@@ -1,0 +1,100 @@
+@import '_typography-button-layout';
+@import '_responsive';
+@import '_custom-kendo';
+@import '_common';
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////Start Account CSS///////////////////////
+/////////////////////////////////////////////////////////////////////
+
+// can not move this css in specific component and and account css becuase here we are useing css on the basis of body and if we will call  in specific component than it will not work
+
+  // set password
+  // login
+  // signup
+  body.opti_account-module
+  {
+    background-image: url('/assets/images/signup/nouse/shutter/body-bg-new-5.jpg');
+    background-position: center center;
+    background-size: cover;
+    padding: 50px;
+    background-repeat: no-repeat;
+    float: left;
+    width: 100%;
+  }
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////End Account CSS/////////////////////////
+/////////////////////////////////////////////////////////////////////  
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////Start Move Order CSS////////////////////
+/////////////////////////////////////////////////////////////////////  
+body.opti_body-move-order.opti_account-module {
+
+  .opti_primary-color{
+    color: #1FA2FF;
+  }
+
+  .opti_account-submodule-container{
+    width: 60%;
+  }
+
+  padding: 0;
+  float: left;
+  width: 100%;
+  #opti_MainContentID {
+    padding: 50px;
+  }
+  #opti_MoveOrderID{
+    // height: calc(100vh - 65px);
+    width: 100%;
+    height: 100%;
+  }
+  .opti_account-banner-section, .opti_account-form-section{
+    height: calc(100vh - 165px);
+  }
+
+  .opti_outer-moveorder-form{
+    .opti_vertcal-align-outer-box{
+      // height: calc(100vh - 165px);
+      height: 100%;
+      padding: 0;
+
+    }
+  }
+
+  .opti_date-start-end{
+    input{
+      padding: 0.375rem 0.75rem;
+      border: 1px solid rgba(33, 37, 41, 0.125);
+      font-size: 15px;
+      border-radius: 3px;
+      font-weight: $font-weight-regular;
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+
+  kendo-grid-toolbar.k-header.k-grid-toolbar {
+      text-align: center;
+  }
+
+}
+
+
+
+// Css for lookup quantity field
+td.opti_Balance.Quantity {
+  text-align: right;
+}
+
+
+kendo-grid tr td button, kendo-grid tr td button.k-button.k-grid-remove-command {
+  margin: 0 !important;
+}
+kendo-grid tr td button, kendo-grid tr td button.k-button.k-grid-edit-command {
+  margin: 0 5px 0 0 !important;
+}
