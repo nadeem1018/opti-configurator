@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top flex-md-nowrap shadow" [hidden]="!showHeader">
+  <button class="navbar-toggler" type="button">
+  <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+  </button>
+  <a class="navbar-brand  col-sm-3 col-md-2 mr-0" href="javascript:;">{{project_name}}</a>
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> -->
+ 
+
+  <div class="navbar-collapse" id="navbarsExample04">
+    <!-- <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="javascript:;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:;">Link</a>
+      </li>
+      
+    </ul> -->
+   <!--  <form class="form-inline my-2 my-md-0">
+      <input class="form-control" type="text" placeholder="Search">
+    </form>
+       -->
+      <div class="pull-right">
+        <ul class="navbar-nav pull-right">
+          <li class="nav-item dropdown">
+            <a href="#" class=" nav-link dropdown-toggle" data-toggle="dropdown">Welcome, User
+              <i class="fa fa-caret"></i>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:;">   <i class="fa fa-cog"></i> Preferences</a>
+                <span class="divider"></span>
+                <a class="dropdown-item" href="javascript:;" (click)="logout()">   <i class="fa fa-sign-out"></i> Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+   
+  </div>
+</nav>

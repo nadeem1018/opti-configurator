@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
-import { BaseClass } from "src/app/models/Baseclass";
+import { CommonData } from "src/app/models/CommonData";
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -13,12 +13,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class LoginComponent implements OnInit {
   public loginId: string;//= 'shashank';
   public password: string;//= 'sha@123';
-
+  
   public modelSource: any;
   public disableLoginBtn: boolean = true;
   public psURL: string = '';
 
-  private baseClassObj = new BaseClass();
+  private baseClassObj = new CommonData();
+  public page_title = this.baseClassObj.project_name;
   public arrConfigData: any[];
   public defaultCompnyComboValue: any = [{ OPTM_COMPID: "Select Company" }];
   public listItems: Array<string> = this.defaultCompnyComboValue;
@@ -40,14 +41,26 @@ export class LoginComponent implements OnInit {
   public InvalidActiveUser: boolean = false;
   public passwordBlank: boolean = false;
   public showLoader: boolean = false;
+  constructor(   
+    private auth: AuthenticationService, 
+    private router: Router,
+    private httpClientSer: HttpClient
+  ) { }
 
+    test_click(){
+      console.log(sessionStorage.getItem('isLoggedIn'));
+      sessionStorage.setItem('isLoggedIn', "true");
+      // this.router.navigateByUrl('/home');
+      window.location.href = '/home';
+    }
 
-  constructor(
-    private auth: AuthenticationService, private router: Router,
-    private httpClientSer: HttpClient) { }
+  ngOnInit() { 
 
-  ngOnInit() {
+    if (sessionStorage.getItem('isLoggedIn') == 'true') {
+      this.router.navigateByUrl('/home');
+    }
 
+/*
     this.listItems = this.defaultCompnyComboValue;
     this.selectedValue = this.listItems[0];
 
@@ -227,8 +240,7 @@ export class LoginComponent implements OnInit {
         }
       }
     )
-
+*/
   }
-
 
 }

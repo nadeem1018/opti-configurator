@@ -24,18 +24,27 @@ import { ToastrModule } from 'ngx-toastr';
 // user defined components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/common/header/header.component';
+import { SidebarComponent } from './components/common/sidebar/sidebar.component';
+import { FooterComponent } from './components/common/footer/footer.component';
 
 // routing & navigation
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent },
 ];
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

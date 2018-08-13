@@ -2,6 +2,7 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
+	"service_url":"",
 	"system_version":"1.0.0",
 	 "default_db_driver":"ms_sql_srv",
 	 "connection_parameter":
