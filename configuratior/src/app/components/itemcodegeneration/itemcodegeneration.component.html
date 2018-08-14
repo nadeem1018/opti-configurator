@@ -1,0 +1,52 @@
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard DEMO</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i> Add</button>
+      <button class="btn btn-sm btn-outline-secondary"><i class="fa fa-trash"></i> Delete</button>
+    </div>
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <i class="fa fa-caret"></i>
+      Actions
+    </button>
+  </div>
+</div>
+<form class="form-inline"><div class="form-group">
+    <label for="usr">Code:</label>
+    <input type="text" class="form-control" id="usrID"/>
+  </div></form>
+
+
+<table class="table">
+  <thead>
+    <tr >
+      <th><button type="button" class="btn btn-info btn-sm"   (click)="onAddRow()">Add</button> </th>
+      <th>String</th>
+      <th>Type</th>
+      <th>Operations</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of itemcodetable">
+        <td> 
+            <input [disabled]="true" type="text" class="form-control" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+        </td>
+      <td>
+        <input type="text" class="form-control" id="stringtxt" name="stringtxtName" [(ngModel)]="row.stringtype" (blur)="onStrBlur()"/>      </td>
+      <td name="stringtype" [(ngModel)]="row.stringtype"><select class="form-control form-control-sm">
+        <option>String</option>
+        <option>Number</option>
+      </select></td>
+      <td name="operations" [(ngModel)]="row.operations"><select class="form-control form-control-sm">
+        <option>No Operation</option>
+        <option>Increase</option>
+        <option>Decrease</option>
+      </select></td>
+      <td name="delete" [(ngModel)]="row.delete" > <button type="button" class="btn btn-danger">Delete</button></td>
+     
+    </tr>
+   
+  </tbody>
+</table>
