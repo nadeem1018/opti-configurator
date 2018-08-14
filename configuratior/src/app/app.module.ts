@@ -30,12 +30,14 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
 import { FooterComponent } from './components/common/footer/footer.component';
 import { LookupComponent } from './components/common/lookup/lookup.component';
 import { NotfoundComponent } from './components/common/notfound/notfound.component';
+import { ItemcodegenerationComponent } from './components/itemcodegeneration/itemcodegeneration.component';
 
 
 // routing & navigation
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'itemcodegeneration', component: ItemcodegenerationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
@@ -49,7 +51,8 @@ const routes: Routes = [
     SidebarComponent,
     FooterComponent,
     LookupComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    ItemcodegenerationComponent
   ],
   imports: [
     BrowserModule,
