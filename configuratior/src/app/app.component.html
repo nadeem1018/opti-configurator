@@ -1,15 +1,16 @@
-<div class="row">
-    <div class="col-md-12 col-sm-12">
-        <app-header></app-header>
-        <br><br><br>
-        <div class="container-fluid">
-            <div class="row">
-                <app-sidebar class="col-md-2" [hidden]="!showSidebar"></app-sidebar>
-                <main role="main" class="{{main_class}}">
+<div id="page-top">
+    <app-header></app-header>
+    <div id="wrapper">
+        <app-sidebar class="" [hidden]="!showSidebar"></app-sidebar>
+        <div id="content-wrapper" class="{{main_class}}">
+            <div class="container-fluid">
                     <router-outlet></router-outlet>
-                </main>
-                <app-footer></app-footer>
-            </div>
-        </div>
-    </div>
+            </div> <!-- /.container-fluid -->
+        </div> <!-- /.content-wrapper -->
+        <app-footer></app-footer>
+    </div> <!-- /#wrapper -->
+    <a class="scroll-to-top rounded gototop" href="javascript:;">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <app-lookup></app-lookup>
 </div>

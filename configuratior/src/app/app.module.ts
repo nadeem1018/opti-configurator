@@ -28,14 +28,17 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/common/header/header.component';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
 import { FooterComponent } from './components/common/footer/footer.component';
+import { LookupComponent } from './components/common/lookup/lookup.component';
+import { NotfoundComponent } from './components/common/notfound/notfound.component';
+
 
 // routing & navigation
 const routes: Routes = [
-  { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: NotfoundComponent }
 ];
-
 
 @NgModule({
   declarations: [
@@ -44,7 +47,9 @@ const routes: Routes = [
     HomeComponent,
     HeaderComponent,
     SidebarComponent,
-    FooterComponent
+    FooterComponent,
+    LookupComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,

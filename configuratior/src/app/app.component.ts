@@ -10,5 +10,5 @@ export class AppComponent {
   title = 'app';
 
   showSidebar: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false; 
-  main_class = (sessionStorage.getItem('isLoggedIn') !== null) ? "col-md-9 ml-sm-auto col-lg-10 px-4" : "col-md-12 ml-sm-auto col-lg-12 px-4";
+  main_class = ""; // (sessionStorage.getItem('isLoggedIn') !== null) ? "col-md-9 ml-sm-auto col-lg-10 px-4" : "col-md-12 ml-sm-auto col-lg-12 px-4";
 }

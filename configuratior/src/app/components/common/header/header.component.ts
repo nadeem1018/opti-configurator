@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonData } from "src/app/models/CommonData";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -10,14 +11,17 @@ import { CommonData } from "src/app/models/CommonData";
 export class HeaderComponent implements OnInit {
   private commonData = new CommonData();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private toastr: ToastrService) { }
   project_name = this.commonData.project_name; 
   showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
 
   
   ngOnInit() {
     this.checkSession();
+     this.toastr.success('', 'Toast Loaded Sucessfully', this.commonData.toast_config);
   }
+
+ 
  
 
   logout(){

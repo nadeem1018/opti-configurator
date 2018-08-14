@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   constructor() { }
-
+  showFooter: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
   ngOnInit() {
   }
 
