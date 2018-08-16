@@ -10,7 +10,8 @@ import { LookupComponent } from 'src/app/components/common/lookup/lookup.compone
 
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
-  constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
+  //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
+constructor(private fms: FeaturemodelService) { }
   companyName: string ;
   showLookup: boolean = false;
   showLookupItem: boolean = false;
@@ -44,7 +45,7 @@ export class ModelComponent implements OnInit {
       //this.openRightSection(status);
       this.showLookup = true;    
       //On Form Initialization get All WO
-      this.getAllTemplateItems();
+      //this.getAllTemplateItems();
   
     }   
     
@@ -53,7 +54,7 @@ export class ModelComponent implements OnInit {
       data => {
         this.allWODetails = data;
         if (this.allWODetails.length > 0) {
-          this.lookupData = this.allWODetails;
+          //this.lookupData = this.allWODetails;
          this.showLookup=true;
         }
       }
@@ -65,14 +66,14 @@ export class ModelComponent implements OnInit {
     this.isWorkOrderListRightSection = status;
     this.showLookup = true;    
     //On Form Initialization get All WO
-    this.getAllItemGenerated();
+    //this.getAllItemGenerated();
   }
   getAllItemGenerated() {
     this.fms.getGeneratedItems("SFDCDB").subscribe(
       data => {
         this.allWODetails = data;
         if (this.allWODetails.length > 0) {
-          this.lookupData = this.allWODetails;
+          //this.lookupData = this.allWODetails;
          this.showLookup=true;
         }
       }
