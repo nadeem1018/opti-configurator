@@ -16,6 +16,7 @@ constructor(private fms: FeaturemodelService) { }
   showLookup: boolean = false;
   showLookupItem: boolean = false;
   openedLookup: string = '';
+  lookupfor:string = '';
   columnsToShow: Array<string> = [];
   sWorkOrderLookupColumns = "OPTM_GROUPCODE";
   isWorkOrderListRightSection: boolean = false;
@@ -39,6 +40,7 @@ constructor(private fms: FeaturemodelService) { }
     }
 
     onTemplateItemPress(status) {
+      this.lookupfor = 'model_template';
       this.columnsToShow = this.sWorkOrderLookupColumns.split(",");
       this.openedLookup = "Lookup";
       this.isWorkOrderListRightSection = status;

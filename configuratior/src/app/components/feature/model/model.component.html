@@ -22,7 +22,7 @@
     <label for="featureItem">Model Template Item:</label>
     <span class="opti_workorder-icon">
       <input type="text" name = ngModel class="form-control" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
-      <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" />
+    <a href="javascript:;" data-toggle="modal" data-target="#lookup_modal"> <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" /></a>
     </span>
   </div>
   <div class="form-group">
@@ -39,7 +39,7 @@
     <label for="featureItemCode">Item Code Generation Ref:</label>
     <span class="opti_workorder-icon">
         <input type="text"  class="form-control" name = ngModel id="featureItemCode" placeholder="Item Code Generation Ref" [(ngModel)]="featureBom.Ref">
-        <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onItemGenerationPress(true)" alt="work order" width="27px" height="27px" />
+        <a href="javascript:;"  data-toggle="modal" data-target="#lookup_modal" ><img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onItemGenerationPress(true)"  alt="work order" width="27px" height="27px" /></a>
     </span>
   </div>
   <div class="form-group">
@@ -52,3 +52,5 @@
 </form>
   <button type="button" (click)="onSaveClick()" class="btn btn-success">Save</button>
   <button type="button" class="btn btn-danger">Delete</button>
+
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>
