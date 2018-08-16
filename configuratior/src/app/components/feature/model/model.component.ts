@@ -21,6 +21,7 @@ export class ModelComponent implements OnInit {
   showLookup: boolean = false;
   showLookupItem: boolean = false;
   openedLookup: string = '';
+  lookupfor:string = '';
   columnsToShow: Array<string> = [];
   sWorkOrderLookupColumns = "OPTM_GROUPCODE";
   isWorkOrderListRightSection: boolean = false;
@@ -44,6 +45,7 @@ export class ModelComponent implements OnInit {
     }
 
     onTemplateItemPress(status) {
+      this.lookupfor = 'model_template';
       this.columnsToShow = this.sWorkOrderLookupColumns.split(",");
       this.openedLookup = "Lookup";
       this.isWorkOrderListRightSection = status;

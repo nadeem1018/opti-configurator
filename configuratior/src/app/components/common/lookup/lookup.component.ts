@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 
 
@@ -8,6 +8,10 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./lookup.component.scss']
 })
 export class LookupComponent implements OnInit {
+
+  @Input() serviceData: any; 
+  @Input() lookupfor: any; 
+
   constructor(private common_service: CommonService) { }
   
 
@@ -27,6 +31,18 @@ export class LookupComponent implements OnInit {
   ngOnInit() {
     this.showLoader = true;
   }
+  
+  ngOnChanges(): void {
+    console.log("ngOnChanges lookup - " + this.lookupfor);
+
+    if (this.lookupfor != "") {
+      if (this.lookupfor == "model_template") {
+        console.log('chanve in here');
+        this.model_template_lookup();
+      }
+    }
+    
+  }
 
   model_template_lookup(){
     this.click_operation  = 'model_template';
@@ -35,8 +51,9 @@ export class LookupComponent implements OnInit {
     this.dataBind = [];
 
     // service call 
-    this.service_Data = this.common_service.templatelookupData;
-
+    // this.service_Data = this.common_service.templatelookupData;
+    console.log(this.serviceData);
+    
     this.dataBind = JSON.stringify(this.service_Data, this.model_template_item_columns);
     this.dataBind = JSON.parse(this.dataBind);
     this.showLoader = false;
