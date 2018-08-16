@@ -13,19 +13,26 @@
   </div>
 </div>
 <form class="form-inline"><div class="form-group">
-    <label for="usr">Code:</label>
-    <input type="text" class="form-control" id="usrID"/>
+    <label for="usr" style="float: left;">Code:</label>
+    <input  type="text" class="form-control" id="usrID"/>
+    
   </div></form>
+  <div style="float: right;">
+      <button type="button" class="btn btn-info btn-sm"   (click)="onAddRow()">Add</button> 
+  </div>
+  
 
-
-<table class="table">
-  <thead>
+  <div class="table-responsive" style="height:180px; overflow:auto;">
+      <form action="/action_page.php" >
+      
+<table class="table table-bordered" >
+  <thead class="thead-dark">
     <tr >
-      <th><button type="button" class="btn btn-info btn-sm"   (click)="onAddRow()">Add</button> </th>
+      <th style="width: 10%">#</th>
       <th>String</th>
       <th>Type</th>
       <th>Operations</th>
-      <th></th>
+      <th>Remove</th>
     </tr>
   </thead>
   <tbody>
@@ -33,20 +40,32 @@
         <td> 
             <input [disabled]="true" type="text" class="form-control" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
         </td>
-      <td>
-        <input type="text" class="form-control" id="stringtxt" name="stringtxtName" [(ngModel)]="row.stringtype" (blur)="onStrBlur()"/>      </td>
-      <td name="stringtype" [(ngModel)]="row.stringtype"><select class="form-control form-control-sm">
-        <option>String</option>
-        <option>Number</option>
+      <td name="stringtxtName" [(ngModel)]="row.string">
+        <input type="text" class="form-control" id="stringtxt"   #stringtxtvalue  (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"/>      </td>
+      <td name="stringtype" [(ngModel)]="row.stringtype">
+        <select class="form-control form-control-sm"  #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)" >
+        <!-- <option *ngFor="let v of stringtypevalue" [value]="v.value" ng-selected="item.versionID"> {{v.Name}}</option> -->
+        <option value=1>String</option>
+        <option value=2>Number</option>
       </select></td>
-      <td name="operations" [(ngModel)]="row.operations"><select class="form-control form-control-sm">
-        <option>No Operation</option>
-        <option>Increase</option>
-        <option>Decrease</option>
+      <td name="operations" [(ngModel)]="row.operations">
+        <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+        <option value="1">No Operation</option>
+        <option value="2">Increase</option>
+        <option value="3">Decrease</option>
       </select></td>
-      <td name="delete" [(ngModel)]="row.delete" > <button type="button" class="btn btn-danger">Delete</button></td>
+      <td name="delete" [(ngModel)]="row.delete" > <button type="button" class="btn btn-danger"  (click)="onDeleteRow(row.rowindex)">Delete</button></td>
      
     </tr>
    
   </tbody>
 </table>
+</form>
+
+</div>
+<form class="form-inline"><div class="form-group">
+    <label for="finalstring">Final String:</label>
+    <input [disabled]="true" type="text" name="finaltxtstring" [(ngModel)]="finalstring" class="form-control" id="finalstring"/>
+    <button type="button" style="float: right;" class="btn btn-info btn-sm"   (click)="onSaveAndUpdate()">Save</button> 
+  </div></form>
+

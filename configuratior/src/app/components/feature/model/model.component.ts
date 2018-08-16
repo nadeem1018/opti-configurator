@@ -16,7 +16,7 @@ export class ModelComponent implements OnInit {
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent) { }
-  
+  page_main_title = 'Model Feature';
   companyName: string ;
   showLookup: boolean = false;
   showLookupItem: boolean = false;

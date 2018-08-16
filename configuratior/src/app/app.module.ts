@@ -32,13 +32,14 @@ import { LookupComponent } from './components/common/lookup/lookup.component';
 import { NotfoundComponent } from './components/common/notfound/notfound.component';
 import { ModelComponent } from './components/feature/model/model.component';
 import { ItemcodegenerationComponent } from './components/itemcodegeneration/itemcodegeneration.component';
-
+import { ViewFeatureModelComponent } from "./components/feature/model/view.model.component";
 
 // routing & navigation
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'feature/model', component: ModelComponent },
+  { path: 'feature/model/view', component: ViewFeatureModelComponent },
   { path: 'feature/bom', component: ModelComponent },
   { path: 'item-code-generation', component: ItemcodegenerationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -56,7 +57,8 @@ const routes: Routes = [
     LookupComponent,
     NotfoundComponent,
     ModelComponent,
-    ItemcodegenerationComponent
+    ItemcodegenerationComponent,
+    ViewFeatureModelComponent
   ],
   imports: [
     BrowserModule,
