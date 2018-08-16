@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="lookup_data" *ngIf="LookupDataLoaded">
-          <kendo-grid [ngStyle]="setStyles()" [kendoGridBinding]="dataBind" [scrollable]="'scrollable'" [height]="height" [selectable]="true"
+          <kendo-grid  [kendoGridBinding]="dataBind" [scrollable]="'scrollable'" [height]="height" [selectable]="true"
             [sortable]="{ mode: 'multiple' }" [resizable]="false" [pageSize]="10000" [pageable]="true" [filterable]="false" [groupable]="false"
             [selectable]="true">
             <kendo-grid-column *ngFor="let col of columns;let i=index" class="opti_{{col.Name}}" field="{{col.Name}}" title="{{col.Name}}"

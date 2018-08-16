@@ -23,9 +23,10 @@ export class ModelComponent implements OnInit {
   openedLookup: string = '';
   lookupfor:string = '';
   columnsToShow: Array<string> = [];
-  sWorkOrderLookupColumns = "OPTM_GROUPCODE";
+  sWorkOrderLookupColumns = "ItemCode";
   isWorkOrderListRightSection: boolean = false;
   allWODetails: any;
+   serviceData: any; 
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
@@ -52,7 +53,7 @@ export class ModelComponent implements OnInit {
       //this.openRightSection(status);
       this.showLookup = true;    
       //On Form Initialization get All WO
-      //this.getAllTemplateItems();
+      this.getAllTemplateItems();
       this.lookup.model_template_lookup();
   
     }   
@@ -60,11 +61,10 @@ export class ModelComponent implements OnInit {
   getAllTemplateItems() {
     this.fms.getTemplateItems("SFDCDB").subscribe(
       data => {
-        this.allWODetails = data;
-        if (this.allWODetails.length > 0) {
-          //this.lookupData = this.allWODetails;
+        this.serviceData = data;
+        
          this.showLookup=true;
-        }
+        //}
       }
     )
   }

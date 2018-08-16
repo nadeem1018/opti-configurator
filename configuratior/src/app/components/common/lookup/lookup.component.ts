@@ -46,7 +46,7 @@ export class LookupComponent implements OnInit {
 
   model_template_lookup(){
     this.click_operation  = 'model_template';
-    this.model_template_item_columns = ['', '', ''];
+    this.model_template_item_columns = ['ItemCode', 'ItemName'];
     this.showLoader = true;
     this.dataBind = [];
 
@@ -54,14 +54,15 @@ export class LookupComponent implements OnInit {
     // this.service_Data = this.common_service.templatelookupData;
     console.log(this.serviceData);
     
-    this.dataBind = JSON.stringify(this.service_Data, this.model_template_item_columns);
+    this.dataBind = JSON.stringify(this.serviceData, this.model_template_item_columns);
     this.dataBind = JSON.parse(this.dataBind);
+    console.log( this.dataBind);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
 
   onRowBtnClick(evt, rowIndex) {
-    this.common_service.ShareData({ value: this.service_Data[rowIndex], from: this.click_operation });
+    this.common_service.ShareData({ value: this.serviceData[rowIndex], from: this.click_operation });
   }
 
 

@@ -33,9 +33,9 @@ httpOptions = {
   getTemplateItems(CompanyDBID:string):Observable<any>{
      //JSON Obeject Prepared to be send as a param to API
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
-        
+
    //Return the response form the API  
-    return this.httpclient.post("http://localhost:57966/api/FeatureHeader/GetModelTemplateItem",jObject,this.httpOptions);
+    return this.httpclient.post("http://localhost:65342/FeatureHeader/GetModelTemplateItem",jObject,this.httpOptions);
    }
 
     
@@ -45,6 +45,6 @@ httpOptions = {
     let jObject = { UserGroupValues: JSON.stringify([{ UserGroupId: "shashank" }]) };
        
   //Return the response form the API  
-  return this.httpclient.post("http://localhost:57966/api/UserGroup/GetAllUserGroupRecords",jObject,this.httpOptions);
+  return this.httpclient.post("http://localhost:65342/api/UserGroup/GetAllUserGroupRecords",jObject,this.httpOptions);
   }
 }
