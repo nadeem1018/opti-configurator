@@ -16,6 +16,8 @@ export class CommonData {
         }
     };
 
+    public lookup_selected_value = '';
+
     /* public employee_list = [
         { id: 1, name: 'Meenesh', email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
         { id: 2, name: 'Neeraj', email: 'Neeraj@batchmaster.com', address: 'Indore, India' },

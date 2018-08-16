@@ -1,5 +1,5 @@
 <!-- Grid Modal-->
-<div class="modal fade" id="lookup_modal" tabindex="-1" role="dialog" aria-labelledby="lookup_modal" aria-hidden="true">
+<div class="modal fade" id="lookup_modal" tabindex="-1" role="dialog" aria-labelledby="lookup_modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog  modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,8 +9,24 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="lookup_data">
-
+        <div class="opti_loader " *ngIf="showLoader"> 
+          <div class="text-center">
+            <i class="fa fa-gear fa-3x fa-spin"></i>
+          </div>
+        </div>
+        <div class="lookup_data" *ngIf="LookupDataLoaded">
+          <kendo-grid [ngStyle]="setStyles()" [kendoGridBinding]="dataBind" [scrollable]="'scrollable'" [height]="height" [selectable]="true"
+            [sortable]="{ mode: 'multiple' }" [resizable]="false" [pageSize]="10000" [pageable]="true" [filterable]="false" [groupable]="false"
+            [selectable]="true">
+            <kendo-grid-column *ngFor="let col of columns;let i=index" class="opti_{{col.Name}}" field="{{col.Name}}" title="{{col.Name}}"
+              [sortable]="col.CanSort" [hidden]="col.Hidden" [width]="100">
+              <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <div (click)="onRowClick($event, rowIndex)" class="gridCell">
+                  {{dataItem[col.Name]}}
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
         </div>
       </div>
       <div class="modal-footer">
