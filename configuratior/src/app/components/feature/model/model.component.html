@@ -19,8 +19,11 @@
     <input type="text" name = ngModel class="form-control" id="featureDesc" placeholder="Model/Feature Description" [(ngModel)]="featureBom.Desc">
   </div>
   <div class="form-group">
-    <label for="featureItem">Model/Feature Item:</label>
-    <input type="text" name = ngModel class="form-control" id="featureItem" placeholder="Model/Feature Item">
+    <label for="featureItem">Model Template Item:</label>
+    <span class="opti_workorder-icon">
+      <input type="text" name = ngModel class="form-control" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
+      <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" />
+    </span>
   </div>
   <div class="form-group">
     <label for="image">Upload Image</label>
@@ -34,7 +37,10 @@
   </div>
   <div class="form-group">
     <label for="featureItemCode">Item Code Generation Ref:</label>
-    <input type="text"  class="form-control" id="featureItemCode" placeholder="Item Code Generation Ref">
+    <span class="opti_workorder-icon">
+        <input type="text"  class="form-control" name = ngModel id="featureItemCode" placeholder="Item Code Generation Ref" [(ngModel)]="featureBom.Ref">
+        <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onItemGenerationPress(true)" alt="work order" width="27px" height="27px" />
+    </span>
   </div>
   <div class="form-group">
     <label for="Status">Status</label>
