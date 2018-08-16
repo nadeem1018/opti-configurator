@@ -8,8 +8,8 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./lookup.component.scss']
 })
 export class LookupComponent implements OnInit {
-
   constructor(private common_service: CommonService) { }
+  
 
   // mandatory variables
   public dataBind: any = [];

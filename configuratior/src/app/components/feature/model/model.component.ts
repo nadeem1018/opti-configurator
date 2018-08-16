@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturemodelService } from 'src/app/services/featuremodel.service';
 import { LookupComponent } from 'src/app/components/common/lookup/lookup.component';
+
+
 @Component({
+  providers:[LookupComponent],
   selector: 'app-model',
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.scss']
@@ -11,7 +14,9 @@ import { LookupComponent } from 'src/app/components/common/lookup/lookup.compone
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
-constructor(private fms: FeaturemodelService) { }
+  
+  constructor(private fms: FeaturemodelService, private lookup: LookupComponent) { }
+  
   companyName: string ;
   showLookup: boolean = false;
   showLookupItem: boolean = false;
@@ -34,7 +39,7 @@ constructor(private fms: FeaturemodelService) { }
       data => {
         if(data == "True"){
          
-        }
+        } 
       })
     }
 
@@ -46,6 +51,7 @@ constructor(private fms: FeaturemodelService) { }
       this.showLookup = true;    
       //On Form Initialization get All WO
       //this.getAllTemplateItems();
+      this.lookup.model_template_lookup();
   
     }   
     

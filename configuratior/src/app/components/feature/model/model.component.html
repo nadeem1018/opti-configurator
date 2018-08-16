@@ -22,9 +22,10 @@
     <label for="featureItem">Model Template Item:</label>
     <span class="opti_workorder-icon">
       <input type="text" name = ngModel class="form-control" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
-      <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" />
+      <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" data-toggle="modal" data-target="#lookup_modal" />
     </span>
   </div>
+  
   <div class="form-group">
     <label for="image">Upload Image</label>
     <input type="file" class="form-control-file" id="image">
