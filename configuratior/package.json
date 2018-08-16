@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^6.1.1",
+    "@angular/animations": "^6.1.2",
     "@angular/cdk": "^6.3.0",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
@@ -43,7 +43,7 @@
     "ng-pick-datetime": "^6.0.10",
     "ngx-bootstrap": "^3.0.1",
     "ngx-perfect-scrollbar": "^6.2.0",
-    "ngx-toastr": "^8.10.0",
+    "ngx-toastr": "^8.10.2",
     "peer": "^0.2.8",
     "popper.js": "^1.12.9",
     "rxjs": "^6.0.0",

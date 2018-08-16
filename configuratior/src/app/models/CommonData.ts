@@ -2,12 +2,21 @@
 export class CommonData {
     public project_name:string = "Optipro Configurator";
     public adminDBName: string = "OPTIPROADMIN";
-  // toast configuration 
+    
     public toast_config = {
         closeButton: true,
-        progressBar: true,
-        timeOut: 100000
+        progressBar: false,
+        timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        iconClasses : {
+            error:   'toast-error',
+            info:    'toast-info',
+            success: 'toast-success',
+            warning: 'toast-warning'
+        }
     };
+
+    public lookup_selected_value = '';
 
     /* public employee_list = [
         { id: 1, name: 'Meenesh', email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
