@@ -33,6 +33,7 @@ import { NotfoundComponent } from './components/common/notfound/notfound.compone
 import { ModelComponent } from './components/feature/model/model.component';
 import { ItemcodegenerationComponent } from './components/itemcodegeneration/itemcodegeneration.component';
 import { ViewFeatureModelComponent } from "./components/feature/model/view.model.component";
+import { ViewItemCodeGenerationComponent } from "./components/itemcodegeneration/viewitemcodegeneration.component";
 
 // routing & navigation
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
   { path: 'feature/model', component: ModelComponent },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
   { path: 'feature/bom', component: ModelComponent },
-  { path: 'item-code-generation', component: ItemcodegenerationComponent },
+  { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
+  { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
@@ -58,7 +60,8 @@ const routes: Routes = [
     NotfoundComponent,
     ModelComponent,
     ItemcodegenerationComponent,
-    ViewFeatureModelComponent
+    ViewFeatureModelComponent,
+    ViewItemCodeGenerationComponent
   ],
   imports: [
     BrowserModule,

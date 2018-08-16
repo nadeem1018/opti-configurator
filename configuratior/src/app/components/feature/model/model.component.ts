@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FeaturemodelService } from 'src/app/services/featuremodel.service';
-import { LookupComponent } from 'src/app/components/common/lookup/lookup.component';
+import { FeaturemodelService } from '../../../services/featuremodel.service';
+import { LookupComponent } from '../../common/lookup/lookup.component';
 
 
 @Component({

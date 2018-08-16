@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonData } from "src/app/models/CommonData";
+import { CommonData } from "../../models/CommonData";
 
 @Component({
   selector: 'app-home',
