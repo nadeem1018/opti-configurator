@@ -38,8 +38,9 @@ import { ItemcodegenerationComponent } from './components/itemcodegeneration/ite
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'model', component: ModelComponent },
-  { path: 'itemcodegeneration', component: ItemcodegenerationComponent },
+  { path: 'feature/model', component: ModelComponent },
+  { path: 'feature/bom', component: ModelComponent },
+  { path: 'item-code-generation', component: ItemcodegenerationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
