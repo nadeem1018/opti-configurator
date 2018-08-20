@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
+import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 
 @Component({
   selector: 'app-itemcodegeneration',
@@ -9,8 +10,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ItemcodegenerationComponent implements OnInit {
 private commonData = new CommonData();
-constructor(private toastr: ToastrService) {
+constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
+ 
 }
+companyName: string ;
 page_main_title = 'Item Code Generation'
 public itemCodeGen:any =[];
 public itemcodetable:any =[];
@@ -27,12 +30,15 @@ public stringType:any =[];
 public counter:number=0;
 public finalstring:string="";
 public countnumberrow:number=0;
+public codekey:string="";
+
 
 
   
 
   ngOnInit()
   {
+    this.companyName = sessionStorage.getItem('selectedComp');
   }
 
   onAddRow()
@@ -54,6 +60,8 @@ public countnumberrow:number=0;
       stringtype:1,
       operations:1,
       delete:"",
+      CompanyDBId:"SFDCDB",
+      codekey:this.codekey
 
     })
 
@@ -87,10 +95,20 @@ public countnumberrow:number=0;
 
   onSaveAndUpdate()
   {
+    alert(this.codekey)
     if(this.validateRowData("SaveData")==false){
       return
     } 
-  alert(JSON.stringify(this.itemcodetable))
+    this.itemgen.saveData(this.itemcodetable).subscribe(
+      data => {
+        // this.allWODetails = data;
+        // if (this.allWODetails.length > 0) {
+          //this.lookupData = this.allWODetails;
+        //  this.showLookup=true;
+        //}
+      }
+    )
+ 
   }
 
   onStringTypeSelectChange(selectedvalue,rowindex)
@@ -146,7 +164,6 @@ public countnumberrow:number=0;
         {
           if(isNaN(this.itemcodetable[i].string)==true){
             this.toastr.success('', 'Enter valid number', this.commonData.toast_config);
-            //alert("not a number")
             return false;
           }
           
@@ -155,10 +172,16 @@ public countnumberrow:number=0;
         else{
           if(this.itemcodetable[i].operations!=1){
             this.toastr.success('', 'Enter valid operation', this.commonData.toast_config);
-            //alert("invalid operation")
+            return false;
           }
         }
       }
+
+      if(this.finalstring.length>50){
+        this.toastr.success('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
+        return false;
+      }
+
       }
     }
     else{
