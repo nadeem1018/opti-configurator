@@ -1,24 +1,40 @@
 .mr-10 {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-.cursor_icon{
-    cursor: pointer;
+.cursor_icon {
+  cursor: pointer;
 }
 
-.lookup_data .k-grid-header{
-    padding: 0px !important;
-    width: 100% !important;
-  }
-  .lookup_data .k-grid-header-wrap table{
-    width: 100% !important;
-  }
-  .k-header{
-    width: 50% !important;
-  }
-  .lookup_data table.k-grid-table{
-    width: 100% !important;
-  }
-  .k-grid-table tr td{
-    width: 50% !important;
-  }
+.lookup_data .k-grid-header {
+  padding: 0px !important;
+  width: 100% !important;
+}
+
+.lookup_data .k-grid-header-wrap table {
+  width: 100% !important;
+}
+
+.k-header {
+  width: 50% !important;
+}
+
+.lookup_data table.k-grid-table {
+  width: 100% !important;
+}
+
+.k-grid-table tr td {
+  width: 50% !important;
+}
+
+.border_top {
+  border-top: 1px solid #ccc;
+}
+
+.margin_top {
+  margin-top: 11px;
+}
+
+.padding_top{
+  padding-top: 10px;
+}

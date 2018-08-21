@@ -19,7 +19,7 @@ export class CommonData {
     };
 
       //defining properties for the call 
-    httpOptions = {
+    public httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -29,35 +29,14 @@ export class CommonData {
     public lookup_selected_value = '';
 
     public stringtypevalue:any=[
-        {"value":1,
-        "Name":"String"
-        },
-        {"value":2,
-        "Name":"Number"
-        }
-        ];
-        public opertions:any=[
-            {"value":1,
-            "Name":"No Operation"
-            },
-            {"value":2,
-            "Name":"Increase"
-            },
-            {"value":3,
-            "Name":"Decrease"
-            }
-            ];
+        {"value":1, "Name":"String"},
+        {"value":2,  "Name":"Number"}
+    ];
     
-    /* public employee_list = [
-        { id: 1, name: 'Meenesh', email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
-        { id: 2, name: 'Neeraj', email: 'Neeraj@batchmaster.com', address: 'Indore, India' },
-        { id: 3, name: 'Ashish', email: 'Ashish@batchmaster.com', address: 'Indore, India' },
-        { id: 4, name: 'Kapil', email: 'Kapil@batchmaster.com', address: 'Indore, India' },
-        { id: 5, name: 'Roba', email: 'Roba@batchmaster.com', address: 'Indore, India' },
-        { id: 6, name: 'Akshay', email: 'Akshay@batchmaster.com', address: 'Indore, India' },
-        { id: 7, name: 'Hamza', email: 'Hamza@batchmaster.com', address: 'Indore, India' },
-        { id: 8, name: 'Kishan', email: 'Kishan@batchmaster.com', address: 'Indore, India' },
-        { id: 9, name: 'Sagar', email: 'Sagar@batchmaster.com', address: 'Indore, India' },
-        { id: 10, name: 'Satendra', email: 'Satendra@batchmaster.com', address: 'Indore, India' }
-    ]; */
+    public opertions:any= [
+        {"value":1,  "Name":"No Operation"  },  
+        {"value":2,  "Name":"Increase"  },  
+        {"value":3,  "Name":"Decrease"  }
+    ];
+    
 }
