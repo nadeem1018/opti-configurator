@@ -49,7 +49,9 @@ public DefaultTypeValue:any =[];
             operations:data[i].operations,
             delete:"",
             CompanyDBId:"SFDCDB",
-            codekey:data[i].codekey
+            codekey:data[i].codekey,
+            user:"john"
+
           })
           this.finalstring=this.finalstring + data[i].string
         }
@@ -82,7 +84,8 @@ public DefaultTypeValue:any =[];
       operations:1,
       delete:"",
       CompanyDBId:"SFDCDB",
-      codekey:this.codekey
+      codekey:this.codekey,
+      user:"john"
 
     })
 
