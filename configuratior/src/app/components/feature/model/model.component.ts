@@ -13,6 +13,7 @@ import { LookupComponent } from '../../common/lookup/lookup.component';
 
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
+  public featureModel:any =[];
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent) { }
@@ -28,18 +29,29 @@ export class ModelComponent implements OnInit {
   allWODetails: any;
    serviceData: any;
    item:string =''; 
+   
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
   onSaveClick(){
-    alert(this.featureBom.Code);
-    alert(this.featureBom.Name);
-    alert(this.featureBom.Desc);
-    alert(this.featureBom.Date);
-    alert(this.featureBom.type);
-    alert(this.featureBom.Status);
-    this.fms.saveData(this.companyName,this.featureBom).subscribe(
+    
+    this.featureModel.push({
+      CompanyDBId:"SFDCDB",
+      DisplayCode: this.featureBom.Code,
+      DisplayName: this.featureBom.Name,
+      FeatureDesc: this.featureBom.Desc,
+      EffectiveDate:this.featureBom.Date,
+      Type:this.featureBom.type,
+      FeatureStatus:this.featureBom.Status,
+      ModelTemplateItem:this.featureBom.ItemName,
+      ItemCodeGenerationRef : this.featureBom.Ref,
+      PicturePath: "www",
+      CreatedUser: "ash"
+    })
+    console.log(this.featureModel);
+    this.fms.saveData(this.featureModel).subscribe(
       data => {
+        console.log(data);
         if(data == "True"){
          
         } 

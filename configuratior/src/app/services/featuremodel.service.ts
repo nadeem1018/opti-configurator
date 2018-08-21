@@ -17,16 +17,12 @@ httpOptions = {
     })
   };
   //Submit feature bom data
-  saveData(CompanyDBID:string,FromOperationNo):Observable<any>{
+  saveData(featureBom):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
-      let jObject:any={ MoveOrder: JSON.stringify([{ 
-        CompanyDBID: CompanyDBID, 
-        FromOperation: FromOperationNo, 
-        
-       
-      }]) };
+      //JSON Obeject Prepared to be send as a param to API
+      let jObject:any={ Feature: JSON.stringify(featureBom) };
     //Return the response form the API  
-    return this.httpclient.post(this.arrConfigData.optiProMoveOrderAPIURL+"/MoveOrder/SubmitMoveOrder",jObject,this.httpOptions);
+    return this.httpclient.post("http://localhost:65342/FeatureHeader/AddFeatures",jObject,this.httpOptions);
     }
     
     //get template items to hit API
