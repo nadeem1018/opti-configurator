@@ -26,40 +26,46 @@ public countnumberrow:number=0;
 public codekey:string="";
 public GetItemData:any =[];
 public DefaultTypeValue:any =[];
+public button="save"
 
   ngOnInit()
   {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.stringtypevalue=this.commonData.stringtypevalue
     this.opertions=this.commonData.opertions
-    this.GetItemData.push({
-       CompanyDBId:"SFDCDB",
-       ItemCode:"sdsadad"
+    if(this.button=="update"){
+      this.GetItemData.push({
+        CompanyDBId:"SFDCDB",
+        ItemCode:"sdsadad"
+ 
+     })
+     this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
+       data => {
+         this.finalstring="";
+         
+         for(let i = 0; i < data.length; ++i)
+         {
+           this.itemcodetable.push({
+             rowindex:data[i].OPTM_LINEID,
+             string:data[i].OPTM_CODESTRING,
+             stringtype:data[i].OPTM_TYPE,
+             operations:data[i].OPTM_OPERATION,
+             delete:"",
+             CompanyDBId:"SFDCDB",
+             codekey:"sdsadad",
+             CreatedUser:"john"
+           })
+           this.finalstring=this.finalstring + data[i].OPTM_CODESTRING
+         }
 
-    })
-    this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
-      data => {
-        this.finalstring="";
-        for(let i = 0; i < data.length; ++i)
-        {
-          this.itemcodetable.push({
-            rowindex:data[i].rowindex,
-            string:data[i].string,
-            stringtype:data[i].stringtype,
-            operations:data[i].operations,
-            delete:"",
-            CompanyDBId:"SFDCDB",
-            codekey:data[i].codekey,
-            user:"john"
-
-          })
-          this.finalstring=this.finalstring + data[i].string
-        }
-       
-      }
-
-
-    )
+         
+        
+       }
+ 
+ 
+     )
+    }
+   
     
     
   }
@@ -85,8 +91,7 @@ public DefaultTypeValue:any =[];
       delete:"",
       CompanyDBId:"SFDCDB",
       codekey:this.codekey,
-      user:"john"
-
+      CreatedUser:"john"
     })
 
     
@@ -124,7 +129,8 @@ public DefaultTypeValue:any =[];
     } 
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-        if (data == "true" ) {
+        alert(data);
+        if (data === "True" ) {
           this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
           return;
         }
