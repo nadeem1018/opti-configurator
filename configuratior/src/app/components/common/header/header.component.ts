@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonData } from "../../../models/CommonData";
+import { CommonService } from "../../../services/common.service";
  import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -10,18 +11,24 @@ import { CommonData } from "../../../models/CommonData";
 })
 export class HeaderComponent implements OnInit {
   private commonData = new CommonData();
-
-  constructor(private router: Router, private toastr: ToastrService) {}
-  
-  project_name = this.commonData.project_name; 
+  config_data: any = "";
+  language: any = "";
+  project_name:any = '';
+  constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) {}
   showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
   
   ngOnInit() {
-    this.checkSession();
-   
-    
-  }
+    this.CommonService.get_config();
 
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+    this.checkSession();
+    
+    this.CommonService.set_language(this.config_data['locale']);
+    this.project_name = this.config_data['app_title'];
+    this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
+  }
+    
+  
   logout(){
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
     sessionStorage.clear();

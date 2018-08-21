@@ -1,3 +1,5 @@
+ import { HttpHeaders } from '@angular/common/http';
+
 // Example of Data as model, can be used for non updating data (exaple - names, task type and etc)
 export class CommonData {
     public project_name:string = "Optipro Configurator";
@@ -15,6 +17,14 @@ export class CommonData {
             warning: 'toast-warning'
         }
     };
+
+      //defining properties for the call 
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        })
+    }
 
     public lookup_selected_value = '';
 

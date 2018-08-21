@@ -39,7 +39,7 @@ import { ViewItemCodeGenerationComponent } from "./components/itemcodegeneration
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'feature/model', component: ModelComponent },
+  { path: 'feature/model/add', component: ModelComponent },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
   { path: 'feature/bom', component: ModelComponent },
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent },

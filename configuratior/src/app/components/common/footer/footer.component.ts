@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-
   constructor() { }
   showFooter: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
-  ngOnInit() {
+  config_data = JSON.parse(sessionStorage.getItem('system_config'));
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
+  
+  ngOnInit(){ 
   }
+
+  ngOnChanges() {  }
 
 }

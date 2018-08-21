@@ -11,7 +11,8 @@ export class LookupComponent implements OnInit {
 
   @Input() serviceData: any; 
   @Input() lookupfor: any; 
-
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
+  popup_title = this.language.title;
   constructor(private common_service: CommonService) { }
   
 
@@ -45,6 +46,7 @@ export class LookupComponent implements OnInit {
   }
 
   model_template_lookup(){
+    this.popup_title = this.language.model_template;
     this.click_operation  = 'model_template';
     this.model_template_item_columns = ['ItemCode', 'ItemName'];
     this.showLoader = true;

@@ -1,0 +1,17 @@
+{
+    "help": "Help",
+    "server_error": "There was some error, please try again",
+    "signout" : "Sign-out",
+    "user_profile": "User Profile",
+    "preferences": "Preferences",
+    "search_for": "Search for...",
+    "dashboard": "Dashboard",
+    "itemcodegeneration": "Item Code Generation",
+    "feature" : "Feature",
+    "model": "Model",
+    "bom": "BOM",
+    "lookup" : "Lookup",
+    "cancel" : "Cancel",
+    "title" : "Title", 
+    "model_template":"Model Template"
+}
