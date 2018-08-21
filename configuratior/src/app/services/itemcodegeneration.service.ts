@@ -19,7 +19,7 @@ httpOptions = {
   'Accept':'application/json'
     })
   };
-  //Submit feature bom data
+  //save data 
   saveData(ItemCodeGenerationData):Observable<any>{
     
     //JSON Obeject Prepared to be send as a param to API
@@ -27,4 +27,14 @@ httpOptions = {
     //Return the response form the API  
     return this.httpclient.post("http://localhost:65341/ItemGeneration/AddItemGeneration",jObject,this.httpOptions);
     }
+//get data
+    getItemCodeGenerationByCode(ItemCode):Observable<any>{
+    
+      //JSON Obeject Prepared to be send as a param to API
+        let jObject:any={ ItemList: JSON.stringify(ItemCode) };
+      //Return the response form the API  
+      return this.httpclient.post("http://localhost:65341/ItemGeneration/GetDataByItemCode",jObject,this.httpOptions);
+      }
+
+    
 }
