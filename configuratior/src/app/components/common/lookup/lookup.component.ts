@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input ,Output, EventEmitter} from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 
 
@@ -11,8 +11,10 @@ export class LookupComponent implements OnInit {
 
   @Input() serviceData: any; 
   @Input() lookupfor: any; 
+  @Output() messageEvent = new EventEmitter<string>();
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
+  @Input() fillLookupArray: any;
   constructor(private common_service: CommonService) { }
   
 
@@ -23,23 +25,30 @@ export class LookupComponent implements OnInit {
   public LookupDataLoaded:boolean = false;
   public click_operation;
   public service_Data;
-
   // look up columns - thats needs to be shown 
    
   public item_code_columns;
   public model_template_item_columns;
 
-  ngOnInit() {
-    this.showLoader = true;
-  }
+  ngOnInit() {  }
   
   ngOnChanges(): void {
+
+    this.showLoader = true;
+    this.LookupDataLoaded = false;
+
+    this.item_code_columns = [];
+    this.model_template_item_columns = [];
+
     console.log("ngOnChanges lookup - " + this.lookupfor);
+    this.dataBind = [];
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-        console.log('chanve in here');
         this.model_template_lookup();
+      }
+      if (this.lookupfor == "model_item_generation") {
+        this.model_item_generation_lookup();
       }
     }
     
@@ -49,6 +58,21 @@ export class LookupComponent implements OnInit {
     this.popup_title = this.language.model_template;
     this.click_operation  = 'model_template';
     this.model_template_item_columns = ['ItemCode', 'ItemName'];
+    this.showLoader = true;
+    this.dataBind = [];
+    // service call 
+    // this.service_Data = this.common_service.templatelookupData;
+    console.log(this.serviceData);
+    
+    this.dataBind = JSON.stringify(this.serviceData, this.model_template_item_columns);
+    this.dataBind = JSON.parse(this.dataBind);
+    console.log( this.dataBind);
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+      }
+  model_item_generation_lookup(){
+    this.click_operation  = 'model_item_generation';
+    this.model_template_item_columns = ['Code'];
     this.showLoader = true;
     this.dataBind = [];
 
@@ -63,9 +87,12 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
   }
 
-  onRowBtnClick(evt, rowIndex) {
+  onRowBtnClick(evt, rowIndex) {  
+    
+    console.log('in row select ');
     this.common_service.ShareData({ value: this.serviceData[rowIndex], from: this.click_operation });
+   
+   
   }
-
 
 }

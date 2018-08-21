@@ -9,7 +9,7 @@ import { ItemcodegenerationService } from '../../services/itemcodegeneration.ser
   styleUrls: ['./itemcodegeneration.component.scss']
 })
 export class ItemcodegenerationComponent implements OnInit {
-private commonData = new CommonData();
+public commonData = new CommonData();
 constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
  
 }
@@ -17,28 +17,51 @@ companyName: string ;
 page_main_title = 'Item Code Generation'
 public itemCodeGen:any =[];
 public itemcodetable:any =[];
-public stringtypevalue:any=[
-{"value":1,
-"Name":"String"
-},
-{"value":2,
-"Name":"Number"
-}
-];
-public stringtypeselectedvalue:string;
+public stringtypevalue:any=[];
+public opertions:any=[];
 public stringType:any =[];
 public counter:number=0;
 public finalstring:string="";
 public countnumberrow:number=0;
 public codekey:string="";
-
-
-
-  
+public GetItemData:any =[];
+public DefaultTypeValue:any =[];
 
   ngOnInit()
   {
     this.companyName = sessionStorage.getItem('selectedComp');
+    this.stringtypevalue=this.commonData.stringtypevalue
+    this.opertions=this.commonData.opertions
+    this.GetItemData.push({
+       CompanyDBId:"SFDCDB",
+       ItemCode:"sdsadad"
+
+    })
+    this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
+      data => {
+        this.finalstring="";
+        for(let i = 0; i < data.length; ++i)
+        {
+          this.itemcodetable.push({
+            rowindex:data[i].rowindex,
+            string:data[i].string,
+            stringtype:data[i].stringtype,
+            operations:data[i].operations,
+            delete:"",
+            CompanyDBId:"SFDCDB",
+            codekey:data[i].codekey,
+            user:"john"
+
+          })
+          this.finalstring=this.finalstring + data[i].string
+        }
+       
+      }
+
+
+    )
+    
+    
   }
 
   onAddRow()
@@ -61,7 +84,8 @@ public codekey:string="";
       operations:1,
       delete:"",
       CompanyDBId:"SFDCDB",
-      codekey:this.codekey
+      codekey:this.codekey,
+      user:"john"
 
     })
 
@@ -95,17 +119,19 @@ public codekey:string="";
 
   onSaveAndUpdate()
   {
-    alert(this.codekey)
     if(this.validateRowData("SaveData")==false){
       return
     } 
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-        // this.allWODetails = data;
-        // if (this.allWODetails.length > 0) {
-          //this.lookupData = this.allWODetails;
-        //  this.showLookup=true;
-        //}
+        if (data == "true" ) {
+          this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
+          return;
+        }
+        else{
+          this.toastr.success('', 'Data not saved', this.commonData.toast_config);
+          return;
+        }
       }
     )
  
@@ -188,6 +214,7 @@ public codekey:string="";
       if(this.itemcodetable.length==0)
       {
         this.toastr.success('', 'Enter any row', this.commonData.toast_config);
+        return false;
       } 
       else{
         this.countnumberrow=0;
@@ -200,9 +227,14 @@ public codekey:string="";
         }
         if(this.countnumberrow==0){
           this.toastr.success('', 'Atleast one row should be number type', this.commonData.toast_config);
-          //alert("invalid operation")
+          return false;
+          
         }
       }
+    }
+    if(this.codekey.length==0){
+      this.toastr.success('', 'Code cannot be blank ', this.commonData.toast_config); 
+      return false;
     }
    
   }

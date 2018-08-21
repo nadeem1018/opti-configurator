@@ -15,8 +15,6 @@ export class ItemcodegenerationService {
   }
 
 
-
-  //Submit feature bom data
   saveData(ItemCodeGenerationData):Observable<any>{
     
     //JSON Obeject Prepared to be send as a param to API
@@ -24,4 +22,14 @@ export class ItemcodegenerationService {
     //Return the response form the API  
     return this.httpclient.post("http://localhost:65341/ItemGeneration/AddItemGeneration", jObject, this.common_params.httpOptions);
     }
+//get data
+    getItemCodeGenerationByCode(ItemCode):Observable<any>{
+    
+      //JSON Obeject Prepared to be send as a param to API
+        let jObject:any={ ItemList: JSON.stringify(ItemCode) };
+      //Return the response form the API  
+      return this.httpclient.post("http://localhost:65341/ItemGeneration/GetDataByItemCode",jObject,this.httpOptions);
+      }
+
+    
 }

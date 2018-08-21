@@ -5,3 +5,20 @@
 .cursor_icon{
     cursor: pointer;
 }
+
+.lookup_data .k-grid-header{
+    padding: 0px !important;
+    width: 100% !important;
+  }
+  .lookup_data .k-grid-header-wrap table{
+    width: 100% !important;
+  }
+  .k-header{
+    width: 50% !important;
+  }
+  .lookup_data table.k-grid-table{
+    width: 100% !important;
+  }
+  .k-grid-table tr td{
+    width: 50% !important;
+  }

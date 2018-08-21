@@ -28,6 +28,26 @@ export class CommonData {
 
     public lookup_selected_value = '';
 
+    public stringtypevalue:any=[
+        {"value":1,
+        "Name":"String"
+        },
+        {"value":2,
+        "Name":"Number"
+        }
+        ];
+        public opertions:any=[
+            {"value":1,
+            "Name":"No Operation"
+            },
+            {"value":2,
+            "Name":"Increase"
+            },
+            {"value":3,
+            "Name":"Decrease"
+            }
+            ];
+    
     /* public employee_list = [
         { id: 1, name: 'Meenesh', email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
         { id: 2, name: 'Neeraj', email: 'Neeraj@batchmaster.com', address: 'Indore, India' },
