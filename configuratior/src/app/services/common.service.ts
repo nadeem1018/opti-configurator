@@ -13,7 +13,7 @@ export class CommonService {
   common_params = new CommonData();
   constructor(private httpclient: HttpClient) { }
   config_parameter;
-  current_lang;
+
   // Declaration
   private commonData = new Subject<any>();
   commonData$ = this.commonData.asObservable();

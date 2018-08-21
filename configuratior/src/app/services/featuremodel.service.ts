@@ -8,13 +8,13 @@ import { CommonData } from "src/app/models/CommonData";
   providedIn: 'root'
 })
 export class FeaturemodelService {
-  arrConfigData:any;
+  config_params:any;
   common_params = new CommonData();
   constructor(private httpclient:HttpClient) { 
-    this.arrConfigData=JSON.parse(localStorage.getItem('arrConfigData'));
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
-//defining properties for the call 
-   ;
+
+   
   //Submit feature bom data
   saveData(CompanyDBID:string,FromOperationNo):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
@@ -25,7 +25,7 @@ export class FeaturemodelService {
        
       }]) };
     //Return the response form the API  
-    return this.httpclient.post(this.arrConfigData.optiProMoveOrderAPIURL + "/MoveOrder/SubmitMoveOrder", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/MoveOrder/SubmitMoveOrder", jObject, this.common_params.httpOptions);
     }
     
     //get template items to hit API
@@ -34,7 +34,7 @@ export class FeaturemodelService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
 
    //Return the response form the API  
-    return this.httpclient.post("http://localhost:65342/FeatureHeader/GetModelTemplateItem",jObject,this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetModelTemplateItem",jObject,this.common_params.httpOptions);
    }
 
     
@@ -44,6 +44,6 @@ export class FeaturemodelService {
     let jObject = { ItemCodeGenerationReference: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
        
   //Return the response form the API  
-  return this.httpclient.post("http://localhost:65342/api/UserGroup/GetAllUserGroupRecords",jObject,this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/api/UserGroup/GetAllUserGroupRecords",jObject,this.common_params.httpOptions);
   }
 }

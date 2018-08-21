@@ -8,10 +8,10 @@ import { CommonData } from "src/app/models/CommonData";
 })
 export class ItemcodegenerationService {
 
-  arrConfigData:any;
+  config_params:any;
   common_params = new CommonData();
   constructor(private httpclient:HttpClient) { 
-    this.arrConfigData=JSON.parse(localStorage.getItem('arrConfigData'));
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
 
 
@@ -20,7 +20,7 @@ export class ItemcodegenerationService {
     //JSON Obeject Prepared to be send as a param to API
       let jObject:any={ AddItemGeneration: JSON.stringify(ItemCodeGenerationData) };
     //Return the response form the API  
-    return this.httpclient.post("http://localhost:65341/ItemGeneration/AddItemGeneration", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/AddItemGeneration", jObject, this.common_params.httpOptions);
     }
 //get data
     getItemCodeGenerationByCode(ItemCode):Observable<any>{
@@ -28,7 +28,7 @@ export class ItemcodegenerationService {
       //JSON Obeject Prepared to be send as a param to API
         let jObject:any={ ItemList: JSON.stringify(ItemCode) };
       //Return the response form the API  
-      return this.httpclient.post("http://localhost:65341/ItemGeneration/GetDataByItemCode",jObject,this.httpOptions);
+      return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/GetDataByItemCode", jObject, this.common_params.httpOptions);
       }
 
     
