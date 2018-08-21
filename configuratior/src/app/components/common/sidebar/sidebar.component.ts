@@ -9,6 +9,10 @@ export class SidebarComponent implements OnInit {
 
   constructor() { }
   showSidebar: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
-  ngOnInit() {  }
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
+  ngOnInit() { 
+
+
+   }
 
 }

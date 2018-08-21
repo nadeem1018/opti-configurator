@@ -12,7 +12,7 @@ export class ViewFeatureModelComponent implements OnInit {
     page_main_title = 'Model Feature';
     table_title = this.page_main_title;
 
-    add_route_link = '/feature/model';
+    add_route_link = '/feature/model/add';
 
     table_head_foot = ['Name', 'Position', 'Office', 'Age', 'Start Date', 'Salary'];
     

@@ -38,18 +38,19 @@
             <input [disabled]="true" type="text" class="form-control" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
         </td>
       <td name="stringtxtName" [(ngModel)]="row.string">
-        <input type="text" class="form-control" id="stringtxt"   #stringtxtvalue  (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"/>      </td>
+        <input type="text" class="form-control" id="stringtxt"  value={{row.string}} #stringtxtvalue  (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"/>      </td>
       <td name="stringtype" [(ngModel)]="row.stringtype">
-        <select class="form-control form-control-sm"  #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)" >
-        <!-- <option *ngFor="let v of stringtypevalue" [value]="v.value" ng-selected="item.versionID"> {{v.Name}}</option> -->
-        <option value=1>String</option>
-        <option value=2>Number</option>
+        <select class="form-control form-control-sm"  #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)" >
+        <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value" > {{v.Name}}</option>
+        <!-- <option  value=1>String</option>
+        <option value=2>Number</option> -->
       </select></td>
       <td name="operations" [(ngModel)]="row.operations">
         <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
-        <option value="1">No Operation</option>
+            <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value" > {{v.Name}}</option>
+        <!-- <option value="1">No Operation</option>
         <option value="2">Increase</option>
-        <option value="3">Decrease</option>
+        <option value="3">Decrease</option> -->
       </select></td>
       <td name="delete" [(ngModel)]="row.delete" > <button type="button" class="btn btn-danger"  (click)="onDeleteRow(row.rowindex)">Delete</button></td>
      
