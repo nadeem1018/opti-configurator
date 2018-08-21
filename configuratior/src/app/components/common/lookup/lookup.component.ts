@@ -1,5 +1,5 @@
 import { Component, OnInit, Input ,Output, EventEmitter} from '@angular/core';
-import { CommonService } from 'src/app/services/common.service';
+import { CommonService } from '../../../services/common.service';
 
 
 @Component({

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonData } from "../../models/CommonData";
+import { ToastrService } from 'ngx-toastr';
+import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 
 @Component({
   selector: 'app-itemcodegeneration',
@@ -6,6 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./itemcodegeneration.component.scss']
 })
 export class ItemcodegenerationComponent implements OnInit {
+private commonData = new CommonData();
+constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
+ 
+}
+companyName: string ;
+page_main_title = 'Item Code Generation'
 public itemCodeGen:any =[];
 public itemcodetable:any =[];
 public stringtypevalue:any=[
@@ -20,16 +29,23 @@ public stringtypeselectedvalue:string;
 public stringType:any =[];
 public counter:number=0;
 public finalstring:string="";
+public countnumberrow:number=0;
+public codekey:string="";
 
 
-  constructor() { }
+
+  
 
   ngOnInit()
   {
+    this.companyName = sessionStorage.getItem('selectedComp');
   }
 
   onAddRow()
   {
+    if(this.validateRowData("AddRow")==false){
+      return
+    }
     if(this.itemcodetable.length==0){
       this.counter=0;
     }
@@ -44,6 +60,8 @@ public finalstring:string="";
       stringtype:1,
       operations:1,
       delete:"",
+      CompanyDBId:"SFDCDB",
+      codekey:this.codekey
 
     })
 
@@ -77,7 +95,20 @@ public finalstring:string="";
 
   onSaveAndUpdate()
   {
-alert(JSON.stringify(this.itemcodetable))
+    alert(this.codekey)
+    if(this.validateRowData("SaveData")==false){
+      return
+    } 
+    this.itemgen.saveData(this.itemcodetable).subscribe(
+      data => {
+        // this.allWODetails = data;
+        // if (this.allWODetails.length > 0) {
+          //this.lookupData = this.allWODetails;
+        //  this.showLookup=true;
+        //}
+      }
+    )
+ 
   }
 
   onStringTypeSelectChange(selectedvalue,rowindex)
@@ -104,20 +135,76 @@ alert(JSON.stringify(this.itemcodetable))
 
   }
 
-  onStrBlur(selectedvalue,rowindex){
+  onStrBlur(selectedvalue,rowindex)
+  {
     if(this.itemcodetable.length>0)
     {
       this.finalstring="";
     for(let i = 0; i < this.itemcodetable.length; ++i)
-    {
+      {
       if (this.itemcodetable[i].rowindex === rowindex) 
       {
             this.itemcodetable[i].string=selectedvalue;
       }
       this.finalstring=this.finalstring + this.itemcodetable[i].string
+      }
     }
+
   }
 
+  validateRowData(buttonpressevent)
+  {
+    if(buttonpressevent=="AddRow"){
+      if(this.itemcodetable.length>0)
+      {
+       
+      for(let i = 0; i < this.itemcodetable.length; ++i)
+      {
+        if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+        {
+          if(isNaN(this.itemcodetable[i].string)==true){
+            this.toastr.success('', 'Enter valid number', this.commonData.toast_config);
+            return false;
+          }
+          
+          
+        }
+        else{
+          if(this.itemcodetable[i].operations!=1){
+            this.toastr.success('', 'Enter valid operation', this.commonData.toast_config);
+            return false;
+          }
+        }
+      }
+
+      if(this.finalstring.length>50){
+        this.toastr.success('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
+        return false;
+      }
+
+      }
+    }
+    else{
+      if(this.itemcodetable.length==0)
+      {
+        this.toastr.success('', 'Enter any row', this.commonData.toast_config);
+      } 
+      else{
+        this.countnumberrow=0;
+        for(let i = 0; i < this.itemcodetable.length; ++i)
+        {
+          if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+          {
+            this.countnumberrow++;
+          }
+        }
+        if(this.countnumberrow==0){
+          this.toastr.success('', 'Atleast one row should be number type', this.commonData.toast_config);
+          //alert("invalid operation")
+        }
+      }
+    }
+   
   }
 
 

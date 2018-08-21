@@ -1,67 +1,136 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">{{page_main_title}}</h1>
+    <h1 class="h2">{{page_main_title}}</h1>
 </div>
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="javascript:;" routerLink="/home">Dashboard</a>
-  </li>
-  <li class="breadcrumb-item "><a routerLink="/feature/model/view" href="javascript:;">{{page_main_title}}</a></li>
-  <li class="breadcrumb-item active">Add</li>
+    <li class="breadcrumb-item">
+        <a href="javascript:;" routerLink="/home">
+            <i class="fa fa-home fa-fw"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+    <li class="breadcrumb-item ">
+        <a routerLink="/feature/model/view" href="javascript:;">{{page_main_title}}</a>
+    </li>
+    <li class="breadcrumb-item active">Add</li>
 </ol>
-  <form >
-  <div class="form-group">
-    <label for="feature">Model/Feature Code:</label>
-    <input type="text" name = ngModel class="form-control" id="feature" placeholder="Model/Feature Code" [(ngModel)]="featureBom.Code">
-  </div>
-  <div class="form-group">
-    <label for="type">Type</label>
-    <select class="form-control" id="type" name= ngModel [(ngModel)]="featureBom.type">
-      <option>Feature</option>
-      <option>Model</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="featurename">Model/Feature Name:</label>
-    <input type="text" name = ngModel class="form-control" id="featurename" placeholder="Model/Feature Name" [(ngModel)]="featureBom.Name">
-  </div>
-  <div class="form-group">
-    <label for="featureDesc">Model/Feature Description:</label>
-    <input type="text" name = ngModel class="form-control" id="featureDesc" placeholder="Model/Feature Description" [(ngModel)]="featureBom.Desc">
-  </div>
-  <div class="form-group">
-    <label for="featureItem">Model Template Item:</label>
-    <span class="opti_workorder-icon">
-      <input type="text" name = ngModel class="form-control" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
-    <a href="javascript:;" data-toggle="modal" data-target="#lookup_modal"> <img src="assets/images/common/list.svg" title="Template Items" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" /></a>
-    </span>
-  </div>
-  
-  <div class="form-group">
-    <label for="image">Upload Image</label>
-    <input type="file" class="form-control-file" id="image">
-  </div>
-  <div class="form-group row">
-    <label for="example-datetime-local-input" class="col-2 col-form-label">Effective Date</label>
-    <div class="col-10">
-      <input class="form-control" name = ngModel type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" placeholder="Effective Date" [(ngModel)]="featureBom.Date">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="featureItemCode">Item Code Generation Ref:</label>
-    <span class="opti_workorder-icon">
-        <input type="text"  class="form-control" name = ngModel id="featureItemCode" placeholder="Item Code Generation Ref" [(ngModel)]="featureBom.Ref">
-        <a href="javascript:;"  data-toggle="modal" data-target="#lookup_modal" ><img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onItemGenerationPress(true)"  alt="work order" width="27px" height="27px" /></a>
-    </span>
-  </div>
-  <div class="form-group">
-    <label for="Status">Status</label>
-    <select class="form-control" name = ngModel [(ngModel)]= "featureBom.Status" id="Status">
-      <option>Active</option>
-      <option>Inactive</option>
-    </select>
-  </div>
-</form>
-  <button type="button" (click)="onSaveClick()" class="btn btn-success">Save</button>
-  <button type="button" class="btn btn-danger">Delete</button>
+<div class="card mb-3">
+    <form>
+        <div class="card-header">
+            <i class="fa fa-file"></i> Add Feature/ Model</div>
+        <div class="card-body">
 
-  <app-lookup  [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>
+            <div class="form-group row clearfix">
+                <label class="col-sm-3 col-form-label" for="feature">Model/Feature Code:</label>
+                <div class="col-sm-6">
+                    <input type="text" name=n gModel class="form-control  form-control-sm" id="feature" placeholder="Model/Feature Code" [(ngModel)]="featureBom.Code">
+                </div>
+            </div>
+            <div class="form-group row clearfix">
+                <label class="col-sm-3 col-form-label" for="type">Type</label>
+                <div class="col-sm-6">
+                    <select class="form-control  form-control-sm" id="type" name=n gModel [(ngModel)]="featureBom.type">
+                        <option>Feature</option>
+                        <option>Model</option>
+                    </select>
+                </div>
+            </div>
+
+             <div class="form-group row clearfix">
+        <label class="col-sm-3 col-form-label" for="featurename">Model/Feature Name:</label>
+        <div class="col-sm-6">
+          <input type="text" name=n gModel class="form-control  form-control-sm" id="featurename" placeholder="Model/Feature Name" [(ngModel)]="featureBom.Name">
+        </div>
+      </div>
+      <div class="form-group row clearfix">
+        <label class="col-sm-3 col-form-label" for="featureDesc">Model/Feature Description:</label>
+        <div class="col-sm-6">
+          <input type="text" name=n gModel class="form-control  form-control-sm" id="featureDesc" placeholder="Model/Feature Description" [(ngModel)]="featureBom.Desc">
+        </div>
+      </div>
+      <div class="form-group row clearfix">
+        <label class="col-sm-3 col-form-label" for="featureItem">Model Template Item:</label>
+    
+          <div class="col-sm-6 input-group">
+            <input type="text" name=n gModel class="form-control  form-control-sm" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
+            <div class="input-group-append">
+              <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)"><i class="fa fa-bars"></i></span>
+            </div>
+          </div>
+          </div>
+
+        <div class="form-group row clearfix">
+            <label class="col-sm-3 col-form-label" for="image">Upload Image</label>
+            <div class="col-sm-6">
+                <input type="file" class="form-control  form-control-sm-file" id="image">
+            </div>
+        </div>
+        <div class="form-group row clearfix">
+            <label class="col-sm-3 col-form-label" for="datetime_input" class="col-sm-3 col-form-label">Effective Date</label>
+            <div class="col-sm-6 input-group">
+                <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm" name='datepicker'
+                    type="text" value="" id="datetime_input" readonly placeholder="Effective Date" [(ngModel)]="featureBom.Date">
+                <div class="input-group-append">
+                    <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+                <owl-date-time #dt12></owl-date-time>
+            </div>
+        </div>
+        <div class="form-group row clearfix">
+            <label class="col-sm-3 col-form-label" for="featureItemCode">Item Code Generation Ref:</label>
+        
+            <div class="col-sm-6 input-group">
+                <input type="text" class="form-control  form-control-sm" name=n gModel id="featureItemCode" placeholder="Item Code Generation Ref"
+                    [(ngModel)]="featureBom.Ref">
+                <div class="input-group-append">
+                    <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+            </div>
+        
+        </div>
+        <div class="form-group row clearfix">
+            <label class="col-sm-3 col-form-label" for="Status">Status</label>
+            <div class="col-sm-6">
+                <select class="form-control  form-control-sm" name=n gModel [(ngModel)]="featureBom.Status" id="Status">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                </select>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <div class="footer-buttons">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="pull-left">
+                            <button type="button" (click)="onSaveClick()" class="btn btn-success  mr-10">
+                                <i class="fa fa-save"></i> Save</button>
+                            <button type="button" (click)="onUpdateClick()" class="btn btn-info mr-10">
+                                <i class="fa fa-save"></i> Update</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right">
+                            <button type="button" routerLink="/feature/model/view" class="btn btn-grey mr-10">
+                                <i class="fa fa-times fa-fw"></i>
+                                <span>Cancel</span>
+                            </button>
+        
+                            <button type="button" class="btn btn-danger" (click)="onDeleteClick()">
+                                <i class="fa fa-trash fa-fw"></i>
+                                <span>Delete</span>
+                            </button>
+                            <!-- only view when edit mode -->
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+        </div>
+        
+        <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>

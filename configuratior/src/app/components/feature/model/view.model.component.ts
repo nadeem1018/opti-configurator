@@ -20,7 +20,4 @@ export class ViewFeatureModelComponent implements OnInit {
 
     ngOnInit() {
     }
-
-   
-   
 }
