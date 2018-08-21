@@ -32,7 +32,7 @@
     <label for="featureItem">Model Template Item:</label>
     <span class="opti_workorder-icon">
       <input type="text" name = ngModel class="form-control" id="featureItemName" placeholder="Model Template Item" [(ngModel)]="featureBom.ItemName">
-    <a href="javascript:;" data-toggle="modal" data-target="#lookup_modal"> <img src="assets/images/common/list.svg" title="Work Order's" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" /></a>
+    <a href="javascript:;" data-toggle="modal" data-target="#lookup_modal"> <img src="assets/images/common/list.svg" title="Template Items" class="opti_mouse-pointer" (click)="onTemplateItemPress(true)" alt="work order" width="27px" height="27px" /></a>
     </span>
   </div>
   
@@ -64,4 +64,4 @@
   <button type="button" (click)="onSaveClick()" class="btn btn-success">Save</button>
   <button type="button" class="btn btn-danger">Delete</button>
 
-  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>
+  <app-lookup  [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>

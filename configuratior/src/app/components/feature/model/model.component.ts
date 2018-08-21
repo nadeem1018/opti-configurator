@@ -26,7 +26,8 @@ export class ModelComponent implements OnInit {
   sWorkOrderLookupColumns = "ItemCode";
   isWorkOrderListRightSection: boolean = false;
   allWODetails: any;
-   serviceData: any; 
+   serviceData: any;
+   item:string =''; 
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
@@ -62,29 +63,32 @@ export class ModelComponent implements OnInit {
     this.fms.getTemplateItems("SFDCDB").subscribe(
       data => {
         this.serviceData = data;
-        
+        if(this.serviceData.length > 0)
          this.showLookup=true;
         //}
       }
     )
   }
   onItemGenerationPress(status){
+    this.lookupfor = 'model_item_generation';
     this.columnsToShow = this.sWorkOrderLookupColumns.split(",");
     this.openedLookup = "Lookup";
     this.isWorkOrderListRightSection = status;
     this.showLookup = true;    
     //On Form Initialization get All WO
-    //this.getAllItemGenerated();
+    this.getAllItemGenerated();
+    this.lookup.model_item_generation_lookup();
   }
   getAllItemGenerated() {
     this.fms.getGeneratedItems("SFDCDB").subscribe(
       data => {
-        this.allWODetails = data;
-        if (this.allWODetails.length > 0) {
+        this.serviceData = data;
+        if (this.serviceData.length > 0) {
           //this.lookupData = this.allWODetails;
          this.showLookup=true;
         }
       }
     )
   }
+  
 }

@@ -42,9 +42,9 @@ httpOptions = {
     //get template items to hit API
   getGeneratedItems(CompanyDBID:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { UserGroupValues: JSON.stringify([{ UserGroupId: "shashank" }]) };
+    let jObject = { ItemCodeGenerationReference: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
        
   //Return the response form the API  
-  return this.httpclient.post("http://localhost:65342/api/UserGroup/GetAllUserGroupRecords",jObject,this.httpOptions);
+  return this.httpclient.post("http://localhost:65342/FeatureHeader/GetItemCodeGenerationReference",jObject,this.httpOptions);
   }
 }
