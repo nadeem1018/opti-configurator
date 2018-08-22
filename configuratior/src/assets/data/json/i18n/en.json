@@ -39,8 +39,18 @@
 "Addrow":"Enter any row",
 "RowNumberType":"Atleast one row should be number type",
 "CodeBlank":"Code cannot be blank",
-"ItemCodeGeneration":"Item Code Generation"
+"ItemCodeGeneration":"Item Code Generation",
 
 
+"Model_Code" :"Model/Feature Code",
+"Model_Type": "Type",
+"Model_Name": "Model/Feature Name",
+"Model_Desc":"Model/Feature Desc",
+"Model_Item":"Model Template Item",
+"Model_Image":"Upload Image",
+"Model_Date": "Effective Date",
+"Model_Ref":"Item Code Generation Ref",
+"Model_Status": "Status",
+"Model_Add":"Add Feature/ Model"
     
 }
