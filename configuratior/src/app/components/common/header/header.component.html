@@ -40,10 +40,11 @@
         <span class="badge badge-danger">7</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-        <a class="dropdown-item" href="javascript:;">Action</a>
-        <a class="dropdown-item" href="javascript:;">Another action</a>
+        <a class="dropdown-item" href="javascript:;" (click)="show_success()" ><i class="fa fa-check"></i> success</a>
+        <a class="dropdown-item" href="javascript:;" (click)="show_warning()"><i class="fa fa-warning"></i> warning</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="javascript:;">Something else here</a>
+        <a class="dropdown-item" href="javascript:;" (click)="show_error()"> <i class="f fa-times"></i> error</a>
+        <a class="dropdown-item" href="javascript:;" (click)="show_info()"> <i class="fa fa-recycle"></i> info</a>
       </div>
     </li>
     <li class="nav-item dropdown no-arrow">

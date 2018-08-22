@@ -11,10 +11,10 @@ export class CommonData {
         timeOut: 5000,
         positionClass: 'toast-bottom-right',
         iconClasses : {
-            error:   'toast-error',
-            info:    'toast-info',
-            success: 'toast-success',
-            warning: 'toast-warning'
+            error:   'alert alert-danger',
+            info:    'alert alert-info ',
+            success: 'alert alert-success ',
+            warning: 'alert alert-warning'
         }
     };
 
