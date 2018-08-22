@@ -46,5 +46,28 @@
 "": "",
 "": "",
 "":""
+"DataSaved":"Data saved successfully",
+"DataNotSaved":"Data not saved",
+"DataDeleteSuccesfully":"Data deleted successfully",
+"DataNotDelete":"Data not deleted",
+"ValidNumber":"Enter valid number",
+"ValidOperations":"Enter valid operation",
+"StringLengthValidation":"Item code key cannot be greater than 50 characters",
+"Addrow":"Enter any row",
+"RowNumberType":"Atleast one row should be number type",
+"CodeBlank":"Code cannot be blank",
+"ItemCodeGeneration":"Item Code Generation",
+
+
+"Model_Code" :"Model/Feature Code",
+"Model_Type": "Type",
+"Model_Name": "Model/Feature Name",
+"Model_Desc":"Model/Feature Desc",
+"Model_Item":"Model Template Item",
+"Model_Image":"Upload Image",
+"Model_Date": "Effective From",
+"Model_Ref":"Item Code Generation Ref",
+"Model_Status": "Status",
+"Model_Add":"Add Feature/ Model"
     
 }

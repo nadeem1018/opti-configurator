@@ -19,7 +19,7 @@ export class ModelComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
-  
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router) { }
   page_main_title = 'Model Feature';
   companyName: string ;
@@ -36,18 +36,20 @@ export class ModelComponent implements OnInit {
    
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
+    var todaysDate = new Date();
+    this.featureBom.Date  = todaysDate;
   }
   onSaveClick(){
     this.featureModel= [];
-
-
+    var validateStatus = this.Validation();
+if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:"SFDCDB",
       FeatureCode: this.featureBom.Code,
       DisplayName: this.featureBom.Name,
       FeatureDesc: this.featureBom.Desc,
-      EffectiveDate:this.featureBom.Date,
-      Type:this.featureBom.type,
+      EffectiveDate: this.featureBom.Date,
+      Type: this.featureBom.type,
       FeatureStatus:this.featureBom.Status,
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
@@ -63,11 +65,16 @@ export class ModelComponent implements OnInit {
           this.router.navigateByUrl(this.view_route_link);
           return;
         }
+        else if(data == "Record Already Exist"){
+          this.toastr.error('', 'Code already exists', this.commonData.toast_config);
+          return;
+        }
         else{
           this.toastr.error('', 'Data not saved', this.commonData.toast_config);
           return;
         }
       })
+    }
     }
 
     onTemplateItemPress(status) {
@@ -114,5 +121,31 @@ export class ModelComponent implements OnInit {
       }
     )
   }
-  
+  //validation of inputs
+  Validation () {
+    if(this.featureBom.Code == undefined || this.featureBom.Code == ''){
+      this.toastr.error('', 'Code cannot be blank', this.commonData.toast_config);
+      return false;
+    }
+    
+    if(this.featureBom.type == undefined || this.featureBom.type == ''){
+      this.toastr.error('', 'Type cannot be blank', this.commonData.toast_config);
+      return false;
+    }
+    if(this.featureBom.Name == undefined || this.featureBom.Name== ''){
+      this.toastr.error('', 'Model/Feature Name cannot be blank', this.commonData.toast_config);
+      return false;
+    }
+    if(this.featureBom.type == "Model"){
+      if(this.featureBom.ItemName == undefined || this.featureBom.ItemName == ''){
+      this.toastr.error('', 'Model Template Item cannot be blank', this.commonData.toast_config);
+      return false;
+      }
+      if(this.featureBom.Ref == undefined || this.featureBom.Ref == ''){
+        this.toastr.error('', 'Item Code Generation Ref cannot be blank', this.commonData.toast_config);
+        return false;
+        }
+    }
+    return true;
+  }
 }
