@@ -14,6 +14,7 @@ import { LookupComponent } from '../../common/lookup/lookup.component';
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
   public featureModel:any =[];
+  public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent) { }

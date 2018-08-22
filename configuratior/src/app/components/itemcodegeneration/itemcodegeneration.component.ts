@@ -10,6 +10,8 @@ import { ItemcodegenerationService } from '../../services/itemcodegeneration.ser
 })
 export class ItemcodegenerationComponent implements OnInit {
 public commonData = new CommonData();
+  public view_route_link = '/item-code-generation/view';
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
 constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
  
 }

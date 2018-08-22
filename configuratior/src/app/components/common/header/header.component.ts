@@ -28,6 +28,18 @@ export class HeaderComponent implements OnInit {
     this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
   }
     
+  show_success(){
+    this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
+  }
+  show_warning(){
+    this.toastr.warning('', 'Session has been stopped', this.commonData.toast_config);
+  }
+  show_error(){
+    this.toastr.error('', 'Session has been stopped', this.commonData.toast_config);
+  }
+  show_info(){
+    this.toastr.info('', 'Session has been stopped', this.commonData.toast_config);
+  }
   
   logout(){
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);

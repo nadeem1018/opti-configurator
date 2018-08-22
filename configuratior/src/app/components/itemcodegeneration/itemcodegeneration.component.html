@@ -4,62 +4,62 @@
   </div>
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <a href="javascript:;" routerLink="/home">Dashboard</a>
+      <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
     </li>
-    <li class="breadcrumb-item "><a routerLink="/item-code-generation/view" href="javascript:;">{{page_main_title}}</a></li>
-    <li class="breadcrumb-item active">Add</li>
+    <li class="breadcrumb-item "><a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a></li>
+    <li class="breadcrumb-item active">{{language.add}}</li>
   </ol>
-<form class="form-inline"><div class="form-group">
-    <label for="usr" style="float: left;">Code:</label>
-    <input  type="text" class="form-control" id="usrID" name="code" [(ngModel)]="codekey"/>
-    
-  </div></form>
-  <div style="float: right;">
-      <button type="button" class="btn btn-info btn-sm"   (click)="onAddRow()">Add</button> 
-  </div>
-  
+<!-- new design -->
 
-  <div class="table-responsive" style="height:180px; overflow:auto;">
-      <form action="/action_page.php" >
-      
-<table class="table table-bordered" >
-  <thead class="thead-dark">
-    <tr >
-      <th style="width: 10%">#</th>
-      <th>String</th>
-      <th>Type</th>
-      <th>Operations</th>
-      <th>Remove</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of itemcodetable">
-        <td> 
-            <input [disabled]="true" type="text" class="form-control" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
-        </td>
-      <td name="stringtxtName" [(ngModel)]="row.string">
-        <input type="text" class="form-control" id="stringtxt"  value={{row.string}} #stringtxtvalue  (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"/>      </td>
-      <td name="stringtype" [(ngModel)]="row.stringtype">
-        <select class="form-control form-control-sm"  #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)" >
-        <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value" > {{v.Name}}</option>
-        <!-- <option  value=1>String</option>
-        <option value=2>Number</option> -->
-      </select></td>
-      <td name="operations" [(ngModel)]="row.operations">
-        <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
-            <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value" > {{v.Name}}</option>
-        <!-- <option value="1">No Operation</option>
-        <option value="2">Increase</option>
-        <option value="3">Decrease</option> -->
-      </select></td>
-      <td name="delete" [(ngModel)]="row.delete" > <button type="button" class="btn btn-danger"  (click)="onDeleteRow(row.rowindex)">Delete</button></td>
-     
-    </tr>
+<div class="card mb-3">
+  <form>
+    <div class="card-header">
+      <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div>
+    <div class="card-body">
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="feature">{{language.code}}</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control  form-control-sm mt3" placeholder="{{language.code}}" id="usrID" name="code" [(ngModel)]="codekey" >
+        </div>
+        <div class="col-sm-2">
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm" title="{{language.add_row}} " (click)="onAddRow()">  <i class="fa fa-plus"></i> </a> </div>
+      </div>
+      <hr>
+      <!-- grid  -->
+      <div class="row clearfix" >
+          <div class="col-form-label col-sm-1"><b>#</b></div>
+          <div class="col-form-label col-sm-3"><b>{{language.string}}</b></div>
+          <div class="col-form-label col-sm-3"><b>{{language.type}}</b></div>
+          <div class="col-form-label col-sm-3"><b>{{language.operations}}</b></div>
+          <div class="col-form-label col-sm-2"><b>{{language.remove}}</b></div>
+          </div>
+        <div class="row border_top margin_top padding_top string_block_section clearfix" *ngFor="let row of itemcodetable">
+            <div class="col-sm-1">
+              <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
+              />
+            </div>
+            <div class="col-sm-3">
+              <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+                <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+                <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
+              </select>
+            </div>
+            <div class="col-sm-2" name="delete" [(ngModel)]="row.delete">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)"><i class="fa fa-times"></i></button>
+            </div>
+          
+        </div>
    
-  </tbody>
-</table>
-</form>
+      <hr>
 
+<<<<<<< HEAD
 </div>
 <form class="form-inline"><div class="form-group">
     <label for="finalstring">Final String:</label>
@@ -68,4 +68,44 @@
     <button type="button" style="float: right;" class="btn btn-info btn-sm"   (click)="onDelete()">Delete</button> 
   </div></form>
   
+=======
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="feature">{{language.final_string}}</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control  form-control-sm mt3" placeholder="{{language.final_string}}" name="finaltxtstring" [(ngModel)]="finalstring" id="finalstring" [readonly]="true" >
+        </div>
+      </div>
+>>>>>>> 6159fc876921a78fcabfd07b687c29bb7711fc00
 
+    </div>
+    <div class="card-footer small text-muted">
+      <div class="footer-buttons">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pull-left">
+              <button type="button" (click)="onSaveClick()" class="btn btn-sm btn-success  mr-10">
+                <i class="fa fa-save"></i> {{language.save}}</button>
+              <button type="button" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right">
+              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                <i class="fa fa-times fa-fw"></i>
+                <span>{{language.cancel}}</span>
+              </button>
+    
+              <button type="button" class="btn btn-sm btn-danger" (click)="onDeleteClick()">
+                <i class="fa fa-trash fa-fw"></i>
+                <span>{{language.delete}}</span>
+              </button>
+              <!-- only view when edit mode -->
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>
+</div>
