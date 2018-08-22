@@ -59,23 +59,12 @@
    
       <hr>
 
-<<<<<<< HEAD
-</div>
-<form class="form-inline"><div class="form-group">
-    <label for="finalstring">Final String:</label>
-    <input [disabled]="true" type="text" name="finaltxtstring" [(ngModel)]="finalstring" class="form-control" id="finalstring"/>
-    <button type="button" style="float: right;" class="btn btn-info btn-sm"   (click)="onSaveAndUpdate()">Save</button> 
-    <button type="button" style="float: right;" class="btn btn-info btn-sm"   (click)="onDelete()">Delete</button> 
-  </div></form>
-  
-=======
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="feature">{{language.final_string}}</label>
         <div class="col-sm-4">
           <input type="text" class="form-control  form-control-sm mt3" placeholder="{{language.final_string}}" name="finaltxtstring" [(ngModel)]="finalstring" id="finalstring" [readonly]="true" >
         </div>
       </div>
->>>>>>> 6159fc876921a78fcabfd07b687c29bb7711fc00
 
     </div>
     <div class="card-footer small text-muted">
