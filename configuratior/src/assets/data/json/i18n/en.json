@@ -29,22 +29,18 @@
 "add_row": "Add Row",
 "final_string": "Final String",
 "search": "Search",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"": "",
-"":""
+"DataSaved":"Data saved successfully",
+"DataNotSaved":"Data not saved",
+"DataDeleteSuccesfully":"Data deleted successfully",
+"DataNotDelete":"Data not deleted",
+"ValidNumber":"Enter valid number",
+"ValidOperations":"Enter valid operation",
+"StringLengthValidation":"Item code key cannot be greater than 50 characters",
+"Addrow":"Enter any row",
+"RowNumberType":"Atleast one row should be number type",
+"CodeBlank":"Code cannot be blank",
+"ItemCodeGeneration":"Item Code Generation"
+
+
     
 }

@@ -3,6 +3,7 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 
+
 @Component({
   selector: 'app-itemcodegeneration',
   templateUrl: './itemcodegeneration.component.html',
@@ -16,7 +17,7 @@ constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrSer
  
 }
 companyName: string ;
-page_main_title = 'Item Code Generation'
+page_main_title = this.language.ItemCodeGeneration
 public itemCodeGen:any =[];
 public itemcodetable:any =[];
 public stringtypevalue:any=[];
@@ -29,6 +30,8 @@ public codekey:string="";
 public GetItemData:any =[];
 public DefaultTypeValue:any =[];
 public button="save"
+public isUpdateButtonVisible:boolean=false;
+public isSaveButtonVisible:boolean=true;
 
   ngOnInit()
   {
@@ -36,6 +39,8 @@ public button="save"
     this.stringtypevalue=this.commonData.stringtypevalue
     this.opertions=this.commonData.opertions
     if(this.button=="update"){
+      this.isUpdateButtonVisible=true;
+      this.isSaveButtonVisible=false;
       this.GetItemData.push({
         CompanyDBId:"SFDCDB",
         ItemCode:"sdsadad"
@@ -66,6 +71,10 @@ public button="save"
  
  
      )
+    }
+    else{
+      this.isUpdateButtonVisible=false;
+      this.isSaveButtonVisible=true;
     }
     
    
@@ -125,20 +134,19 @@ public button="save"
    }
   }
 
-  onSaveAndUpdate()
+  onSaveClick()
   {
     if(this.validateRowData("SaveData")==false){
       return
     } 
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-        alert(data);
         if (data === "True" ) {
-          this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
+          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           return;
         }
         else{
-          this.toastr.error('', 'Data not saved', this.commonData.toast_config);
+          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
         }
       }
@@ -170,7 +178,7 @@ public button="save"
 
   }
 
-  onDelete()
+  onDeleteClick()
   {
     if(this.validateRowData("Delete")==false){
       return
@@ -182,13 +190,12 @@ public button="save"
    }) 
     this.itemgen.DeleteData(this.GetItemData).subscribe(
       data => {
-        alert(data);
         if (data === "True" ) {
-          this.toastr.success('', 'Data deleted successfully', this.commonData.toast_config);
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           return;
         }
         else{
-          this.toastr.error('', 'Data not deleted', this.commonData.toast_config);
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
           return;
         }
       }
@@ -224,7 +231,7 @@ public button="save"
         if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
         {
           if(isNaN(this.itemcodetable[i].string)==true){
-            this.toastr.warning('', 'Enter valid number', this.commonData.toast_config);
+            this.toastr.warning('',this.language.ValidNumber, this.commonData.toast_config);
             return false;
           }
           
@@ -232,14 +239,14 @@ public button="save"
         }
         else{
           if(this.itemcodetable[i].operations!=1){
-            this.toastr.warning('', 'Enter valid operation', this.commonData.toast_config);
+            this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
             return false;
           }
         }
       }
 
       if(this.finalstring.length>50){
-        this.toastr.warning('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
+        this.toastr.warning('',this.language.StringLengthValidation, this.commonData.toast_config);
         return false;
       }
 
@@ -249,7 +256,7 @@ public button="save"
       if( buttonpressevent!="Delete"){
         if(this.itemcodetable.length==0)
         {
-          this.toastr.warning('', 'Enter any row', this.commonData.toast_config);
+          this.toastr.warning('', this.language.Addrow, this.commonData.toast_config);
           return false;
         } 
         else{
@@ -262,7 +269,7 @@ public button="save"
             }
           }
           if(this.countnumberrow==0){
-            this.toastr.warning('', 'Atleast one row should be number type', this.commonData.toast_config);
+            this.toastr.warning('', this.language.RowNumberType, this.commonData.toast_config);
             return false;
             
           }
@@ -271,7 +278,7 @@ public button="save"
      
     }
     if(this.codekey.length==0){
-      this.toastr.warning('', 'Code cannot be blank ', this.commonData.toast_config); 
+      this.toastr.warning('', this.language.CodeBlank, this.commonData.toast_config); 
       return false;
     }
    
