@@ -10,6 +10,8 @@ import { ItemcodegenerationService } from '../../services/itemcodegeneration.ser
 })
 export class ItemcodegenerationComponent implements OnInit {
 public commonData = new CommonData();
+  public view_route_link = '/item-code-generation/view';
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
 constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
  
 }
@@ -26,40 +28,47 @@ public countnumberrow:number=0;
 public codekey:string="";
 public GetItemData:any =[];
 public DefaultTypeValue:any =[];
+public button="save"
 
   ngOnInit()
   {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.stringtypevalue=this.commonData.stringtypevalue
     this.opertions=this.commonData.opertions
-    this.GetItemData.push({
-       CompanyDBId:"SFDCDB",
-       ItemCode:"sdsadad"
+    if(this.button=="update"){
+      this.GetItemData.push({
+        CompanyDBId:"SFDCDB",
+        ItemCode:"sdsadad"
+ 
+     })
+     this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
+       data => {
+         this.finalstring="";
+         
+         for(let i = 0; i < data.length; ++i)
+         {
+           this.itemcodetable.push({
+             rowindex:data[i].OPTM_LINEID,
+             string:data[i].OPTM_CODESTRING,
+             stringtype:data[i].OPTM_TYPE,
+             operations:data[i].OPTM_OPERATION,
+             delete:"",
+             CompanyDBId:"SFDCDB",
+             codekey:"sdsadad",
+             CreatedUser:"john"
+           })
+           this.finalstring=this.finalstring + data[i].OPTM_CODESTRING
+         }
 
-    })
-    this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
-      data => {
-        this.finalstring="";
-        for(let i = 0; i < data.length; ++i)
-        {
-          this.itemcodetable.push({
-            rowindex:data[i].rowindex,
-            string:data[i].string,
-            stringtype:data[i].stringtype,
-            operations:data[i].operations,
-            delete:"",
-            CompanyDBId:"SFDCDB",
-            codekey:data[i].codekey,
-            user:"john"
-
-          })
-          this.finalstring=this.finalstring + data[i].string
-        }
-       
-      }
-
-
-    )
+         
+        
+       }
+ 
+ 
+     )
+    }
+    
+   
     
     
   }
@@ -85,8 +94,7 @@ public DefaultTypeValue:any =[];
       delete:"",
       CompanyDBId:"SFDCDB",
       codekey:this.codekey,
-      user:"john"
-
+      CreatedUser:"john"
     })
 
     
@@ -124,12 +132,13 @@ public DefaultTypeValue:any =[];
     } 
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-        if (data == "true" ) {
+        alert(data);
+        if (data === "True" ) {
           this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
           return;
         }
         else{
-          this.toastr.success('', 'Data not saved', this.commonData.toast_config);
+          this.toastr.error('', 'Data not saved', this.commonData.toast_config);
           return;
         }
       }
@@ -161,6 +170,32 @@ public DefaultTypeValue:any =[];
 
   }
 
+  onDelete()
+  {
+    if(this.validateRowData("Delete")==false){
+      return
+    } 
+    this.GetItemData.push({
+      CompanyDBId:"SFDCDB",
+      ItemCode:this.codekey
+
+   }) 
+    this.itemgen.DeleteData(this.GetItemData).subscribe(
+      data => {
+        alert(data);
+        if (data === "True" ) {
+          this.toastr.success('', 'Data deleted successfully', this.commonData.toast_config);
+          return;
+        }
+        else{
+          this.toastr.error('', 'Data not deleted', this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+ 
+  }
+
   onStrBlur(selectedvalue,rowindex)
   {
     if(this.itemcodetable.length>0)
@@ -189,7 +224,7 @@ public DefaultTypeValue:any =[];
         if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
         {
           if(isNaN(this.itemcodetable[i].string)==true){
-            this.toastr.success('', 'Enter valid number', this.commonData.toast_config);
+            this.toastr.warning('', 'Enter valid number', this.commonData.toast_config);
             return false;
           }
           
@@ -197,47 +232,51 @@ public DefaultTypeValue:any =[];
         }
         else{
           if(this.itemcodetable[i].operations!=1){
-            this.toastr.success('', 'Enter valid operation', this.commonData.toast_config);
+            this.toastr.warning('', 'Enter valid operation', this.commonData.toast_config);
             return false;
           }
         }
       }
 
       if(this.finalstring.length>50){
-        this.toastr.success('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
+        this.toastr.warning('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
         return false;
       }
 
       }
     }
     else{
-      if(this.itemcodetable.length==0)
-      {
-        this.toastr.success('', 'Enter any row', this.commonData.toast_config);
-        return false;
-      } 
-      else{
-        this.countnumberrow=0;
-        for(let i = 0; i < this.itemcodetable.length; ++i)
+      if( buttonpressevent!="Delete"){
+        if(this.itemcodetable.length==0)
         {
-          if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+          this.toastr.warning('', 'Enter any row', this.commonData.toast_config);
+          return false;
+        } 
+        else{
+          this.countnumberrow=0;
+          for(let i = 0; i < this.itemcodetable.length; ++i)
           {
-            this.countnumberrow++;
+            if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+            {
+              this.countnumberrow++;
+            }
+          }
+          if(this.countnumberrow==0){
+            this.toastr.warning('', 'Atleast one row should be number type', this.commonData.toast_config);
+            return false;
+            
           }
         }
-        if(this.countnumberrow==0){
-          this.toastr.success('', 'Atleast one row should be number type', this.commonData.toast_config);
-          return false;
-          
-        }
       }
+     
     }
     if(this.codekey.length==0){
-      this.toastr.success('', 'Code cannot be blank ', this.commonData.toast_config); 
+      this.toastr.warning('', 'Code cannot be blank ', this.commonData.toast_config); 
       return false;
     }
    
   }
+  
 
 
 }

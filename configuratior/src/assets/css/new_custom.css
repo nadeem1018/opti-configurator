@@ -1,24 +1,66 @@
 .mr-10 {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-.cursor_icon{
-    cursor: pointer;
+.mt3 {
+  margin-top: 3px;
 }
 
-.lookup_data .k-grid-header{
-    padding: 0px !important;
-    width: 100% !important;
-  }
-  .lookup_data .k-grid-header-wrap table{
-    width: 100% !important;
-  }
-  .k-header{
-    width: 50% !important;
-  }
-  .lookup_data table.k-grid-table{
-    width: 100% !important;
-  }
-  .k-grid-table tr td{
-    width: 50% !important;
-  }
+.border_top {
+  border-top: 1px solid #ccc;
+}
+
+.margin_top {
+  margin-top: 11px;
+}
+
+.padding_top {
+  padding-top: 10px;
+}
+
+.cursor_icon {
+  cursor: pointer;
+}
+
+.lookup_data .k-grid-header {
+  padding: 0px !important;
+  width: 100% !important;
+}
+
+.lookup_data .k-grid-header-wrap table {
+  width: 100% !important;
+}
+
+.k-header {
+  width: 50% !important;
+}
+
+.lookup_data table.k-grid-table {
+  width: 100% !important;
+}
+
+.k-grid-table tr td {
+  width: 50% !important;
+}
+
+.toast-success {
+  color: #ffffff !important;
+  background-color: #51A351 !important;
+  border: #51A351 !important;
+}
+
+.toast-error {
+  background-color: #BD362F !important;
+  border: #BD362F !important;
+}
+
+.toast-info {
+  background-color: #2F96B4 !important;
+  border: #2F96B4 !important;
+}
+
+.toast-warning {
+  color: #856404 !important;
+  background-color: #dea500 !important;
+  border: none !important;
+}

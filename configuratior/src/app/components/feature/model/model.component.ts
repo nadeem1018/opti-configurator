@@ -40,7 +40,7 @@ export class ModelComponent implements OnInit {
   onSaveClick(){
     this.featureModel= [];
 
-    
+
     this.featureModel.push({
       CompanyDBId:"SFDCDB",
       FeatureCode: this.featureBom.Code,

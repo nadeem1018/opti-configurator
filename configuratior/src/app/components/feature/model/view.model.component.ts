@@ -15,7 +15,7 @@ export class ViewFeatureModelComponent implements OnInit {
     add_route_link = '/feature/model/add';
 
     table_head_foot = ['Name', 'Position', 'Office', 'Age', 'Start Date', 'Salary'];
-    
+    language = JSON.parse(sessionStorage.getItem('current_lang')); 
     constructor() { }
 
     ngOnInit() {

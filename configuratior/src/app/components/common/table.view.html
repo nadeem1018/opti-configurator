@@ -4,10 +4,12 @@
     <h1 class="h2">{{page_main_title}}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <a href="javascript:;" routerLink="{{add_route_link}}" class="btn btn-sm btn-outline-secondary">
-                <i class="fa fa-plus"></i> Add</a>
-            <a class="btn btn-sm btn-outline-secondary">
-                <i class="fa fa-trash" ></i> Delete</a>
+            <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
+                <i class="fa fa-plus fa-fw"></i> {{language.add}}
+            </button>
+            <button type="button" class="mr-10 btn btn-sm btn-outline-danger"> 
+                <i class="fa fa-trash fa-fw" ></i> {{language.delete}}
+            </button>
         </div>
         
     </div>
@@ -15,16 +17,26 @@
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="javascript:;" routerLink="/home">Dashboard</a>
+        <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
     </li>
     <li class="breadcrumb-item ">{{page_main_title}}</li>
-    <li class="breadcrumb-item active">View</li>
+    <li class="breadcrumb-item active">{{language.view}}v</li>
 </ol>
 <div class="card mb-3">
     <div class="card-header">
         <i class="fa fa-table"></i>
        {{table_title}}</div>
     <div class="card-body">
+
+         <div class="col-sm-4 pull-right">
+                <div class="form-group row clearfix">
+                    <label class="col-sm-4 col-form-label" for="search">{{language.search}}</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm mt3" id="search" placeholder="{{language.search}}">
+                    </div>
+                </div>
+             </div>
+        
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -100,5 +112,30 @@
             </table>
         </div>
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    <div class="card-footer small text-muted">
+        <div class="pull-right">
+            <nav aria-label="pagination">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="fa fa-angle-double-left"></i></span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item active">
+                        <span class="page-link">
+                            2
+                            <span class="sr-only">(current)</span>
+                        </span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="fa fa-angle-double-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
