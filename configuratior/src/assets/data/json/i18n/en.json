@@ -35,7 +35,7 @@
 "Model_Desc":"Model/Feature Desc",
 "Model_Item":"Model Template Item",
 "Model_Image":"Upload Image",
-"Model_Date": "Effective Date",
+"Model_Date": "Effective From",
 "Model_Ref":"Item Code Generation Ref",
 "Model_Status": "Status",
 "Model_Add":"Add Feature/ Model"
