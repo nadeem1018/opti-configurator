@@ -19,7 +19,7 @@ export class ModelComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
-  
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router) { }
   page_main_title = 'Model Feature';
   companyName: string ;
