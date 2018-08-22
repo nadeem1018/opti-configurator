@@ -21,7 +21,7 @@ export class FeaturemodelService {
       //JSON Obeject Prepared to be send as a param to API
       let jObject:any={ Feature: JSON.stringify(featureBom) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/MoveOrder/SubmitMoveOrder", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/AddFeatures", jObject, this.common_params.httpOptions);
     }
     
     //get template items to hit API

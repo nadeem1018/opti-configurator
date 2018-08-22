@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { LookupComponent } from '../../common/lookup/lookup.component';
-
+import { CommonData } from "../../../models/CommonData";
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   providers:[LookupComponent],
@@ -14,9 +16,11 @@ import { LookupComponent } from '../../common/lookup/lookup.component';
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
   public featureModel:any =[];
+  public commonData = new CommonData();
+  public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   
-  constructor(private fms: FeaturemodelService, private lookup: LookupComponent) { }
+  constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router) { }
   page_main_title = 'Model Feature';
   companyName: string ;
   showLookup: boolean = false;
@@ -34,10 +38,12 @@ export class ModelComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
   onSaveClick(){
+    this.featureModel= [];
+
     
     this.featureModel.push({
       CompanyDBId:"SFDCDB",
-      DisplayCode: this.featureBom.Code,
+      FeatureCode: this.featureBom.Code,
       DisplayName: this.featureBom.Name,
       FeatureDesc: this.featureBom.Desc,
       EffectiveDate:this.featureBom.Date,
@@ -48,13 +54,19 @@ export class ModelComponent implements OnInit {
       PicturePath: "www",
       CreatedUser: "ash"
     })
-    console.log(this.featureModel);
+    
     this.fms.saveData(this.featureModel).subscribe(
       data => {
         console.log(data);
-        if(data == "True"){
-         
-        } 
+        if (data == "True" ) {
+          this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
+          this.router.navigateByUrl(this.view_route_link);
+          return;
+        }
+        else{
+          this.toastr.error('', 'Data not saved', this.commonData.toast_config);
+          return;
+        }
       })
     }
 
