@@ -65,6 +65,7 @@ public button="save"
  
      )
     }
+    
    
     
     
@@ -135,7 +136,7 @@ public button="save"
           return;
         }
         else{
-          this.toastr.success('', 'Data not saved', this.commonData.toast_config);
+          this.toastr.error('', 'Data not saved', this.commonData.toast_config);
           return;
         }
       }
@@ -167,6 +168,32 @@ public button="save"
 
   }
 
+  onDelete()
+  {
+    if(this.validateRowData("Delete")==false){
+      return
+    } 
+    this.GetItemData.push({
+      CompanyDBId:"SFDCDB",
+      ItemCode:this.codekey
+
+   }) 
+    this.itemgen.DeleteData(this.GetItemData).subscribe(
+      data => {
+        alert(data);
+        if (data === "True" ) {
+          this.toastr.success('', 'Data deleted successfully', this.commonData.toast_config);
+          return;
+        }
+        else{
+          this.toastr.error('', 'Data not deleted', this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+ 
+  }
+
   onStrBlur(selectedvalue,rowindex)
   {
     if(this.itemcodetable.length>0)
@@ -195,7 +222,7 @@ public button="save"
         if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
         {
           if(isNaN(this.itemcodetable[i].string)==true){
-            this.toastr.success('', 'Enter valid number', this.commonData.toast_config);
+            this.toastr.warning('', 'Enter valid number', this.commonData.toast_config);
             return false;
           }
           
@@ -203,47 +230,51 @@ public button="save"
         }
         else{
           if(this.itemcodetable[i].operations!=1){
-            this.toastr.success('', 'Enter valid operation', this.commonData.toast_config);
+            this.toastr.warning('', 'Enter valid operation', this.commonData.toast_config);
             return false;
           }
         }
       }
 
       if(this.finalstring.length>50){
-        this.toastr.success('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
+        this.toastr.warning('', 'Item code key cannot be greater than 50 characters', this.commonData.toast_config);
         return false;
       }
 
       }
     }
     else{
-      if(this.itemcodetable.length==0)
-      {
-        this.toastr.success('', 'Enter any row', this.commonData.toast_config);
-        return false;
-      } 
-      else{
-        this.countnumberrow=0;
-        for(let i = 0; i < this.itemcodetable.length; ++i)
+      if( buttonpressevent!="Delete"){
+        if(this.itemcodetable.length==0)
         {
-          if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+          this.toastr.warning('', 'Enter any row', this.commonData.toast_config);
+          return false;
+        } 
+        else{
+          this.countnumberrow=0;
+          for(let i = 0; i < this.itemcodetable.length; ++i)
           {
-            this.countnumberrow++;
+            if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
+            {
+              this.countnumberrow++;
+            }
+          }
+          if(this.countnumberrow==0){
+            this.toastr.warning('', 'Atleast one row should be number type', this.commonData.toast_config);
+            return false;
+            
           }
         }
-        if(this.countnumberrow==0){
-          this.toastr.success('', 'Atleast one row should be number type', this.commonData.toast_config);
-          return false;
-          
-        }
       }
+     
     }
     if(this.codekey.length==0){
-      this.toastr.success('', 'Code cannot be blank ', this.commonData.toast_config); 
+      this.toastr.warning('', 'Code cannot be blank ', this.commonData.toast_config); 
       return false;
     }
    
   }
+  
 
 
 }

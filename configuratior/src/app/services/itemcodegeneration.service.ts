@@ -14,7 +14,7 @@ export class ItemcodegenerationService {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
 
-
+//save data
   saveData(ItemCodeGenerationData):Observable<any>{
     
     //JSON Obeject Prepared to be send as a param to API
@@ -30,6 +30,13 @@ export class ItemcodegenerationService {
       //Return the response form the API  
       return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/GetDataByItemCode", jObject, this.common_params.httpOptions);
       }
+      DeleteData(ItemCode):Observable<any>{
+    
+        //JSON Obeject Prepared to be send as a param to API
+          let jObject:any={ DeleteItemGeneration: JSON.stringify(ItemCode) };
+        //Return the response form the API  
+        return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/DeleteItemGenerationCode", jObject, this.common_params.httpOptions);
+        }
 
     
 }
