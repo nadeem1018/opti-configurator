@@ -32,6 +32,7 @@ public DefaultTypeValue:any =[];
 public button="save"
 public isUpdateButtonVisible:boolean=false;
 public isSaveButtonVisible:boolean=true;
+public isDeleteButtonVisible:boolean=true;
 
   ngOnInit()
   {
@@ -41,6 +42,7 @@ public isSaveButtonVisible:boolean=true;
     if(this.button=="update"){
       this.isUpdateButtonVisible=true;
       this.isSaveButtonVisible=false;
+      this.isDeleteButtonVisible=true;
       this.GetItemData.push({
         CompanyDBId:"SFDCDB",
         ItemCode:"sdsadad"
@@ -75,6 +77,7 @@ public isSaveButtonVisible:boolean=true;
     else{
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
+      this.isDeleteButtonVisible=false;
     }
     
    
