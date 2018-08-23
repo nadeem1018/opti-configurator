@@ -15,7 +15,7 @@ export class ItemcodegenerationComponent implements OnInit {
 public commonData = new CommonData();
   public view_route_link = '/item-code-generation/view';
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
-constructor(private router: ActivatedRoute,private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
+constructor(private router: ActivatedRoute,private route: Router,private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
  
 }
 companyName: string ;
@@ -160,6 +160,7 @@ public isCodeDisabled:boolean=true;
       data => {
         if (data === "True" ) {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
+          this.route.navigateByUrl('item-code-generation/view');
           return;
         }
         else{
@@ -209,6 +210,7 @@ public isCodeDisabled:boolean=true;
       data => {
         if (data === "True" ) {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.route.navigateByUrl('item-code-generation/view');
           return;
         }
         else{
@@ -251,6 +253,10 @@ public isCodeDisabled:boolean=true;
             this.toastr.warning('',this.language.ValidNumber, this.commonData.toast_config);
             return false;
           }
+          if(this.itemcodetable[i].operations==1){
+            this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+            return false;
+          }
           
           
         }
@@ -282,8 +288,24 @@ public isCodeDisabled:boolean=true;
           {
             if(this.itemcodetable[i].stringtype==2 || this.itemcodetable[i].stringtype==3 )
             {
+              if(isNaN(this.itemcodetable[i].string)==true){
+                this.toastr.warning('',this.language.ValidNumber, this.commonData.toast_config);
+                return false;
+              }
+              if(this.itemcodetable[i].operations==1){
+                this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+                return false;
+              }
               this.countnumberrow++;
+              
             }
+            else{
+              if(this.itemcodetable[i].operations!=1){
+                this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+                return false;
+              }
+            }
+            
           }
           if(this.countnumberrow==0){
             this.toastr.warning('', this.language.RowNumberType, this.commonData.toast_config);

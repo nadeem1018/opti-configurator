@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CommonData } from "../../models/CommonData";
 
 @Component({
     selector: 'app-item-code-view-model',
@@ -10,7 +12,7 @@ import { Router } from '@angular/router';
 
 
 export class ViewItemCodeGenerationComponent implements OnInit {
-
+    public commonData = new CommonData();
     page_main_title = 'Item Code Generation';
     table_title = this.page_main_title;
     public companyName:string="SFDCDB"
@@ -21,21 +23,16 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     current_page: any = 1;
     page_numbers:any = "";
     rows:any = "";
-    public GetItemData:any =[];
     public ViewData:any =[];
     show_table_footer:boolean = true;
+    public GetItemData:any =[];
 
 
     table_head_foot = ['#', 'Code', 'Final String','Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang')); 
-    constructor(private router: Router,private itemgen: ItemcodegenerationService,) { }
+    constructor(private router: Router,private itemgen: ItemcodegenerationService,private toastr: ToastrService) { }
 
     ngOnInit() {
-        this.GetItemData.push({
-            CompanyDBId:"SFDCDB",
-            ItemCode:"sdsadad"
-     
-         })
         this.service_call(this.current_page, this.search_string);
     }
     on_page_limit_change(){
@@ -52,6 +49,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         var dataset =  this.itemgen.viewItemGenerationData("SFDCDB").subscribe(
             data => {
                dataset = JSON.parse(data);
+               console.log(dataset)
            this.rows = dataset[0];
            let pages:any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
            if (parseInt(pages) ==0 || parseInt(pages) < 0){
@@ -86,58 +84,34 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     button2_icon = "fa fa-trash-o fa-fw";
 
     button_click1(id){
-       // alert(id)
+      
         this.router.navigateByUrl('item-code-genration/edit/'+id);
         // button click function in here
     }
     button_click2(id){
-       // alert(id)
-        // button click function in here
+        this.GetItemData.push({
+            CompanyDBId:"SFDCDB",
+            ItemCode:id
+      
+         }) 
+          this.itemgen.DeleteData(this.GetItemData).subscribe(
+            data => {
+              if (data === "True" ) {
+                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                this.service_call(this.current_page, this.search_string);
+                this.router.navigateByUrl('item-code-generation/view');
+                return;
+              }
+              else{
+                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                return;
+              }
+            }
+          )
+       
     }
 
-     // for testing purpose 
-     dummy_data(){
-         
-        this.itemgen.viewItemGenerationData(this.GetItemData).subscribe(
-            data => {
-                if(data.length>0){
-                   this.ViewData=data
-                }
-                else{
-
-                }
-
-            }
-        ) 
-        return  {
-            total_records: "50",
-            data : [ 
-                ["1", "Code1", "Serial-001","Code1"],
-                ["2", "Code2", "Serial-002","Code2"],
-                ["3", "Code3", "Serial-003","Code3"],
-                ["4", "Code4", "Serial-004","Code4"],
-                ["5", "Code5", "Serial-005","Code5"],
-                
-             ]
-
-         };
-        // return  { 
-        //      total_records: "50", 
-
-            
-            //  data : [ 
-            //      ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800"],
-            //      ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750"],
-            //      ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000"],
-            //      ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060"],
-            //      ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800"],
-            //      ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750"],
-            //      ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000"],
-            //      ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060"],
-            //   ]
-             
-        //   };
-      }
+   
    
    
 }
