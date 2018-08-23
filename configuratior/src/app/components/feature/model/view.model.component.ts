@@ -99,8 +99,7 @@ export class ViewFeatureModelComponent implements OnInit {
                ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750", "6"],
                ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000", "7"],
                ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060", "8"],
-            ]
-           
+           ]
         };
     }
 }

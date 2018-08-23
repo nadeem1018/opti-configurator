@@ -78,3 +78,12 @@ a.page-link.active {
   transition: color .15s;
   margin-top: 3px;
 }
+
+.row_select, .row_select td {
+  cursor: pointer;
+}
+
+.row_select:hover {
+  background: #003e80;
+  color: white;
+}
