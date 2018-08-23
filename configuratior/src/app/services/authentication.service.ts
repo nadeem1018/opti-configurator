@@ -1,54 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CommonData } from "src/app/models/CommonData";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  constructor(private httpclient: HttpClient) { }
-
-  //defining properties for the call 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
-  };
-
-  //Login function to hit login API
-  login(loginId: string, loginPassword: string, psURL: string): Observable<any> {
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { Login: JSON.stringify([{ User: loginId, Password: loginPassword, IsAdmin: false }]) };
-    //Return the response form the API  
-    return this.httpclient.post(psURL + "/api/login/ValidateUserLogin", jObject, this.httpOptions);
+public config_params:any;
+common_params = new CommonData();
+  constructor(private httpclient: HttpClient) { 
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
 
-  //This function will get Company acc. to User
-  getCompany(loginId: string, psURL: string): Observable<any> {
+
+
+  //Login function to hit login API
+  login(loginCredentials:any, psURL: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { Username: JSON.stringify([{ Username: loginId, Product: "SFES" }]) };
+    let jObject: any = { Login: JSON.stringify([{ User: loginCredentials.userName, Password: loginCredentials.password, IsAdmin: false }]) };
     //Return the response form the API  
-    return this.httpclient.post(psURL + "/api/login/GetCompaniesAndLanguages", jObject, this.httpOptions)
+    return this.httpclient.post(psURL + "/api/login/ValidateUserLogin", jObject, this.common_params.httpOptions);
+  }
+
+  // //This function will get Company acc. to User
+  getCompany(loginCredentials: any, psURL: string): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject: any = { Username: JSON.stringify([{ Username: loginCredentials.userName, Product: "SFES" }]) };
+    //Return the response form the API  
+    return this.httpclient.post(psURL + "/api/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
   }
 
   //Get psURL
-  getPSURL(CompanyDBID: string, optiProMoveOrderAPIURL: string): Observable<any> {
+  getPSURL(): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { MoveOrder: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
+    let jObject: any = { GetPSURL: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name }]) };
     //Return the response form the API  
-    return this.httpclient.post(optiProMoveOrderAPIURL + "/MoveOrder/GetPSURL", jObject, this.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/Base/GetPSURL", jObject, this.common_params.httpOptions);
   }
-
   //Get Warehouses
-  getWarehouse(loginId: string, CompanyDBID: string, psURL: string): Observable<any> {
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { CompanyName: JSON.stringify([{ Username: loginId, CompanyDBId: CompanyDBID }]) };
-    //Return the response form the API  
-    return this.httpclient.post(psURL + "/api/login/GetWHS", jObject, this.httpOptions)
-  }
+  // getWarehouse(loginId: string, CompanyDBID: string, psURL: string): Observable<any> {
+  //   //JSON Obeject Prepared to be send as a param to API
+  //   let jObject: any = { CompanyName: JSON.stringify([{ Username: loginId, CompanyDBId: CompanyDBID }]) };
+  //   //Return the response form the API  
+  //   return this.httpclient.post(psURL + "/api/login/GetWHS", jObject, this.httpOptions)
+  // }
 
 };
 

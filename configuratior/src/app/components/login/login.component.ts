@@ -3,7 +3,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import { CommonData } from "../../models/CommonData";
 import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -11,236 +11,150 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public loginId: string;//= 'shashank';
-  public password: string;//= 'sha@123';
-  
-  public modelSource: any;
-  public disableLoginBtn: boolean = true;
+  public loginCredentials:any =[];
   public psURL: string = '';
+  public showCompDropDown:boolean = false;
+  public showLoginBtn:boolean = false;
+  public config_params:any;
+  public assignedCompanies:any;
+  public selecetedComp:any;
+  
 
-  private baseClassObj = new CommonData();
-  public page_title = this.baseClassObj.project_name;
-  public arrConfigData: any[];
-  public defaultCompnyComboValue: any = [{ OPTM_COMPID: "Select Company" }];
-  public listItems: Array<string> = this.defaultCompnyComboValue;
-
-  public defaultWhseComboValue: any = [{ OPTM_WHSE: "Select Warehouse" }];
-  public whseListItems: Array<string> = this.defaultWhseComboValue;
-
-  public selectedValue: any;
-  public selectedWhseValue: any;
-
-  public hasCompaneyData: any = false;
-  public hasWhseData: any = false;
-
-
-  public userName: string = "";
-  public companyName: string = "";
-  public warehouseName: string = "";
-  public invalidCredentials: boolean = false;
-  public InvalidActiveUser: boolean = false;
-  public passwordBlank: boolean = false;
-  public showLoader: boolean = false;
+  private commonData = new CommonData();
+  public page_title = this.commonData.project_name;
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(   
     private auth: AuthenticationService, 
     private router: Router,
-    private httpClientSer: HttpClient
+    private httpClientSer: HttpClient,
+    private toastr: ToastrService
   ) { }
 
-    test_click(){
-      console.log(sessionStorage.getItem('isLoggedIn'));
-      sessionStorage.setItem('isLoggedIn', "true");
-      // this.router.navigateByUrl('/home');
-      window.location.href = '/home';
-    }
-
   ngOnInit() { 
-
+    this.loginCredentials.userName = 'shashank';
+    this.loginCredentials.password = 'sha@123';
+    console.info('in LOGIN header');
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
       this.router.navigateByUrl('/home');
+    } else {
+      //This Function will get the url from Database to hit Admin Portal Services
+      setTimeout(()=>{
+        this.getPSURL();
+      }, 1000);
     }
 
-/*
-    this.listItems = this.defaultCompnyComboValue;
-    this.selectedValue = this.listItems[0];
-
-    this.whseListItems = this.defaultWhseComboValue;
-    this.selectedWhseValue = this.whseListItems[0];
-
-
-    const element = document.getElementsByTagName("body")[0];
-    element.className = "";
-    element.classList.add("opti_body-login");
-    element.classList.add("opti_account-module");
-
-    //This will get all config
-    this.httpClientSer.get('./assets/data/json/config.json').subscribe(
-      data => {
-        this.arrConfigData = data as string[];
-        localStorage.setItem('arrConfigData', JSON.stringify(this.arrConfigData[0]));
-
-        //This will get the psURL
-        this.auth.getPSURL(this.baseClassObj.adminDBName, this.arrConfigData[0].optiProMoveOrderAPIURL).subscribe(
-          data => {
-            if (data != null) {
-              this.psURL = data;
-
-              //For code analysis remove in live enviorments.
-              // this.psURL = "http://localhost:57979/api";
-              // this.psURL = "http://172.16.6.140/OptiAdmin/api";
-            }
-          }
-        )
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.message);
-      }
-    );
   }
-  onKeyUp() {
-    if (this.loginId == "" || this.password == "") {
-      this.invalidCredentials = false;
-      this.listItems = this.defaultCompnyComboValue;
-      this.selectedValue = this.listItems[0];
-      return;
-    }
-  }
-  //On Password blur the authentication will be checked
-  onPasswordBlur() {
-    this.showLoader = true;
-    if (this.loginId == "" || this.password == "") {
-      this.invalidCredentials = false;
-      this.passwordBlank = true;
-      this.hasCompaneyData = false;
-      this.hasWhseData = false;
-      this.listItems = this.defaultCompnyComboValue;
-      this.selectedValue = this.listItems[0];
-      this.selectedWhseValue = this.whseListItems[0];
-      this.showLoader = false;
-      return;
-    }
-    else {
-      if (this.password != undefined || this.password != null) {
-        // Check users authontication 
-        this.auth.login(this.loginId, this.password, this.psURL).subscribe(
-          data => {
-            this.modelSource = data;
 
-            if (this.modelSource != null && this.modelSource.Table.length > 0 && this.modelSource.Table[0].OPTM_ACTIVE == 1) {
-              this.showLoader = false;
-              //If everything is ok then we will navigate the user to main home page
-              //this.router.navigateByUrl('/moveorder');
+  //Events
+  onConnectBtnPress(){
+      console.log(this.loginCredentials);
+      if(this.loginCredentials != undefined){
+        this.auth.login(this.loginCredentials, this.psURL).subscribe(
+          data => {
+        if(data!=null || data.Table.length > 0){
+          if(data.Table.length > 0){
+            if(data.Table[0].OPTM_ACTIVE == 1){
+              //If everything is ok then we will get comapnies
               this.getCompanies();
             }
-            else {
-              if (this.password != null || this.password != undefined) {
-                this.hasCompaneyData = false;
-                this.hasWhseData = false;
-                this.disableLoginBtn = true;
-                this.invalidCredentials = true;
-                this.passwordBlank = false;
-                this.InvalidActiveUser = false;
-                this.listItems = this.defaultCompnyComboValue;
-                this.selectedValue = this.listItems[0];
-                this.whseListItems = this.defaultWhseComboValue;
-                this.selectedWhseValue = this.whseListItems[0];
-              }
+            else{
+              //If user is not active
+              this.toastr.warning('', this.language.UserNotActive, this.commonData.toast_config);
             }
-            this.showLoader = false;
           }
-        )
-      }
-      else {
-        this.showLoader = false;
-      }
-
-    }
-  }
-
-  // On Login button clicked
-  onLoginClick() {
-    this.showLoader = true;
-    if (this.disableLoginBtn == false) {
-      sessionStorage.setItem('selectedComp', this.selectedValue.OPTM_COMPID);
-      sessionStorage.setItem('loggedInUser', this.loginId);
-      sessionStorage.setItem('selectedWhse', this.warehouseName);
-      this.router.navigateByUrl('/moveorder');
-    }
-    else {
-      alert("Select company first");
-    }
-    this.showLoader = false;
-  }
-
-  //On Comapany selection the selected comp will be set into session
-  onCompanyChange(event: any) {
-    this.userName = this.loginId;
-    this.companyName = event.OPTM_COMPID;
-
-    if (this.companyName != null || this.companyName != undefined) {
-      this.getWarehouse(this.companyName);
-    }
-
-  }
-
-  onWarehouseChange(event: any) {
-    this.warehouseName = event.OPTM_WHSE;
-  }
-
-  //Core Functions
-  getCompanies() {
-    this.showLoader = true;
-    this.auth.getCompany(this.loginId, this.psURL).subscribe(
-      data => {
-
-        this.modelSource = data
-
-        if (this.modelSource != undefined
-          && this.modelSource != null
-          && this.modelSource.Table.length > 0) {
-          //Show the Company Combo box
-          this.listItems = data.Table;
-          console.log("data", this.listItems);
-          this.selectedValue = this.listItems[0];
-          this.disableLoginBtn = false;
-          this.hasCompaneyData = true;
-          this.invalidCredentials = false;
-          this.InvalidActiveUser = false;
-
-          //When the first item sets in the drop down then will get its warehouse
-          this.getWarehouse(this.selectedValue.OPTM_COMPID);
-          this.showLoader = false;
+          else{
+            //If no table found
+            this.toastr.error('', this.language.InvalidCredentials, this.commonData.toast_config);
+          }
+        }else{
+            //If no username & pass matches
+            this.toastr.error('', this.language.InvalidCredentials, this.commonData.toast_config);
         }
-        else {
-          this.disableLoginBtn = true;
-          this.hasCompaneyData = false;
-          this.listItems = this.defaultCompnyComboValue;
-          this.selectedValue = this.listItems[0];
-          this.InvalidActiveUser = true;
-          this.showLoader = false;
+          })
+      }
+
+  }
+
+  onLoginBtnPress(){
+    console.log(this.selecetedComp.OPTM_COMPID)
+    sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
+    sessionStorage.setItem('loggedInUser', this.loginCredentials.username);
+    //sessionStorage.setItem('selectedWhse',this.warehouseName);
+    sessionStorage.setItem('isLoggedIn', "true");
+   // this.router.navigateByUrl('/home');
+   window.location.href = '/home';
+  }
+  
+  //Core Functions 
+  //To get url from DB
+  getPSURL(){
+    //This will get the psURL
+    this.auth.getPSURL().subscribe(
+      data => {
+        if (data != null) {
+          this.psURL = data;
+          //For code analysis remove in live enviorments.
+            this.psURL = "http://localhost:57962/";
+          //this.psURL = "http://172.16.6.140/OptiAdmin";
         }
       }
     )
   }
 
-  //This Funciton will get all the whse of this company
-  getWarehouse(companyName: string) {
-    this.showLoader = true;
-    this.auth.getWarehouse(this.loginId, companyName, this.psURL).subscribe(
+  //to get the companies assigned to user
+  getCompanies(){
+    this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
       data => {
-        if (data != null || data != undefined) {
-          this.whseListItems = data.Table
-          this.hasWhseData = true;
-          this.selectedWhseValue = this.whseListItems[0];
-          this.warehouseName = this.selectedWhseValue.OPTM_WHSE
-          this.showLoader = false;
+      if(data!=null || data!= undefined){
+        this.assignedCompanies = data.Table;
+        if(this.assignedCompanies != null){
+          //If comp found
+          this.showCompDropDown = true;
+          this.showLoginBtn = true;
+
+
         }
-        else {
-          this.showLoader = false;
+        else{
+          //If no companies found then will hide elements
+          this.showCompDropDown = false;
+          this.showLoginBtn = false;
         }
+
+      }
+      else{
+        //if No companies are retriving then we will consider that user have no company assignment
+       // alert("You Don't have Permission to Access this Product");
+        this.toastr.success('', this.language.isUserPermitted, this.commonData.toast_config);
+      }
+     
+
+        // if (this.modelSource != undefined
+        //   && this.modelSource != null
+        //   && this.modelSource.Table.length > 0) {
+        //   //Show the Company Combo box
+        //   this.listItems = data.Table;
+        //   console.log("data", this.listItems);
+        //   this.selectedValue = this.listItems[0];
+        //   this.disableLoginBtn = false;
+        //   this.hasCompaneyData = true;
+        //   this.invalidCredentials = false;
+        //   this.InvalidActiveUser = false;
+          
+        //   //When the first item sets in the drop down then will get its warehouse
+        //   this.getWarehouse(this.selectedValue.OPTM_COMPID);
+        //   this.showLoader = false;
+        // }
+        // else {
+        //   this.disableLoginBtn = true;
+        //   this.hasCompaneyData = false;
+        //   this.listItems = this.defaultCompnyComboValue;
+        //   this.selectedValue = this.listItems[0];
+        //   this.InvalidActiveUser = true;
+        //   this.showLoader = false;
+        // }
       }
     )
-*/
   }
 
+  
 }

@@ -43,7 +43,7 @@ export class ViewFeatureModelComponent implements OnInit {
     service_call(page_number, search){
        let dataset =  this.dummy_data();
         this.rows = dataset.data;
-        let pages = (parseInt(dataset.total_records) / parseInt(this.record_per_page));
+        let pages: any = (parseInt(dataset.total_records) / parseInt(this.record_per_page));
         if (parseInt(pages) ==0 || parseInt(pages) < 0){
             pages = 1;
         }

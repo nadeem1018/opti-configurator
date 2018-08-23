@@ -45,7 +45,7 @@
 "": "",
 "": "",
 "": "",
-"":""
+"":"",
 "DataSaved":"Data saved successfully",
 "DataNotSaved":"Data not saved",
 "DataDeleteSuccesfully":"Data deleted successfully",
@@ -68,6 +68,10 @@
 "Model_Date": "Effective From",
 "Model_Ref":"Item Code Generation Ref",
 "Model_Status": "Status",
-"Model_Add":"Add Feature/ Model"
+"Model_Add":"Add Feature/ Model",
+
+"UserNotActive":"User is not active",
+"InvalidCredentials":"Username or password not valid",
+"isUserPermitted":"You Don't have Permission to Access this Product"
     
 }

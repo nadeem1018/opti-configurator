@@ -1,76 +1,3 @@
-<!-- <div id="opti_signinID" class="opti_account-submodule-wrapper">
-  <div class="float-left opti_account-banner-section">
-  </div>
-
-  <div class="float-right opti_account-form-section">
-    <div class="opti_outer-login-form opti_account-submodule-container">
-      <div class="opti_vertcal-align-outer-box">
-        <div class="panel-body opti_position-relative" [perfectScrollbar]="">
-
-          <div class="opti_loader" *ngIf="showLoader">
-            <div class="opti_spinner"></div>
-          </div>
-         
-          <div class="opti_fullwidth text-center opti_signin-logo">
-            <img src="assets/images/logo/large-logo.png" alt="brandlogo" class="opti_account-logo">
-          </div>
-
-          <form class="k-form" #signInForm="ngForm">
-            <label class="k-form-field">
-              <span class="opti_form-label">
-                Username *
-                <span *ngIf="name.errors?.required && name.touched" class="float-right opti_error-msg"> Username Required </span>
-              </span>
-
-              <input autofocus name="id" required #name= ngModel ng-change="GetCompany()" [(ngModel)]="loginId" (keyup)="onKeyUp()" type="text"
-                class="k-textbox" id="usr" placeholder="Your username">
-
-
-            </label>
-
-            <label class="k-form-field">
-              <span class="opti_form-label">
-                Password *
-                <span *ngIf="PasswordBlank.errors?.required && PasswordBlank.touched" class="float-right opti_error-msg"> Password required. </span>
-                <span *ngIf="invalidCredentials" class="float-right opti_error-msg"> Invalid username or password.</span>
-                <span *ngIf="InvalidActiveUser" class="float-right opti_error-msg"> You are not active user.</span>
-              </span>
-              <input name="pwd" required #PasswordBlank= ngModel (keyup)="onKeyUp()" [(ngModel)]="password" type="password" class="k-textbox"
-                id="pwd" (blur)="onPasswordBlur()" placeholder="Your password">
-              <span *ngIf="passwordBlank" class="float-right opti_error-msg"> Password required. </span>
-              <span *ngIf="invalidCredentials" class="float-right opti_error-msg"> Invalid username or password.</span>
-              <span *ngIf="InvalidActiveUser" class="float-right opti_error-msg"> You are not active user.</span>
-            </label>
-
-            <label class="k-form-field">
-              <span class="opti_form-label">
-                Company *
-              </span>
-              <kendo-dropdownlist [disabled]="hasCompaneyData==false" [textField]="'OPTM_COMPID'" [valueField]="'OPTM_COMPID'" [data]="listItems"
-                name="listname" [(ngModel)]="selectedValue" (selectionChange)="onCompanyChange($event)"></kendo-dropdownlist>
-            </label>
-
-            <label class="k-form-field">
-              <span class="opti_form-label">
-                Warehouse *
-              </span>
-              <kendo-dropdownlist [disabled]="hasWhseData==false" [textField]="'OPTM_WHSE'" [valueField]="'OPTM_WHSE'" [data]="whseListItems"
-                name="whseListItems" [(ngModel)]="selectedWhseValue" (selectionChange)="onWarehouseChange($event)"></kendo-dropdownlist>
-            </label>
-
-            <div class="text-right">
-
-              <button (click)="onLoginClick()" [disabled]="!signInForm.form.valid  || disableLoginBtn" align="center" type="button" class="opti_fullwidth">Login</button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-</div> -->
 <div class="top-content">
 
   <div class="inner-bg">
@@ -95,24 +22,25 @@
             <form role="form" action="" method="post" class="login-form">
               <div class="form-group">
                 <label class="sr-only" for="form-username">Username</label>
-                <input type="text" name="form-username" placeholder="John" class="form-username form-control" id="form-username">
+                <input type="text" name="form-username" placeholder="John" class="form-username form-control" id="form-username"  [(ngModel)]="loginCredentials.userName">
               </div>
               <div class="form-group">
                 <label class="sr-only" for="form-password">Password</label>
-                <input type="password" name="form-password" placeholder="******" class="form-password form-control" id="form-password">
+                <input type="password" name="form-password" placeholder="******" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password">
               </div>
-              <button type="button" class="btn" (click)="connect_user"><i class="fa fa-plug"></i> Connect</button>
+              <button type="button" class="btn" (click)="onConnectBtnPress()"><i class="fa fa-plug"></i> Connect</button>
               <div class="company_section" >
               <hr>
-                <div class="form-group">
+                <div class="form-group" *ngIf="showCompDropDown">
                   <label class="sr-only" for="form-company">Company</label>
-                  <select type="company" name="form-company" placeholder="Company" class="form-username form-control" id="form-company">
+                  <select type="company" name="form-company" placeholder="Company" class="form-username form-control" id="form-company" [(ngModel)]="selecetedComp">
                     <option value="">Select a company</option>
-                    <option value="aps">APS</option>
-                    <option value="configurator">Configurator</option>
+                    <!-- <option value="aps">APS</option>
+                    <option value="configurator">Configurator</option> -->
+                    <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.OPTM_COMPID}}</option>
                   </select>
                 </div>
-                <button type="button" class="btn" (click)="test_click()"><i class="fa fa-sign-in"></i> Login</button>
+                <button type="button" class="btn" (click)="onLoginBtnPress()" *ngIf="showLoginBtn"><i class="fa fa-sign-in" ></i> Login</button>
               </div>
             </form>
           </div>

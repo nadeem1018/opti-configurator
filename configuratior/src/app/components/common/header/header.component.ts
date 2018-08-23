@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
     // this.router.navigateByUrl('/login');
    setTimeout(function(){
      window.location.href = '/login';
-   }, 3000);
+   }, 1000);
   }
 
   checkSession(){
