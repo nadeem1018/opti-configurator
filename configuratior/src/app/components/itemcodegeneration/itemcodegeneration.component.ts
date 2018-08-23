@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
@@ -13,7 +15,7 @@ export class ItemcodegenerationComponent implements OnInit {
 public commonData = new CommonData();
   public view_route_link = '/item-code-generation/view';
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
-constructor(private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
+constructor(private router: ActivatedRoute,private itemgen: ItemcodegenerationService,private toastr: ToastrService) {
  
 }
 companyName: string ;
@@ -33,19 +35,30 @@ public button="save"
 public isUpdateButtonVisible:boolean=false;
 public isSaveButtonVisible:boolean=true;
 public isDeleteButtonVisible:boolean=true;
+public isCodeDisabled:boolean=true;
+
 
   ngOnInit()
   {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.stringtypevalue=this.commonData.stringtypevalue
     this.opertions=this.commonData.opertions
+    this.codekey ="";
+    this.codekey = this.router.snapshot.paramMap.get('id');
+    if(this.codekey === "" || this.codekey === null){
+      this.button="save"
+    }
+    else{
+      this.button="update"
+    }
     if(this.button=="update"){
       this.isUpdateButtonVisible=true;
       this.isSaveButtonVisible=false;
       this.isDeleteButtonVisible=true;
+      this.isCodeDisabled=false;
       this.GetItemData.push({
         CompanyDBId:"SFDCDB",
-        ItemCode:"sdsadad"
+        ItemCode:this.codekey
  
      })
      this.itemgen.getItemCodeGenerationByCode(this.GetItemData).subscribe(
@@ -61,7 +74,7 @@ public isDeleteButtonVisible:boolean=true;
              operations:data[i].OPTM_OPERATION,
              delete:"",
              CompanyDBId:"SFDCDB",
-             codekey:"sdsadad",
+             codekey:this.codekey,
              CreatedUser:"john"
            })
            this.finalstring=this.finalstring + data[i].OPTM_CODESTRING
@@ -75,6 +88,7 @@ public isDeleteButtonVisible:boolean=true;
      )
     }
     else{
+      this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
       this.isDeleteButtonVisible=false;
