@@ -58,13 +58,21 @@
             </div>
           </div>
           </div>
-
-        <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="image">{{language.Model_Image}}</label>
-            <div class="col-sm-6">
-                <input type="file" class="form-control  form-control-sm mt3-file" id="image">
+          <div class="form-group row clearfix">
+                <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
+            
+                <div class="col-sm-6 input-group">
+                    <input type="text" class="form-control  form-control-sm mt3" name=n gModel id="featureItemCode" placeholder="{{language.Model_Ref}}"
+                        [(ngModel)]="featureBom.Ref">
+                    <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
+                            <i class="fa fa-bars"></i>
+                        </span>
+                    </div>
+                </div>
+            
             </div>
-        </div>
+        
         <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="datetime_input" class="col-sm-3 col-form-label">{{language.Model_Date}}</label>
             <div class="col-sm-6 input-group">
@@ -79,19 +87,11 @@
             </div>
         </div>
         <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
-        
-            <div class="col-sm-6 input-group">
-                <input type="text" class="form-control  form-control-sm mt3" name=n gModel id="featureItemCode" placeholder="{{language.Model_Ref}}"
-                    [(ngModel)]="featureBom.Ref">
-                <div class="input-group-append">
-                    <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
-                        <i class="fa fa-bars"></i>
-                    </span>
+                <label class="col-sm-3 col-form-label" for="image">{{language.Model_Image}}</label>
+                <div class="col-sm-6">
+                    <input type="file" class="form-control  form-control-sm mt3-file" id="image">
                 </div>
             </div>
-        
-        </div>
         <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="Status">{{language.Model_Status}}</label>
             <div class="col-sm-6">
