@@ -42,6 +42,13 @@ export class FeaturemodelService {
   //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetItemCodeGenerationReference",jObject,this.common_params.httpOptions);
   }
-    
+      //get template items to hit API
+  getAllViewData(CompanyDBID:string):Observable<any>{
+    //JSON Obeject Prepared to be send as a param to API
+   let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: "SFDCDB" }]) };
+
+  //Return the response form the API  
+   return this.httpclient.post("http://localhost:65342/FeatureHeader/GetAllData",jObject,this.common_params.httpOptions);
+  }
     
 }
