@@ -16,14 +16,15 @@ export class ViewFeatureModelComponent implements OnInit {
 // generate table default constants
     table_pages: any;
     search_key:any;
-    table_head_foot = ['Name', 'Position', 'Office', 'Age', 'Start Date', 'Salary'];
+    table_head_foot = ['Name', 'Position', 'Office', 'Age', 'Start Date', 'Salary', 'Actions'];
     record_per_page_list:any = [10, 25, 50 , 100]
     record_per_page:any = 10;
     search_string:any= "";
     current_page: any = 1;
     page_numbers:any = "";
     rows:any = "";
-    language = JSON.parse(sessionStorage.getItem('current_lang')); 
+    language = JSON.parse(sessionStorage.getItem('current_lang'));
+    show_table_footer:boolean = true; 
     constructor() { }
 
     ngOnInit() {
@@ -43,7 +44,7 @@ export class ViewFeatureModelComponent implements OnInit {
     service_call(page_number, search){
        let dataset =  this.dummy_data();
         this.rows = dataset.data;
-        let pages = (parseInt(dataset.total_records) / parseInt(this.record_per_page));
+        let pages:any = (parseInt(dataset.total_records) / parseInt(this.record_per_page));
         if (parseInt(pages) ==0 || parseInt(pages) < 0){
             pages = 1;
         }
@@ -60,6 +61,26 @@ export class ViewFeatureModelComponent implements OnInit {
         console.log("record_per_page " + this.record_per_page);
         console.log("search " + this.search_string);
     }
+
+    // action button values 
+    show_button1:boolean = true;
+    show_button2:boolean = true;
+
+    button1_title = this.language.edit;
+    button2_title = this.language.delete;
+
+    button1_color = "btn-info";
+    button2_color = "btn-danger";
+
+    button1_icon = "fa fa-edit fa-fw";
+    button2_icon = "fa fa-trash-o fa-fw";
+
+    button_click1(id){
+        // button click function in here
+    }
+    button_click2(id){
+        // button click function in here
+    }
     
     // for testing purpose 
     dummy_data(){
@@ -67,14 +88,14 @@ export class ViewFeatureModelComponent implements OnInit {
       return  { 
            total_records: "50", 
            data : [ 
-               ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800"],
-               ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750"],
-               ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000"],
-               ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060"],
-               ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800"],
-               ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750"],
-               ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000"],
-               ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060"],
+               ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800", "1"],
+               ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750", "2"],
+               ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000", "3"],
+               ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060", "4"],
+               ["Tiger Nixon", "System Architect", "Edinburgh", "61", "2011/04/25", "$320, 800", "5"],
+               ["Garrett Winters", "Accountant", "Tokyo", "63", "2011/07/25", "$170,750", "6"],
+               ["Ashton Cox", "Junior Technical Author", "San Francisco", "66", "2009/01/12", "$86,000", "7"],
+               ["Cedric Kellyn", "Senior Javascript Developer", "Edinburgh", "22", "2012/03/29", "$433,060", "8"],
             ]
            
         };

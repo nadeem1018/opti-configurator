@@ -32,6 +32,7 @@
 "view": "View",
 "show": "Show",
 "per_page": "Per Page",
+"edit": "Edit",
 "": "",
 "": "",
 "": "",
@@ -44,8 +45,7 @@
 "": "",
 "": "",
 "": "",
-"": "",
-"":""
+"":"",
 "DataSaved":"Data saved successfully",
 "DataNotSaved":"Data not saved",
 "DataDeleteSuccesfully":"Data deleted successfully",
