@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonData } from "src/app/models/CommonData";
 
 @Component({
     selector: 'app-view-feature-model',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 
 export class ViewFeatureModelComponent implements OnInit {
-    
+    common_params = new CommonData();
     page_main_title = 'Model Feature';
     add_route_link = '/feature/model/add';
     table_title = this.page_main_title;
@@ -17,8 +18,9 @@ export class ViewFeatureModelComponent implements OnInit {
     table_pages: any;
     search_key:any;
     table_head_foot = ['Name', 'Position', 'Office', 'Age', 'Start Date', 'Salary', 'Actions'];
-    record_per_page_list:any = [10, 25, 50 , 100]
-    record_per_page:any = 10;
+    record_per_page_list: any = this.common_params.default_limits;
+
+    record_per_page: any = this.common_params.default_count;
     search_string:any= "";
     current_page: any = 1;
     page_numbers:any = "";
@@ -78,6 +80,7 @@ export class ViewFeatureModelComponent implements OnInit {
     button_click1(id){
         // button click function in here
     }
+
     button_click2(id){
         // button click function in here
     }
