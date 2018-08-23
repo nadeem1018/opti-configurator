@@ -32,6 +32,7 @@
 "view": "View",
 "show": "Show",
 "per_page": "Per Page",
+"edit": "Edit",
 "": "",
 "": "",
 "": "",
@@ -44,7 +45,10 @@
 "": "",
 "": "",
 "": "",
+<<<<<<< HEAD
 "": "",
+=======
+>>>>>>> 289352064dad01840bf80e30a7055e5951f37fa6
 "":"",
 "DataSaved":"Data saved successfully",
 "DataNotSaved":"Data not saved",

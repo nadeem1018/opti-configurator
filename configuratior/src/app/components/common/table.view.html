@@ -47,21 +47,26 @@
         
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
+                <thead class="thead-dark">
                     <tr >
                         <th *ngFor="let table_columns of table_head_foot">{{table_columns}}</th>
                     </tr>
                 </thead>
-                <tfoot>
+                <tfoot class="thead-dark" *ngIf='show_table_footer'>
                     <tr >
                         <th *ngFor="let table_columns of table_head_foot">{{table_columns}}</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr *ngFor="let row of rows">
-                        <td *ngFor="let row_data of row">{{row_data}}</td>
+                    <tr *ngFor="let row of rows ">
+                        <td *ngFor="let row_data of row; let i = index"  > 
+                            <span *ngIf="(row.length-1) != i">{{row_data}}</span>
+                            <span *ngIf="(row.length-1) == i">
+                                <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(row_data)" title="{{button1_title}}" ><i class="{{button1_icon}}"></i></button>
+                                <button type="button" class="btn btn-sm mr-10 {{button2_color}}" *ngIf="show_button2" (click)="button_click2(row_data)"  title="{{button2_title}}" ><i class="{{button2_icon}}"></i></button>
+                            </span>
+                        </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>

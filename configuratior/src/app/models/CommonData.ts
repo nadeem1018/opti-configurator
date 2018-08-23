@@ -38,5 +38,9 @@ export class CommonData {
         {"value":2,  "Name":"Increase"  },  
         {"value":3,  "Name":"Decrease"  }
     ];
+
+    // for common view
+    public default_limits =  [10, 25, 50, 100];
+    public default_count = 10;
     
 }

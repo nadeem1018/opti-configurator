@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
+import { CommonData } from "src/app/models/CommonData";
+
 @Component({
     selector: 'app-view-feature-model',
     templateUrl: '../../common/table.view.html',
@@ -8,16 +10,17 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 
 
 export class ViewFeatureModelComponent implements OnInit {
-    
+    common_params = new CommonData();
     page_main_title = 'Model Feature';
     add_route_link = '/feature/model/add';
     table_title = this.page_main_title;
 // generate table default constants
     table_pages: any;
     search_key:any;
-    table_head_foot = ['Code','Type', 'Display Name', 'Effective Date', 'Status'];
-    record_per_page_list:any = [10, 25, 50 , 100]
-    record_per_page:any = 10;
+    table_head_foot = ['Code','Type', 'Display Name', 'Effective Date', 'Status','Action'];
+    record_per_page_list: any = this.common_params.default_limits;
+
+    record_per_page: any = this.common_params.default_count;
     search_string:any= "";
     current_page: any = 1;
     page_numbers:any = "";
@@ -25,6 +28,8 @@ export class ViewFeatureModelComponent implements OnInit {
     public dataBind:any="";
     language = JSON.parse(sessionStorage.getItem('current_lang')); 
     constructor(private fms: FeaturemodelService){}
+    show_table_footer:boolean = true; 
+    
 
     ngOnInit() {
         this.service_call(this.current_page, this.search_string);
@@ -70,6 +75,27 @@ export class ViewFeatureModelComponent implements OnInit {
        console.log("search " + this.search_string);
         });
      
+    }
+
+    // action button values 
+    show_button1:boolean = true;
+    show_button2:boolean = true;
+
+    button1_title = this.language.edit;
+    button2_title = this.language.delete;
+
+    button1_color = "btn-info";
+    button2_color = "btn-danger";
+
+    button1_icon = "fa fa-edit fa-fw";
+    button2_icon = "fa fa-trash-o fa-fw";
+
+    button_click1(id){
+        // button click function in here
+    }
+
+    button_click2(id){
+        // button click function in here
     }
     
     // for testing purpose 
