@@ -96,6 +96,17 @@ public username:string="";
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
       this.isDeleteButtonVisible=false;
+      this.counter=1;
+      this.itemcodetable.push({
+        rowindex:this.counter,
+        string:"",
+        stringtype:1,
+        operations:1,
+        delete:"",
+        CompanyDBId:this.companyName,
+        codekey:this.codekey,
+        CreatedUser:this.username
+      })
     }
     
    
