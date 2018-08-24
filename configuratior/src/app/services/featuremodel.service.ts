@@ -30,7 +30,7 @@ export class FeaturemodelService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
 
    //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetModelTemplateItem",jObject,this.common_params.httpOptions);
+    return this.httpclient.post("http://localhost:65342/FeatureHeader/GetModelTemplateItem",jObject,this.common_params.httpOptions);
    }
 
     
@@ -40,7 +40,7 @@ export class FeaturemodelService {
     let jObject = { ItemCodeGenerationReference: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
        
   //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetItemCodeGenerationReference",jObject,this.common_params.httpOptions);
+    return this.httpclient.post("http://localhost:65342/FeatureHeader/GetItemCodeGenerationReference",jObject,this.common_params.httpOptions);
   }
       //get template items to hit API
   getAllViewData(CompanyDBID:string):Observable<any>{

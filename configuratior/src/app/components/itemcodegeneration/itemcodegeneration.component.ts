@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
-import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 
 
 @Component({
