@@ -23,18 +23,35 @@ export class CommonService {
     this.commonData.next(data);
   }
  
-  public get_config(){
+ 
+  async get_config() {
+
+    let service_call = await fetch("../../assets/data/json/config.json");
+    let data = await service_call.json();
+    
+    sessionStorage.setItem('system_config', JSON.stringify(data));
+  }
+
+  async set_language(language) {
+
+    let service_call = await fetch("../../assets/data/json/i18n/" + language + ".json");
+    let data = await service_call.json();
+    sessionStorage.setItem('current_lang', JSON.stringify(data));
+  }
+
+   /* public get_config(){
     let service_call = this.httpclient.get("../../assets/data/json/config.json");
    
     service_call.subscribe( data => {
         sessionStorage.setItem('system_config', JSON.stringify(data));
       });
-  }
+  } */
 
-  public set_language(language){
+
+  /* public set_language(language){
     let service_call = this.httpclient.get("../../assets/data/json/i18n/" + language +".json");
     service_call.subscribe(data => {
       sessionStorage.setItem('current_lang', JSON.stringify(data));
     });
-  }
+  } */
 }

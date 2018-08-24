@@ -1,7 +1,7 @@
 <div id="page-top">
     <app-header></app-header>
     <div id="wrapper">
-        <app-sidebar class="" [hidden]="!showSidebar"></app-sidebar>
+        <app-sidebar class="" *ngIf="showSidebar"></app-sidebar>
         <div id="content-wrapper" class="{{main_class}}">
             <div class="container-fluid">
                     <router-outlet></router-outlet>

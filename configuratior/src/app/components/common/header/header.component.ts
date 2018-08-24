@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
   
   ngOnInit() {
-    this.CommonService.get_config();
+     this.CommonService.get_config();
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     this.checkSession();
@@ -43,8 +43,12 @@ export class HeaderComponent implements OnInit {
   
   logout(){
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
-    sessionStorage.clear();
-    localStorage.clear();
+    /* sessionStorage.clear();
+    localStorage.clear(); */
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('selectedComp');
+    sessionStorage.removeItem('loggedInUser');
+
     // this.router.navigateByUrl('/login');
    setTimeout(function(){
      window.location.href = '/login';
