@@ -1,0 +1,446 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+OptiPro.Config.Common
+</name>
+</assembly>
+<members>
+<member name="T:OptiPro.Config.Common.Enumerations.ExceptionTypeEnum">
+	<summary>
+ Exception Return Type
+ </summary>
+	<remarks></remarks>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu1">
+	<summary>Level 1 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu2">
+	<summary>Level 2 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu3">
+	<summary>Level 3 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.MasterScreen">
+	<summary>Master Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.TransactionScreen">
+	<summary>Transactional Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Report">
+	<summary>Report</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Utility">
+	<summary>Utility</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Exe">
+	<summary>Exe</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.URL">
+	<summary>URL</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomScreen">
+	<summary>Custom Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomReport">
+	<summary>Custom Report</summary>
+</member><member name="T:OptiPro.Config.Common.Enumerations.SAPUDFFieldType">
+	<summary>
+ SAPbobui.BoFieldsType
+ </summary>
+	<remarks>SAPbobui.BoFieldsType</remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.StringFormat(System.String,System.Object[])">
+	<summary>
+ Returns formatted string as per the culture used by the current thread.
+ </summary>
+	<param name="format"></param>
+	<param name="arg"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetMinSqlDate(System.DateTime)">
+	<summary>
+ Converts to minimum sql date if dt is minimum .net date else returns the date.
+ </summary>
+	<param name="dt"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.NETToSQLDate(System.DateTime)">
+	<summary>
+   This function converts .NET DateTime data to SQL server DateTime
+ in .NET min value = #Jan 1, 0001 12:00:00 PM"; in sql min value = Jan 1, 1753
+ </summary>
+	<param name="o"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetNumPart(System.String)">
+	<summary>
+ Returns numeric part of an alpha numeric string
+ For example for a string XYZ0001 0001 would be returned
+ </summary>
+	<param name="inputStr"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.IsBlank(System.String)">
+	<summary>
+ Finds weather a string is blank
+ </summary>
+	<param name="s"></param>
+	<returns></returns>
+	<remarks>Function returns true if string is nothing or string only contains white spaces.
+ For example function returns true for a string with value "   "
+ </remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ParseXMLvalue(System.String)">
+	<summary>
+	</summary>
+	<param name="xmlValue"></param>
+	<returns></returns>
+	<remarks></remarks>
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlHeaderOpeningTag(System.String)">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlHeaderClosingTag">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlRowCellOpeningTag">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlRowCellClosingTag">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlCellOpeningTag">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlCellClosingTag">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlCellColumnTag(System.String)">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetDataTableXmlRowValueTag(System.String)">
+ Gopal/July-15-14
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IncrementAlphaNumericNumber(System.String)">
+	<summary>
+ Increments an alphanumeric string
+ Example: For XYZ0001 XYZ0002 would be returned
+ </summary>
+	<param name="inputStr"></param>
+	<returns>an alphanumeric string incremented by 1</returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetReportMDBPath">
+	<summary>
+ First Check BMM Login user wise report folder then return MDB path for report file.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.FileCopy(System.String,System.String)">
+	<summary>
+ For copy disk files 
+ </summary>
+	<param name="sourceFileName"></param>
+	<param name="TargatFileName"></param>
+	<remarks>Use to copy MDB File from source to user specific.</remarks>
+</member><member name="P:OptiPro.Config.Common.Utilites.MyApplicationPath">
+	<summary>
+ Gets application startup path
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetCompanyName">
+	<summary>
+ Returns company name from configuration.xml
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.RoundNumberToNextWholeNumber(System.Double)">
+	<summary>
+ Rounds a fractional number to next whole number. For example 1.3 would be rounded to 2
+ </summary>
+	<param name="number"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ParseRowFilter(System.String)">
+	<summary>
+ Parses a data row filter and replaces specical characters like single quotes
+ meant to be used only for string type of value
+ </summary>
+	<param name="rowFilter"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.NaNToDouble(System.Object)">
+	<summary>
+ parses the object value for infinity and not an Number (NaN) and replace it by Zero
+ </summary>
+	<param name="o"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetTimePartFromDate(System.DateTime)">
+	<summary>
+ Gets time part form a date
+ </summary>
+	<param name="wholeDate"></param>
+	<returns>Date</returns>
+	<remarks></remarks>
+</member><member name="P:OptiPro.Config.Common.Utilites.MinSQLDate">
+	<summary>
+ Returns minimum supported sql server date
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:OptiPro.Config.Common.Utilites.QuantityDecimalPlaces">
+	<summary>
+ Parag 08 oct 09 Scr 17405
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.DaysToMinutes(System.String)">
+	<summary>
+ Convert DD:HH:MM Time Format into Number of Minutes
+ </summary>
+	<param name="DaysAndHours"></param>
+	<returns></returns>
+	<remarks></remarks>
+ MUFFU
+
+</member><member name="M:OptiPro.Config.Common.Utilites.MinutesToDays(System.Double)">
+	<summary>
+ Returns DD:HH:MM Time Format String
+ </summary>
+	<param name="Minuts">Number of minutes</param>
+	<returns>Time in DD:HH:MM Format String</returns>
+	<remarks></remarks>
+ MUFFU
+
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertMinutesToTimeHHMMFormat(System.Int32)">
+	<summary>
+ Returns Time (Valid range 00:00 to 23:59) in HH:MM Format String
+ </summary>
+	<param name="timeInMinutes">Number of Minutes</param>
+	<returns>Time in HH:MM Format</returns>
+	<remarks></remarks>
+	<exception cref="T:System.ApplicationException">Throws ApplicationException if invalid value is entered</exception>
+ RAVEENDRA 
+
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertMinutesToDurationHHMMFormat(System.Int32)">
+	<summary>
+ Returns Time (Duration in Minutes) in HH:MM Format String
+ </summary>
+	<param name="timeInMinutes">Number of Minutes</param>
+	<returns>Time (Duration) in HH:MM Format</returns>
+	<remarks></remarks>
+ RAVEENDRA
+ 
+
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertTimeStringtoHHMMTime(System.String)">
+	<summary>
+	</summary>
+	<param name="timeString">Time in string format</param>
+	<returns>Time (Duration) in HH:MM Format</returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertTimeMinutesToDouble(System.String,System.Boolean)">
+	<summary>
+ Convert HH:MM Time Format String into integer
+ </summary>
+	<param name="timeInMinutes"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 13 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertDurationMinutesToDouble(System.String)">
+	<summary>
+ Convert HH:MM Time Format String into integer
+ Hours value can be from two digits upto six digits
+ </summary>
+	<param name="timeInMinutes"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 13 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IsValidTimeInHHMMFormat(System.String)">
+	<summary>
+ Validate HH:MM Time Format String
+ </summary>
+	<param name="timeInHHMMFormat"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 13 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IsValidTime(System.String)">
+	<summary>
+ Validate HH:MM Time Format String
+ </summary>
+	<param name="timeInHHMMFormat"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 13 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IsValidClockTime(System.Int32)">
+	<summary>
+ Valides if time in minutes if a valid time from midnignt
+ all values except from 0 to 1439 are invlid
+ </summary>
+	<param name="timeInMinutes"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 13 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IsValidDurationInHHMMFormat(System.String)">
+	<summary>
+ Validate Time Duration in HH:MM Format String
+ </summary>
+	<param name="timeInHHMMFormat"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 16 AUGUST 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.TimeInHNumFormat(System.String)">
+	<summary>
+ Return Time Duration in HH:MM Format String
+ </summary>
+	<param name="timeInHHMMFormat"></param>
+	<returns></returns>
+	<remarks></remarks>
+ Bhupendra Singh  ON 3 OCT 2012
+
+</member><member name="M:OptiPro.Config.Common.Utilites.IntToEnum``2(``1,``0)">
+	<summary>
+ Convert integer value to enum value
+ </summary>
+	<typeparam name="T">Type of Enum</typeparam>
+	<typeparam name="U">Type of Value to be converted</typeparam>
+	<param name="value">Value to be converted</param>
+	<param name="defaultValue">Default Value to be return</param>
+	<returns></returns>
+	<remarks></remarks>
+ Raveendra on 23 Sep 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetInvariantLocalXMLString(System.Object,System.Type)">
+	<summary>
+ This function will return invariant (culture insensitive string value of respective date type(double, decimal, date, datetime, integer, string)
+ </summary>
+	<param name="vObj"> valid object of type date, datetime, decimal, double, string, integer etc. </param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetCurrentCultureLocaleNumStrFromInvariantStr(System.String)">
+	<summary>
+ Returns numeric string in current culture locale from invariant culture locale. 
+ </summary>
+	<param name="vInvariantNumberString">numeric string in invariant culture Locale.</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.IsNumeric(System.String,System.Globalization.NumberStyles)">
+	<summary>
+ Check whether given value is numeric or not on Current Culture
+ </summary>
+	<param name="val"></param>
+	<param name="numberStyle"></param>
+	<returns></returns>
+	<remarks></remarks>
+ RAVEENDRA ON 27 OCT 2010
+
+</member><member name="M:OptiPro.Config.Common.Utilites.GetAssemblyTypes(System.String)">
+	<summary>
+ Get all the types from given assembly name.
+ </summary>
+	<param name="assName"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetTypeMethods(System.String,System.String)">
+	<summary>
+ Get all the methods in the given assembly and type.
+ </summary>
+	<param name="docName"></param>
+	<param name="assName"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.GetFiles(System.String,System.String)">
+	<summary>
+ Gets all files fileinfo in the given directory path with all the comma seperated extension list.
+ </summary>
+	<param name="dirPath"></param>
+	<param name="ext"></param>
+	<returns></returns>
+	<remarks></remarks>
+ Gopal/June-30-11
+
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertSAPDateToDate(System.String)">
+	<summary>
+ SAP Date("YYYYMMDD") To System Date
+ </summary>
+	<param name="vdate">"YYYYMMDD"</param>
+	<returns>Date</returns>
+	<remarks>SAP Date("YYYYMMDD") To System Date</remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertDateToSAPDate(System.DateTime)">
+	<summary>
+ System Date To SAP Date("YYYYMMDD")
+ </summary>
+	<param name="vdate">Date</param>
+	<returns>String("YYYYMMDD")</returns>
+	<remarks>System Date To SAP Date("YYYYMMDD")</remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertMinutesToSAPDurationHHMMFormat(System.Int32)">
+	<summary>
+ Convert Minute to HH:MM Format
+ </summary>
+	<param name="timeInMinutes">minutes</param>
+	<returns>Return string HH:MM Formate</returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.ConvertDurationMinutesSAPToDouble(System.String)">
+	<summary>
+ Covert HH:MM Format To SAP Minute formate (HHMM)
+ </summary>
+	<param name="timeInMinutes">string (HH:MM)</param>
+	<returns>SAP Minute formate (HHMM)</returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetPrivateProfileString(System.String,System.String,System.String,System.Text.StringBuilder,System.Int32,System.String)">
+	<summary>
+ Declare INI Functions
+ </summary>
+	<param name="lpApplicationName"></param>
+	<param name="lpKeyName"></param>
+	<param name="lpDefault"></param>
+	<param name="lpReturnedString"></param>
+	<param name="nSize"></param>
+	<param name="lpFileName"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetString(System.String,System.String,System.String)">
+	<summary>
+ ' Returns a string from your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Default"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetInteger(System.String,System.String,System.Int32)">
+	<summary>
+ Returns an integer from your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Default"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.WriteString(System.String,System.String,System.String)">
+	<summary>
+  Writes a string to your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Value"></param>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.Flush">
+	<summary>
+ Stores all the cached changes to your INI file
+ </summary>
+	<remarks></remarks>
+</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:OptiPro.Config.Common.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

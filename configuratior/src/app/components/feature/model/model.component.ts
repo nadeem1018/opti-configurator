@@ -4,6 +4,7 @@ import { LookupComponent } from '../../common/lookup/lookup.component';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   providers:[LookupComponent],
@@ -20,7 +21,7 @@ export class ModelComponent implements OnInit {
   public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
-  constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router) { }
+  constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router,private ActivatedRouter: ActivatedRoute) { }
   page_main_title = 'Model Feature';
   companyName: string ;
   showLookup: boolean = false;
@@ -33,11 +34,40 @@ export class ModelComponent implements OnInit {
   allWODetails: any;
    serviceData: any;
    item:string =''; 
+   public codekey:string="";
+   public button="save";
+   public isUpdateButtonVisible:boolean=false;
+public isSaveButtonVisible:boolean=true;
+public isDeleteButtonVisible:boolean=true;
    
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
     var todaysDate = new Date();
     this.featureBom.Date  = todaysDate;
+    this.codekey ="";
+    this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
+    if(this.codekey === "" || this.codekey === null){
+      this.button="save";
+      this.isUpdateButtonVisible = false;
+      this.isDeleteButtonVisible = false;
+    }
+    else{
+      this.button="update";
+      this.isUpdateButtonVisible = true;
+      this.isSaveButtonVisible = false;
+      this.isDeleteButtonVisible = true;
+      this.fms.GetRecordById("SFDCDB", this.codekey).subscribe(
+        data => {
+this.featureBom.Code= data[0].OPTM_FEATURECODE
+this.featureBom.Name= data[0].OPTM_DISPLAYNAME
+this.featureBom.Desc= data[0].OPTM_FEATUREDESC
+this.featureBom.Date=data[0].OPTM_EFFECTIVEDATE
+this.featureBom.type=data[0].OPTM_TYPE
+this.featureBom.Status=data[0].OPTM_STATUS
+this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
+this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
+        })
+    }
   }
   onSaveClick(){
     this.featureModel= [];
@@ -61,7 +91,7 @@ if (validateStatus == true){
       data => {
         console.log(data);
         if (data == "True" ) {
-          this.toastr.success('', 'Data saved successfully', this.commonData.toast_config);
+          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.router.navigateByUrl(this.view_route_link);
           return;
         }
@@ -70,7 +100,7 @@ if (validateStatus == true){
           return;
         }
         else{
-          this.toastr.error('', 'Data not saved', this.commonData.toast_config);
+          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
         }
       })
@@ -147,5 +177,59 @@ if (validateStatus == true){
         }
     }
     return true;
+  }
+  onUpdateClick(){
+    this.featureModel= [];
+    var validateStatus = this.Validation();
+if (validateStatus == true){
+    this.featureModel.push({
+      CompanyDBId:"SFDCDB",
+      FeatureId: this.codekey,
+      FeatureCode: this.featureBom.Code,
+      DisplayName: this.featureBom.Name,
+      FeatureDesc: this.featureBom.Desc,
+      EffectiveDate: this.featureBom.Date,
+      Type: this.featureBom.type,
+      FeatureStatus:this.featureBom.Status,
+      ModelTemplateItem:this.featureBom.ItemName,
+      ItemCodeGenerationRef : this.featureBom.Ref,
+      PicturePath: "www",
+      CreatedUser: "ash"
+    })
+    
+    this.fms.updateData(this.featureModel).subscribe(
+      data => {
+        console.log(data);
+        if (data == "True" ) {
+          this.toastr.success('', this.language.DataUpdateSuccesfully, this.commonData.toast_config);
+          this.router.navigateByUrl(this.view_route_link);
+          return;
+        }
+        else if(data == "Record Already Exist"){
+          this.toastr.error('', 'Code already exists', this.commonData.toast_config);
+          return;
+        }
+        else{
+          this.toastr.error('', this.language.DataNotUpdate, this.commonData.toast_config);
+          return;
+        }
+      })
+    }
+    }
+    onDeleteClick(){
+     // button click function in here
+     this.fms.DeleteData("SFDCDB",this.codekey).subscribe(
+      data => {
+        if (data === "True" ) {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.router.navigateByUrl(this.view_route_link);
+          return;
+        }
+        else{
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
   }
 }
