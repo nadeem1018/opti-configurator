@@ -15,7 +15,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public commonData = new CommonData();
     page_main_title = 'Item Code Generation';
     table_title = this.page_main_title;
-    public companyName:string="SFDCDB"
+    public companyName:string="";
+    public username:string="";
     add_route_link = '/item-code-genration/add';
     record_per_page_list:any = [10, 25, 50 , 100]
     record_per_page:any = 10;
@@ -33,6 +34,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     constructor(private router: Router,private itemgen: ItemcodegenerationService,private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.companyName = sessionStorage.getItem('selectedComp');
+        this.username = sessionStorage.getItem('loggedInUser');
         this.service_call(this.current_page, this.search_string);
     }
     on_page_limit_change(){
@@ -46,7 +49,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
 
     service_call(page_number, search){
-        var dataset =  this.itemgen.viewItemGenerationData("SFDCDB").subscribe(
+        var dataset =  this.itemgen.viewItemGenerationData(this.companyName).subscribe(
             data => {
                dataset = JSON.parse(data);
                console.log(dataset)
@@ -89,25 +92,37 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         // button click function in here
     }
     button_click2(id){
-        this.GetItemData.push({
-            CompanyDBId:"SFDCDB",
+        this.GetItemData=[]
+          this.GetItemData.push({
+            CompanyDBId:this.companyName,
             ItemCode:id
       
-         }) 
-          this.itemgen.DeleteData(this.GetItemData).subscribe(
-            data => {
-              if (data === "True" ) {
-                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                this.service_call(this.current_page, this.search_string);
-                this.router.navigateByUrl('item-code-generation/view');
-                return;
-              }
-              else{
-                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                return;
-              }
-            }
-          )
+         })
+         this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+           data => {
+             if(data=="True"){
+              this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
+              return false;    
+             }
+             else{
+              this.itemgen.DeleteData(this.GetItemData).subscribe(
+                data => {
+                    if (data === "True" ) {
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('item-code-generation/view');
+                        return;
+                      }
+                      else{
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                      }
+                }
+              )
+             }
+           }
+         )
+
        
     }
 

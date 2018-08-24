@@ -19,7 +19,7 @@
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="feature">{{language.code}}</label>
         <div class="col-sm-4">
-          <input type="text"   class="form-control  form-control-sm mt3" placeholder="{{language.code}}" id="usrID" name="code" [(ngModel)]="codekey" >
+          <input type="text"  [disabled]="!isCodeDisabled" class="form-control  form-control-sm mt3" placeholder="{{language.code}}" id="usrID" name="code" [(ngModel)]="codekey" >
         </div>
         <div class="col-sm-2">
           <a href="javascript:;" class="btn btn-outline-primary btn-sm" title="{{language.add_row}} " (click)="onAddRow()">  <i class="fa fa-plus"></i> </a> </div>

@@ -93,6 +93,7 @@
     "RowNumberType":"Atleast one row should be number type",
     "CodeBlank":"Code cannot be blank",
     "ItemCodeGeneration":"Item Code Generation",
+    "ItemCodeLink":"Cannot delete,Item code is linked to feature model ",
 
 
     "Model_Code" :"Model/Feature Code",
