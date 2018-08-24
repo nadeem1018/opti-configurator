@@ -236,6 +236,9 @@ export class ItemcodegenerationComponent implements OnInit {
               return false;
             }
           }
+          if(this.itemcodetable[i].codekey==""||this.itemcodetable[i].codekey==null){
+            this.itemcodetable[i].codekey=this.codekey
+          }
         }
 
         if (this.finalstring.length > 50) {

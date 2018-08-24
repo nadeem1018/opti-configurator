@@ -34,6 +34,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
     }
     on_page_limit_change() {
