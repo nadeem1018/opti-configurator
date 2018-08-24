@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   public config_params:any;
   public assignedCompanies:any;
   public selecetedComp:any;
+  public disbleConnectBtn:boolean = true;
   
 
   private commonData = new CommonData();
@@ -31,8 +32,8 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() { 
-    this.loginCredentials.userName = 'shashank';
-    this.loginCredentials.password = 'sha@123';
+    //this.loginCredentials.userName = 'shashank';
+    //this.loginCredentials.password = 'sha@123';
     console.info('in LOGIN header');
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
       this.router.navigateByUrl('/home');
@@ -48,7 +49,16 @@ export class LoginComponent implements OnInit {
   //Events
   onConnectBtnPress(){
       console.log(this.loginCredentials);
-      if(this.loginCredentials != undefined){
+      if(this.loginCredentials.userName == undefined || this.loginCredentials.userName == null){
+        this.toastr.warning('', this.language.UserNameRequired, this.commonData.toast_config);
+        return;
+      }
+      if(this.loginCredentials.password == undefined || this.loginCredentials.password == null){
+        this.toastr.warning('', this.language.PasswordRequired, this.commonData.toast_config);
+        return;
+      }
+      if(this.loginCredentials.userName != undefined && this.loginCredentials.password !=undefined){
+     
         this.auth.login(this.loginCredentials, this.psURL).subscribe(
           data => {
         if(data!=null || data.Table.length > 0){
@@ -72,19 +82,35 @@ export class LoginComponent implements OnInit {
         }
           })
       }
-
+    
   }
 
   onLoginBtnPress(){
-    console.log(this.selecetedComp.OPTM_COMPID)
+   
+    if(this.selecetedComp == undefined){
+      this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
+      return;
+    }
+    else{
+    if(this.selecetedComp.OPTM_COMPID == undefined){
+      this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
+      return;
+    } 
     sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
-    sessionStorage.setItem('loggedInUser', this.loginCredentials.username);
+    sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
     //sessionStorage.setItem('selectedWhse',this.warehouseName);
     sessionStorage.setItem('isLoggedIn', "true");
-   // this.router.navigateByUrl('/home');
-   window.location.href = '/home';
+    // this.router.navigateByUrl('/home');
+    window.location.href = '/home';
+    }
   }
   
+  onUserNameBlur(){
+    
+  }
+  onPasswordBlur(){
+  
+  }
   //Core Functions 
   //To get url from DB
   getPSURL(){
