@@ -50,5 +50,28 @@ export class FeaturemodelService {
   //Return the response form the API  
    return this.httpclient.post("http://localhost:65342/FeatureHeader/GetAllData",jObject,this.common_params.httpOptions);
   }
+      //get template items to hit API
+      GetRecordById(CompanyDBID:string, FEATUREID: string):Observable<any>{
+        //JSON Obeject Prepared to be send as a param to API
+       let jObject = { FeatureCode: JSON.stringify([{ CompanyDBID: "SFDCDB", FEATUREID: FEATUREID }]) };
     
+      //Return the response form the API  
+       return this.httpclient.post("http://localhost:65342/FeatureHeader/GetRecordById",jObject,this.common_params.httpOptions);
+      }
+
+      //Submit feature bom data
+    updateData(featureBom):Observable<any>{
+    //JSON Obeject Prepared to be send as a param to API
+      //JSON Obeject Prepared to be send as a param to API
+      let jObject:any={ UpdateFeature: JSON.stringify(featureBom) };
+    //Return the response form the API  
+    return this.httpclient.post("http://localhost:65342/featureheader/UpdateFeatures", jObject, this.common_params.httpOptions);
+    }
+    DeleteData(CompanyDBID:string, FEATUREID: string):Observable<any>{
+      //JSON Obeject Prepared to be send as a param to API
+     let jObject = { DeleteFeature: JSON.stringify([{ CompanyDBID: "SFDCDB", FEATUREID: FEATUREID }]) };
+  
+    //Return the response form the API  
+     return this.httpclient.post("http://localhost:65342/FeatureHeader/DeleteFeatures",jObject,this.common_params.httpOptions);
+    }
 }

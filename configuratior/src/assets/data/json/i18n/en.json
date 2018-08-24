@@ -72,6 +72,8 @@
     "DataNotSaved":"Data not saved",
     "DataDeleteSuccesfully":"Data deleted successfully",
     "DataNotDelete":"Data not deleted",
+    "DataUpdateSuccesfully":"Data updated successfully",
+    "DataNotUpdate":"Data not update",
     "ValidNumber":"Enter valid number",
     "ValidOperations":"Enter valid operation",
     "StringLengthValidation":"Item code key cannot be greater than 50 characters",
