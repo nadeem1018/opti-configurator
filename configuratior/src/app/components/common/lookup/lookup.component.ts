@@ -47,7 +47,7 @@ export class LookupComponent implements OnInit {
 
     console.log("ngOnChanges lookup - " + this.lookupfor);
     this.dataBind = [];
-    this.test_model();
+    //this.test_model();
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
         this.model_template_lookup();
@@ -59,31 +59,6 @@ export class LookupComponent implements OnInit {
   }
 
   log(val) { console.log(val); }
-  
-
-  test_model(){
-    this.popup_title = 'Example Model';
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureItemName';
-    this.lookup_key = 'name';
-    this.table_head = ["ID", "Name", "Email ID", "Address"];
-    this.serviceData = [
-    { id: 1, name: 'Meenesh', email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
-    { id: 2, name: 'Neeraj', email: 'Neeraj@batchmaster.com', address: 'Indore, India' },
-    { id: 3, name: 'Ashish', email: 'Ashish@batchmaster.com', address: 'Indore, India' },
-    { id: 4, name: 'Kapil', email: 'Kapil@batchmaster.com', address: 'Indore, India' },
-    { id: 5, name: 'Roba', email: 'Roba@batchmaster.com', address: 'Indore, India' },
-    { id: 6, name: 'Akshay', email: 'Akshay@batchmaster.com', address: 'Indore, India' },
-    { id: 7, name: 'Hamza', email: 'Hamza@batchmaster.com', address: 'Indore, India' },
-    { id: 8, name: 'Kishan', email: 'Kishan@batchmaster.com', address: 'Indore, India' },
-    { id: 9, name: 'Sagar', email: 'Sagar@batchmaster.com', address: 'Indore, India' },
-    { id: 10, name: 'Satendra', email: 'Satendra@batchmaster.com', address: 'Indore, India' }
-];
-    console.log(this.serviceData)
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-  }
 
   on_item_select(lookup_key){
      (<HTMLInputElement>document.getElementById(this.fill_input_id)).value = lookup_key;
@@ -96,19 +71,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureItemName';
     this.table_head = ['ItemCode', 'ItemName'];
     this.lookup_key = 'ItemName';
-    this.serviceData = [
-      { ItemCode: 1, ItemName: 'Meenesh'  },
-      { ItemCode: 2, ItemName: 'Neeraj'  },
-      { ItemCode: 3, ItemName: 'Ashish'  },
-      { ItemCode: 4, ItemName: 'Kapil'  },
-      { ItemCode: 5, ItemName: 'Roba'  },
-      { ItemCode: 6, ItemName: 'Akshay'  },
-      { ItemCode: 7, ItemName: 'Hamza'  },
-      { ItemCode: 8, ItemName: 'Kishan'  },
-      { ItemCode: 9, ItemName: 'Sagar'  },
-      { ItemCode: 10, ItemName: 'Satendra' }
-    ];
-
+   
     console.log(this.serviceData)
     this.showLoader = false;
     this.LookupDataLoaded = true;
@@ -119,21 +82,9 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemCode';
-    this.table_head = ['Code', 'ItemName', 'ItemDescription'];
-    this.lookup_key = 'email';
-    this.serviceData = [
-      { Code: 1, email: 'Meenesh@batchmaster.com', address: 'Indore, India' },
-      { Code: 2, email: 'Neeraj@batchmaster.com', address: 'Indore, India' },
-      { Code: 3, email: 'Ashish@batchmaster.com', address: 'Indore, India' },
-      { Code: 4, email: 'Kapil@batchmaster.com', address: 'Indore, India' },
-      { Code: 5, email: 'Roba@batchmaster.com', address: 'Indore, India' },
-      { Code: 6, email: 'Akshay@batchmaster.com', address: 'Indore, India' },
-      { Code: 7, email: 'Hamza@batchmaster.com', address: 'Indore, India' },
-      { Code: 8, email: 'Kishan@batchmaster.com', address: 'Indore, India' },
-      { Code: 9, email: 'Sagar@batchmaster.com', address: 'Indore, India' },
-      { Code: 10, email: 'Satendra@batchmaster.com', address: 'Indore, India' }
-    ];
-
+    this.table_head = ['Code'];
+    this.lookup_key = 'OPTM_CODE';
+   
     console.log(this.serviceData)
     this.showLoader = false;
     this.LookupDataLoaded = true;

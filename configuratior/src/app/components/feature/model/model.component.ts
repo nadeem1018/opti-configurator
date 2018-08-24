@@ -124,7 +124,8 @@ if (validateStatus == true){
     this.fms.getTemplateItems("SFDCDB").subscribe(
       data => {
         this.serviceData = data;
-        if(this.serviceData.length > 0)
+        console.log(data);
+        //if(this.serviceData.length > 0)
          this.showLookup=true;
         //}
       }

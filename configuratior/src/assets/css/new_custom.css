@@ -87,3 +87,24 @@ a.page-link.active {
   background: #003e80;
   color: white;
 }
+
+
+/* For table in lookup */
+
+  
+  table.lookup_table{
+   height:500px;              
+   display: -moz-groupbox;    
+  }
+
+  tbody.lookup_table_body tr{
+    width: 100%;
+    display: inline-table;
+    table-layout: fixed;
+  }
+
+  tbody.lookup_table_body{
+    overflow-y: scroll;      
+    height: 470px;            
+    position: absolute;
+  }

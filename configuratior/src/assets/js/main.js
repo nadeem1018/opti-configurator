@@ -57,7 +57,7 @@
     return false;
   });
 
-  $(".row_select, .row_select td").on("click",function (){
+  $(".row_select, .row_select td").on("click",function(){
     $("#lookup_modal").modal("hide");
   });
   
