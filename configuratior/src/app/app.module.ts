@@ -41,6 +41,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'feature/model/add', component: ModelComponent },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
+  { path: 'feature/model/edit/:id', component: ModelComponent },
   { path: 'feature/bom', component: ModelComponent },
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent },

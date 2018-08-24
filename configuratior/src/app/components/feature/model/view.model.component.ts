@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "src/app/models/CommonData";
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-view-feature-model',
@@ -13,6 +15,7 @@ export class ViewFeatureModelComponent implements OnInit {
     common_params = new CommonData();
     page_main_title = 'Model Feature';
     add_route_link = '/feature/model/add';
+    public commonData = new CommonData();
     table_title = this.page_main_title;
 // generate table default constants
     table_pages: any;
@@ -27,7 +30,7 @@ export class ViewFeatureModelComponent implements OnInit {
     rows:any = "";
     public dataBind:any="";
     language = JSON.parse(sessionStorage.getItem('current_lang')); 
-    constructor(private fms: FeaturemodelService){}
+    constructor(private fms: FeaturemodelService,private router: Router,private toastr: ToastrService){}
     show_table_footer:boolean = true; 
     
 
@@ -91,11 +94,26 @@ export class ViewFeatureModelComponent implements OnInit {
     button2_icon = "fa fa-trash-o fa-fw";
 
     button_click1(id){
-        // button click function in here
+        //alert(id)
+        this.router.navigateByUrl('feature/model/edit/'+id);
     }
 
     button_click2(id){
         // button click function in here
+        this.fms.DeleteData("SFDCDB",id).subscribe(
+            data => {
+              if (data === "True" ) {
+                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                this.service_call(this.current_page, this.search_string);
+                this.router.navigateByUrl('feature/model/view');
+                return;
+              }
+              else{
+                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                return;
+              }
+            }
+          )
     }
     
     // for testing purpose 
