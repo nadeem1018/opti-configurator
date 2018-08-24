@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
-import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 
 
 @Component({
@@ -37,13 +36,11 @@ public isUpdateButtonVisible:boolean=false;
 public isSaveButtonVisible:boolean=true;
 public isDeleteButtonVisible:boolean=true;
 public isCodeDisabled:boolean=true;
-public username:string="";
 
 
   ngOnInit()
   {
     this.companyName = sessionStorage.getItem('selectedComp');
-    this.username = sessionStorage.getItem('loggedInUser');
     this.stringtypevalue=this.commonData.stringtypevalue
     this.opertions=this.commonData.opertions
     this.codekey ="";
@@ -59,9 +56,8 @@ public username:string="";
       this.isSaveButtonVisible=false;
       this.isDeleteButtonVisible=true;
       this.isCodeDisabled=false;
-      this.GetItemData=[]
       this.GetItemData.push({
-        CompanyDBId:this.companyName, 
+        CompanyDBId:"SFDCDB",
         ItemCode:this.codekey
  
      })
@@ -77,9 +73,9 @@ public username:string="";
              stringtype:data[i].OPTM_TYPE,
              operations:data[i].OPTM_OPERATION,
              delete:"",
-             CompanyDBId:this.companyName ,
+             CompanyDBId:"SFDCDB",
              codekey:this.codekey,
-             CreatedUser:this.username
+             CreatedUser:"john"
            })
            this.finalstring=this.finalstring + data[i].OPTM_CODESTRING
          }
@@ -133,9 +129,9 @@ public username:string="";
       stringtype:1,
       operations:1,
       delete:"",
-      CompanyDBId:this.companyName,
+      CompanyDBId:"SFDCDB",
       codekey:this.codekey,
-      CreatedUser:this.username
+      CreatedUser:"john"
     })
 
     
@@ -213,7 +209,28 @@ public username:string="";
 
   onDeleteClick()
   {
-    this.validateRowData("Delete")
+    if(this.validateRowData("Delete")==false){
+      return
+    } 
+    this.GetItemData.push({
+      CompanyDBId:"SFDCDB",
+      ItemCode:this.codekey
+
+   }) 
+    this.itemgen.DeleteData(this.GetItemData).subscribe(
+      data => {
+        if (data === "True" ) {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.route.navigateByUrl('item-code-generation/view');
+          return;
+        }
+        else{
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+ 
   }
 
   onStrBlur(selectedvalue,rowindex)
@@ -308,40 +325,9 @@ public username:string="";
           }
         }
       }
-      else{
-        this.GetItemData=[]
-        this.GetItemData.push({
-          CompanyDBId:this.companyName, 
-          ItemCode:this.codekey
-   
-       })
-       this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-         data => {
-           if(data=="True"){
-            this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
-            return false;    
-           }
-           else{
-            this.itemgen.DeleteData(this.GetItemData).subscribe(
-              data => {
-                if (data === "True" ) {
-                  this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                  this.route.navigateByUrl('item-code-generation/view');
-                  return;
-                }
-                else{
-                  this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                  return;
-                }
-              }
-            )
-           }
-         }
-       )
-      }
      
     }
-    if(this.codekey=="" || this.codekey==null ){
+    if(this.codekey.length==0){
       this.toastr.warning('', this.language.CodeBlank, this.commonData.toast_config); 
       return false;
     }
