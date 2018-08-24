@@ -1,14 +1,15 @@
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{page_main_title}}</h1>
-  </div>
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
-    </li>
-    <li class="breadcrumb-item "><a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a></li>
-    <li class="breadcrumb-item active">{{language.add}}</li>
-  </ol>
+  <h1 class="h2">{{page_main_title}}</h1>
+</div>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
+  </li>
+  <li class="breadcrumb-item ">
+    <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
+  </li>
+  <li class="breadcrumb-item active">{{language.add}}</li>
+</ol>
 <!-- new design -->
 
 <div class="card mb-3">
@@ -19,49 +20,66 @@
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="feature">{{language.code}}</label>
         <div class="col-sm-4">
-          <input type="text"   class="form-control  form-control-sm mt3" placeholder="{{language.code}}" id="usrID" name="code" [(ngModel)]="codekey" >
+          <input type="text" [disabled]="!isCodeDisabled" class="form-control  form-control-sm mt3" placeholder="{{language.code}}"
+            id="usrID" name="code" [(ngModel)]="codekey">
         </div>
         <div class="col-sm-2">
-          <a href="javascript:;" class="btn btn-outline-primary btn-sm" title="{{language.add_row}} " (click)="onAddRow()">  <i class="fa fa-plus"></i> </a> </div>
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm" title="{{language.add_row}} " (click)="onAddRow()">
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
       </div>
       <hr>
       <!-- grid  -->
-      <div class="row clearfix" >
-          <div class="col-form-label col-sm-1"><b>#</b></div>
-          <div class="col-form-label col-sm-3"><b>{{language.string}}</b></div>
-          <div class="col-form-label col-sm-3"><b>{{language.type}}</b></div>
-          <div class="col-form-label col-sm-3"><b>{{language.operations}}</b></div>
-          <div class="col-form-label col-sm-2"><b>{{language.remove}}</b></div>
-          </div>
-        <div class="row border_top margin_top padding_top string_block_section clearfix" *ngFor="let row of itemcodetable">
-            <div class="col-sm-1">
-              <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
-            </div>
-            <div class="col-sm-3">
-              <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
-              />
-            </div>
-            <div class="col-sm-3">
-              <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
-                <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
-              </select>
-            </div>
-            <div class="col-sm-3">
-              <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
-                <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
-              </select>
-            </div>
-            <div class="col-sm-2" name="delete" [(ngModel)]="row.delete">
-                <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)"><i class="fa fa-times"></i></button>
-            </div>
-          
+      <div class="row clearfix">
+        <div class="col-form-label col-sm-1">
+          <b>#</b>
         </div>
+        <div class="col-form-label col-sm-3">
+          <b>{{language.string}}</b>
+        </div>
+        <div class="col-form-label col-sm-3">
+          <b>{{language.type}}</b>
+        </div>
+        <div class="col-form-label col-sm-3">
+          <b>{{language.operations}}</b>
+        </div>
+        <div class="col-form-label col-sm-2">
+          <b>{{language.remove}}</b>
+        </div>
+      </div>
+      <div class="row border_top margin_top padding_top string_block_section clearfix" *ngFor="let row of itemcodetable">
+        <div class="col-sm-1">
+          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+        </div>
+        <div class="col-sm-3">
+          <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
+          />
+        </div>
+        <div class="col-sm-3">
+          <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+            <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+          </select>
+        </div>
+        <div class="col-sm-3">
+          <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+            <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
+          </select>
+        </div>
+        <div class="col-sm-2" name="delete" [(ngModel)]="row.delete">
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+
+      </div>
       <hr>
 
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="feature">{{language.final_string}}</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control  form-control-sm mt3" placeholder="{{language.final_string}}" name="finaltxtstring" [(ngModel)]="finalstring" id="finalstring" [readonly]="true" >
+          <input type="text" class="form-control  form-control-sm mt3" placeholder="{{language.final_string}}" name="finaltxtstring"
+            [(ngModel)]="finalstring" id="finalstring" [readonly]="true">
         </div>
       </div>
 
@@ -83,17 +101,17 @@
                 <i class="fa fa-times fa-fw"></i>
                 <span>{{language.cancel}}</span>
               </button>
-    
+
               <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
               </button>
               <!-- only view when edit mode -->
-    
+
             </div>
           </div>
         </div>
       </div>
     </div>
-</form>
+  </form>
 </div>
