@@ -1,7 +1,7 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{page_main_title}}</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+    <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
 </div>
-<ol class="breadcrumb">
+<ol class="breadcrumb breadcrumb_mini_margin">
     <li class="breadcrumb-item">
         <a href="javascript:;" routerLink="/home">
             <i class="fa fa-home fa-fw"></i>
@@ -15,19 +15,19 @@
 </ol>
 <div class="card mb-3">
     <form>
-        <div class="card-header">
-            <i class="fa fa-file"></i> {{language.Model_Add}}</div>
+       <!--  <div class="card-header">
+            <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
         <div class="card-body">
 
             <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="feature">
+                <label class="col-sm-4 col-form-label" for="feature">
                     {{language.Model_Code}}</label>
                 <div class="col-sm-6">
                     <input type="text"  id="codeID" name= "codeName" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}" [(ngModel)]="featureBom.Code">
                 </div>
             </div>
             <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="type">{{language.Model_Type}}</label>
+                <label class="col-sm-4 col-form-label" for="type">{{language.Model_Type}}</label>
                 <div class="col-sm-6">
                     <select class="form-control  form-control-sm mt3" id="typeID" name="typeName" [(ngModel)]="featureBom.type">
                         <option>Feature</option>
@@ -37,19 +37,19 @@
             </div>
 
              <div class="form-group row clearfix">
-        <label class="col-sm-3 col-form-label" for="featurename">{{language.Model_Name}}</label>
+        <label class="col-sm-4 col-form-label" for="featurename">{{language.Model_Name}}</label>
         <div class="col-sm-6">
           <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3"  placeholder="{{language.Model_Name}}" [(ngModel)]="featureBom.Name">
         </div>
       </div>
       <div class="form-group row clearfix">
-        <label class="col-sm-3 col-form-label" for="featureDesc">{{language.Model_Desc}}</label>
+        <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Model_Desc}}</label>
         <div class="col-sm-6">
           <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Model_Desc}}" [(ngModel)]="featureBom.Desc">
         </div>
       </div>
       <div class="form-group row clearfix">
-        <label class="col-sm-3 col-form-label" for="featureItem">{{language.Model_Item}}</label>
+        <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
     
           <div class="col-sm-6 input-group">
             <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" readonly placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
@@ -59,7 +59,7 @@
           </div>
           </div>
           <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
+                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
             
                 <div class="col-sm-6 input-group">
                     <input type="text" class="form-control  form-control-sm mt3" name="itemCodeName" readonly id="featureItemCode" placeholder="{{language.Model_Ref}}"
@@ -74,7 +74,7 @@
             </div>
         
         <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="datetime_input" class="col-sm-3 col-form-label">{{language.Model_Date}}</label>
+            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
             <div class="col-sm-6 input-group">
                 <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
                     type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
@@ -87,13 +87,13 @@
             </div>
         </div>
         <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="image">{{language.Model_Image}}</label>
+                <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
                 <div class="col-sm-6">
                     <input type="file" class="form-control  form-control-sm mt3-file" id="image">
                 </div>
             </div>
         <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="Status">{{language.Model_Status}}</label>
+            <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
             <div class="col-sm-6">
                 <select class="form-control  form-control-sm mt3" name="featureTypeName" gModel [(ngModel)]="featureBom.Status" id="featureTypeNameID">
                     <option>Active</option>

@@ -1,7 +1,7 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">{{page_main_title}}</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
 </div>
-<ol class="breadcrumb">
+<ol class="breadcrumb breadcrumb_mini_margin">
   <li class="breadcrumb-item">
     <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
   </li>
@@ -14,8 +14,8 @@
 
 <div class="card mb-3">
   <form>
-    <div class="card-header">
-      <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div>
+    <!-- <div class="card-header">
+      <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
     <div class="card-body">
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="feature">{{language.code}}</label>
@@ -24,14 +24,58 @@
             id="usrID" name="code" [(ngModel)]="codekey">
         </div>
         <div class="col-sm-2">
-          <a href="javascript:;" class="btn btn-outline-primary btn-sm" title="{{language.add_row}} " (click)="onAddRow()">
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
             <i class="fa fa-plus"></i>
           </a>
         </div>
       </div>
       <hr>
       <!-- grid  -->
-      <div class="row clearfix">
+      <div class="cleafix">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive table-responsive-sm">
+              <table class="table table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
+                <thead class="thead-dark">
+                  <tr class="d-flex">
+                    <th scope="row" class="col-sm-1">#</th>
+                    <th scope="row" class="col-sm-3">{{language.string}}</th>
+                    <th scope="row" class="col-sm-3">{{language.type}}</th>
+                    <th scope="row" class="col-sm-3">{{language.operations}}</th>
+                    <th scope="row" class="col-sm-2">{{language.remove}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of itemcodetable" class="d-flex">
+                        <td class="col-sm-1">
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                        </td>
+                        <td class="col-sm-3">
+                          <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)" />
+                        </td>
+                        <td class="col-sm-3">
+                          <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+                            <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+                        <td class="col-sm-3">
+                          <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+                            <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+                        <td class="col-sm-2">
+                          <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    </table>
+            </div>
+          </div>
+      </div>
+      </div>
+      <!-- <div class="row clearfix">
         <div class="col-form-label col-sm-1">
           <b>#</b>
         </div>
@@ -72,7 +116,7 @@
           </button>
         </div>
 
-      </div>
+      </div> -->
       <hr>
 
       <div class="form-group row clearfix">
