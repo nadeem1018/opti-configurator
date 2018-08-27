@@ -27,7 +27,7 @@ Public Class SQLQuery
     End Function
 
     Function GetModelTemplateItem() As String
-        Dim psSQL As String = "SELECT ""Code"",""Name"" FROM ""@OPTM_ITMTEMP"""
+        Dim psSQL As String = "SELECT ""ItemCode"",""ItemName"" FROM ""OITM"""
         Return psSQL
     End Function
 
@@ -42,7 +42,7 @@ Public Class SQLQuery
     End Function
 
     Function GetAllData() As String
-        Dim psSQL As String = "Select TOP @ENDCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS From ""OPCONFIG_FEATUREHDR"" EXCEPT Select  top @STARTCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS  From ""OPCONFIG_FEATUREHDR"""
+        Dim psSQL As String = "Select TOP @ENDCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS,OPTM_FEATUREID From ""OPCONFIG_FEATUREHDR"" EXCEPT Select  top @STARTCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS,OPTM_FEATUREID From ""OPCONFIG_FEATUREHDR"""
         Return psSQL
     End Function
     Function GetAllSavedRecord() As String

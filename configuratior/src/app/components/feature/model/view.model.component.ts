@@ -46,6 +46,7 @@ export class ViewFeatureModelComponent implements OnInit {
     search_results(){
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+        console.log(this.search_string);
     }
 
     service_call(page_number, search){

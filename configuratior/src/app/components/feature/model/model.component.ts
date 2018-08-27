@@ -39,6 +39,8 @@ export class ModelComponent implements OnInit {
    public isUpdateButtonVisible:boolean=false;
 public isSaveButtonVisible:boolean=true;
 public isDeleteButtonVisible:boolean=true;
+
+
    
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');

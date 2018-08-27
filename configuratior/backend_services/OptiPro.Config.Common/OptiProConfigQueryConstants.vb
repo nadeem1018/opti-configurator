@@ -25,6 +25,7 @@
     Public Const OptiPro_Config_AddDataInFeatureDetail As String = "AddDataInFeatureDetail"
     Public Const OptiPro_Config_UpdateDataInFeatureDetail As String = "UpdateDataInFeatureDetail"
     Public Const OptiPro_Config_DeleteDataFromFeatureDetail As String = "DeleteDataFromFeatureDetail"
+    Public Const OptiPro_Config_GetTotalCountOfRecord As String = "GetTotalCountOfRecord"
 #End Region
 
 
