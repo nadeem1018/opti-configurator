@@ -43,7 +43,13 @@ export class LoginComponent implements OnInit {
         this.getPSURL();
       }, 1000);
     }
+  }
 
+  enter_to_sublit(event){
+    if(event.keyCode == 13){
+      console.log('in enter function ');
+      this.onConnectBtnPress();
+    }
   }
 
   //Events

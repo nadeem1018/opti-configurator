@@ -35,7 +35,7 @@
                                 </tr>
                             </thead>
                             <tbody class="lookup_table_body">
-                                <tr class="row_select " *ngFor="let row of serviceData; let i= index" >
+                                <tr class="row_select" *ngFor="let row of serviceData; let i= index" >
                                     <td *ngFor="let row_data of Object.keys(row)"  (click)="on_item_select(row[lookup_key])">
                                         <span>{{row[row_data]}}</span>
                                     </td>
