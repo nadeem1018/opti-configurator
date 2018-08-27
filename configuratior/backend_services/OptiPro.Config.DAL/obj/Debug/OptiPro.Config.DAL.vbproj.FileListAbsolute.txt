@@ -11,16 +11,16 @@ C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\De
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.dll
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.xml
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.pdb
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.pdb
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.xml
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\System.Data.Common.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.pdb
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.xml
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbprojResolveAssemblyReference.cache
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.Resources.resources
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbproj.GenerateResource.Cache
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.xml
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.pdb
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.pdb
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.xml
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\System.Data.Common.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.pdb
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.xml
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbprojResolveAssemblyReference.cache
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.Resources.resources
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbproj.GenerateResource.Cache
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.xml
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.pdb

@@ -56,8 +56,14 @@ Public Class ItemGenerationController
 
     <HttpPost, HttpGet>
  <Route("GetItemGenerationData")>
-    Public Function GetItemGenerationData(ByVal oGetItemGenerationData As ItemGenerationModel) As DataTable
+    Public Function GetItemGenerationData(ByVal oGetItemGenerationData As ItemGenerationModel) As String
         Return ItemGenerationBL.GetItemGenerationData(oGetItemGenerationData)
+    End Function
+
+    <HttpPost, HttpGet>
+<Route("GetItemCodeReference")>
+    Public Function GetItemCodeReference(ByVal oGetItemGenerationData As ItemGenerationModel) As String
+        Return ItemGenerationBL.GetItemCodeReference(oGetItemGenerationData)
     End Function
 
 End Class

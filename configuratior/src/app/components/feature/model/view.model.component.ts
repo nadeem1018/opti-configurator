@@ -99,6 +99,9 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     button_click2(id){
+        var result = confirm(this.language.DeleteConfimation);
+
+        if(result){
         // button click function in here
         this.fms.DeleteData("SFDCDB",id).subscribe(
             data => {
@@ -114,6 +117,7 @@ export class ViewFeatureModelComponent implements OnInit {
               }
             }
           )
+        }
     }
     
     // for testing purpose 

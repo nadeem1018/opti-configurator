@@ -21,9 +21,8 @@ Public Class SQLQuery
         Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
-    'Sql Query to Update the Feature Using the Feature ID 
     Function UpdateFeatures() As String
-        Dim psSQL As String = "UPDATE ""OPCONFIG_FEATUREHDR"" SET ""OPTM_DISPLAYNAME"" =@DISPLAYNAME,""OPTM_FEATUREDESC""=@FEATUREDESC,""OPTM_PRODGRPID""=@PRODUCTGROUPID,""OPTM_PHOTO""=@PHOTOPATH,""OPTM_MODIFIEDBY""=@MODIFIEDBY,""OPTM_MODIFIEDDATE""=GETDATE(), WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSQL As String = "UPDATE ""OPCONFIG_FEATUREHDR"" SET ""OPTM_DISPLAYNAME"" =@DISPLAYNAME,""OPTM_FEATUREDESC""=@FEATUREDESC,""OPTM_PHOTO""=@PHOTOPATH,""OPTM_MODIFIEDBY""=@MODIFIEDBY,""OPTM_MODIFIEDDATE""=GETDATE(),""OPTM_TYPE""=@TYPE,""OPTM_MODELTEMPLATEITEM""=@MODELTEMPLATEITEM,""OPTM_ITEMCODEGENREF""=@ITEMCODEGENREF,""OPTM_STATUS""=@STATUS,""OPTM_EFFECTIVEDATE""=@EFFECTIVEDATE WHERE ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
 
@@ -33,7 +32,7 @@ Public Class SQLQuery
     End Function
 
     Function GetItemCodeGenerationReference() As String
-        Dim psSQL As String = "select * from ""@OPTM_ITEMEXTDTL"""
+        Dim psSQL As String = "SELECT DISTINCT (""OPTM_CODE"") FROM ""OPCONFIG_ITEMCODEGENERATION"""
         Return psSQL
     End Function
 
@@ -43,22 +42,30 @@ Public Class SQLQuery
     End Function
 
     Function GetAllData() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREHDR"""
+        Dim psSQL As String = "Select TOP @ENDCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS From ""OPCONFIG_FEATUREHDR"" EXCEPT Select  top @STARTCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS  From ""OPCONFIG_FEATUREHDR"""
         Return psSQL
     End Function
     Function GetAllSavedRecord() As String
-        Dim psSQL As String = "Select top @STARTCOUNT * From ""OPCONFIG_FEATUREHDR"" EXCEPT Select top @ENDCOUNT * From ""OPCONFIG_FEATUREHDR"" "
+        Dim psSQL As String = "Select top @ENDCOUNT OPTM_FEATURECODE,OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS From ""OPCONFIG_FEATUREHDR"" EXCEPT Select top @STARTCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS From ""OPCONFIG_FEATUREHDR"" "
         Return psSQL
     End Function
-
     Function GetAllDataOnBasisOfSearchCriteria() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR ""OPTM_FEATUREDESC"" LIKE '%@SEARCHSTRING%' OR ""OPTM_MODELTEMPLATEITEM"" LIKE '%@SEARCHSTRING%' OR ""OPTM_ITEMCODEGENREF"" LIKE '%@SEARCHSTRING%' OR ""OPTM_FEATURECODE"" LIKE '%@SEARCHSTRING%'"
+        Dim psSQL As String = "Select TOP @ENDCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS From ""OPCONFIG_FEATUREHDR""  WHERE ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR  ""OPTM_FEATURECODE"" LIKE '%@SEARCHSTRING%' OR ""OPTM_TYPE"" LIKE '%@SEARCHSTRING%' OR ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR ""OPTM_STATUS"" LIKE '%@SEARCHSTRING%' EXCEPT Select  top @STARTCOUNT OPTM_FEATURECODE,OPTM_TYPE,OPTM_DISPLAYNAME,format(OPTM_EFFECTIVEDATE,'dd/MM/yyyy') AS ""OPTM_EFFECTIVEDATE"",OPTM_STATUS  From ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR  ""OPTM_FEATURECODE"" LIKE '%@SEARCHSTRING%' OR ""OPTM_TYPE"" LIKE '%@SEARCHSTRING%' OR ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR ""OPTM_STATUS"" LIKE '%@SEARCHSTRING%'"
+        Return psSQL
+    End Function
+    'Function GetAllDataOnBasisOfSearchCriteria() As String
+    '    Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_DISPLAYNAME"" LIKE '%@SEARCHSTRING%' OR ""OPTM_FEATUREDESC"" LIKE '%@SEARCHSTRING%' OR ""OPTM_MODELTEMPLATEITEM"" LIKE '%@SEARCHSTRING%' OR ""OPTM_ITEMCODEGENREF"" LIKE '%@SEARCHSTRING%' OR ""OPTM_FEATURECODE"" LIKE '%@SEARCHSTRING%'"
+    '    Return psSQL
+    'End Function
+    Function GetTotalCountOfRecord() As String
+        Dim psSQL As String = "SELECT COUNT(""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"""
         Return psSQL
     End Function
 
-
-
-
+    Function GetRecordById() As String
+        Dim psSql As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"" ,""OPTM_FEATUREDESC"",""OPTM_PHOTO"",""OPTM_TYPE"",""OPTM_MODELTEMPLATEITEM"",""OPTM_ITEMCODEGENREF"",""OPTM_STATUS"",""OPTM_EFFECTIVEDATE"" from ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID =@FEATUREID"
+        Return psSql
+    End Function
 #End Region
 
 
@@ -143,13 +150,32 @@ Public Class SQLQuery
     End Function
 
     Function GetItemGenerationData() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_ITEMCODEGENERATION"""
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.OPTM_CODE = OPICG.OPTM_CODE FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as OPICG GROUP BY OPTM_CODE"
         Return psSQL
     End Function
 
-   
+    Function GetItemGenerationDataBySearchCriteria() As String
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.""OPTM_CODE"" = ""OPICG"".""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '') AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY OPTM_CODE"
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForItemGeneration() As String
+        Dim psSQL As String = "SELECT  COUNT( DISTINCT ""OPTM_CODE"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_ITEMCODEGENERATION"""
+        Return psSQL
+    End Function
+
+
 
 #End Region
+
+#Region "Comman Base"
+    'This will get the server date & Time
+    Function GetPSURL() As String
+        Dim psSQL As String = "select ""OPTM_URL"" From ""OPTM_MGSDFLT"" where ""Default_Key"" = 'OptiAdmin'"
+        Return psSQL
+    End Function
+#End Region
+
 
 #Region "Common Query"
     'This will get the server date & Time
@@ -164,13 +190,6 @@ Public Class SQLQuery
     End Function
 #End Region
 
-#Region "Comman Base"
-    'This will get the server date & Time
-    Function GetPSURL() As String
-        Dim psSQL As String = "select ""OPTM_URL"" From ""OPTM_MGSDFLT"" where ""Default_Key"" = 'OptiAdmin'"
-        Return psSQL
-    End Function
-#End Region
 
 
 End Class

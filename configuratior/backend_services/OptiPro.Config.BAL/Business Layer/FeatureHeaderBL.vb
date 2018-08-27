@@ -35,9 +35,6 @@ Public Class FeatureHeaderBL
             Return Nothing
         End Try
     End Function
-
-
-
     'Function is called from the LoginController.js to be Executed
     Public Shared Function DeleteFeatures(ByVal objDelete As FeatureHeaderModel) As String
         Dim psStatus As String
@@ -68,7 +65,6 @@ Public Class FeatureHeaderBL
             Return Nothing
         End Try
     End Function
-
 
     Public Shared Function GetModelTemplateItem(ByVal objModelTemplateItem As FeatureHeaderModel) As DataTable
         Dim pdtModelTemplateItem As DataTable
@@ -118,8 +114,8 @@ Public Class FeatureHeaderBL
     End Function
 
 
-    Public Shared Function GetAllData(ByVal objGetAllData As FeatureHeaderModel) As DataTable
-        Dim pdtGetData As DataTable
+    Public Shared Function GetAllData(ByVal objGetAllData As FeatureHeaderModel) As String
+        Dim pdtGetData As String
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
@@ -147,6 +143,38 @@ Public Class FeatureHeaderBL
             Return Nothing
         End Try
     End Function
+
+
+    Public Shared Function GetRecordById(ByVal objCheckDuplicateFeatureCode As FeatureHeaderModel) As DataTable
+        Dim pdtCheckDuplicateFeature As DataTable
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objCheckDuplicateFeatureCode.FeatureCode)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            pdtCheckDuplicateFeature = FeatureHeaderDL.GetRecordById(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return pdtCheckDuplicateFeature
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+
+    'Public Shared Function GetDataByFeatureID(ByVal objGetAllData As FeatureHeaderModel) As DataTable
+    '    Dim pdtGetData As DataTable
+    '    Try
+    '        Dim pdtDetails As DataTable = Nothing
+    '        ' Deserialize JSON Object in DataTable Send through the Service
+    '        pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objGetAllData.GetRecord)
+    '        'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+    '        pdtGetData = FeatureHeaderDL.GetDataByFeatureID(pdtDetails, mObjCompany)
+    '        'Return the Datasetset
+    '        Return pdtGetData
+    '    Catch ex As Exception
+    '        Return Nothing
+    '    End Try
+    'End Function
 
 
 

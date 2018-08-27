@@ -6,11 +6,11 @@ C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
 C:\Dheeraj Agrawal\Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.pdb
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.xml
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.Resources.resources
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
-C:\Ashish\OptiPro Configurator\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.pdb
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.xml
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.Resources.resources
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
+C:\Tamanna\OptiPro.Config.Service\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb

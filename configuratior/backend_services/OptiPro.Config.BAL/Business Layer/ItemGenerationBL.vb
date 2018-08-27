@@ -147,16 +147,31 @@ Public Class ItemGenerationBL
     End Function
 
 
-    Public Shared Function GetItemGenerationData(ByVal objGetItemGenerationData As ItemGenerationModel) As DataTable
-        Dim pdtItemData As DataTable
+    Public Shared Function GetItemGenerationData(ByVal objGetItemGenerationData As ItemGenerationModel) As String
+        Dim psItemData As String
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objGetItemGenerationData.GetRecord)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdtItemData = ItemGenerationDL.GetItemGenerationData(pdtDetails, mObjCompany)
+            psItemData = ItemGenerationDL.GetItemGenerationData(pdtDetails, mObjCompany)
             'Return the Datasetset
-            Return pdtItemData
+            Return psItemData
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+    Public Shared Function GetItemCodeReference(ByVal objGetItemGenerationData As ItemGenerationModel) As String
+        Dim psItemData As String
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objGetItemGenerationData.DeleteItemGeneration)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psItemData = ItemGenerationDL.GetItemCodeReference(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psItemData
         Catch ex As Exception
             Return Nothing
         End Try

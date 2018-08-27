@@ -58,6 +58,7 @@ public isDeleteButtonVisible:boolean=true;
       this.isDeleteButtonVisible = true;
       this.fms.GetRecordById("SFDCDB", this.codekey).subscribe(
         data => {
+          console.log(data);
 this.featureBom.Code= data[0].OPTM_FEATURECODE
 this.featureBom.Name= data[0].OPTM_DISPLAYNAME
 this.featureBom.Desc= data[0].OPTM_FEATUREDESC
@@ -72,6 +73,7 @@ this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
   onSaveClick(){
     this.featureModel= [];
     var validateStatus = this.Validation();
+    console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:"SFDCDB",
@@ -182,6 +184,7 @@ if (validateStatus == true){
   onUpdateClick(){
     this.featureModel= [];
     var validateStatus = this.Validation();
+    console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:"SFDCDB",
@@ -218,6 +221,9 @@ if (validateStatus == true){
     }
     }
     onDeleteClick(){
+      var result = confirm(this.language.DeleteConfimation);
+if (result) {
+    //Logic to delete the 
      // button click function in here
      this.fms.DeleteData("SFDCDB",this.codekey).subscribe(
       data => {
@@ -232,5 +238,6 @@ if (validateStatus == true){
         }
       }
     )
+}
   }
 }
