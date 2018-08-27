@@ -52,7 +52,7 @@
         <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
     
           <div class="col-sm-6 input-group">
-            <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" readonly placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
+            <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
             <div class="input-group-append">
               <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)"><i class="fa fa-bars"></i></span>
             </div>
@@ -62,7 +62,7 @@
                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
             
                 <div class="col-sm-6 input-group">
-                    <input type="text" class="form-control  form-control-sm mt3" name="itemCodeName" readonly id="featureItemCode" placeholder="{{language.Model_Ref}}"
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" readonly id="featureItemCode" placeholder="{{language.Model_Ref}}"
                         [(ngModel)]="featureBom.Ref">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">

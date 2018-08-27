@@ -157,5 +157,4 @@ Public Class HanaQuery
         Return psSQL
     End Function
 #End Region
-
 End Class

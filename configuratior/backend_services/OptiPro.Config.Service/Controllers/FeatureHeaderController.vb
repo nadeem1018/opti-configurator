@@ -62,7 +62,7 @@ Public Class FeatureHeaderController
     'Controller to get all Data From Service
     <HttpPost, HttpGet>
   <Route("GetAllData")>
-    Public Function GetAllData(ByVal oGetAllData As FeatureHeaderModel) As DataTable
+    Public Function GetAllData(ByVal oGetAllData As FeatureHeaderModel) As String
         Return FeatureHeaderBL.GetAllData(oGetAllData)
     End Function
 
@@ -72,6 +72,10 @@ Public Class FeatureHeaderController
         Return FeatureHeaderBL.GetAllDataOnBasisOfSearchCriteria(oGetAllData)
     End Function
 
-
+    <HttpPost, HttpGet>
+ <Route("GetRecordById")>
+    Public Function GetRecordById(ByVal oGetAllData As FeatureHeaderModel) As DataTable
+        Return FeatureHeaderBL.GetRecordById(oGetAllData)
+    End Function
 
 End Class

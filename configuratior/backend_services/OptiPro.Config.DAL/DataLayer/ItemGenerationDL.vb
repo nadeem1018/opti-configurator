@@ -6,6 +6,7 @@ Imports System.Data
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.IO
+Imports System.Web
 Imports System.ComponentModel
 Imports System.Reflection
 Imports OptiPro.Config.Common.Utilites
@@ -503,7 +504,7 @@ Public Class ItemGenerationDL
                 tempDV(0)("OPTM_CODESTRING") = AuthRow("string")
                 tempDV(0)("OPTM_TYPE") = NullToInteger(AuthRow("stringtype"))
                 tempDV(0)("OPTM_OPERATION") = NullToInteger(AuthRow("operations"))
-                ' tempDV(0)("OPTM_MODIFIEDBY") = NullToString(AuthRow("CreatedUser"))
+                tempDV(0)("OPTM_MODIFIEDBY") = NullToString(AuthRow("CreatedUser"))
                 tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
             Else
                 pdr = tempds.Tables("OPCONFIG_ITEMCODEGENERATION").NewRow()
@@ -511,12 +512,46 @@ Public Class ItemGenerationDL
                 pdr("OPTM_CODESTRING") = AuthRow("string")
                 pdr("OPTM_TYPE") = AuthRow("stringtype")
                 pdr("OPTM_OPERATION") = AuthRow("operations")
-                ' pdr("OPTM_CREATEDBY") = AuthRow("CreatedUser")
+                pdr("OPTM_CREATEDBY") = AuthRow("CreatedUser")
                 pdr("OPTM_CREATEDATETIME") = dtServerDate
                 pdr("OPTM_LINEID") = AuthRow("rowindex")
                 tempds.Tables("OPCONFIG_ITEMCODEGENERATION").Rows.Add(pdr)
             End If
         Next
+        Dim seqlist1 As String = ""
+        tempDV = New DataView(objdsGenItem)
+        If tempDV.Count > 0 Then
+            ' Filter Data According to row 
+            tempDV.RowFilter = String.Format("IsNull(rowindex, 0) <> 0")
+        End If
+        For Each row In tempDV
+            'For Getting the Sequence Number 
+            If seqlist1 <> "" Then
+                seqlist1 = seqlist1 & "," & "'" & NullToInteger(row("rowindex")) & "'"
+            Else
+                seqlist1 = "'" & NullToInteger(row("rowindex")) & "'"
+            End If
+        Next
+        'if the Sequence is Present then Delete the Row 
+        If seqlist1.Length > 0 Then
+            Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_ITEMCODEGENERATION"))
+            deletedFGDV.RowFilter = String.Format("OPTM_LINEID Not in (" & seqlist1 & ") and IsNull(OPTM_LINEID, 0) <> 0")
+            Dim tempRow As DataRow = Nothing
+            For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+                tempRow = deletedFGDV(fgRowCnt).Row
+                tempRow.Delete()
+            Next
+        Else
+            Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_ITEMCODEGENERATION"))
+            deletedFGDV.RowFilter = String.Format("IsNull(OPTM_LINEID, 0) <> 0")
+            Dim tempRow As DataRow = Nothing
+            For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+                tempRow = deletedFGDV(fgRowCnt).Row
+                tempRow.Delete()
+            Next
+
+
+        End If
     End Sub
     'This method will help to Update the Data set into the Database
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
@@ -535,7 +570,7 @@ Public Class ItemGenerationDL
 
 
 
-    Public Shared Function GetItemGenerationData(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+    Public Shared Function GetItemGenerationData(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
 
         Try
             Dim psCompanyDBId As String = String.Empty
@@ -554,7 +589,129 @@ Public Class ItemGenerationDL
             ' Get the Query on the basis of objIQuery
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemGenerationData)
             pdsItemData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
-            Return pdsItemData.Tables(0)
+
+            'Create a Datatable 
+            Dim objdtItemGenerationData As New DataTable
+
+            'Add Column to the Datatable 
+            objdtItemGenerationData.Columns.Add("Code", GetType(String))
+            'Add new Column to Datatble 
+            objdtItemGenerationData.Columns.Add("FinalString", GetType(String))
+            'Add Column 
+            objdtItemGenerationData.Columns.Add("Action", GetType(String))
+
+            'Loop from the Complete Data Coming from the Query 
+            For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
+                'Variable for the Final String 
+                Dim psFinalString As String = String.Empty
+                'Get the ItemCode 
+                Dim itemCode As String = pdsItemData.Tables(0).Rows(irow)("OPTM_CODE")
+                'Loop to MAke Fina String for a PArticular Item Code 
+                For irowindex As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
+                    If itemCode = pdsItemData.Tables(0).Rows(irowindex)("OPTM_CODE") Then
+                        'Final String 
+                        psFinalString = psFinalString + pdsItemData.Tables(0).Rows(irowindex)("OPTM_CODESTRING")
+                    End If
+                Next
+                'Add row to the Datatable 
+                objdtItemGenerationData.Rows.Add(itemCode, psFinalString, itemCode)
+            Next
+            'Create a Datta View 
+            Dim dvItemGen As DataView
+            dvItemGen = New DataView(objdtItemGenerationData)
+            'Sort the TAble and Find only Distinct Value 
+            objdtItemGenerationData = dvItemGen.ToTable(True, "Code", "FinalString", "Action")
+            'Add Column to the Datatable 
+            objdtItemGenerationData.Columns.Add("#", GetType(String))
+            Dim Counter As Integer = 1
+            'Loop to Insert Value to Action and Sequence 
+            For irow As Integer = 0 To objdtItemGenerationData.Rows.Count - 1
+                objdtItemGenerationData.Rows(irow)("#") = Counter
+                'objdtItemGenerationData.Rows(irow)("Action") = Counter
+                Counter = Counter + 1
+            Next
+            'Create a Datatable 
+            Dim objdtOrderedData As New DataTable
+            'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("#", GetType(Integer))
+            'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Code", GetType(String))
+            'Add new Column to Datatble 
+            objdtOrderedData.Columns.Add("FinalString", GetType(String))
+            'Add Column 
+            objdtOrderedData.Columns.Add("Action", GetType(String))
+            For irow As Integer = 0 To objdtItemGenerationData.Rows.Count - 1
+                objdtOrderedData.Rows.Add(objdtItemGenerationData.Rows(irow)("#"), objdtItemGenerationData.Rows(irow)("Code"), objdtItemGenerationData.Rows(irow)("FinalString"), objdtItemGenerationData.Rows(irow)("Action"))
+            Next
+
+            Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
+            serializer.MaxJsonLength = Integer.MaxValue
+            Dim rows As New Collection
+            Dim final_array As New Collection
+            Dim row As Dictionary(Of String, Object) = Nothing
+
+            For Each dr As DataRow In objdtOrderedData.Rows
+                Dim temp_array As New Collection
+                row = New Dictionary(Of String, Object)()
+                For Each dc As DataColumn In objdtOrderedData.Columns
+                    temp_array.Add(dr.Item(dc))
+                Next
+                rows.Add(temp_array)
+            Next
+
+            final_array.Add(rows)
+            final_array.Add(50)
+            Return serializer.Serialize(final_array)
+            ' Return objdtOrderedData
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+    Public Shared Function GetItemCodeReference(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsItemData As DataSet = Nothing
+            Dim psItemDataRowCount As String = String.Empty
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psItemCode As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name  
+            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemCode
+
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemCodeReference)
+            pdsItemData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+
+            If (pdsItemData.Tables(0).Rows.Count > 0) Then
+                If (pdsItemData.Tables(0).Rows(0).Item("ROWCOUNT") = 0) Then
+                    psItemDataRowCount = "False"
+                Else
+                    psItemDataRowCount = "True"
+                End If
+            Else
+                psItemDataRowCount = "False"
+            End If
+
+            Return psItemDataRowCount
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try

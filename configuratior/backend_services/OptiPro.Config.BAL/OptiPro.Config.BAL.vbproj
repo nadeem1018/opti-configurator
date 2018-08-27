@@ -71,8 +71,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business Layer\Common.vb" />
     <Compile Include="Business Layer\BaseBL.vb" />
+    <Compile Include="Business Layer\Common.vb" />
     <Compile Include="Business Layer\ItemGenerationBL.vb" />
     <Compile Include="Business Layer\FeatureHeaderBL.vb" />
     <Compile Include="Business Layer\FeatureMasterDetailBL.vb" />

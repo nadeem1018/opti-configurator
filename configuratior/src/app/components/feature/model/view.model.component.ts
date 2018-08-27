@@ -46,6 +46,7 @@ export class ViewFeatureModelComponent implements OnInit {
     search_results(){
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+        console.log(this.search_string);
     }
 
     service_call(page_number, search){
@@ -87,6 +88,9 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     button_click2(id){
+        var result = confirm(this.language.DeleteConfimation);
+
+        if(result){
         // button click function in here
         this.fms.DeleteData("SFDCDB",id).subscribe(
             data => {
@@ -102,6 +106,7 @@ export class ViewFeatureModelComponent implements OnInit {
               }
             }
           )
+        }
     }
     
     // for testing purpose 

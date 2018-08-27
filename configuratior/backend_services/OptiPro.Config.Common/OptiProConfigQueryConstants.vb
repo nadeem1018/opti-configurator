@@ -11,6 +11,7 @@
     Public Const OptiPro_Config_GetAllData As String = "GetAllData"
     Public Const OptiPro_Config_GetAllDataOnBasisOfSearchCriteria As String = "GetAllDataOnBasisOfSearchCriteria"
     Public Const OptiPro_Config_GetAllSavedRecordOnBasisOfSearchCriteria As String = "GetAllSavedRecordOnBasisOfSearchCriteria"
+    Public Const OptiPro_Config_GetRecordById As String = "GetRecordById"
 
 
 #End Region
@@ -24,7 +25,9 @@
     Public Const OptiPro_Config_AddDataInFeatureDetail As String = "AddDataInFeatureDetail"
     Public Const OptiPro_Config_UpdateDataInFeatureDetail As String = "UpdateDataInFeatureDetail"
     Public Const OptiPro_Config_DeleteDataFromFeatureDetail As String = "DeleteDataFromFeatureDetail"
+    Public Const OptiPro_Config_GetTotalCountOfRecord As String = "GetTotalCountOfRecord"
 #End Region
+
 
 #Region "Item Generation"
     Public Const OptiPro_Config_AddItemGeneration As String = "AddItemGeneration"
@@ -33,13 +36,13 @@
     Public Const OptiPro_Config_UpdateDataofGeneratedItem As String = "UpdateDataofGeneratedItem"
     Public Const OptiPro_Config_GetDataByItemCode As String = "GetDataByItemCode"
     Public Const OptiPro_Config_GetItemGenerationData As String = "GetItemGenerationData"
+    Public Const OptiPro_Config_GetItemCodeReference As String = "GetItemCodeReference"
 #End Region
 
 #Region "Common"
     Public Const OptiPro_Config_GetServerDate As String = "GetServerDate"
     Public Const OptiPro_Config_GetTableStructure As String = "GetTableStructure"
 #End Region
-
 
 #Region "Base Comman"
     Public Const OptiPro_Config_GetPSURL As String = "GetPSURL"
