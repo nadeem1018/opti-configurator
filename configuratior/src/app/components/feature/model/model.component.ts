@@ -155,25 +155,25 @@ if (validateStatus == true){
   //validation of inputs
   Validation () {
     if(this.featureBom.Code == undefined || this.featureBom.Code == ''){
-      this.toastr.error('', 'Code cannot be blank', this.commonData.toast_config);
+      this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
       return false;
     }
     
     if(this.featureBom.type == undefined || this.featureBom.type == ''){
-      this.toastr.error('', 'Type cannot be blank', this.commonData.toast_config);
+      this.toastr.error('',this.language.TypeBlank, this.commonData.toast_config);
       return false;
     }
     if(this.featureBom.Name == undefined || this.featureBom.Name== ''){
-      this.toastr.error('', 'Model/Feature Name cannot be blank', this.commonData.toast_config);
+      this.toastr.error('',this.language.ModelName, this.commonData.toast_config);
       return false;
     }
     if(this.featureBom.type == "Model"){
       if(this.featureBom.ItemName == undefined || this.featureBom.ItemName == ''){
-      this.toastr.error('', 'Model Template Item cannot be blank', this.commonData.toast_config);
+      this.toastr.error('', this.language.ModelItem,this.commonData.toast_config);
       return false;
       }
       if(this.featureBom.Ref == undefined || this.featureBom.Ref == ''){
-        this.toastr.error('', 'Item Code Generation Ref cannot be blank', this.commonData.toast_config);
+        this.toastr.error('',this.language.ModeRef,this.commonData.toast_config);
         return false;
         }
     }

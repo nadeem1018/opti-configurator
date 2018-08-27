@@ -68,7 +68,10 @@
     "Model_Ref":"Item Code Generation Ref",
     "Model_Status": "Status",
     "Model_Add":"Add Feature/ Model",
-
+    "TypeBlank": "Type cannot be blank",
+    "ModelName":"Model/Feature Name cannot be blank",
+    "ModelItem":"Model Template Item cannot be blank",
+    "ModeRef":"Item Code Generation Ref cannot be blank",
     "UserNotActive":"User is not active",
     "InvalidCredentials":"Username or password not valid",
     "isUserPermitted":"You Don't have Permission to Access this Product",
