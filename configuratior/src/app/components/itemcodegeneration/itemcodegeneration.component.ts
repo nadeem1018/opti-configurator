@@ -197,7 +197,11 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onDeleteClick() {
-    this.validateRowData("Delete")
+    var result = confirm(this.language.DeleteConfimation);
+    if (result) {
+      this.validateRowData("Delete")
+    }
+  
   }
 
   onStrBlur(selectedvalue, rowindex) {
