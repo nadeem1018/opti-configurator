@@ -245,4 +245,15 @@ if (result) {
     )
 }
   }
+
+  getLookupValue($event){
+    if (this.lookupfor != "") {
+      if (this.lookupfor == "model_template") {
+       this.featureBom.ItemName = $event;
+      }
+      if (this.lookupfor == "model_item_generation") {
+       this.featureBom.Ref = $event;
+      }
+    }
+  }
 }
