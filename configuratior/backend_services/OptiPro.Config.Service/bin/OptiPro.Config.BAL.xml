@@ -6,28 +6,28 @@ OptiPro.Config.BAL
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.BAL.FeatureMasterDetailBL.GetFeatureDetail(OptiPro.Config.Entity.FeatureMasterDetailModel)">
+<member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  This Function is Used to get the Details of the Features According to the Features Seleced From the Lookup 
  </summary>
 	<param name="objAddFeature"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.BAL.FeatureMasterDetailBL.GetItemList(OptiPro.Config.Entity.FeatureMasterDetailModel)">
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetItemList(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  function to get the List of Item frm the Item master
  </summary>
 	<param name="objAddFeature"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.BAL.FeatureMasterDetailBL.GetFeatureListExceptSelectedFeature(OptiPro.Config.Entity.FeatureMasterDetailModel)">
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetFeatureListExceptSelectedFeature(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  buisness Layer to Get all the Feature Except the Selected Feature in the Header
  </summary>
 	<param name="objAddFeature"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.BAL.FeatureMasterDetailBL.UpdateDataInFeatureDetail(OptiPro.Config.Entity.FeatureMasterDetailModel)">
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.UpdateDataInFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  Buisness Layer to Update the Data in TAble
  Table :OPCONFIG_FEATUREDTL
@@ -35,7 +35,7 @@ OptiPro.Config.BAL
 	<param name="oUpdateFeatureMasterDetail"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.BAL.FeatureMasterDetailBL.DeleteDataFromFeatureDetail(OptiPro.Config.Entity.FeatureMasterDetailModel)">
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.DeleteDataFromFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  Buisness Layer to Delete the Data 
  Table:OPCONFIG_FEATUREDTL
