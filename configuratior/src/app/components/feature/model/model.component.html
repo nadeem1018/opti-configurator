@@ -101,7 +101,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group row clearfix">
+        <!-- <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
             <div class="col-sm-6">
                 <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel [(ngModel)]="featureBom.Accessory" id="featureAccessory">
@@ -109,6 +109,19 @@
                     <option>N</option>
                 </select>
             </div>
+        </div> -->
+        <div class="form-group row clearfix">
+            <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+         <div class="col-sm-6 mt-3px">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory">
+                <label class="custom-control-label" for="yes">Yes</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory">
+                <label class="custom-control-label" for="no">No</label>
+            </div>
+         </div>
         </div>
 
         </div>
@@ -144,4 +157,4 @@
         </form>
         </div>
         
-        <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'></app-lookup>
+        <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'  (lookupvalue)="getLookupValue($event)"></app-lookup>

@@ -8,13 +8,14 @@ import { CommonService } from '../../../services/common.service';
   styleUrls: ['./lookup.component.scss']
 })
 export class LookupComponent implements OnInit {
-
+  // input and output emitters
   @Input() serviceData: any; 
   @Input() lookupfor: any; 
-  @Output() messageEvent = new EventEmitter<string>();
+  @Input() fillLookupArray: any;
+  @Output() lookupvalue = new EventEmitter();
+
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
-  @Input() fillLookupArray: any;
   constructor(private common_service: CommonService) { }
   
 
@@ -32,6 +33,7 @@ export class LookupComponent implements OnInit {
   public table_head = [];
   public lookup_key = "";
 
+  // intital Javascript object class 
   Object = Object;
 
   ngOnInit() {  }
@@ -44,8 +46,7 @@ export class LookupComponent implements OnInit {
     this.item_code_columns = [];
     this.model_template_item_columns = [];
     this.fill_input_id = ''; 
-
-    console.log("ngOnChanges lookup - " + this.lookupfor);
+    
     this.dataBind = [];
     //this.test_model();
     if (this.lookupfor != "") {
@@ -58,10 +59,12 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  log(val) { console.log(val); }
+  log(val) { 
+    console.log(val); 
+  }
 
   on_item_select(lookup_key){
-     (<HTMLInputElement>document.getElementById(this.fill_input_id)).value = lookup_key;
+    this.lookupvalue.emit(lookup_key);
   }
 
   model_template_lookup() {
@@ -72,7 +75,6 @@ export class LookupComponent implements OnInit {
     this.table_head = ['ItemCode', 'ItemName'];
     this.lookup_key = 'ItemName';
    
-    console.log(this.serviceData)
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -84,53 +86,10 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureItemCode';
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
-   
-    console.log(this.serviceData)
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-  }
-
-
- /*  model_template_lookup(){
-    this.popup_title = this.language.model_template;
-    this.click_operation  = 'model_template';
-    this.model_template_item_columns = ['ItemCode', 'ItemName'];
-    this.showLoader = true;
-    this.dataBind = [];
-    // service call 
-    // this.service_Data = this.common_service.templatelookupData;
-    console.log(this.serviceData);
-    
-    this.dataBind = JSON.stringify(this.serviceData, this.model_template_item_columns);
-    this.dataBind = JSON.parse(this.dataBind);
-    console.log( this.dataBind);
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-      } */
-
- /*  model_item_generation_lookup(){
-    this.click_operation  = 'model_item_generation';
-    this.model_template_item_columns = ['Code'];
-    this.showLoader = true;
-    this.dataBind = [];
-
   
-    // this.service_Data = this.common_service.templatelookupData;
-    console.log(this.serviceData);
-    
-    this.dataBind = JSON.stringify(this.serviceData, this.model_template_item_columns);
-    this.dataBind = JSON.parse(this.dataBind);
-    console.log( this.dataBind);
     this.showLoader = false;
     this.LookupDataLoaded = true;
-  } */
-
-  onRowBtnClick(evt, rowIndex) {  
-    
-    console.log('in row select ');
-    this.common_service.ShareData({ value: this.serviceData[rowIndex], from: this.click_operation });
-   
-   
   }
+
 
 }
