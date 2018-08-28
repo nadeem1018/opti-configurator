@@ -73,7 +73,7 @@ Public Class HanaQuery
 #End Region
 
 
-#Region "Feature Detail"
+#Region "Feature BOM"
 
     Function GetFeatureList() As String
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"""
@@ -85,8 +85,8 @@ Public Class HanaQuery
         Return psSQL
     End Function
 
-    Function GetItemList() As String
-        Dim psSQL As String = "SELECT ""ItemCode"",""ItemName"" from ""OITM"""
+    Function GetItemForFeatureBOM() As String
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"""
         Return psSQL
     End Function
 

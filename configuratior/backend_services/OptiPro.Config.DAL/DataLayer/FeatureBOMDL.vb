@@ -111,7 +111,7 @@ Public Class FeatureBOMDL
     ''' <param name="objCmpnyInstance"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function GetItemList(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+    Public Shared Function GetItemForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
 
         Try
             Dim psCompanyDBId As String = String.Empty
@@ -128,7 +128,7 @@ Public Class FeatureBOMDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
             ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemList)
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemForFeatureBOM)
             pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
             Return pdsFeatureList.Tables(0)
         Catch ex As Exception
