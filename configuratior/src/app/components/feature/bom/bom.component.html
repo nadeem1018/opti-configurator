@@ -1,0 +1,142 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+</div>
+<ol class="breadcrumb breadcrumb_mini_margin">
+  <li class="breadcrumb-item">
+      <a href="javascript:;" routerLink="/home">
+          <i class="fa fa-home fa-fw"></i>
+          <span>{{language.dashboard}}</span>
+      </a>
+  </li>
+  <li class="breadcrumb-item ">
+      <a routerLink="{{view_route_link}}" href="javascript:;">{{language.Bom_title}}</a>
+  </li>
+  <li class="breadcrumb-item active">{{language.add}}</li>
+</ol>
+<div class="card mb-3">
+  <form>
+     <!--  <div class="card-header">
+          <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
+      <div class="card-body">
+          <div class="form-group row clearfix">
+              <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
+          
+              <div class="col-sm-6 input-group">
+                  <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="featureName"  id="featureid" placeholder="{{language.Bom_FeatureId}}"
+                      >
+                  <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
+                          <i class="fa fa-bars"></i>
+                      </span>
+                  </div>
+              </div>
+          
+          </div>
+          <div class="form-group row clearfix">
+              <label class="col-sm-4 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+              <div class="col-sm-6">
+                <input type="text" name="displayName" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}">
+              </div>
+            </div>
+
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
+                <div class="col-sm-6">
+                  <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}">
+                </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
+                  <div class="col-sm-6">
+                      <input type="file" class="form-control  form-control-sm mt3-file" id="image">
+                  </div>
+              </div>
+
+              <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+                  <div class="col-sm-6">
+                      <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel  id="featureAccessory">
+                          <option>Y</option>
+                          <option>N</option>
+                      </select>
+                  </div>
+              </div>
+               <hr> 
+              <div class="col-sm-12">
+                  <div class="table-responsive table-responsive-sm">
+                    <table class="table table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
+                      <thead class="thead-dark">
+                        <tr class="d-flex">
+                          <th scope="row" class="col-sm-1">#</th>
+                          <th scope="row" class="col-sm-3">{{language.Model_Type}}</th>
+                          <th scope="row" class="col-sm-3">{{language.Bom_FeatureValue}}</th>
+                          <th scope="row" class="col-sm-3">{{language.Bom_Displayname}}</th>
+                          <th scope="row" class="col-sm-2">{{language.Bom_Qty}}</th>
+                          <th scope="row" class="col-sm-2">{{language.Bom_Default}}</th>
+                          <th scope="row" class="col-sm-2">{{language.Bom_Remarks}}</th>
+                          <th scope="row" class="col-sm-2">{{language.Bom_Attach}}</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let row of itemcodetable" class="d-flex">
+                              <td class="col-sm-1">
+                                <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                              </td>
+                              <td class="col-sm-3">
+                                <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)" />
+                              </td>
+                              <td class="col-sm-3">
+                                <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+                                  <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                                </select>
+                              </td>
+                              <td class="col-sm-3">
+                                <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+                                  <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
+                                </select>
+                              </td>
+                              <td class="col-sm-2">
+                                <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                                  <i class="fa fa-times"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                          </table>
+                  </div>
+                </div>    
+      </div>
+      <div class="card-footer small text-muted">
+          <div class="footer-buttons">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="pull-left">
+                          <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                              <i class="fa fa-save"></i> {{language.save}}</button>
+                          <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
+                              <i class="fa fa-save"></i> {{language.update}}</button>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="pull-right">
+                          <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                              <i class="fa fa-times fa-fw"></i>
+                              <span>{{language.cancel}}</span>
+                          </button>
+      
+                          <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
+                              <i class="fa fa-trash fa-fw"></i>
+                              <span>{{language.delete}}</span>
+                          </button>
+                          <!-- only view when edit mode -->
+      
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>
+  <hr>
+   

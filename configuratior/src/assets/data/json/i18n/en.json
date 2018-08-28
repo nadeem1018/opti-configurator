@@ -81,6 +81,16 @@
     "PasswordRequired":"Password required",
     "UserNameRequired":"Username required",
     "CompanyRequired":"Select Company",
-    "DeleteConfimation":"Do you want to delete?"
+    "DeleteConfimation":"Do you want to delete?",
+
+    "Bom_FeatureId":"Feature ID",
+    "Bom_Displayname":"Display Name",
+    "Bom_FeatureDesc":"Feature Description",
+    "Bom_FeatureValue":"Feature/Item/Value",
+    "Bom_Qty":"Quantity",
+    "Bom_Default":"Default",
+    "Bom_Remarks":"Remarks",
+    "Bom_Attach":"Attachment",
+    "Bom_title":"Feature BOM"
     
 }
