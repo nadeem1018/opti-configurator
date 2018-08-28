@@ -69,6 +69,7 @@ this.featureBom.type=data[0].OPTM_TYPE
 this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
+this.featureBom.Accessory=data[0].OPTM_ACCESSORY
         })
     }
   }
@@ -88,7 +89,8 @@ if (validateStatus == true){
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
       PicturePath: "www",
-      CreatedUser: "ash"
+      CreatedUser: "ash",
+      Accessory:this.featureBom.Accessory
     })
     
     this.fms.saveData(this.featureModel).subscribe(
@@ -200,7 +202,8 @@ if (validateStatus == true){
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
       PicturePath: "www",
-      CreatedUser: "ash"
+      CreatedUser: "ash",
+      Accessory:this.featureBom.Accessory
     })
     
     this.fms.updateData(this.featureModel).subscribe(

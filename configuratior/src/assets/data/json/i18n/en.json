@@ -68,6 +68,7 @@
     "Model_Ref":"Item Code Generation Ref",
     "Model_Status": "Status",
     "Model_Add":"Add Feature/ Model",
+    "Model_Accessory":"Accessory",
     "TypeBlank": "Type cannot be blank",
     "ModelName":"Model/Feature Name cannot be blank",
     "ModelItem":"Model Template Item cannot be blank",

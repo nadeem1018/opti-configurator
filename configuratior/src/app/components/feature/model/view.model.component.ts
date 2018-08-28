@@ -46,11 +46,10 @@ export class ViewFeatureModelComponent implements OnInit {
     search_results(){
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
-        console.log(this.search_string);
     }
 
     service_call(page_number, search){
-       var dataset =  this.fms.getAllViewData("SFDCDB").subscribe(
+       var dataset =  this.fms.getAllViewData("SFDCDB",search,page_number,this.record_per_page).subscribe(
         data => {
             // console.log(data);
             // console.log(JSON.parse(data));
