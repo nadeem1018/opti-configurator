@@ -34,6 +34,7 @@ import { ModelComponent } from './components/feature/model/model.component';
 import { ItemcodegenerationComponent } from './components/itemcodegeneration/itemcodegeneration.component';
 import { ViewFeatureModelComponent } from "./components/feature/model/view.model.component";
 import { ViewItemCodeGenerationComponent } from "./components/itemcodegeneration/viewitemcodegeneration.component";
+import { ModelbomComponent } from './components/modelbom/modelbom.component';
 
 // routing & navigation
 const routes: Routes = [
@@ -46,6 +47,9 @@ const routes: Routes = [
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent },
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
+  { path: 'modelbom/add', component: ModelbomComponent },
+  { path: 'modelbom/edit/:id', component: ModelbomComponent },
+  { path: 'modelbom/view', component: ViewItemCodeGenerationComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
@@ -63,7 +67,8 @@ const routes: Routes = [
     ModelComponent,
     ItemcodegenerationComponent,
     ViewFeatureModelComponent,
-    ViewItemCodeGenerationComponent
+    ViewItemCodeGenerationComponent,
+    ModelbomComponent
   ],
   imports: [
     BrowserModule,
