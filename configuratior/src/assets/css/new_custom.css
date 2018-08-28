@@ -179,7 +179,7 @@ mb-3, .my-3 {
 }
 
 .table-sm td, .table-sm th {
-  padding: 0.17rem !important;
+  padding: 0.1rem 0.5rem !important;
 }
 
 .form-control-sm, .input-group-sm>.form-control, .input-group-sm>.input-group-append>.btn, .input-group-sm>.input-group-append>.input-group-text, .input-group-sm>.input-group-prepend>.btn, .input-group-sm>.input-group-prepend>.input-group-text {
@@ -229,8 +229,16 @@ li.breadcrumb-item a, li.breadcrumb-item {
   margin: .1rem 0 !important;
 }
 
-.mt-3px{
-  margin-top:3px;
+.mt-3px {
+  margin-top: 3px;
+}
+
+.pagination, .pagination-sm {
+  margin-bottom: 1px !important;
+}
+
+.pagination-sm .page-link {
+  padding: .1rem .5rem !important;
 }
 
 /* custom css for page width magin and padding - end */
