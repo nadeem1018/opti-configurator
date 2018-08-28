@@ -91,6 +91,7 @@
     "Bom_Default":"Default",
     "Bom_Remarks":"Remarks",
     "Bom_Attach":"Attachment",
-    "Bom_title":"Feature BOM"
+    "Bom_title":"Feature BOM",
+    "import" : "Import"
     
 }

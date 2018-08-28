@@ -48,7 +48,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        var dataset = this.itemgen.viewItemGenerationData(this.companyName).subscribe(
+        var dataset = this.itemgen.viewItemGenerationData(this.companyName,search,page_number,this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
                 console.log(dataset)
@@ -87,36 +87,41 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         // button click function in here
     }
     button_click2(id) {
-        this.GetItemData = []
-        this.GetItemData.push({
-            CompanyDBId: this.companyName,
-            ItemCode: id
+        var result = confirm(this.language.DeleteConfimation);
+        if (result) {
+            this.GetItemData = []
+            this.GetItemData.push({
+                CompanyDBId: this.companyName,
+                ItemCode: id
+    
+            })
+            this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+                data => {
+                    if (data == "True") {
+                        this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
+                        return false;
+                    }
+                    else {
+                        this.itemgen.DeleteData(this.GetItemData).subscribe(
+                            data => {
+                                if (data === "True") {
+                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                    this.service_call(this.current_page, this.search_string);
+                                    this.router.navigateByUrl('item-code-generation/view');
+                                    return;
+                                }
+                                else {
+                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                    return;
+                                }
+                            }
+                        )
+                    }
+                }
+            )
 
-        })
-        this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-            data => {
-                if (data == "True") {
-                    this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
-                    return false;
-                }
-                else {
-                    this.itemgen.DeleteData(this.GetItemData).subscribe(
-                        data => {
-                            if (data === "True") {
-                                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                this.service_call(this.current_page, this.search_string);
-                                this.router.navigateByUrl('item-code-generation/view');
-                                return;
-                            }
-                            else {
-                                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                return;
-                            }
-                        }
-                    )
-                }
-            }
-        )
+        }
+       
 
 
     }
