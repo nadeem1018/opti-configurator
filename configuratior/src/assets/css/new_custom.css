@@ -209,4 +209,24 @@ li.breadcrumb-item a, li.breadcrumb-item {
   font-size: 0.8rem;
 }
 
+.modal-header {
+  padding: 0.2rem 1rem !important;
+}
+
+.modal-footer {
+  padding: 0.2rem 1rem !important;
+}
+
+.modal-body {
+  padding: 0.2rem 1rem !important;
+}
+
+.dropdown-item {
+  padding: .15rem .5rem !important;
+}
+
+.dropdown-divider {
+  margin: .1rem 0 !important;
+}
+
 /* custom css for page width magin and padding - end */
