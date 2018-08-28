@@ -25,7 +25,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public ViewData: any = [];
-    show_table_footer: boolean = true;
+    show_table_footer: boolean = false;
     public GetItemData: any = [];
 
 
@@ -65,10 +65,6 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 if (search != undefined) {
                     this.search_string = search;
                 }
-
-                //    console.log("current_page " + this.current_page);
-                //    console.log("record_per_page " + this.record_per_page);
-                //    console.log("search " + this.search_string);
             });
     }
 

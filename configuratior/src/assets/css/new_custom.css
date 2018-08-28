@@ -71,9 +71,9 @@ a.page-link.active {
 }
 
 .btn.btn-xs {
-  padding: 8px;
+  padding: 0.1rem 0.4rem;
   font-size: 0.8rem;
-  line-height: 1.3;
+  line-height: 0.1;
   border-radius: .25rem;
   transition: color .15s;
   margin-top: 3px;
@@ -88,23 +88,145 @@ a.page-link.active {
   color: white;
 }
 
-
 /* For table in lookup */
 
-  
-  table.lookup_table{
-   height:500px;              
-   display: -moz-groupbox;    
-  }
+table.lookup_table {
+  height: 500px;
+  display: -moz-groupbox;
+}
 
-  tbody.lookup_table_body tr{
-    width: 100%;
-    display: inline-table;
-    table-layout: fixed;
-  }
+tbody.lookup_table_body tr {
+  width: 100%;
+  display: inline-table;
+  table-layout: fixed;
+}
 
-  tbody.lookup_table_body{
-    overflow-y: scroll;      
-    height: 470px;            
-    position: absolute;
-  }
+tbody.lookup_table_body {
+  overflow-y: scroll;
+  height: 470px;
+  position: absolute;
+}
+
+/* custom css for page width magin and padding - start */
+
+.sidebar_top_margin-3 {
+  margin-top: 2rem;
+}
+
+.container-top-margin-2 {
+  margin-top: 2rem;
+}
+
+.header_input_field {
+  height: 30px;
+}
+
+.search_button {
+  height: 30px;
+  line-height: 10px !important;
+}
+
+.navbar-custom-sm {
+  height: 40px;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.first_menu_padding {
+  padding-top: 1rem;
+}
+
+.sidebar .nav-item .nav-link {
+  padding: 0.4rem !important;
+}
+
+mb-3, .my-3 {
+  margin-bottom: .4rem !important;
+}
+
+.smaller_font {
+  font-size: 1rem !important;
+}
+
+.breadcrumb_mini_margin {
+  padding: .20rem .5rem !important;
+}
+
+.card-body {
+  padding: 0.5rem !important;
+}
+
+.card-header {
+  padding: .20rem 0.4rem !important;
+}
+
+.btn-group-sm>.btn, .btn-sm {
+  padding: .3rem 0.4rem !important;
+  font-size: .875rem !important;
+  line-height: 1.0 !important;
+  border-radius: .2rem !important;
+}
+
+.col-form-label {
+  padding-top: calc(0.6rem + 1px) !important;
+  padding-bottom: calc(.45rem + 1px) !important;
+  margin-bottom: 0;
+  font-size: 0.9rem !important;
+  line-height: 1.0 !important;
+  font-weight: 500;
+}
+
+.table-sm td, .table-sm th {
+  padding: 0.17rem !important;
+}
+
+.form-control-sm, .input-group-sm>.form-control, .input-group-sm>.input-group-append>.btn, .input-group-sm>.input-group-append>.input-group-text, .input-group-sm>.input-group-prepend>.btn, .input-group-sm>.input-group-prepend>.input-group-text {
+  padding: .20rem .5rem !important;
+  font-size: .875rem !important;
+  line-height: 1.0 !important;
+  border-radius: .2rem !important;
+}
+
+.form-group {
+  margin-bottom: 0.5rem !important;
+}
+
+.input-group-sm>.input-group-append>select.btn:not([size]):not([multiple]), .input-group-sm>.input-group-append>select.input-group-text:not([size]):not([multiple]), .input-group-sm>.input-group-prepend>select.btn:not([size]):not([multiple]), .input-group-sm>.input-group-prepend>select.input-group-text:not([size]):not([multiple]), .input-group-sm>select.form-control:not([size]):not([multiple]), select.form-control-sm:not([size]):not([multiple]) {
+  height: calc(1.7rem + 1px) !important;
+}
+
+.input-group-text {
+  margin-top: 0.2rem;
+}
+
+.card-footer {
+  padding: .5rem 1.0rem !important;
+}
+
+li.breadcrumb-item a, li.breadcrumb-item {
+  font-size: 0.8rem;
+}
+
+.modal-header {
+  padding: 0.2rem 1rem !important;
+}
+
+.modal-footer {
+  padding: 0.2rem 1rem !important;
+}
+
+.modal-body {
+  padding: 0.2rem 1rem !important;
+}
+
+.dropdown-item {
+  padding: .15rem .5rem !important;
+}
+
+.dropdown-divider {
+  margin: .1rem 0 !important;
+}
+
+/* custom css for page width magin and padding - end */

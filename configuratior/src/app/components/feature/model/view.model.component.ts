@@ -31,7 +31,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public dataBind:any="";
     language = JSON.parse(sessionStorage.getItem('current_lang')); 
     constructor(private fms: FeaturemodelService,private router: Router,private toastr: ToastrService){}
-    show_table_footer:boolean = true; 
+    show_table_footer:boolean = false; 
     
 
     ngOnInit() {
@@ -51,15 +51,8 @@ export class ViewFeatureModelComponent implements OnInit {
     service_call(page_number, search){
        var dataset =  this.fms.getAllViewData("SFDCDB",search,page_number,this.record_per_page).subscribe(
         data => {
-            // console.log(data);
-            // console.log(JSON.parse(data));
-            
            dataset = JSON.parse(data);
-           
-          
-       console.log( dataset);
        this.rows = dataset[0];
-       console.log("rows" + this.rows);
        let pages:any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
        if (parseInt(pages) ==0 || parseInt(pages) < 0){
            pages = 1;
@@ -72,12 +65,7 @@ export class ViewFeatureModelComponent implements OnInit {
        if (search != undefined) {
            this.search_string = search;
        }
-
-       console.log("current_page " + this.current_page);
-       console.log("record_per_page " + this.record_per_page);
-       console.log("search " + this.search_string);
         });
-     
     }
 
     // action button values 
