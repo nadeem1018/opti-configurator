@@ -11,18 +11,26 @@ Imports System.Reflection
 Imports OptiPro.Config.Common.Utilites
 
 
-Public Class FeatureMasterDetailDL
+Public Class FeatureBOMDL
 
 
-    'Function to Add Features to Feature Header 
+    'Function to get the Feature for both the Look 
     Public Shared Function GetFeatureList(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
 
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
+            Dim psFeatureId As String = String.Empty
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            If objDataTable.Columns.Contains("FeatureID") Then
+                '  get the FeatureID,
+                psFeatureId = NullToString(objDataTable.Rows(0)("FeatureID"))
+            Else
+                'if there is no Column then we will be Cnsider it Blank
+                psFeatureId = ""
+            End If
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -32,8 +40,24 @@ Public Class FeatureMasterDetailDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
             ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureList)
-            pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            If psFeatureId.Length > 0 Then
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting featureID and it will be of Integer
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@FEATUREID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(0).Paramvalue = psFeatureId
+
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureListExceptSelectedFeature)
+                'These query will ftch all the Feature fro feature master except the Selected feature 
+                pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+
+            Else
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureList)
+                pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            End If
+
             Return pdsFeatureList.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -190,7 +214,7 @@ Public Class FeatureMasterDetailDL
             ' Get the Query on the basis of objIQuery
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureListExceptSelectedFeature)
             iInsert = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
-           
+
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
             psStatus = ex.ToString

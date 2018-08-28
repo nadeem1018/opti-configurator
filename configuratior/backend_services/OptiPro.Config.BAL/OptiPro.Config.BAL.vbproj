@@ -48,6 +48,7 @@
       <HintPath>..\OptiPro.Config.Service\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -75,7 +76,7 @@
     <Compile Include="Business Layer\Common.vb" />
     <Compile Include="Business Layer\ItemGenerationBL.vb" />
     <Compile Include="Business Layer\FeatureHeaderBL.vb" />
-    <Compile Include="Business Layer\FeatureMasterDetailBL.vb" />
+    <Compile Include="Business Layer\FeatureBOMBL.vb" />
     <Compile Include="Class1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

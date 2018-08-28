@@ -65,7 +65,7 @@
     <Compile Include="Class1.vb" />
     <Compile Include="Models\BaseModel.vb" />
     <Compile Include="Models\FeatureHeaderModel.vb" />
-    <Compile Include="Models\FeatureMasterDetailModel.vb" />
+    <Compile Include="Models\FeatureBOMModel.vb" />
     <Compile Include="Models\ItemGenerationModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

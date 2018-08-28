@@ -5,12 +5,12 @@ Imports OptiPro.Config.Entity
 Imports OptiPro.Config.BAL
 
 <RoutePrefix("FeatureMasterDetail")>
-Public Class FeatureMasterDetailController
+Public Class FeatureBOMController
     Inherits ApiController
 
-    Private objSampleBL As FeatureMasterDetailBL
+    Private objSampleBL As FeatureBOMBL
     Public Sub New()
-        objSampleBL = New FeatureMasterDetailBL
+        objSampleBL = New FeatureBOMBL
     End Sub
     ''' <summary>
     ''' vb Controller to get the List of all the Feture from the Fature Header
@@ -20,8 +20,8 @@ Public Class FeatureMasterDetailController
     ''' <remarks></remarks>
     <HttpPost, HttpGet>
     <Route("GetFeatureList")>
-    Public Function GetFeatureList(ByVal oFeatureList As FeatureMasterDetailModel) As DataTable
-        Return FeatureMasterDetailBL.GetFeatureList(oFeatureList)
+    Public Function GetFeatureList(ByVal oFeatureList As FeatureBOMModel) As DataTable
+        Return FeatureBOMBL.GetFeatureList(oFeatureList)
     End Function
 
     ''' <summary>
@@ -32,42 +32,42 @@ Public Class FeatureMasterDetailController
     ''' <remarks></remarks>
     <HttpPost, HttpGet>
     <Route("GetFeatureDetail")>
-    Public Function GetFeatureDetail(ByVal oFeatureDetail As FeatureMasterDetailModel) As DataTable
-        Return FeatureMasterDetailBL.GetFeatureDetail(oFeatureDetail)
+    Public Function GetFeatureDetail(ByVal oFeatureDetail As FeatureBOMModel) As DataTable
+        Return FeatureBOMBL.GetFeatureDetail(oFeatureDetail)
     End Function
     'VbController to get the Item List f Item is Selected in the Lookup
     <HttpPost, HttpGet>
     <Route("GetItemList")>
-    Public Function GetItemList(ByVal oFeatureDetail As FeatureMasterDetailModel) As DataTable
-        Return FeatureMasterDetailBL.GetItemList(oFeatureDetail)
+    Public Function GetItemList(ByVal oFeatureDetail As FeatureBOMModel) As DataTable
+        Return FeatureBOMBL.GetItemList(oFeatureDetail)
     End Function
 
     'Vb Controller to get the Feature Except the Selecccted Feature ,This Feature are for the Grid Level
     <HttpPost, HttpGet>
     <Route("GetFeatureListExceptSelectedFeature")>
-    Public Function GetFeatureListExceptSelectedFeature(ByVal oFeatureDetail As FeatureMasterDetailModel) As DataTable
-        Return FeatureMasterDetailBL.GetFeatureListExceptSelectedFeature(oFeatureDetail)
+    Public Function GetFeatureListExceptSelectedFeature(ByVal oFeatureDetail As FeatureBOMModel) As DataTable
+        Return FeatureBOMBL.GetFeatureListExceptSelectedFeature(oFeatureDetail)
     End Function
 
     'Vb Controller to add the Feature 
     <HttpPost, HttpGet>
    <Route("AddFeatureMasterDetail")>
-    Public Function AddFeatureMaster(ByVal oAddFeatureMasterDetail As FeatureMasterDetailModel) As String
-        Return FeatureMasterDetailBL.AddFeatureMasterDetail(oAddFeatureMasterDetail)
+    Public Function AddFeatureMaster(ByVal oAddFeatureMasterDetail As FeatureBOMModel) As String
+        Return FeatureBOMBL.AddFeatureMasterDetail(oAddFeatureMasterDetail)
     End Function
 
     'Vb Controller to Update the Feature Detail Table 
     <HttpPost, HttpGet>
   <Route("UpdateDataInFeatureDetail")>
-    Public Function UpdateDataInFeatureDetail(ByVal oUpdateFeatureMasterDetail As FeatureMasterDetailModel) As String
-        Return FeatureMasterDetailBL.UpdateDataInFeatureDetail(oUpdateFeatureMasterDetail)
+    Public Function UpdateDataInFeatureDetail(ByVal oUpdateFeatureMasterDetail As FeatureBOMModel) As String
+        Return FeatureBOMBL.UpdateDataInFeatureDetail(oUpdateFeatureMasterDetail)
     End Function
 
     'vb Controller to Delete the Data from the FEature Detail TAble 
     <HttpPost, HttpGet>
   <Route("DeleteDataFromFeatureDetail")>
-    Public Function DeleteDataFromFeatureDetail(ByVal oDeleteFeatureMasterDetail As FeatureMasterDetailModel) As String
-        Return FeatureMasterDetailBL.DeleteDataFromFeatureDetail(oDeleteFeatureMasterDetail)
+    Public Function DeleteDataFromFeatureDetail(ByVal oDeleteFeatureMasterDetail As FeatureBOMModel) As String
+        Return FeatureBOMBL.DeleteDataFromFeatureDetail(oDeleteFeatureMasterDetail)
     End Function
 
 

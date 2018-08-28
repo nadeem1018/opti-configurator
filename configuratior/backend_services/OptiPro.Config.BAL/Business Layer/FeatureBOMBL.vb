@@ -12,7 +12,7 @@ Imports System.ComponentModel
 Imports System.Reflection
 Imports System.Web
 Imports OptiPro.Config.Entity
-Public Class FeatureMasterDetailBL
+Public Class FeatureBOMBL
 
     Private Shared mObjCompany As OptiPro.Config.Common.Company
 
@@ -21,14 +21,14 @@ Public Class FeatureMasterDetailBL
         mObjCompany = OptiPro.Config.Common.Company.GetCompanyInstance(HttpContext.Current)
     End Sub
     'Function is called from the LoginController.js to be Executed
-    Public Shared Function GetFeatureList(ByVal objAddFeature As FeatureMasterDetailModel) As DataTable
+    Public Shared Function GetFeatureList(ByVal objAddFeature As FeatureBOMModel) As DataTable
         Dim pdFeatureList As DataTable
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.FeatureList)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdFeatureList = FeatureMasterDetailDL.GetFeatureList(pdtDetails, mObjCompany)
+            pdFeatureList = FeatureBOMDL.GetFeatureList(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return pdFeatureList
         Catch ex As Exception
@@ -43,14 +43,14 @@ Public Class FeatureMasterDetailBL
     ''' <param name="objAddFeature"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function GetFeatureDetail(ByVal objAddFeature As FeatureMasterDetailModel) As DataTable
+    Public Shared Function GetFeatureDetail(ByVal objAddFeature As FeatureBOMModel) As DataTable
         Dim pdtFeatureDetail As DataTable
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.FeatureList)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdtFeatureDetail = FeatureMasterDetailDL.GetFeatureDetail(pdtDetails, mObjCompany)
+            pdtFeatureDetail = FeatureBOMDL.GetFeatureDetail(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return pdtFeatureDetail
         Catch ex As Exception
@@ -65,14 +65,14 @@ Public Class FeatureMasterDetailBL
     ''' <returns></returns>
     ''' <remarks></remarks>
 
-    Public Shared Function GetItemList(ByVal objAddFeature As FeatureMasterDetailModel) As DataTable
+    Public Shared Function GetItemList(ByVal objAddFeature As FeatureBOMModel) As DataTable
         Dim pdtItemList As DataTable
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.ItemList)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdtItemList = FeatureMasterDetailDL.GetItemList(pdtDetails, mObjCompany)
+            pdtItemList = FeatureBOMDL.GetItemList(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return pdtItemList
         Catch ex As Exception
@@ -87,14 +87,14 @@ Public Class FeatureMasterDetailBL
     ''' <returns></returns>
     ''' <remarks></remarks>
 
-    Public Shared Function GetFeatureListExceptSelectedFeature(ByVal objAddFeature As FeatureMasterDetailModel) As DataTable
+    Public Shared Function GetFeatureListExceptSelectedFeature(ByVal objAddFeature As FeatureBOMModel) As DataTable
         Dim pdFeatureList As DataTable
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.FeatureList)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdFeatureList = FeatureMasterDetailDL.GetFeatureListExceptSelectedFeature(pdtDetails, mObjCompany)
+            pdFeatureList = FeatureBOMDL.GetFeatureListExceptSelectedFeature(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return pdFeatureList
         Catch ex As Exception
@@ -109,14 +109,14 @@ Public Class FeatureMasterDetailBL
     ''' <param name="objAddFeature"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function AddFeatureMasterDetail(ByVal objAddFeatureMasterDetail As FeatureMasterDetailModel) As String
+    Public Shared Function AddFeatureMasterDetail(ByVal objAddFeatureMasterDetail As FeatureBOMModel) As String
         Dim psStatus As String = String.Empty
         Try
             Dim pdtDetails As DataSet = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataSet)(objAddFeatureMasterDetail.AddFeatureMaster)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            psStatus = FeatureMasterDetailDL.AddFeatureMasterDetail(pdtDetails, mObjCompany)
+            psStatus = FeatureBOMDL.AddFeatureMasterDetail(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return psStatus
         Catch ex As Exception
@@ -130,14 +130,14 @@ Public Class FeatureMasterDetailBL
     ''' <param name="oUpdateFeatureMasterDetail"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function UpdateDataInFeatureDetail(ByVal oUpdateFeatureMasterDetail As FeatureMasterDetailModel) As String
+    Public Shared Function UpdateDataInFeatureDetail(ByVal oUpdateFeatureMasterDetail As FeatureBOMModel) As String
         Dim psStatus As String = String.Empty
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(oUpdateFeatureMasterDetail.UpdateFeatureMaster)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            psStatus = FeatureMasterDetailDL.UpdateDataInFeatureDetail(pdtDetails, mObjCompany)
+            psStatus = FeatureBOMDL.UpdateDataInFeatureDetail(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return psStatus
         Catch ex As Exception
@@ -153,21 +153,21 @@ Public Class FeatureMasterDetailBL
     ''' <param name="oDeleteFeatureMasterDetail"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DeleteDataFromFeatureDetail(ByVal oDeleteFeatureMasterDetail As FeatureMasterDetailModel) As String
+    Public Shared Function DeleteDataFromFeatureDetail(ByVal oDeleteFeatureMasterDetail As FeatureBOMModel) As String
         Dim psStatus As String = String.Empty
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(oDeleteFeatureMasterDetail.DeleteFeatureMaster)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            psStatus = FeatureMasterDetailDL.UpdateDataInFeatureDetail(pdtDetails, mObjCompany)
+            psStatus = FeatureBOMDL.UpdateDataInFeatureDetail(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return psStatus
         Catch ex As Exception
             Return psStatus = ex.ToString
         End Try
     End Function
-   
+
 
 
 End Class

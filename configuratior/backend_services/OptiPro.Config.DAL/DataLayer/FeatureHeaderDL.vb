@@ -515,7 +515,16 @@ Public Class FeatureHeaderDL
             Dim psSQL As String = String.Empty
             Dim pdsFeatureList As DataSet
             Dim psTotalCount As Integer
-            Dim piPageLimit As Integer = 10
+            Dim piPageLimit As Integer
+
+            If objDataTable.Columns.Contains("SearchString") Then
+                '  get Search String,
+                piPageLimit = NullToInteger(objDataTable.Rows(0)("PageLimit"))
+            Else
+                'if there is no Column then we will be Coonsider page Limit as 25 
+                piPageLimit = 25
+            End If
+
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             'psCompanyDBId = "DEVQAS2BRANCHING"
@@ -532,11 +541,17 @@ Public Class FeatureHeaderDL
             Dim piStartCount, piEndCount As Integer
             Dim piPageNumber As Integer
             'get the PAge Number which is Coming from UI 
-            ' piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
-            piPageNumber = 1
+            piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
+            'piPageNumber = 1
             'get the Search String 
-            ' psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
-            psSearchString = ""
+            If objDataTable.Columns.Contains("SearchString") Then
+                '  get Search String,
+                psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
+            Else
+                'if there is no Column then we will be Cnsider it Blank
+                psSearchString = ""
+            End If
+
             'logic to get the End Count 
             piEndCount = piPageNumber * piPageLimit
             'Logic to get the Starting Count 
@@ -635,7 +650,6 @@ Public Class FeatureHeaderDL
         End Try
         Return Nothing
     End Function
-
 
     Public Shared Function GetTotalCountOfRecord(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try

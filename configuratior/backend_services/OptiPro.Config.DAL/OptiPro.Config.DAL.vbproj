@@ -76,7 +76,7 @@
     <Compile Include="CompanySQLConnection.vb" />
     <Compile Include="ConnectionFactory.vb" />
     <Compile Include="DataLayer\BaseDL.vb" />
-    <Compile Include="DataLayer\FeatureMasterDetailDL.vb" />
+    <Compile Include="DataLayer\FeatureBOMDL.vb" />
     <Compile Include="DataLayer\FeatureHeaderDL.vb" />
     <Compile Include="DataLayer\ItemGenerationDL.vb" />
     <Compile Include="DBParamBuilder.vb" />
