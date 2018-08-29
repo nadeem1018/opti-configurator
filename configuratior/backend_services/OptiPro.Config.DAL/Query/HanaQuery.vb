@@ -188,4 +188,10 @@ Public Class HanaQuery
         Return psSQL
     End Function
 #End Region
+
+
+#Region "ModelBOM"
+
+
+#End Region
 End Class

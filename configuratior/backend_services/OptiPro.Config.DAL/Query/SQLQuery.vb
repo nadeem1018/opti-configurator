@@ -194,4 +194,10 @@ Public Class SQLQuery
     End Function
 #End Region
 
+
+#Region "ModelBOM"
+
+
+#End Region
+
 End Class

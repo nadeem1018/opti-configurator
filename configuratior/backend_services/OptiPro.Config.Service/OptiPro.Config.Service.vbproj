@@ -185,6 +185,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.vb" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.vb" />
     <Compile Include="Controllers\BaseController.vb" />
+    <Compile Include="Controllers\ModelBOMController.vb" />
     <Compile Include="Controllers\ItemGenerationController.vb" />
     <Compile Include="Controllers\FeatureBOMController.vb" />
     <Compile Include="Controllers\FeatureHeaderController.vb" />

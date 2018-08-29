@@ -105,7 +105,7 @@ Public Class FeatureBOMDL
     End Function
 
     ''' <summary>
-    ''' Funtion to get the Item List from the Table OITM for the Grid
+    ''' Funtion to get the Item List from the Table for the Grid
     ''' </summary>
     ''' <param name="objDataTable"></param>
     ''' <param name="objCmpnyInstance"></param>

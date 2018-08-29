@@ -4,7 +4,7 @@ Imports OptiPro.Config.Common
 Imports OptiPro.Config.Entity
 Imports OptiPro.Config.BAL
 
-<RoutePrefix("FeatureMasterDetail")>
+<RoutePrefix("FeatureBOM")>
 Public Class FeatureBOMController
     Inherits ApiController
 

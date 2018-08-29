@@ -51,6 +51,11 @@
     Public Const OptiPro_Config_GetPSURL As String = "GetPSURL"
 #End Region
 
+#Region "ModelBOM"
+
+
+#End Region
+
 
 
 
