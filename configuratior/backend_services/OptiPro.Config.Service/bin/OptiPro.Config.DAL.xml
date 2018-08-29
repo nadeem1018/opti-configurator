@@ -6,7 +6,7 @@ OptiPro.Config.DAL
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetItemList(System.Data.DataTable,OptiPro.Config.Common.Company)">
+<member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetItemForFeatureBOM(System.Data.DataTable,OptiPro.Config.Common.Company)">
 	<summary>
  Funtion to get the Item List from the Table OITM for the Grid
  </summary>

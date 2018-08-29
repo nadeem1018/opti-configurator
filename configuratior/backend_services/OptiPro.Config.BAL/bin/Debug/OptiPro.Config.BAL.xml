@@ -13,7 +13,7 @@ OptiPro.Config.BAL
 	<param name="objAddFeature"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetItemList(OptiPro.Config.Entity.FeatureBOMModel)">
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetItemForFeatureBOM(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  function to get the List of Item frm the Item master
  </summary>
