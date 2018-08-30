@@ -74,11 +74,13 @@ const routes: Routes = [
     ItemcodegenerationComponent,
     ViewFeatureModelComponent,
     ViewItemCodeGenerationComponent,
+    BomComponent,
     ModelbomComponent,
     ViewModelBomComponent,
     BomComponent,
     ModelbomComponent,
     ViewFeatureBOMComponent
+    ViewModelBomComponent
   ],
   imports: [
     BrowserModule,
