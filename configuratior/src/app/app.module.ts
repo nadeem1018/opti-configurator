@@ -79,7 +79,7 @@ const routes: Routes = [
     ViewModelBomComponent,
     BomComponent,
     ModelbomComponent,
-    ViewFeatureBOMComponent
+    ViewFeatureBOMComponent,
     ViewModelBomComponent
   ],
   imports: [
