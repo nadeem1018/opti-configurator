@@ -81,6 +81,9 @@
     "PasswordRequired":"Password required",
     "UserNameRequired":"Username required",
     "CompanyRequired":"Select Company",
-    "DeleteConfimation":"Do you want to delete?"
+    "DeleteConfimation":"Do you want to delete?",
+
+
+    "ModelBom":"Model Bom"
     
 }
