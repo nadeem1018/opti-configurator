@@ -77,6 +77,7 @@
     <Compile Include="Business Layer\ItemGenerationBL.vb" />
     <Compile Include="Business Layer\FeatureHeaderBL.vb" />
     <Compile Include="Business Layer\FeatureBOMBL.vb" />
+    <Compile Include="Business Layer\ModelBOMBL.vb" />
     <Compile Include="Class1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

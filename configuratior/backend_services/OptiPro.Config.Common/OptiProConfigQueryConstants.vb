@@ -17,7 +17,7 @@
 
 #End Region
 
-#Region "Feature Master Detail"
+#Region "Feature BOM"
     Public Const OptiPro_Config_GetFeatureList As String = "GetFeatureList"
     Public Const OptiPro_Config_GetFeatureDetail As String = "GetFeatureDetail"
     Public Const OptiPro_Config_GetItemList As String = "GetItemList"
@@ -26,6 +26,9 @@
     Public Const OptiPro_Config_AddDataInFeatureDetail As String = "AddDataInFeatureDetail"
     Public Const OptiPro_Config_UpdateDataInFeatureDetail As String = "UpdateDataInFeatureDetail"
     Public Const OptiPro_Config_DeleteDataFromFeatureDetail As String = "DeleteDataFromFeatureDetail"
+    Public Const OptiPro_Config_GetItemForFeatureBOM As String = "GetItemForFeatureBOM"
+
+
 #End Region
 
 #Region "Item Generation"
@@ -46,6 +49,11 @@
 #End Region
 #Region "Base Comman"
     Public Const OptiPro_Config_GetPSURL As String = "GetPSURL"
+#End Region
+
+#Region "ModelBOM"
+
+
 #End Region
 
 

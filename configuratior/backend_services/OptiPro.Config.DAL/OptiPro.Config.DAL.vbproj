@@ -79,6 +79,7 @@
     <Compile Include="DataLayer\FeatureBOMDL.vb" />
     <Compile Include="DataLayer\FeatureHeaderDL.vb" />
     <Compile Include="DataLayer\ItemGenerationDL.vb" />
+    <Compile Include="DataLayer\ModelBOMDL.vb" />
     <Compile Include="DBParamBuilder.vb" />
     <Compile Include="DBParameterCollection.vb" />
     <Compile Include="HanaDBHelper.vb" />

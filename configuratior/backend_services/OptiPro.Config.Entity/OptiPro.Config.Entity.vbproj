@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Class1.vb" />
     <Compile Include="Models\BaseModel.vb" />
+    <Compile Include="Models\ModelBOMModel.vb" />
     <Compile Include="Models\FeatureHeaderModel.vb" />
     <Compile Include="Models\FeatureBOMModel.vb" />
     <Compile Include="Models\ItemGenerationModel.vb" />

@@ -6,7 +6,63 @@ OptiPro.Config.Common
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.Common.Utilites.StringFormat(System.String,System.Object[])">
+<member name="P:OptiPro.Config.Common.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:OptiPro.Config.Common.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetPrivateProfileString(System.String,System.String,System.String,System.Text.StringBuilder,System.Int32,System.String)">
+	<summary>
+ Declare INI Functions
+ </summary>
+	<param name="lpApplicationName"></param>
+	<param name="lpKeyName"></param>
+	<param name="lpDefault"></param>
+	<param name="lpReturnedString"></param>
+	<param name="nSize"></param>
+	<param name="lpFileName"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetString(System.String,System.String,System.String)">
+	<summary>
+ ' Returns a string from your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Default"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.GetInteger(System.String,System.String,System.Int32)">
+	<summary>
+ Returns an integer from your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Default"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.WriteString(System.String,System.String,System.String)">
+	<summary>
+  Writes a string to your INI file
+ </summary>
+	<param name="Section"></param>
+	<param name="Key"></param>
+	<param name="Value"></param>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.IniFile.Flush">
+	<summary>
+ Stores all the cached changes to your INI file
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Common.Utilites.StringFormat(System.String,System.Object[])">
 	<summary>
  Returns formatted string as per the culture used by the current thread.
  </summary>
@@ -352,62 +408,6 @@ OptiPro.Config.Common
  </summary>
 	<param name="timeInMinutes">string (HH:MM)</param>
 	<returns>SAP Minute formate (HHMM)</returns>
-	<remarks></remarks>
-</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:OptiPro.Config.Common.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="M:OptiPro.Config.Common.IniFile.GetPrivateProfileString(System.String,System.String,System.String,System.Text.StringBuilder,System.Int32,System.String)">
-	<summary>
- Declare INI Functions
- </summary>
-	<param name="lpApplicationName"></param>
-	<param name="lpKeyName"></param>
-	<param name="lpDefault"></param>
-	<param name="lpReturnedString"></param>
-	<param name="nSize"></param>
-	<param name="lpFileName"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Common.IniFile.GetString(System.String,System.String,System.String)">
-	<summary>
- ' Returns a string from your INI file
- </summary>
-	<param name="Section"></param>
-	<param name="Key"></param>
-	<param name="Default"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Common.IniFile.GetInteger(System.String,System.String,System.Int32)">
-	<summary>
- Returns an integer from your INI file
- </summary>
-	<param name="Section"></param>
-	<param name="Key"></param>
-	<param name="Default"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Common.IniFile.WriteString(System.String,System.String,System.String)">
-	<summary>
-  Writes a string to your INI file
- </summary>
-	<param name="Section"></param>
-	<param name="Key"></param>
-	<param name="Value"></param>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Common.IniFile.Flush">
-	<summary>
- Stores all the cached changes to your INI file
- </summary>
 	<remarks></remarks>
 </member><member name="T:OptiPro.Config.Common.Enumerations.ExceptionTypeEnum">
 	<summary>

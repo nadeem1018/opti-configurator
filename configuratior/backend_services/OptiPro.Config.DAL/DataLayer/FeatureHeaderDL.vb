@@ -26,7 +26,7 @@ Public Class FeatureHeaderDL
             Dim dtCheckDuplicateRecord As DataTable
 
             Dim psDisplayName, psFeatureDesc, psProductGroupID, psPhotoPath, psCreatedBy As String
-            Dim psType, psModelTemplateItem, psItemCodeGen, psFeatureStatus, psFeatureCode As String
+            Dim psType, psModelTemplateItem, psItemCodeGen, psFeatureStatus, psFeatureCode, psAccessory As String
             Dim pdtEffectiveDate As DateTime
 
             'Get the Company Name
@@ -76,6 +76,8 @@ Public Class FeatureHeaderDL
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
             'get the Effective Date and Time 
             pdtEffectiveDate = NullToDate(objDataTable.Rows(0)("EffectiveDate"))
+            'get VAlue for Accessory
+            psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
             'Functtion to Check whether the Record is Already Present in Table 
@@ -86,7 +88,7 @@ Public Class FeatureHeaderDL
                 Return psStatus
             Else
 
-                Dim pSqlParam(11) As MfgDBParameter
+                Dim pSqlParam(12) As MfgDBParameter
                 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
                 pSqlParam(0) = New MfgDBParameter
                 pSqlParam(0).ParamName = "@DISPLAYNAME"
@@ -156,6 +158,10 @@ Public Class FeatureHeaderDL
                 pSqlParam(10).Dbtype = BMMDbType.HANA_NVarChar
                 pSqlParam(10).Paramvalue = psFeatureCode
 
+                pSqlParam(11) = New MfgDBParameter
+                pSqlParam(11).ParamName = "@ACCESSORY"
+                pSqlParam(11).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(11).Paramvalue = psAccessory
 
                 ' Get the Query on the basis of objIQuery
                 psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_AddFeatures)
@@ -238,7 +244,7 @@ Public Class FeatureHeaderDL
             Dim psSQL As String = String.Empty
             Dim iUpdate As Integer
             Dim psFeatureID, piFeatureCode As Integer
-            Dim psDisplayName, psFeatureDesc, psPicturePath, psPhotoPath, psModifiedBy, psModelTemplateItem, psType, psIsHana, psItemCodeGenRef, psFeatureStatus As String
+            Dim psDisplayName, psFeatureDesc, psPicturePath, psAccessory, psPhotoPath, psModifiedBy, psModelTemplateItem, psType, psIsHana, psItemCodeGenRef, psFeatureStatus As String
             Dim pdtEffectiveDate As DateTime
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
@@ -269,6 +275,8 @@ Public Class FeatureHeaderDL
                 psModelTemplateItem = ""
             End If
             psItemCodeGenRef = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+            'get VAlue for Accessory
+            psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
 
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -285,7 +293,7 @@ Public Class FeatureHeaderDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
 
-            Dim pSqlParam(11) As MfgDBParameter
+            Dim pSqlParam(12) As MfgDBParameter
             'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@DISPLAYNAME"
@@ -344,9 +352,14 @@ Public Class FeatureHeaderDL
             End If
 
             pSqlParam(10) = New MfgDBParameter
-            pSqlParam(10).ParamName = "@FEATUREID"
-            pSqlParam(10).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(10).Paramvalue = psFeatureID
+            pSqlParam(10).ParamName = "@ACCESSORY"
+            pSqlParam(10).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(10).Paramvalue = psAccessory
+
+            pSqlParam(11) = New MfgDBParameter
+            pSqlParam(11).ParamName = "@FEATUREID"
+            pSqlParam(11).Dbtype = BMMDbType.HANA_Integer
+            pSqlParam(11).Paramvalue = psFeatureID
 
 
             ' Get the Query on the basis of objIQuery

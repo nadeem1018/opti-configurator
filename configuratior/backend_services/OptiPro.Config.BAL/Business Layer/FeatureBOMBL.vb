@@ -65,14 +65,14 @@ Public Class FeatureBOMBL
     ''' <returns></returns>
     ''' <remarks></remarks>
 
-    Public Shared Function GetItemList(ByVal objAddFeature As FeatureBOMModel) As DataTable
+    Public Shared Function GetItemForFeatureBOM(ByVal objAddFeature As FeatureBOMModel) As DataTable
         Dim pdtItemList As DataTable
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.ItemList)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            pdtItemList = FeatureBOMDL.GetItemList(pdtDetails, mObjCompany)
+            pdtItemList = FeatureBOMDL.GetItemForFeatureBOM(pdtDetails, mObjCompany)
             'Return the Datasetset
             Return pdtItemList
         Catch ex As Exception

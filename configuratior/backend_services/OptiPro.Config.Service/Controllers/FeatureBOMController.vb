@@ -4,7 +4,7 @@ Imports OptiPro.Config.Common
 Imports OptiPro.Config.Entity
 Imports OptiPro.Config.BAL
 
-<RoutePrefix("FeatureMasterDetail")>
+<RoutePrefix("FeatureBOM")>
 Public Class FeatureBOMController
     Inherits ApiController
 
@@ -39,7 +39,7 @@ Public Class FeatureBOMController
     <HttpPost, HttpGet>
     <Route("GetItemList")>
     Public Function GetItemList(ByVal oFeatureDetail As FeatureBOMModel) As DataTable
-        Return FeatureBOMBL.GetItemList(oFeatureDetail)
+        Return FeatureBOMBL.GetItemForFeatureBOM(oFeatureDetail)
     End Function
 
     'Vb Controller to get the Feature Except the Selecccted Feature ,This Feature are for the Grid Level
