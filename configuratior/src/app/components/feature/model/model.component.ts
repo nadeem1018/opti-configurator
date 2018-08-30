@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
+
 @Component({
   providers:[LookupComponent],
   selector: 'app-model',
@@ -27,33 +28,24 @@ export class ModelComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router,private ActivatedRouter: ActivatedRoute) { }
   page_main_title = 'Model Feature';
+  section_title="";
   companyName: string ;
-  showLookup: boolean = false;
-  showLookupItem: boolean = false;
-  openedLookup: string = '';
+  username: string;
   lookupfor:string = '';
-  columnsToShow: Array<string> = [];
-  sWorkOrderLookupColumns = "ItemCode";
-  isWorkOrderListRightSection: boolean = false;
-  allWODetails: any;
    serviceData: any;
    item:string =''; 
    public codekey:string="";
    public button="save";
    public isUpdateButtonVisible:boolean=false;
-<<<<<<< HEAD
-public isSaveButtonVisible:boolean=true;
-public isDeleteButtonVisible:boolean=true;
-public selectedFile:string="";
-=======
-  public isSaveButtonVisible:boolean=true;
-  public isDeleteButtonVisible:boolean=true;
->>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
+   public isSaveButtonVisible:boolean=true;
+   public isDeleteButtonVisible:boolean=true;
+   public selectedFile:string="";
 
 
    
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
+    this.username = sessionStorage.getItem('loggedInUser');
     var todaysDate = new Date();
     this.featureBom.Date  = todaysDate;
     this.codekey ="";
@@ -62,13 +54,15 @@ public selectedFile:string="";
       this.button="save";
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
+      this.section_title = this.language.add;
     }
     else{
       this.button="update";
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true;
-      this.fms.GetRecordById("SFDCDB", this.codekey).subscribe(
+      this.section_title = this.language.edit;
+      this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
           console.log(data);
 this.featureBom.Code= data[0].OPTM_FEATURECODE
@@ -89,8 +83,8 @@ this.featureBom.Accessory=data[0].OPTM_ACCESSORY
     var validateStatus = this.Validation();
    // console.log(this.featureBom.ItemName);
 if (validateStatus == true){
-    this.featureModel.Feature.push({
-      CompanyDBId:"SFDCDB",
+    this.featureModel.push({
+      CompanyDBId:this.companyName,
       FeatureCode: this.featureBom.Code,
       DisplayName: this.featureBom.Name,
       FeatureDesc: this.featureBom.Desc,
@@ -99,8 +93,8 @@ if (validateStatus == true){
       FeatureStatus:this.featureBom.Status,
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
-      // PicturePath:this.selectedFile,
-      CreatedUser: "ash",
+      PicturePath: "www",
+      CreatedUser: this.username,
       Accessory:this.featureBom.Accessory
     })
    
@@ -140,24 +134,17 @@ if (validateStatus == true){
 
     onTemplateItemPress(status) {
       this.lookupfor = 'model_template';
-      this.columnsToShow = this.sWorkOrderLookupColumns.split(",");
-      this.openedLookup = "Lookup";
-      this.isWorkOrderListRightSection = status;
-      //this.openRightSection(status);
-      this.showLookup = true;    
-      //On Form Initialization get All WO
       this.getAllTemplateItems();
-      this.lookup.model_template_lookup();
   
     }   
     
   getAllTemplateItems() {
-    this.fms.getTemplateItems("SFDCDB").subscribe(
+    this.fms.getTemplateItems(this.companyName).subscribe(
       data => {
         this.serviceData = data;
        // console.log(data);
         //if(this.serviceData.length > 0)
-         this.showLookup=true;
+         
         //}
       }
     )
@@ -182,22 +169,12 @@ if (validateStatus == true){
 
   onItemGenerationPress(status){
     this.lookupfor = 'model_item_generation';
-    this.columnsToShow = this.sWorkOrderLookupColumns.split(",");
-    this.openedLookup = "Lookup";
-    this.isWorkOrderListRightSection = status;
-    this.showLookup = true;    
-    //On Form Initialization get All WO
     this.getAllItemGenerated();
-    this.lookup.model_item_generation_lookup();
   }
   getAllItemGenerated() {
     this.fms.getGeneratedItems("SFDCDB").subscribe(
       data => {
         this.serviceData = data;
-        if (this.serviceData.length > 0) {
-          //this.lookupData = this.allWODetails;
-         this.showLookup=true;
-        }
       }
     )
   }
@@ -238,7 +215,7 @@ if (validateStatus == true){
     console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
-      CompanyDBId:"SFDCDB",
+      CompanyDBId:this.companyName,
       FeatureId: this.codekey,
       FeatureCode: this.featureBom.Code,
       DisplayName: this.featureBom.Name,
@@ -249,7 +226,7 @@ if (validateStatus == true){
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
       PicturePath: this.selectedFile,
-      CreatedUser: "ash",
+      CreatedUser:  this.username,
       Accessory:this.featureBom.Accessory
     })
     
@@ -277,7 +254,7 @@ if (validateStatus == true){
 if (result) {
     //Logic to delete the 
      // button click function in here
-     this.fms.DeleteData("SFDCDB",this.codekey).subscribe(
+     this.fms.DeleteData(this.companyName,this.codekey).subscribe(
       data => {
         if (data === "True" ) {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);

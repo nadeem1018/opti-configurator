@@ -5,16 +5,16 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-view-feature-model',
+    selector: 'app-feature-bom-view',
     templateUrl: '../../common/table.view.html',
-    styleUrls: ['./model.component.scss']
+    styleUrls: ['./bom.component.scss']
 })
 
 
-export class ViewFeatureModelComponent implements OnInit {
+export class ViewFeatureBOMComponent implements OnInit {
     common_params = new CommonData();
-    page_main_title = 'Model Feature';
-    add_route_link = '/feature/model/add';
+    page_main_title = 'Model BOM';
+    add_route_link = '/feature/bom/add';
     public commonData = new CommonData();
     table_title = this.page_main_title;
 // generate table default constants
