@@ -70,10 +70,6 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].rowindex = i + 1;
         }
       }
-      this.finalstring = "";
-      for (let i = 0; i < this.feature_bom_table.length; ++i) {
-        this.finalstring = this.finalstring + this.feature_bom_table[i].string
-      }
     }
   }
 
