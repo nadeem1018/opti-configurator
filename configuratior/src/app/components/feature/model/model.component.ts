@@ -37,8 +37,8 @@ export class ModelComponent implements OnInit {
    public codekey:string="";
    public button="save";
    public isUpdateButtonVisible:boolean=false;
-public isSaveButtonVisible:boolean=true;
-public isDeleteButtonVisible:boolean=true;
+  public isSaveButtonVisible:boolean=true;
+  public isDeleteButtonVisible:boolean=true;
 
 
    
@@ -157,6 +157,10 @@ if (validateStatus == true){
         }
       }
     )
+  }
+
+  openImportPopup() {
+    this.lookupfor = 'import_popup';
   }
   //validation of inputs
   Validation () {

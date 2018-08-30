@@ -39,6 +39,12 @@ export class CommonData {
         {"value":3,  "Name":"Decrease"  }
     ];
 
+    public bom_type: any = [
+        { "value": 1, "Name": "Feature" },
+        { "value": 2, "Name": "Item" },
+        { "value": 3, "Name": "Value" }
+    ];
+
     // for common view
     public default_limits =  [10, 25, 50, 100];
     public default_count = 10;
