@@ -24,8 +24,15 @@
     </a>
     <div class="dropdown-menu no-padding" aria-labelledby="pagesDropdown" data-target="feature_sub_menu" data-status="0">
       <a class="dropdown-item" href='javascript:;' routerLink="feature/model/view">{{this.language.model}}</a>
-      <a class="dropdown-item" href='javascript:;' routerLink="feature/bom">{{this.language.bom}}</a>
+      <a class="dropdown-item" href='javascript:;' routerLink="feature/bom/add">{{this.language.bom}}</a>
     </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href='javascript:;' routerLink="modelbom/view">
+      <i class="fa fa-fw fa-table"></i>
+      <span>{{this.language.ModelBom}}</span>
+    </a>
   </li>
 
 </ul>

@@ -576,8 +576,19 @@ Public Class ItemGenerationDL
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
             Dim pdsItemData As DataSet
+            Dim psTotalCount As Integer
+            Dim piPageLimit As Integer
+            If objDataTable.Columns.Contains("SearchString") Then
+                '  get Search String,
+                piPageLimit = NullToInteger(objDataTable.Rows(0)("PageLimit"))
+            Else
+                'if there is no Column then we will be Coonsider page Limit as 25 
+                piPageLimit = 25
+            End If
+
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -586,50 +597,80 @@ Public Class ItemGenerationDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemGenerationData)
+            Dim psSearchString As String
+            'Variable to Fet Starting Limit and The End Limit
+            Dim piStartCount, piEndCount As Integer
+            Dim piPageNumber As Integer
+            'get the PAge Number which is Coming from UI 
+            ' piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
+            piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
+            'get the Search String 
+            If objDataTable.Columns.Contains("SearchString") Then
+                '  get the Model Template Item,
+                psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
+            Else
+                'if there is no Column then we will be Cnsider it Blank
+                psSearchString = ""
+            End If
+            'logic to get the End Count 
+            piEndCount = piPageNumber * piPageLimit
+            'Logic to get the Starting Count 
+            If piPageNumber = 1 Then
+                piStartCount = 0
+            Else
+                piStartCount = piEndCount - piPageLimit + 1
+            End If
+            If psSearchString.Length > 0 Then
+                Dim pSqlParam(3) As MfgDBParameter
+                'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@STARTCOUNT"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(0).Paramvalue = piStartCount
+
+                pSqlParam(1) = New MfgDBParameter
+                pSqlParam(1).ParamName = "@ENDCOUNT"
+                pSqlParam(1).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(1).Paramvalue = piEndCount
+
+                pSqlParam(3) = New MfgDBParameter
+                pSqlParam(3).ParamName = "@SEARCHSTRING"
+                pSqlParam(3).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(3).Paramvalue = psSearchString
+
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemGenerationDataBySearchCriteria)
+                'here we needto Replace the Parameter as Like is Used inthe where Clause
+                psSQL = psSQL.Replace("@STARTCOUNT", piStartCount)
+                'here we needto Replace the Parameter as Like is Used inthe where Clause
+                psSQL = psSQL.Replace("@ENDCOUNT", piEndCount)
+                'here we need to Replace the Serach String 
+                psSQL = psSQL.Replace("@SEARCHSTRING", psSearchString)
+
+            Else
+                Dim pSqlParam(2) As MfgDBParameter
+                'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@ENDCOUNT"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(0).Paramvalue = piEndCount
+
+                pSqlParam(1) = New MfgDBParameter
+                pSqlParam(1).ParamName = "@STARTCOUNT"
+                pSqlParam(1).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(1).Paramvalue = piStartCount
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetItemGenerationData)
+                'here we needto Replace the Parameter as Like is Used inthe where Clause
+                psSQL = psSQL.Replace("@STARTCOUNT", piStartCount)
+                'here we needto Replace the Parameter as Like is Used inthe where Clause
+                psSQL = psSQL.Replace("@ENDCOUNT", piEndCount)
+            End If
             pdsItemData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
-
-            'Create a Datatable 
-            Dim objdtItemGenerationData As New DataTable
-
-            'Add Column to the Datatable 
-            objdtItemGenerationData.Columns.Add("Code", GetType(String))
-            'Add new Column to Datatble 
-            objdtItemGenerationData.Columns.Add("FinalString", GetType(String))
-            'Add Column 
-            objdtItemGenerationData.Columns.Add("Action", GetType(String))
-
-            'Loop from the Complete Data Coming from the Query 
-            For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                'Variable for the Final String 
-                Dim psFinalString As String = String.Empty
-                'Get the ItemCode 
-                Dim itemCode As String = pdsItemData.Tables(0).Rows(irow)("OPTM_CODE")
-                'Loop to MAke Fina String for a PArticular Item Code 
-                For irowindex As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                    If itemCode = pdsItemData.Tables(0).Rows(irowindex)("OPTM_CODE") Then
-                        'Final String 
-                        psFinalString = psFinalString + pdsItemData.Tables(0).Rows(irowindex)("OPTM_CODESTRING")
-                    End If
-                Next
-                'Add row to the Datatable 
-                objdtItemGenerationData.Rows.Add(itemCode, psFinalString, itemCode)
-            Next
-            'Create a Datta View 
-            Dim dvItemGen As DataView
-            dvItemGen = New DataView(objdtItemGenerationData)
-            'Sort the TAble and Find only Distinct Value 
-            objdtItemGenerationData = dvItemGen.ToTable(True, "Code", "FinalString", "Action")
-            'Add Column to the Datatable 
-            objdtItemGenerationData.Columns.Add("#", GetType(String))
-            Dim Counter As Integer = 1
-            'Loop to Insert Value to Action and Sequence 
-            For irow As Integer = 0 To objdtItemGenerationData.Rows.Count - 1
-                objdtItemGenerationData.Rows(irow)("#") = Counter
-                'objdtItemGenerationData.Rows(irow)("Action") = Counter
-                Counter = Counter + 1
-            Next
+            'function to get Total Count of Record 
+            Dim dtTotalCount As DataTable
+            dtTotalCount = GetTotalCountOfRecordForItemGeneration(psCompanyDBId, objCmpnyInstance)
+            psTotalCount = NullToInteger(dtTotalCount.Rows(0)("TOTALCOUNT"))
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
@@ -640,10 +681,12 @@ Public Class ItemGenerationDL
             objdtOrderedData.Columns.Add("FinalString", GetType(String))
             'Add Column 
             objdtOrderedData.Columns.Add("Action", GetType(String))
-            For irow As Integer = 0 To objdtItemGenerationData.Rows.Count - 1
-                objdtOrderedData.Rows.Add(objdtItemGenerationData.Rows(irow)("#"), objdtItemGenerationData.Rows(irow)("Code"), objdtItemGenerationData.Rows(irow)("FinalString"), objdtItemGenerationData.Rows(irow)("Action"))
+            Dim Counter As Integer = 1
+            'Loop to Insert Value to Action and Sequence 
+            For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
+                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("Code"), pdsItemData.Tables(0).Rows(irow)("FinalString"), pdsItemData.Tables(0).Rows(irow)("Code"))
+                Counter = Counter + 1
             Next
-
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
             serializer.MaxJsonLength = Integer.MaxValue
             Dim rows As New Collection
@@ -658,9 +701,8 @@ Public Class ItemGenerationDL
                 Next
                 rows.Add(temp_array)
             Next
-
             final_array.Add(rows)
-            final_array.Add(50)
+            final_array.Add(psTotalCount)
             Return serializer.Serialize(final_array)
             ' Return objdtOrderedData
         Catch ex As Exception
@@ -668,7 +710,6 @@ Public Class ItemGenerationDL
         End Try
         Return Nothing
     End Function
-
     Public Shared Function GetItemCodeReference(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
 
         Try
@@ -717,6 +758,33 @@ Public Class ItemGenerationDL
         End Try
         Return Nothing
     End Function
+
+    Public Shared Function GetTotalCountOfRecordForItemGeneration(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsFeatureList As DataSet
+            'Get the Company Name
+            psCompanyDBId = objCompanyDBID
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetTotalCountOfRecordForItemGeneration)
+            pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return pdsFeatureList.Tables(0)
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
 
 
 End Class

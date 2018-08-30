@@ -241,4 +241,20 @@ li.breadcrumb-item a, li.breadcrumb-item {
   padding: .1rem .5rem !important;
 }
 
+.modal-header .close {
+  padding: 0.1rem !important;
+  margin: 0 !important;
+}
+
+.modal-header .close:active, .modal-header .close:focus, a:active, a:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+  outline-style: none;
+}
+
+.table .thead-dark th {
+  font-size: 13px;
+}
+
 /* custom css for page width magin and padding - end */

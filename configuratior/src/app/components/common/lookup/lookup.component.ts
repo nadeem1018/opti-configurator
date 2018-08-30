@@ -39,7 +39,7 @@ export class LookupComponent implements OnInit {
   ngOnInit() {  }
   
   ngOnChanges(): void {
-
+ 
     this.showLoader = true;
     this.LookupDataLoaded = false;
     this.lookup_key = '';
@@ -55,6 +55,15 @@ export class LookupComponent implements OnInit {
       }
       if (this.lookupfor == "model_item_generation") {
         this.model_item_generation_lookup();
+      }
+
+      if (this.lookupfor == "feature_lookup"){
+        this.get_features_lookup();
+      }
+
+      // open poup for import 
+      if (this.lookupfor == "import_popup"){
+        this.import_popup();
       }
     }
   }
@@ -80,6 +89,7 @@ export class LookupComponent implements OnInit {
   }
 
   model_item_generation_lookup() {
+    console.log(this.serviceData);
     this.popup_title = this.language.Model_Ref;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -87,6 +97,25 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
   
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  get_features_lookup(){
+    console.log('in lookup');
+
+    this.popup_title = this.language.Bom_title;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'featureNameId';
+    this.lookup_key = 'OPTM_FEATURECODE';
+    this.table_head = ['Code', 'Name'];
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  import_popup(){
+    this.popup_title = this.language.import_features;
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }

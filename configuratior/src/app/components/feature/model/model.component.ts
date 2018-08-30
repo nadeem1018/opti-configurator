@@ -5,6 +5,7 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -17,7 +18,10 @@ import { ActivatedRoute } from "@angular/router";
 
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
-  public featureModel:any =[];
+ public featureModel:any ={};
+ //public featureModel:any =[];
+ public form: FormGroup;
+  
   public commonData = new CommonData();
   public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
@@ -35,6 +39,7 @@ export class ModelComponent implements OnInit {
    public isUpdateButtonVisible:boolean=false;
 public isSaveButtonVisible:boolean=true;
 public isDeleteButtonVisible:boolean=true;
+public selectedFile:string="";
 
 
    
@@ -73,9 +78,10 @@ this.featureBom.Accessory=data[0].OPTM_ACCESSORY
     }
   }
   onSaveClick(){
-    this.featureModel= [];
+    this.featureModel.Feature= [];
+    this.featureModel.Picture= [];
     var validateStatus = this.Validation();
-    console.log(this.featureBom.ItemName);
+   // console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:this.companyName,
@@ -91,10 +97,24 @@ if (validateStatus == true){
       CreatedUser: this.username,
       Accessory:this.featureBom.Accessory
     })
+   
+    this.featureModel.Picture.push({
+      PicturePath:this.selectedFile
+
+    });
+    //  const fd=new FormData()
+    //  fd.append('image',this.selectedFile,this.selectedFile.name)
     
+    //  fd.append('Feature',JSON.stringify(this.featureModel))
+    
+   // alert(fd)
+   // var jsFeature=JSON.stringify(this.featureModel);
+   // fd.append("jsonData",jsFeature)
+   
     this.fms.saveData(this.featureModel).subscribe(
+     // this.fms.saveData(fd).subscribe(
       data => {
-        console.log(data);
+       // console.log(data);
         if (data == "True" ) {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.router.navigateByUrl(this.view_route_link);
@@ -122,9 +142,31 @@ if (validateStatus == true){
     this.fms.getTemplateItems(this.companyName).subscribe(
       data => {
         this.serviceData = data;
+       // console.log(data);
+        //if(this.serviceData.length > 0)
+         
+        //}
       }
     )
   }
+
+  // onFileChanged(event) {
+  //   this.selectedFile = <File>event.target.files[0]
+  //   console.log( this.selectedFile)
+  // }
+
+  onFileChanged(event) {
+    
+    let reader = new FileReader();
+    if(event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      this.selectedFile = reader.result.split(',')[1]
+       //this.selectedFile = btoa(reader.result.split(',')[1]);
+      console.log(  this.selectedFile )
+    }
+  }
+
   onItemGenerationPress(status){
     this.lookupfor = 'model_item_generation';
     this.getAllItemGenerated();
@@ -135,6 +177,10 @@ if (validateStatus == true){
         this.serviceData = data;
       }
     )
+  }
+
+  openImportPopup() {
+    this.lookupfor = 'import_popup';
   }
   //validation of inputs
   Validation () {
@@ -179,8 +225,8 @@ if (validateStatus == true){
       FeatureStatus:this.featureBom.Status,
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
-      PicturePath: "www",
-      CreatedUser: this.username,
+      PicturePath: this.selectedFile,
+      CreatedUser:  this.username,
       Accessory:this.featureBom.Accessory
     })
     
