@@ -71,13 +71,10 @@ const routes: Routes = [
     ItemcodegenerationComponent,
     ViewFeatureModelComponent,
     ViewItemCodeGenerationComponent,
-<<<<<<< HEAD
     ModelbomComponent,
-    ViewModelBomComponent
-=======
+    ViewModelBomComponent,
     BomComponent,
     ModelbomComponent
->>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
   ],
   imports: [
     BrowserModule,

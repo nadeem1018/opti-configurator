@@ -22,9 +22,18 @@ export class FeaturebomService {
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
   }
 
-  getFeatureDetails(feature_code){
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code }]) }
-    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
+  getFeatureDetails(feature_code,press_location,index): Observable<any>{
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index}]) }
+      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
+  }
 
+  getItemDetails(ItemKey): Observable<any>{
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, ItemKey: ItemKey}]) }
+      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetItemList", jObject, this.common_params.httpOptions);
+  }
+
+  SaveModelBom(SaveData): Observable<any>{
+    let jObject:any = { AddModelBom: JSON.stringify( SaveData) };
+      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/AddUpdateFeatureBOMData", jObject, this.common_params.httpOptions);
   }
 }
