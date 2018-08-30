@@ -83,7 +83,27 @@
     "CompanyRequired":"Select Company",
     "DeleteConfimation":"Do you want to delete?",
 
+<<<<<<< HEAD
 
     "ModelBom":"Model Bom"
+=======
+    "Bom_FeatureId":"Feature ID",
+    "Bom_Displayname":"Display Name",
+    "Bom_FeatureDesc":"Feature Description",
+    "Bom_FeatureValue":"Feature/Item/Value",
+    "Bom_Qty":"Quantity",
+    "Bom_Default":"Default",
+    "Bom_Remarks":"Remarks",
+    "Bom_Attach":"Attachment",
+    "Bom_title":"Feature BOM",
+    "import" : "Import",
+    "image" : "Image",
+    "import_features" : "Import Features",
+    "choose_file_msg":"Choose File Type",
+        "file_type": "File Type",
+    "choose_file" : "Choose File",
+    "csv":"CSV",
+    "excel":"Excel"
+>>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
     
 }

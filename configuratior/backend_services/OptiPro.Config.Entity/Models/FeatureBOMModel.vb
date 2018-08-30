@@ -1,5 +1,5 @@
 ﻿
-Public Class FeatureMasterDetailModel
+Public Class FeatureBOMModel
     Private msFeatureList As String
     Private msFeatureDetail As String
     Private msItemList As String
@@ -65,6 +65,6 @@ Public Class FeatureMasterDetailModel
             Return msDeleteFeatureMaster
         End Get
     End Property
-   
+
 
 End Class

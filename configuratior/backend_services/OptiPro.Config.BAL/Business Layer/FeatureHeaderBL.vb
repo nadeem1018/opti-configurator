@@ -27,6 +27,22 @@ Public Class FeatureHeaderBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddFeature.Feature)
+
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
+
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = FeatureHeaderDL.AddFeatures(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -42,6 +58,22 @@ Public Class FeatureHeaderBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDelete.DeleteFeature)
+
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
+
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = FeatureHeaderDL.DeleteFeatures(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -57,6 +89,22 @@ Public Class FeatureHeaderBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDelete.UpdateFeature)
+
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
+
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = FeatureHeaderDL.UpdateFeatures(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -158,6 +206,19 @@ Public Class FeatureHeaderBL
         Catch ex As Exception
             Return Nothing
         End Try
+    End Function
+
+
+    Public Shared Function CreateTableForLicenseMsg() As DataSet
+        Dim ds As New DataSet
+        Dim dt As New DataTable
+
+        dt.Columns.Add("ErrorMsg")
+        dt.Columns.Add("ErrorNo")
+
+        ds.Tables.Add(dt)
+        ds.Tables(0).TableName = "LICDATA"
+        Return ds
     End Function
 
 

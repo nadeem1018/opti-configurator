@@ -39,13 +39,6 @@ common_params = new CommonData();
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Base/GetPSURL", jObject, this.common_params.httpOptions);
   }
-  //Get Warehouses
-  // getWarehouse(loginId: string, CompanyDBID: string, psURL: string): Observable<any> {
-  //   //JSON Obeject Prepared to be send as a param to API
-  //   let jObject: any = { CompanyName: JSON.stringify([{ Username: loginId, CompanyDBId: CompanyDBID }]) };
-  //   //Return the response form the API  
-  //   return this.httpclient.post(psURL + "/api/login/GetWHS", jObject, this.httpOptions)
-  // }
 
 };
 

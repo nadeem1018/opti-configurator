@@ -32,6 +32,21 @@ Public Class ItemGenerationBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddItemGeneration.AddItemGeneration)
+
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = ItemGenerationDL.AddItemGeneration(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -76,6 +91,21 @@ Public Class ItemGenerationBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDeleteItemGenerationCode.DeleteItemGeneration)
+
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = ItemGenerationDL.DeleteItemGenerationCode(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -116,6 +146,20 @@ Public Class ItemGenerationBL
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objAddItemGeneration.AddItemGeneration)
+            ''-----------------------------------Code For Licence -------------------------------------------------
+            'Dim psLicenceErrMsg As String = ""
+            'If Not (BaseBL.IsLicAuthenticateForTransaction(pdtDetails.Rows(0).Item("Username"), pdtDetails.Rows(0).Item("GUID"), psLicenceErrMsg)) Then
+            '    Dim dsLICServiceDs As DataSet
+            '    Dim pRow As DataRow
+            '    dsLICServiceDs = CreateTableForLicenseMsg()
+            '    pRow = dsLICServiceDs.Tables(0).NewRow
+            '    pRow("ErrorMsg") = psLicenceErrMsg
+            '    pRow("ErrorNo") = psLicenceErrMsg
+            '    dsLICServiceDs.Tables(0).Rows.Add(pRow)
+            '    psStatus = dsLICServiceDs.Tables(0).Rows(0).Item("ErrorMsg").ToString
+            '    Return psStatus
+            'End If
+            ''----------------------------------Code For Licence End Here -------------------------------------------------------------
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             psStatus = ItemGenerationDL.UpdateDataofGeneratedItem(pdtDetails, mObjCompany)
             'Return the Datasetset
@@ -148,15 +192,15 @@ Public Class ItemGenerationBL
 
 
     Public Shared Function GetItemGenerationData(ByVal objGetItemGenerationData As ItemGenerationModel) As String
-        Dim psItemData As String
+        Dim pdtItemData As String
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
             pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objGetItemGenerationData.GetRecord)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-            psItemData = ItemGenerationDL.GetItemGenerationData(pdtDetails, mObjCompany)
+            pdtItemData = ItemGenerationDL.GetItemGenerationData(pdtDetails, mObjCompany)
             'Return the Datasetset
-            Return psItemData
+            Return pdtItemData
         Catch ex As Exception
             Return Nothing
         End Try
@@ -175,6 +219,18 @@ Public Class ItemGenerationBL
         Catch ex As Exception
             Return Nothing
         End Try
+    End Function
+
+    Public Shared Function CreateTableForLicenseMsg() As DataSet
+        Dim ds As New DataSet
+        Dim dt As New DataTable
+
+        dt.Columns.Add("ErrorMsg")
+        dt.Columns.Add("ErrorNo")
+
+        ds.Tables.Add(dt)
+        ds.Tables(0).TableName = "LICDATA"
+        Return ds
     End Function
 
 End Class
