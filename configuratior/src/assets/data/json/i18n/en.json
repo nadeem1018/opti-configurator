@@ -83,10 +83,8 @@
     "CompanyRequired":"Select Company",
     "DeleteConfimation":"Do you want to delete?",
 
-<<<<<<< HEAD
 
-    "ModelBom":"Model Bom"
-=======
+    "ModelBom":"Model Bom",
     "Bom_FeatureId":"Feature ID",
     "Bom_Displayname":"Display Name",
     "Bom_FeatureDesc":"Feature Description",
@@ -104,6 +102,5 @@
     "choose_file" : "Choose File",
     "csv":"CSV",
     "excel":"Excel"
->>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
     
 }

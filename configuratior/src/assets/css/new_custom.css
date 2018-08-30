@@ -250,6 +250,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
   outline: 0;
   border: none;
   -moz-outline-style: none;
+  outline-style: none;
 }
 
 .table .thead-dark th {
