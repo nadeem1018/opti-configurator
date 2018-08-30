@@ -2,7 +2,7 @@
     <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal" >
+            <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal">
                 <i class="fa fa-plus fa-fw"></i> {{language.import}}
             </button>
         </div>
@@ -22,7 +22,7 @@
 </ol>
 <div class="card mb-3">
     <form>
-       <!--  <div class="card-header">
+        <!--  <div class="card-header">
             <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
         <div class="card-body">
 
@@ -30,7 +30,8 @@
                 <label class="col-sm-4 col-form-label" for="feature">
                     {{language.Model_Code}}</label>
                 <div class="col-sm-6">
-                    <input type="text"  id="codeID" name= "codeName" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}" [(ngModel)]="featureBom.Code">
+                    <input type="text" id="codeID" name="codeName" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
+                        [(ngModel)]="featureBom.Code">
                 </div>
             </div>
             <div class="form-group row clearfix">
@@ -43,33 +44,38 @@
                 </div>
             </div>
 
-             <div class="form-group row clearfix">
-        <label class="col-sm-4 col-form-label" for="featurename">{{language.Model_Name}}</label>
-        <div class="col-sm-6">
-          <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3"  placeholder="{{language.Model_Name}}" [(ngModel)]="featureBom.Name">
-        </div>
-      </div>
-      <div class="form-group row clearfix">
-        <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Model_Desc}}</label>
-        <div class="col-sm-6">
-          <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Model_Desc}}" [(ngModel)]="featureBom.Desc">
-        </div>
-      </div>
-      <div class="form-group row clearfix">
-        <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
-    
-          <div class="col-sm-6 input-group">
-            <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
-            <div class="input-group-append">
-              <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)"><i class="fa fa-bars"></i></span>
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="featurename">{{language.Model_Name}}</label>
+                <div class="col-sm-6">
+                    <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Name}}"
+                        [(ngModel)]="featureBom.Name">
+                </div>
             </div>
-          </div>
-          </div>
-          <div class="form-group row clearfix">
-                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
-            
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Model_Desc}}</label>
+                <div class="col-sm-6">
+                    <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Model_Desc}}"
+                        [(ngModel)]="featureBom.Desc">
+                </div>
+            </div>
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
+
                 <div class="col-sm-6 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName"  id="featureItemCode" placeholder="{{language.Model_Ref}}"
+                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
+                        placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
+                    <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)">
+                            <i class="fa fa-bars"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
+
+                <div class="col-sm-6 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" placeholder="{{language.Model_Ref}}"
                         [(ngModel)]="featureBom.Ref">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
@@ -77,59 +83,51 @@
                         </span>
                     </div>
                 </div>
-            
+
             </div>
-        
-        <div class="form-group row clearfix">
-            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
-            <div class="col-sm-6 input-group">
-                <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
-                    type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
-                <div class="input-group-append">
-                    <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
+
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
+                <div class="col-sm-6 input-group">
+                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
+                        type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
+                    <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                    <owl-date-time #dt12></owl-date-time>
                 </div>
-                <owl-date-time #dt12></owl-date-time>
             </div>
-        </div>
-        <div class="form-group row clearfix">
+            <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
                 <div class="col-sm-6">
                     <input type="file" class="form-control  form-control-sm mt3-file" id="image">
                 </div>
             </div>
-        <div class="form-group row clearfix">
-            <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
-            <div class="col-sm-6">
-                <select class="form-control  form-control-sm mt3" name="featureTypeName" gModel [(ngModel)]="featureBom.Status" id="featureTypeNameID">
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
+                <div class="col-sm-6">
+                    <select class="form-control  form-control-sm mt3" name="featureTypeName" gModel [(ngModel)]="featureBom.Status" id="featureTypeNameID">
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <!-- <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
-            <div class="col-sm-6">
-                <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel [(ngModel)]="featureBom.Accessory" id="featureAccessory">
-                    <option>Y</option>
-                    <option>N</option>
-                </select>
+
+            <div class="form-group row clearfix">
+                <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+                <div class="col-sm-6 mt-3px">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory">
+                        <label class="custom-control-label" for="yes">Yes</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory">
+                        <label class="custom-control-label" for="no">No</label>
+                    </div>
+                </div>
             </div>
-        </div> -->
-        <div class="form-group row clearfix">
-            <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
-         <div class="col-sm-6 mt-3px">
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory">
-                <label class="custom-control-label" for="yes">Yes</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory">
-                <label class="custom-control-label" for="no">No</label>
-            </div>
-         </div>
-        </div>
 
         </div>
         <div class="card-footer small text-muted">
@@ -149,19 +147,19 @@
                                 <i class="fa fa-times fa-fw"></i>
                                 <span>{{language.cancel}}</span>
                             </button>
-        
+
                             <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
                                 <i class="fa fa-trash fa-fw"></i>
                                 <span>{{language.delete}}</span>
                             </button>
                             <!-- only view when edit mode -->
-        
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </form>
-        </div>
-        
-        <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData'  (lookupvalue)="getLookupValue($event)"></app-lookup>
+    </form>
+</div>
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"></app-lookup>

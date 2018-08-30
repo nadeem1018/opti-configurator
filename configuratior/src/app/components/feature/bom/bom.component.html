@@ -19,7 +19,7 @@
           <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
       <div class="card-body">
           <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
+              <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
           
               <div class="col-sm-4 input-group">
                   <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]   ="feature_bom_data.feature_id" name="featureName"  id="featureNameId" placeholder="{{language.Bom_FeatureId}}"
@@ -33,28 +33,28 @@
           
           </div>
           <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+              <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
               <div class="col-sm-4">
                 <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}" readonly [(ngModel)] ="feature_bom_data.feature_name">
               </div>
             </div>
 
             <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
+                <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
                 <div class="col-sm-4">
                   <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}" readonly [(ngModel)] ="feature_bom_data.feature_desc">
                 </div>
               </div>
 
               <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="image">{{language.image}}</label>
+                  <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                   <div class="col-sm-4">
                       <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)] ="feature_bom_data.image_path">
                   </div>
               </div>
 
               <!-- <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+                  <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                   <div class="col-sm-4">
                       <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel  id="featureAccessory">
                           <option>Y</option>
@@ -63,7 +63,7 @@
                   </div>
               </div> -->
             <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+                <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                 <div class="col-sm-4 mt-3px">
                     <div class="custom-control custom-radio custom-control-inline">
                         <input type="radio" id="yes" name="featureAccessory" [(ngModel)] ="feature_bom_data.is_accessory"  class="custom-control-input" value="Y">
@@ -109,9 +109,9 @@
                               </td>
                             <td>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}} #type_value />
+                                    <input type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}} #type_value placeholder="{{language.feature}}" />
                                     <div class="input-group-append">
-                                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" placeholder="{{language.feature}}" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
+                                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
                                             <i class="fa fa-bars"></i>
                                         </span>
                                     </div>

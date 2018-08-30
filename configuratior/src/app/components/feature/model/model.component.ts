@@ -41,14 +41,9 @@ export class ModelComponent implements OnInit {
    public codekey:string="";
    public button="save";
    public isUpdateButtonVisible:boolean=false;
-<<<<<<< HEAD
-public isSaveButtonVisible:boolean=true;
-public isDeleteButtonVisible:boolean=true;
-public selectedFile:string="";
-=======
-  public isSaveButtonVisible:boolean=true;
-  public isDeleteButtonVisible:boolean=true;
->>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
+   public isSaveButtonVisible:boolean=true;
+   public isDeleteButtonVisible:boolean=true;
+   public selectedFile:string="";
 
 
    
