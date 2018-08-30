@@ -1,3 +1,40 @@
-<p>
-  modelbom works!
-</p>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+</div>
+<ol class="breadcrumb breadcrumb_mini_margin">
+  <li class="breadcrumb-item">
+    <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
+  </li>
+  <li class="breadcrumb-item ">
+    <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
+  </li>
+  <li class="breadcrumb-item active">{{language.add}}</li>
+</ol>
+<!-- new design -->
+
+<div class="card mb-3">
+  <form>
+    <!-- <div class="card-header">
+      <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
+    <div class="card-body">
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="feature">File</label>
+        <div class="col-sm-4">
+            <input     
+            type="file" (change)="onFileChanged($event)" 
+            #fileInput>
+          <!-- <button (click)="fileInput.click()">Select File</button> -->
+          <button (click)="onUpload()">Upload!</button>
+          <!-- <input type="text"  class="form-control  form-control-sm mt3"
+            id="usrID" name="code" [(ngModel)]="codekey"> -->
+        </div>
+        <div class="col-sm-2">
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="Image upload " (click)="fileUpload()">
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </form>
+</div>

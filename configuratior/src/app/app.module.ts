@@ -36,6 +36,7 @@ import { ViewFeatureModelComponent } from "./components/feature/model/view.model
 import { ViewItemCodeGenerationComponent } from "./components/itemcodegeneration/viewitemcodegeneration.component";
 import { BomComponent } from './components/feature/bom/bom.component';
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
+import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
 
 // routing & navigation
 const routes: Routes = [
@@ -51,7 +52,7 @@ const routes: Routes = [
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
   { path: 'modelbom/add', component: ModelbomComponent },
   { path: 'modelbom/edit/:id', component: ModelbomComponent },
-  { path: 'modelbom/view', component: ViewItemCodeGenerationComponent },
+  { path: 'modelbom/view', component: ViewModelBomComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
@@ -70,8 +71,13 @@ const routes: Routes = [
     ItemcodegenerationComponent,
     ViewFeatureModelComponent,
     ViewItemCodeGenerationComponent,
+<<<<<<< HEAD
+    ModelbomComponent,
+    ViewModelBomComponent
+=======
     BomComponent,
     ModelbomComponent
+>>>>>>> d55cfa876aa8cafaf669c2895ae3fc02d557c248
   ],
   imports: [
     BrowserModule,
