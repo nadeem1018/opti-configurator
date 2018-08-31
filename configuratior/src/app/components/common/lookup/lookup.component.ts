@@ -32,7 +32,7 @@ export class LookupComponent implements OnInit {
   public model_template_item_columns;
   public table_head = [];
   public lookup_key = "";
-
+  public width_value = '100%';
   // intital Javascript object class 
   Object = Object;
 
@@ -92,6 +92,9 @@ export class LookupComponent implements OnInit {
     this.table_head = ['ItemCode', 'ItemName'];
     this.lookup_key = 'ItemName';
    
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -104,7 +107,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureItemCode';
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
-  
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -118,6 +122,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id','Code', 'Name'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -131,6 +137,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
     this.table_head = ['ItemKey','Name'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
