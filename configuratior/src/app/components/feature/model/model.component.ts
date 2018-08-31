@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import * as XLSX from 'ts-xlsx';
 
 
 @Component({
@@ -81,7 +82,6 @@ this.featureBom.Accessory=data[0].OPTM_ACCESSORY
     this.featureModel.Feature= [];
     this.featureModel.Picture= [];
     var validateStatus = this.Validation();
-   // console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:this.companyName,
@@ -102,19 +102,12 @@ if (validateStatus == true){
       PicturePath:this.selectedFile
 
     });
-    //  const fd=new FormData()
-    //  fd.append('image',this.selectedFile,this.selectedFile.name)
     
-    //  fd.append('Feature',JSON.stringify(this.featureModel))
-    
-   // alert(fd)
-   // var jsFeature=JSON.stringify(this.featureModel);
-   // fd.append("jsonData",jsFeature)
    
     this.fms.saveData(this.featureModel).subscribe(
-     // this.fms.saveData(fd).subscribe(
+     
       data => {
-       // console.log(data);
+     
         if (data == "True" ) {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.router.navigateByUrl(this.view_route_link);
@@ -142,18 +135,11 @@ if (validateStatus == true){
     this.fms.getTemplateItems(this.companyName).subscribe(
       data => {
         this.serviceData = data;
-       // console.log(data);
-        //if(this.serviceData.length > 0)
-         
-        //}
+       
       }
     )
   }
 
-  // onFileChanged(event) {
-  //   this.selectedFile = <File>event.target.files[0]
-  //   console.log( this.selectedFile)
-  // }
 
   onFileChanged(event) {
     
@@ -172,7 +158,7 @@ if (validateStatus == true){
     this.getAllItemGenerated();
   }
   getAllItemGenerated() {
-    this.fms.getGeneratedItems("SFDCDB").subscribe(
+    this.fms.getGeneratedItems(this.companyName).subscribe(
       data => {
         this.serviceData = data;
       }
@@ -181,7 +167,10 @@ if (validateStatus == true){
 
   openImportPopup() {
     this.lookupfor = 'import_popup';
-  }
+   
+    }  
+  
+  
   //validation of inputs
   Validation () {
     if(this.featureBom.Code == undefined || this.featureBom.Code == ''){
@@ -212,7 +201,6 @@ if (validateStatus == true){
   onUpdateClick(){
     this.featureModel= [];
     var validateStatus = this.Validation();
-    console.log(this.featureBom.ItemName);
 if (validateStatus == true){
     this.featureModel.push({
       CompanyDBId:this.companyName,

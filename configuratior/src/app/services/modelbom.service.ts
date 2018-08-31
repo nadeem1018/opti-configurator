@@ -11,10 +11,12 @@ export class ModelbomService {
   config_params: any;
   common_params = new CommonData();
   logged_in_company = sessionStorage.selectedComp;
-
+  
   constructor(private httpclient: HttpClient) {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
+  
+ 
 
   httpOptions = {
     headers: new HttpHeaders({

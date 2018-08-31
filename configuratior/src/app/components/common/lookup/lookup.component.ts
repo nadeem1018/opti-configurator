@@ -1,6 +1,7 @@
 import { Component, OnInit, setTestabilityGetter, Input ,Output, EventEmitter} from '@angular/core';
 import { CommonService } from '../../../services/common.service';
-
+import * as XLSX from 'ts-xlsx';
+import { FeaturemodelService } from '../../../services/featuremodel.service';
 
 @Component({
   selector: 'app-lookup',
@@ -16,7 +17,7 @@ export class LookupComponent implements OnInit {
 
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
-  constructor(private common_service: CommonService) { }
+  constructor(private common_service: CommonService,private fms: FeaturemodelService) { }
   
 
   // mandatory variables
@@ -32,11 +33,16 @@ export class LookupComponent implements OnInit {
   public model_template_item_columns;
   public table_head = [];
   public lookup_key = "";
-
+  public width_value = '100%';
+  public selectedFile:string="";
+  public xls_dataset;
+  companyName: string ;
   // intital Javascript object class 
   Object = Object;
 
-  ngOnInit() {  }
+  ngOnInit() {  
+    this.companyName = sessionStorage.getItem('selectedComp');
+  }
   
   ngOnChanges(): void {
  
@@ -92,6 +98,9 @@ export class LookupComponent implements OnInit {
     this.table_head = ['ItemCode', 'ItemName'];
     this.lookup_key = 'ItemName';
    
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -104,7 +113,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureItemCode';
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
-  
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -118,6 +128,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id','Code', 'Name'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -131,6 +143,8 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
     this.table_head = ['ItemKey','Name'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
@@ -140,6 +154,33 @@ export class LookupComponent implements OnInit {
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
+  file_input($event) {
+    var obj = this;
+    this.selectedFile = $event.target.files[0];
+    var reader = new FileReader();
+    var XLS_DATA = '';
+    reader.onload = function ( loadEvent ) {
+      var data = loadEvent.target.result; 
+        var workbook = XLSX.read(data, { type: 'binary' });  
+        workbook.SheetNames.forEach(function(sheetName) {
+          // Here is your object
+          XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+          obj.xls_dataset = XLS_DATA;
+        })
+    
+      }
+    reader.readAsBinaryString($event.target.files[0]);
+  }  
 
+  importclick() {
+    var xls_data = this.xls_dataset;
+    
+    if(this.lookupfor == 'import_popup'){
+      
+      this.fms.importData(this.companyName, xls_data).subscribe(
+        data => {
+        })
+    } 
 
+  }
 }
