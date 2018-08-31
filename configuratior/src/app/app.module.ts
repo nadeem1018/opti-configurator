@@ -74,12 +74,10 @@ const routes: Routes = [
     ItemcodegenerationComponent,
     ViewFeatureModelComponent,
     ViewItemCodeGenerationComponent,
-<<<<<<< HEAD
     ModelbomComponent,
     ViewModelBomComponent,
     BomComponent,
-    ModelbomComponent
-=======
+    ModelbomComponent,
     BomComponent,
     ModelbomComponent,
     ViewModelBomComponent,
@@ -87,7 +85,6 @@ const routes: Routes = [
     ModelbomComponent,
     ViewFeatureBOMComponent,
     ViewModelBomComponent
->>>>>>> a9126f048f973acdb47bd9dd439033959b73bbaf
   ],
   imports: [
     BrowserModule,
