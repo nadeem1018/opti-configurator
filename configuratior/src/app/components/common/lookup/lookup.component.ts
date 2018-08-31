@@ -61,6 +61,14 @@ export class LookupComponent implements OnInit {
         this.get_features_lookup();
       }
 
+      if (this.lookupfor == "feature_Detail_lookup"){
+        this.get_features_lookup();
+      }
+
+      if (this.lookupfor == "Item_Detail_lookup"){
+        this.get_Item_lookup();
+      }
+
       // open poup for import 
       if (this.lookupfor == "import_popup"){
         this.import_popup();
@@ -104,12 +112,25 @@ export class LookupComponent implements OnInit {
   get_features_lookup(){
     console.log('in lookup');
 
-    this.popup_title = this.language.Bom_title;
+    this.popup_title = this.language.FeatureLookupTitle;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATURECODE';
-    this.table_head = ['Code', 'Name'];
+    this.lookup_key = 'OPTM_FEATUREID';
+    this.table_head = ['Id','Code', 'Name'];
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  get_Item_lookup(){
+    console.log('in lookup');
+
+    this.popup_title = this.language.ItemLookupTitle;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'type_value';
+    this.lookup_key = 'ItemKey';
+    this.table_head = ['ItemKey','Name'];
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }

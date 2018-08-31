@@ -96,5 +96,7 @@
     "csv": "CSV",
     "excel": "Excel",
     "uom":"UOM",
-    "min_selectable":"Min Selectable"
+    "min_selectable":"Min Selectable",
+    "FeatureLookupTitle":"Feature Master",
+    "ItemLookupTitle":"Item Master"
 }

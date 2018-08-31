@@ -109,9 +109,9 @@
                               </td>
                             <td>
                                 <div class="input-group">
-                                    <input type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}} #type_value placeholder="{{language.feature}}" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
+                                    <input   [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}} #type_value />
+                                    <div class="input-group-append" [hidden]=row.hide>
+                                        <span  class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal"  (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
                                             <i class="fa fa-bars"></i>
                                         </span>
                                     </div>
@@ -119,12 +119,12 @@
                             
                             </td>
                               <td>
-                               <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} #display_name />
+                               <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} #display_name />
                                     
                               
                               </td>
                               <td>
-                                <input type="text" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
+                                <input type="text" style="text-align:right" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
                               </td>
                               <td>
                                 <input type="checkbox" value="1" class="form-control  form-control-sm mt3" id="default" value={{row.default}} #default />
