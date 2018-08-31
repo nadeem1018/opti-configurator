@@ -23,6 +23,15 @@
           <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
             readonly [(ngModel)]="modelbom_data.feature_name">
         </div>
+        <div class="col-sm-4">
+          <div class="col-sm-4 mt-3px">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="modelbom_data.is_ready_touse" class="custom-control-input"
+                value="Y">
+              <label class="custom-control-label" for="yes">Yes</label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="form-group row clearfix">
@@ -37,6 +46,11 @@
         <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
         <div class="col-sm-4">
           <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)]="modelbom_data.image_path">
+        </div>
+        <div class="col-sm-1">
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
+            <i class="fa fa-plus"></i>
+          </a>
         </div>
       </div>
       <hr>
@@ -78,34 +92,36 @@
           </div>
           <hr>
         </div>
-        <div class="card-footer small text-muted">
-          <div class="footer-buttons">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="pull-left">
-                  <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
-                    <i class="fa fa-save"></i> {{language.save}}</button>
-                  <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdate()" class="btn btn-sm btn-info mr-10">
-                    <i class="fa fa-save"></i> {{language.update}}</button>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="pull-right">
-                  <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                    <i class="fa fa-times fa-fw"></i>
-                    <span>{{language.cancel}}</span>
-                  </button>
+      </div>
+    </div>
+    <div class="card-footer small text-muted">
+      <div class="footer-buttons">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pull-left">
+              <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                <i class="fa fa-save"></i> {{language.save}}</button>
+              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdate()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right">
+              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                <i class="fa fa-times fa-fw"></i>
+                <span>{{language.cancel}}</span>
+              </button>
 
-                  <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
-                    <i class="fa fa-trash fa-fw"></i>
-                    <span>{{language.delete}}</span>
-                  </button>
-                  <!-- only view when edit mode -->
+              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+                <i class="fa fa-trash fa-fw"></i>
+                <span>{{language.delete}}</span>
+              </button>
+              <!-- only view when edit mode -->
 
-                </div>
-              </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
   </form>
-  </div>
+</div>
