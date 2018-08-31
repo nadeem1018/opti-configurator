@@ -257,4 +257,8 @@ li.breadcrumb-item a, li.breadcrumb-item {
   font-size: 13px;
 }
 
+.mt15 {
+  margin-top: 15% !important;
+}
+
 /* custom css for page width magin and padding - end */

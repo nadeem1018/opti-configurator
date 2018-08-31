@@ -1,59 +1,61 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-  <h4 class="h4 smaller_font"> {{language.Bom_title}} </h4>
+    <h4 class="h4 smaller_font"> {{language.Bom_title}} </h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
-  <li class="breadcrumb-item">
-      <a href="javascript:;" routerLink="/home">
-          <i class="fa fa-home fa-fw"></i>
-          <span>{{language.dashboard}}</span>
-      </a>
-  </li>
-  <li class="breadcrumb-item ">
-      <a routerLink="{{view_route_link}}" href="javascript:;">{{language.Bom_title}}</a>
-  </li>
-  <li class="breadcrumb-item active">{{language.add}}</li>
+    <li class="breadcrumb-item">
+        <a href="javascript:;" routerLink="/home">
+            <i class="fa fa-home fa-fw"></i>
+            <span>{{language.dashboard}}</span>
+        </a>
+    </li>
+    <li class="breadcrumb-item ">
+        <a routerLink="{{view_route_link}}" href="javascript:;">{{language.Bom_title}}</a>
+    </li>
+    <li class="breadcrumb-item active">{{language.add}}</li>
 </ol>
 <div class="card mb-3">
-  <form name="bom_feature_form">
-     <!--  <div class="card-header">
+    <form name="bom_feature_form">
+        <!--  <div class="card-header">
           <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
-      <div class="card-body">
-          <div class="form-group row clearfix">
-              <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
-          
-              <div class="col-sm-4 input-group">
-                  <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]   ="feature_bom_data.feature_id" name="featureName"  id="featureNameId" placeholder="{{language.Bom_FeatureId}}"
-                      >
-                  <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openFeatureLookUp()">
-                          <i class="fa fa-bars"></i>
-                      </span>
-                  </div>
-              </div>
-          
-          </div>
-          <div class="form-group row clearfix">
-              <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
-              <div class="col-sm-4">
-                <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}" readonly [(ngModel)] ="feature_bom_data.feature_name">
-              </div>
+        <div class="card-body">
+            <div class="form-group row clearfix">
+                <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
+
+                <div class="col-sm-4 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id" name="featureName"
+                        id="featureNameId" placeholder="{{language.Bom_FeatureId}}">
+                    <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openFeatureLookUp()">
+                            <i class="fa fa-bars"></i>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group row clearfix">
+                <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+                <div class="col-sm-4">
+                    <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
+                        readonly [(ngModel)]="feature_bom_data.feature_name">
+                </div>
             </div>
 
             <div class="form-group row clearfix">
                 <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
                 <div class="col-sm-4">
-                  <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}" readonly [(ngModel)] ="feature_bom_data.feature_desc">
+                    <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}"
+                        readonly [(ngModel)]="feature_bom_data.feature_desc">
                 </div>
-              </div>
+            </div>
 
-              <div class="form-group row clearfix">
-                  <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
-                  <div class="col-sm-4">
-                      <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)] ="feature_bom_data.image_path">
-                  </div>
-              </div>
+            <div class="form-group row clearfix">
+                <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
+                <div class="col-sm-4">
+                    <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)]="feature_bom_data.image_path">
+                </div>
+            </div>
 
-              <!-- <div class="form-group row clearfix">
+            <!-- <div class="form-group row clearfix">
                   <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                   <div class="col-sm-4">
                       <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel  id="featureAccessory">
@@ -66,11 +68,13 @@
                 <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                 <div class="col-sm-4 mt-3px">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="yes" name="featureAccessory" [(ngModel)] ="feature_bom_data.is_accessory"  class="custom-control-input" value="Y">
+                        <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
+                            value="Y">
                         <label class="custom-control-label" for="yes">Yes</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="no" name="featureAccessory" [(ngModel)] ="feature_bom_data.is_accessory" class="custom-control-input" value="N">
+                        <input type="radio" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
+                            value="N">
                         <label class="custom-control-label" for="no">No</label>
                     </div>
                 </div>
@@ -80,106 +84,118 @@
                     </a>
                 </div>
             </div>
-               <hr> 
-              <div class="col-sm-12">
-                  <div class="table-responsive table-responsive-sm">
+            <hr>
+            <div class="col-sm-12">
+                <div class="table-responsive table-responsive-sm">
                     <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
-                      <thead class="thead-dark">
-                        <tr >
-                          <th  width="4%">#</th>
-                          <th width="10%">{{language.Model_Type}}</th>
-                          <th width="13%">{{language.Bom_FeatureValue}}</th>
-                          <th width="13%">{{language.Bom_Displayname}}</th>
-                          <th width="5%">{{language.Bom_Qty}}</th>
-                          <th width="5%">{{language.Bom_Default}}</th>
-                          <th width="10%">{{language.Bom_Remarks}}</th>
-                          <th width="10%">{{language.Bom_Attach}}</th>
-                            <th width="4%">#</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let row of feature_bom_table" >
-                              <td>
-                                <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
-                              </td>
-                              <td>
-                                <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
-                                    <option *ngFor="let v of commonData.bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
-                                </select>
-                              </td>
-                            <td>
-                                <div class="input-group">
-                                    <input   [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}} #type_value />
-                                    <div class="input-group-append" [hidden]=row.hide>
-                                        <span  class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal"  (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
-                                            <i class="fa fa-bars"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            
-                            </td>
-                              <td>
-                               <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} #display_name />
-                                    
-                              
-                              </td>
-                              <td>
-                                <input type="text" style="text-align:right" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
-                              </td>
-                              <td>
-                                <input type="checkbox" value="1" class="form-control  form-control-sm mt3" id="default" value={{row.default}} #default />
-                              </td>
-                            <td>
-                                <input type="text" class="form-control  form-control-sm mt3" id="remark" value={{row.remark}} #remark />
-                            
-                            </td>
-                            <td>
-                                <input type="file" class="form-control  form-control-sm mt3" id="attachment" value={{row.attachment}} #attachment />
-                            
-                            </td>
-                              <td>
-                                <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              </td>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th width="4%">#</th>
+                                <th width="10%">{{language.Model_Type}}</th>
+                                <th width="13%">{{language.Bom_FeatureValue}}</th>
+                                <th width="13%">{{language.Bom_Displayname}}</th>
+                                <th width="5%">{{language.Bom_Qty}}</th>
+                                <th width="5%">{{language.Bom_Default}}</th>
+                                <th width="10%">{{language.Bom_Remarks}}</th>
+                                <th width="10%">{{language.Bom_Attach}}</th>
+                                <th width="4%">#</th>
                             </tr>
-                          </tbody>
-                          </table>
-                  </div>
-                </div>    
-      </div>
-      <div class="card-footer small text-muted">
-          <div class="footer-buttons">
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="pull-left">
-                          <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
-                              <i class="fa fa-save"></i> {{language.save}}</button>
-                          <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
-                              <i class="fa fa-save"></i> {{language.update}}</button>
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="pull-right">
-                          <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                              <i class="fa fa-times fa-fw"></i>
-                              <span>{{language.cancel}}</span>
-                          </button>
-      
-                          <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
-                              <i class="fa fa-trash fa-fw"></i>
-                              <span>{{language.delete}}</span>
-                          </button>
-                          <!-- only view when edit mode -->
-      
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of feature_bom_table">
+                                <td>
+                                    <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                                </td>
+                                <td>
+                                    <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
+                                        <option *ngFor="let v of commonData.bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}}
+                                            #type_value />
+                                        <div class="input-group-append" [hidden]=row.hide>
+                                            <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
+                                                <i class="fa fa-bars"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}}
+                                        #display_name />
+
+
+                                </td>
+                                <td>
+                                    <input type="text" style="text-align:right" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}}
+                                        #quantity />
+                                </td>
+                                <td>
+                                    <input type="checkbox" value="1" class="form-control  form-control-sm mt3" id="default" value={{row.default}} #default />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control  form-control-sm mt3" id="remark" value={{row.remark}} #remark />
+
+                                </td>
+                                <td>
+                                    <input type="file" class="form-control  form-control-sm mt3" id="attachment" value={{row.attachment}} #attachment />
+
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <div class="footer-buttons">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="pull-left">
+                            <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                                <i class="fa fa-save"></i> {{language.save}}
+                            </button>
+                            <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
+                                <i class="fa fa-save"></i> {{language.update}}
+                            </button>
+                            <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
+                                <i class="fa fa-window-maximize"></i> {{language.explode}}
+                            </button>
+                            
+                            <button type="button" (click)="onAssociatedBOMClick()" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10">
+                                <i class="fa fa-window-maximize"></i> {{language.on_associated_bom}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="pull-right">
+                            <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                                <i class="fa fa-times fa-fw"></i>
+                                <span>{{language.cancel}}</span>
+                            </button>
+
+                            <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
+                                <i class="fa fa-trash fa-fw"></i>
+                                <span>{{language.delete}}</span>
+                            </button>
+                            <!-- only view when edit mode -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-  </div>
-  <hr>
-   
+</div>
+<hr>
+
 
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"></app-lookup>

@@ -20,6 +20,8 @@ export class BomComponent implements OnInit {
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = false;
+  public isExplodeButtonVisible: boolean = true;
+  public isAssociatedBOMButtonVisible: boolean = true;
   public update_id: string = "";
   public currentrowindex: number;
   // public isDisplayNameDisabled: boolean = false;
@@ -204,11 +206,17 @@ export class BomComponent implements OnInit {
          
             this.serviceData = data;
           }
-
-
         }
       }
     )
+  }
+
+  onExplodeClick(){
+
+  }
+
+  onAssociatedBOMClick(){
+
   }
 
 
