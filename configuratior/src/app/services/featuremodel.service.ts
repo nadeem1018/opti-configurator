@@ -73,4 +73,15 @@ export class FeaturemodelService {
     //Return the response form the API  
      return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/DeleteFeatures",jObject,this.common_params.httpOptions);
     }
+
+    
+    //Submit feature bom data
+    importData(CompanyDBID:string,featureBom):Observable<any>{
+    //JSON Obeject Prepared to be send as a param to API
+      //JSON Obeject Prepared to be send as a param to API
+      let jObject:any={ GetRecord: JSON.stringify(featureBom), FeatureCode:JSON.stringify([{ CompanyDBID: CompanyDBID}])};
+      
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ImportDataFromExcel", jObject, this.common_params.httpOptions);
+    }
 }

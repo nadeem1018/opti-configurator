@@ -28,9 +28,12 @@ export class ModelbomComponent implements OnInit {
 
   file_input($event) {
     this.input_file = $event.target.files[0];
+
   }
 
   onUpload() {
+    
+    
     this.service.post_data_with_file(this.input_file, this.modelbom_data).subscribe(
       data => {
         console.log(data);

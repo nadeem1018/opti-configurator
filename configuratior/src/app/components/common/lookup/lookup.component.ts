@@ -1,6 +1,7 @@
 import { Component, OnInit, setTestabilityGetter, Input ,Output, EventEmitter} from '@angular/core';
 import { CommonService } from '../../../services/common.service';
-
+import * as XLSX from 'ts-xlsx';
+import { FeaturemodelService } from '../../../services/featuremodel.service';
 
 @Component({
   selector: 'app-lookup',
@@ -16,7 +17,7 @@ export class LookupComponent implements OnInit {
 
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
-  constructor(private common_service: CommonService) { }
+  constructor(private common_service: CommonService,private fms: FeaturemodelService) { }
   
 
   // mandatory variables
@@ -32,11 +33,15 @@ export class LookupComponent implements OnInit {
   public model_template_item_columns;
   public table_head = [];
   public lookup_key = "";
-
+  public selectedFile:string="";
+  public xls_dataset;
+  companyName: string ;
   // intital Javascript object class 
   Object = Object;
 
-  ngOnInit() {  }
+  ngOnInit() {  
+    this.companyName = sessionStorage.getItem('selectedComp');
+  }
   
   ngOnChanges(): void {
  
@@ -119,6 +124,33 @@ export class LookupComponent implements OnInit {
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
+  file_input($event) {
+    var obj = this;
+    this.selectedFile = $event.target.files[0];
+    var reader = new FileReader();
+    var XLS_DATA = '';
+    reader.onload = function ( loadEvent ) {
+      var data = loadEvent.target.result; 
+        var workbook = XLSX.read(data, { type: 'binary' });  
+        workbook.SheetNames.forEach(function(sheetName) {
+          // Here is your object
+          XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+          obj.xls_dataset = XLS_DATA;
+        })
+    
+      }
+    reader.readAsBinaryString($event.target.files[0]);
+  }  
 
+  importclick() {
+    var xls_data = this.xls_dataset;
+    
+    if(this.lookupfor == 'import_popup'){
+      
+      this.fms.importData(this.companyName, xls_data).subscribe(
+        data => {
+        })
+    } 
 
+  }
 }

@@ -86,15 +86,20 @@
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>
                         <div class="col-sm-6">
-                            <input type="file" class="form-control  form-control-sm mt3-file" id="image">
+                            <input type="file" class="form-control  form-control-sm mt3-file" id="image" (change)="file_input($event)">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-success mr-10" type="button">
+                <button class="btn btn-sm btn-success mr-10" type="button" (click)="importclick()">
                     <i class="fa fa-check"></i> {{this.language.import}}</button>
             </div>
         </div>
     </div>
+    <script src="Scripts/angular.min.js"></script>  
+    <script src= '../../../feature/model/model.component.ts'></script>  
+  
+    <script src="Scripts/xlsx.full.min.js"></script>  
+    <script src="Scripts/jszip.js"></script>  
 </div>
