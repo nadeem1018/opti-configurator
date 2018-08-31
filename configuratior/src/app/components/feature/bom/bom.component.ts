@@ -364,7 +364,8 @@ export class BomComponent implements OnInit {
     )
   }
 
-  onExplodeClick(){
+  onExplodeClick(){}
+
   onDeleteClick(){
     var result = confirm(this.language.DeleteConfimation);
         if (result) {
@@ -384,13 +385,8 @@ export class BomComponent implements OnInit {
         }
   }
 
-  }
-
   onAssociatedBOMClick(){
 
   }
-
-
-
-
+  
 }

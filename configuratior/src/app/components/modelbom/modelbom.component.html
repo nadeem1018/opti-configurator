@@ -18,9 +18,23 @@
 <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
     <div class="card-body">
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.model}}</label>
+      
+        <div class="col-sm-4 input-group">
+          <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"
+            id="featureNameId" placeholder="{{language.model}}">
+          <div class="input-group-append">
+            <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openFeatureLookUp()">
+              <i class="fa fa-bars"></i>
+            </span>
+          </div>
+        </div>
+      
+      </div>
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.name}}</label>
         <div class="col-sm-4">
-          <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
+          <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.name}}"
             readonly [(ngModel)]="modelbom_data.feature_name">
         </div>
         <div class="col-sm-4 mt-3px">
@@ -33,9 +47,9 @@
       </div>
 
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
+        <label class="col-sm-2 col-form-label" for="featureDesc">{{language.description}}</label>
         <div class="col-sm-4">
-          <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}"
+          <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.description}}"
             readonly [(ngModel)]="modelbom_data.feature_desc">
         </div>
       </div>
@@ -132,7 +146,7 @@
           </table>
           </div>
           </div>
-          <div class="form-group row clearfix">
+       <!--   <div class="form-group row clearfix">
             <label class="col-sm-2 col-form-label" for="feature">Test File Upload </label>
             <div class="col-sm-4">
               <input multiple="false" type="file" (change)="file_input($event)">
@@ -148,12 +162,11 @@
           </div> -->
           <hr>
         </div>
-      </div>
-    </div>
+
     <div class="card-footer small text-muted">
       <div class="footer-buttons">
         <div class="row">
-          <div class="col-md-7">
+          <div class="col-md-8">
             <div class="pull-left">
               <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
@@ -168,7 +181,7 @@
               </button>
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-4">
             <div class="pull-right">
               <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
                 <i class="fa fa-times fa-fw"></i>

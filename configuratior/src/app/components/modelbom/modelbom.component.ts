@@ -15,6 +15,7 @@ export class ModelbomComponent implements OnInit {
   public input_file: File = null;
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public modelbom_data: any = [];
+  public image_data: any = [];
   public counter = 0;
   public currentrowindex: number;
   public isExplodeButtonVisible: boolean = true;
@@ -30,6 +31,9 @@ export class ModelbomComponent implements OnInit {
 
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
+    this.image_data = [
+      "" 
+    ];
   }
   onAddRow() {
     this.counter = 0;
