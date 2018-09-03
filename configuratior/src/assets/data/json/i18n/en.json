@@ -99,7 +99,7 @@
     "min_selectable":"Min Selectable",
     "max_selectable":"Max Selectable",
     "propagate_qty":"Propagate Qty",
-    "propagate_qty":"Price Source",
+    "price_source":"Price Source",
     "mandatory":"Mandatory",
     "unique_identifier":"unique identifier",
     "FeatureLookupTitle":"Feature Master",
@@ -111,4 +111,5 @@
     "description":"Description",
     "name":"Name",
     "model":"Model"
+    
 }

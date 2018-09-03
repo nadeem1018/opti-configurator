@@ -155,21 +155,21 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
   }
   file_input($event) {
-    var obj = this;
-    this.selectedFile = $event.target.files[0];
-    var reader = new FileReader();
-    var XLS_DATA = '';
-    reader.onload = function ( loadEvent ) {
-      var data = loadEvent.target.result; 
-        var workbook = XLSX.read(data, { type: 'binary' });  
-        workbook.SheetNames.forEach(function(sheetName) {
-          // Here is your object
-          XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-          obj.xls_dataset = XLS_DATA;
-        })
+    // var obj = this;
+    // this.selectedFile = $event.target.files[0];
+    // var reader = new FileReader();
+    // var XLS_DATA = '';
+    // reader.onload = function ( loadEvent ) {
+    //   var data = loadEvent.target.result; 
+    //     var workbook = XLSX.read(data, { type: 'binary' });  
+    //     workbook.SheetNames.forEach(function(sheetName) {
+    //       // Here is your object
+    //       XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+    //       obj.xls_dataset = XLS_DATA;
+    //     })
     
-      }
-    reader.readAsBinaryString($event.target.files[0]);
+    //   }
+    // reader.readAsBinaryString($event.target.files[0]);
   }  
 
   importclick() {

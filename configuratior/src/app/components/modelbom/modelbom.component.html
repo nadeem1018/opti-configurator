@@ -80,7 +80,7 @@
                 <th width="5%">{{language.min_selectable}}</th>
                 <th width="5%">{{language.max_selectable}}</th>
                 <th width="5%">{{language.propagate_qty}}</th>
-                <th width="5%">{{language.propagate_qty}}</th>
+                <th width="5%">{{language.price_source}}</th>
                 <th width="5%">{{language.mandatory}}</th>
                 <th width="5%">{{language.unique_identifier}}</th>
                 <th width="4%">#</th>
@@ -114,7 +114,7 @@
                   <input type="text" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} #uom />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
+                  <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}} #quantity />
                 </td>
                 <td>
                   <input type="text" class="form-control  form-control-sm mt3" id="min_selected" value={{row.min_selected}} #min_selected />
@@ -123,7 +123,7 @@
                   <input type="text" class="form-control  form-control-sm mt3" id="max_selected" value={{row.max_selected}} #max_selected />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="propagate_qty" value={{row.propagate_qty}} #propagate_qty
+                  <input type="checkbox" class="form-control  form-control-sm mt15" style="text-align:right" id="propagate_qty" value={{row.propagate_qty}} #propagate_qty
                   />
                 </td>
                 <td>
@@ -201,3 +201,5 @@
     </div>
   </form>
 </div>
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"></app-lookup>

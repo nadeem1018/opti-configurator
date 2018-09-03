@@ -42,4 +42,25 @@ export class ModelbomService {
     
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetBomModel/", input_file_obj, this.httpOptions);
   } */
+
+  GetModelList(): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetModelList", jObject, this.common_params.httpOptions);
+  }
+
+  getModelDetails(model_code,press_location,index): Observable<any>{
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: model_code ,pressLocation:press_location,rowid:index}]) }
+      return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetModelList", jObject, this.common_params.httpOptions);
+  }
+
+  getModelFeatureDetails(feature_code,press_location,index): Observable<any>{
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index}]) }
+      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
+  }
+
+  getItemDetails(ItemKey): Observable<any>{
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, ItemKey: ItemKey}]) }
+      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetItemList", jObject, this.common_params.httpOptions);
+  }
+
 }
