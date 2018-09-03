@@ -273,4 +273,9 @@ export class ModelbomComponent implements OnInit {
 
   }
 
+
+  enlage_image(image) {
+    this.lookupfor = 'large_image_view';
+    this.selectedImage = image;
+  } 
 }

@@ -111,6 +111,7 @@
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
     "name":"Name",
-    "model":"Model"
+    "model":"Model",
+    "feature_image":"Feature Image"
     
 }
