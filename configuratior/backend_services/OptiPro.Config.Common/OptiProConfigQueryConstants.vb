@@ -21,14 +21,22 @@
     Public Const OptiPro_Config_GetFeatureList As String = "GetFeatureList"
     Public Const OptiPro_Config_GetFeatureDetail As String = "GetFeatureDetail"
     Public Const OptiPro_Config_GetItemList As String = "GetItemList"
-    Public Const OptiPro_Config_GetFeatureListExceptSelectedFeature As String = "GetFeatureListExceptSelectedFeature"
+    Public Const OptiPro_Config_GetFeatureListForSelectedFeature As String = "GetFeatureListForSelectedFeature"
     Public Const OptiPro_Config_AddDataInFeatureHeader As String = "AddDataInFeatureHeader"
     Public Const OptiPro_Config_AddDataInFeatureDetail As String = "AddDataInFeatureDetail"
     Public Const OptiPro_Config_UpdateDataInFeatureDetail As String = "UpdateDataInFeatureDetail"
     Public Const OptiPro_Config_DeleteDataFromFeatureDetail As String = "DeleteDataFromFeatureDetail"
     Public Const OptiPro_Config_GetItemForFeatureBOM As String = "GetItemForFeatureBOM"
-
-
+    Public Const OptiPro_Config_GetSavedDataByFeatureCodeFromHDR As String = "GetSavedDataByFeatureCodeFromHDR"
+    Public Const OptiPro_Config_GetSavedDataByFeatureCodeFromDTL As String = "GetSavedDataByFeatureCodeFromDTL"
+    Public Const OptiPro_Config_GetFeatureListExceptSelectedFeature As String = "GetFeatureListExceptSelectedFeature"
+    Public Const OptiPro_Config_GetFeatureListExceptSelectedItem As String = "GetFeatureListExceptSelectedItem"
+    Public Const OptiPro_Config_GetDataForCommonViewBySearchCriteria As String = "GetDataForCommonViewBySearchCriteria"
+    Public Const OptiPro_Config_GetDataForCommonView As String = "GetDataForCommonView"
+    Public Const OptiPro_Config_GetTotalCountOfRecordForFeatureBOM As String = "GetTotalCountOfRecordForFeatureBOM"
+    Public Const OptiPro_Config_GetDataByFeatureIDForFeatureBOM As String = "GetDataByFeatureIDForFeatureBOM"
+    Public Const OptiPro_Config_DeleteDataFromHDR As String = "DeleteDataFromHDR"
+    Public Const OptiPro_Config_DeleteDataFromDTL As String = "DeleteDataFromDTL"
 #End Region
 
 #Region "Item Generation"
@@ -41,6 +49,7 @@
     Public Const OptiPro_Config_GetItemGenerationDataBySearchCriteria As String = "GetItemGenerationDataBySearchCriteria"
     Public Const OptiPro_Config_GetTotalCountOfRecordForItemGeneration As String = "GetTotalCountOfRecordForItemGeneration"
     Public Const OptiPro_Config_GetItemCodeReference As String = "GetItemCodeReference"
+
 #End Region
 
 #Region "Common"
@@ -53,7 +62,20 @@
 
 #Region "ModelBOM"
 
+    Public Const OptiPro_Config_GetModelList As String = "GetModelList"
+    Public Const OptiPro_Config_GetModelListExceptSelectedFeature As String = "GetModelListExceptSelectedFeature"
 
+    Public Const OptiPro_Config_GetPriceList As String = "GetPriceList"
+    Public Const OptiPro_Config_GetDetailForModel As String = "GetDetailForModel"
+    Public Const OptiPro_Config_GetSavedDataByModelIdFromHDR As String = "GetSavedDataByModelIdFromHDR"
+    Public Const OptiPro_Config_GetSavedDataByModelIdFromDTL As String = "GetSavedDataByFeatureCodeFromDTL"
+    Public Const OptiPro_Config_DeleteDataFromMBOMHDR As String = "DeleteDataFromMBOMHDR"
+    Public Const OptiPro_Config_DeleteDataFromMBOMDTL As String = "DeleteDataFromMBOMDTL"
+    Public Const OptiPro_Config_GetDataForCommonViewForModelBOMBySearchCriteria As String = "GetDataForCommonViewForModelBOMBySearchCriteria"
+    Public Const OptiPro_Config_GetDataForCommonViewForModelBOM As String = "GetDataForCommonViewForModelBOM"
+    Public Const OptiPro_Config_GetTotalCountOfRecordForModelBOM As String = "GetTotalCountOfRecordForModelBOM"
+    Public Const OptiPro_Config_GetDataByFeatureIDForModelBOM As String = "GetDataByFeatureIDForModelBOM"
+    Public Const OptiPro_Config_GetDataForModelDTL As String = "GetDataForModelDTL"
 #End Region
 
 

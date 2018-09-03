@@ -148,25 +148,37 @@ Public Class SQLQuery
 #Region "Feature BOM"
     'SQL Query to get the LIst of Fetaure 
     Function GetFeatureList() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"""
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature'"
         Return psSQL
     End Function
 
     'SQL Query to get the Details of  Feature Accordng to the Fature ID 
     Function GetFeatureDetail() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID "
+        Dim psSQL As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID "
         Return psSQL
     End Function
 
     'SQL Query to get the List of the Items fom the OITM Table
     Function GetItemForFeatureBOM() As String
-        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"""
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"" where ""ItemKey""=@ITEMKEY"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of all the Features Except the Selected Feature
+    Function GetFeatureListForSelectedFeature() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
 
     'SQL Query to get the List of all the Features Except the Selected Feature
     Function GetFeatureListExceptSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""DisplayName"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""<>@FEATUREID"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""<>@FEATUREID"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of all the Features Except the Selected Feature
+    Function GetFeatureListExceptSelectedItem() As String
+        Dim psSQL As String = "select ""ItemKey"",""Description"" from ""OPConfig_ItemMaster"""
         Return psSQL
     End Function
 
@@ -192,10 +204,104 @@ Public Class SQLQuery
         Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREDTL"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
+
+    Function GetSavedDataByFeatureCodeFromHDR() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataByFeatureCodeFromDTL() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonViewBySearchCriteria() As String
+        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT (T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_FEATUREID"" LIKE '%@SEARCHSTRING%'  EXCEPT Select DISTINCT TOP @STARTCOUNT (T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_FEATUREID"" LIKE '%@SEARCHSTRING%'"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonView() As String
+        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT (T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"" EXCEPT Select DISTINCT TOP @STARTCOUNT (T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"""
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForFeatureBOM() As String
+        Dim psSQL As String = "SELECT  COUNT( DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromHDR() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromDTL() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSQL
+    End Function
+
 #End Region
 
 
 #Region "ModelBOM"
+    Function GetModelList() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Model'"
+        Return psSQL
+    End Function
+
+    Function GetModelListExceptSelectedFeature() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Model' and ""OPTM_FEATUREID""<>@MODELID"
+        Return psSQL
+    End Function
+
+    Function GetPriceList() As String
+        Dim psSQL As String = ""
+        Return psSQL
+    End Function
+
+    Function GetDetailForModel() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@MODELID"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataByModelIdFromHDR() As String
+        Dim psSQL As String = "SELECT * FROM OPCONFIG_MBOMHDR WHERE ""OPTM_MODELID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
+        Return psSQL
+    End Function
+    Function GetSavedDataByModelIdFromDTL() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_FEATUREID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromMBOMHDR() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=@MODELID AND ""OPTM_COMPANYID""=@COMPANYID"
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromMBOMDTL() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_MODELID""=@MODELID AND ""OPTM_COMPANYID""=@COMPANYID"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonViewForModelBOMBySearchCriteria() As String
+        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT (T1.""OPTM_MODELID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'  EXCEPT Select DISTINCT TOP @STARTCOUNT (T1.""OPTM_MODELID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonViewForModelBOM() As String
+        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT (T1.""OPTM_MODELID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"" EXCEPT Select DISTINCT TOP @STARTCOUNT (T1.""OPTM_MODELID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"""
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForModelBOM() As String
+        Dim psSQL As String = "SELECT  COUNT( DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
+    Function GetDataForModelDTL() As String
+        Dim psSQL As String = "SELECT * FROM OPCONFIG_MBOMDTL WHERE ""OPTM_MODELID""=@MODELID"
+        Return psSQL
+    End Function
 
 
 #End Region

@@ -42,6 +42,13 @@ Public Class FeatureBOMController
         Return FeatureBOMBL.GetItemForFeatureBOM(oFeatureDetail)
     End Function
 
+    'Vb Controller to add the Feature 
+    <HttpPost, HttpGet>
+   <Route("AddUpdateFeatureBOMData")>
+    Public Function AddUpdateFeatureBOMData(ByVal oAddFeatureMasterDetail As FeatureBOMModel) As String
+        Return FeatureBOMBL.AddUpdateFeatureBOMData(oAddFeatureMasterDetail)
+    End Function
+
     'Vb Controller to get the Feature Except the Selecccted Feature ,This Feature are for the Grid Level
     <HttpPost, HttpGet>
     <Route("GetFeatureListExceptSelectedFeature")>
@@ -69,9 +76,24 @@ Public Class FeatureBOMController
     Public Function DeleteDataFromFeatureDetail(ByVal oDeleteFeatureMasterDetail As FeatureBOMModel) As String
         Return FeatureBOMBL.DeleteDataFromFeatureDetail(oDeleteFeatureMasterDetail)
     End Function
+    'Function to getthe Data for the Common View
+    <HttpPost, HttpGet>
+  <Route("GetDataForCommonView")>
+    Public Function GetDataForCommonView(ByVal oDataForCommonView As FeatureBOMModel) As String
+        Return FeatureBOMBL.GetDataForCommonView(oDataForCommonView)
+    End Function
 
+    'Function to get Data by  Feature ID
+    <HttpPost, HttpGet>
+ <Route("GetDataByFeatureID")>
+    Public Function GetDataByFeatureID(ByVal oDataByFeatureID As FeatureBOMModel) As DataSet
+        Return FeatureBOMBL.GetDataByFeatureID(oDataByFeatureID)
+    End Function
 
-
-
+    <HttpPost, HttpGet>
+ <Route("DeleteFeatureFromHDRandDTL")>
+    Public Function DeleteFeatureFromHDRandDTL(ByVal oDeleteFeatureMasterDetail As FeatureBOMModel) As String
+        Return FeatureBOMBL.DeleteFeatureFromHDRandDTL(oDeleteFeatureMasterDetail)
+    End Function
 
 End Class
