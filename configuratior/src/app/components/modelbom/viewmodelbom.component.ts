@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
+import { ModelbomService } from '../../services/Modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
@@ -29,13 +29,13 @@ export class ViewModelBomComponent implements OnInit {
     public GetItemData: any = [];
 
 
-    table_head_foot = ['#', 'Code', 'Final String', 'Action'];
+    table_head_foot = ['#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-    constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
+    constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 
     ngOnInit() {
         this.companyName = sessionStorage.getItem('selectedComp');
-       // this.service_call(this.current_page, this.search_string);
+        this.service_call(this.current_page, this.search_string);
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -48,10 +48,9 @@ export class ViewModelBomComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        var dataset = this.itemgen.viewItemGenerationData(this.companyName,search,page_number,this.record_per_page).subscribe(
+        var dataset = this.service.getAllViewDataForModelBom(search,page_number,this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
-                console.log(dataset)
                 this.rows = dataset[0];
                 let pages: any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
@@ -83,47 +82,11 @@ export class ViewModelBomComponent implements OnInit {
 
     button_click1(id) {
 
-        this.router.navigateByUrl('item-code-genration/edit/' + id);
+        this.router.navigateByUrl('modelbom/edit/' + id);
         // button click function in here
     }
     button_click2(id) {
         var result = confirm(this.language.DeleteConfimation);
-        if (result) {
-            this.GetItemData = []
-            this.GetItemData.push({
-                CompanyDBId: this.companyName,
-                ItemCode: id
-    
-            })
-            this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-                data => {
-                    if (data == "True") {
-                        this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
-                        return false;
-                    }
-                    else {
-                        this.itemgen.DeleteData(this.GetItemData).subscribe(
-                            data => {
-                                if (data === "True") {
-                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                    this.service_call(this.current_page, this.search_string);
-                                    this.router.navigateByUrl('item-code-generation/view');
-                                    return;
-                                }
-                                else {
-                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                    return;
-                                }
-                            }
-                        )
-                    }
-                }
-            )
-
-        }
-       
-
-
     }
 
 
