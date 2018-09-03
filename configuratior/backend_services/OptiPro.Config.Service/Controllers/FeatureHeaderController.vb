@@ -78,4 +78,10 @@ Public Class FeatureHeaderController
         Return FeatureHeaderBL.GetRecordById(oGetAllData)
     End Function
 
+    <HttpPost, HttpGet>
+ <Route("ImportDataFromExcel")>
+    Public Function ImportDataFromExcel(ByVal oGetAllData As FeatureHeaderModel) As String
+        Return FeatureHeaderBL.ImportDataFromExcel(oGetAllData)
+    End Function
+
 End Class

@@ -6,63 +6,12 @@ OptiPro.Config.DAL
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetItemForFeatureBOM(System.Data.DataTable,OptiPro.Config.Common.Company)">
+<member name="M:OptiPro.Config.DAL.ModelBOMDL.GetPriceList(System.Data.DataTable,OptiPro.Config.Common.Company)">
 	<summary>
- Funtion to get the Item List from the Table OITM for the Grid
+ Function to get the Price list fromthe table
  </summary>
 	<param name="objDataTable"></param>
 	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetFeatureListExceptSelectedFeature(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Get the Feature List for the Grid,All the Features will come Except the selected Feture
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.AddDataInFeatureHeader(System.Data.DataTable,OptiPro.Config.Common.Company,System.String)">
-	<summary>
- This Function is USed to Insert the Data tin the Header Table 
- Table :OPCONFIG_FEATUREHDRMASTER
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<param name="CompanyDBId"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.AddDataInFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- This Function is Used to Insert the Data in the Feature Detail 
- Tables : OPCONFIG_FEATUREDTL
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.UpdateDataInFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- ThisFunctin is Used to Update the Data in the Table 
- Table :OPCONFIG_FEATUREDTL
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.DeleteDataFromFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- ThisFunctin is Used to Delete  the Data from the  Table 
- Table :OPCONFIG_FEATUREDTL
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GenerateGUIDNo">
-	<summary>
- Thhis Function is USed to Generate the GUID
- </summary>
 	<returns></returns>
 	<remarks></remarks>
 </member><member name="M:OptiPro.Config.DAL.CompanySQLConnection.ExecuteQuery(System.String)">
@@ -180,6 +129,65 @@ OptiPro.Config.DAL
 	<param name="xmlSchemaCollectionOwingSchema">The owning relational schema where the schema collection for this XML instance is located.</param>
 	<param name="xmlSchemaxCollectionDatabase">The name of the database where the schema collection for this XML instance is located.</param>
 	<param name="xmlSchemaxCollectionName"> The name of the schema collection for this parameter.</param>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetItemForFeatureBOM(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Funtion to get the Item List from the Table for the Grid
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetFeatureListExceptSelectedFeature(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Get the Feature List for the Grid,All the Features will come Except the selected Feture
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.AddDataInFeatureHeader(System.Data.DataTable,OptiPro.Config.Common.Company,System.String)">
+	<summary>
+ This Function is USed to Insert the Data tin the Header Table 
+ Table :OPCONFIG_FEATUREHDRMASTER
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<param name="CompanyDBId"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.AddDataInFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ This Function is Used to Insert the Data in the Feature Detail 
+ Tables : OPCONFIG_FEATUREDTL
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.UpdateDataInFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ ThisFunctin is Used to Update the Data in the Table 
+ Table :OPCONFIG_FEATUREDTL
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.DeleteDataFromFeatureDetail(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ ThisFunctin is Used to Delete  the Data from the  Table 
+ Table :OPCONFIG_FEATUREDTL
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GenerateGUIDNo">
+	<summary>
+ Thhis Function is USed to Generate the GUID
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
 </member><member name="T:OptiPro.Config.DAL.AssemblyProvider">
 	<summary>
  A Singlton class which provides and loads the necessary assembly

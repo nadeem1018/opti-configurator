@@ -805,7 +805,162 @@ Public Class FeatureHeaderDL
     End Function
 
 
+    Public Shared Function ImportDataFromExcel(ByVal objDataTable As DataTable, ByVal pCompanyDBId As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
 
+        Dim psStatusImportexcel As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim iInsert As Integer
+            Dim psIsHana As String = String.Empty
+            Dim dtCheckDuplicateRecord As DataTable
+            Dim psDisplayName, psFeatureDesc, psProductGroupID, psPhotoPath, psCreatedBy As String
+            Dim psType, psModelTemplateItem, psItemCodeGen, psFeatureStatus, psFeatureCode, psAccessory As String
+            Dim pdtEffectiveDate As String
+            Dim piDuplicateCount As Integer = 0
+            Dim piInsertedRecord As Integer = 0
+            'Get the Company Name
+            psCompanyDBId = NullToString(pCompanyDBId.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "DEVQAS2BRANCHING"
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'If it is HANA then it will be true rather it will false
+            If pObjCompany.CompanyDBType = WMSDatabaseType.HANADatabase Then
+                psIsHana = True
+            Else
+                psIsHana = False
+            End If
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            For iaddrecord As Integer = 0 To objDataTable.Rows.Count - 1
+                'get the Display NAme 
+                psDisplayName = NullToString(objDataTable.Rows(0)("DisplayName"))
+                If objDataTable.Columns.Contains("FeatureDesc") Then
+                    ' get the Model Template Item,
+                    psFeatureDesc = NullToString(objDataTable.Rows(iaddrecord)("FeatureDesc"))
+                Else
+                    'if there is no Column then we will be Cnsider it Blank
+                    psFeatureDesc = ""
+                End If
+                psPhotoPath = NullToString(objDataTable.Rows(iaddrecord)("PicturePath"))
+                'Get the User 
+                psCreatedBy = NullToString(objDataTable.Rows(iaddrecord)("CreatedUser"))
+                'get the type
+                psType = NullToString(objDataTable.Rows(iaddrecord)("Type"))
+                'Check whether the value of Model Temlate Item is Coming from the Ui,If There is no column then we will replace with blank
+                If objDataTable.Columns.Contains("ModelTemplateItem") Then
+                    ' get the Model Template Item,
+                    psModelTemplateItem = NullToString(objDataTable.Rows(iaddrecord)("ModelTemplateItem"))
+                Else
+                    'if there is no Column then we will be Cnsider it Blank
+                    psModelTemplateItem = ""
+                End If
+                'get Item Code Generation Reference Number
+                psItemCodeGen = NullToString(objDataTable.Rows(iaddrecord)("ItemCodeGenerationRef"))
+                'get the Status of Feature
+                psFeatureStatus = NullToString(objDataTable.Rows(iaddrecord)("FeatureStatus"))
+                Dim xmlDate As String = NullToString(objDataTable.Rows(iaddrecord)("EffectiveDate"))
+                Dim oDate As DateTime = DateTime.Parse(xmlDate)
+                pdtEffectiveDate = oDate
+                'get VAlue for Accessory
+                psAccessory = NullToString(objDataTable.Rows(iaddrecord)("Accessory"))
+                'get the Feature Code 
+                psFeatureCode = NullToString(objDataTable.Rows(iaddrecord)("FeatureCode"))
+                'Functtion to Check whether the Record is Already Present in Table 
+                dtCheckDuplicateRecord = CheckDuplicateFeatureCode1(psCompanyDBId, psFeatureCode, objCmpnyInstance)
+                'If the Record is Already Present in the TAble then Error MEssage will be Shown 
+                If (dtCheckDuplicateRecord.Rows(0)("TOTALCOUNT") > 0) Then
+                    piDuplicateCount = piDuplicateCount + 1
+                    Continue For
+                Else
+                    Dim pSqlParam(12) As MfgDBParameter
+                    'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+                    pSqlParam(0) = New MfgDBParameter
+                    pSqlParam(0).ParamName = "@DISPLAYNAME"
+                    pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(0).Paramvalue = psDisplayName
+
+                    'Parameter 1 Consisting of Feature Description and its Type will be nvarchar
+                    pSqlParam(1) = New MfgDBParameter
+                    pSqlParam(1).ParamName = "@FEATUREDESC"
+                    pSqlParam(1).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(1).Paramvalue = psFeatureDesc
+
+                    pSqlParam(2) = New MfgDBParameter
+                    pSqlParam(2).ParamName = "@PHOTOPATH"
+                    pSqlParam(2).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(2).Paramvalue = psPhotoPath
+
+                    pSqlParam(3) = New MfgDBParameter
+                    pSqlParam(3).ParamName = "@CREATEDBY"
+                    pSqlParam(3).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(3).Paramvalue = psCreatedBy
+
+                    pSqlParam(4) = New MfgDBParameter
+                    pSqlParam(4).ParamName = "@MODIFIEDBY"
+                    pSqlParam(4).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(4).Paramvalue = psCreatedBy
+
+                    pSqlParam(5) = New MfgDBParameter
+                    pSqlParam(5).ParamName = "@TYPE"
+                    pSqlParam(5).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(5).Paramvalue = psType
+
+                    pSqlParam(6) = New MfgDBParameter
+                    pSqlParam(6).ParamName = "@MODELTEMPLATEITEM"
+                    pSqlParam(6).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(6).Paramvalue = psModelTemplateItem
+
+                    pSqlParam(7) = New MfgDBParameter
+                    pSqlParam(7).ParamName = "@ITEMCODEREFERENCE"
+                    pSqlParam(7).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(7).Paramvalue = psItemCodeGen
+
+                    pSqlParam(8) = New MfgDBParameter
+                    pSqlParam(8).ParamName = "@STATUS"
+                    pSqlParam(8).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(8).Paramvalue = psFeatureStatus
+
+                    If psIsHana = True Then
+                        pSqlParam(9) = New MfgDBParameter
+                        pSqlParam(9).ParamName = "@EFFECTIVEDATE"
+                        pSqlParam(9).Dbtype = BMMDbType.HANA_TimeStamp
+                        pSqlParam(9).Paramvalue = oDate
+                    Else
+                        pSqlParam(9) = New MfgDBParameter
+                        pSqlParam(9).ParamName = "@EFFECTIVEDATE"
+                        pSqlParam(9).Dbtype = BMMDbType.SQL_DateTime
+                        pSqlParam(9).Paramvalue = oDate
+
+                    End If
+                    pSqlParam(10) = New MfgDBParameter
+                    pSqlParam(10).ParamName = "@FEATURECODE"
+                    pSqlParam(10).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(10).Paramvalue = psFeatureCode
+
+                    pSqlParam(11) = New MfgDBParameter
+                    pSqlParam(11).ParamName = "@ACCESSORY"
+                    pSqlParam(11).Dbtype = BMMDbType.HANA_NVarChar
+                    pSqlParam(11).Paramvalue = psAccessory
+
+                    ' Get the Query on the basis of objIQuery
+                    psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_AddFeatures)
+
+                    iInsert = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
+                    piInsertedRecord = piInsertedRecord + 1
+                End If
+            Next
+            psStatusImportexcel = "Total Record Inserted :" + (piInsertedRecord).ToString + " and DuplicateRecord: " + (piDuplicateCount).ToString
+            Return psStatusImportexcel
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return psStatusImportexcel
+    End Function
 
 
     'Public Shared Function GetItemCodeGenerationReference(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable

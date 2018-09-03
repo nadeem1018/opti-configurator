@@ -209,6 +209,24 @@ Public Class FeatureHeaderBL
     End Function
 
 
+    Public Shared Function ImportDataFromExcel(ByVal objCheckDuplicateFeatureCode As FeatureHeaderModel) As String
+        Dim psStatusImport As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            Dim pCompanyDBId As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objCheckDuplicateFeatureCode.GetRecord)
+            pCompanyDBId = JsonConvert.DeserializeObject(Of DataTable)(objCheckDuplicateFeatureCode.FeatureCode)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatusImport = FeatureHeaderDL.ImportDataFromExcel(pdtDetails, pCompanyDBId, mObjCompany)
+            'Return the Datasetset
+            Return psStatusImport
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+
     Public Shared Function CreateTableForLicenseMsg() As DataSet
         Dim ds As New DataSet
         Dim dt As New DataTable

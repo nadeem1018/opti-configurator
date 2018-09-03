@@ -6,8 +6,10 @@ Public Class FeatureBOMModel
     Private msAddFeatureMaster As String
     Private msUpdateFeatureMaster As String
     Private msDeleteFeatureMaster As String
+    Private msAddModelBom As String
 
-    Public Property FeatureList As String
+
+    Public Property ModelItem As String
         Set(value As String)
 
             msFeatureList = value
@@ -65,6 +67,18 @@ Public Class FeatureBOMModel
             Return msDeleteFeatureMaster
         End Get
     End Property
+
+
+    Public Property AddModelBom As String
+        Set(value As String)
+
+            msAddModelBom = value
+        End Set
+        Get
+            Return msAddModelBom
+        End Get
+    End Property
+
 
 
 End Class

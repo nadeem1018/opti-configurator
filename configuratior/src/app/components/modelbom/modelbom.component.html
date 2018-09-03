@@ -80,7 +80,7 @@
                 <th width="5%">{{language.min_selectable}}</th>
                 <th width="5%">{{language.max_selectable}}</th>
                 <th width="5%">{{language.propagate_qty}}</th>
-                <th width="5%">{{language.propagate_qty}}</th>
+                <th width="5%">{{language.price_source}}</th>
                 <th width="5%">{{language.mandatory}}</th>
                 <th width="5%">{{language.unique_identifier}}</th>
                 <th width="4%">#</th>
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                   <div class="input-group">
-                    <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}}
+                    <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)" value={{row.type_value}}
                       #type_value />
                     <div class="input-group-append" [hidden]=row.hide>
                       <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
@@ -108,32 +108,32 @@
                   </div>
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} #display_name />
+                  <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)" #display_name />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} #uom />
+                  <input type="text" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)" #uom />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
+                  <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}} (change)="on_quantity_change(quantity.value,row.rowindex)" #quantity />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="min_selected" value={{row.min_selected}} #min_selected />
+                  <input type="text" class="form-control  form-control-sm mt3" id="min_selected" value={{row.min_selected}} (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="max_selected" value={{row.max_selected}} #max_selected />
+                  <input type="text" class="form-control  form-control-sm mt3" id="max_selected" value={{row.max_selected}} (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="propagate_qty" value={{row.propagate_qty}} #propagate_qty
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" #propagate_qty
                   />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} #price_source />
+                  <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)" #price_source />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} #mandatory />
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)" #mandatory />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} #unique_identifer
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" #unique_identifer
                   />
                 </td>
                 <td>
@@ -146,13 +146,23 @@
           </table>
           </div>
           </div>
+
+          <hr>
+          <div class="clearfix"></div>
+          <div class="row image_data" *ngIf="showImageBlock">
+            <div class="col-lg-3" *ngFor="let image of image_data">
+              <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
+                <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="clearfix"></div>
        <!--   <div class="form-group row clearfix">
             <label class="col-sm-2 col-form-label" for="feature">Test File Upload </label>
             <div class="col-sm-4">
               <input multiple="false" type="file" (change)="file_input($event)">
               <hr>
               <button (click)="onUpload()">Upload!</button>
-
             </div>
             <div class="col-sm-2">
               <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" (click)="fileUpload()">
@@ -162,12 +172,7 @@
           </div> -->
           <hr>
         </div>
-<<<<<<< HEAD
-      
-    
-=======
 
->>>>>>> af1383bacb9311ac7bda047f16719ec608c25756
     <div class="card-footer small text-muted">
       <div class="footer-buttons">
         <div class="row">
@@ -175,8 +180,8 @@
             <div class="pull-left">
               <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
-              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdate()" class="btn btn-sm btn-info mr-10">
-                <i class="fa fa-save"></i> {{language.update}}</button>
+              <!-- <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button> -->
               <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
                 <i class="fa fa-window-maximize"></i> {{language.explode}}
               </button>
@@ -193,10 +198,10 @@
                 <span>{{language.cancel}}</span>
               </button>
 
-              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+              <!-- <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
-              </button>
+              </button> -->
               <!-- only view when edit mode -->
 
             </div>
@@ -206,3 +211,5 @@
     </div>
   </form>
 </div>
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
