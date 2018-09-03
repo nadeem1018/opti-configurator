@@ -2,7 +2,9 @@ import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter } 
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
-
+import { CommonData } from "../../../models/CommonData";
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -15,11 +17,11 @@ export class LookupComponent implements OnInit {
   @Input() fillLookupArray: any;
   @Input() selectedImage: any
   @Output() lookupvalue = new EventEmitter();
-
-  language = JSON.parse(sessionStorage.getItem('current_lang'));
+  public commonData = new CommonData();
+  language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
-  constructor(private common_service: CommonService, private fms: FeaturemodelService) { }
-
+  constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
+  
 
   // mandatory variables
   public dataBind: any = [];
@@ -207,6 +209,12 @@ export class LookupComponent implements OnInit {
 
       this.fms.importData(this.companyName, xls_data).subscribe(
         data => {
+          console.log("imported result"+ data);
+          this.toastr.success('', data, this.commonData.toast_config);
+          $("#import_modal").modal("hide");
+        
+          this.router.navigateByUrl('/feature/model/view');
+          return;
         })
     }
   }

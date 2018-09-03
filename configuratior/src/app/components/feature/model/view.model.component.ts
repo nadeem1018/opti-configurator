@@ -30,12 +30,14 @@ export class ViewFeatureModelComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public dataBind: any = "";
+    CompanyDBId: string ;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
 
 
     ngOnInit() {
+        this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
     }
 
@@ -50,7 +52,7 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        var dataset = this.fms.getAllViewData("SFDCDB", search, page_number, this.record_per_page).subscribe(
+        var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
@@ -92,7 +94,7 @@ export class ViewFeatureModelComponent implements OnInit {
 
         if (result) {
             // button click function in here
-            this.fms.DeleteData("SFDCDB", id).subscribe(
+            this.fms.DeleteData(this.CompanyDBId, id).subscribe(
                 data => {
                     if (data === "True") {
                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
