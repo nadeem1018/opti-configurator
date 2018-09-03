@@ -79,6 +79,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "import_popup"){
         this.import_popup();
       }
+
+      if (this.lookupfor == "ModelBom_lookup"){
+        this.get_Model_lookup();
+      }
     }
   }
 
@@ -128,6 +132,21 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id','Code', 'Name'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  get_Model_lookup(){
+    console.log('in lookup');
+
+    this.popup_title = this.language.ModelBom;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'featureNameId';
+    this.lookup_key = 'OPTM_FEATUREID';
+    this.table_head = ['Model Id','Code', 'Name'];
     this.width_value = ((100 / this.table_head.length) + '%');
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;

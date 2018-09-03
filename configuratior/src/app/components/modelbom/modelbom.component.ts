@@ -32,6 +32,7 @@ export class ModelbomComponent implements OnInit {
   serviceData: any;
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
+    this.companyName = sessionStorage.getItem('selectedComp');
     this.image_data = [
       ""
     ];
@@ -45,7 +46,9 @@ export class ModelbomComponent implements OnInit {
 
     this.modelbom_data.push({
       rowindex: this.counter,
-      FeatureId: this.modelbom_data.modal_id,
+      ModelId: this.modelbom_data.modal_id,
+      description:this.modelbom_data.feature_desc,
+      readytouse:"N",
       type: 1,
       type_value: "",
       display_name: "",
@@ -53,13 +56,15 @@ export class ModelbomComponent implements OnInit {
       quantity: 0,
       min_selected: '',
       max_selected: '',
-      propagate_qty: 0,
-      price_source: 0,
-      mandatory: 0,
-      unique_identifer: 0,
+      propagate_qty: 'N',
+      price_source: '',
+      mandatory: 'N',
+      unique_identifer: 'N',
       isDisplayNameDisabled: true,
       isTypeDisabled: true,
-      hide: false
+      hide: false,
+      CompanyDBId: this.companyName,
+      CreatedUser: this.username
     });
   };
 
@@ -214,7 +219,6 @@ export class ModelbomComponent implements OnInit {
             if (this.lookupfor == 'ModelBom_lookup') {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-              this.modelbom_data.is_ready_to_use = data[0].OPTM_ACCESSORY;
             }
           }
          
@@ -231,7 +235,7 @@ export class ModelbomComponent implements OnInit {
         if (data.length > 0) {
           for (let i = 0; i < this.modelbom_data.length; ++i) {
             if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-              this.modelbom_data[i].type_value = data[0].ItemKey
+              this.modelbom_data[i].type_value = data[0].ItemKey.toString()
               this.modelbom_data[i].display_name = data[0].Description
 
             }
@@ -240,13 +244,183 @@ export class ModelbomComponent implements OnInit {
       })
   }
 
+  on_typevalue_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].type_value = value.toString()
+      }
+    }
+  }
+
+  on_display_name_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].display_name = value
+      }
+    }
+  }
+
+  on_quantity_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].quantity = value
+
+
+      }
+    }
+
+  }
+
+  on_uom_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].uom = value
+
+
+      }
+    }
+
+  }
+
+  on_min_selected_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].min_selected = value
+
+
+      }
+    }
+
+  }
+
+  on_max_selected_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].max_selected = value
+
+
+      }
+    }
+
+  }
+
+  on_propagate_qty_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        if (value.checked == true) {
+          this.modelbom_data[i].propagate_qty = "Y"
+        }
+        else {
+          this.modelbom_data[i].propagate_qty = "N"
+        }
+
+
+
+      }
+    }
+
+  }
+
+  on_price_source_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.modelbom_data[i].price_source = value
+
+
+      }
+    }
+
+  }
+
+  on_mandatory_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        if (value.checked == true) {
+          this.modelbom_data[i].mandatory = "Y"
+        }
+        else {
+          this.modelbom_data[i].mandatory = "N"
+        }
+
+
+
+      }
+    }
+
+  }
+
+  on_unique_identifer_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        if (value.checked == true) {
+          this.modelbom_data[i].unique_identifer = "Y"
+        }
+        else {
+          this.modelbom_data[i].unique_identifer = "N"
+        }
+
+
+
+      }
+    }
+
+  }
+
+  
+  
+  
+
   onSave() {
+    if (this.modelbom_data.length > 0) {
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if( this.modelbom_data[i].unique_identifer==false){
+          this.modelbom_data[i].unique_identifer="N"
+        }
+        else if(this.modelbom_data[i].unique_identifer==true){
+          this.modelbom_data[i].unique_identifer="Y"
+        }
+        else if(this.modelbom_data[i].mandatory==false){
+          this.modelbom_data[i].mandatory="N"
+        }
+        else if(this.modelbom_data[i].mandatory==true){
+          this.modelbom_data[i].mandatory="Y"
+        }
+        else if(this.modelbom_data[i].propagate_qty==false){
+          this.modelbom_data[i].propagate_qty="N"
+        }
+        else if(this.modelbom_data[i].propagate_qty==true){
+          this.modelbom_data[i].propagate_qty="Y"
+        }
+       
+       
+      }
+    }
 
+    this.service.SaveModelBom(this.modelbom_data).subscribe(
+      data => {
+        if (data === "True") {
+          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
+          this.route.navigateByUrl('modelbom/view');
+          return;
+        }
+        else {
+          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
   }
 
-  onUpdate() {
-
-  }
 
   onDelete() {
 

@@ -63,4 +63,9 @@ export class ModelbomService {
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetItemList", jObject, this.common_params.httpOptions);
   }
 
+  SaveModelBom(SaveData): Observable<any>{
+    let jObject:any = { AddModel: JSON.stringify( SaveData) };
+      return this.httpclient.post(this.config_params.service_url + "/ModelBOM/AddUpdateModelBOM", jObject, this.common_params.httpOptions);
+  }
+
 }

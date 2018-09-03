@@ -110,7 +110,7 @@
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
-    "name":"Name",
-    "model":"Model"
+    "name":"Name"
+
     
 }
