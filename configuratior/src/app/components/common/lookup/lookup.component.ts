@@ -59,7 +59,7 @@ export class LookupComponent implements OnInit {
     this.dataBind = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
-    
+
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
         this.model_template_lookup();
@@ -85,8 +85,10 @@ export class LookupComponent implements OnInit {
         this.import_popup();
       }
 
-      if (this.lookupfor == "ModelBom_lookup"){
+      if (this.lookupfor == "ModelBom_lookup") {
         this.get_Model_lookup();
+      }
+
       if (this.lookupfor == "large_image_view") {
         this.showImage();
       }
@@ -145,7 +147,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
   }
 
-  get_Model_lookup(){
+  get_Model_lookup() {
     console.log('in lookup');
 
     this.popup_title = this.language.ModelBom;
@@ -153,14 +155,14 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Model Id','Code', 'Name'];
+    this.table_head = ['Model Id', 'Code', 'Name'];
     this.width_value = ((100 / this.table_head.length) + '%');
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
 
-  get_Item_lookup(){
+  get_Item_lookup() {
     console.log('in lookup');
 
     this.popup_title = this.language.ItemLookupTitle;
@@ -210,9 +212,8 @@ export class LookupComponent implements OnInit {
   }
 
   showImage() {
-    console.log('in here ');
-    console.log(this.selectedImage);
-    
+
+
     this.popup_title = this.language.feature_image;
     this.showLoader = true;
     this.LookupDataLoaded = false;
@@ -221,4 +222,3 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
   }
 }
-
