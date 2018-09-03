@@ -73,48 +73,6 @@ Public Class HanaQuery
 #End Region
 
 
-#Region "Feature BOM"
-
-    Function GetFeatureList() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"""
-        Return psSQL
-    End Function
-
-    Function GetFeatureDetail() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=?"
-        Return psSQL
-    End Function
-
-    Function GetItemForFeatureBOM() As String
-        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"""
-        Return psSQL
-    End Function
-
-    Function GetFeatureListExceptSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""DisplayName"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""<>?"
-        Return psSQL
-    End Function
-
-    Function AddDataInFeatureHeader() As String
-        Dim psSQL As String = "INSERT INTO ""OPCONFIG_FEATUREHDRMASTER"" (""OPTM_COMPANYID"",""OPTM_CREATEDBY"",""OPTM_CREATEDATE"") VALUES(?,?,NOW())"
-        Return psSQL
-    End Function
-
-    Function AddDataInFeatureDetail() As String
-        Dim psSQL As String = "INSERT INTO ""OPCONFIG_FEATUREDTL"" (""OPTM_TYPE"",""OPTM_LINENO"",""OPTM_HDRFEATUREID"",""OPTM_ITEMKEY"",""OPTM_VALUE"",""OPTM_DISPLAYNAME"",""OPTM_DEFAULT"",""OPTM_REMARKS"",""OPTM_ATTACHMENT"",""OPTM_COMPANYID"",""OPTM_CREATEDBY"",""OPTM_CREATEDATETIME"")VALUES(?,?,?,?,?,?,?,?,?,?,?,NOW())"
-        Return psSQL
-    End Function
-
-    Function UpdateDataInFeatureDetail() As String
-        Dim psSQL As String = "UPDATE ""OPCONFIG_FEATUREDTL"" SET ""OPTM_TYPE"" =?,""OPTM_ITEMKEY""=?,""OPTM_VALUE""=?,""OPTM_DISPLAYNAME""=?,""OPTM_DEFAULT""=?,""OPTM_REMARKS""=?,""OPTM_ATTACHMENT""=?,""OPTM_COMPANYID""=?,""OPTM_MODIFIEDBY""=?,""OPTM_MODIFIEDDATETIME""=NOW() WHERE ""OPTM_FEATUREID""=?"
-        Return psSQL
-    End Function
-
-    Function DeleteDataFromFeatureDetail() As String
-        Dim psSQL As String = "DELETE FROM  ""OPCONFIG_FEATUREDTL"" WHERE ""OPTM_FEATUREID""=?"
-        Return psSQL
-    End Function
-#End Region
 
 #Region "Item Generation"
     'hana Query to add the data in Item Generation Table 
@@ -189,9 +147,107 @@ Public Class HanaQuery
     End Function
 #End Region
 
+#Region "Feature BOM"
+    'SQL Query to get the LIst of Fetaure 
+    Function GetFeatureList() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature'"
+        Return psSQL
+    End Function
 
+    'SQL Query to get the Details of  Feature Accordng to the Fature ID 
+    Function GetFeatureDetail() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of the Items fom the OITM Table
+    Function GetItemForFeatureBOM() As String
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"" where ""ItemKey""=?"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of all the Features Except the Selected Feature
+    Function GetFeatureListForSelectedFeature() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of all the Features Except the Selected Feature
+    Function GetFeatureListExceptSelectedFeature() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""<>?"
+        Return psSQL
+    End Function
+
+    'SQL Query to get the List of all the Features Except the Selected Feature
+    Function GetFeatureListExceptSelectedItem() As String
+        Dim psSQL As String = "select ""ItemKey"",""Description"" from ""OPConfig_ItemMaster"""
+        Return psSQL
+    End Function
+
+    ''SQL Query to add Feature in Feature HEader 
+    'Function AddDataInFeatureHeader() As String
+    '    Dim psSQL As String = "INSERT INTO ""OPCONFIG_FEATUREHDRMASTER"" (""OPTM_COMPANYID"",""OPTM_CREATEDBY"",""OPTM_CREATEDATE"") VALUES(@COMPANY,@USERID,GETDATE())"
+    '    Return psSQL
+    'End Function
+    'SQLQuery to Add Detail in the Feature Detail
+    'Function AddDataInFeatureDetail() As String
+    '    Dim psSQL As String = "INSERT INTO ""OPCONFIG_FEATUREDTL"" (""OPTM_TYPE"",""OPTM_LINENO"",""OPTM_HDRFEATUREID"",""OPTM_ITEMKEY"",""OPTM_VALUE"",""OPTM_DISPLAYNAME"",""OPTM_DEFAULT"",""OPTM_REMARKS"",""OPTM_ATTACHMENT"",""OPTM_COMPANYID"",""OPTM_CREATEDBY"",""OPTM_CREATEDATETIME"")VALUES(@ITEMTYPE,@LINENO,@HEADERFEATUREID,@ITEMKEY,@ITEMVALUE,@DISPLAYNAME,@DEFAULT,@REMARKS,@ATTACHMENT,@COMPANYID,@USERID,GETDATE())"
+    '    Return psSQL
+    'End Function
+
+    ''SQL Query to Update data in Feature Detail 
+    'Function UpdateDataInFeatureDetail() As String
+    '    Dim psSQL As String = "UPDATE ""OPCONFIG_FEATUREDTL"" SET ""OPTM_TYPE"" =@ITEMTYPE,""OPTM_ITEMKEY""=@ITEMKEY,""OPTM_VALUE""=@ITEMVALUE,""OPTM_DISPLAYNAME""=@DISPLAYNAME,""OPTM_DEFAULT""=@DEFAULT,""OPTM_REMARKS""=@REMARKS,""OPTM_ATTACHMENT""=@ATTACHMENT,""OPTM_COMPANYID""=@COMPANYID,""OPTM_MODIFIEDBY""=@USERID,""OPTM_MODIFIEDDATETIME""=GETDATE() WHERE ""OPTM_FEATUREID""=@FEATUREID"
+    '    Return psSQL
+    'End Function
+
+    'SQL Query to Delete the Data From the Feature Detail
+    Function DeleteDataFromFeatureDetail() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREDTL"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataByFeatureCodeFromHDR() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataByFeatureCodeFromDTL() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonViewBySearchCriteria() As String
+        Dim psSQL As String = "Select TOP @ENDCOUNT(T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_FEATUREID"" LIKE '%@SEARCHSTRING%'  EXCEPT Select DISTINCT TOP @STARTCOUN(T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_FEATUREID"" LIKE '%@SEARCHSTRING%'"
+        Return psSQL
+    End Function
+
+    Function GetDataForCommonView() As String
+        Dim psSQL As String = "Select TOP @ENDCOUNT(T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"" EXCEPT Select TOP @STARTCOUNT(T1.""OPTM_FEATUREID""),T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_FEATUREBOMHDR"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID"" =T2.""OPTM_FEATUREID"""
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT(DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromHDR() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+    Function DeleteDataFromDTL() As String
+        Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSQL
+    End Function
+
+#End Region
 #Region "ModelBOM"
-
+    Function GetPriceList() As String
+        Dim psSQL As String = ""
+        Return psSQL
+    End Function
 
 #End Region
 End Class

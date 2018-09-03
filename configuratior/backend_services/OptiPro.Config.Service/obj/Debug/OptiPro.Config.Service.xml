@@ -6,21 +6,7 @@ OptiPro.Config.Service
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureList(OptiPro.Config.Entity.FeatureBOMModel)">
-	<summary>
- vb Controller to get the List of all the Feture from the Fature Header
- </summary>
-	<param name="oFeatureList"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
-	<summary>
- vb Controller alls the buisnesss layer and it is used t get the Details of the Features According to Featre ID 
- </summary>
-	<param name="oFeatureDetail"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+<member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
 	<summary>
  Sets the documentation provider for help page.
  </summary>
@@ -435,6 +421,20 @@ Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.Ap
  vb Controller to add Item Generation in Item
  </summary>
 	<param name="oAddItemGeneration"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureList(OptiPro.Config.Entity.FeatureBOMModel)">
+	<summary>
+ vb Controller to get the List of all the Feture from the Fature Header
+ </summary>
+	<param name="oFeatureList"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
+	<summary>
+ vb Controller alls the buisnesss layer and it is used t get the Details of the Features According to Featre ID 
+ </summary>
+	<param name="oFeatureDetail"></param>
 	<returns></returns>
 	<remarks></remarks>
 </member>
