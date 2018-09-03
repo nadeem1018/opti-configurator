@@ -13,6 +13,9 @@
     Public Const OptiPro_Config_GetAllSavedRecordOnBasisOfSearchCriteria As String = "GetAllSavedRecordOnBasisOfSearchCriteria"
     Public Const OptiPro_Config_GetTotalCountOfRecord As String = "GetTotalCountOfRecord"
     Public Const OptiPro_Config_GetRecordById As String = "GetRecordById"
+    Public Const OptiPro_Config_ChkValidItemTemplate As String = "ChkValidItemTemplate"
+    Public Const OptiPro_Config_ChkValidItemCodeGeneration As String = "ChkValidItemCodeGeneration"
+
 
 
 #End Region

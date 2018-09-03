@@ -92,7 +92,7 @@ export class LookupComponent implements OnInit {
       }
     }
   }
-
+  }
   log(val) {
     console.log(val);
   }
