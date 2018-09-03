@@ -877,7 +877,6 @@ Public Class FeatureHeaderDL
                     piDuplicateCount = piDuplicateCount + 1
                     Continue For
                 Else
-
                     Dim pSqlParam(12) As MfgDBParameter
                     'Parameter 0 consisting warehouse and it's datatype will be nvarchar
                     pSqlParam(0) = New MfgDBParameter
