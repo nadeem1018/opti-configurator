@@ -19,8 +19,8 @@ import * as XLSX from 'ts-xlsx';
 
 export class ModelComponent implements OnInit {
   public featureBom: any=[];
- public featureModel:any ={};
- //public featureModel:any =[];
+ //public featureModel:any ={};
+ public featureModel:any =[];
  public form: FormGroup;
   
   public commonData = new CommonData();
@@ -79,8 +79,8 @@ this.featureBom.Accessory=data[0].OPTM_ACCESSORY
     }
   }
   onSaveClick(){
-    this.featureModel.Feature= [];
-    this.featureModel.Picture= [];
+    //this.featureModel.Feature= [];
+    //this.featureModel.Picture= [];
     var validateStatus = this.Validation();
 if (validateStatus == true){
     this.featureModel.push({
@@ -98,10 +98,10 @@ if (validateStatus == true){
       Accessory:this.featureBom.Accessory
     })
    
-    this.featureModel.Picture.push({
-      PicturePath:this.selectedFile
+    // this.featureModel.Picture.push({
+    //   PicturePath:this.selectedFile
 
-    });
+    // });
     
    
     this.fms.saveData(this.featureModel).subscribe(
@@ -114,7 +114,7 @@ if (validateStatus == true){
           return;
         }
         else if(data == "Record Already Exist"){
-          this.toastr.error('', 'Code already exists', this.commonData.toast_config);
+          this.toastr.error('',this.language.DuplicateCode, this.commonData.toast_config);
           return;
         }
         else{

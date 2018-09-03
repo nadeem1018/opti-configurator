@@ -98,5 +98,6 @@
     "uom":"UOM",
     "min_selectable":"Min Selectable",
     "FeatureLookupTitle":"Feature Master",
-    "ItemLookupTitle":"Item Master"
+    "ItemLookupTitle":"Item Master",
+    "DuplicateCode": "Code already exists"
 }
