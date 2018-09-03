@@ -180,8 +180,8 @@
             <div class="pull-left">
               <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
-              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
-                <i class="fa fa-save"></i> {{language.update}}</button>
+              <!-- <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button> -->
               <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
                 <i class="fa fa-window-maximize"></i> {{language.explode}}
               </button>
@@ -198,10 +198,10 @@
                 <span>{{language.cancel}}</span>
               </button>
 
-              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+              <!-- <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
-              </button>
+              </button> -->
               <!-- only view when edit mode -->
 
             </div>

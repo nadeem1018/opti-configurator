@@ -68,4 +68,12 @@ export class ModelbomService {
       return this.httpclient.post(this.config_params.service_url + "/ModelBOM/AddUpdateModelBOM", jObject, this.common_params.httpOptions);
   }
 
+  getAllViewDataForModelBom(search:string,PageNumber:any,record_per_page:any): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataForCommonViewForModelBOM", jObject, this.common_params.httpOptions);
+  }
+
 }
