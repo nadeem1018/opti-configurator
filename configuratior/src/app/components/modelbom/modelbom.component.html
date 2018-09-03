@@ -18,26 +18,38 @@
 <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
     <div class="card-body">
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.model}}</label>
+      
+        <div class="col-sm-4 input-group">
+          <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"
+            id="featureNameId" placeholder="{{language.model}}">
+          <div class="input-group-append">
+            <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openFeatureLookUp()">
+              <i class="fa fa-bars"></i>
+            </span>
+          </div>
+        </div>
+      
+      </div>
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.name}}</label>
         <div class="col-sm-4">
-          <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
+          <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.name}}"
             readonly [(ngModel)]="modelbom_data.feature_name">
         </div>
-        <div class="col-sm-4">
-          <div class="col-sm-4 mt-3px">
-            <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="modelbom_data.is_ready_touse" class="custom-control-input"
-                value="Y">
-              <label class="custom-control-label" for="yes">Yes</label>
-            </div>
+        <div class="col-sm-4 mt-3px">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="modelbom_data.is_ready_to_use" class="custom-control-input"
+              value="Y">
+            <label class="custom-control-label" for="yes">Is Ready To Use</label>
           </div>
         </div>
       </div>
 
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
+        <label class="col-sm-2 col-form-label" for="featureDesc">{{language.description}}</label>
         <div class="col-sm-4">
-          <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}"
+          <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.description}}"
             readonly [(ngModel)]="modelbom_data.feature_desc">
         </div>
       </div>
@@ -65,18 +77,76 @@
                 <th width="13%">{{language.Bom_Displayname}}</th>
                 <th width="13%">{{language.uom}}</th>
                 <th width="5%">{{language.Bom_Qty}}</th>
-                <th width="13%">{{language.min_selectable}}</th>
-                <th width="5%">{{language.Bom_Default}}</th>
-                <th width="10%">{{language.Bom_Remarks}}</th>
-                <th width="10%">{{language.Bom_Attach}}</th>
+                <th width="5%">{{language.min_selectable}}</th>
+                <th width="5%">{{language.max_selectable}}</th>
+                <th width="5%">{{language.propagate_qty}}</th>
+                <th width="5%">{{language.propagate_qty}}</th>
+                <th width="5%">{{language.mandatory}}</th>
+                <th width="5%">{{language.unique_identifier}}</th>
                 <th width="4%">#</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              <tr *ngFor="let row of modelbom_data">
+                <td>
+                  <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                </td>
+                <td>
+                  <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
+                    <option *ngFor="let v of commonData.bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                  </select>
+                </td>
+                <td>
+                  <div class="input-group">
+                    <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" value={{row.type_value}}
+                      #type_value />
+                    <div class="input-group-append" [hidden]=row.hide>
+                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} #display_name />
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} #uom />
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="quantity" value={{row.quantity}} #quantity />
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="min_selected" value={{row.min_selected}} #min_selected />
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="max_selected" value={{row.max_selected}} #max_selected />
+                </td>
+                <td>
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="propagate_qty" value={{row.propagate_qty}} #propagate_qty
+                  />
+                </td>
+                <td>
+                  <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} #price_source />
+                </td>
+                <td>
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} #mandatory />
+                </td>
+                <td>
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} #unique_identifer
+                  />
+                </td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
           </div>
           </div>
-          <div class="form-group row clearfix">
+       <!--   <div class="form-group row clearfix">
             <label class="col-sm-2 col-form-label" for="feature">Test File Upload </label>
             <div class="col-sm-4">
               <input multiple="false" type="file" (change)="file_input($event)">
@@ -89,23 +159,34 @@
                 <i class="fa fa-plus"></i>
               </a>
             </div>
-          </div>
+          </div> -->
           <hr>
         </div>
+<<<<<<< HEAD
       
     
+=======
+
+>>>>>>> af1383bacb9311ac7bda047f16719ec608c25756
     <div class="card-footer small text-muted">
       <div class="footer-buttons">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="pull-left">
               <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
               <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdate()" class="btn btn-sm btn-info mr-10">
                 <i class="fa fa-save"></i> {{language.update}}</button>
+              <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
+                <i class="fa fa-window-maximize"></i> {{language.explode}}
+              </button>
+
+              <button type="button" (click)="onVerifyOutput()" *ngIf="isVerifyButtonVisible" class="btn btn-sm btn-secondary  mr-10">
+                <i class="fa fa-window-maximize"></i> {{language.verify_output}}
+              </button>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="pull-right">
               <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
                 <i class="fa fa-times fa-fw"></i>

@@ -97,7 +97,19 @@
     "excel": "Excel",
     "uom":"UOM",
     "min_selectable":"Min Selectable",
+    "max_selectable":"Max Selectable",
+    "propagate_qty":"Propagate Qty",
+    "propagate_qty":"Price Source",
+    "mandatory":"Mandatory",
+    "unique_identifier":"unique identifier",
     "FeatureLookupTitle":"Feature Master",
     "ItemLookupTitle":"Item Master",
-    "DuplicateCode": "Code already exists"
+    "DuplicateCode": "Code already exists",
+    "explode":"Explode",
+    "verify_output":"Verify Output",
+    "on_associated_bom":"On Associated BOMs",
+    "associated_modal_bom":"Associated Modal BOMs",
+    "description":"Description",
+    "name":"Name",
+    "model":"Model"
 }

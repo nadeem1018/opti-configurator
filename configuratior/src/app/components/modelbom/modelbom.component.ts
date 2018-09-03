@@ -15,7 +15,14 @@ export class ModelbomComponent implements OnInit {
   public input_file: File = null;
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public modelbom_data: any = [];
-
+  public image_data: any = [];
+  public counter = 0;
+  public currentrowindex: number;
+  public isExplodeButtonVisible: boolean = true;
+  public isVerifyButtonVisible: boolean = true;
+  public isUpdateButtonVisible: boolean = true;
+  public isSaveButtonVisible: boolean = true;
+  public isDeleteButtonVisible: boolean = true;
   constructor(private router: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
@@ -24,9 +31,73 @@ export class ModelbomComponent implements OnInit {
 
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
+    this.image_data = [
+      "" 
+    ];
+  }
+  onAddRow() {
+    this.counter = 0;
+    if (this.modelbom_data.length > 0) {
+      this.counter = this.modelbom_data.length
+    }
+    this.counter++;
+
+    this.modelbom_data.push({
+      rowindex: this.counter,
+      FeatureId: this.modelbom_data.feature_id,
+      type: 1,
+      type_value: "",
+      display_name: "",
+      uom: '',
+      quantity: '',
+      min_selected: '',
+      max_selected: '',
+      propagate_qty: 0,
+      price_source: 0,
+      mandatory: 0,
+      unique_identifer: 0,
+      isDisplayNameDisabled: true,
+      isTypeDisabled: true,
+      hide: false
+    });
+  };
+
+  onDeleteRow(rowindex) {
+    if (this.modelbom_data.length > 0) {
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if (this.modelbom_data[i].rowindex === rowindex) {
+          this.modelbom_data.splice(i, 1);
+          i = i - 1;
+        }
+        else {
+          this.modelbom_data[i].rowindex = i + 1;
+        }
+      }
+    }
   }
 
-  file_input($event) {
+  on_bom_type_change(selectedvalue, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        if (selectedvalue == 3) {
+          this.modelbom_data[i].isDisplayNameDisabled = false
+          this.modelbom_data[i].isTypeDisabled = false
+          this.modelbom_data[i].hide = true
+
+
+        }
+        else {
+          this.modelbom_data[i].isDisplayNameDisabled = true
+          this.modelbom_data[i].isTypeDisabled = true
+          this.modelbom_data[i].hide = false
+        }
+      }
+    }
+  }
+
+
+  /* file_input($event) {
     this.input_file = $event.target.files[0];
 
   }
@@ -40,7 +111,7 @@ export class ModelbomComponent implements OnInit {
       }, error => {
         console.log(error);
       });
-  }
+  } */
 
   onSave() {
 
@@ -51,6 +122,14 @@ export class ModelbomComponent implements OnInit {
   }
 
   onDelete() {
+
+  }
+
+  onExplodeClick() {
+
+  }
+
+  onVerifyOutput() {
 
   }
 

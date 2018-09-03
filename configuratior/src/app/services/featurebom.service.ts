@@ -36,4 +36,28 @@ export class FeaturebomService {
     let jObject:any = { AddModelBom: JSON.stringify( SaveData) };
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/AddUpdateFeatureBOMData", jObject, this.common_params.httpOptions);
   }
+
+  getAllViewDataForFeatureBom(search:string,PageNumber:any,record_per_page:any): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForCommonView", jObject, this.common_params.httpOptions);
+  }
+
+  DeleteData(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/DeleteFeatureFromHDRandDTL", jObject, this.common_params.httpOptions);
+  }
+
+  GetDataByFeatureId(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataByFeatureId", jObject, this.common_params.httpOptions);
+  }
 }

@@ -18,16 +18,28 @@ export class ModelbomService {
   
  
 
-  post_data_with_file(input_file_obj, modelbom_data): Observable<any> {
-     console.log('input_file_obj');
-     console.log(input_file_obj);
-    
-     let jObject = { 
-       GetModel: input_file_obj, 
-       ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, modelbom_data: modelbom_data }])
-     };
-      console.log(jObject);
-   //   const headers = new HttpHeaders({'Content-Type': 'Content-Disposition', 'Accept': 'json/application' })
-    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetBomModel", input_file_obj);
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'multipart/form-data',
+      'Accept': 'application/json'
+    })
   }
+
+  /* post_data_with_file(input_file_obj: File, modelbom_data): Observable<any> {
+    console.log(' in  post_data_with_file');
+    console.log(input_file_obj);
+    console.log(input_file_obj.name);
+    
+    
+    let form_data: FormData = new FormData();
+    form_data.append('file', input_file_obj, input_file_obj.name);
+    console.log('form_data');
+    console.log(form_data);
+    
+    // let jObject = { file_data: form_data, ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, modelbom_data: modelbom_data }]) };
+    let jObject = { form_data };
+    console.log(jObject);
+    
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetBomModel/", input_file_obj, this.httpOptions);
+  } */
 }
