@@ -29,9 +29,9 @@ Public Class ModelBOMDL
                 psModelid = NullToInteger(objDataTable.Rows(0)("ModelID"))
             End If
             'get the Press Location 
-            pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
+            '   pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
             'get the ROW ID 
-            rowid = NullToString(objDataTable.Rows(0)("rowid"))
+            '  rowid = NullToString(objDataTable.Rows(0)("rowid"))
 
 
             'Now assign the Company object Instance to a variable pObjCompany
@@ -51,27 +51,15 @@ Public Class ModelBOMDL
                 pSqlParam(0).ParamName = "@MODELID"
                 pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
                 pSqlParam(0).Paramvalue = psModelid
-                ' Get the Query on the basis of objIQuery
-                If pressLoaction = "Detail" Then
-                    'get the Data For Model Except the Selecrted Model
-                    If rowid = 1 Then
-                        psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetModelListExceptSelectedFeature)
-                        'These query will ftch all the Feature fro feature master except the Selected feature 
-                        pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
-                    ElseIf rowid = 2 Then
-                        'Get tHe Data For the Item
-                        psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureListExceptSelectedItem)
-                        pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
-                    ElseIf rowid = 3 Then
-                        'Get the Data For the Feature 
-                        psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetFeatureList)
-                        pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
-                    End If
-                End If
+
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
+                pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
             Else
+
                 psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetModelList)
                 pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
             End If
+
             Return pdsGetData.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -86,7 +74,7 @@ Public Class ModelBOMDL
 
 
 
-   
+
 
     ''' <summary>
     ''' Function to get the Price list fromthe table
@@ -293,16 +281,16 @@ Public Class ModelBOMDL
             If tempDV.Count > 0 Then
                 tempDV(0)("OPTM_READYTOUSE") = NullToString(iModelBOMHdrRow("ReadyToUse"))
                 tempDV(0)("OPTM_MODIFIEDBY") = NullToString(iModelBOMHdrRow("CreatedUser"))
-                tempDV(0)("OPTM_MODIFIEDDATE") = dtServerDate
+                tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
             Else
                 pdr = tempds.Tables("OPCONFIG_MBOMHDR").NewRow()
                 pdr("OPTM_MODELID") = NullToInteger(iModelBOMHdrRow("ModelId"))
                 pdr("OPTM_DESCRIPTION") = NullToString(iModelBOMHdrRow("description"))
                 pdr("OPTM_READYTOUSE") = NullToString(iModelBOMHdrRow("readytouse"))
                 pdr("OPTM_COMPANYID") = NullToString(iModelBOMHdrRow("CompanyDBId"))
-                pdr("OPTM_CREATEDBY") = NullToString(iModelBOMHdrRow("CreatedBy"))
-                pdr("OPTM_CREATEDATE") = dtServerDate
-                tempds.Tables("OPCONFIG_FEATUREBOMHDR").Rows.Add(pdr)
+                pdr("OPTM_CREATEDBY") = NullToString(iModelBOMHdrRow("CreatedUser"))
+                pdr("OPTM_CREATEDDATETIME") = dtServerDate
+                tempds.Tables("OPCONFIG_MBOMHDR").Rows.Add(pdr)
             End If
         Next
         'These will execute and add and update datain the detail table 
@@ -336,14 +324,14 @@ Public Class ModelBOMDL
                 tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
                 tempDV(0)("OPTM_UOM") = childRow("uom")
                 tempDV(0)("OPTM_QUANTITY") = childRow("quantity")
-                tempDV(0)("OPTM_MINSELECTABLE") = childRow("min_selectable")
-                tempDV(0)("OPTM_MAXSELECTABLE") = childRow("max_selectable")
-                tempDV(0)("OPTM_PROPOGATEQTY") = childRow("propogate_qty")
-                tempDV(0)("OPTM_PRICESOURCE") = childRow("pricesource")
+                tempDV(0)("OPTM_MINSELECTABLE") = childRow("min_selected")
+                tempDV(0)("OPTM_MAXSELECTABLE") = childRow("max_selected")
+                tempDV(0)("OPTM_PROPOGATEQTY") = childRow("propagate_qty")
+                tempDV(0)("OPTM_PRICESOURCE") = childRow("price_source")
                 tempDV(0)("OPTM_MANDATORY") = childRow("mandatory")
-                tempDV(0)("OPTM_UNIQUEIDNT") = childRow("unique_indentity")
-                tempDV(0)("OPTM_COMPANYID") = childRow("companyid")
-                tempDV(0)("OPTM_MODIFIEDBY") = childRow("createduser")
+                tempDV(0)("OPTM_UNIQUEIDNT") = childRow("unique_identifer")
+                tempDV(0)("OPTM_COMPANYID") = childRow("CompanyDBId")
+                tempDV(0)("OPTM_MODIFIEDBY") = childRow("CreatedUser")
                 tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
 
             Else
@@ -365,14 +353,14 @@ Public Class ModelBOMDL
                 pdr("OPTM_DISPLAYNAME") = childRow("display_name")
                 pdr("OPTM_UOM") = childRow("uom")
                 pdr("OPTM_QUANTITY") = childRow("quantity")
-                pdr("OPTM_MINSELECTABLE") = childRow("min_selectable")
-                pdr("OPTM_MAXSELECTABLE") = childRow("max_selectable")
-                pdr("OPTM_PROPOGATEQTY") = childRow("propogate_qty")
-                pdr("OPTM_PRICESOURCE") = childRow("pricesource")
+                pdr("OPTM_MINSELECTABLE") = childRow("min_selected")
+                pdr("OPTM_MAXSELECTABLE") = childRow("max_selected")
+                pdr("OPTM_PROPOGATEQTY") = childRow("propagate_qty")
+                pdr("OPTM_PRICESOURCE") = childRow("price_source")
                 pdr("OPTM_MANDATORY") = childRow("mandatory")
-                pdr("OPTM_UNIQUEIDNT") = childRow("unique_indentity")
-                pdr("OPTM_COMPANYID") = childRow("companyid")
-                pdr("OPTM_CREATEDBY") = childRow("createduser")
+                pdr("OPTM_UNIQUEIDNT") = childRow("unique_identifer")
+                pdr("OPTM_COMPANYID") = childRow("CompanyDBId")
+                pdr("OPTM_CREATEDBY") = childRow("CreatedUser")
                 pdr("OPTM_CREATEDATETIME") = dtServerDate
                 tempds.Tables("OPCONFIG_MBOMDTL").Rows.Add(pdr)
             End If

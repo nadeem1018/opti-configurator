@@ -27,7 +27,7 @@ Public Class ModelBOMBL
         Try
             Dim pdtDetails As DataTable = Nothing
             ' Deserialize JSON Object in DataTable Send through the Service
-            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objModelList.ModelList)
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objModelList.GetData)
             'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
             pdPriceList = ModelBOMDL.GetModelList(pdtDetails, mObjCompany)
             'Return the Datasetset
