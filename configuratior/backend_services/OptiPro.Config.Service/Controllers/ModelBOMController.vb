@@ -18,7 +18,7 @@ Public Class ModelBOMController
     ''' <param name="oFeatureList"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    
+
 
     <HttpPost, HttpGet>
    <Route("GetPriceList")>

@@ -68,7 +68,7 @@
     Public Const OptiPro_Config_GetPriceList As String = "GetPriceList"
     Public Const OptiPro_Config_GetDetailForModel As String = "GetDetailForModel"
     Public Const OptiPro_Config_GetSavedDataByModelIdFromHDR As String = "GetSavedDataByModelIdFromHDR"
-    Public Const OptiPro_Config_GetSavedDataByModelIdFromDTL As String = "GetSavedDataByFeatureCodeFromDTL"
+    Public Const OptiPro_Config_GetSavedDataByModelIdFromDTL As String = "GetSavedDataByModelIdFromDTL"
     Public Const OptiPro_Config_DeleteDataFromMBOMHDR As String = "DeleteDataFromMBOMHDR"
     Public Const OptiPro_Config_DeleteDataFromMBOMDTL As String = "DeleteDataFromMBOMDTL"
     Public Const OptiPro_Config_GetDataForCommonViewForModelBOMBySearchCriteria As String = "GetDataForCommonViewForModelBOMBySearchCriteria"
