@@ -24,6 +24,9 @@ export class ModelbomComponent implements OnInit {
   public isUpdateButtonVisible: boolean = true;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = true;
+  public showImageBlock: boolean = false;
+  public selectedImage = ""; 
+
   constructor(private router: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
@@ -33,8 +36,18 @@ export class ModelbomComponent implements OnInit {
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
     this.image_data = [
-      ""
+      "../../../assets/images/test/1.jpg",
+      "../../../assets/images/test/2.jpg",
+      "../../../assets/images/test/3.jpg",
+      "../../../assets/images/test/4.jpg",
+      "../../../assets/images/test/5.jpg",
+      "../../../assets/images/test/6.jpg",
+      "../../../assets/images/test/7.jpg",
+      "../../../assets/images/test/8.jpg",
     ];
+    if (this.image_data.length > 0) {
+      this.showImageBlock = true;
+    } 
   }
   onAddRow() {
     this.counter = 0;

@@ -262,3 +262,12 @@ li.breadcrumb-item a, li.breadcrumb-item {
 }
 
 /* custom css for page width magin and padding - end */
+
+.mdelbom_image {
+  width: 200px;
+  max-height: 200px;
+}
+
+.row.image_data div {
+  margin-bottom: 12px;
+}
