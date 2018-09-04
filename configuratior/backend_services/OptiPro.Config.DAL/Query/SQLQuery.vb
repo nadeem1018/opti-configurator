@@ -66,6 +66,28 @@ Public Class SQLQuery
         Dim psSql As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"" ,""OPTM_FEATUREDESC"",""OPTM_PHOTO"",""OPTM_TYPE"",""OPTM_MODELTEMPLATEITEM"",""OPTM_ITEMCODEGENREF"",""OPTM_STATUS"",""OPTM_EFFECTIVEDATE"",""OPTM_ACCESSORY"" from ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID =@FEATUREID"
         Return psSql
     End Function
+
+    Function ChkValidItemTemplate() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""Code"") AS ""TOTALCOUNT"" FROM ""@OPTM_ITMTEMP"" WHERE ""Code"" =@ITEMTEMPLATE"
+        Return psSql
+    End Function
+
+    Function ChkValidItemCodeGeneration() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_CODE"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_ITEMCODEGENERATION"" WHERE ""OPTM_CODE"" =@ITEMGENERATIONCODE"
+        Return psSql
+    End Function
+
+    Function ChkReferenceForFeatureIDInFeatureBOM() As String
+        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSql
+    End Function
+
+    Function ChkReferenceForFeatureIDInModelBOM() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=@FEATUREID"
+        Return psSql
+    End Function
+
+
 #End Region
 
 
@@ -102,12 +124,12 @@ Public Class SQLQuery
     End Function
 
     Function GetItemGenerationData() As String
-        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.OPTM_CODE = OPICG.OPTM_CODE FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as OPICG GROUP BY OPTM_CODE"
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1,0, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.OPTM_CODE = OPICG.OPTM_CODE FOR XML PATH('') ), 1, 0, '' ) AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as OPICG GROUP BY OPTM_CODE"
         Return psSQL
     End Function
 
     Function GetItemGenerationDataBySearchCriteria() As String
-        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.""OPTM_CODE"" = ""OPICG"".""OPTM_CODE"" FOR XML PATH('') ), 1, 1, '') AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY OPTM_CODE"
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT OPICG.OPTM_CODE AS ""Code"",STUFF((SELECT '' + SUB.OPTM_CODESTRING AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" AS  SUB WHERE SUB.""OPTM_CODE"" = OPICG.""OPTM_CODE"" FOR XML PATH('') ), 1, 0, '' ) AS ""FinalString"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY ""OPTM_CODE"" EXCEPT SELECT TOP @STARTCOUNT ""OPICG"".""OPTM_CODE"" AS ""Code"", STUFF((SELECT '' + ""SUB"".""OPTM_CODESTRING"" AS ""text()"" FROM ""OPCONFIG_ITEMCODEGENERATION"" as  ""SUB"" WHERE SUB.""OPTM_CODE"" = ""OPICG"".""OPTM_CODE"" FOR XML PATH('') ), 1, 0, '') AS ""FinalString"" FROM  ""OPCONFIG_ITEMCODEGENERATION"" as ""OPICG"" WHERE ""OPTM_CODE"" LIKE '%@SEARCHSTRING%' GROUP BY OPTM_CODE"
         Return psSQL
     End Function
 
@@ -160,7 +182,7 @@ Public Class SQLQuery
 
     'SQL Query to get the List of the Items fom the OITM Table
     Function GetItemForFeatureBOM() As String
-        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"" where ""ItemKey""=@ITEMKEY"
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"",""InvUOM"" from ""OpConfig_ItemMaster"" where ""ItemKey""=@ITEMKEY"
         Return psSQL
     End Function
 
@@ -255,7 +277,7 @@ Public Class SQLQuery
     End Function
 
     Function GetPriceList() As String
-        Dim psSQL As String = ""
+        Dim psSQL As String = "SELECT ""PriceListID"" from ""OPConfig_PriceList"" WHERE ""ItemCode""=@ITEMKEY"
         Return psSQL
     End Function
 
@@ -269,7 +291,7 @@ Public Class SQLQuery
         Return psSQL
     End Function
     Function GetSavedDataByModelIdFromDTL() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_FEATUREID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_MODELID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
         Return psSQL
     End Function
 
@@ -294,7 +316,7 @@ Public Class SQLQuery
     End Function
 
     Function GetTotalCountOfRecordForModelBOM() As String
-        Dim psSQL As String = "SELECT  COUNT( DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Dim psSQL As String = "SELECT  COUNT( DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMDTL"""
         Return psSQL
     End Function
 
@@ -303,6 +325,10 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetDetailForModelByModelID() As String
+        Dim psSQL As String = "SELECT T1.""OPTM_FEATURECODE"",T1.""OPTM_DISPLAYNAME"",T1.""OPTM_FEATUREDESC"",T1.""OPTM_PRODGRPID"" ,T1.""OPTM_PHOTO"",T2.""OPTM_READYTOUSE"" FROM ""OPCONFIG_FEATUREHDR"" T1 INNER JOIN ""OPCONFIG_MBOMHDR"" T2 ON T1.OPTM_FEATUREID =T2.OPTM_MODELID  WHERE T2.""OPTM_MODELID""=@MODELID"
+        Return psSQL
+    End Function
 
 #End Region
 

@@ -1,16 +1,18 @@
-import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter,ElementRef,ViewChild } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
   styleUrls: ['./lookup.component.scss']
 })
 export class LookupComponent implements OnInit {
+  @ViewChild("lookupsearch") _el: ElementRef;
   // input and output emitters
   @Input() serviceData: any;
   @Input() lookupfor: any;
@@ -47,7 +49,7 @@ export class LookupComponent implements OnInit {
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
-
+  
   ngOnChanges(): void {
 
     this.showLoader = true;
@@ -100,7 +102,7 @@ export class LookupComponent implements OnInit {
       
     }
   }
-
+  
   log(val) {
     console.log(val);
   }
@@ -114,18 +116,18 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['ItemCode', 'ItemName'];
-    this.lookup_key = 'ItemName';
+    this.table_head = ['Code', 'Name'];
+    this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
     console.log("this.width_value - " + this.width_value);
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    
   }
 
   model_item_generation_lookup() {
-    console.log(this.serviceData);
     this.popup_title = this.language.Model_Ref;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -133,9 +135,10 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    `console.log("this.width_value - " + this.width_value);`
     this.showLoader = false;
     this.LookupDataLoaded = true;
+   
   }
 
   get_features_lookup() {

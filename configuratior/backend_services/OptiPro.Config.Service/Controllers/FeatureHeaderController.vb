@@ -84,4 +84,25 @@ Public Class FeatureHeaderController
         Return FeatureHeaderBL.ImportDataFromExcel(oGetAllData)
     End Function
 
+
+    <HttpPost, HttpGet>
+ <Route("ChkValidItemTemplate")>
+    Public Function ChkValidItemTemplate(ByVal oGetAllData As FeatureHeaderModel) As String
+        Return FeatureHeaderBL.ChkValidItemTemplate(oGetAllData)
+    End Function
+
+
+    <HttpPost, HttpGet>
+ <Route("ChkValidItemCodeGeneration")>
+    Public Function ChkValidItemCodeGeneration(ByVal oGetAllData As FeatureHeaderModel) As String
+        Return FeatureHeaderBL.ChkValidItemCodeGeneration(oGetAllData)
+    End Function
+
+
+    <HttpPost, HttpGet>
+<Route("ChkReferenceForFeatureID")>
+    Public Function ChkReferenceForFeatureID(ByVal oGetAllData As FeatureHeaderModel) As String
+        Return FeatureHeaderBL.ChkReferenceForFeatureID(oGetAllData)
+    End Function
+
 End Class

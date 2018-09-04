@@ -31,6 +31,7 @@ Public Class FeatureHeaderDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
 
             'Now assign the Company object Instance to a variable pObjCompany
@@ -57,11 +58,25 @@ Public Class FeatureHeaderDL
                 'if there is no Column then we will be Cnsider it Blank
                 psFeatureDesc = ""
             End If
-            psPhotoPath = NullToString(objDataTable.Rows(0)("PicturePath"))
-            'Get the User 
-            psCreatedBy = NullToString(objDataTable.Rows(0)("CreatedUser"))
-            'get the type
-            psType = NullToString(objDataTable.Rows(0)("Type"))
+            If objDataTable.Columns.Contains("PicturePath") Then
+                psPhotoPath = NullToString(objDataTable.Rows(0)("PicturePath"))
+            Else
+                psPhotoPath = ""
+            End If
+            If objDataTable.Columns.Contains("CreatedUser") Then
+                'Get the User 
+                psCreatedBy = NullToString(objDataTable.Rows(0)("CreatedUser"))
+            Else
+                psCreatedBy = ""
+            End If
+
+            If objDataTable.Columns.Contains("Type") Then
+                'get the type
+                psType = NullToString(objDataTable.Rows(0)("Type"))
+            Else
+                psType = ""
+            End If
+
             'Check whether the value of Model Temlate Item is Coming from the Ui,If There is no column then we will replace with blank
             If objDataTable.Columns.Contains("ModelTemplateItem") Then
                 '  get the Model Template Item,
@@ -70,8 +85,15 @@ Public Class FeatureHeaderDL
                 'if there is no Column then we will be Cnsider it Blank
                 psModelTemplateItem = ""
             End If
-            'get Item Code Generation Reference Number
-            psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+
+            If objDataTable.Columns.Contains("ItemCodeGenerationRef") Then
+                'get Item Code Generation Reference Number
+                psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+            Else
+
+                'if there is no Column then we will be Cnsider it Blank
+                psItemCodeGen = ""
+            End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
             'get the Effective Date and Time 
@@ -80,6 +102,38 @@ Public Class FeatureHeaderDL
             psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
+
+
+
+            If objDataTable.Columns.Contains("FeatureStatus") Then
+                'get the Status of Feature
+                psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
+            Else
+                psFeatureStatus = ""
+            End If
+
+            If objDataTable.Columns.Contains("EffectiveDate") Then
+                'get the Effective Date and Time 
+                pdtEffectiveDate = NullToDate(objDataTable.Rows(0)("EffectiveDate"))
+            Else
+                pdtEffectiveDate = Date.Now()
+            End If
+
+
+            If objDataTable.Columns.Contains("Accessory") Then
+                'get VAlue for Accessory
+                psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
+            Else
+                psAccessory = ""
+            End If
+
+            If objDataTable.Columns.Contains("FeatureCode") Then
+                'get the Feature Code 
+                psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
+            Else
+                psFeatureCode = ""
+            End If
+
             'Functtion to Check whether the Record is Already Present in Table 
             dtCheckDuplicateRecord = CheckDuplicateFeatureCode1(psCompanyDBId, psFeatureCode, objCmpnyInstance)
             'If the Record is Already Present in the TAble then Error MEssage will be Shown 
@@ -194,8 +248,10 @@ Public Class FeatureHeaderDL
             Dim psSQL As String = String.Empty
             Dim iDelete As Integer
             Dim psFeatureID As Integer
+            Dim ChkReferenceForFeature As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'get the Display NAme 
             psFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
@@ -209,8 +265,15 @@ Public Class FeatureHeaderDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
 
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            ChkReferenceForFeature = ChkReferenceForFeatureID(objDataTable, objCmpnyInstance)
+            If (ChkReferenceForFeature = "True") Then
+                psStatus = "Reference Already Exist in Feature BOM or Model BOM"
+                Return psStatus
+            End If
+
+
+
+            Dim pSqlParam(1) As MfgDBParameter 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@FEATUREID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
@@ -248,6 +311,7 @@ Public Class FeatureHeaderDL
             Dim pdtEffectiveDate As DateTime
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Display NAme 
             psDisplayName = NullToString(objDataTable.Rows(0)("DisplayName"))
             'get the Feature Description 
@@ -274,10 +338,18 @@ Public Class FeatureHeaderDL
                 'if there is no Column then we will be Cnsider it Blank
                 psModelTemplateItem = ""
             End If
-            psItemCodeGenRef = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
-            'get VAlue for Accessory
-            psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
+            If objDataTable.Columns.Contains("ItemCodeGenerationRef") Then
+                psItemCodeGenRef = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+            Else
+                psItemCodeGenRef = ""
+            End If
 
+            If objDataTable.Columns.Contains("Accessory") Then
+                'get VAlue for Accessory
+                psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
+            Else
+                psAccessory = ""
+            End If
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -320,8 +392,6 @@ Public Class FeatureHeaderDL
             pSqlParam(5).ParamName = "@TYPE"
             pSqlParam(5).Dbtype = BMMDbType.HANA_NVarChar
             pSqlParam(5).Paramvalue = psType
-
-
 
             pSqlParam(6) = New MfgDBParameter
             pSqlParam(6).ParamName = "@MODELTEMPLATEITEM"
@@ -390,6 +460,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -422,6 +493,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -494,6 +566,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Feature Code
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -540,6 +613,7 @@ Public Class FeatureHeaderDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -698,6 +772,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -737,6 +812,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Feature Code
             psFeatureCode = NullToString(objDataTable.Rows(0)("FEATUREID"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -774,6 +850,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -805,6 +882,152 @@ Public Class FeatureHeaderDL
     End Function
 
 
+
+    Public Shared Function ChkValidItemTemplate(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim psTemplateItem As String = String.Empty
+            Dim pdsGetData As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
+            'get the Search String
+            psTemplateItem = NullToString(objDataTable.Rows(0)("TemplateItem"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMTEMPLATE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psTemplateItem
+
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkValidItemTemplate)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+
+            If (pdsGetData.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+
+    Public Shared Function ChkValidItemCodeGeneration(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+
+            Dim psItemGenerationCode As String = String.Empty
+            Dim pdsGetData As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
+            'get the Search String
+            psItemGenerationCode = NullToString(objDataTable.Rows(0)("ItemGenerationCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMGENERATIONCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemGenerationCode
+
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkValidItemCodeGeneration)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If (pdsGetData.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+    Public Shared Function ChkReferenceForFeatureID(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim psSQLMBOM As String = String.Empty
+            Dim piFeatureID As Integer
+            Dim pdsGetDataFBOM, pdsGetDataMBOM As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
+            'get the Search String
+            piFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@FEATUREID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = piFeatureID
+
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM)
+
+            psSQLMBOM = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInModelBOM)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            pdsGetDataFBOM = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            pdsGetDataMBOM = (ObjIConnection.ExecuteDataset(psSQLMBOM, CommandType.Text, pSqlParam))
+            If (pdsGetDataFBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0 Or pdsGetDataMBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+
+
     Public Shared Function ImportDataFromExcel(ByVal objDataTable As DataTable, ByVal pCompanyDBId As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
 
         Dim psStatusImportexcel As String = String.Empty
@@ -821,6 +1044,7 @@ Public Class FeatureHeaderDL
             Dim piInsertedRecord As Integer = 0
             'Get the Company Name
             psCompanyDBId = NullToString(pCompanyDBId.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance

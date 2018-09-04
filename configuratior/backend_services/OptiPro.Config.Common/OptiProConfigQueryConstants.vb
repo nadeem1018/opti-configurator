@@ -13,6 +13,11 @@
     Public Const OptiPro_Config_GetAllSavedRecordOnBasisOfSearchCriteria As String = "GetAllSavedRecordOnBasisOfSearchCriteria"
     Public Const OptiPro_Config_GetTotalCountOfRecord As String = "GetTotalCountOfRecord"
     Public Const OptiPro_Config_GetRecordById As String = "GetRecordById"
+    Public Const OptiPro_Config_ChkValidItemTemplate As String = "ChkValidItemTemplate"
+    Public Const OptiPro_Config_ChkValidItemCodeGeneration As String = "ChkValidItemCodeGeneration"
+    Public Const OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM As String = "ChkReferenceForFeatureIDInFeatureBOM"
+    Public Const OptiPro_Config_ChkReferenceForFeatureIDInModelBOM As String = "ChkReferenceForFeatureIDInModelBOM"
+
 
 
 #End Region
@@ -76,6 +81,7 @@
     Public Const OptiPro_Config_GetTotalCountOfRecordForModelBOM As String = "GetTotalCountOfRecordForModelBOM"
     Public Const OptiPro_Config_GetDataByFeatureIDForModelBOM As String = "GetDataByFeatureIDForModelBOM"
     Public Const OptiPro_Config_GetDataForModelDTL As String = "GetDataForModelDTL"
+    Public Const OptiPro_Config_GetDetailForModelByModelID As String = "GetDetailForModelByModelID"
 #End Region
 
 

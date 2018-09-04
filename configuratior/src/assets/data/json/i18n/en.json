@@ -21,7 +21,7 @@
     "bom": "BOM",
     "lookup": "Lookup",
     "title": "Title",
-    "model_template": "Model Template",
+    "model_template": "Model Template Item",
     "code": "Code",
     "add": "Add",
     "string": "String",
@@ -67,6 +67,8 @@
     "Model_Status": "Status",
     "Model_Add": "Add Feature/ Model",
     "Model_Accessory": "Accessory",
+    "Model_Active": "Active",
+    "Model_InActive": "InActive",
     "TypeBlank": "Type cannot be blank",
     "ModelName": "Model/Feature Name cannot be blank",
     "ModelItem": "Model Template Item cannot be blank",
@@ -114,6 +116,11 @@
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
     "name":"Name",
-    "feature_image":"Feature Image"
+    "feature_image":"Feature Image",
+    "Model_FeatureName":"Feature Name",
+    "Model_ModelName":"Model Name",
+    "Model_FeatureDesc":"Feature Desc",
+    "Model_ModelDesc":"Model Desc",
+    "Model_RefValidate": "Invalid ItemCode"
     
 }

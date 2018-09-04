@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
@@ -13,8 +13,9 @@ import { ToastrService } from 'ngx-toastr';
 
 
 export class ViewFeatureModelComponent implements OnInit {
+    @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
-    page_main_title = 'Model Feature';
+    page_main_title = 'Model/Feature Master';
     add_route_link = '/feature/model/add';
     public commonData = new CommonData();
     table_title = this.page_main_title;
@@ -38,9 +39,12 @@ export class ViewFeatureModelComponent implements OnInit {
 
     ngOnInit() {
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
+        //this._el.nativeElement.focus();
         this.service_call(this.current_page, this.search_string);
     }
-
+    ngAfterViewInit() {
+        this._el.nativeElement.focus();
+    }
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
