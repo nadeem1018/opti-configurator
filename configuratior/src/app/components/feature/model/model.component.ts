@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as XLSX from 'ts-xlsx';
 
 
+
 @Component({
   providers:[LookupComponent],
   selector: 'app-model',
@@ -285,5 +286,26 @@ if (result) {
        this.featureBom.Ref = $event;
       }
     }
+  }
+  onItemCodeChange(){
+    this.fms.onItemCodeChange(this.companyName,this.featureBom.ItemName).subscribe(
+      data => {
+        if (data === "False" ) {
+          this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          return;
+        }
+      })
+
+  }
+  onRefCodeChange(){
+    this.fms.onRefCodeChange(this.companyName,this.featureBom.Ref).subscribe(
+      data => {
+        console.log(data);
+        if (data === "False" ) {
+          this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          return;
+        }
+      })
+
   }
 }

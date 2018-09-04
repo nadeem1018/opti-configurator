@@ -85,17 +85,13 @@ Public Class FeatureHeaderDL
                 psModelTemplateItem = ""
             End If
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c2d56932ce0c972ca0aebc6644f8bbf7d8771ae6
             If objDataTable.Columns.Contains("ItemCodeGenerationRef") Then
                 'get Item Code Generation Reference Number
                 psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
             Else
-<<<<<<< HEAD
-                'if there is no Column then we will be Cnsider it Blank
-                psItemCodeGen = ""
+
+            'if there is no Column then we will be Cnsider it Blank
+            psItemCodeGen = ""
             End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
@@ -105,9 +101,8 @@ Public Class FeatureHeaderDL
             psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
-=======
-                psItemCodeGen = ""
-            End If
+
+           
 
             If objDataTable.Columns.Contains("FeatureStatus") Then
                 'get the Status of Feature
@@ -137,7 +132,7 @@ Public Class FeatureHeaderDL
             Else
                 psFeatureCode = ""
             End If
->>>>>>> c2d56932ce0c972ca0aebc6644f8bbf7d8771ae6
+
             'Functtion to Check whether the Record is Already Present in Table 
             dtCheckDuplicateRecord = CheckDuplicateFeatureCode1(psCompanyDBId, psFeatureCode, objCmpnyInstance)
             'If the Record is Already Present in the TAble then Error MEssage will be Shown 

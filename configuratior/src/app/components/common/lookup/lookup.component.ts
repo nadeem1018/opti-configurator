@@ -5,6 +5,7 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
