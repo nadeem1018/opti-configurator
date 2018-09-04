@@ -83,6 +83,7 @@
     "CompanyRequired": "Select Company",
     "DeleteConfimation": "Do you want to delete?",
     "ModelBom": "Model",
+    "Model_Bom": "ModelBOM",
     "Bom_FeatureId": "Feature ID",
     "Bom_Displayname": "Display Name",
     "Bom_FeatureDesc": "Feature Description",

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
 import { ModelbomService } from '../../services/Modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,7 @@ import { CommonData } from "../../models/CommonData";
 
 
 export class ViewModelBomComponent implements OnInit {
+    @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
     page_main_title = 'Model Bom';
     table_title = this.page_main_title;
@@ -36,6 +37,9 @@ export class ViewModelBomComponent implements OnInit {
     ngOnInit() {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
+    }
+    ngAfterViewInit() {
+        this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
