@@ -16,9 +16,9 @@
 </div>
 
 <ol class="breadcrumb breadcrumb_mini_margin">
-    <li class="breadcrumb-item">
+   <!--  <li class="breadcrumb-item">
         <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
-    </li>
+    </li> -->
     <li class="breadcrumb-item ">{{page_main_title}}</li>
     <li class="breadcrumb-item active">{{language.view}}</li>
 </ol>
@@ -40,7 +40,7 @@
                
              <div class="col-sm-3  pull-right">
                     <div class="form-group row clearfix">
-                        <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string">
+                        <input type="text" autofocus class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string" >
                         <button class="btn btn-outline-dark btn-xs" (click)="search_results()"><i class="fa fa-search"></i></button>
                     </div>
             </div>
@@ -60,7 +60,7 @@
                 </tfoot>
                 <tbody>
                     <tr *ngFor="let row of rows ">
-                        <td *ngFor="let row_data of row; let i = index"  > 
+                        <td *ngFor="let row_data of row; let i = index"  >  <!--   | local_search : search_string -->
                             <span *ngIf="(row.length-1) != i">{{row_data}}</span>
                             <span *ngIf="(row.length-1) == i">
                                 <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(row_data)" title="{{button1_title}}" ><i class="{{button1_icon}}"></i></button>

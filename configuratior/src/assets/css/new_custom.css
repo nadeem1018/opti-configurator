@@ -163,7 +163,7 @@ mb-3, .my-3 {
 }
 
 .btn-group-sm>.btn, .btn-sm {
-  padding: .3rem 0.4rem !important;
+  padding: .1rem 0.2rem !important;
   font-size: .875rem !important;
   line-height: 1.0 !important;
   border-radius: .2rem !important;
@@ -271,4 +271,8 @@ li.breadcrumb-item a, li.breadcrumb-item {
 
 .row.image_data div {
   margin-bottom: 12px;
+}
+
+.table td {
+  font-size: 13px;
 }

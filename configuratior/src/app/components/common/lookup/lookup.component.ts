@@ -6,6 +6,8 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+// import { ContentChild, AfterViewInit, ViewChild, ViewChildren, AfterViewChecked, ElementRef } from "@angular/core"
+
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -18,10 +20,13 @@ export class LookupComponent implements OnInit {
   @Input() fillLookupArray: any;
   @Input() selectedImage: any
   @Output() lookupvalue = new EventEmitter();
+  // @ViewChild(searchlookupfield, { read: ElementRef }) lookup_search: ElementRef;
+
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
   constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
+  
   
 
   // mandatory variables
@@ -58,14 +63,14 @@ export class LookupComponent implements OnInit {
     this.model_template_item_columns = [];
     this.fill_input_id = '';
     this.preview_image = '';
-
     this.dataBind = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
+   
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-        this.model_template_lookup();
+       this.model_template_lookup();
       }
       if (this.lookupfor == "model_item_generation") {
         this.model_item_generation_lookup();
@@ -95,8 +100,16 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "large_image_view") {
         this.showImage();
       }
+
+      if (this.lookupfor == "tree_view_lookup"){
+        this.showTreeView();
+      }
     }
   }
+
+ /*  ngAfterViewChecked() {
+    
+  } */
   
   log(val) {
     console.log(val);
@@ -107,18 +120,22 @@ export class LookupComponent implements OnInit {
   }
 
   model_template_lookup() {
+    
     this.popup_title = this.language.model_template;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
     this.table_head = ['ItemCode', 'ItemName'];
     this.lookup_key = 'ItemName';
-
+ 
     this.width_value = ((100 / this.table_head.length) + '%');
     console.log("this.width_value - " + this.width_value);
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
+   /*  setTimeout(function () {
+      this.lookup_search.nativeElement.focus();
+    }, 500); */
   }
 
   model_item_generation_lookup() {
@@ -228,5 +245,15 @@ export class LookupComponent implements OnInit {
     this.preview_image = this.selectedImage;
     this.showLoader = false;
     this.LookupDataLoaded = true;
+  }
+
+  showTreeView(){
+    this.popup_title = this.language.explode;
+    this.showLoader = true;
+    this.LookupDataLoaded = false;
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    
   }
 }

@@ -364,7 +364,7 @@ export class BomComponent implements OnInit {
     )
   }
 
-  onExplodeClick(){}
+  
 
   onDeleteClick(){
     var result = confirm(this.language.DeleteConfimation);
@@ -387,6 +387,10 @@ export class BomComponent implements OnInit {
 
   onAssociatedBOMClick(){
 
+  }
+
+  onExplodeClick() { 
+    this.lookupfor = 'tree_view_lookup';
   }
   
 }
