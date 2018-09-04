@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
+
 
 
 @Component({
@@ -12,6 +13,9 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./itemcodegeneration.component.scss']
 })
 export class ItemcodegenerationComponent implements OnInit {
+  @ViewChild("inputBox") _el: ElementRef;
+  @ViewChild("button") _button: ElementRef;
+  
   public commonData = new CommonData();
   public view_route_link = '/item-code-generation/view';
   language = JSON.parse(sessionStorage.getItem('current_lang'));
@@ -89,6 +93,8 @@ export class ItemcodegenerationComponent implements OnInit {
       )
     }
     else{
+      
+     // this.setfocus=true
       this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
@@ -110,7 +116,14 @@ export class ItemcodegenerationComponent implements OnInit {
 
 
   }
-
+  ngAfterViewInit() {
+    if(this.codekey === "" || this.codekey === null){
+    this._el.nativeElement.focus();
+    }
+    else{
+      this._button.nativeElement.focus();
+    }
+  }
   onAddRow() {
     if (this.validateRowData("AddRow") == false) {
       return

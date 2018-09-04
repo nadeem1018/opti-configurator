@@ -31,15 +31,15 @@
                     {{language.Model_Code}}</label>
                 <div class="col-sm-6">
                     <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
-                        [(ngModel)]="featureBom.Code">
+                        [(ngModel)]="featureBom.Code" #inputBox>
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="type">{{language.Model_Type}}</label>
                 <div class="col-sm-6">
-                    <select class="form-control  form-control-sm mt3" (change)="onTypeLookupChange()" id="typeID" name="typeName" [(ngModel)]="featureBom.type">
-                        <option value="feature">{{language.feature}}</option>
-                        <option value="model">{{language.model}}</option>
+                    <select class="form-control  form-control-sm mt3" (change)= "onTypeLookupChange()" id="typeID" name="typeName" [(ngModel)]="featureBom.type" #select>
+                        <option value="Feature">{{language.feature}}</option>
+                        <option value="Model">{{language.model}}</option>
                     </select>
                 </div>
             </div>

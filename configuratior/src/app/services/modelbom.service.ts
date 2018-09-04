@@ -76,4 +76,17 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataForCommonViewForModelBOM", jObject, this.common_params.httpOptions);
   }
 
+  GetPriceList(ItemKey): Observable<any> {
+    let jObject = { PriceList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey }]) }
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetPriceList", jObject, this.common_params.httpOptions);
+  }
+
+  GetDataByModelId(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataByModelID", jObject, this.common_params.httpOptions);
+  }
+
 }

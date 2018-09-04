@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { LookupComponent } from '../../common/lookup/lookup.component';
 import { CommonData } from "../../../models/CommonData";
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as XLSX from 'ts-xlsx';
+import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
 
 
 
@@ -19,6 +20,9 @@ import * as XLSX from 'ts-xlsx';
 
 
 export class ModelComponent implements OnInit {
+  @ViewChild("inputBox") _el: ElementRef;
+  @ViewChild("select") _ele: ElementRef;
+  
   public featureBom: any=[];
  //public featureModel:any ={};
  public featureModel:any =[];
@@ -63,6 +67,7 @@ public code_disabled= "false";
       this.featureBom.Accessory = 'N';
       this.featureBom.Status= "Active";
       this.code_disabled= "false";
+      this._el.nativeElement.focus();
     }
     else{
       this.button="update";
@@ -71,6 +76,7 @@ public code_disabled= "false";
       this.isDeleteButtonVisible = true;
       this.section_title = this.language.edit;
       this.code_disabled= "true";
+      
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
           console.log(data);
@@ -83,7 +89,8 @@ this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
-if(data[0].OPTM_TYPE == "feature"){
+console.log(data[0].OPTM_TYPE);
+if(data[0].OPTM_TYPE == "Feature"){
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
 }else{
@@ -93,9 +100,17 @@ if(data[0].OPTM_TYPE == "feature"){
         })
     }
   }
+  ngAfterViewInit() {
+    if(this.codekey === "" || this.codekey === null){
+    this._el.nativeElement.focus();
+    }
+    else{
+      this._ele.nativeElement.focus();
+    }
+  }
 
   onTypeLookupChange(){
-if(this.featureBom.type == "feature"){
+if(this.featureBom.type == "Feature"){
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
 }else{
@@ -292,6 +307,7 @@ if (result) {
       data => {
         if (data === "False" ) {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          this.featureBom.ItemName="";
           return;
         }
       })
@@ -303,6 +319,7 @@ if (result) {
         console.log(data);
         if (data === "False" ) {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          this.featureBom.Ref="";
           return;
         }
       })

@@ -1,4 +1,4 @@
-import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter,ElementRef,ViewChild } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
@@ -14,6 +14,7 @@ import * as $ from 'jquery';
   styleUrls: ['./lookup.component.scss']
 })
 export class LookupComponent implements OnInit {
+  @ViewChild("lookupsearch") _el: ElementRef;
   // input and output emitters
   @Input() serviceData: any;
   @Input() lookupfor: any;
@@ -53,7 +54,7 @@ export class LookupComponent implements OnInit {
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
-
+  
   ngOnChanges(): void {
 
     this.showLoader = true;
@@ -93,13 +94,17 @@ export class LookupComponent implements OnInit {
         this.import_popup();
       }
 
-      if (this.lookupfor == "ModelBom_lookup") {
+      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup" ) {
         this.get_Model_lookup();
       }
 
       if (this.lookupfor == "large_image_view") {
         this.showImage();
       }
+      if (this.lookupfor == "Price_lookup") {
+        this.get_Price_lookup();
+      }
+      
 
       if (this.lookupfor == "tree_view_lookup"){
         this.showTreeView();
@@ -125,17 +130,15 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['ItemCode', 'ItemName'];
-    this.lookup_key = 'ItemName';
- 
+    this.table_head = ['Code', 'Name'];
+    this.lookup_key = 'Name';
+
     this.width_value = ((100 / this.table_head.length) + '%');
     console.log("this.width_value - " + this.width_value);
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
-   /*  setTimeout(function () {
-      this.lookup_search.nativeElement.focus();
-    }, 500); */
+    
   }
 
   model_item_generation_lookup() {
@@ -149,12 +152,13 @@ export class LookupComponent implements OnInit {
     `console.log("this.width_value - " + this.width_value);`
     this.showLoader = false;
     this.LookupDataLoaded = true;
+   
   }
 
   get_features_lookup() {
     console.log('in lookup');
 
-    this.popup_title = this.language.FeatureLookupTitle;
+    this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
@@ -201,6 +205,21 @@ export class LookupComponent implements OnInit {
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
+
+  get_Price_lookup() {
+    this.popup_title = this.language.price_source;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'price_source';
+    this.lookup_key = 'PriceListID';
+    this.table_head = ['Price Source'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  
   file_input($event) {
     // var obj = this;
     // this.selectedFile = $event.target.files[0];
@@ -228,7 +247,7 @@ export class LookupComponent implements OnInit {
         data => {
           console.log("imported result"+ data);
           this.toastr.success('', data, this.commonData.toast_config);
-          $("#import_modal").modal("hide");
+          // $("#import_modal").modal("hide");
         
           this.router.navigateByUrl('/feature/model/view');
           return;

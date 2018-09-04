@@ -23,11 +23,17 @@ export class ModelbomComponent implements OnInit {
   public isVerifyButtonVisible: boolean = true;
   public isUpdateButtonVisible: boolean = true;
   public isSaveButtonVisible: boolean = true;
-  public isDeleteButtonVisible: boolean = true;
+  public isDeleteButtonVisible: boolean = false;
   public showImageBlock: boolean = false;
-  public selectedImage = ""; 
+  public selectedImage = "";
+  public isPriceDisabled = true;
+  public pricehide = true;
+  public isUOMDisabled = true;
+  public update_id: string = "";
+  public typevaluefromdatabase: string = "";
+  
 
-  constructor(private router: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
   page_main_title = this.language.ModelBom
@@ -36,6 +42,8 @@ export class ModelbomComponent implements OnInit {
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
+    this.update_id = "";
+    this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     this.image_data = [
       "../../../assets/images/test/1.jpg",
       "../../../assets/images/test/2.jpg",
@@ -48,7 +56,83 @@ export class ModelbomComponent implements OnInit {
     ];
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
-    } 
+    }
+    if (this.update_id === "" || this.update_id === null) {
+      this.isUpdateButtonVisible = false;
+      this.isDeleteButtonVisible = false;
+    }
+    else {
+      this.isUpdateButtonVisible = true;
+      this.isSaveButtonVisible = false;
+      this.isDeleteButtonVisible = true;
+
+      this.service.GetDataByModelId(this.update_id).subscribe(
+        data => {
+          if (data.ModelHeader.length > 0) {
+            this.modelbom_data.modal_id=data.ModelDetail[0].OPTM_MODELID
+            this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
+            this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
+           }
+
+          if (data.ModelDetail.length > 0) {
+            for (let i = 0; i < data.ModelDetail.length; ++i) {
+              if (data.ModelDetail[i].OPTM_TYPE == 1) {
+                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDFEATUREID.toString()
+                this.isPriceDisabled = true
+                this.pricehide = true
+                this.isUOMDisabled = true
+              }
+              else if (data.ModelDetail[i].OPTM_TYPE == 2) {
+                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
+                this.isPriceDisabled = false
+                this.pricehide = false
+                this.isUOMDisabled = false
+              }
+              else {
+                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
+                this.isPriceDisabled = true
+                this.pricehide = true
+                this.isUOMDisabled = true
+              }
+
+              this.modelbom_data.push({
+                rowindex: data.ModelDetail[i].OPTM_LINENO,
+                ModelId: data.ModelDetail[i].OPTM_MODELID,
+                description:this.modelbom_data.feature_name ,
+                readytouse: data.ModelDetail[i].OPTM_READYTOUSE,
+                type: data.ModelDetail[i].OPTM_TYPE,
+                type_value:  this.typevaluefromdatabase,
+                display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
+                uom: data.ModelDetail[i].OPTM_UOM,
+                quantity: data.ModelDetail[i].OPTM_QUANTITY,
+                min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
+                max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
+                propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
+                price_source: data.ModelDetail[i].OPTM_PRICESOURCE,
+                mandatory: data.ModelDetail[i].OPTM_MANDATORY,
+                unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
+                isDisplayNameDisabled: false,
+                isTypeDisabled: false,
+                hide: false,
+                CompanyDBId:data.ModelDetail[i].OPTM_COMPANYID,
+                CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
+                isPriceDisabled:   this.isPriceDisabled,
+                pricehide: this.pricehide ,
+                isUOMDisabled:this.isUOMDisabled
+              });
+
+            }
+          }
+          
+
+
+
+
+        }
+
+
+      )
+    }
   }
   onAddRow() {
     this.counter = 0;
@@ -60,24 +144,27 @@ export class ModelbomComponent implements OnInit {
     this.modelbom_data.push({
       rowindex: this.counter,
       ModelId: this.modelbom_data.modal_id,
-      description:this.modelbom_data.feature_desc,
-      readytouse:"N",
+      description: this.modelbom_data.feature_desc,
+      readytouse: "N",
       type: 1,
       type_value: "",
       display_name: "",
       uom: '',
       quantity: 0,
-      min_selected: '',
-      max_selected: '',
+      min_selected: 1,
+      max_selected: 1,
       propagate_qty: 'N',
       price_source: '',
       mandatory: 'N',
       unique_identifer: 'N',
-      isDisplayNameDisabled: true,
-      isTypeDisabled: true,
+      isDisplayNameDisabled: false,
+      isTypeDisabled: false,
       hide: false,
       CompanyDBId: this.companyName,
-      CreatedUser: this.username
+      CreatedUser: this.username,
+      isPriceDisabled: true,
+      pricehide: true,
+      isUOMDisabled:true
     });
   };
 
@@ -95,35 +182,68 @@ export class ModelbomComponent implements OnInit {
     }
   }
 
+  clearData(rowindex){
+    this.modelbom_data[rowindex].type_value="";
+    this.modelbom_data[rowindex].uom="";
+    this.modelbom_data[rowindex].display_name="";
+    this.modelbom_data[rowindex].quantity=0;
+    this.modelbom_data[rowindex].min_selected=1;
+    this.modelbom_data[rowindex].max_selected=1;
+    this.modelbom_data[rowindex].propagate_qty='N';
+    this.modelbom_data[rowindex].price_source='';
+    this.modelbom_data[rowindex].mandatory='N';
+    this.modelbom_data[rowindex].unique_identifer='N';
+  }
+
   on_bom_type_change(selectedvalue, rowindex) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        this.clearData(i);
         if (selectedvalue == 3) {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
-          this.modelbom_data[i].hide = true
+          this.modelbom_data[i].hide = false
           this.modelbom_data[i].type = 3
+          this.modelbom_data[i].isPriceDisabled = true
+          this.modelbom_data[i].pricehide = true
+          this.modelbom_data[i].isUOMDisabled = true
+         
+
 
 
         }
         else {
-          this.modelbom_data[i].isDisplayNameDisabled = true
-          this.modelbom_data[i].isTypeDisabled = true
+          this.modelbom_data[i].isDisplayNameDisabled = false
+          this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
           if (selectedvalue == 2) {
             this.modelbom_data[i].type = 2
+            this.modelbom_data[i].isPriceDisabled = false
+            this.modelbom_data[i].pricehide = false
+            this.modelbom_data[i].isUOMDisabled = false
           }
           else {
             this.modelbom_data[i].type = 1
             this.lookupfor = 'feature_lookup';
+            this.modelbom_data[i].isPriceDisabled = true
+            this.modelbom_data[i].pricehide = true
+            this.modelbom_data[i].isUOMDisabled = true
+
+
           }
         }
 
 
       }
     }
-    this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
+    if (selectedvalue == 3) {
+      this.getModelDetails(this.modelbom_data.modal_id, "Detail",selectedvalue )
+    }
+    else {
+      this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
+    }
+
 
   }
 
@@ -147,6 +267,8 @@ export class ModelbomComponent implements OnInit {
                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString()
                   this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
+                  
+                  
 
                 }
               }
@@ -189,9 +311,23 @@ export class ModelbomComponent implements OnInit {
 
   openFeatureLookUp(status) {
     console.log('inopen feature');
-
+    this.serviceData=[]
     this.lookupfor = 'ModelBom_lookup';
     this.service.GetModelList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.serviceData = data;
+          console.log(this.serviceData);
+
+        }
+      }
+    )
+  }
+
+  openPriceLookUp(ItemKey) {
+    this.lookupfor = 'Price_lookup';
+    this.serviceData=[]
+    this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
@@ -210,6 +346,12 @@ export class ModelbomComponent implements OnInit {
     else if (this.lookupfor == 'feature_Detail_lookup') {
       this.getModelFeatureDetails($event, "Header", 0);
     }
+    else if (this.lookupfor == 'ModelBom_Detail_lookup') {
+      this.getModelDetails($event, "Header", 0);
+    }
+    else if (this.lookupfor == 'Price_lookup') {
+      this.getPriceDetails($event, "Header", this.currentrowindex);
+    }
     else {
       this.lookupfor = 'Item_Detail_lookup';
       this.getItemDetails($event);
@@ -220,7 +362,13 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-
+  getPriceDetails(price, press_location, index) {
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+      if (this.modelbom_data[i].rowindex === index) {
+        this.modelbom_data[i].price_source = price.toString()
+      }
+    }
+  }
 
 
   getModelDetails(Model_code, press_location, index) {
@@ -233,8 +381,23 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
             }
+            else{
+              for (let i = 0; i < this.modelbom_data.length; ++i) {
+                if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+                  this.modelbom_data[i].type_value = data[0].OPTM_FEATURECODE.toString()
+                  this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
+
+                }
+              }
+            }
           }
-         
+          else {
+            if (index == 3) {
+              this.lookupfor = 'ModelBom_Detail_lookup';
+            }
+            this.serviceData = data;
+          }
+
 
         }
       }
@@ -250,6 +413,7 @@ export class ModelbomComponent implements OnInit {
             if (this.modelbom_data[i].rowindex === this.currentrowindex) {
               this.modelbom_data[i].type_value = data[0].ItemKey.toString()
               this.modelbom_data[i].display_name = data[0].Description
+              this.modelbom_data[i].uom=data[0].InvUOM
 
             }
           }
@@ -389,33 +553,33 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  
-  
-  
+
+
+
 
   onSave() {
     if (this.modelbom_data.length > 0) {
       for (let i = 0; i < this.modelbom_data.length; ++i) {
-        if( this.modelbom_data[i].unique_identifer==false){
-          this.modelbom_data[i].unique_identifer="N"
+        if (this.modelbom_data[i].unique_identifer == false) {
+          this.modelbom_data[i].unique_identifer = "N"
         }
-        else if(this.modelbom_data[i].unique_identifer==true){
-          this.modelbom_data[i].unique_identifer="Y"
+        else if (this.modelbom_data[i].unique_identifer == true) {
+          this.modelbom_data[i].unique_identifer = "Y"
         }
-        else if(this.modelbom_data[i].mandatory==false){
-          this.modelbom_data[i].mandatory="N"
+        else if (this.modelbom_data[i].mandatory == false) {
+          this.modelbom_data[i].mandatory = "N"
         }
-        else if(this.modelbom_data[i].mandatory==true){
-          this.modelbom_data[i].mandatory="Y"
+        else if (this.modelbom_data[i].mandatory == true) {
+          this.modelbom_data[i].mandatory = "Y"
         }
-        else if(this.modelbom_data[i].propagate_qty==false){
-          this.modelbom_data[i].propagate_qty="N"
+        else if (this.modelbom_data[i].propagate_qty == false) {
+          this.modelbom_data[i].propagate_qty = "N"
         }
-        else if(this.modelbom_data[i].propagate_qty==true){
-          this.modelbom_data[i].propagate_qty="Y"
+        else if (this.modelbom_data[i].propagate_qty == true) {
+          this.modelbom_data[i].propagate_qty = "Y"
         }
-       
-       
+
+
       }
     }
 
@@ -451,5 +615,6 @@ export class ModelbomComponent implements OnInit {
   enlage_image(image) {
     this.lookupfor = 'large_image_view';
     this.selectedImage = image;
-  } 
+  }
 }
+

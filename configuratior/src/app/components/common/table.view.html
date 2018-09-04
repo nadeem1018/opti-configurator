@@ -40,7 +40,7 @@
                
              <div class="col-sm-3  pull-right">
                     <div class="form-group row clearfix">
-                        <input type="text" autofocus class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string" >
+                        <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string" #searchinput>
                         <button class="btn btn-outline-dark btn-xs" (click)="search_results()"><i class="fa fa-search"></i></button>
                     </div>
             </div>
