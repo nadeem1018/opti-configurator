@@ -379,6 +379,42 @@ Public Class ModelBOMDL
                 tempds.Tables("OPCONFIG_MBOMDTL").Rows.Add(pdr)
             End If
         Next
+
+
+
+        Dim seqlist1 As String = ""
+        tempDV = New DataView(objdsFeatureBOM)
+        If tempDV.Count > 0 Then
+            ' Filter Data According to row 
+            tempDV.RowFilter = String.Format("IsNull(rowindex, 0) <> 0")
+        End If
+        For Each row In tempDV
+            'For Getting the Sequence Number 
+            If seqlist1 <> "" Then
+                seqlist1 = seqlist1 & "," & "'" & NullToInteger(row("rowindex")) & "'"
+            Else
+                seqlist1 = "'" & NullToInteger(row("rowindex")) & "'"
+            End If
+        Next
+        'if the Sequence is Present then Delete the Row 
+        If seqlist1.Length > 0 Then
+            Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
+            deletedFGDV.RowFilter = String.Format("OPTM_LINENO Not in (" & seqlist1 & ") and IsNull(OPTM_LINENO, 0) <> 0")
+            Dim tempRow As DataRow = Nothing
+            For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+                tempRow = deletedFGDV(fgRowCnt).Row
+                tempRow.Delete()
+            Next
+        Else
+            Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
+            deletedFGDV.RowFilter = String.Format("IsNull(OPTM_LINENO, 0) <> 0")
+            Dim tempRow As DataRow = Nothing
+            For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+                tempRow = deletedFGDV(fgRowCnt).Row
+                tempRow.Delete()
+            Next
+
+        End If
     End Sub
     'This method will help to Update the Data set into the Database
 #End Region
