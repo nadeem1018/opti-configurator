@@ -235,6 +235,7 @@ Public Class FeatureHeaderDL
             Dim psSQL As String = String.Empty
             Dim iDelete As Integer
             Dim psFeatureID As Integer
+            Dim ChkReferenceForFeature As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             'psCompanyDBId = "DEVQAS2BRANCHING"
@@ -250,8 +251,15 @@ Public Class FeatureHeaderDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
 
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            ChkReferenceForFeature = ChkReferenceForFeatureID(objDataTable, objCmpnyInstance)
+            If (ChkReferenceForFeature = "True") Then
+                psStatus = "Reference Already Exist in Feature BOM or Model BOM"
+                Return psStatus
+            End If
+
+
+
+            Dim pSqlParam(1) As MfgDBParameter'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@FEATUREID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
@@ -905,6 +913,7 @@ Public Class FeatureHeaderDL
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
+
             Dim psItemGenerationCode As String = String.Empty
             Dim pdsGetData As DataSet
             'Get the Company Name
@@ -942,6 +951,55 @@ Public Class FeatureHeaderDL
         End Try
         Return Nothing
     End Function
+
+
+    Public Shared Function ChkReferenceForFeatureID(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim psSQLMBOM As String = String.Empty
+            Dim piFeatureID As Integer
+            Dim pdsGetDataFBOM, pdsGetDataMBOM As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the Search String
+            piFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@FEATUREID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = piFeatureID
+
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM)
+
+            psSQLMBOM = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInModelBOM)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            pdsGetDataFBOM = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            pdsGetDataMBOM = (ObjIConnection.ExecuteDataset(psSQLMBOM, CommandType.Text, pSqlParam))
+            If (pdsGetDataFBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0 Or pdsGetDataMBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
 
 
 

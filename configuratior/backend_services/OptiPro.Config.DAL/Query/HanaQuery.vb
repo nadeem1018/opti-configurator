@@ -70,6 +70,26 @@ Public Class HanaQuery
         Return psSql
     End Function
 
+    Function ChkValidItemTemplate() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""ItemKey"") AS ""TOTALCOUNT"" FROM ""OPConfig_ItemMaster"" WHERE ""ItemKey""=?"
+        Return psSql
+    End Function
+
+    Function ChkValidItemCodeGeneration() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_CODE"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_ITEMCODEGENERATION"" WHERE ""OPTM_CODE""=?"
+        Return psSql
+    End Function
+
+    Function ChkReferenceForFeatureIDInFeatureBOM() As String
+        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHEADER"" WHERE ""OPTM_FEATUREID""=?"
+        Return psSql
+    End Function
+
+    Function ChkReferenceForFeatureIDInModelBOM() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=?"
+        Return psSql
+    End Function
+
 #End Region
 
 

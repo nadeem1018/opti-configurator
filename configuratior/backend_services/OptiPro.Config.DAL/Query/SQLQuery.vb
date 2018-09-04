@@ -77,6 +77,16 @@ Public Class SQLQuery
         Return psSql
     End Function
 
+    Function ChkReferenceForFeatureIDInFeatureBOM() As String
+        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHEADER"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSql
+    End Function
+
+    Function ChkReferenceForFeatureIDInModelBOM() As String
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=@FEATUREID"
+        Return psSql
+    End Function
+
 
 #End Region
 
