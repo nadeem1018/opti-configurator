@@ -84,9 +84,12 @@ Public Class ModelBOMDL
     Public Shared Function GetPriceList(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
+            Dim psItemKey As String = String.Empty
             Dim psSQL As String = String.Empty
             Dim pdsPriceList As DataSet
             'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -96,9 +99,15 @@ Public Class ModelBOMDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting featureID and it will be of Integer
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMKEY"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemKey
             ' Get the Query on the basis of objIQuery
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetPriceList)
-            pdsPriceList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            pdsPriceList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
             Return pdsPriceList.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)

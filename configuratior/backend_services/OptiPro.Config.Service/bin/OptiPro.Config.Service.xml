@@ -6,33 +6,7 @@ OptiPro.Config.Service
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureList(OptiPro.Config.Entity.FeatureBOMModel)">
-	<summary>
- vb Controller to get the List of all the Feture from the Fature Header
- </summary>
-	<param name="oFeatureList"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
-	<summary>
- vb Controller alls the buisnesss layer and it is used t get the Details of the Features According to Featre ID 
- </summary>
-	<param name="oFeatureDetail"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.SampleDirection">
-	<summary>
- Indicates whether the sample is used for request or response
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
-	<summary>
- Generates model descriptions for given types.
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.TextSample">
-	<summary>
- This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
- </summary>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+<member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
 	<summary>
  Sets the documentation provider for help page.
  </summary>
@@ -162,70 +136,14 @@ OptiPro.Config.Service
 	<returns>
  An <see cref="T:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel"/>
 	</returns>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.Controllers.HelpController">
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.InvalidSample">
 	<summary>
- The controller that will handle requests for the help page.
+ This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
  </summary>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
 	<summary>
- Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+ Generates model descriptions for given types.
  </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
-	<summary>
- Gets or sets the <see cref="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
-	<summary>
- Gets or sets the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
-	<summary>
- Gets or sets the documentation for the request.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
-	<summary>
- Gets or sets the model description of the request body.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
-	<summary>
- Gets the request body parameter descriptions.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
-	<summary>
- Gets or sets the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
-	<summary>
- Gets the resource property descriptions.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
-	<summary>
- Gets the sample requests associated with the API.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
-	<summary>
- Gets the sample responses associated with the API.
- </summary>
-</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
-	<summary>
- Gets the error messages associated with this model.
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel">
-	<summary>
- The model that represents an API displayed on the help page.
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfig">
-	<summary>
- Use this class to customize the Help Page.
- For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
- or you can provide the samples for the requests/responses.
- </summary>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
-	<summary>
-Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
-</summary>
-	<param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
-	<returns>The ID as a string.</returns>
 </member><member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
 	<summary>
  Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.HelpPageSampleGenerator"/> class.
@@ -320,6 +238,19 @@ Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.Ap
 	<summary>
  This class will generate the samples for the help page.
  </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.Controllers.HelpController">
+	<summary>
+ The controller that will handle requests for the help page.
+ </summary>
+</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.ImageSample.#ctor(System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ImageSample"/> class.
+ </summary>
+	<param name="src">The URL of an image.</param>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ImageSample">
+	<summary>
+ This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+ </summary>
 </member><member name="M:OptiPro.Config.Service.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
 	<summary>
  Creates a new <see cref="T:OptiPro.Config.Service.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
@@ -381,43 +312,6 @@ Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.Ap
 	<summary>
  This is used to identify the place where the sample should be applied.
  </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription">
-	<summary>
- Describes a type model.
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
-	<summary>
- Use this attribute to change the name of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
- </summary>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.InvalidSample">
-	<summary>
- This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
- </summary>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
-	<summary>
- Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider"/> class.
- </summary>
-	<param name="documentPath">The physical path to XML document.</param>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider">
-	<summary>
- A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
- </summary>
-</member><member name="M:OptiPro.Config.Service.ItemGenerationController.AddItemGeneration(OptiPro.Config.Entity.ItemGenerationModel)">
-	<summary>
- vb Controller to add Item Generation in Item
- </summary>
-	<param name="oAddItemGeneration"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.ImageSample.#ctor(System.String)">
-	<summary>
- Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ImageSample"/> class.
- </summary>
-	<param name="src">The URL of an image.</param>
-</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ImageSample">
-	<summary>
- This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
- </summary>
 </member><member name="M:OptiPro.Config.Service.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
 	<summary>
  Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
@@ -437,6 +331,112 @@ Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.Ap
 	<summary>
  This class will create an object of a given type and populate it with sample data.
  </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.HelpPageConfig">
+	<summary>
+ Use this class to customize the Help Page.
+ For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+ or you can provide the samples for the requests/responses.
+ </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription">
+	<summary>
+ Describes a type model.
+ </summary>
+</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+	<summary>
+Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+</summary>
+	<param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+	<returns>The ID as a string.</returns>
+</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+	<summary>
+ Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+	<summary>
+ Gets or sets the <see cref="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+	<summary>
+ Gets or sets the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+	<summary>
+ Gets or sets the documentation for the request.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+	<summary>
+ Gets or sets the model description of the request body.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+	<summary>
+ Gets the request body parameter descriptions.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+	<summary>
+ Gets or sets the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+	<summary>
+ Gets the resource property descriptions.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+	<summary>
+ Gets the sample requests associated with the API.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+	<summary>
+ Gets the sample responses associated with the API.
+ </summary>
+</member><member name="P:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+	<summary>
+ Gets the error messages associated with this model.
+ </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.Models.HelpPageApiModel">
+	<summary>
+ The model that represents an API displayed on the help page.
+ </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.SampleDirection">
+	<summary>
+ Indicates whether the sample is used for request or response
+ </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.TextSample">
+	<summary>
+ This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+ </summary>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+	<summary>
+ Use this attribute to change the name of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+ </summary>
+</member><member name="M:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider"/> class.
+ </summary>
+	<param name="documentPath">The physical path to XML document.</param>
+</member><member name="T:OptiPro.Config.Service.Areas.HelpPage.XmlDocumentationProvider">
+	<summary>
+ A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+ </summary>
+</member><member name="M:OptiPro.Config.Service.ItemGenerationController.AddItemGeneration(OptiPro.Config.Entity.ItemGenerationModel)">
+	<summary>
+ vb Controller to add Item Generation in Item
+ </summary>
+	<param name="oAddItemGeneration"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureList(OptiPro.Config.Entity.FeatureBOMModel)">
+	<summary>
+ vb Controller to get the List of all the Feture from the Fature Header
+ </summary>
+	<param name="oFeatureList"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.Service.FeatureBOMController.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
+	<summary>
+ vb Controller alls the buisnesss layer and it is used t get the Details of the Features According to Featre ID 
+ </summary>
+	<param name="oFeatureDetail"></param>
+	<returns></returns>
+	<remarks></remarks>
 </member>
 </members>
 </doc>

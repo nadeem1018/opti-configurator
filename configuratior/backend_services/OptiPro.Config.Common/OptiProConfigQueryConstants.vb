@@ -15,6 +15,8 @@
     Public Const OptiPro_Config_GetRecordById As String = "GetRecordById"
     Public Const OptiPro_Config_ChkValidItemTemplate As String = "ChkValidItemTemplate"
     Public Const OptiPro_Config_ChkValidItemCodeGeneration As String = "ChkValidItemCodeGeneration"
+    Public Const OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM As String = "ChkReferenceForFeatureIDInFeatureBOM"
+    Public Const OptiPro_Config_ChkReferenceForFeatureIDInModelBOM As String = "ChkReferenceForFeatureIDInModelBOM"
 
 
 
