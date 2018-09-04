@@ -170,7 +170,8 @@ mb-3, .my-3 {
 }
 
 .col-form-label {
-  padding-top: calc(0.6rem + 1px) !important;
+  /*  padding-top: calc(0.6rem + 1px) !important; */
+  padding-top: 0.3rem !important;
   padding-bottom: calc(.45rem + 1px) !important;
   margin-bottom: 0;
   font-size: 0.9rem !important;
