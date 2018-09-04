@@ -93,7 +93,7 @@
                 </td>
                 <td>
                   <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
-                    <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                    <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
                   </select>
                 </td>
                 <td>
@@ -114,7 +114,7 @@
                   <input type="text"  [disabled]="row.isUOMDisabled" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)" #uom />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}} (change)="on_quantity_change(quantity.value,row.rowindex)" #quantity />
+                  <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}} (change)="on_quantity_change(quantity.value,row.rowindex)"  #quantity />
                 </td>
                 <td>
                   <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="min_selected" value={{row.min_selected}} (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
@@ -187,8 +187,8 @@
             <div class="pull-left">
               <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
-              <!-- <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
-                <i class="fa fa-save"></i> {{language.update}}</button> -->
+              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button>
               <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
                 <i class="fa fa-window-maximize"></i> {{language.explode}}
               </button>
@@ -205,10 +205,10 @@
                 <span>{{language.cancel}}</span>
               </button>
 
-              <!-- <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
-              </button> -->
+              </button>
               <!-- only view when edit mode -->
 
             </div>

@@ -77,7 +77,7 @@ export class ModelbomComponent implements OnInit {
           if (data.ModelDetail.length > 0) {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
               if (data.ModelDetail[i].OPTM_TYPE == 1) {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDFEATUREID.toString()
+                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isUOMDisabled = true
@@ -150,7 +150,7 @@ export class ModelbomComponent implements OnInit {
       type_value: "",
       display_name: "",
       uom: '',
-      quantity: 0,
+      quantity: 1,
       min_selected: 1,
       max_selected: 1,
       propagate_qty: 'N',
@@ -165,6 +165,7 @@ export class ModelbomComponent implements OnInit {
       isPriceDisabled: true,
       pricehide: true,
       isUOMDisabled:true
+      
     });
   };
 
@@ -183,7 +184,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   clearData(rowindex){
-    this.modelbom_data[rowindex].type_value="";
+    //this.modelbom_data[rowindex].type_value="";
     this.modelbom_data[rowindex].uom="";
     this.modelbom_data[rowindex].display_name="";
     this.modelbom_data[rowindex].quantity=0;
@@ -208,6 +209,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isPriceDisabled = true
           this.modelbom_data[i].pricehide = true
           this.modelbom_data[i].isUOMDisabled = true
+          this.modelbom_data[i].quantity=1
          
 
 
@@ -217,7 +219,9 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
+          this.modelbom_data[i].quantity=1
           if (selectedvalue == 2) {
+            this.lookupfor = 'Item_Detail_lookup';
             this.modelbom_data[i].type = 2
             this.modelbom_data[i].isPriceDisabled = false
             this.modelbom_data[i].pricehide = false
@@ -241,6 +245,7 @@ export class ModelbomComponent implements OnInit {
       this.getModelDetails(this.modelbom_data.modal_id, "Detail",selectedvalue )
     }
     else {
+      this.lookupfor = 'Item_Detail_lookup';
       this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
     }
 
@@ -250,7 +255,7 @@ export class ModelbomComponent implements OnInit {
   getModelFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
 
-
+    this.serviceData =[]
     this.service.getModelFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
         if (data.length > 0) {
@@ -354,6 +359,7 @@ export class ModelbomComponent implements OnInit {
     }
     else {
       this.lookupfor = 'Item_Detail_lookup';
+      this.serviceData=[]
       this.getItemDetails($event);
 
     }
@@ -406,6 +412,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   getItemDetails(ItemKey) {
+    this.serviceData =[]
     this.service.getItemDetails(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
