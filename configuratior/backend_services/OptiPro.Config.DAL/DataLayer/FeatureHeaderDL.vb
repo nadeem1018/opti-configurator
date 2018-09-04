@@ -91,8 +91,8 @@ Public Class FeatureHeaderDL
                 psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
             Else
 
-            'if there is no Column then we will be Cnsider it Blank
-            psItemCodeGen = ""
+                'if there is no Column then we will be Cnsider it Blank
+                psItemCodeGen = ""
             End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
@@ -103,7 +103,7 @@ Public Class FeatureHeaderDL
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
 
-           
+
 
             If objDataTable.Columns.Contains("FeatureStatus") Then
                 'get the Status of Feature
@@ -273,7 +273,7 @@ Public Class FeatureHeaderDL
 
 
 
-            Dim pSqlParam(1) As MfgDBParameter'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            Dim pSqlParam(1) As MfgDBParameter 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@FEATUREID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
