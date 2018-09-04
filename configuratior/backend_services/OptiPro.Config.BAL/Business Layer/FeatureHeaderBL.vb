@@ -227,6 +227,41 @@ Public Class FeatureHeaderBL
     End Function
 
 
+
+    Public Shared Function ChkValidItemTemplate(ByVal objCheckDuplicateFeatureCode As FeatureHeaderModel) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            Dim pCompanyDBId As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objCheckDuplicateFeatureCode.GetRecord)
+
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatus = FeatureHeaderDL.ChkValidItemTemplate(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psStatus
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+    Public Shared Function ChkValidItemCodeGeneration(ByVal objCheckDuplicateFeatureCode As FeatureHeaderModel) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            Dim pCompanyDBId As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objCheckDuplicateFeatureCode.GetRecord)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatus = FeatureHeaderDL.ChkValidItemCodeGeneration(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psStatus
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+
     Public Shared Function CreateTableForLicenseMsg() As DataSet
         Dim ds As New DataSet
         Dim dt As New DataTable

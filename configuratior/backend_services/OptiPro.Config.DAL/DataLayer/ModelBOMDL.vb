@@ -32,8 +32,6 @@ Public Class ModelBOMDL
             '   pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
             'get the ROW ID 
             '  rowid = NullToString(objDataTable.Rows(0)("rowid"))
-
-
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -428,7 +426,6 @@ Public Class ModelBOMDL
 
 
     Public Shared Function GetDataForCommonViewForModelBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
-
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
@@ -634,14 +631,6 @@ Public Class ModelBOMDL
         End Try
         Return Nothing
     End Function
-
-
-
-
-
-
-
-
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
         Try
             Dim ObjInsertCommand As DbCommand = ObjIConnection.GetCommandBuilder(psSQLforDS, ObjIConnection.CompanyDBConnection, Nothing).GetInsertCommand()

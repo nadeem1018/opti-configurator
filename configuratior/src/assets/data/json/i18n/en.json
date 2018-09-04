@@ -14,6 +14,9 @@
     "dashboard": "Dashboard",
     "itemcodegeneration": "Item Code Generation",
     "feature": "Feature",
+    "feature_Model": "Feature Model",
+    "feature_Bom": "Feature BOM",
+
     "model": "Model",
     "bom": "BOM",
     "lookup": "Lookup",

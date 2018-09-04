@@ -245,10 +245,7 @@ export class ItemcodegenerationComponent implements OnInit {
           }
         }
 
-        if (this.finalstring.length > 50) {
-          this.toastr.warning('', this.language.StringLengthValidation, this.commonData.toast_config);
-          return false;
-        }
+        
 
       }
     }
@@ -323,6 +320,10 @@ export class ItemcodegenerationComponent implements OnInit {
     }
     if (this.codekey == "" || this.codekey == null) {
       this.toastr.warning('', this.language.CodeBlank, this.commonData.toast_config);
+      return false;
+    }
+    if (this.finalstring.length > 50) {
+      this.toastr.warning('', this.language.StringLengthValidation, this.commonData.toast_config);
       return false;
     }
 
