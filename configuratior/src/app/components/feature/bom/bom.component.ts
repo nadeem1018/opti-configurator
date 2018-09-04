@@ -57,19 +57,21 @@ export class BomComponent implements OnInit {
             for (let i = 0; i < data.FeatureDetail.length; ++i) {
               if (data.FeatureDetail[i].OPTM_TYPE == 1) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
-                this.isDisplayNameDisabled = true
-                this.isTypeDisabled = true
+                this.isDisplayNameDisabled = false
+                this.isTypeDisabled = false
                 this.ishide = false
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
-                this.isDisplayNameDisabled = true
-                this.isTypeDisabled = true
+                this.isDisplayNameDisabled = false
+                this.isTypeDisabled = false
                 this.ishide = false
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
+               // this.isDisplayNameDisabled = false
                 this.isDisplayNameDisabled = false
+              //  this.isTypeDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = true
               }
@@ -135,8 +137,8 @@ export class BomComponent implements OnInit {
       default: "N",
       remark: "",
       attachment: "",
-      isDisplayNameDisabled: true,
-      isTypeDisabled: true,
+      isDisplayNameDisabled: false,
+      isTypeDisabled: false,
       hide: false,
       CompanyDBId: this.companyName,
       CreatedUser: this.username
@@ -199,8 +201,8 @@ export class BomComponent implements OnInit {
 
         }
         else {
-          this.feature_bom_table[i].isDisplayNameDisabled = true
-          this.feature_bom_table[i].isTypeDisabled = true
+          this.feature_bom_table[i].isDisplayNameDisabled = false
+          this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
@@ -364,7 +366,7 @@ export class BomComponent implements OnInit {
     )
   }
 
-  onExplodeClick(){}
+  
 
   onDeleteClick(){
     var result = confirm(this.language.DeleteConfimation);
@@ -387,6 +389,10 @@ export class BomComponent implements OnInit {
 
   onAssociatedBOMClick(){
 
+  }
+
+  onExplodeClick() { 
+    this.lookupfor = 'tree_view_lookup';
   }
   
 }

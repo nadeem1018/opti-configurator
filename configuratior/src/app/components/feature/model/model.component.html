@@ -9,12 +9,12 @@
     </div>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
-    <li class="breadcrumb-item">
+    <!-- <li class="breadcrumb-item" style="display:none;">
         <a href="javascript:;" routerLink="/home">
             <i class="fa fa-home fa-fw"></i>
             <span>{{language.dashboard}}</span>
         </a>
-    </li>
+    </li> -->
     <li class="breadcrumb-item ">
         <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
     </li>
@@ -63,7 +63,7 @@
 
                 <div class="col-sm-6 input-group">
                     <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
-                        placeholder="{{language.Model_Item}}" (change)= "onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
+                        placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
@@ -75,8 +75,8 @@
                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)= "onRefCodeChange()" placeholder="{{language.Model_Ref}}"
-                        [(ngModel)]="featureBom.Ref">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
+                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
                             <i class="fa fa-bars"></i>
@@ -108,9 +108,9 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
                 <div class="col-sm-6">
-                    <select class="form-control  form-control-sm mt3" name="featureTypeName"  [(ngModel)]="featureBom.Status" id="featureTypeNameID">
-                        <option value = "Active">{{language.Model_Active}}</option>
-                        <option value= "Inactive">{{language.Model_InActive}}</option>
+                    <select class="form-control  form-control-sm mt3" name="featureTypeName" [(ngModel)]="featureBom.Status" id="featureTypeNameID">
+                        <option value="Active">{{language.Model_Active}}</option>
+                        <option value="Inactive">{{language.Model_InActive}}</option>
                     </select>
                 </div>
             </div>
@@ -136,9 +136,13 @@
                     <div class="col-md-6">
                         <div class="pull-left">
                             <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
-                                <i class="fa fa-save"></i> {{language.save}}</button>
+                                <i class="fa fa-save"></i> {{language.save}}
+                            </button>
+
                             <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
-                                <i class="fa fa-save"></i> {{language.update}}</button>
+                                <i class="fa fa-save"></i> {{language.update}}
+                            </button>
+
                         </div>
                     </div>
                     <div class="col-md-6">

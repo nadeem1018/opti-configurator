@@ -21,6 +21,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { ToastrModule } from 'ngx-toastr';
 
+//pipes
+import { FilterPipe } from './filter.pipe';
+
 // user defined components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -38,6 +41,7 @@ import { BomComponent } from './components/feature/bom/bom.component';
 import { ViewFeatureBOMComponent } from './components/feature/bom/view.bom.component';
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
+
 
 // routing & navigation
 const routes: Routes = [
@@ -84,7 +88,8 @@ const routes: Routes = [
     BomComponent,
     ModelbomComponent,
     ViewFeatureBOMComponent,
-    ViewModelBomComponent
+    ViewModelBomComponent, 
+    FilterPipe
   ],
   imports: [
     BrowserModule,

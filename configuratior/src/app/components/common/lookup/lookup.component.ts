@@ -6,6 +6,8 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+// import { ContentChild, AfterViewInit, ViewChild, ViewChildren, AfterViewChecked, ElementRef } from "@angular/core"
+
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -19,10 +21,13 @@ export class LookupComponent implements OnInit {
   @Input() fillLookupArray: any;
   @Input() selectedImage: any
   @Output() lookupvalue = new EventEmitter();
+  // @ViewChild(searchlookupfield, { read: ElementRef }) lookup_search: ElementRef;
+
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
   constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
+  
   
 
   // mandatory variables
@@ -59,14 +64,14 @@ export class LookupComponent implements OnInit {
     this.model_template_item_columns = [];
     this.fill_input_id = '';
     this.preview_image = '';
-
     this.dataBind = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
+   
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-        this.model_template_lookup();
+       this.model_template_lookup();
       }
       if (this.lookupfor == "model_item_generation") {
         this.model_item_generation_lookup();
@@ -89,15 +94,27 @@ export class LookupComponent implements OnInit {
         this.import_popup();
       }
 
-      if (this.lookupfor == "ModelBom_lookup") {
+      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup" ) {
         this.get_Model_lookup();
       }
 
       if (this.lookupfor == "large_image_view") {
         this.showImage();
       }
+      if (this.lookupfor == "Price_lookup") {
+        this.get_Price_lookup();
+      }
+      
+
+      if (this.lookupfor == "tree_view_lookup"){
+        this.showTreeView();
+      }
     }
   }
+
+ /*  ngAfterViewChecked() {
+    
+  } */
   
   log(val) {
     console.log(val);
@@ -108,6 +125,7 @@ export class LookupComponent implements OnInit {
   }
 
   model_template_lookup() {
+    
     this.popup_title = this.language.model_template;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -140,7 +158,7 @@ export class LookupComponent implements OnInit {
   get_features_lookup() {
     console.log('in lookup');
 
-    this.popup_title = this.language.FeatureLookupTitle;
+    this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
@@ -187,6 +205,21 @@ export class LookupComponent implements OnInit {
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
+
+  get_Price_lookup() {
+    this.popup_title = this.language.price_source;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'price_source';
+    this.lookup_key = 'PriceListID';
+    this.table_head = ['Price Source'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  
   file_input($event) {
     // var obj = this;
     // this.selectedFile = $event.target.files[0];
@@ -214,7 +247,7 @@ export class LookupComponent implements OnInit {
         data => {
           console.log("imported result"+ data);
           this.toastr.success('', data, this.commonData.toast_config);
-          $("#import_modal").modal("hide");
+          // $("#import_modal").modal("hide");
         
           this.router.navigateByUrl('/feature/model/view');
           return;
@@ -231,5 +264,15 @@ export class LookupComponent implements OnInit {
     this.preview_image = this.selectedImage;
     this.showLoader = false;
     this.LookupDataLoaded = true;
+  }
+
+  showTreeView(){
+    this.popup_title = this.language.explode;
+    this.showLoader = true;
+    this.LookupDataLoaded = false;
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    
   }
 }
