@@ -121,7 +121,6 @@ export class LookupComponent implements OnInit {
   }
 
   model_item_generation_lookup() {
-    console.log(this.serviceData);
     this.popup_title = this.language.Model_Ref;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -129,7 +128,7 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    `console.log("this.width_value - " + this.width_value);`
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }

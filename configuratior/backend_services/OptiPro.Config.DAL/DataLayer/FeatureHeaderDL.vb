@@ -70,8 +70,14 @@ Public Class FeatureHeaderDL
                 'if there is no Column then we will be Cnsider it Blank
                 psModelTemplateItem = ""
             End If
-            'get Item Code Generation Reference Number
-            psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+
+            If objDataTable.Columns.Contains("ItemCodeGenerationRef") Then
+                'get Item Code Generation Reference Number
+                psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
+            Else
+                'if there is no Column then we will be Cnsider it Blank
+                psItemCodeGen = ""
+            End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
             'get the Effective Date and Time 

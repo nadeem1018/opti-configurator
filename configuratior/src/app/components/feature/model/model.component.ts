@@ -28,7 +28,7 @@ export class ModelComponent implements OnInit {
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router,private ActivatedRouter: ActivatedRoute) { }
-  page_main_title = 'Model Feature';
+  page_main_title = 'Model/Feature Master';
   section_title="";
   companyName: string ;
   username: string;
@@ -41,7 +41,9 @@ export class ModelComponent implements OnInit {
    public isSaveButtonVisible:boolean=true;
    public isDeleteButtonVisible:boolean=true;
    public selectedFile:string="";
-
+   public model_name_label =  this.language.Model_Name;
+   public model_desc_label =  this.language.Model_Desc;
+public code_disabled= "false";
 
    
   ngOnInit() {
@@ -51,11 +53,15 @@ export class ModelComponent implements OnInit {
     this.featureBom.Date  = todaysDate;
     this.codekey ="";
     this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
+    
     if(this.codekey === "" || this.codekey === null){
       this.button="save";
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
       this.section_title = this.language.add;
+      this.featureBom.Accessory = 'N';
+      this.featureBom.Status= "Active";
+      this.code_disabled= "false";
     }
     else{
       this.button="update";
@@ -63,6 +69,7 @@ export class ModelComponent implements OnInit {
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true;
       this.section_title = this.language.edit;
+      this.code_disabled= "true";
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
           console.log(data);
@@ -75,12 +82,29 @@ this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
+if(data[0].OPTM_TYPE == "feature"){
+  this.model_name_label=this.language.Model_FeatureName;
+  this.model_desc_label= this.language.Model_FeatureDesc;
+}else{
+  this.model_name_label=this.language.Model_ModelName;
+  this.model_desc_label= this.language.Model_ModelDesc;
+}
         })
     }
   }
+
+  onTypeLookupChange(){
+if(this.featureBom.type == "feature"){
+  this.model_name_label=this.language.Model_FeatureName;
+  this.model_desc_label= this.language.Model_FeatureDesc;
+}else{
+  this.model_name_label=this.language.Model_ModelName;
+  this.model_desc_label= this.language.Model_ModelDesc;
+}
+
+  }
   onSaveClick(){
-    //this.featureModel.Feature= [];
-    //this.featureModel.Picture= [];
+    this.featureModel= [];
     var validateStatus = this.Validation();
 if (validateStatus == true){
     this.featureModel.push({
@@ -97,12 +121,6 @@ if (validateStatus == true){
       CreatedUser: this.username,
       Accessory:this.featureBom.Accessory
     })
-   
-    // this.featureModel.Picture.push({
-    //   PicturePath:this.selectedFile
-
-    // });
-    
    
     this.fms.saveData(this.featureModel).subscribe(
      
