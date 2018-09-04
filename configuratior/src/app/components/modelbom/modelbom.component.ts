@@ -44,7 +44,7 @@ export class ModelbomComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
-    this.image_data = [
+   /*  this.image_data = [
       "../../../assets/images/test/1.jpg",
       "../../../assets/images/test/2.jpg",
       "../../../assets/images/test/3.jpg",
@@ -53,7 +53,7 @@ export class ModelbomComponent implements OnInit {
       "../../../assets/images/test/6.jpg",
       "../../../assets/images/test/7.jpg",
       "../../../assets/images/test/8.jpg",
-    ];
+    ]; */
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
     }

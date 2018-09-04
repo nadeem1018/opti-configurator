@@ -81,15 +81,13 @@ Public Class HanaQuery
     End Function
 
     Function ChkReferenceForFeatureIDInFeatureBOM() As String
-        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=?"
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_FEATUREID"") AS ""FeatureCount"",COUNT(DISTINCT ""OPTM_CHILDFEATUREID"") AS ""ChildFeatureCount"" from ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=? OR OPTM_CHILDFEATUREID=?"
         Return psSql
     End Function
-
     Function ChkReferenceForFeatureIDInModelBOM() As String
-        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=?"
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""ModelCount"",COUNT(DISTINCT ""OPTM_FEATUREID"") AS ""FeatureCount"",COUNT(DISTINCT ""OPTM_CHILDMODELID"") AS ""ChildModelCount"" from ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_MODELID""=? OR ""OPTM_FEATUREID""=? OR ""OPTM_CHILDMODELID""=?"
         Return psSql
     End Function
-
 #End Region
 
 
@@ -182,7 +180,7 @@ Public Class HanaQuery
 
     'SQL Query to get the List of the Items fom the OITM Table
     Function GetItemForFeatureBOM() As String
-        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OPConfig_ItemMaster"" where ""ItemKey""=?"
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"",""InvUOM"" from ""OpConfig_ItemMaster"" where ""ItemKey""=?"
         Return psSQL
     End Function
 

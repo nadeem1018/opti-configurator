@@ -82,6 +82,8 @@
     Public Const OptiPro_Config_GetDataByFeatureIDForModelBOM As String = "GetDataByFeatureIDForModelBOM"
     Public Const OptiPro_Config_GetDataForModelDTL As String = "GetDataForModelDTL"
     Public Const OptiPro_Config_GetDetailForModelByModelID As String = "GetDetailForModelByModelID"
+    Public Const OptiPro_Config_DeleteDataFromHDRForModelBOM As String = "DeleteDataFromHDRForModelBOM"
+    Public Const OptiPro_Config_DeleteDataFromDTLForModelBOM As String = "DeleteDataFromDTLForModelBOM"
 #End Region
 
 

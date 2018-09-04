@@ -78,12 +78,12 @@ Public Class SQLQuery
     End Function
 
     Function ChkReferenceForFeatureIDInFeatureBOM() As String
-        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_FEATUREID"") AS ""FeatureCount"" ,COUNT(DISTINCT ""OPTM_CHILDFEATUREID"") AS ""ChildFeatureCount"" from ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=@FEATUREID OR OPTM_CHILDFEATUREID=@FEATUREID1"
         Return psSql
     End Function
 
     Function ChkReferenceForFeatureIDInModelBOM() As String
-        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_MBOMHDR"" WHERE ""OPTM_MODELID""=@FEATUREID"
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""OPTM_MODELID"") AS ""ModelCount"",COUNT(DISTINCT ""OPTM_FEATUREID"") AS ""FeatureCount"",COUNT(DISTINCT ""OPTM_CHILDMODELID"") AS ""ChildModelCount"" from ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_MODELID""=@FEATUREID3 OR ""OPTM_FEATUREID""=@FEATUREID4 OR ""OPTM_CHILDMODELID""=@FEATUREID5"
         Return psSql
     End Function
 

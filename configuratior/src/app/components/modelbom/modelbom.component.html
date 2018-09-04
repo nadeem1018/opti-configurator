@@ -2,9 +2,9 @@
   <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
-  <li class="breadcrumb-item">
+ <!--  <li class="breadcrumb-item">
     <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
-  </li>
+  </li> -->
   <li class="breadcrumb-item ">
     <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
   </li>
@@ -157,7 +157,7 @@
           <hr>
           <div class="clearfix"></div>
           <div class="row image_data" *ngIf="showImageBlock">
-            <div class="col-lg-3" *ngFor="let image of image_data">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of image_data" style="width: 100px;">
               <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
                 <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
               </a>

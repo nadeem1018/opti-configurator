@@ -91,8 +91,8 @@ Public Class FeatureHeaderDL
                 psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
             Else
 
-                'if there is no Column then we will be Cnsider it Blank
-                psItemCodeGen = ""
+            'if there is no Column then we will be Cnsider it Blank
+            psItemCodeGen = ""
             End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
@@ -103,7 +103,7 @@ Public Class FeatureHeaderDL
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
 
-
+           
 
             If objDataTable.Columns.Contains("FeatureStatus") Then
                 'get the Status of Feature
@@ -273,7 +273,7 @@ Public Class FeatureHeaderDL
 
 
 
-            Dim pSqlParam(1) As MfgDBParameter 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            Dim pSqlParam(1) As MfgDBParameter'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@FEATUREID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
@@ -999,25 +999,54 @@ Public Class FeatureHeaderDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
 
-            Dim pSqlParam(1) As MfgDBParameter
+            Dim pSqlParam(2) As MfgDBParameter
             'Parameter 0 consisting warehouse and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@FEATUREID"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
             pSqlParam(0).Paramvalue = piFeatureID
+
+            pSqlParam(1) = New MfgDBParameter
+            pSqlParam(1).ParamName = "@FEATUREID1"
+            pSqlParam(1).Dbtype = BMMDbType.HANA_Integer
+            pSqlParam(1).Paramvalue = piFeatureID
 
             ' Get the Query on the basis of objIQuery
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM)
-
-            psSQLMBOM = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInModelBOM)
             'here we needto Replace the Parameter as Like is Used inthe where Clause
             pdsGetDataFBOM = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
-            pdsGetDataMBOM = (ObjIConnection.ExecuteDataset(psSQLMBOM, CommandType.Text, pSqlParam))
-            If (pdsGetDataFBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0 Or pdsGetDataMBOM.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+
+            If (pdsGetDataFBOM.Tables(0).Rows(0)("FeatureCount") > 0 Or pdsGetDataFBOM.Tables(0).Rows(0)("ChildFeatureCount") > 0) Then
                 psStatus = "True"
             Else
-                psStatus = "False"
+                Dim pSqlParam1(3) As MfgDBParameter
+                'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+                pSqlParam1(0) = New MfgDBParameter
+                pSqlParam1(0).ParamName = "@FEATUREID3"
+                pSqlParam1(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam1(0).Paramvalue = piFeatureID
+
+                pSqlParam1(1) = New MfgDBParameter
+                pSqlParam1(1).ParamName = "@FEATUREID4"
+                pSqlParam1(1).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam1(1).Paramvalue = piFeatureID
+
+                pSqlParam1(2) = New MfgDBParameter
+                pSqlParam1(2).ParamName = "@FEATUREID5"
+                pSqlParam1(2).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam1(2).Paramvalue = piFeatureID
+
+
+                psSQLMBOM = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_ChkReferenceForFeatureIDInModelBOM)
+                pdsGetDataMBOM = (ObjIConnection.ExecuteDataset(psSQLMBOM, CommandType.Text, pSqlParam1))
+                If (pdsGetDataMBOM.Tables(0).Rows(0)("ModelCount") > 0 Or pdsGetDataMBOM.Tables(0).Rows(0)("FeatureCount") > 0 Or pdsGetDataMBOM.Tables(0).Rows(0)("ChildModelCount") > 0) Then
+                    psStatus = "True"
+                Else
+                    psStatus = "False"
+                End If
+
             End If
+           
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
