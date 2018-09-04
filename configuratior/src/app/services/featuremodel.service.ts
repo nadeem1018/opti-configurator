@@ -86,7 +86,7 @@ export class FeaturemodelService {
     }
 
     //Submit feature bom data
-    onItemCodeChange(CompanyDBID:string,ItemGenerationCode:string):Observable<any>{
+    onRefCodeChange(CompanyDBID:string,ItemGenerationCode:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
       let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, ItemGenerationCode: ItemGenerationCode }]) };
