@@ -456,10 +456,10 @@ Public Class ModelBOMDL
             pSqlParam(1).Paramvalue = psCompanyDBId
 
             ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromHDR)
+            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMHDR)
             iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
             If iDeleteRecordHDR > 0 Then
-                psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromDTL)
+                psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMDTL)
                 iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
                 If iDeleteRecordDTL > 0 Then
                     psStatus = "True"
@@ -684,13 +684,6 @@ Public Class ModelBOMDL
         End Try
         Return Nothing
     End Function
-
-
-
-
-
-
-
 
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
         Try

@@ -1019,7 +1019,6 @@ Public Class FeatureHeaderDL
             If (pdsGetDataFBOM.Tables(0).Rows(0)("FeatureCount") > 0 Or pdsGetDataFBOM.Tables(0).Rows(0)("ChildFeatureCount") > 0) Then
                 psStatus = "True"
             Else
-
                 Dim pSqlParam1(3) As MfgDBParameter
                 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
                 pSqlParam1(0) = New MfgDBParameter

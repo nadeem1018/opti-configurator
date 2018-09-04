@@ -6,7 +6,20 @@ OptiPro.Config.BAL
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
+<member name="P:OptiPro.Config.BAL.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:OptiPro.Config.BAL.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:OptiPro.Config.BAL.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:OptiPro.Config.BAL.FeatureBOMBL.GetFeatureDetail(OptiPro.Config.Entity.FeatureBOMModel)">
 	<summary>
  This Function is Used to get the Details of the Features According to the Features Seleced From the Lookup 
  </summary>
@@ -78,19 +91,6 @@ OptiPro.Config.BAL
 	<param name="objGetDataByItemCode"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="P:OptiPro.Config.BAL.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:OptiPro.Config.BAL.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:OptiPro.Config.BAL.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
 </member>
 </members>
 </doc>
