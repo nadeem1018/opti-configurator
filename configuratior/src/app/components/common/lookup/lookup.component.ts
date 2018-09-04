@@ -87,13 +87,17 @@ export class LookupComponent implements OnInit {
         this.import_popup();
       }
 
-      if (this.lookupfor == "ModelBom_lookup") {
+      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup" ) {
         this.get_Model_lookup();
       }
 
       if (this.lookupfor == "large_image_view") {
         this.showImage();
       }
+      if (this.lookupfor == "Price_lookup") {
+        this.get_Price_lookup();
+      }
+      
     }
   }
 
@@ -137,7 +141,7 @@ export class LookupComponent implements OnInit {
   get_features_lookup() {
     console.log('in lookup');
 
-    this.popup_title = this.language.FeatureLookupTitle;
+    this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
@@ -184,6 +188,21 @@ export class LookupComponent implements OnInit {
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }
+
+  get_Price_lookup() {
+    this.popup_title = this.language.price_source;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'price_source';
+    this.lookup_key = 'PriceListID';
+    this.table_head = ['Price Source'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    console.log("this.width_value - " + this.width_value);
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+  }
+
+  
   file_input($event) {
     // var obj = this;
     // this.selectedFile = $event.target.files[0];
@@ -211,7 +230,7 @@ export class LookupComponent implements OnInit {
         data => {
           console.log("imported result"+ data);
           this.toastr.success('', data, this.commonData.toast_config);
-          $("#import_modal").modal("hide");
+          // $("#import_modal").modal("hide");
         
           this.router.navigateByUrl('/feature/model/view');
           return;

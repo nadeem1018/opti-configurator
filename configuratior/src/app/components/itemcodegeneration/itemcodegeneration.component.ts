@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 
 
+
 @Component({
   selector: 'app-itemcodegeneration',
   templateUrl: './itemcodegeneration.component.html',
@@ -89,6 +90,8 @@ export class ItemcodegenerationComponent implements OnInit {
       )
     }
     else{
+      
+     // this.setfocus=true
       this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;

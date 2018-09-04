@@ -83,7 +83,7 @@
                 <th width="5%">{{language.price_source}}</th>
                 <th width="5%">{{language.mandatory}}</th>
                 <th width="5%">{{language.unique_identifier}}</th>
-                <th width="4%">#</th>
+                <th width="4%">{{language.remove}}</th>
               </tr>
             </thead>
             <tbody>
@@ -93,7 +93,7 @@
                 </td>
                 <td>
                   <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
-                    <option *ngFor="let v of commonData.bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                    <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
                   </select>
                 </td>
                 <td>
@@ -111,23 +111,30 @@
                   <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)" #display_name />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)" #uom />
+                  <input type="text"  [disabled]="row.isUOMDisabled" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)" #uom />
                 </td>
                 <td>
                   <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}} (change)="on_quantity_change(quantity.value,row.rowindex)" #quantity />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="min_selected" value={{row.min_selected}} (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
+                  <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="min_selected" value={{row.min_selected}} (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="max_selected" value={{row.max_selected}} (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
+                  <input type="text" class="form-control  form-control-sm mt3 pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}} (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" #propagate_qty
+                  <input type="checkbox" class="form-control  form-control-sm mt15 pull-right"  id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" #propagate_qty
                   />
                 </td>
                 <td>
-                  <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)" #price_source />
+                    <div class="input-group">
+                  <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)" #price_source [disabled]="row.isPriceDisabled"/>
+                  <div class="input-group-append" [hidden]=row.pricehide>
+                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openPriceLookUp(row.type_value)">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                </div>
                 </td>
                 <td>
                   <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)" #mandatory />
