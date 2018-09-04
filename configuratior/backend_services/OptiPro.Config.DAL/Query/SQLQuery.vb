@@ -78,7 +78,7 @@ Public Class SQLQuery
     End Function
 
     Function ChkReferenceForFeatureIDInFeatureBOM() As String
-        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHEADER"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
         Return psSql
     End Function
 
@@ -182,7 +182,7 @@ Public Class SQLQuery
 
     'SQL Query to get the List of the Items fom the OITM Table
     Function GetItemForFeatureBOM() As String
-        Dim psSQL As String = "SELECT ""ItemKey"",""Description"" from ""OpConfig_ItemMaster"" where ""ItemKey""=@ITEMKEY"
+        Dim psSQL As String = "SELECT ""ItemKey"",""Description"",""InvUOM"" from ""OpConfig_ItemMaster"" where ""ItemKey""=@ITEMKEY"
         Return psSQL
     End Function
 
@@ -277,7 +277,7 @@ Public Class SQLQuery
     End Function
 
     Function GetPriceList() As String
-        Dim psSQL As String = "SELECT ""PriceListID"" from ""OPConfig_PriceList"" WHERE T1.""ItemCode""=@ITEMKEY"
+        Dim psSQL As String = "SELECT ""PriceListID"" from ""OPConfig_PriceList"" WHERE ""ItemCode""=@ITEMKEY"
         Return psSQL
     End Function
 
@@ -325,6 +325,10 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetDetailForModelByModelID() As String
+        Dim psSQL As String = "SELECT T1.""OPTM_FEATURECODE"",T1.""OPTM_DISPLAYNAME"",T1.""OPTM_FEATUREDESC"",T1.""OPTM_PRODGRPID"" ,T1.""OPTM_PHOTO"",T2.""OPTM_READYTOUSE"" FROM ""OPCONFIG_FEATUREHDR"" T1 INNER JOIN ""OPCONFIG_MBOMHDR"" T2 ON T1.OPTM_FEATUREID =T2.OPTM_MODELID  WHERE T2.""OPTM_MODELID""=@MODELID"
+        Return psSQL
+    End Function
 
 #End Region
 

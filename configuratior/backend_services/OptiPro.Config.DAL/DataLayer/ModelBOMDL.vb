@@ -27,11 +27,14 @@ Public Class ModelBOMDL
             If objDataTable.Columns.Contains("ModelID") Then
                 '  get the FeatureID,
                 psModelid = NullToInteger(objDataTable.Rows(0)("ModelID"))
+                'get the Press Location 
+                pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
+                'get the ROW ID 
+                rowid = NullToString(objDataTable.Rows(0)("rowid"))
             End If
-            'get the Press Location 
-            '   pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
-            'get the ROW ID 
-            '  rowid = NullToString(objDataTable.Rows(0)("rowid"))
+
+
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -50,7 +53,12 @@ Public Class ModelBOMDL
                 pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
                 pSqlParam(0).Paramvalue = psModelid
 
-                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
+                If (pressLoaction = "Detail" And rowid = 3) Then
+                    psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetModelListExceptSelectedFeature)
+                Else
+                    psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
+
+                End If
                 pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
             Else
 
@@ -90,7 +98,6 @@ Public Class ModelBOMDL
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
-            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -322,10 +329,10 @@ Public Class ModelBOMDL
                     tempDV(0)("OPTM_FEATUREID") = childRow("type_value")
                 End If
                 If childRow("type") = 2 Then
-                    tempDV(0)("OPTM_CHILDMODELID") = childRow("type_value")
+                    tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
                 End If
                 If childRow("type") = 3 Then
-                    tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
+                    tempDV(0)("OPTM_CHILDMODELID") = childRow("type_value")
                 End If
                 tempDV(0)("OPTM_LINENO") = childRow("rowindex")
                 tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
@@ -351,10 +358,10 @@ Public Class ModelBOMDL
                     pdr("OPTM_FEATUREID") = childRow("type_value")
                 End If
                 If childRow("type") = 2 Then
-                    pdr("OPTM_CHILDMODELID") = childRow("type_value")
+                    pdr("OPTM_ITEMKEY") = childRow("type_value")
                 End If
                 If childRow("type") = 3 Then
-                    pdr("OPTM_ITEMKEY") = childRow("type_value")
+                    pdr("OPTM_CHILDMODELID") = childRow("type_value")
                 End If
                 pdr("OPTM_LINENO") = childRow("rowindex")
                 pdr("OPTM_DISPLAYNAME") = childRow("display_name")
@@ -435,6 +442,7 @@ Public Class ModelBOMDL
 
 
     Public Shared Function GetDataForCommonViewForModelBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
@@ -628,7 +636,7 @@ Public Class ModelBOMDL
             pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
             pSqlParam(0).Paramvalue = piModelId
             ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
+            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModelByModelID)
             'This method will fill the same dataset with table ParentTable
             ObjIConnection.FillDataset(psSQLHDR, CommandType.Text, dsRecord, "ModelHeader", pSqlParam)
             psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDataForModelDTL)
@@ -640,6 +648,14 @@ Public Class ModelBOMDL
         End Try
         Return Nothing
     End Function
+
+
+
+
+
+
+
+
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
         Try
             Dim ObjInsertCommand As DbCommand = ObjIConnection.GetCommandBuilder(psSQLforDS, ObjIConnection.CompanyDBConnection, Nothing).GetInsertCommand()

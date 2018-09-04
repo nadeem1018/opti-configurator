@@ -272,7 +272,9 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.vbhtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.vbhtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.vbhtml" />
-    <Content Include="Configuration\Configuration.config" />
+    <Content Include="Configuration\Configuration.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configuration\LicSettings.ini" />
     <Content Include="Configuration\OptiAdminHanaConfiguration.config" />
     <Content Include="Configuration\productinfo.ini" />

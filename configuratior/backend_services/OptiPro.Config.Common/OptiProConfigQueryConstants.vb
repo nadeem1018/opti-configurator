@@ -81,6 +81,7 @@
     Public Const OptiPro_Config_GetTotalCountOfRecordForModelBOM As String = "GetTotalCountOfRecordForModelBOM"
     Public Const OptiPro_Config_GetDataByFeatureIDForModelBOM As String = "GetDataByFeatureIDForModelBOM"
     Public Const OptiPro_Config_GetDataForModelDTL As String = "GetDataForModelDTL"
+    Public Const OptiPro_Config_GetDetailForModelByModelID As String = "GetDetailForModelByModelID"
 #End Region
 
 

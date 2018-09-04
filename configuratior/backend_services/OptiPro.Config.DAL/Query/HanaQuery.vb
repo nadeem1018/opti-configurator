@@ -81,7 +81,7 @@ Public Class HanaQuery
     End Function
 
     Function ChkReferenceForFeatureIDInFeatureBOM() As String
-        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHEADER"" WHERE ""OPTM_FEATUREID""=?"
+        Dim psSql As String = "SELECT COUNT (DISTINCT ""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREBOMHDR"" WHERE ""OPTM_FEATUREID""=?"
         Return psSql
     End Function
 
@@ -320,6 +320,11 @@ Public Class HanaQuery
 
     Function GetDataForModelDTL() As String
         Dim psSQL As String = "SELECT * FROM OPCONFIG_MBOMDTL WHERE ""OPTM_MODELID""=?"
+        Return psSQL
+    End Function
+
+    Function GetDetailForModelByModelID() As String
+        Dim psSQL As String = "SELECT T1.""OPTM_FEATURECODE"",T1.""OPTM_DISPLAYNAME"",T1.""OPTM_FEATUREDESC"",T1.""OPTM_PRODGRPID"" ,T1.""OPTM_PHOTO"",T2.""OPTM_READYTOUSE"" FROM ""OPCONFIG_FEATUREHDR"" T1 INNER JOIN ""OPCONFIG_MBOMHDR"" T2 ON T1.OPTM_FEATUREID =T2.OPTM_MODELID  WHERE T2.""OPTM_MODELID""=?"
         Return psSQL
     End Function
 
