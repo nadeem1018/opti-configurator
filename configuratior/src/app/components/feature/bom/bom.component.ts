@@ -4,7 +4,6 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
-import { truncate } from 'fs';
 
 @Component({
   selector: 'app-bom',
