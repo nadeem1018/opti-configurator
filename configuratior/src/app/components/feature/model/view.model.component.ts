@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ViewFeatureModelComponent implements OnInit {
     common_params = new CommonData();
-    page_main_title = 'Model Feature';
+    page_main_title = 'Model/Feature Master';
     add_route_link = '/feature/model/add';
     public commonData = new CommonData();
     table_title = this.page_main_title;

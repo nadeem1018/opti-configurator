@@ -5,6 +5,7 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -96,7 +97,7 @@ export class LookupComponent implements OnInit {
       }
     }
   }
-  }
+  
   log(val) {
     console.log(val);
   }
@@ -121,7 +122,6 @@ export class LookupComponent implements OnInit {
   }
 
   model_item_generation_lookup() {
-    console.log(this.serviceData);
     this.popup_title = this.language.Model_Ref;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -129,7 +129,7 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    `console.log("this.width_value - " + this.width_value);`
     this.showLoader = false;
     this.LookupDataLoaded = true;
   }

@@ -287,7 +287,7 @@ Public Class SQLQuery
         Return psSQL
     End Function
     Function GetSavedDataByModelIdFromDTL() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_FEATUREID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" WHERE ""OPTM_MODELID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
         Return psSQL
     End Function
 

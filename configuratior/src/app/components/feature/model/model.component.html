@@ -30,31 +30,31 @@
                 <label class="col-sm-4 col-form-label" for="feature">
                     {{language.Model_Code}}</label>
                 <div class="col-sm-6">
-                    <input type="text" id="codeID" name="codeName" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
+                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
                         [(ngModel)]="featureBom.Code">
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="type">{{language.Model_Type}}</label>
                 <div class="col-sm-6">
-                    <select class="form-control  form-control-sm mt3" id="typeID" name="typeName" [(ngModel)]="featureBom.type">
-                        <option>Feature</option>
-                        <option>Model</option>
+                    <select class="form-control  form-control-sm mt3" (change)= "onTypeLookupChange()" id="typeID" name="typeName" [(ngModel)]="featureBom.type">
+                        <option value="feature">{{language.feature}}</option>
+                        <option value="model">{{language.model}}</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group row clearfix">
-                <label class="col-sm-4 col-form-label" for="featurename">{{language.Model_Name}}</label>
+                <label class="col-sm-4 col-form-label" for="featurename">{{model_name_label}}</label>
                 <div class="col-sm-6">
-                    <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Name}}"
+                    <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
                         [(ngModel)]="featureBom.Name">
                 </div>
             </div>
             <div class="form-group row clearfix">
-                <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Model_Desc}}</label>
+                <label class="col-sm-4 col-form-label" for="featureDesc">{{model_desc_label}}</label>
                 <div class="col-sm-6">
-                    <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Model_Desc}}"
+                    <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
                         [(ngModel)]="featureBom.Desc">
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" name="modelItemName" readonly class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
+                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
                         placeholder="{{language.Model_Item}}" [(ngModel)]="featureBom.ItemName">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)">
@@ -75,7 +75,7 @@
                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" readonly ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" placeholder="{{language.Model_Ref}}"
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" placeholder="{{language.Model_Ref}}"
                         [(ngModel)]="featureBom.Ref">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
@@ -108,9 +108,9 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
                 <div class="col-sm-6">
-                    <select class="form-control  form-control-sm mt3" name="featureTypeName" gModel [(ngModel)]="featureBom.Status" id="featureTypeNameID">
-                        <option>Active</option>
-                        <option>Inactive</option>
+                    <select class="form-control  form-control-sm mt3" name="featureTypeName"  [(ngModel)]="featureBom.Status" id="featureTypeNameID">
+                        <option value = "Active">{{language.Model_Active}}</option>
+                        <option value= "Inactive">{{language.Model_InActive}}</option>
                     </select>
                 </div>
             </div>
