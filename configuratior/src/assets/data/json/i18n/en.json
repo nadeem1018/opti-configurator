@@ -120,6 +120,7 @@
     "Model_FeatureName":"Feature Name",
     "Model_ModelName":"Model Name",
     "Model_FeatureDesc":"Feature Desc",
-    "Model_ModelDesc":"Model Desc"
+    "Model_ModelDesc":"Model Desc",
+    "Model_RefValidate": "Invalid ItemCode"
     
 }
