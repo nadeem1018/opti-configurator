@@ -25,6 +25,7 @@ Public Class FeatureBOMDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "CONFIGURATOR01"
             'psCompanyDBId = "DEVQAS2BRANCHING"
             If objDataTable.Columns.Contains("FeatureCode") Then
                 '  get the FeatureID,
@@ -88,6 +89,7 @@ Public Class FeatureBOMDL
             Dim pdsFeatureDetail As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "CONFIGURATOR01"
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Get the Feature ID From the Datatable 
             psFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureID"))
@@ -136,6 +138,7 @@ Public Class FeatureBOMDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "CONFIGURATOR01"
             ' psCompanyDBId = "DEVQAS2BRANCHING"
             psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -178,6 +181,7 @@ Public Class FeatureBOMDL
             Dim psFeatureID As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             ' psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -218,6 +222,7 @@ Public Class FeatureBOMDL
             Dim iInsert As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataSet.Tables(0).Rows(0)("CompanyDBId"))
+
             'get the Parameters Values from 
 
             'Now assign the Company object Instance to a variable pObjCompany
@@ -268,6 +273,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Get the User from the User Interface  
             psCreatedBy = NullToString(objDataTable.Rows(0)("CreatedUser"))
 
@@ -335,6 +341,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get theIem Key From the User Interface 
             psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             'get the Value of Item or Feature from the User Interface
@@ -461,6 +468,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get theIem Key From the User Interface 
             psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             'get the Value of Item or Feature from the User Interface
@@ -586,6 +594,7 @@ Public Class FeatureBOMDL
             Dim piFeatureID As Integer
             'get the Feature Id 
             piFeatureID = NullToString(objDataTable.Rows(0)("FeatureID"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -628,6 +637,7 @@ Public Class FeatureBOMDL
             Dim psCompanyDBId As String
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'psCompanyDBId = "SFDCDB"
             'Used To The Company Instance
@@ -688,6 +698,7 @@ Public Class FeatureBOMDL
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+
             ' psCompanyDBId = "DEVQAS2BRANCHING"
             ' psCompanyDBId = "SFDCDB"
             'Company Connection
@@ -740,6 +751,7 @@ Public Class FeatureBOMDL
         Dim dtServerDate As DateTime
         'Get the Company DB 
         Dim psCmapnyDBID As String = NullToString(objdsFeatureBOM.Rows(0)("CompanyDBId"))
+
         ' Dim psCmapnyDBID As String = "DEVQAS2BRANCHING"
         ' psCmapnyDBID = "SFDCDB"
         'Function to get the Server Date Time
@@ -936,7 +948,7 @@ Public Class FeatureBOMDL
             Dim pdsItemData As DataSet
             Dim psTotalCount As Integer
             Dim piPageLimit As Integer
-            If objDataTable.Columns.Contains("SearchString") Then
+            If objDataTable.Columns.Contains("PageLimit") Then
                 '  get Search String,
                 piPageLimit = NullToInteger(objDataTable.Rows(0)("PageLimit"))
             Else
@@ -946,6 +958,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             '  psCompanyDBId = "DEVQAS2BRANCHING"
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
@@ -1109,6 +1122,7 @@ Public Class FeatureBOMDL
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "CONFIGURATOR01"
             ' psCompanyDBId = "DEVQAS2BRANCHING"
             'get the ItemCode name  
             psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
@@ -1152,6 +1166,7 @@ Public Class FeatureBOMDL
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "CONFIGURATOR01"
             '  psCompanyDBId = "DEVQAS2BRANCHING"
             'get the ItemCode name  
             psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))

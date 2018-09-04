@@ -31,6 +31,7 @@ Public Class FeatureHeaderDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
 
             'Now assign the Company object Instance to a variable pObjCompany
@@ -85,17 +86,13 @@ Public Class FeatureHeaderDL
                 psModelTemplateItem = ""
             End If
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c2d56932ce0c972ca0aebc6644f8bbf7d8771ae6
             If objDataTable.Columns.Contains("ItemCodeGenerationRef") Then
                 'get Item Code Generation Reference Number
                 psItemCodeGen = NullToString(objDataTable.Rows(0)("ItemCodeGenerationRef"))
             Else
-<<<<<<< HEAD
-                'if there is no Column then we will be Cnsider it Blank
-                psItemCodeGen = ""
+
+            'if there is no Column then we will be Cnsider it Blank
+            psItemCodeGen = ""
             End If
             'get the Status of Feature
             psFeatureStatus = NullToString(objDataTable.Rows(0)("FeatureStatus"))
@@ -105,9 +102,8 @@ Public Class FeatureHeaderDL
             psAccessory = NullToString(objDataTable.Rows(0)("Accessory"))
             'get the Feature Code 
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
-=======
-                psItemCodeGen = ""
-            End If
+
+           
 
             If objDataTable.Columns.Contains("FeatureStatus") Then
                 'get the Status of Feature
@@ -137,7 +133,7 @@ Public Class FeatureHeaderDL
             Else
                 psFeatureCode = ""
             End If
->>>>>>> c2d56932ce0c972ca0aebc6644f8bbf7d8771ae6
+
             'Functtion to Check whether the Record is Already Present in Table 
             dtCheckDuplicateRecord = CheckDuplicateFeatureCode1(psCompanyDBId, psFeatureCode, objCmpnyInstance)
             'If the Record is Already Present in the TAble then Error MEssage will be Shown 
@@ -255,6 +251,7 @@ Public Class FeatureHeaderDL
             Dim ChkReferenceForFeature As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'get the Display NAme 
             psFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
@@ -314,6 +311,7 @@ Public Class FeatureHeaderDL
             Dim pdtEffectiveDate As DateTime
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Display NAme 
             psDisplayName = NullToString(objDataTable.Rows(0)("DisplayName"))
             'get the Feature Description 
@@ -462,6 +460,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -494,6 +493,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -566,6 +566,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Feature Code
             psFeatureCode = NullToString(objDataTable.Rows(0)("FeatureCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -612,6 +613,7 @@ Public Class FeatureHeaderDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -770,6 +772,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -809,6 +812,7 @@ Public Class FeatureHeaderDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Feature Code
             psFeatureCode = NullToString(objDataTable.Rows(0)("FEATUREID"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -846,6 +850,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psSearchString = NullToString(objDataTable.Rows(0)("SearchString"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -887,6 +892,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psTemplateItem = NullToString(objDataTable.Rows(0)("TemplateItem"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -935,6 +941,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetData As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             psItemGenerationCode = NullToString(objDataTable.Rows(0)("ItemGenerationCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -980,6 +987,7 @@ Public Class FeatureHeaderDL
             Dim pdsGetDataFBOM, pdsGetDataMBOM As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the Search String
             piFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -1036,6 +1044,7 @@ Public Class FeatureHeaderDL
             Dim piInsertedRecord As Integer = 0
             'Get the Company Name
             psCompanyDBId = NullToString(pCompanyDBId.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance

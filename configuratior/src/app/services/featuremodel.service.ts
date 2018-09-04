@@ -84,4 +84,27 @@ export class FeaturemodelService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ImportDataFromExcel", jObject, this.common_params.httpOptions);
     }
+
+    //Submit feature bom data
+    onItemCodeChange(CompanyDBID:string,ItemGenerationCode:string):Observable<any>{
+    //JSON Obeject Prepared to be send as a param to API
+      //JSON Obeject Prepared to be send as a param to API
+      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, ItemGenerationCode: ItemGenerationCode }]) };
+      
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemCodeGeneration", jObject, this.common_params.httpOptions);
+
+    }
+    
+    
+    //Submit feature bom data
+    onItemCodeChange(CompanyDBID:string,TemplateItem:string):Observable<any>{
+      //JSON Obeject Prepared to be send as a param to API
+        //JSON Obeject Prepared to be send as a param to API
+        let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, TemplateItem: TemplateItem }]) };
+        
+      //Return the response form the API  
+      return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemTemplate", jObject, this.common_params.httpOptions);
+      
+      }
 }

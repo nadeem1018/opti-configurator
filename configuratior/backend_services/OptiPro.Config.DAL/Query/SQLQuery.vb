@@ -68,7 +68,7 @@ Public Class SQLQuery
     End Function
 
     Function ChkValidItemTemplate() As String
-        Dim psSql As String = "SELECT COUNT(DISTINCT ""ItemKey"") AS ""TOTALCOUNT"" FROM ""OPConfig_ItemMaster"" WHERE ""ItemKey"" =@ITEMTEMPLATE"
+        Dim psSql As String = "SELECT COUNT(DISTINCT ""Code"") AS ""TOTALCOUNT"" FROM ""@OPTM_ITMTEMP"" WHERE ""Code"" =@ITEMTEMPLATE"
         Return psSql
     End Function
 
@@ -270,18 +270,22 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Model'"
         Return psSQL
     End Function
+
     Function GetModelListExceptSelectedFeature() As String
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Model' and ""OPTM_FEATUREID""<>@MODELID"
         Return psSQL
     End Function
+
     Function GetPriceList() As String
-        Dim psSQL As String = ""
+        Dim psSQL As String = "SELECT ""PriceListID"" from ""OPConfig_PriceList"" WHERE T1.""ItemCode""=@ITEMKEY"
         Return psSQL
     End Function
+
     Function GetDetailForModel() As String
         Dim psSQL As String = "SELECT ""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_PRODGRPID"" ,""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@MODELID"
         Return psSQL
     End Function
+
     Function GetSavedDataByModelIdFromHDR() As String
         Dim psSQL As String = "SELECT * FROM OPCONFIG_MBOMHDR WHERE ""OPTM_MODELID""=@MODELID AND OPTM_COMPANYID=@COMPANYID"
         Return psSQL

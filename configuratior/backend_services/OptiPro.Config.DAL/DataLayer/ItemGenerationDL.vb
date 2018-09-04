@@ -26,6 +26,7 @@ Public Class ItemGenerationDL
             For recordCount = 0 To objDataTable.Rows.Count - 1
                 'Get the Company Name
                 psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
                 'get the ItemCode name  
                 'psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
                 psItemCode = NullToString(objDataTable.Rows(recordCount)("codekey"))
@@ -114,6 +115,7 @@ Public Class ItemGenerationDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -143,6 +145,7 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -185,6 +188,7 @@ Public Class ItemGenerationDL
             Dim pdsItemCodeCount As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -230,6 +234,7 @@ Public Class ItemGenerationDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'get the ItemType
@@ -312,6 +317,7 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -352,6 +358,7 @@ Public Class ItemGenerationDL
             Dim pdsServerDate As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -384,6 +391,7 @@ Public Class ItemGenerationDL
             Dim psCompanyDBId As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -442,6 +450,7 @@ Public Class ItemGenerationDL
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'Company Connection
             pObjCompany.CompanyDbName = psCompanyDBId
             'get the the Item Code Key 
@@ -588,6 +597,7 @@ Public Class ItemGenerationDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -721,6 +731,7 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
