@@ -4,7 +4,7 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
-import { truncate } from 'fs';
+
 
 @Component({
   selector: 'app-bom',
@@ -310,7 +310,7 @@ export class BomComponent implements OnInit {
 
   openFeatureLookUp(status) {
     console.log('inopen feature');
-
+    this.serviceData=[]
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
@@ -340,7 +340,7 @@ export class BomComponent implements OnInit {
 
   getFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
-
+    this.serviceData=[]
     //this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
