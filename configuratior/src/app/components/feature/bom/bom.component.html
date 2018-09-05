@@ -124,7 +124,7 @@
                                  
                                  </td>
                                  <td>
-                                   <input type="text" style="text-align:right" class="form-control  form-control-sm mt3" id="quantity"  (change)="on_quantity_change(quantity.value,row.rowindex)" value={{row.quantity}} #quantity />
+                                   <input type="text" [disabled]="row.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm mt3" id="quantity"  (change)="on_quantity_change(quantity.value,row.rowindex)" value={{row.quantity}} #quantity />
                                  </td>
                                  <td>
                                    <input type="checkbox" value="1" class="form-control  form-control-sm mt3" id="default" (change)="on_defualt_change(default,row.rowindex)" value={{row.default}} #default />

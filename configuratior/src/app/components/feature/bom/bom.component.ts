@@ -4,6 +4,10 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
+<<<<<<< HEAD
+
+=======
+>>>>>>> 395a566f2d318b5952446bcbf9d266de8b00da74
 
 @Component({
   selector: 'app-bom',
@@ -31,6 +35,8 @@ export class BomComponent implements OnInit {
   public isDisplayNameDisabled: boolean = false;
   public isTypeDisabled: boolean = false;
   public ishide: boolean = false;
+  public isQuanityDisabled: boolean = true;
+  public isQuanity: number ;
 
   serviceData: any;
   counter = 0;
@@ -60,12 +66,16 @@ export class BomComponent implements OnInit {
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
+                this.isQuanityDisabled=true
+                this.isQuanity=data.FeatureDetail[i].OPTM_QUANTITY
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
+                this.isQuanityDisabled=true
+                this.isQuanity=data.FeatureDetail[i].OPTM_QUANTITY
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
@@ -74,6 +84,8 @@ export class BomComponent implements OnInit {
               //  this.isTypeDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = true
+                this.isQuanityDisabled=false
+                this.isQuanity=0
               }
               if (data.FeatureDetail[i].default == "Y") {
                 this.defaultcheckbox = true
@@ -89,7 +101,7 @@ export class BomComponent implements OnInit {
                 type: data.FeatureDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
                 display_name: data.FeatureDetail[i].OPTM_DISPLAYNAME,
-                quantity: data.FeatureDetail[i].OPTM_QUANTITY,
+                quantity: this.isQuanity,
                 default: this.defaultcheckbox,
                 remark: data.FeatureDetail[i].OPTM_REMARKS,
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
@@ -133,13 +145,14 @@ export class BomComponent implements OnInit {
       type: 1,
       type_value: "",
       display_name: "",
-      quantity: 0,
+      quantity: 1,
       default: "N",
       remark: "",
       attachment: "",
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
+      isQuanityDisabled:true,
       CompanyDBId: this.companyName,
       CreatedUser: this.username
     });
@@ -197,6 +210,9 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = true
           this.feature_bom_table[i].type = 3
+          this.feature_bom_table[i].isQuanity=0;
+          this.feature_bom_table[i].isQuanityDisabled=false
+
 
 
         }
@@ -297,7 +313,7 @@ export class BomComponent implements OnInit {
 
   openFeatureLookUp(status) {
     console.log('inopen feature');
-
+    this.serviceData=[]
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
@@ -327,7 +343,7 @@ export class BomComponent implements OnInit {
 
   getFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
-
+    this.serviceData=[]
     //this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {

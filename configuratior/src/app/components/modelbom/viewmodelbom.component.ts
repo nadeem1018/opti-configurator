@@ -91,6 +91,22 @@ export class ViewModelBomComponent implements OnInit {
     }
     button_click2(id) {
         var result = confirm(this.language.DeleteConfimation);
+        if (result) {
+            this.service.DeleteData(id).subscribe(
+                data => {
+                    if (data === "True") {
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('feature/bom/view');
+                        return;
+                    }
+                    else {
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                    }
+                }
+            )
+        }
     }
 
 
