@@ -1,0 +1,8 @@
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Release\OptiPro.Config.Common.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Release\OptiPro.Config.Common.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Release\OptiPro.Config.Common.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Release\OptiPro.Config.Common.Resources.resources
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Release\OptiPro.Config.Common.vbproj.GenerateResource.Cache
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Release\OptiPro.Config.Common.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Release\OptiPro.Config.Common.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Release\OptiPro.Config.Common.pdb

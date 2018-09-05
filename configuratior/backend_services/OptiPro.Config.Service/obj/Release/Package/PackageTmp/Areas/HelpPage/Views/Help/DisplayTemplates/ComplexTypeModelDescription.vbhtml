@@ -1,0 +1,3 @@
+@Imports OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions
+@ModelType ComplexTypeModelDescription
+@Html.DisplayFor(Function(m) Model.Properties, "Parameters")
