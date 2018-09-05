@@ -122,6 +122,17 @@
     "Model_ModelName":"Model Name",
     "Model_FeatureDesc":"Feature Desc",
     "Model_ModelDesc":"Model Desc",
-    "Model_RefValidate": "Invalid ItemCode"
+    "Model_RefValidate": "Invalid ItemCode",
+
+    "FeatureIDBlank":"Feature id cannot be blank",
+    "SelectFeature":"Select feature at row index: ",
+    "SelectItem":"Select item at row index: ",
+    "SelectValue":"Select value at row index: ",
+    "quantityblank":"Select quantity at row index: ",
+    "quantityvalid":"Quantity cannot be 0",
+
+    "ModelIDBlank":"Model id cannot be blank",
+    "SelectModel":"Select model at row index: ",
+    "NoDataAvailable" :"No data available"
     
 }

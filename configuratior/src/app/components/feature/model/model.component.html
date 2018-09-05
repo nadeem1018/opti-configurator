@@ -65,7 +65,7 @@
                     <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
                         placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
                     <div class="input-group-append">
-                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onTemplateItemPress(true)">
+                        <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
                     </div>
@@ -78,7 +78,7 @@
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
                         placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref">
                     <div class="input-group-append">
-                        <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="onItemGenerationPress(true)">
+                        <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
                     </div>

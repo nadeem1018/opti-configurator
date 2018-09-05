@@ -6,6 +6,8 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import 'bootstrap';
+
 // import { ContentChild, AfterViewInit, ViewChild, ViewChildren, AfterViewChecked, ElementRef } from "@angular/core"
 
 @Component({
@@ -122,10 +124,10 @@ export class LookupComponent implements OnInit {
 
   on_item_select(lookup_key) {
     this.lookupvalue.emit(lookup_key);
+    $("#lookup_modal").modal('hide');
   }
 
   model_template_lookup() {
-    
     this.popup_title = this.language.model_template;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -138,7 +140,9 @@ export class LookupComponent implements OnInit {
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
   }
 
   model_item_generation_lookup() {
@@ -152,6 +156,9 @@ export class LookupComponent implements OnInit {
     `console.log("this.width_value - " + this.width_value);`
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
    
   }
 
@@ -168,6 +175,14 @@ export class LookupComponent implements OnInit {
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
+  }
+
+  close_lookup(lookup_id){
+    this.log("lookup id - " + lookup_id);
+    $("#" + lookup_id).modal('show');
   }
 
   get_Model_lookup() {
@@ -183,6 +198,9 @@ export class LookupComponent implements OnInit {
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
   }
 
   get_Item_lookup() {
@@ -198,12 +216,20 @@ export class LookupComponent implements OnInit {
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    this.log('this.serviceData');
+    this.log(this.serviceData);
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
   }
 
   import_popup() {
     this.popup_title = this.language.import_features;
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData.length > 0){
+      $("#import_modal").modal('show');
+    }
   }
 
   get_Price_lookup() {
@@ -217,6 +243,9 @@ export class LookupComponent implements OnInit {
     console.log("this.width_value - " + this.width_value);
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData.length > 0){
+      $("#lookup_modal").modal('show');
+    }
   }
 
   
@@ -247,7 +276,7 @@ export class LookupComponent implements OnInit {
         data => {
           console.log("imported result"+ data);
           this.toastr.success('', data, this.commonData.toast_config);
-          // $("#import_modal").modal("hide");
+            $("#import_modal").modal("hide");
         
           this.router.navigateByUrl('/feature/model/view');
           return;

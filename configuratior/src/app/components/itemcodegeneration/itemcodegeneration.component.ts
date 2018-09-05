@@ -81,6 +81,7 @@ export class ItemcodegenerationComponent implements OnInit {
               CompanyDBId: this.companyName,
               codekey: this.codekey,
               CreatedUser: this.username
+             
             })
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING
           }
@@ -108,7 +109,8 @@ export class ItemcodegenerationComponent implements OnInit {
         delete:"",
         CompanyDBId:this.companyName,
         codekey:this.codekey,
-        CreatedUser:this.username
+        CreatedUser:this.username,
+        isOperationDisable:true
       })
     }
 
@@ -144,7 +146,8 @@ export class ItemcodegenerationComponent implements OnInit {
       delete: "",
       CompanyDBId: this.companyName,
       codekey: this.codekey,
-      CreatedUser: this.username
+      CreatedUser: this.username,
+      isOperationDisable:true
     })
 
 
@@ -195,7 +198,15 @@ export class ItemcodegenerationComponent implements OnInit {
     for (let i = 0; i < this.itemcodetable.length; ++i) {
       if (this.itemcodetable[i].rowindex === rowindex) {
         this.itemcodetable[i].stringtype = selectedvalue;
+        if(selectedvalue==1){
+          this.itemcodetable[i].isOperationDisable=true;
+          this.itemcodetable[i].operations=1;
+        }
+        else{
+          this.itemcodetable[i].isOperationDisable=false
+        }
       }
+
     }
 
   }
@@ -237,11 +248,11 @@ export class ItemcodegenerationComponent implements OnInit {
         for (let i = 0; i < this.itemcodetable.length; ++i) {
           if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
             if (isNaN(this.itemcodetable[i].string) == true) {
-              this.toastr.warning('', this.language.ValidNumber, this.commonData.toast_config);
+              this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
               return false;
             }
             if (this.itemcodetable[i].operations == 1) {
-              this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+              this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
               return false;
             }
 
@@ -249,7 +260,7 @@ export class ItemcodegenerationComponent implements OnInit {
           }
           else {
             if (this.itemcodetable[i].operations != 1) {
-              this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+              this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
               return false;
             }
           }
@@ -265,7 +276,7 @@ export class ItemcodegenerationComponent implements OnInit {
     else {
       if (buttonpressevent != "Delete") {
         if (this.itemcodetable.length == 0) {
-          this.toastr.warning('', this.language.Addrow, this.commonData.toast_config);
+          this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
           return false;
         }
         else {
@@ -273,11 +284,11 @@ export class ItemcodegenerationComponent implements OnInit {
           for (let i = 0; i < this.itemcodetable.length; ++i) {
             if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
               if (isNaN(this.itemcodetable[i].string) == true) {
-                this.toastr.warning('', this.language.ValidNumber, this.commonData.toast_config);
+                this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
                 return false;
               }
               if (this.itemcodetable[i].operations == 1) {
-                this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+                this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
               this.countnumberrow++;
@@ -285,14 +296,14 @@ export class ItemcodegenerationComponent implements OnInit {
             }
             else {
               if (this.itemcodetable[i].operations != 1) {
-                this.toastr.warning('', this.language.ValidOperations, this.commonData.toast_config);
+                this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
             }
 
           }
           if (this.countnumberrow == 0) {
-            this.toastr.warning('', this.language.RowNumberType, this.commonData.toast_config);
+            this.toastr.error('', this.language.RowNumberType, this.commonData.toast_config);
             return false;
 
           }
@@ -308,7 +319,7 @@ export class ItemcodegenerationComponent implements OnInit {
         this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
           data => {
             if (data == "True") {
-              this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
+              this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
               return false;
             }
             else {
@@ -332,11 +343,11 @@ export class ItemcodegenerationComponent implements OnInit {
 
     }
     if (this.codekey == "" || this.codekey == null) {
-      this.toastr.warning('', this.language.CodeBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
       return false;
     }
     if (this.finalstring.length > 50) {
-      this.toastr.warning('', this.language.StringLengthValidation, this.commonData.toast_config);
+      this.toastr.error('', this.language.StringLengthValidation, this.commonData.toast_config);
       return false;
     }
 
