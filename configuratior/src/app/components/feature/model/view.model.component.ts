@@ -36,6 +36,9 @@ export class ViewFeatureModelComponent implements OnInit {
     constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
 
+    //custom dialoag params
+    public dialog_params:any = [];
+    public show_dialog:boolean = false;
 
     ngOnInit() {
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
@@ -94,6 +97,15 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     button_click2(id) {
+//TRY
+    this.dialog_params.push({'dialog_type':'delete_confirmation'});
+    this.show_dialog = true;
+return;
+//END TRY
+
+
+
+
         var result = confirm(this.language.DeleteConfimation);
 
         if (result) {

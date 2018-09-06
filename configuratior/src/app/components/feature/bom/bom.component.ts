@@ -4,10 +4,6 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
-<<<<<<< HEAD
-
-=======
->>>>>>> 395a566f2d318b5952446bcbf9d266de8b00da74
 
 @Component({
   selector: 'app-bom',
