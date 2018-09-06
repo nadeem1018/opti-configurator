@@ -6,6 +6,7 @@
     "delete": "Delete",
     "remove": "Remove",
     "action": "Action",
+    "ok":"Ok",
     "server_error": "There was some error, please try again",
     "signout": "Sign-out",
     "user_profile": "User Profile",

@@ -78,4 +78,27 @@ Public Class BaseDL
         End Try
         Return Nothing
     End Function
+
+
+
+    Public Shared Function GetMenuRecord(ByVal ObjDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+        Try
+            'Variable to get the SQl Query
+            Dim psSQL As String
+            Dim dsRecord As New DataSet
+            'Used To The Company Instance
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.SysAdminConnection
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetMenus)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return dsRecord.Tables(0)
+        Catch ex As Exception
+            ErrorLogging.LogError(ex)
+            Return Nothing
+        End Try
+    End Function
 End Class

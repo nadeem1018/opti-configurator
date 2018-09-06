@@ -163,12 +163,18 @@ Public Class HanaQuery
         Dim psSQL As String = "select ""OPTM_URL"" From ""OPTM_MGSDFLT"" where ""Default_Key"" = 'OptiAdmin'"
         Return psSQL
     End Function
+
+    Function GetMenus() As String
+        Dim psSQL As String = "SELECT ""OPTM_MENUID"",""OPTM_MENUNAME"",OPTM_ICONPATH,""OPTM_MENUSEQ"" FROM ""OPTIPROADMIN"".""OPTM_ADMIN_MENUS"" WHERE OPTM_PROD='SFES' ORDER BY ""OPTM_MENUSEQ"""
+        Return psSQL
+    End Function
+
 #End Region
 
 #Region "Feature BOM"
     'SQL Query to get the LIst of Fetaure 
     Function GetFeatureList() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='feature'"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='feature' OR ""OPTM_TYPE"" ='Feature'"
         Return psSQL
     End Function
 
@@ -186,7 +192,7 @@ Public Class HanaQuery
 
     'SQL Query to get the List of all the Features Except the Selected Feature
     Function GetFeatureListForSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='feature' and ""OPTM_FEATUREID""=?"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='feature' OR ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=?"
         Return psSQL
     End Function
 
@@ -263,12 +269,12 @@ Public Class HanaQuery
 #End Region
 #Region "ModelBOM"
     Function GetModelList() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='model'"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='model' OR ""OPTM_TYPE"" ='Model'"
         Return psSQL
     End Function
 
     Function GetModelListExceptSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='model' and ""OPTM_FEATUREID""<>?"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='model' OR ""OPTM_TYPE"" ='Model' and ""OPTM_FEATUREID""<>?"
         Return psSQL
     End Function
 
@@ -302,12 +308,12 @@ Public Class HanaQuery
     End Function
 
     Function GetDataForCommonViewForModelBOMBySearchCriteria() As String
-        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'  EXCEPT Select DISTINCT TOP @STARTCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'"
+        Dim psSQL As String = "Select TOP @ENDCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'  EXCEPT Select TOP @STARTCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_FEATUREID""=T2.""OPTM_FEATUREID"" WHERE T1.""OPTM_MODELID"" LIKE '%@SEARCHSTRING%'"
         Return psSQL
     End Function
 
     Function GetDataForCommonViewForModelBOM() As String
-        Dim psSQL As String = "Select  DISTINCT TOP @ENDCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"" EXCEPT Select DISTINCT TOP @STARTCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"""
+        Dim psSQL As String = "Select TOP @ENDCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"" EXCEPT Select TOP @STARTCOUNT T1.""OPTM_MODELID"",T2.""OPTM_DISPLAYNAME"" From ""OPCONFIG_MBOMDTL"" T1 INNER JOIN ""OPCONFIG_FEATUREHDR"" T2 ON T1.""OPTM_MODELID"" =T2.""OPTM_FEATUREID"""
         Return psSQL
     End Function
 

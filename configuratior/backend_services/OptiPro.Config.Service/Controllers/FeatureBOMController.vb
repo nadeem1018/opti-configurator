@@ -96,4 +96,10 @@ Public Class FeatureBOMController
         Return FeatureBOMBL.DeleteFeatureFromHDRandDTL(oDeleteFeatureMasterDetail)
     End Function
 
+
+    <HttpPost, HttpGet>
+ <Route("GetDataForExplodeViewForFeatureBOM")>
+    Public Function GetDataForExplodeViewForFeatureBOM(ByVal oGetData As FeatureBOMModel) As DataTable
+        Return FeatureBOMBL.GetDataForExplodeViewForFeatureBOM(oGetData)
+    End Function
 End Class
