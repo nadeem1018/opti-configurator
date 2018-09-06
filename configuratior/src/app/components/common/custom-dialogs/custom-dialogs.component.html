@@ -1,20 +1,20 @@
 <!-- confirm dialog modal -->
 <div class="modal custom_modal_confirm_box" id="custom_dialog_box" tabindex="-1" role="dialog" aria-labelledby="custom_dialog_box" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-sm" role="document">
+    <div class="modal-dialog  modal-sm top-45" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="custom_dialog_box_title">Confirm Action</h5>
+            <div class="modal-header header_custom btn-dark" >
+                <h5 class="modal-title" id="custom_dialog_box_title"><i class="fa fa-exclamation-triangle"></i> Confirm</h5>
             </div>
             <div class="modal-body custom_height_width">
-              Are You Sure You want to continue ? 
+             {{message}}
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-sm btn-danger mr-10" type="button">
-                    <i class="fa fa-transh"></i> Delete 
+            <div class="modal-footer footer_custom">
+                <button class="btn btn-sm btn-danger mr-10 padding_5px_imp" type="button" (click)="onOKPress()">
+                    <i class="fa fa-check-square"></i> 
                   </button>
-                <button class="btn btn-sm btn-secondary mr-10" type="button">
-                    <i class="fa fa-close"></i> Cancel 
+                <button class="btn btn-sm btn-secondary mr-10 padding_5px_imp" type="button" (click)="onCancelPress()">
+                    <i class="fa fa-times"></i>
                 </button>
             </div>
             </div>
