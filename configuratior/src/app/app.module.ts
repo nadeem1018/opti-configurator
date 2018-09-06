@@ -24,6 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //pipes
 import { FilterPipe } from './filter.pipe';
+import { LookupFilterPipe } from './filter.pipe';
 
 // user defined components
 import { AppComponent } from './app.component';
@@ -93,7 +94,8 @@ const routes: Routes = [
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
     FilterPipe,
-    CustomDialogsComponent
+    CustomDialogsComponent,
+    LookupFilterPipe
   ],
   imports: [
     BrowserModule,
