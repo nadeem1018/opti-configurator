@@ -151,6 +151,14 @@ Public Class SQLQuery
         Dim psSQL As String = "select ""OPTM_URL"" From ""OPTM_MGSDFLT"" where ""Default_Key"" = 'OptiAdmin'"
         Return psSQL
     End Function
+
+
+    Function GetMenus() As String
+        Dim psSQL As String = "SELECT ""OPTM_MENUID"",""OPTM_MENUNAME"",OPTM_ICONPATH,""OPTM_MENUSEQ"" FROM ""OPTIPROADMIN""..""OPTM_ADMIN_MENUS"" WHERE OPTM_PROD='CNF' ORDER BY ""OPTM_MENUSEQ"""
+        Return psSQL
+    End Function
+
+
 #End Region
 
 
@@ -261,6 +269,12 @@ Public Class SQLQuery
         Dim psSQL As String = "DELETE FROM ""OPCONFIG_FEATUREBOMDTL"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
+
+    Function GetDataForExplodeViewForFeatureBOM() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
 
 #End Region
 

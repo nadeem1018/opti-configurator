@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,8 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./bom.component.scss']
 })
 export class BomComponent implements OnInit {
+  @ViewChild("featureinputbox") _el: ElementRef;
+  @ViewChild("button") _ele: ElementRef;
   public feature_bom_data: any = [];
   public feature_bom_table: any = [];
   language = JSON.parse(sessionStorage.getItem('current_lang'));
@@ -32,7 +34,10 @@ export class BomComponent implements OnInit {
   public isTypeDisabled: boolean = false;
   public ishide: boolean = false;
   public isQuanityDisabled: boolean = true;
-  public isQuanity: number ;
+  public isQuanity: number;
+  public isFeatureIdEnable: boolean = true;
+  public FeatureLookupBtnhide: boolean = true;
+
 
   serviceData: any;
   counter = 0;
@@ -48,11 +53,17 @@ export class BomComponent implements OnInit {
     if (this.update_id === "" || this.update_id === null) {
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
+      this.isFeatureIdEnable = false;
+      this.FeatureLookupBtnhide = false;
+      this._el.nativeElement.focus();
     }
     else {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true;
+      this.isFeatureIdEnable = true;
+      this.FeatureLookupBtnhide = true;
+
       this.fbom.GetDataByFeatureId(this.update_id).subscribe(
         data => {
           if (data.FeatureDetail.length > 0) {
@@ -62,26 +73,26 @@ export class BomComponent implements OnInit {
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
-                this.isQuanityDisabled=true
-                this.isQuanity=data.FeatureDetail[i].OPTM_QUANTITY
+                this.isQuanityDisabled = false
+                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
-                this.isQuanityDisabled=true
-                this.isQuanity=data.FeatureDetail[i].OPTM_QUANTITY
+                this.isQuanityDisabled = false
+                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
-               // this.isDisplayNameDisabled = false
+                // this.isDisplayNameDisabled = false
                 this.isDisplayNameDisabled = false
-              //  this.isTypeDisabled = false
+                //  this.isTypeDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = true
-                this.isQuanityDisabled=false
-                this.isQuanity=0
+                this.isQuanityDisabled = true
+                this.isQuanity = 0
               }
               if (data.FeatureDetail[i].default == "Y") {
                 this.defaultcheckbox = true
@@ -128,7 +139,19 @@ export class BomComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    if (this.update_id === "" || this.update_id === null) {
+      this._el.nativeElement.focus();
+    }
+    else {
+      this._ele.nativeElement.focus();
+    }
+  }
+
   onAddRow() {
+    if (this.validation("Add") == false) {
+      return;
+    }
     this.counter = 0;
     if (this.feature_bom_table.length > 0) {
       this.counter = this.feature_bom_table.length
@@ -148,7 +171,7 @@ export class BomComponent implements OnInit {
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
-      isQuanityDisabled:true,
+      isQuanityDisabled: false,
       CompanyDBId: this.companyName,
       CreatedUser: this.username
     });
@@ -169,16 +192,18 @@ export class BomComponent implements OnInit {
   }
 
   onSaveClick() {
-
+    if (this.validation("Save") == false) {
+      return;
+    }
     if (this.feature_bom_table.length > 0) {
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
-        if( this.feature_bom_table[i].default==false){
-          this.feature_bom_table[i].default="N"
+        if (this.feature_bom_table[i].default == false) {
+          this.feature_bom_table[i].default = "N"
         }
-        else{
-          this.feature_bom_table[i].default="Y"
+        else {
+          this.feature_bom_table[i].default = "Y"
         }
-       
+
       }
     }
 
@@ -201,13 +226,15 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        this.feature_bom_table[i].type_value=""
+        this.feature_bom_table[i].display_name=""
         if (selectedvalue == 3) {
           this.feature_bom_table[i].isDisplayNameDisabled = false
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = true
           this.feature_bom_table[i].type = 3
-          this.feature_bom_table[i].isQuanity=0;
-          this.feature_bom_table[i].isQuanityDisabled=false
+          this.feature_bom_table[i].quantity = 0;
+          this.feature_bom_table[i].isQuanityDisabled = true
 
 
 
@@ -218,15 +245,24 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].hide = false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
+            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].isQuanityDisabled = false
           }
           else {
             this.feature_bom_table[i].type = 1
+            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].isQuanityDisabled = false
           }
         }
 
 
       }
     }
+
+  }
+
+  on_type_change(selectedvalue, rowindex) {
+    this.currentrowindex = rowindex
     this.getFeatureDetails(this.feature_bom_data.feature_id, "Detail", selectedvalue);
 
   }
@@ -235,10 +271,17 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].quantity = value
-
-
+        if (this.feature_bom_table[i].type == 1 || this.feature_bom_table[i].type == 2) {
+          if (value == 0) {
+            this.feature_bom_table[i].quantity = ""
+            this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
+          }
+          else {
+            this.feature_bom_table[i].quantity = value
+          }
+        }
       }
+
     }
 
   }
@@ -309,7 +352,7 @@ export class BomComponent implements OnInit {
 
   openFeatureLookUp(status) {
     console.log('inopen feature');
-
+    this.serviceData = []
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
@@ -317,6 +360,12 @@ export class BomComponent implements OnInit {
           this.serviceData = data;
           console.log(this.serviceData);
 
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
         }
       }
     )
@@ -339,7 +388,7 @@ export class BomComponent implements OnInit {
 
   getFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
-
+    this.serviceData = []
     //this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
@@ -374,37 +423,81 @@ export class BomComponent implements OnInit {
             this.serviceData = data;
           }
         }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
       }
     )
   }
 
-  
+  validation(btnpress) {
+    if (this.feature_bom_data.feature_id == "" || this.feature_bom_data.feature_id == null) {
+      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      return false;
+    }
 
-  onDeleteClick(){
-    var result = confirm(this.language.DeleteConfimation);
-        if (result) {
-            this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
-                data => {
-                    if (data === "True") {
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                        this.router.navigateByUrl('feature/bom/view');
-                        return;
-                    }
-                    else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
-                    }
-                }
-            )
+    if (btnpress == "Save") {
+      if (this.feature_bom_table.length == 0) {
+        this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
+        return false;
+      }
+      else {
+        for (let i = 0; i < this.feature_bom_table.length; ++i) {
+          let currentrow = i + 1;
+          if (this.feature_bom_table[i].type == 1 && this.feature_bom_table[i].type_value == "") {
+            this.toastr.error('', this.language.SelectFeature + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.feature_bom_table[i].type == 2 && this.feature_bom_table[i].type_value == "") {
+            this.toastr.error('', this.language.SelectItem + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.feature_bom_table[i].type == 3 && this.feature_bom_table[i].type_value == "") {
+            this.toastr.error('', this.language.SelectValue + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.feature_bom_table[i].quantity == "") {
+            this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
+            return false;
+          }
         }
+      }
+
+    }
+
+
   }
 
-  onAssociatedBOMClick(){
+
+
+  onDeleteClick() {
+    var result = confirm(this.language.DeleteConfimation);
+    if (result) {
+      this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
+        data => {
+          if (data === "True") {
+            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.router.navigateByUrl('feature/bom/view');
+            return;
+          }
+          else {
+            this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+            return;
+          }
+        }
+      )
+    }
+  }
+
+  onAssociatedBOMClick() {
 
   }
 
-  onExplodeClick() { 
+  onExplodeClick() {
     this.lookupfor = 'tree_view_lookup';
   }
-  
+
 }

@@ -17,6 +17,7 @@
     Public Const OptiPro_Config_ChkValidItemCodeGeneration As String = "ChkValidItemCodeGeneration"
     Public Const OptiPro_Config_ChkReferenceForFeatureIDInFeatureBOM As String = "ChkReferenceForFeatureIDInFeatureBOM"
     Public Const OptiPro_Config_ChkReferenceForFeatureIDInModelBOM As String = "ChkReferenceForFeatureIDInModelBOM"
+    Public Const OptiPro_Config_GetDataForExplodeViewForFeatureBOM As String = "GetDataForExplodeViewForFeatureBOM"
 
 
 
@@ -60,6 +61,7 @@
 #Region "Common"
     Public Const OptiPro_Config_GetServerDate As String = "GetServerDate"
     Public Const OptiPro_Config_GetTableStructure As String = "GetTableStructure"
+    Public Const OptiPro_Config_GetMenus As String = "GetMenus"
 #End Region
 #Region "Base Comman"
     Public Const OptiPro_Config_GetPSURL As String = "GetPSURL"

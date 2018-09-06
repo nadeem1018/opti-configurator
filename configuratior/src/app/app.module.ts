@@ -20,9 +20,11 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { ToastrModule } from 'ngx-toastr';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //pipes
 import { FilterPipe } from './filter.pipe';
+import { LookupFilterPipe } from './filter.pipe';
 
 // user defined components
 import { AppComponent } from './app.component';
@@ -42,6 +44,8 @@ import { ViewFeatureBOMComponent } from './components/feature/bom/view.bom.compo
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
 import { TreeViewComponent } from "./components/common/tree.view";
+import { CustomDialogsComponent } from './components/common/custom-dialogs/custom-dialogs.component';
+
 
 
 // routing & navigation
@@ -92,6 +96,8 @@ const routes: Routes = [
     ViewModelBomComponent, 
     FilterPipe,
     TreeViewComponent
+    CustomDialogsComponent,
+    LookupFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -103,6 +109,7 @@ const routes: Routes = [
     InputsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    NgbModule.forRoot(),
     GridModule,
     DropDownsModule,
     ReactiveFormsModule,

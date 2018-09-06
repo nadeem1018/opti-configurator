@@ -21,10 +21,10 @@
         <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.model}}</label>
       
         <div class="col-sm-4 input-group">
-          <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"
-            id="featureNameId" placeholder="{{language.model}}">
-          <div class="input-group-append">
-            <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openFeatureLookUp()">
+          <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName" [disabled]="isModelIdEnable"
+            id="featureNameId" placeholder="{{language.model}}" #Modelinputbox>
+          <div class="input-group-append" [hidden]=ModelLookupBtnhide>
+            <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
               <i class="fa fa-bars"></i>
             </span>
           </div>
@@ -60,7 +60,7 @@
           <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)]="modelbom_data.image_path">
         </div>
         <div class="col-sm-1">
-          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
             <i class="fa fa-plus"></i>
           </a>
         </div>
@@ -101,7 +101,7 @@
                     <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)" value={{row.type_value}}
                       #type_value />
                     <div class="input-group-append" [hidden]=row.hide>
-                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="on_bom_type_change(selectedvalue.value, row.rowindex)">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_click(selectedvalue.value, row.rowindex)">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
@@ -130,7 +130,7 @@
                     <div class="input-group">
                   <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)" #price_source [disabled]="row.isPriceDisabled"/>
                   <div class="input-group-append" [hidden]=row.pricehide>
-                      <span class="input-group-text cursor_icon" id="basic-addon2" data-toggle="modal" data-target="#lookup_modal" (click)="openPriceLookUp(row.type_value)">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value)">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>

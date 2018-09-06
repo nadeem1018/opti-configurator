@@ -22,11 +22,11 @@ C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backe
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.dll
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.xml
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.Resources.resources
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.vbproj.GenerateResource.Cache
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.pdb
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.pdb
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\bin\Debug\OptiPro.Config.Entity.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.Resources.resources
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.vbproj.GenerateResource.Cache
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Entity\obj\Debug\OptiPro.Config.Entity.pdb

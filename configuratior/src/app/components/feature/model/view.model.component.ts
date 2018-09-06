@@ -3,6 +3,8 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { truncateSync } from 'fs';
+//import { CustomDialogsComponent } from 'src/app/components/common/custom-dialogs/custom-dialogs.component'
 
 
 @Component({
@@ -36,6 +38,11 @@ export class ViewFeatureModelComponent implements OnInit {
     constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
 
+    //custom dialoag params
+    public dialog_params:any = [];
+    public show_dialog:boolean = false;
+    public dialog_box_value:any;
+    public row_id:any;
 
     ngOnInit() {
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
@@ -94,26 +101,43 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     button_click2(id) {
-        var result = confirm(this.language.DeleteConfimation);
+        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
+        this.show_dialog = true;    
+        this.row_id = id;
+        //var result = confirm(this.language.DeleteConfimation);
 
-        if (result) {
-            // button click function in here
-            this.fms.DeleteData(this.CompanyDBId, id).subscribe(
-                data => {
-                    if (data === "True") {
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('feature/model/view');
-                        return;
-                    }
-                    else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
-                    }
-                }
-            )
-        }
     }
+
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue){
+        console.log("GET DUIALOG VALUE")  
+        if(userSelectionValue == true){
+                this.delete_row();
+            }
+            this.show_dialog = false;
+    }
+    //delete values
+    delete_row(){
+       console.log("YES DELETE--"+this.row_id);
+       // button click function in here
+        this.fms.DeleteData(this.CompanyDBId, this.row_id).subscribe(
+            data => {
+                if (data === "True") {
+                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('feature/model/view');
+                    return;
+                }
+                else {
+                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    return;
+                }
+            }
+        )
+    }
+
+   
+    
 
     // for testing purpose 
     dummy_data() {

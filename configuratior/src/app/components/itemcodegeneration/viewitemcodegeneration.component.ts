@@ -27,6 +27,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     rows: any = "";
     public ViewData: any = [];
     show_table_footer: boolean = false;
+
+    //custom dialoag params
+    public dialog_params:any = [];
+    public show_dialog:boolean = false;
+    public dialog_box_value:any;
+    public row_id:any;
+
     public GetItemData: any = [];
 
 
@@ -91,46 +98,57 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         // button click function in here
     }
     button_click2(id) {
-        var result = confirm(this.language.DeleteConfimation);
-        if (result) {
-            this.GetItemData = []
-            this.GetItemData.push({
-                CompanyDBId: this.companyName,
-                ItemCode: id
-    
-            })
-            this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-                data => {
-                    if (data == "True") {
-                        this.toastr.warning('', this.language.ItemCodeLink, this.commonData.toast_config);
-                        return false;
-                    }
-                    else {
-                        this.itemgen.DeleteData(this.GetItemData).subscribe(
-                            data => {
-                                if (data === "True") {
-                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                    this.service_call(this.current_page, this.search_string);
-                                    this.router.navigateByUrl('item-code-generation/view');
-                                    return;
-                                }
-                                else {
-                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                    return;
-                                }
-                            }
-                        )
-                    }
-                }
-            )
-
-        }
-       
-
+        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
+        this.show_dialog = true;    
+        this.row_id = id;
+      
+       // var result = confirm(this.language.DeleteConfimation);
 
     }
 
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue){
+        console.log("GET DUIALOG VALUE")  
+        if(userSelectionValue == true){
+                this.delete_row();
+            }
+            this.show_dialog = false;
+    }
 
+    //delete values
+    delete_row(){
+        // console.log("YES DELETE--"+this.row_id);
+        this.GetItemData = []
+        this.GetItemData.push({
+            CompanyDBId: this.companyName,
+            ItemCode: this.row_id
+
+        })
+        this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+            data => {
+                if (data == "True") {
+                    this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                    return false;
+                }
+                else {
+                    this.itemgen.DeleteData(this.GetItemData).subscribe(
+                        data => {
+                            if (data === "True") {
+                                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                this.service_call(this.current_page, this.search_string);
+                                this.router.navigateByUrl('item-code-generation/view');
+                                return;
+                            }
+                            else {
+                                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                return;
+                            }
+                        }
+                    )
+                }
+            }
+        )
+      }
 
 
 }

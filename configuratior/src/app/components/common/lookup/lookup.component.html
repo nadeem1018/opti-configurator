@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="lookup_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(lookup_modal)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -38,8 +38,9 @@
                             </thead>
                             <!-- data="{{fill_input_id}}" -->
                             <tbody class="lookup_table_body">
-                                <tr class="row_select" *ngFor="let row of serviceData; let i= index">
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])">
+                                <tr class="row_select" *ngFor="let row of serviceData | Lookupfilter:search_string; let i= index">
+                                    <!-- <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])"> -->
+                                            <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
                                         <span>{{row[row_data]}}</span>
                                     </td>
                                 </tr>
@@ -49,7 +50,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal">
+                <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(lookup_modal)">
                     <i class="fa fa-close"></i> {{this.language.close}}</button>
             </div>
         </div>
@@ -64,7 +65,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(import_modal)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -117,7 +118,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="enlarge_image_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(enlarge_image_modal)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -137,7 +138,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-success mr-10" type="button" data-dismiss="modal">
+                    <button class="btn btn-sm btn-success mr-10" type="button" data-dismiss="modal" (click)="close_lookup(enlarge_image_modal)">
                         <i class="fa fa-check"></i> {{this.language.close}}</button>
                 </div>
             </div>
@@ -152,7 +153,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="tree_view_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(tree_view)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -281,7 +282,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-success mr-10" type="button" data-dismiss="modal">
+                    <button class="btn btn-sm btn-success mr-10" type="button" data-dismiss="modal" (click)="close_lookup(tree_view)">
                         <i class="fa fa-check"></i> {{this.language.close}}</button>
                 </div>
             </div>
