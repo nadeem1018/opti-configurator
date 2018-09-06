@@ -285,8 +285,6 @@ export class LookupComponent implements OnInit {
   }
 
   showImage() {
-
-
     this.popup_title = this.language.feature_image;
     this.showLoader = true;
     this.LookupDataLoaded = false;

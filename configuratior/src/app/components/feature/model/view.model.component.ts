@@ -3,7 +3,7 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { truncateSync } from 'fs';
+
 //import { CustomDialogsComponent } from 'src/app/components/common/custom-dialogs/custom-dialogs.component'
 
 

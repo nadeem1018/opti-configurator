@@ -40,7 +40,7 @@
                             <tbody class="lookup_table_body">
                                 <tr class="row_select" *ngFor="let row of serviceData | Lookupfilter:search_string; let i= index">
                                     <!-- <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])"> -->
-                                            <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
+                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
                                         <span>{{row[row_data]}}</span>
                                     </td>
                                 </tr>
@@ -167,118 +167,18 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
-                        <!--   <div class="tree well">
-                            <ul class="parent_ul">
-                                <li *ngFor="let element of tree_data_json; let i= index;">
-                                    <span *ngIf="element.level == 0 && element.parent==''">
-                                        <i class="icon-folder-open"></i> {{element.component}} </span>
-                                    <ul *ngIf="check_component_exist(element.component).length > 0">
-                                        <li *ngFor="let inner_ele of check_component_exist(element.component); let i= index;">
-                                            <span>
-                                                <i class="icon-minus-sign"></i> {{inner_ele.component}} </span>
-                                            <ul *ngIf="check_component_exist(inner_ele.component).length > 0">
-                                                <li *ngFor="let iele2 of check_component_exist(inner_ele.component); let i= index;">
-                                                    <span>
-                                                        <i class="icon-minus-sign"></i> {{iele2.component}} </span>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div> -->
                         <div class="tree well">
                             <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
-                                <div *ngFor="let element of tree_data_json; let i= index;" >
-                                <li *ngIf="element.level == 0 && element.parent==''">
+                                <div *ngFor="let element of tree_data_json; let i= index;">
+                                    <li *ngIf="element.level == 0 && element.parent==''">
                                         <span>
                                             <i class="fa fa-folder"></i> {{element.component}}
                                         </span>
-                                        {{log(check_component_exist(element.component, i))}}
                                         <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                                     </li>
                                 </div>
                             </ul>
-
                         </div>
-                        <!-- <div class="tree well">
-                            <ul class="parent_ul">
-                                <li>
-                                    <span> <i class="icon-folder-open"></i> F1 </span>
-                                    <ul>
-                                        <li>
-                                            <span>
-                                                <i class="icon-minus-sign"></i> F2 </span>
-                                            <ul>
-                                                <li>
-                                                    <span>
-                                                        <i class="icon-leaf"></i> item007 </span>
-                                                </li>
-                                                <li>
-                                                    <span>
-                                                        <i class="icon-leaf"></i> item008 </span>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-                                        <li>
-                                            <span>
-                                                <i class="icon-minus-sign"></i> F3 </span>
-                                            <ul>
-                                                <li>
-                                                    <span>
-                                                        <i class="icon-leaf"></i>F4</span>
-                                                </li>
-                                                <li>
-                                                    <span>
-                                                        <i class="icon-minus-sign"></i> F5 </span>
-                                                    <ul>
-                                                        <li>
-                                                            <span>
-                                                                <i class="icon-minus-sign"></i> F6 </span>
-                                                            <ul>
-                                                                <li>
-                                                                    <span>
-                                                                        <i class="icon-leaf"></i> item001 </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span>
-                                                                        <i class="icon-leaf"></i> item0002 </span>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li>
-                                                            <span>
-                                                                <i class="icon-leaf"></i> item003 </span>
-                                                        </li>
-                                                        <li>
-                                                            <span>
-                                                                <i class="icon-leaf"></i> item004 </span>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-
-                                            </ul>
-                                        </li>
-
-                                        <li>
-                                            <span>
-                                                <i class="icon-minus-sign"></i> item005 </span>
-                                        </li>
-                                        <li>
-                                            <span>
-                                                <i class="icon-minus-sign"></i> item006 </span>
-                                        </li>
-
-
-
-
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div> -->
-
                     </div>
                 </div>
                 <div class="modal-footer">
