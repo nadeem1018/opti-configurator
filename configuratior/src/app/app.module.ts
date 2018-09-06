@@ -95,7 +95,7 @@ const routes: Routes = [
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
     FilterPipe,
-    TreeViewComponent
+    TreeViewComponent,
     CustomDialogsComponent,
     LookupFilterPipe
   ],
