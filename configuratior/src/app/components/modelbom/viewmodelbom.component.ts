@@ -97,7 +97,7 @@ export class ViewModelBomComponent implements OnInit {
                     if (data === "True") {
                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                         this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('feature/bom/view');
+                        this.router.navigateByUrl('modelbom/view');
                         return;
                     }
                     else {

@@ -54,12 +54,12 @@
                           <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)" />
                         </td>
                         <td class="col-sm-3">
-                          <select class="form-control  form-control-sm mt3" #selectedvalue (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
-                            <option *ngFor="let v of stringtypevalue " [value]="v.value" [selected]="row.stringtype==v.value"> {{v.Name}}</option>
+                          <select class="form-control  form-control-sm mt3" #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+                            <option *ngFor="let v of stringtypevalue " [value]="v.value"  [selected]="row.stringtype==v.value"> {{v.Name}}</option>
                           </select>
                         </td>
                         <td class="col-sm-3">
-                          <select class="form-control form-control-sm" #selectedoperationvalue (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
+                          <select class="form-control form-control-sm" #selectedoperationvalue [disabled]="row.isOperationDisable" (change)="onStringOperationsSelectChange(selectedoperationvalue.value,row.rowindex)">
                             <option *ngFor="let v of opertions" [value]="v.value" [selected]="row.operations==v.value"> {{v.Name}}</option>
                           </select>
                         </td>
