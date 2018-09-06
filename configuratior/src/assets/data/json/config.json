@@ -2,11 +2,7 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
-<<<<<<< HEAD
 	"service_url":"http://localhost:65397/",
-=======
-	"service_url": "http://localhost:65345/",
->>>>>>> c10c986827d0f9757629749e33b14d5468473b5e
 	"admin_db_name":"OPTIPROADMIN",
 	"system_version":"1.0.0",
 	 "default_db_driver":"ms_sql_srv",
