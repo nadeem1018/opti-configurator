@@ -1,5 +1,3 @@
-
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
     <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -59,7 +57,7 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr *ngFor="let row of rows ">
+                    <tr *ngFor="let row of rows  | filter:search_string">
                         <td *ngFor="let row_data of row; let i = index"  >  <!--   | local_search : search_string -->
                             <span *ngIf="(row.length-1) != i">{{row_data}}</span>
                             <span *ngIf="(row.length-1) == i">
@@ -102,3 +100,6 @@
         </div>
     </div>
 </div>
+
+<!--Custom Dialog-->
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
