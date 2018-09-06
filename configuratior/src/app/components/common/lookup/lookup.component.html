@@ -39,7 +39,8 @@
                             <!-- data="{{fill_input_id}}" -->
                             <tbody class="lookup_table_body">
                                 <tr class="row_select" *ngFor="let row of serviceData | Lookupfilter:search_string; let i= index">
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])">
+                                    <!-- <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])"> -->
+                                            <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
                                         <span>{{row[row_data]}}</span>
                                     </td>
                                 </tr>
