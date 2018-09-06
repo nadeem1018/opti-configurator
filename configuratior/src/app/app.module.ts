@@ -41,6 +41,7 @@ import { BomComponent } from './components/feature/bom/bom.component';
 import { ViewFeatureBOMComponent } from './components/feature/bom/view.bom.component';
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
+import { TreeViewComponent } from "./components/common/tree.view";
 
 
 // routing & navigation
@@ -89,7 +90,8 @@ const routes: Routes = [
     ModelbomComponent,
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
-    FilterPipe
+    FilterPipe,
+    TreeViewComponent
   ],
   imports: [
     BrowserModule,
