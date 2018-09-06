@@ -23,6 +23,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 //pipes
 import { FilterPipe } from './filter.pipe';
+import { LookupFilterPipe } from './filter.pipe';
 
 // user defined components
 import { AppComponent } from './app.component';
@@ -89,7 +90,8 @@ const routes: Routes = [
     ModelbomComponent,
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
-    FilterPipe
+    FilterPipe,
+    LookupFilterPipe
   ],
   imports: [
     BrowserModule,
