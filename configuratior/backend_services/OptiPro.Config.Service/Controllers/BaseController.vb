@@ -22,4 +22,10 @@ Public Class BaseController
     End Function
 
 
+    <HttpPost, HttpGet>
+  <Route("GetMenuRecord")>
+    Public Function GetMenuRecord(ByVal Base As BaseModel) As DataTable
+        Return BaseBL.GetMenuRecord(Base)
+    End Function
+
 End Class

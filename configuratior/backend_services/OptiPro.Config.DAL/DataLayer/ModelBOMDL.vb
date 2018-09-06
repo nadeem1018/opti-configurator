@@ -24,6 +24,7 @@ Public Class ModelBOMDL
             Dim pdsGetData As New DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             If objDataTable.Columns.Contains("ModelID") Then
                 '  get the FeatureID,
                 psModelid = NullToInteger(objDataTable.Rows(0)("ModelID"))
@@ -97,6 +98,7 @@ Public Class ModelBOMDL
             Dim pdsPriceList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -130,6 +132,7 @@ Public Class ModelBOMDL
             Dim pdsFeatureDetail As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             'Get the Feature ID From the Datatable 
             psModelID = NullToInteger(objDataTable.Rows(0)("ModelID"))
 
@@ -169,6 +172,7 @@ Public Class ModelBOMDL
             Dim psCompanyDBId As String
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -227,6 +231,8 @@ Public Class ModelBOMDL
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
+
             'Company Connection
             pObjCompany.CompanyDbName = psCompanyDBId
             'get the the Item Code Key 
@@ -279,6 +285,10 @@ Public Class ModelBOMDL
         Dim dtServerDate As DateTime
         'Get the Company DB 
         Dim psCmapnyDBID As String = NullToString(objdsFeatureBOM.Rows(0)("CompanyDBId"))
+        psCmapnyDBID = "CONFIGURATOR01"
+
+
+
         'Function to get the Server Date Time
         pdtServerDate = BaseDL.GetServerDate(psCmapnyDBID, objCmpnyInstance)
         'Get Server Date
@@ -433,6 +443,7 @@ Public Class ModelBOMDL
             Dim piModelId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             'get the ItemCode name  
             piModelId = NullToInteger(objDataTable.Rows(0)("ModelId"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -495,6 +506,7 @@ Public Class ModelBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -655,6 +667,7 @@ Public Class ModelBOMDL
             Dim piModelId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = "CONFIGURATOR01"
             'get the ItemCode name  
             piModelId = NullToInteger(objDataTable.Rows(0)("ModelId"))
             'Now assign the Company object Instance to a variable pObjCompany
