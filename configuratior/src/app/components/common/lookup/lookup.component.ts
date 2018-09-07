@@ -285,8 +285,6 @@ export class LookupComponent implements OnInit {
   }
 
   showImage() {
-
-
     this.popup_title = this.language.feature_image;
     this.showLoader = true;
     this.LookupDataLoaded = false;
@@ -295,13 +293,116 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
   }
 
+  public tree_data_json:any = '';
+  @Input() component;
+
   showTreeView(){
     this.popup_title = this.language.explode;
     this.showLoader = true;
     this.LookupDataLoaded = false;
-
+    this.tree_data_json = this.dummy_json();
     this.showLoader = false;
     this.LookupDataLoaded = true;
     
+  }
+
+  check_component_exist(component, level){
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parent'] == component && obj['level'] == level;
+    });
+    return data;
+  }
+
+  dummy_json(){
+    return [
+      {
+        "sequence": "1",
+        "component": "F1",
+        "level": "0",
+        "parent": ""
+      },
+      {
+        "sequence": "2",
+        "component": "F2",
+        "level": "1",
+        "parent": "F1"
+      },
+      {
+        "sequence": "3",
+        "component": "F3",
+        "level": "1",
+        "parent": "F1"
+      },
+      {
+        "sequence": "4",
+        "component": "Item0001",
+        "level": "2",
+        "parent": "F2"
+      },
+      {
+        "sequence": "5",
+        "component": "Item0002",
+        "level": "2",
+        "parent": "F2"
+      },
+      {
+        "sequence": "6",
+        "component": "F4",
+        "level": "2",
+        "parent": "F3"
+      }
+      ,
+      {
+        "sequence": "7",
+        "component": "F5",
+        "level": "2",
+        "parent": "F3"
+      },
+      {
+        "sequence": "7",
+        "component": "F6",
+        "level": "3",
+        "parent": "F4"
+      },
+      {
+        "sequence": "8",
+        "component": "Item0003",
+        "level": "3",
+        "parent": "F5"
+      },
+      {
+        "sequence": "9",
+        "component": "Item0004",
+        "level": "3",
+        "parent": "F5"
+      },
+      {
+        "sequence": "10",
+        "component": "Item0005",
+        "level": "4",
+        "parent": "F6"
+      }
+      ,
+      {
+        "sequence": "11",
+        "component": "Item0006",
+        "level": "4",
+        "parent": "F6"
+      } ,
+      {
+        "sequence": "13",
+        "component": "Item0002",
+        "level": "1",
+        "parent": "F1"
+      }
+      ,
+      {
+        "sequence": "14",
+        "component": "Item0011",
+        "level": "0",
+        "parent": ""
+      }
+    ];
   }
 }

@@ -43,6 +43,7 @@ import { BomComponent } from './components/feature/bom/bom.component';
 import { ViewFeatureBOMComponent } from './components/feature/bom/view.bom.component';
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
+import { TreeViewComponent } from "./components/common/tree.view";
 import { CustomDialogsComponent } from './components/common/custom-dialogs/custom-dialogs.component';
 
 
@@ -94,6 +95,7 @@ const routes: Routes = [
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
     FilterPipe,
+    TreeViewComponent,
     CustomDialogsComponent,
     LookupFilterPipe
   ],
