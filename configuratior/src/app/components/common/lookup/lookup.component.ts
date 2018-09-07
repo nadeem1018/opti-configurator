@@ -136,13 +136,16 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+   
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+   
   }
 
   model_item_generation_lookup() {
@@ -153,17 +156,20 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Code'];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
-    `console.log("this.width_value - " + this.width_value);`
+   
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+    
    
   }
 
   get_features_lookup() {
-    console.log('in lookup');
+    
 
     this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
@@ -172,12 +178,15 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id', 'Code', 'Name'];
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+   
   }
 
   close_lookup(lookup_id){
@@ -186,7 +195,7 @@ export class LookupComponent implements OnInit {
   }
 
   get_Model_lookup() {
-    console.log('in lookup');
+    
 
     this.popup_title = this.language.ModelBom;
     this.LookupDataLoaded = false;
@@ -195,16 +204,19 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Model Id', 'Code', 'Name'];
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+    
   }
 
   get_Item_lookup() {
-    console.log('in lookup');
+    
 
     this.popup_title = this.language.ItemLookupTitle;
     this.LookupDataLoaded = false;
@@ -213,23 +225,25 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'ItemKey';
     this.table_head = ['ItemKey', 'Name'];
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    
     this.showLoader = false;
     this.LookupDataLoaded = true;
     this.log('this.serviceData');
     this.log(this.serviceData);
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+  
   }
 
   import_popup() {
     this.popup_title = this.language.import_features;
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#import_modal").modal('show');
-    }
+    $("#import_modal").modal('show');
+   
   }
 
   get_Price_lookup() {
@@ -240,31 +254,20 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'PriceListID';
     this.table_head = ['Price Source'];
     this.width_value = ((100 / this.table_head.length) + '%');
-    console.log("this.width_value - " + this.width_value);
+    
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData.length > 0){
-      $("#lookup_modal").modal('show');
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
     }
+
   }
 
   
   file_input($event) {
-    // var obj = this;
-    // this.selectedFile = $event.target.files[0];
-    // var reader = new FileReader();
-    // var XLS_DATA = '';
-    // reader.onload = function ( loadEvent ) {
-    //   var data = loadEvent.target.result; 
-    //     var workbook = XLSX.read(data, { type: 'binary' });  
-    //     workbook.SheetNames.forEach(function(sheetName) {
-    //       // Here is your object
-    //       XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-    //       obj.xls_dataset = XLS_DATA;
-    //     })
-
-    //   }
-    // reader.readAsBinaryString($event.target.files[0]);
+ 
   }
 
   importclick() {
@@ -316,93 +319,20 @@ export class LookupComponent implements OnInit {
 
   dummy_json(){
     return [
-      {
-        "sequence": "1",
-        "component": "F1",
-        "level": "0",
-        "parent": ""
-      },
-      {
-        "sequence": "2",
-        "component": "F2",
-        "level": "1",
-        "parent": "F1"
-      },
-      {
-        "sequence": "3",
-        "component": "F3",
-        "level": "1",
-        "parent": "F1"
-      },
-      {
-        "sequence": "4",
-        "component": "Item0001",
-        "level": "2",
-        "parent": "F2"
-      },
-      {
-        "sequence": "5",
-        "component": "Item0002",
-        "level": "2",
-        "parent": "F2"
-      },
-      {
-        "sequence": "6",
-        "component": "F4",
-        "level": "2",
-        "parent": "F3"
-      }
-      ,
-      {
-        "sequence": "7",
-        "component": "F5",
-        "level": "2",
-        "parent": "F3"
-      },
-      {
-        "sequence": "7",
-        "component": "F6",
-        "level": "3",
-        "parent": "F4"
-      },
-      {
-        "sequence": "8",
-        "component": "Item0003",
-        "level": "3",
-        "parent": "F5"
-      },
-      {
-        "sequence": "9",
-        "component": "Item0004",
-        "level": "3",
-        "parent": "F5"
-      },
-      {
-        "sequence": "10",
-        "component": "Item0005",
-        "level": "4",
-        "parent": "F6"
-      }
-      ,
-      {
-        "sequence": "11",
-        "component": "Item0006",
-        "level": "4",
-        "parent": "F6"
-      } ,
-      {
-        "sequence": "13",
-        "component": "Item0002",
-        "level": "1",
-        "parent": "F1"
-      }
-      ,
-      {
-        "sequence": "14",
-        "component": "Item0011",
-        "level": "0",
-        "parent": ""
-      }
+      { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
+      { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
+      { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
+      { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
+      { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
+      { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
+      { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
+      { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
+      { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
+      { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
+      { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
+      { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
+      { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
+      { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
     ];
   }
 }

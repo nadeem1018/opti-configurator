@@ -745,7 +745,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   onExplodeClick() {
-
+    this.lookupfor = 'tree_view_lookup';
   }
 
   onVerifyOutput() {
