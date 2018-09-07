@@ -25,8 +25,6 @@ Public Class FeatureBOMDL
             Dim pdsFeatureList As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
-           
             If objDataTable.Columns.Contains("FeatureCode") Then
                 '  get the FeatureID,
                 psFeatureid = NullToInteger(objDataTable.Rows(0)("featureCode"))
@@ -1232,16 +1230,22 @@ Public Class FeatureBOMDL
             Dim counter As Integer = 1
 
             For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
+                'variable to get parent Feature ID
                 Dim tempParentFeatureID As Integer
+                'variable to get Item key 
                 Dim tempitemkey As String
+                'avariable to get value for Item Value
                 Dim tempvalue As String
                 tempParentFeatureID = NullToInteger(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_FEATUREID"))
                 tempitemkey = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_ITEMKEY")))
                 tempvalue = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_VALUE")))
                 Dim tempChildId As String = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"))
+                'dataView
                 Dim tempDV As DataView
                 Dim tempDV1, tempDataView2, tempDataView3 As DataView
+                'get the data from the Parent Table 
                 tempDV = New DataView(pdsFeatureDetail.Tables(0))
+                'Filter the Data  According  to Feature ID
                 tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", tempParentFeatureID)
 
                 tempDataView2 = New DataView(pdsFeatureDetail.Tables(0))
@@ -1249,6 +1253,14 @@ Public Class FeatureBOMDL
 
                 tempDataView3 = New DataView(objdtOrderedData)
                 tempDataView3.RowFilter = StringFormat("component ='{0}' ", tempParentFeatureID)
+                Dim tempDVCount As Integer = tempDataView3.Count - 1
+
+                If tempDataView3.Count = 0 Then
+                    tempDVCount = 0
+                Else
+                    tempDVCount = tempDataView3.Count - 1
+                End If
+
 
                 If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
                     objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
@@ -1264,9 +1276,7 @@ Public Class FeatureBOMDL
                 tempDV1 = New DataView(objdtOrderedData)
                 tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentFeatureID)
                 Dim piLevel As Integer = 1
-
-
-                piLevel = NullToInteger(tempDataView3(0)("level")) + 1
+                piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
                 If tempDV1.Count = 0 Then
                     If tempDV.Count > 0 Then
 
@@ -1274,7 +1284,7 @@ Public Class FeatureBOMDL
                             'piLevel = piLevel + 1
                             Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_FEATUREID"))
                             Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDFEATUREID")))
-                            If (psChildID.length > 0) Then
+                            If (psChildID.Length > 0) Then
                                 objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDFEATUREID"), piLevel)
                                 counter = counter + 1
                             ElseIf NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY").Length > 0)) Then

@@ -344,6 +344,11 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetDataForExplodeViewForModelBOM() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" order by ""OPTM_CHILDMODELID"" DESC"
+        Return psSQL
+    End Function
+
 #End Region
 
 End Class

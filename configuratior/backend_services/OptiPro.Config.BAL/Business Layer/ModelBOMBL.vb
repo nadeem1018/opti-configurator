@@ -130,4 +130,19 @@ Public Class ModelBOMBL
     End Function
 
 
+    Public Shared Function GetDataForExplodeViewForModelBOM(ByVal objDeleteModelBOM As ModelBOMModel) As DataTable
+        Dim pdsDataByModelID As DataTable
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDeleteModelBOM.GetData)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            pdsDataByModelID = ModelBOMDL.GetDataForExplodeViewForModelBOM(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return pdsDataByModelID
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
 End Class

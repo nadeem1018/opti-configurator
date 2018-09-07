@@ -66,6 +66,12 @@ Public Class ModelBOMController
         Return ModelBOMBL.GetDataByModelID(oGetDataByModelID)
     End Function
 
+    <HttpPost, HttpGet>
+  <Route("GetDataForExplodeViewForModelBOM")>
+    Public Function GetDataForExplodeViewForModelBOM(ByVal oGetDataByModelID As ModelBOMModel) As DataTable
+        Return ModelBOMBL.GetDataForExplodeViewForModelBOM(oGetDataByModelID)
+    End Function
+
 
 
 
