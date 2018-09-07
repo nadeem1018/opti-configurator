@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
       this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
       return;
     } 
-    sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
+    sessionStorage.setItem('selectedComp', "SFDCDB");
     sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
     //sessionStorage.setItem('selectedWhse',this.warehouseName);
     sessionStorage.setItem('isLoggedIn', "true");

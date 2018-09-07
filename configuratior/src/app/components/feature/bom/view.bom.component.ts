@@ -22,7 +22,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     // generate table default constants
     table_pages: any;
     search_key: any;
-    table_head_foot = ['#', 'Feature ID', 'Display Name', 'Action'];
+    table_head_foot = ['Select','#', 'Feature ID', 'Display Name', 'Action'];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;

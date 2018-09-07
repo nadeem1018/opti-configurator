@@ -38,7 +38,7 @@ export class ViewModelBomComponent implements OnInit {
     public GetItemData: any = [];
 
 
-    table_head_foot = ['#', 'Model Id', 'Name', 'Action'];
+    table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 

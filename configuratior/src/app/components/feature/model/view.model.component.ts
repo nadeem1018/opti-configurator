@@ -3,7 +3,6 @@ import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { truncateSync } from 'fs';
 //import { CustomDialogsComponent } from 'src/app/components/common/custom-dialogs/custom-dialogs.component'
 
 
@@ -24,7 +23,7 @@ export class ViewFeatureModelComponent implements OnInit {
     // generate table default constants
     table_pages: any;
     search_key: any;
-    table_head_foot = ['Code', 'Type', 'Display Name', 'Effective Date', 'Status', 'Action'];
+    table_head_foot = ['Select','Code', 'Type', 'Display Name', 'Effective Date', 'Status', 'Action'];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;

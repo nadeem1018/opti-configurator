@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -26,18 +26,20 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public ViewData: any = [];
+    public toDelete: any = {};
     show_table_footer: boolean = false;
+    public CheckedData = [];
 
     //custom dialoag params
-    public dialog_params:any = [];
-    public show_dialog:boolean = false;
-    public dialog_box_value:any;
-    public row_id:any;
+    public dialog_params: any = [];
+    public show_dialog: boolean = false;
+    public dialog_box_value: any;
+    public row_id: any;
 
     public GetItemData: any = [];
 
 
-    table_head_foot = ['#', 'Code', 'Final String', 'Action'];
+    table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
@@ -58,8 +60,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
 
+    log(data) {
+        console.log(data);
+    }
+
     service_call(page_number, search) {
-        var dataset = this.itemgen.viewItemGenerationData(this.companyName,search,page_number,this.record_per_page).subscribe(
+        var dataset = this.itemgen.viewItemGenerationData(this.companyName, search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
                 console.log(dataset)
@@ -98,25 +104,25 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         // button click function in here
     }
     button_click2(id) {
-        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
-        this.show_dialog = true;    
+        this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+        this.show_dialog = true;
         this.row_id = id;
-      
-       // var result = confirm(this.language.DeleteConfimation);
+
+        // var result = confirm(this.language.DeleteConfimation);
 
     }
 
     //This will take confimation box value
-    get_dialog_value(userSelectionValue){
-        console.log("GET DUIALOG VALUE")  
-        if(userSelectionValue == true){
-                this.delete_row();
-            }
-            this.show_dialog = false;
+    get_dialog_value(userSelectionValue) {
+        console.log("GET DUIALOG VALUE")
+        if (userSelectionValue == true) {
+            this.delete_row();
+        }
+        this.show_dialog = false;
     }
 
     //delete values
-    delete_row(){
+    delete_row() {
         // console.log("YES DELETE--"+this.row_id);
         this.GetItemData = []
         this.GetItemData.push({
@@ -148,7 +154,38 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 }
             }
         )
-      }
+    }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length; i > 0; --i) {
+                if (this.CheckedData[i] == row_data) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push(row_data)
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push(row_data)
+            }
+        }
+        else {
+            this.CheckedData.push(row_data)
+        }
+        console.log(this.CheckedData)
+
+    }
+
+    delete() {
+        console.log(this.toDelete)
+    }
+
+
 
 
 }
