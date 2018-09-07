@@ -35,7 +35,6 @@ export class SidebarComponent implements OnInit {
 
   //get record from DB
   getMenuRecord(){
-    //This will get the psURL
     this.commonService.getMenuRecord().subscribe(
       data => {
         if (data != null) {
