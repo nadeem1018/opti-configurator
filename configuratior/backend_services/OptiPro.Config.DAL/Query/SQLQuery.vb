@@ -271,7 +271,7 @@ Public Class SQLQuery
     End Function
 
     Function GetDataForExplodeViewForFeatureBOM() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"" order by OPTM_CHILDFEATUREID DESC"
         Return psSQL
     End Function
 

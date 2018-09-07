@@ -1237,49 +1237,59 @@ Public Class FeatureBOMDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
-            objdtOrderedData.Columns.Add("#", GetType(Integer))
+            objdtOrderedData.Columns.Add("sequence", GetType(Integer))
             'Add Column to the Datatable 
-            objdtOrderedData.Columns.Add("ParentID", GetType(String))
+            objdtOrderedData.Columns.Add("parentId", GetType(String))
             'Add new Column to Datatble 
-            objdtOrderedData.Columns.Add("ChildID", GetType(String))
+            objdtOrderedData.Columns.Add("component", GetType(String))
             'Add Column 
-            objdtOrderedData.Columns.Add("Level", GetType(String))
+            objdtOrderedData.Columns.Add("level", GetType(String))
             Dim counter As Integer = 1
 
             For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
                 Dim tempParentFeatureID As Integer
-
                 Dim tempitemkey As String
                 Dim tempvalue As String
-
                 tempParentFeatureID = NullToInteger(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_FEATUREID"))
                 tempitemkey = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_ITEMKEY")))
                 tempvalue = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_VALUE")))
+                Dim tempChildId As String = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"))
+                Dim tempDV As DataView
+                Dim tempDV1, tempDataView2, tempDataView3 As DataView
+                tempDV = New DataView(pdsFeatureDetail.Tables(0))
+                tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", tempParentFeatureID)
 
+                tempDataView2 = New DataView(pdsFeatureDetail.Tables(0))
+                tempDataView2.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}'", tempParentFeatureID)
 
-                If (tempitemkey.Length > 0) Then
-                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempitemkey, 0)
-                    counter = counter + 1
-                ElseIf (tempvalue.Length > 0) Then
-                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempvalue, 0)
+                tempDataView3 = New DataView(objdtOrderedData)
+                tempDataView3.RowFilter = StringFormat("component ='{0}' ", tempParentFeatureID)
+
+                If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
+                    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
                     counter = counter + 1
                 End If
-                Dim tempDV As DataView
-                Dim tempDV1 As DataView
-                tempDV = New DataView(pdsFeatureDetail.Tables(0))
-                tempDV.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}'", tempParentFeatureID)
-
+                If tempChildId.Length = 0 Then
+                    If tempitemkey.Length > 0 Then
+                        tempChildId = tempitemkey
+                    Else
+                        tempChildId = tempvalue
+                    End If
+                End If
                 tempDV1 = New DataView(objdtOrderedData)
-                tempDV1.RowFilter = StringFormat("ParentID ='{0}' and ChildID ='{1}' ", tempParentFeatureID, pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"))
+                tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentFeatureID)
+                Dim piLevel As Integer = 1
 
-                If tempDV1.Count <= 0 Then
+
+                piLevel = NullToInteger(tempDataView3(0)("level")) + 1
+                If tempDV1.Count = 0 Then
                     If tempDV.Count > 0 Then
-                        Dim piLevel As Integer = 1
+
                         For iChildRecord As Integer = 0 To tempDV.Count - 1
-                            piLevel = piLevel + 1
+                            'piLevel = piLevel + 1
                             Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_FEATUREID"))
-                            Dim psChildID As Integer = NullToInteger((tempDV(iChildRecord)("OPTM_CHILDFEATUREID")))
-                            If (psChildID > 0) Then
+                            Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDFEATUREID")))
+                            If (psChildID.length > 0) Then
                                 objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDFEATUREID"), piLevel)
                                 counter = counter + 1
                             ElseIf NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY").Length > 0)) Then
@@ -1290,13 +1300,21 @@ Public Class FeatureBOMDL
                                 counter = counter + 1
                             End If
                         Next
-                    ElseIf pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID").length > 0 Then
-                        objdtOrderedData.Rows.Add(counter, tempParentFeatureID, pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"), 0)
-                        counter = counter + 1
+                        'Else
+                        '    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
+                        '    counter = counter + 1
                     End If
-
                 End If
-                
+                If (tempitemkey.Length > 0) And tempDataView3.Count = 0 Then
+
+                    piLevel = piLevel + 1
+                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempitemkey, piLevel)
+                    counter = counter + 1
+                ElseIf (tempvalue.Length > 0) And tempDataView3.Count = 0 Then
+                    piLevel = piLevel + 1
+                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempvalue, piLevel)
+                    counter = counter + 1
+                End If
             Next
             Return objdtOrderedData
 
