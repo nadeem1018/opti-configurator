@@ -266,6 +266,11 @@ Public Class HanaQuery
         Return psSQL
     End Function
 
+    Function GetDataForExplodeViewForFeatureBOM() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"" ORDER BY OPTM_CHILDFEATUREID DESC"
+        Return psSQL
+    End Function
+
 #End Region
 #Region "ModelBOM"
     Function GetModelList() As String
@@ -329,6 +334,11 @@ Public Class HanaQuery
 
     Function GetDetailForModelByModelID() As String
         Dim psSQL As String = "SELECT T1.""OPTM_FEATURECODE"",T1.""OPTM_DISPLAYNAME"",T1.""OPTM_FEATUREDESC"",T1.""OPTM_PRODGRPID"" ,T1.""OPTM_PHOTO"",T2.""OPTM_READYTOUSE"" FROM ""OPCONFIG_FEATUREHDR"" T1 INNER JOIN ""OPCONFIG_MBOMHDR"" T2 ON T1.OPTM_FEATUREID =T2.OPTM_MODELID  WHERE T2.""OPTM_MODELID""=?"
+        Return psSQL
+    End Function
+
+    Function GetDataForExplodeViewForModelBOM() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" ORDER BY ""OPTM_CHILDMODELID"" DESC"
         Return psSQL
     End Function
 

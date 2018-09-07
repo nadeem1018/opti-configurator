@@ -271,7 +271,7 @@ Public Class SQLQuery
     End Function
 
     Function GetDataForExplodeViewForFeatureBOM() As String
-        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"" order by OPTM_CHILDFEATUREID DESC"
         Return psSQL
     End Function
 
@@ -341,6 +341,11 @@ Public Class SQLQuery
 
     Function GetDetailForModelByModelID() As String
         Dim psSQL As String = "SELECT T1.""OPTM_FEATURECODE"",T1.""OPTM_DISPLAYNAME"",T1.""OPTM_FEATUREDESC"",T1.""OPTM_PRODGRPID"" ,T1.""OPTM_PHOTO"",T2.""OPTM_READYTOUSE"" FROM ""OPCONFIG_FEATUREHDR"" T1 INNER JOIN ""OPCONFIG_MBOMHDR"" T2 ON T1.OPTM_FEATUREID =T2.OPTM_MODELID  WHERE T2.""OPTM_MODELID""=@MODELID"
+        Return psSQL
+    End Function
+
+    Function GetDataForExplodeViewForModelBOM() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" order by ""OPTM_CHILDMODELID"" DESC"
         Return psSQL
     End Function
 
