@@ -791,13 +791,15 @@ Public Class ModelBOMDL
                             'piLevel = piLevel + 1
                             Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_MODELID"))
                             Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDMODELID")))
+                            Dim pschildItemKey As String = NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY")))
+                            Dim psChildFeatureID As String = NullToString((tempDV(iChildRecord)("OPTM_FEATUREID")))
                             If (psChildID.Length > 0) Then
                                 objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDMODELID"), piLevel)
                                 counter = counter + 1
-                            ElseIf NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY").Length > 0)) Then
+                            ElseIf ((pschildItemKey.Length > 0)) Then
                                 objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_ITEMKEY"), piLevel)
                                 counter = counter + 1
-                            ElseIf NullToString((tempDV(iChildRecord)("OPTM_FEATUREID").Length > 0)) Then
+                            ElseIf psChildFeatureID.Length > 0 Then
                                 objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_FEATUREID"), piLevel)
                                 counter = counter + 1
                             End If
@@ -819,8 +821,6 @@ Public Class ModelBOMDL
                 End If
             Next
             Return objdtOrderedData
-
-
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try
