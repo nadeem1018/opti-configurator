@@ -945,7 +945,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-          
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -1151,7 +1151,7 @@ Public Class FeatureBOMDL
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            
+
             'get the ItemCode name  
             psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
