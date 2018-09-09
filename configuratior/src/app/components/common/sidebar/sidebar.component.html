@@ -6,26 +6,15 @@
     </a>
   </li> -->
   
-
-  <li class="nav-item">
-    <a class="nav-link" href='javascript:;' routerLink="item-code-generation/view">
-      <i class="fa fa-fw fa-table"></i>
-      <span>{{this.language.itemcodegeneration}}</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href='javascript:;' routerLink="feature/model/view">
-      <i class="fa fa-fw fa-table"></i>
-      <span>{{this.language.feature_Model}}</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href='javascript:;' routerLink="feature/bom/view">
-      <i class="fa fa-fw fa-table"></i>
-      <span>{{this.language.feature_Bom}}</span>
-    </a>
-  </li>
-
+  <div *ngFor="let menuRow of menu_obj">
+      <li class="nav-item">
+          <a class="nav-link" href='javascript:;' routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
+              <i class="fa fa-fw fa-table"></i>
+              <span>{{(getMenuDetails(menuRow.OPTM_MENUID))[0].menu_title}}</span>
+            </a>
+          </li>        
+  </div>  
+  
   <!-- <li class="nav-item dropdown">
     <a class="nav-link drpdown_menu" href="javascript:;" id="feature_sub_menu" aria-expanded="false">
       <i class="fa fa-fw fa-folder"></i>

@@ -768,7 +768,6 @@ Public Class ModelBOMDL
                     tempDVCount = tempDataView3.Count - 1
                 End If
 
-
                 If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
                     objdtOrderedData.Rows.Add(counter, "", tempParentModelID, 0)
                     counter = counter + 1

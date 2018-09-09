@@ -796,8 +796,6 @@ Public Class FeatureBOMDL
                 'get the child feature id 
                 If childRow("type") = 1 Then
                     tempDV(0)("OPTM_CHILDFEATUREID") = childRow("type_value")
-                Else
-                    tempDV(0)("OPTM_CHILDFEATUREID") = 0
                 End If
                 If childRow("type") = 2 Then
                     tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
@@ -845,8 +843,6 @@ Public Class FeatureBOMDL
 
                 If childRow("type") = 1 Then
                     pdr("OPTM_CHILDFEATUREID") = childRow("type_value")
-                Else
-                    pdr("OPTM_CHILDFEATUREID") = 0
                 End If
                 If childRow("type") = 2 Then
                     pdr("OPTM_ITEMKEY") = childRow("type_value")
@@ -949,7 +945,7 @@ Public Class FeatureBOMDL
 
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-          
+
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -1155,7 +1151,7 @@ Public Class FeatureBOMDL
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            
+
             'get the ItemCode name  
             psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -1276,7 +1272,10 @@ Public Class FeatureBOMDL
                 tempDV1 = New DataView(objdtOrderedData)
                 tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentFeatureID)
                 Dim piLevel As Integer = 1
-                piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
+                If tempDataView3.Count > 0 Then
+                    piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
+                End If
+
                 If tempDV1.Count = 0 Then
                     If tempDV.Count > 0 Then
 

@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
     
  
   logout(){
+    
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
     /* sessionStorage.clear();
     localStorage.clear(); */
