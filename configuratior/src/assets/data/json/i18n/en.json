@@ -84,7 +84,7 @@
     "CompanyRequired": "Select Company",
     "DeleteConfimation": "Do you want to delete?",
     "ModelBom": "Model",
-    "Model_Bom": "ModelBOM",
+    "Model_Bom": "Model BOM",
     "Bom_FeatureId": "Feature ID",
     "Bom_Displayname": "Display Name",
     "Bom_FeatureDesc": "Feature Description",
@@ -134,6 +134,8 @@
 
     "ModelIDBlank":"Model id cannot be blank",
     "SelectModel":"Select model at row index: ",
-    "NoDataAvailable" :"No data available"
+    "NoDataAvailable" :"No data available",
+    "rule_WB":"Rule WB",
+    "rule_workbench":"Rule Workbench"
     
 }

@@ -40,7 +40,7 @@ export class ModelbomComponent implements OnInit {
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
-  page_main_title = this.language.ModelBom
+  page_main_title = this.language.Model_Bom
   public username: string = "";
   serviceData: any;
   ngOnInit() {

@@ -363,3 +363,26 @@ li.breadcrumb-item a, li.breadcrumb-item {
     zoom: 1;
   }
 }
+
+.page_size_left_label {
+  width: 11%;
+  float: left;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.page_size_center_select {
+  width: 30% !important;
+  float: left;
+  margin: 0 !important;
+}
+
+.page_size_right_label {
+  width: 30%;
+  float: left;
+  margin-left: 4px;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
