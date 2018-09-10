@@ -278,6 +278,8 @@ Public Class ModelBOMDL
         Dim pdtServerDate As DataTable
         'varriable for Server Date Time
         Dim dtServerDate As DateTime
+        'get the Data for the Record 
+        Dim tempDtRecord As DataTable
         'Get the Company DB 
         Dim psCmapnyDBID As String = NullToString(objdsFeatureBOM.Rows(0)("CompanyDBId"))
         'Function to get the Server Date Time
@@ -286,6 +288,8 @@ Public Class ModelBOMDL
         dtServerDate = pdtServerDate.Rows(0)("DATEANDTIME")
         'get the DataView
         Dim tempDV As DataView = Nothing
+        Dim tempDVReferalCheck As DataView = Nothing
+
         For Each iModelBOMHdrRow As DataRow In objdsFeatureBOM.Rows
             'get Item Code
             psModelId = OptiPro.Config.Common.Utilites.NullToInteger(iModelBOMHdrRow("ModelId"))
@@ -308,12 +312,15 @@ Public Class ModelBOMDL
                 tempds.Tables("OPCONFIG_MBOMHDR").Rows.Add(pdr)
             End If
         Next
+        'get all record from the Datatable
+        tempDtRecord = ModelBOMDL.GetAllRecordForModelBOMForCyclicCheck(psCmapnyDBID, objCmpnyInstance)
         'These will execute and add and update datain the detail table 
         For Each childRow As DataRow In objdsFeatureBOM.Rows
             'get the feature id for the child table
             Dim psChildModelId As Integer
             'get the line id from the ui 
             Dim psLineId As Integer
+            Dim psValue As String
             'get feture id
             psChildModelId = OptiPro.Config.Common.Utilites.NullToInteger(childRow("ModelId"))
             'get the line id 
@@ -322,8 +329,14 @@ Public Class ModelBOMDL
             tempDV = New DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
             'filter data according to the feature id and line id 
             tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}'and OPTM_LINENO='{1}'", psChildModelId, psLineId)
-            ' tempDV.RowFilter = StringFormat("OPTM_CODE ='{0}'and OPTM_LINEID= '{1}'", psItemCode, piLineID)
-            'if data is already present then we willupdate the data 
+            psValue = OptiPro.Config.Common.Utilites.NullToString(childRow("type_value"))
+            '------------This Code is Used to check the Cyclic Dependency for the Feature,if F1 consist F2 Then F2 cannot Consist F1
+            If childRow("type") = 1 Then
+                tempDVReferalCheck = New DataView(tempDtRecord)
+                tempDVReferalCheck.RowFilter = StringFormat("OPTM_CHILDMODELID ='{0}' AND OPTM_MODELID ='{1}'", psChildModelId, psValue)
+
+            End If
+            '-------------End Of the Referal Check --------------------
             If tempDV.Count > 0 Then
                 tempDV(0)("OPTM_TYPE") = childRow("type")
                 If childRow("type") = 1 Then
@@ -380,9 +393,6 @@ Public Class ModelBOMDL
                 tempds.Tables("OPCONFIG_MBOMDTL").Rows.Add(pdr)
             End If
         Next
-
-
-
         Dim seqlist1 As String = ""
         tempDV = New DataView(objdsFeatureBOM)
         If tempDV.Count > 0 Then
@@ -476,10 +486,7 @@ Public Class ModelBOMDL
         Return psStatus
     End Function
 
-
-
     Public Shared Function GetDataForCommonViewForModelBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
-
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
@@ -619,6 +626,7 @@ Public Class ModelBOMDL
         End Try
         Return Nothing
     End Function
+
 
     Public Shared Function GetTotalCountOfRecordForModelBOM(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
@@ -826,5 +834,30 @@ Public Class ModelBOMDL
         Return Nothing
     End Function
 
+
+    Public Shared Function GetAllRecordForModelBOMForCyclicCheck(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsRecord As DataSet
+            'Get the Company Name
+            psCompanyDBId = objCompanyDBID
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllRecordForModelBOMForCyclicCheck)
+            pdsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return pdsRecord.Tables(0)
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
 
 End Class
