@@ -147,8 +147,6 @@ export class LoginComponent implements OnInit {
           //If comp found
           this.showCompDropDown = true;
           this.showLoginBtn = true;
-
-
         }
         else{
           //If no companies found then will hide elements
@@ -162,32 +160,6 @@ export class LoginComponent implements OnInit {
        // alert("You Don't have Permission to Access this Product");
         this.toastr.success('', this.language.isUserPermitted, this.commonData.toast_config);
       }
-     
-
-        // if (this.modelSource != undefined
-        //   && this.modelSource != null
-        //   && this.modelSource.Table.length > 0) {
-        //   //Show the Company Combo box
-        //   this.listItems = data.Table;
-        //   console.log("data", this.listItems);
-        //   this.selectedValue = this.listItems[0];
-        //   this.disableLoginBtn = false;
-        //   this.hasCompaneyData = true;
-        //   this.invalidCredentials = false;
-        //   this.InvalidActiveUser = false;
-          
-        //   //When the first item sets in the drop down then will get its warehouse
-        //   this.getWarehouse(this.selectedValue.OPTM_COMPID);
-        //   this.showLoader = false;
-        // }
-        // else {
-        //   this.disableLoginBtn = true;
-        //   this.hasCompaneyData = false;
-        //   this.listItems = this.defaultCompnyComboValue;
-        //   this.selectedValue = this.listItems[0];
-        //   this.InvalidActiveUser = true;
-        //   this.showLoader = false;
-        // }
       }
     )
   }

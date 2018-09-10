@@ -163,7 +163,7 @@ mb-3, .my-3 {
 }
 
 .btn-group-sm>.btn, .btn-sm {
-  padding: .1rem 0.2rem !important;
+  padding: .2rem 0.2rem !important;
   font-size: .875rem !important;
   line-height: 1.0 !important;
   border-radius: .2rem !important;
@@ -362,4 +362,27 @@ li.breadcrumb-item a, li.breadcrumb-item {
   .parent_ul {
     zoom: 1;
   }
+}
+
+.page_size_left_label {
+  width: 11%;
+  float: left;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.page_size_center_select {
+  width: 30% !important;
+  float: left;
+  margin: 0 !important;
+}
+
+.page_size_right_label {
+  width: 30%;
+  float: left;
+  margin-left: 4px;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
 }
