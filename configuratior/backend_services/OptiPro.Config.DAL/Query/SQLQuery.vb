@@ -275,6 +275,12 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetAllRecordForCyclicCheck() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_CHILDFEATUREID"" FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
+
 
 #End Region
 
@@ -346,6 +352,12 @@ Public Class SQLQuery
 
     Function GetDataForExplodeViewForModelBOM() As String
         Dim psSQL As String = "SELECT * FROM ""OPCONFIG_MBOMDTL"" order by ""OPTM_CHILDMODELID"" DESC"
+        Return psSQL
+    End Function
+
+
+    Function GetAllRecordForModelBOMForCyclicCheck() As String
+        Dim psSQL As String = "SELECT ""OPTM_MODELID"",""OPTM_CHILDMODELID"" FROM ""OPCONFIG_MBOMDTL"""
         Return psSQL
     End Function
 

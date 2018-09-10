@@ -45,6 +45,7 @@ import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
 import { TreeViewComponent } from "./components/common/tree.view";
 import { CustomDialogsComponent } from './components/common/custom-dialogs/custom-dialogs.component';
+import { RulewbComponent } from './components/rulewb/rulewb.component';
 
 
 
@@ -97,7 +98,8 @@ const routes: Routes = [
     FilterPipe,
     TreeViewComponent,
     CustomDialogsComponent,
-    LookupFilterPipe
+    LookupFilterPipe,
+    RulewbComponent
   ],
   imports: [
     BrowserModule,

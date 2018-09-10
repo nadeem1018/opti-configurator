@@ -132,6 +132,8 @@ export class LoginComponent implements OnInit {
           //For code analysis remove in live enviorments.
            this.psURL = "http://localhost:57962";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
+
+          sessionStorage.setItem('psURL', this.psURL);
         }
       }
     )
@@ -147,8 +149,6 @@ export class LoginComponent implements OnInit {
           //If comp found
           this.showCompDropDown = true;
           this.showLoginBtn = true;
-
-
         }
         else{
           //If no companies found then will hide elements
@@ -160,34 +160,8 @@ export class LoginComponent implements OnInit {
       else{
         //if No companies are retriving then we will consider that user have no company assignment
        // alert("You Don't have Permission to Access this Product");
-        this.toastr.success('', this.language.isUserPermitted, this.commonData.toast_config);
+        this.toastr.error('', this.language.isUserPermitted, this.commonData.toast_config);
       }
-     
-
-        // if (this.modelSource != undefined
-        //   && this.modelSource != null
-        //   && this.modelSource.Table.length > 0) {
-        //   //Show the Company Combo box
-        //   this.listItems = data.Table;
-        //   console.log("data", this.listItems);
-        //   this.selectedValue = this.listItems[0];
-        //   this.disableLoginBtn = false;
-        //   this.hasCompaneyData = true;
-        //   this.invalidCredentials = false;
-        //   this.InvalidActiveUser = false;
-          
-        //   //When the first item sets in the drop down then will get its warehouse
-        //   this.getWarehouse(this.selectedValue.OPTM_COMPID);
-        //   this.showLoader = false;
-        // }
-        // else {
-        //   this.disableLoginBtn = true;
-        //   this.hasCompaneyData = false;
-        //   this.listItems = this.defaultCompnyComboValue;
-        //   this.selectedValue = this.listItems[0];
-        //   this.InvalidActiveUser = true;
-        //   this.showLoader = false;
-        // }
       }
     )
   }

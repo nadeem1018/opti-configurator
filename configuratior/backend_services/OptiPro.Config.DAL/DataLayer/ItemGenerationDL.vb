@@ -145,9 +145,6 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
-            'get the ItemCode name  
-            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Assign the DB Name
@@ -158,21 +155,26 @@ Public Class ItemGenerationDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@ITEMCODE"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(0).Paramvalue = psItemCode
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteItemGenerationCode)
-            'Execute the Query 
-            iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
-            If iDelete > 0 Then
-                psStatus = "True"
-            Else
-                psStatus = "False"
-            End If
+            For irecord As Integer = 0 To objDataTable.Rows.Count - 1
+                'get the ItemCode name  
+                psItemCode = NullToString(objDataTable.Rows(irecord)("ItemCode"))
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@ITEMCODE"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(0).Paramvalue = psItemCode
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteItemGenerationCode)
+                'Execute the Query 
+                iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
+                If iDelete > 0 Then
+                    psStatus = "True"
+                Else
+                    psStatus = "False"
+                End If
+            Next
+
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)

@@ -2,8 +2,9 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
-	"service_url": "http://localhost:65341/",
+	"service_url":"http://localhost:65399/",
 	"admin_db_name":"OPTIPROADMIN",
+	"product_code":"CNF",
 	"system_version":"1.0.0",
 	 "default_db_driver":"ms_sql_srv",
 	 "connection_parameter":

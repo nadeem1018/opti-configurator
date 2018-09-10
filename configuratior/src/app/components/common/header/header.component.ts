@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonData } from "../../../models/CommonData";
 import { CommonService } from "../../../services/common.service";
- import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+import 'bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     
  
   logout(){
+    
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
     /* sessionStorage.clear();
     localStorage.clear(); */

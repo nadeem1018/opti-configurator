@@ -64,6 +64,16 @@
 
   });
   
+  $(document).on("click", ".custom_menu_click", function(){
+    var obj = $(this);
+    if (obj.parents("li.li_with_dd").find(".custom_menu_click_option").is(":visible") == false){
+
+      obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:block !important;");
+    } else if (obj.parents("li.li_with_dd").find(".custom_menu_click_option").is(":visible") == true) {
+      obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:none !important;");
+    }
+
+  });
 
 
 })(jQuery); // End of use strict

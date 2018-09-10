@@ -10,8 +10,11 @@ import { CommonData } from "src/app/models/CommonData";
   providedIn: 'root'
 })
 export class CommonService {
+  public config_params:any;
   common_params = new CommonData();
-  constructor(private httpclient: HttpClient) { }
+  constructor(private httpclient: HttpClient) {
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+   }
   config_parameter;
 
   // Declaration
@@ -39,6 +42,7 @@ export class CommonService {
     sessionStorage.setItem('current_lang', JSON.stringify(data));
   }
 
+
    /* public get_config(){
     let service_call = this.httpclient.get("../../assets/data/json/config.json");
    
@@ -54,4 +58,10 @@ export class CommonService {
       sessionStorage.setItem('current_lang', JSON.stringify(data));
     });
   } */
+
+  //This will get he service according to user settings done on Admin Portal
+  getMenuRecord(): Observable<any>{
+    let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
+    return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
+  }
 }

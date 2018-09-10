@@ -84,7 +84,7 @@
     "CompanyRequired": "Select Company",
     "DeleteConfimation": "Do you want to delete?",
     "ModelBom": "Model",
-    "Model_Bom": "ModelBOM",
+    "Model_Bom": "Model BOM",
     "Bom_FeatureId": "Feature ID",
     "Bom_Displayname": "Display Name",
     "Bom_FeatureDesc": "Feature Description",
@@ -136,6 +136,8 @@
     "SelectModel":"Select model at row index: ",
     "NoDataAvailable" :"No data available",
     "Norowselected":"No row selected",
-    "filecannotupload":"file cannot upload "
+    "filecannotupload":"file cannot upload ",
+    "rule_WB":"Rule WB",
+    "rule_workbench":"Rule Workbench"
     
 }

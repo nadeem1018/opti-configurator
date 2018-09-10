@@ -43,6 +43,8 @@
     Public Const OptiPro_Config_GetDataByFeatureIDForFeatureBOM As String = "GetDataByFeatureIDForFeatureBOM"
     Public Const OptiPro_Config_DeleteDataFromHDR As String = "DeleteDataFromHDR"
     Public Const OptiPro_Config_DeleteDataFromDTL As String = "DeleteDataFromDTL"
+    Public Const OptiPro_Config_GetAllRecordForCyclicCheck As String = "GetAllRecordForCyclicCheck"
+
 #End Region
 
 #Region "Item Generation"
@@ -87,6 +89,8 @@
     Public Const OptiPro_Config_DeleteDataFromHDRForModelBOM As String = "DeleteDataFromHDRForModelBOM"
     Public Const OptiPro_Config_DeleteDataFromDTLForModelBOM As String = "DeleteDataFromDTLForModelBOM"
     Public Const OptiPro_Config_GetDataForExplodeViewForModelBOM As String = "GetDataForExplodeViewForModelBOM"
+    Public Const OptiPro_Config_GetAllRecordForModelBOMForCyclicCheck As String = "GetAllRecordForModelBOMForCyclicCheck"
+
 #End Region
 
 
