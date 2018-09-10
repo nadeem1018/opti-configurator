@@ -22,14 +22,6 @@ C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backe
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.Resources.resources
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.dll
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.pdb
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.xml
@@ -38,3 +30,11 @@ C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\bin\Debug\OptiPro.Config.Common.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.Resources.resources
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.pdb

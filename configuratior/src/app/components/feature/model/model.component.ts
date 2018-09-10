@@ -49,6 +49,7 @@ export class ModelComponent implements OnInit {
    public model_name_label =  this.language.Model_Name;
    public model_desc_label =  this.language.Model_Desc;
 public code_disabled= "false";
+public GetItemData: any = [];
 
    
   ngOnInit() {
@@ -276,7 +277,12 @@ if (validateStatus == true){
 if (result) {
     //Logic to delete the 
      // button click function in here
-     this.fms.DeleteData(this.companyName,this.codekey).subscribe(
+     this.GetItemData=[]
+        this.GetItemData.push({
+            CompanyDBId: this.companyName,
+            FEATUREID:this.codekey
+        });
+     this.fms.DeleteData(this.GetItemData).subscribe(
       data => {
         if (data === "True" ) {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);

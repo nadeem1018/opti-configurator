@@ -49,7 +49,9 @@
                  <div class="form-group row clearfix">
                      <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                      <div class="col-sm-4">
-                         <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)] ="feature_bom_data.image_path">
+                         
+                            <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  />
+                           
                      </div>
                  </div>
    
@@ -134,8 +136,7 @@
                                
                                </td>
                                <td>
-                                   <input type="file" class="form-control  form-control-sm mt3" id="attachment" value={{row.attachment}} #attachment />
-                               
+                                   <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname" value={{row.attachment}} #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)" />
                                </td>
                                  <td>
                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">

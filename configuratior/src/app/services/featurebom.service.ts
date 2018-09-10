@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CommonData } from "src/app/models/CommonData";
 
@@ -48,7 +48,7 @@ export class FeaturebomService {
   DeleteData(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    let jObject = { ModelItem:  JSON.stringify(id) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/DeleteFeatureFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
@@ -59,5 +59,11 @@ export class FeaturebomService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataByFeatureId", jObject, this.common_params.httpOptions);
+  }
+
+  UploadFeatureBOM(form:FormData): Observable<any> {
+    let req=new HttpRequest('POST',this.config_params.service_url + "/FeatureBOM/UploadFeatureBOMAttachments",form);  
+    return this.httpclient.request(req);
+    
   }
 }

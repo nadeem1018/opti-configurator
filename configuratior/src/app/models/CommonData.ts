@@ -4,6 +4,16 @@ import { HttpHeaders } from '@angular/common/http';
 export class CommonData {
     public project_name: string = "Optipro Configurator";
     public adminDBName: string = "OPTIPROADMIN";
+    public href:any = window.location.href;
+    public application_path = this.get_current_url();
+
+    public get_current_url(){
+        let temp:any = this.href.substring(0, this.href.lastIndexOf('/'));
+        if (temp.lastIndexOf('#') != '-1'){
+            temp = temp.substring(0, temp.lastIndexOf('#'));
+        }
+        return temp;
+    }
 
     public toast_config = {
         closeButton: true,

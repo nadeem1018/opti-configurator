@@ -26,16 +26,24 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public ViewData: any = [];
-    public toDelete: any = {};
+    public toDelete: any = {
+    };
+
     show_table_footer: boolean = false;
-    public CheckedData = [];
+    public CheckedData: any = [];
+
+
+
+
+
+
 
     //custom dialoag params
     public dialog_params: any = [];
     public show_dialog: boolean = false;
     public dialog_box_value: any;
     public row_id: any;
-
+    public selectall: boolean = false;
     public GetItemData: any = [];
 
 
@@ -46,6 +54,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     ngOnInit() {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
+        //this.CheckedData.CheckedRow=[];
+        //   this.CheckedData.CompanyDBId=[];
+
     }
     ngAfterViewInit() {
         this._el.nativeElement.focus();
@@ -159,11 +170,14 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     on_checkbox_checked(checkedvalue, row_data) {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
-            for (let i = this.CheckedData.length; i > 0; --i) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
                 if (this.CheckedData[i] == row_data) {
                     isExist = 1;
                     if (checkedvalue == true) {
-                        this.CheckedData.push(row_data)
+                        this.CheckedData.push({
+                            ItemCode: row_data,
+                            CompanyDBId: this.companyName
+                        })
                     }
                     else {
                         this.CheckedData.splice(i, 1)
@@ -171,18 +185,84 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 }
             }
             if (isExist == 0) {
-                this.CheckedData.push(row_data)
+                this.CheckedData.push({
+                    ItemCode: row_data,
+                    CompanyDBId: this.companyName
+                })
             }
         }
         else {
-            this.CheckedData.push(row_data)
+            this.CheckedData.push({
+                ItemCode: row_data,
+                CompanyDBId: this.companyName
+            })
         }
-        console.log(this.CheckedData)
+
+
+    }
+
+    on_Selectall_checkbox_checked(checkedvalue) {
+        var isExist = 0;
+        this.CheckedData = []
+        this.selectall = false
+
+        if (checkedvalue == true) {
+            if (this.rows.length > 0) {
+                this.selectall = true
+                for (let i = 0; i < this.rows.length; ++i) {
+
+                    this.CheckedData.push({
+                        ItemCode: this.rows[i][2],
+                        CompanyDBId: this.companyName
+                    })
+                }
+            }
+
+
+
+        }
+        else {
+            this.selectall = false
+        }
+
+
+
 
     }
 
     delete() {
-        console.log(this.toDelete)
+        if (this.CheckedData.length > 0) {
+            //for (let i = 0; i < this.CheckedData.length; ++i) {
+            this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
+                data => {
+                    if (data == "True") {
+                        this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                        return;
+                    }
+                    else {
+                        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+                            data => {
+                                if (data === "True") {
+                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                    this.service_call(this.current_page, this.search_string);
+                                    this.router.navigateByUrl('item-code-generation/view');
+                                    return;
+                                }
+                                else {
+                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                    return;
+                                }
+                            }
+                        )
+                    }
+                }
+            )
+            // }
+        }
+        else {
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+
     }
 
 

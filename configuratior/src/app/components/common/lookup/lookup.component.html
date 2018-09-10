@@ -40,7 +40,7 @@
                             <tbody class="lookup_table_body">
                                 <tr class="row_select" *ngFor="let row of serviceData | Lookupfilter:search_string; let i= index">
                                     <!-- <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[lookup_key])"> -->
-                                            <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
+                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)" (click)="on_item_select(row[0])">
                                         <span>{{row[row_data]}}</span>
                                     </td>
                                 </tr>
@@ -59,7 +59,8 @@
 
 <!-- import data modal -->
 <!-- Grid Modal-->
-<div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true" data-backdrop="static"
+    data-keyboard="false">
     <div class="modal-dialog  modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -111,7 +112,8 @@
 
 <!-- enlarge image modal -->
 
-<div class="modal fade" id="enlarge_image_modal" tabindex="-1" role="dialog" aria-labelledby="enlarge_image_modal" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="enlarge_image_modal" tabindex="-1" role="dialog" aria-labelledby="enlarge_image_modal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -145,8 +147,8 @@
 </div>
 
 <!-- tree view modal -->
-<div class="modal fade" id="tree_view" tabindex="-1" role="dialog" aria-labelledby="tree_view" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="tree_view" tabindex="-1" role="dialog" aria-labelledby="tree_view" aria-hidden="true" data-backdrop="static"
+    data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -166,66 +168,17 @@
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
                         <div class="tree well">
-                <ul class="parent_ul">
-                    <li>
-                        <span><i class="icon-folder-open"></i> F1 </span> 
-                        <ul>
-                            <li>
-                                <span><i class="icon-minus-sign"></i> F2 </span> 
-                                <ul>
-                                    <li>
-                                        <span><i class="icon-leaf"></i> item007 </span>
+                            <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
+                                <div *ngFor="let element of tree_data_json; let i= index;">
+                                    <li *ngIf="element.level == 0 && element.parent==''">
+                                        <span>
+                                            <i class="fa fa-folder"></i> {{element.component}}
+                                        </span>
+                                        <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                                     </li>
-                                    <li>
-                                        <span><i class="icon-leaf"></i> item008 </span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <span><i class="icon-minus-sign"></i> F3 </span>
-                                <ul>
-                                    <li>
-                                        <span><i class="icon-leaf"></i>F4</span>
-                                    </li>
-                                    <li>
-                                        <span><i class="icon-minus-sign"></i> F5 </span>
-                                        <ul>
-                                            <li>
-                                                <span><i class="icon-minus-sign"></i> F6 </span>
-                                                <ul>
-                                                    <li>
-                                                        <span><i class="icon-leaf"></i> item001 </span>
-                                                    </li>
-                                                    <li>
-                                                        <span><i class="icon-leaf"></i> item0002 </span> 
-                                                    </li>
-                                                 </ul>
-                                            </li>
-                                            <li>
-                                                <span><i class="icon-leaf"></i> item003 </span>
-                                            </li>
-                                            <li>
-                                                <span><i class="icon-leaf"></i> item004 </span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    
-                                </ul>
-                            </li>
-
-                            <li><span><i class="icon-minus-sign"></i> item005 </span></li>
-                            <li><span><i class="icon-minus-sign"></i> item006 </span> </li>
-
-                             
-                            
-
-                        </ul>
-                    </li>
-                   
-                </ul>
-            </div>
-
+                                </div>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

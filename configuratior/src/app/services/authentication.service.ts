@@ -21,7 +21,7 @@ common_params = new CommonData();
     //JSON Obeject Prepared to be send as a param to API
     let jObject: any = { Login: JSON.stringify([{ User: loginCredentials.userName, Password: loginCredentials.password, IsAdmin: false }]) };
     //Return the response form the API  
-    return this.httpclient.post(psURL + "/api/login/ValidateUserLogin", jObject, this.common_params.httpOptions);
+    return this.httpclient.post("http://localhost:57962/" + "/api/login/ValidateUserLogin", jObject, this.common_params.httpOptions);
   }
 
   // //This function will get Company acc. to User
@@ -29,7 +29,7 @@ common_params = new CommonData();
     //JSON Obeject Prepared to be send as a param to API
     let jObject: any = { Username: JSON.stringify([{ Username: loginCredentials.userName, Product: "SFES" }]) };
     //Return the response form the API  
-    return this.httpclient.post(psURL + "/api/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
+    return this.httpclient.post("http://localhost:57962/" + "/api/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
   }
 
   //Get psURL

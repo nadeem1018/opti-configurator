@@ -42,6 +42,11 @@ export class ViewFeatureModelComponent implements OnInit {
     public show_dialog:boolean = false;
     public dialog_box_value:any;
     public row_id:any;
+    public CheckedData :any = [];
+    public companyName: string = "";
+    public username: string = "";
+    public GetItemData: any = [];
+    public selectall:boolean=false;
 
     ngOnInit() {
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
@@ -117,9 +122,12 @@ export class ViewFeatureModelComponent implements OnInit {
     }
     //delete values
     delete_row(){
-       console.log("YES DELETE--"+this.row_id);
-       // button click function in here
-        this.fms.DeleteData(this.CompanyDBId, this.row_id).subscribe(
+        this.GetItemData=[]
+        this.GetItemData.push({
+            CompanyDBId: this.CompanyDBId,
+            FEATUREID:this.row_id
+        });
+        this.fms.DeleteData(this.GetItemData).subscribe(
             data => {
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
@@ -149,4 +157,91 @@ export class ViewFeatureModelComponent implements OnInit {
         };
         console.log(dd);
     }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i] == row_data) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            FEATUREID: row_data,
+                            CompanyDBId:this.CompanyDBId
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    FEATUREID: row_data,
+                    CompanyDBId: this.CompanyDBId
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                FEATUREID: row_data,
+                CompanyDBId:this.CompanyDBId
+            })
+        }
+     
+
+    }
+
+    on_Selectall_checkbox_checked(checkedvalue) {
+        var isExist = 0;
+        this.CheckedData = [];
+        this.selectall=false
+
+        if (checkedvalue == true) {
+            this.selectall=true
+            if(this.rows.length>0){
+                for (let i = 0; i < this.rows.length; ++i) {
+
+                    this.CheckedData.push({
+                        FEATUREID: this.rows[i][1],
+                        CompanyDBId:this.CompanyDBId
+                    })
+                }
+            }
+           
+         
+
+        }
+        else{
+            this.selectall=false
+        }
+       
+
+    }
+
+    delete() {
+        if (this.CheckedData.length > 0) {
+            this.fms.DeleteData(this.CheckedData).subscribe(
+                data => {
+                    if (data === "True") {
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('feature/model/view');
+                        return;
+                    }
+                    else {
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                    }
+                }
+            )
+
+        }
+        else{
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+        
+    }
+
+   
 }

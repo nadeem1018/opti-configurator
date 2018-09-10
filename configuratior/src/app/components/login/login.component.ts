@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
   public assignedCompanies:any;
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
-  
+  public config_data:string = "";
+  public background = "/assets/images/bg.jpg";
 
   private commonData = new CommonData();
   public page_title = this.commonData.project_name;
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     //this.loginCredentials.userName = 'shashank';
     //this.loginCredentials.password = 'sha@123';
     console.info('in LOGIN header');
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
       this.router.navigateByUrl('/home');
     } else {
@@ -107,7 +109,9 @@ export class LoginComponent implements OnInit {
     //sessionStorage.setItem('selectedWhse',this.warehouseName);
     sessionStorage.setItem('isLoggedIn', "true");
     // this.router.navigateByUrl('/home');
-    window.location.href = '/home';
+      let home_page = this.commonData.application_path + '/home';
+      
+      window.location.href = home_page;
     }
   }
   

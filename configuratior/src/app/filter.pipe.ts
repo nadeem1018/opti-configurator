@@ -21,17 +21,20 @@ export class LookupFilterPipe implements PipeTransform {
   
     transform(items: any[], searchText: string): any[] {
         var transitem=[]
-        if(items.length>0){
-            for (let i = 0; i < items.length; ++i) {
+        if (items !== undefined ){
+            if (items.length > 0) {
+                for (let i = 0; i < items.length; ++i) {
 
-                transitem.push(Object.values(items[i]))
+                    transitem.push(Object.values(items[i]))
+                }
+                if (!transitem) return [];
+                if (!searchText) return transitem;
+                searchText = searchText.toLowerCase();
+                return transitem.filter(it => {
+                    return it.toString().toLowerCase().includes(searchText);
+                });
             }
         }
-        if (!transitem) return [];
-        if (!searchText) return transitem;
-        searchText = searchText.toLowerCase();
-        return  transitem.filter(it => {
-            return it.toString().toLowerCase().includes(searchText);
-        });
+       
     }
 }

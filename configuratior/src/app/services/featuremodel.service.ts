@@ -66,9 +66,9 @@ export class FeaturemodelService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/UpdateFeatures", jObject, this.common_params.httpOptions);
     }
-    DeleteData(CompanyDBID:string, FEATUREID: string):Observable<any>{
+    DeleteData(Id):Observable<any>{
       //JSON Obeject Prepared to be send as a param to API
-     let jObject = { DeleteFeature: JSON.stringify([{ CompanyDBID: CompanyDBID, FEATUREID: FEATUREID }]) };
+     let jObject = { DeleteFeature: JSON.stringify(Id) };
   
     //Return the response form the API  
      return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/DeleteFeatures",jObject,this.common_params.httpOptions);

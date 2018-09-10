@@ -54,7 +54,7 @@
                     <tr>
                         <th *ngFor="let table_columns of table_head_foot; let i = index">
                             <span *ngIf="i ==0">
-                                <input type="checkbox" name="parent_checkbox" (click)="select_unselect_all()"  id="">
+                                <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id=""  [checked]=selectall>
                             </span>
                             <span *ngIf="i!=0">
                                 {{table_columns}}
@@ -66,7 +66,7 @@
                     <tr>
                         <th *ngFor="let table_columns of table_head_foot; let i = index">
                                 <span *ngIf="i ==0">
-                                    <input type="checkbox" name="parent_checkbox" id="">
+                                    <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="">
                                 </span>
                                 <span *ngIf="i!=0">
                                     {{table_columns}}
@@ -80,7 +80,7 @@
                         <td *ngFor="let row_data of row; let i = index">
                             <span *ngIf="(row.length-1) != i">
                                 <span *ngIf="i==0">
-                                    <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,row_data)">
+                                    <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
                                 </span>
                                 <span *ngIf="i!=0">
                                     {{row_data}}
