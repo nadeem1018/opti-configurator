@@ -5,10 +5,10 @@
       <span>{{this.language.dashboard}}</span>
     </a>
   </li> -->
-  
+
   <div *ngFor="let menuRow of menu_obj">
       <li class="nav-item">
-          <a class="nav-link" href='javascript:;' routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
+          <a class="nav-link" href='javascript:;' (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID))" routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
               <i class="fa fa-fw fa-table"></i>
               <span>{{(getMenuDetails(menuRow.OPTM_MENUID))[0].menu_title}}</span>
             </a>
@@ -29,7 +29,7 @@
     </div>
   </li> -->
 
-  <li class="nav-item">
+  <!-- <li class="nav-item">
     <a class="nav-link" href='javascript:;' routerLink="modelbom/view">
       <i class="fa fa-fw fa-table"></i>
       <span>{{this.language.Model_Bom}}</span>
@@ -41,6 +41,6 @@
       <i class="fa fa-fw fa-table"></i>
       <span>{{this.language.rule_workbench}}</span>
     </a>
-  </li>
+  </li> -->
 
 </ul>

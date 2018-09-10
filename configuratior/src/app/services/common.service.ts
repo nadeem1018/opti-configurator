@@ -59,8 +59,9 @@ export class CommonService {
     });
   } */
 
+  //This will get he service according to user settings done on Admin Portal
   getMenuRecord(): Observable<any>{
-    let jObject = { GetMenuRecord: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name  }]) }
-    return this.httpclient.post(this.config_params.service_url + "/Base/GetMenuRecord", jObject, this.common_params.httpOptions);
+    let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
+    return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
   }
 }

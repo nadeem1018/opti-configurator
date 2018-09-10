@@ -101,4 +101,52 @@ Public Class BaseDL
             Return Nothing
         End Try
     End Function
+
+    'Public Shared Function GetPermissionDetails(ByVal ObjDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+    '    Try
+    '        'Variable to get the SQl Query
+    '        Dim psSQL As String
+    '        'Used To The Company Instance
+    '        Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+    '        pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.SysAdminConnection
+    '        Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+    '        Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+
+    '        ' Get the Query on the basis of objIQuery
+    '        Dim psSQL As String = ObjIQuery.GetQuery(SFDC_Common.SFDCQueryConstants.SFDClogin_PermissionRecordCount)
+    '        'Create New Dataset 
+    '        Dim pObjDsPermission As New DataSet
+    '        'New Parameter For the Count Chek 
+    '        Dim pSqlParam(0) As MfgDBParameter
+    '        pSqlParam(0) = New MfgDBParameter
+    '        pSqlParam(0).ParamName = "@USERCODE"
+    '        pSqlParam(0).Paramvalue = psUserName
+    '        pObjDsPermission = ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam)
+
+    '        'New Param For the Getting Permission According To the Menus 
+    '        Dim pSqlParam1(1) As MfgDBParameter
+    '        pSqlParam1(0) = New MfgDBParameter
+    '        pSqlParam1(0).ParamName = "@USERCODE"
+    '        pSqlParam1(0).Paramvalue = psUserName
+
+    '        pSqlParam1(1) = New MfgDBParameter
+    '        pSqlParam1(1).ParamName = "@MENUID"
+    '        pSqlParam1(1).Paramvalue = psMenuID
+    '        'These Function is Used to Check From the DataSet ,If the UserCount is Greater than Zero then Auth User Table Else from Define Roles Table
+    '        If (pObjDsPermission.Tables(0).Rows(0).Item("USERCOUNT") > 0) Then
+    '            'If Count is Greater than Zero than Authorization TAble is Used 
+    '            psSQL = ObjIQuery.GetQuery(SFDC_Common.SFDCQueryConstants.SFDClogin_PermissionAUTHRUSERScreen)
+    '        Else
+    '            'If no Count is Found then Check from the Roles Screen 
+    '            psSQL = ObjIQuery.GetQuery(SFDC_Common.SFDCQueryConstants.SFDClogin_PermissionRolesScreen)
+    '        End If
+    '        'Execute the Query and Fill the Dataset 
+    '        pObjDsPermission = ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam1)
+    '        'Return the Data Table
+    '        Return pObjDsPermission.Tables(0)
+    '    Catch ex As Exception
+    '        ErrorLogging.LogError(ex)
+    '        Return Nothing
+    '    End Try
+    'End Function
 End Class
