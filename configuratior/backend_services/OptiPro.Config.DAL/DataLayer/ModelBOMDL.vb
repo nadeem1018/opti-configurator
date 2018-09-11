@@ -444,8 +444,7 @@ Public Class ModelBOMDL
             Dim piModelId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            'get the ItemCode name  
-            piModelId = NullToInteger(objDataTable.Rows(0)("ModelId"))
+           
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -454,30 +453,33 @@ Public Class ModelBOMDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@MODELID"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(0).Paramvalue = piModelId
+            For iRecord As Integer = 0 To objDataTable.Rows.Count - 1
+                piModelId = NullToInteger(objDataTable.Rows(iRecord)("ModelId"))
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@MODELID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(0).Paramvalue = piModelId
 
-            pSqlParam(1) = New MfgDBParameter
-            pSqlParam(1).ParamName = "@COMPANYID"
-            pSqlParam(1).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(1).Paramvalue = psCompanyDBId
+                pSqlParam(1) = New MfgDBParameter
+                pSqlParam(1).ParamName = "@COMPANYID"
+                pSqlParam(1).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(1).Paramvalue = psCompanyDBId
 
-            ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMHDR)
-            iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
-            If iDeleteRecordHDR > 0 Then
-                psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMDTL)
-                iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
-                If iDeleteRecordDTL > 0 Then
-                    psStatus = "True"
-                Else
-                    psStatus = "False"
+                ' Get the Query on the basis of objIQuery
+                psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMHDR)
+                iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
+                If iDeleteRecordHDR > 0 Then
+                    psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMDTL)
+                    iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
+                    If iDeleteRecordDTL > 0 Then
+                        psStatus = "True"
+                    Else
+                        psStatus = "False"
+                    End If
                 End If
-            End If
+            Next
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
