@@ -280,7 +280,10 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
-
+    Function CheckValidFeatureIdEnteredForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT (""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID=@FEATUREID"
+        Return psSQL
+    End Function
 
 #End Region
 

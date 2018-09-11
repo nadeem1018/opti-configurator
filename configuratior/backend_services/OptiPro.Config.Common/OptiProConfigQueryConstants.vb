@@ -44,6 +44,8 @@
     Public Const OptiPro_Config_DeleteDataFromHDR As String = "DeleteDataFromHDR"
     Public Const OptiPro_Config_DeleteDataFromDTL As String = "DeleteDataFromDTL"
     Public Const OptiPro_Config_GetAllRecordForCyclicCheck As String = "GetAllRecordForCyclicCheck"
+    Public Const OptiPro_Config_CheckValidFeatureIdEnteredForFeatureBOM As String = "CheckValidFeatureIdEnteredForFeatureBOM"
+
 
 #End Region
 
