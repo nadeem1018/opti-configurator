@@ -51,7 +51,11 @@ export class ItemcodegenerationComponent implements OnInit {
   public isAdditionAllowed:boolean
   public isDeletionAllowed:boolean
   public isFullPermitted:boolean
-  public PermissionStr:any;
+  public PermissionStr:any = [];
+
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
 
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
@@ -124,9 +128,10 @@ export class ItemcodegenerationComponent implements OnInit {
         CreatedUser:this.username,
         isOperationDisable:true
       })
-
+     
       //Check Permission
       this.checkPermission("save");
+      
     }
 
       //Check Permission
@@ -163,8 +168,6 @@ export class ItemcodegenerationComponent implements OnInit {
       CreatedUser: this.username,
       isOperationDisable:true
     })
-
-
 
   }
 
@@ -235,12 +238,22 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onDeleteClick() {
-    var result = confirm(this.language.DeleteConfimation);
-    if (result) {
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
+    // var result = confirm(this.language.DeleteConfimation);
+    // if (result) {
+    //   this.validateRowData("Delete")
+    // }
+  }
+
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
       this.validateRowData("Delete")
     }
-  
+    this.show_dialog = false;
   }
+
 
   onStrBlur(selectedvalue, rowindex) {
     if (this.itemcodetable.length > 0) {
@@ -379,7 +392,7 @@ export class ItemcodegenerationComponent implements OnInit {
           // let isDeletionAllowed:boolean
           // let isFullPermitted:boolean
 
-         this.PermissionStr = data.OPTM_PERMISSION.split(",");
+         this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
 
           // PermissionStr.forEach(function (indexValue) {
           //   if (PermissionStr[indexValue] == "A") {
@@ -467,6 +480,9 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   checkPermission(mode){
+    setTimeout(function(){
+    
+    if(this.PermissionStr != undefined){
 
     this.PermissionStr.forEach(function (indexValue) {
       if (this.PermissionStr[indexValue] == "A") {
@@ -531,5 +547,8 @@ export class ItemcodegenerationComponent implements OnInit {
           }
     }
   }
+    
+    }, 3000);
+ }
 
 }
