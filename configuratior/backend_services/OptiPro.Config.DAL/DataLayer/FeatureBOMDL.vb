@@ -632,7 +632,7 @@ Public Class FeatureBOMDL
             Dim psCompanyDBId As String
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
-           
+
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -1240,7 +1240,6 @@ Public Class FeatureBOMDL
             'Add Column 
             objdtOrderedData.Columns.Add("level", GetType(String))
             Dim counter As Integer = 1
-
             'For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
             '    'variable to get parent Feature ID
             '    Dim tempParentFeatureID As Integer

@@ -405,6 +405,17 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetRuleIDByGUID() As String
+        Dim psSQL As String = "SELECT ""OPTM_RULEID"" FROM ""OPCONFIG_RULEHEADER"" WHERE ""OPTM_GUID""=@GUID"
+        Return psSQL
+    End Function
+
+    Function GetItemMasterDataforRuleWB() As String
+        Dim psSQL As String = "SELECT * FROM ""OPConfig_ItemMaster"""
+        Return psSQL
+    End Function
+
+
 
 
 #End Region

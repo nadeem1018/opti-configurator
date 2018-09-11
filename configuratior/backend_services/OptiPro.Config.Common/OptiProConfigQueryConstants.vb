@@ -100,6 +100,8 @@
     Public Const OptiPro_Config_GetSavedDataFromRuleHDR As String = "GetSavedDataFromRuleHDR"
     Public Const OptiPro_Config_GetSavedDataFromRuleInput As String = "GetSavedDataFromRuleInput"
     Public Const OptiPro_Config_GetSavedDataFromRuleOutput As String = "GetSavedDataFromRuleOutput"
+    Public Const OptiPro_Config_GetRuleIDByGUID As String = "GetRuleIDByGUID"
+    Public Const OptiPro_Config_GetItemMasterDataforRuleWB As String = "GetItemMasterDataforRuleWB"
 
 
 #End Region
