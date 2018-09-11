@@ -30,7 +30,6 @@ export class SidebarComponent implements OnInit {
   //On Menu Press
   onMenuPress(pressedMenu){
     sessionStorage.setItem('currentMenu',pressedMenu[0].menu_code);
-
   }
 
   //Core Functions
