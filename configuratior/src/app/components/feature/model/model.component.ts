@@ -134,7 +134,7 @@ if (validateStatus == true){
       FeatureStatus:this.featureBom.Status,
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
-      PicturePath: "www",
+      PicturePath: this.featureBom.Image,
       CreatedUser: this.username,
       Accessory:this.featureBom.Accessory
     })
@@ -173,6 +173,25 @@ if (validateStatus == true){
        
       }
     )
+  }
+
+  uploadimagefile(files: any) {
+    if (files.length === 0)
+      return;
+    const formData = new FormData();
+
+    for (let file of files) {
+      formData.append(file.name, file);
+    }
+
+    this.fms.UploadFeature(formData).subscribe(data => {
+      if (data.body === "False") {
+        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+      }
+      else {
+        this.featureBom.Image= data.body
+      }
+    })
   }
 
 
@@ -248,7 +267,7 @@ if (validateStatus == true){
       FeatureStatus:this.featureBom.Status,
       ModelTemplateItem:this.featureBom.ItemName,
       ItemCodeGenerationRef : this.featureBom.Ref,
-      PicturePath: this.selectedFile,
+      PicturePath: this.featureBom.Image,
       CreatedUser:  this.username,
       Accessory:this.featureBom.Accessory
     })
