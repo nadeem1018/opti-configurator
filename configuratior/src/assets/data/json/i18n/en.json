@@ -17,6 +17,7 @@
     "feature": "Feature",
     "feature_Model": "Feature Model",
     "feature_Bom": "Feature BOM",
+    "permission_load_error": "There was some error while loading user wright permission",
 
     "model": "Model",
     "bom": "BOM",

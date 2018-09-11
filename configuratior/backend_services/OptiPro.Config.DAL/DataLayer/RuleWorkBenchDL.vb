@@ -43,10 +43,10 @@ Public Class RuleWorkBenchDL
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
-            Dim pdsGetData As New DataSet
-            Dim psFeatureId As Integer = 29
-            Dim tempDV As DataView
-            Dim tempDV1, tempDVfeatureData As DataView
+            Dim psSQLItemMaster As String = String.Empty
+            Dim pdsGetData, pdsItemData As New DataSet
+            Dim psFeatureId As String = "29"
+            Dim tempDV, tempDVFilter As DataView
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -66,44 +66,31 @@ Public Class RuleWorkBenchDL
             objdtFeatureData.Columns.Add("Item", GetType(String))
             'Add Column to the Datatable 
             objdtFeatureData.Columns.Add("DisplayName", GetType(String))
-            objdtFeatureData.Columns.Add("FeatureId", GetType(String))
-            Dim psChildFeatureID As Integer
+            objdtFeatureData.Columns.Add("type", GetType(String))
+            Dim psChildFeatureID As String
             For iRecordDetail As Integer = 0 To pdsGetData.Tables(0).Rows.Count - 1
                 tempDV = New DataView(pdsGetData.Tables(0))
-                'Filter the Data  According  to Feature ID
-                tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", psFeatureId)
-                tempDVfeatureData = New DataView(objdtFeatureData)
-                tempDVfeatureData.RowFilter = StringFormat("FeatureId ='{0}'", psFeatureId)
-                If tempDVfeatureData.Count = 0 Then
-                    If tempDV.Count > 0 Then
-                        For irecord As Integer = 0 To tempDV.Count - 1
-                            psChildFeatureID = NullToInteger(tempDV(irecord)("OPTM_CHILDFEATUREID"))
-                            If psChildFeatureID > 0 Then
-                                tempDV1 = New DataView(pdsGetData.Tables(0))
-                                'Filter the Data  According  to Feature ID
-                                tempDV1.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", psChildFeatureID)
-                                If tempDV1.Count > 0 Then
-                                    For iItemrecord As Integer = 0 To tempDV1.Count - 1
-                                        If tempDV1(iItemrecord)("OPTM_ITEMKEY").LENGTH > 0 Then
-                                            objdtFeatureData.Rows.Add(tempDV1(iItemrecord)("OPTM_ITEMKEY"), tempDV1(iItemrecord)("OPTM_DISPLAYNAME"), tempDV1(iItemrecord)("OPTM_FEATUREID"))
-                                        ElseIf tempDV1(iItemrecord)("OPTM_VALUE").LENGTH > 0 Then
-                                            objdtFeatureData.Rows.Add(tempDV1(iItemrecord)("OPTM_VALUE"), tempDV1(iItemrecord)("OPTM_DISPLAYNAME"), tempDV1(iItemrecord)("OPTM_FEATUREID"))
-                                        Else
-                                            psFeatureId = psChildFeatureID
-                                            Exit For
-                                        End If
-                                    Next
-                                End If
-                            ElseIf tempDV(irecord)("OPTM_ITEMKEY").LENGTH > 0 Then
-                                objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_ITEMKEY"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_FEATUREID"))
-                            ElseIf tempDV(irecord)("OPTM_VALUE").LENGTH > 0 Then
-                                objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_VALUE"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_FEATUREID"))
-                            End If
-                        Next
-                    End If
+                tempDV.RowFilter = String.Format("OPTM_FEATUREID IN (" & psFeatureId & ")")
+                If tempDV.Count > 0 Then
+                    psFeatureId = "0"
+                    For irecord As Integer = 0 To tempDV.Count - 1
+                        If NullToString(tempDV(irecord)("OPTM_ITEMKEY")).Length > 0 Then
+                            objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_ITEMKEY"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_TYPE"))
+                        ElseIf NullToString(tempDV(irecord)("OPTM_VALUE")).Length > 0 Then
+                            objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_VALUE"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_TYPE"))
+                        Else
+                            objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_CHILDFEATUREID"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_TYPE"))
+                            psChildFeatureID = tempDV(irecord)("OPTM_CHILDFEATUREID")
+                            psFeatureId = psFeatureId & "," & "'" & psChildFeatureID & "'"
+                        End If
+                    Next
                 End If
             Next
-            Return objdtFeatureData
+            'Create a new DAtaview
+            Dim dv As DataView = New DataView(objdtFeatureData)
+            'filter the Data According to the Dataview and Remve the Duplicate Reords
+            Dim dt As DataTable = dv.ToTable(True, "Item", "DisplayName", "type")
+            Return dt
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try
@@ -350,9 +337,12 @@ Public Class RuleWorkBenchDL
             psRuleId = OptiPro.Config.Common.Utilites.NullToInteger(iModelBOMHdrRow("ModelId"))
             psCmapnyDBID = OptiPro.Config.Common.Utilites.NullToString(iModelBOMHdrRow("CompanyDBId"))
             tempDV = New DataView(tempds.Tables("OPCONFIG_RULEHEADER"))
-            tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}' AND OPTM_COMPANYID='{1}'", psRuleId, psCmapnyDBID)
+            tempDV.RowFilter = StringFormat("OPTM_RULEID ='{0}' AND OPTM_COMPANYID='{1}'", psRuleId, psCmapnyDBID)
             If tempDV.Count > 0 Then
-                tempDV(0)("OPTM_READYTOUSE") = NullToString(iModelBOMHdrRow("ReadyToUse"))
+                tempDV(0)("OPTM_DESCRIPTION") = NullToString(iModelBOMHdrRow("description"))
+                tempDV(0)("OPTM_EFFECTIVEFROM") = NullToString(iModelBOMHdrRow("effective_from"))
+                tempDV(0)("OPTM_EFFECTIVETO") = NullToString(iModelBOMHdrRow("effective_to"))
+                tempDV(0)("OPTM_DISCONTINUE") = NullToString(iModelBOMHdrRow("discontinue"))
                 tempDV(0)("OPTM_MODIFIEDBY") = NullToString(iModelBOMHdrRow("CreatedUser"))
                 tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
             Else
@@ -374,7 +364,6 @@ Public Class RuleWorkBenchDL
             Dim psChildRuleId As Integer
             'get the line id from the ui 
             Dim piSeqId, piRowId As Integer
-            Dim psValue As String
             'get feture id
             psChildRuleId = OptiPro.Config.Common.Utilites.NullToInteger(childRow("RuleId"))
             'get the Seq id 
@@ -386,49 +375,32 @@ Public Class RuleWorkBenchDL
             'filter data according to the feature id and line id 
             tempDV.RowFilter = StringFormat("OPTM_RULEID ='{0}'AND OPTM_SEQID='{1}' AND OPTM_ROWID='{2}'", psChildRuleId, piSeqId, piRowId)
             If tempDV.Count > 0 Then
-                tempDV(0)("OPTM_LINENO") = childRow("rowindex")
-                tempDV(0)("OPTM_LINENO") = childRow("rowindex")
-                tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
-                tempDV(0)("OPTM_UOM") = childRow("uom")
-                tempDV(0)("OPTM_QUANTITY") = childRow("quantity")
-                tempDV(0)("OPTM_MINSELECTABLE") = childRow("min_selected")
-                tempDV(0)("OPTM_MAXSELECTABLE") = childRow("max_selected")
-                tempDV(0)("OPTM_PROPOGATEQTY") = childRow("propagate_qty")
-                tempDV(0)("OPTM_PRICESOURCE") = childRow("price_source")
-                tempDV(0)("OPTM_MANDATORY") = childRow("mandatory")
-                tempDV(0)("OPTM_UNIQUEIDNT") = childRow("unique_identifer")
-                tempDV(0)("OPTM_COMPANYID") = childRow("CompanyDBId")
-                tempDV(0)("OPTM_MODIFIEDBY") = childRow("CreatedUser")
-                tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
+                tempDV(0)("OPTM_RULEID") = childRow("ruleid")
+                tempDV(0)("OPTM_SEQID") = childRow("seqid")
+                tempDV(0)("OPTM_ROWID") = childRow("rowid")
+                tempDV(0)("OPTM_OPERATOR") = childRow("operator")
+                tempDV(0)("OPTM_TYPE") = childRow("type")
+                tempDV(0)("OPTM_BRACES") = childRow("braces")
+                tempDV(0)("OPTM_FEATURE") = childRow("feature")
+                tempDV(0)("OPTM_MODEL") = childRow("model")
+                tempDV(0)("OPTM_CONDITION") = childRow("condition")
+                tempDV(0)("OPTM_OPERAND") = childRow("operand")
+                tempDV(0)("OPTM_OPERAND1") = childRow("operand1")
             Else
                 'if no record is found then we will add new record to the table 
-                pdr = tempds.Tables("OPCONFIG_MBOMDTL").NewRow()
-                'get the feature id_M
-                pdr("OPTM_MODELID") = childRow("ModelId")
+                pdr = tempds.Tables("OPCONFIG_RULEINPUT").NewRow()
+                pdr("OPTM_RULEID") = childRow("ruleid")
+                pdr("OPTM_SEQID") = childRow("seqid")
+                pdr("OPTM_ROWID") = childRow("rowid")
+                pdr("OPTM_OPERATOR") = childRow("operator")
                 pdr("OPTM_TYPE") = childRow("type")
-                If childRow("type") = 1 Then
-                    pdr("OPTM_FEATUREID") = childRow("type_value")
-                End If
-                If childRow("type") = 2 Then
-                    pdr("OPTM_ITEMKEY") = childRow("type_value")
-                End If
-                If childRow("type") = 3 Then
-                    pdr("OPTM_CHILDMODELID") = childRow("type_value")
-                End If
-                pdr("OPTM_LINENO") = childRow("rowindex")
-                pdr("OPTM_DISPLAYNAME") = childRow("display_name")
-                pdr("OPTM_UOM") = childRow("uom")
-                pdr("OPTM_QUANTITY") = childRow("quantity")
-                pdr("OPTM_MINSELECTABLE") = childRow("min_selected")
-                pdr("OPTM_MAXSELECTABLE") = childRow("max_selected")
-                pdr("OPTM_PROPOGATEQTY") = childRow("propagate_qty")
-                pdr("OPTM_PRICESOURCE") = childRow("price_source")
-                pdr("OPTM_MANDATORY") = childRow("mandatory")
-                pdr("OPTM_UNIQUEIDNT") = childRow("unique_identifer")
-                pdr("OPTM_COMPANYID") = childRow("CompanyDBId")
-                pdr("OPTM_CREATEDBY") = childRow("CreatedUser")
-                pdr("OPTM_CREATEDATETIME") = dtServerDate
-                tempds.Tables("OPCONFIG_MBOMDTL").Rows.Add(pdr)
+                pdr("OPTM_BRACES") = childRow("braces")
+                pdr("OPTM_FEATURE") = childRow("feature")
+                pdr("OPTM_MODEL") = childRow("model")
+                pdr("OPTM_CONDITION") = childRow("condition")
+                pdr("OPTM_OPERAND") = childRow("operand")
+                pdr("OPTM_OPERAND1") = childRow("operand1")
+                tempds.Tables("OPCONFIG_RULEINPUT").Rows.Add(pdr)
             End If
         Next
         Dim seqlist1 As String = ""
@@ -462,28 +434,101 @@ Public Class RuleWorkBenchDL
                 tempRow = deletedFGDV(fgRowCnt).Row
                 tempRow.Delete()
             Next
-
         End If
+        For Each drItemRecord As DataRow In objdsRuleWB.Tables(2).Rows
+            'get the feature id for the child table
+            Dim psChildRuleId As Integer
+            'get the line id from the ui 
+            Dim piSeqId, piRowId As Integer
+            'get feture id
+            psChildRuleId = OptiPro.Config.Common.Utilites.NullToInteger(drItemRecord("RuleId"))
+            'get the Seq id 
+            piSeqId = OptiPro.Config.Common.Utilites.NullToString(drItemRecord("rowindex"))
+            'get the Row ID
+            piRowId = OptiPro.Config.Common.Utilites.NullToString(drItemRecord("rowindex"))
+            'new data view for the  detail table
+            tempDV = New DataView(tempds.Tables("OPCONFIG_RULEOUTPUT"))
+            'filter data according to the feature id and line id 
+            tempDV.RowFilter = StringFormat("OPTM_RULEID ='{0}'AND OPTM_SEQID='{1}'", psChildRuleId, piSeqId)
+            If tempDV.Count > 0 Then
+                tempDV(0)("OPTM_RULEID") = drItemRecord("ruleid")
+                tempDV(0)("OPTM_SEQID") = drItemRecord("seqid")
+                tempDV(0)("OPTM_FEATUREID") = drItemRecord("featureid")
+                tempDV(0)("OPTM_ITEMKEY") = drItemRecord("itemkey")
+                tempDV(0)("OPTM_VALUE") = drItemRecord("value")
+                tempDV(0)("OPTM_UOM") = drItemRecord("uom")
+                tempDV(0)("OPTM_QUANTITY") = drItemRecord("quantity")
+                tempDV(0)("OPTM_ISQTYEDIT") = drItemRecord("isQtyEdit")
+                tempDV(0)("OPTM_PRICESOURCE") = drItemRecord("priceSource")
+                tempDV(0)("OPTM_ISPRICEEDIT") = drItemRecord("isPriceEdit")
+                tempDV(0)("OPTM_DEFAULT") = drItemRecord("default")
+            Else
+                'if no record is found then we will add new record to the table 
+                pdr = tempds.Tables("OPCONFIG_RULEOUTPUT").NewRow()
+                pdr("OPTM_RULEID") = drItemRecord("ruleid")
+                pdr("OPTM_SEQID") = drItemRecord("seqid")
+                pdr("OPTM_FEATUREID") = drItemRecord("featureid")
+                pdr("OPTM_ITEMKEY") = drItemRecord("itemkey")
+                pdr("OPTM_VALUE") = drItemRecord("value")
+                pdr("OPTM_UOM") = drItemRecord("uom")
+                pdr("OPTM_QUANTITY") = drItemRecord("quantity")
+                pdr("OPTM_ISQTYEDIT") = drItemRecord("isQtyEdit")
+                pdr("OPTM_PRICESOURCE") = drItemRecord("priceSource")
+                pdr("OPTM_ISPRICEEDIT") = drItemRecord("isPriceEdit")
+                pdr("OPTM_DEFAULT") = drItemRecord("default")
+                tempds.Tables("OPCONFIG_RULEOUTPUT").Rows.Add(pdr)
+            End If
+        Next
+        'Dim seqlist1 As String = ""
+        'tempDV = New DataView(objdsRuleWB.Tables(1))
+        'If tempDV.Count > 0 Then
+        '    ' Filter Data According to row 
+        '    tempDV.RowFilter = String.Format("IsNull(rowindex, 0) <> 0")
+        'End If
+        'For Each row In tempDV
+        '    'For Getting the Sequence Number 
+        '    If seqlist1 <> "" Then
+        '        seqlist1 = seqlist1 & "," & "'" & NullToInteger(row("rowindex")) & "'"
+        '    Else
+        '        seqlist1 = "'" & NullToInteger(row("rowindex")) & "'"
+        '    End If
+        'Next
+        ''if the Sequence is Present then Delete the Row 
+        'If seqlist1.Length > 0 Then
+        '    Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
+        '    deletedFGDV.RowFilter = String.Format("OPTM_LINENO Not in (" & seqlist1 & ") and IsNull(OPTM_LINENO, 0) <> 0")
+        '    Dim tempRow As DataRow = Nothing
+        '    For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+        '        tempRow = deletedFGDV(fgRowCnt).Row
+        '        tempRow.Delete()
+        '    Next
+        'Else
+        '    Dim deletedFGDV As DataView = New System.Data.DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
+        '    deletedFGDV.RowFilter = String.Format("IsNull(OPTM_LINENO, 0) <> 0")
+        '    Dim tempRow As DataRow = Nothing
+        '    For fgRowCnt As Integer = deletedFGDV.Count - 1 To 0 Step -1
+        '        tempRow = deletedFGDV(fgRowCnt).Row
+        '        tempRow.Delete()
+        '    Next
+        'End If
+
+
+
+
+
+
+
+
     End Sub
-    'This method will help to Update the Data set into the Database
-#End Region
 
 
-    'Query to Delete the data from the Header and child table for the Model Bom Header and Child Table
-    Public Shared Function DeleteModelBOMFromHDRandDTL(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
-        Dim psStatus As String = String.Empty
+    Public Shared Function GetRuleIDByGUID(ByVal objGUID As String, ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
-            Dim psSQLHDR As String = String.Empty
-            Dim psSQLDTL As String = String.Empty
-            Dim iDeleteRecordHDR, iDeleteRecordDTL As Integer
-            Dim dsRecord As New DataSet
-            'VARIABLE TO GET THE ITEM CODE
-            Dim piModelId As Integer
+            Dim psSQL As String = String.Empty
+            Dim PdsGetRuleId As DataSet
             'Get the Company Name
-            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            'get the ItemCode name  
-            piModelId = NullToInteger(objDataTable.Rows(0)("ModelId"))
+            psCompanyDBId = objCompanyDBID
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -495,35 +540,21 @@ Public Class RuleWorkBenchDL
             Dim pSqlParam(1) As MfgDBParameter
             'Parameter 0 consisting itemCode and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@MODELID"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(0).Paramvalue = piModelId
-
-            pSqlParam(1) = New MfgDBParameter
-            pSqlParam(1).ParamName = "@COMPANYID"
-            pSqlParam(1).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(1).Paramvalue = psCompanyDBId
-
+            pSqlParam(0).ParamName = "@GUID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = objGUID
             ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMHDR)
-            iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
-            If iDeleteRecordHDR > 0 Then
-                psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromMBOMDTL)
-                iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
-                If iDeleteRecordDTL > 0 Then
-                    psStatus = "True"
-                Else
-                    psStatus = "False"
-                End If
-            End If
-            Return psStatus
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetRuleIDByGUID)
+            PdsGetRuleId = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return PdsGetRuleId.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
-            psStatus = ex.Message.ToString
         End Try
-        Return psStatus
+        Return Nothing
     End Function
 
+    'This method will help to Update the Data set into the Database
+#End Region
     Public Shared Function GetDataForCommonViewForModelBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
         Try
             Dim psCompanyDBId As String = String.Empty

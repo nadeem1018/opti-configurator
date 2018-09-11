@@ -48,8 +48,12 @@ export class ModelComponent implements OnInit {
    public selectedFile:string="";
    public model_name_label =  this.language.Model_Name;
    public model_desc_label =  this.language.Model_Desc;
-public code_disabled= "false";
-public GetItemData: any = [];
+   public code_disabled= "false";
+   public GetItemData: any = [];
+
+   //custom dialoag params
+   public dialog_params: any = [];
+   public show_dialog: boolean = false;
 
    
   ngOnInit() {
@@ -291,31 +295,44 @@ if (validateStatus == true){
       })
     }
     }
+
     onDeleteClick(){
-      var result = confirm(this.language.DeleteConfimation);
-if (result) {
-    //Logic to delete the 
-     // button click function in here
-     this.GetItemData=[]
-        this.GetItemData.push({
-            CompanyDBId: this.companyName,
-            FEATUREID:this.codekey
-        });
-     this.fms.DeleteData(this.GetItemData).subscribe(
-      data => {
-        if (data === "True" ) {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-          this.router.navigateByUrl(this.view_route_link);
-          return;
-        }
-        else{
-          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-          return;
-        }
+      //var result = confirm(this.language.DeleteConfimation);
+      this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+      this.show_dialog = true;
+    }
+
+    
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue) {
+      if (userSelectionValue == true) {
+        this.delete_record();
       }
-    )
-}
-  }
+      this.show_dialog = false;
+    }
+
+    delete_record(){
+      //Logic to delete the 
+      // button click function in here
+      this.GetItemData=[]
+          this.GetItemData.push({
+              CompanyDBId: this.companyName,
+              FEATUREID:this.codekey
+          });
+      this.fms.DeleteData(this.GetItemData).subscribe(
+        data => {
+          if (data === "True" ) {
+            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.router.navigateByUrl(this.view_route_link);
+            return;
+          }
+          else{
+            this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+            return;
+          }
+        }
+      )
+    }
 
   getLookupValue($event){
     if (this.lookupfor != "") {

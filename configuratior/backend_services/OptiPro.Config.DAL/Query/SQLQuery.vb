@@ -196,7 +196,7 @@ Public Class SQLQuery
 
     'SQL Query to get the List of all the Features Except the Selected Feature
     Function GetFeatureListForSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"",""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
 
@@ -280,7 +280,10 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
-
+    Function CheckValidFeatureIdEnteredForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT (""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID=@FEATUREID"
+        Return psSQL
+    End Function
 
 #End Region
 
@@ -360,7 +363,6 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT ""OPTM_MODELID"",""OPTM_CHILDMODELID"" FROM ""OPCONFIG_MBOMDTL"""
         Return psSQL
     End Function
-
 #End Region
 
 #Region "Rule WorkBench"
@@ -404,6 +406,17 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT * FROM ""OPCONFIG_RULEOUTPUT"" WHERE ""OPTM_RULEID""=@RULEID"
         Return psSQL
     End Function
+
+    Function GetRuleIDByGUID() As String
+        Dim psSQL As String = "SELECT ""OPTM_RULEID"" FROM ""OPCONFIG_RULEHEADER"" WHERE ""OPTM_GUID""=@GUID"
+        Return psSQL
+    End Function
+
+    Function GetItemMasterDataforRuleWB() As String
+        Dim psSQL As String = "SELECT * FROM ""OPConfig_ItemMaster"""
+        Return psSQL
+    End Function
+
 
 
 

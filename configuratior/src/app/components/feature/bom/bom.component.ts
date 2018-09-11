@@ -45,7 +45,10 @@ export class BomComponent implements OnInit {
   counter = 0;
   public header_image_data: any = [];
 
-
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
+  
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 
   ngOnInit() {
@@ -541,22 +544,35 @@ export class BomComponent implements OnInit {
 
 
   onDeleteClick() {
-    var result = confirm(this.language.DeleteConfimation);
-    if (result) {
-      this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
-        data => {
-          if (data === "True") {
-            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-            this.router.navigateByUrl('feature/bom/view');
-            return;
-          }
-          else {
-            this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-            return;
-          }
+    //var result = confirm(this.language.DeleteConfimation);
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
+  }
+
+  //delete record 
+  delete_record(){
+    this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
+      data => {
+        if (data === "True") {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.router.navigateByUrl('feature/bom/view');
+          return;
         }
-      )
+        else {
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
+  
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
+      this.delete_record();
     }
+    this.show_dialog = false;
   }
 
   onAssociatedBOMClick() {
