@@ -13,19 +13,16 @@ Public Class BaseController
         objSampleBL = New BaseBL
     End Sub
 
-
-
     <HttpPost, HttpGet>
-  <Route("GetPSURL")>
+    <Route("GetPSURL")>
     Public Function GetPSURL(ByVal Base As BaseModel) As String
         Return BaseBL.GetPSURL(Base)
     End Function
 
-
-    <HttpPost, HttpGet>
-  <Route("GetMenuRecord")>
-    Public Function GetMenuRecord(ByVal Base As BaseModel) As DataTable
-        Return BaseBL.GetMenuRecord(Base)
-    End Function
+    '<HttpPost, HttpGet> _
+    '<Route("GetPermissionDetails")>
+    'Public Function GetPermissionDetails(ByVal Base As BaseModel) As DataTable
+    '    Return BaseBL.GetPermissionDetails(Base)
+    'End Function
 
 End Class

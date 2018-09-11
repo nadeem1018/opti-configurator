@@ -22,7 +22,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     // generate table default constants
     table_pages: any;
     search_key: any;
-    table_head_foot = ['#', 'Feature ID', 'Display Name', 'Action'];
+    table_head_foot = ['Select','#', 'Feature ID', 'Display Name', 'Action'];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;
@@ -40,9 +40,14 @@ export class ViewFeatureBOMComponent implements OnInit {
     public show_dialog:boolean = false;
     public dialog_box_value:any;
     public row_id:any;
-
+    public CheckedData :any = [];
+    public companyName: string = "";
+    public username: string = "";
+    public GetItemData: any = [];
+    public selectall:boolean=false;
 
     ngOnInit() {
+        this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
         
     }
@@ -117,8 +122,12 @@ export class ViewFeatureBOMComponent implements OnInit {
 
     //delete values
     delete_row(){
-       // console.log("YES DELETE--"+this.row_id);
-        this.fbs.DeleteData(this.row_id).subscribe(
+        this.GetItemData=[]
+        this.GetItemData.push({
+            CompanyDBId: this.companyName,
+            FeatureId:this.row_id
+        });
+        this.fbs.DeleteData(this.GetItemData).subscribe(
             data => {
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
@@ -133,6 +142,93 @@ export class ViewFeatureBOMComponent implements OnInit {
             }
         )
      }
+
+     on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i] == row_data) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            FeatureId: row_data,
+                            CompanyDBId: this.companyName
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    FeatureId: row_data,
+                    CompanyDBId: this.companyName
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                FeatureId: row_data,
+                CompanyDBId: this.companyName
+            })
+        }
+     
+
+    }
+
+    on_Selectall_checkbox_checked(checkedvalue) {
+        
+        var isExist = 0;
+        this.CheckedData = [];
+        this.selectall=false
+
+        if (checkedvalue == true) {
+            this.selectall=true
+            if(this.rows.length>0){
+                for (let i = 0; i < this.rows.length; ++i) {
+
+                    this.CheckedData.push({
+                        FeatureId: this.rows[i][1],
+                        CompanyDBId: this.companyName
+                    })
+                }
+            }
+           
+         
+
+        }
+        else{
+            this.selectall=false
+        }
+       
+
+    }
+
+    delete() {
+        if (this.CheckedData.length > 0) {
+            this.fbs.DeleteData(this.CheckedData).subscribe(
+                data => {
+                    if (data === "True") {
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('feature/bom/view');
+                        return;
+                    }
+                    else {
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                    }
+                }
+            )
+
+        }
+        else{
+            
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+        
+    }
 
 }
     

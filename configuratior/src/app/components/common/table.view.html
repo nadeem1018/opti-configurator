@@ -1,6 +1,20 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
     <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+<<<<<<< HEAD
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
+                <i class="fa fa-plus fa-fw"></i> {{language.add}}
+            </button>
+            <button type="button" class="mr-10 btn btn-sm btn-outline-danger"  (click)="delete()" >
+                <i class="fa fa-trash fa-fw"></i> {{language.delete}}
+            </button>
+        </div>
 
+    </div>
+=======
+
+>>>>>>> 7f10cd8cb3729fc1279d348b1c2152c351c222d9
 </div>
 
 <ol class="breadcrumb breadcrumb_mini_margin">
@@ -18,6 +32,18 @@
     <div class="card-body">
 
         <div class="">
+<<<<<<< HEAD
+            <div class="col-sm-3  pull-left">
+                <div class="form-group row clearfix">
+                    <select type="text" #search class="form-control form-control-sm mt3" (change)="on_page_limit_change()" [(ngModel)]="record_per_page"
+                        id="per_page_recrod">
+                        <option *ngFor="let record of record_per_page_list" [selected]="record_per_page==record" value="{{record}}">{{record}} </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-3  pull-right">
+=======
             <div class="row col-sm-3 pull-left">
                 <div class="btn-toolbar mb-2 mb-md-0 mt-2">
                     <div class="btn-group mr-2">
@@ -33,6 +59,7 @@
 
 
             <div class="row col-sm-2 pull-right">
+>>>>>>> 7f10cd8cb3729fc1279d348b1c2152c351c222d9
                 <div class="form-group row clearfix">
                     <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}"
                         [(ngModel)]="search_string" #searchinput>
@@ -47,19 +74,53 @@
             <table class="table table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
                 <thead class="thead-dark">
                     <tr>
+<<<<<<< HEAD
+                        <th *ngFor="let table_columns of table_head_foot; let i = index">
+                            <span *ngIf="i ==0">
+                                <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id=""  [checked]=selectall>
+                            </span>
+                            <span *ngIf="i!=0">
+                                {{table_columns}}
+                            </span>
+                        </th>
+=======
                         <th *ngFor="let table_columns of table_head_foot">{{table_columns}}</th>
+>>>>>>> 7f10cd8cb3729fc1279d348b1c2152c351c222d9
                     </tr>
                 </thead>
                 <tfoot class="thead-dark" *ngIf='show_table_footer'>
                     <tr>
+<<<<<<< HEAD
+                        <th *ngFor="let table_columns of table_head_foot; let i = index">
+                                <span *ngIf="i ==0">
+                                    <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="">
+                                </span>
+                                <span *ngIf="i!=0">
+                                    {{table_columns}}
+                                </span>
+                        </th>
+=======
                         <th *ngFor="let table_columns of table_head_foot">{{table_columns}}</th>
+>>>>>>> 7f10cd8cb3729fc1279d348b1c2152c351c222d9
                     </tr>
                 </tfoot>
                 <tbody>
+                    <!-- (change)="on_checkbox_checked(checkedvalue,row_data)" -->
                     <tr *ngFor="let row of rows  | filter:search_string">
                         <td *ngFor="let row_data of row; let i = index">
+<<<<<<< HEAD
+                            <span *ngIf="(row.length-1) != i">
+                                <span *ngIf="i==0">
+                                    <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
+                                </span>
+                                <span *ngIf="i!=0">
+                                    {{row_data}}
+                                </span>
+                            </span>
+=======
                             <!--   | local_search : search_string -->
                             <span *ngIf="(row.length-1) != i">{{row_data}}</span>
+>>>>>>> 7f10cd8cb3729fc1279d348b1c2152c351c222d9
                             <span *ngIf="(row.length-1) == i">
                                 <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(row_data)" title="{{button1_title}}">
                                     <i class="{{button1_icon}}"></i>

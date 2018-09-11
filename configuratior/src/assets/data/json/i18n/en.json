@@ -135,6 +135,8 @@
     "ModelIDBlank":"Model id cannot be blank",
     "SelectModel":"Select model at row index: ",
     "NoDataAvailable" :"No data available",
+    "Norowselected":"No row selected",
+    "filecannotupload":"file cannot upload ",
     "rule_WB":"Rule WB",
     "rule_workbench":"Rule Workbench"
     

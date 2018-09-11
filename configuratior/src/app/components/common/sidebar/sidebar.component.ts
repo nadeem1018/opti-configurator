@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
   public menu_options: any = [
     { "menu_code": 200, "menu_title": "Item Code Generation" , "router_link": "item-code-generation/view"},
     { "menu_code": 201, "menu_title": "Feature Model" , "router_link": "feature/model/view"},
-    { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "eature/bom/view"},
+    { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "feature/bom/view"},
     { "menu_code": 203, "menu_title": "Model BOM", "router_link": "modelbom/view" }
   ];
 
@@ -25,6 +25,12 @@ export class SidebarComponent implements OnInit {
   ngOnInit() { 
     //get the menus from database
     this.getMenuRecord();
+  }
+
+  //On Menu Press
+  onMenuPress(pressedMenu){
+    sessionStorage.setItem('currentMenu',pressedMenu[0].menu_code);
+
   }
 
   //Core Functions
