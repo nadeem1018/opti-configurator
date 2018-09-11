@@ -6,39 +6,7 @@ OptiPro.Config.Common
 </name>
 </assembly>
 <members>
-<member name="T:OptiPro.Config.Common.Enumerations.ExceptionTypeEnum">
-	<summary>
- Exception Return Type
- </summary>
-	<remarks></remarks>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu1">
-	<summary>Level 1 Menu</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu2">
-	<summary>Level 2 Menu</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu3">
-	<summary>Level 3 Menu</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.MasterScreen">
-	<summary>Master Screen</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.TransactionScreen">
-	<summary>Transactional Screen</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Report">
-	<summary>Report</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Utility">
-	<summary>Utility</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Exe">
-	<summary>Exe</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.URL">
-	<summary>URL</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomScreen">
-	<summary>Custom Screen</summary>
-</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomReport">
-	<summary>Custom Report</summary>
-</member><member name="T:OptiPro.Config.Common.Enumerations.SAPUDFFieldType">
-	<summary>
- SAPbobui.BoFieldsType
- </summary>
-	<remarks>SAPbobui.BoFieldsType</remarks>
-</member><member name="P:OptiPro.Config.Common.My.Resources.Resources.ResourceManager">
+<member name="P:OptiPro.Config.Common.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
@@ -441,6 +409,38 @@ OptiPro.Config.Common
 	<param name="timeInMinutes">string (HH:MM)</param>
 	<returns>SAP Minute formate (HHMM)</returns>
 	<remarks></remarks>
+</member><member name="T:OptiPro.Config.Common.Enumerations.ExceptionTypeEnum">
+	<summary>
+ Exception Return Type
+ </summary>
+	<remarks></remarks>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu1">
+	<summary>Level 1 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu2">
+	<summary>Level 2 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu3">
+	<summary>Level 3 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.MasterScreen">
+	<summary>Master Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.TransactionScreen">
+	<summary>Transactional Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Report">
+	<summary>Report</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Utility">
+	<summary>Utility</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Exe">
+	<summary>Exe</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.URL">
+	<summary>URL</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomScreen">
+	<summary>Custom Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomReport">
+	<summary>Custom Report</summary>
+</member><member name="T:OptiPro.Config.Common.Enumerations.SAPUDFFieldType">
+	<summary>
+ SAPbobui.BoFieldsType
+ </summary>
+	<remarks>SAPbobui.BoFieldsType</remarks>
 </member>
 </members>
 </doc>

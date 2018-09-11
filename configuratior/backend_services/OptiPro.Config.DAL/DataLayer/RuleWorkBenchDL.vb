@@ -11,31 +11,15 @@ Imports System.Reflection
 Imports OptiPro.Config.Common.Utilites
 
 
-Public Class ModelBOMDL
+Public Class RuleWorkBenchDL
 
-
-    Public Shared Function GetModelList(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+    Public Shared Function GetAllFeatureForRuleWorkBench(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
-            Dim pressLoaction As String = String.Empty
-            Dim rowid As String = String.Empty
-            Dim psModelid As Integer
             Dim pdsGetData As New DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
-            If objDataTable.Columns.Contains("ModelID") Then
-                '  get the FeatureID,
-                psModelid = NullToInteger(objDataTable.Rows(0)("ModelID"))
-                'get the Press Location 
-                pressLoaction = NullToString(objDataTable.Rows(0)("pressLocation"))
-                'get the ROW ID 
-                rowid = NullToString(objDataTable.Rows(0)("rowid"))
-            End If
-
-
-
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -45,28 +29,8 @@ Public Class ModelBOMDL
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
             ' Get the Query on the basis of objIQuery
-
-            If psModelid > 0 And objDataTable.Columns.Contains("ModelID") Then
-                Dim pSqlParam(1) As MfgDBParameter
-                'Parameter 0 consisting featureID and it will be of Integer
-                pSqlParam(0) = New MfgDBParameter
-                pSqlParam(0).ParamName = "@MODELID"
-                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-                pSqlParam(0).Paramvalue = psModelid
-
-                If (pressLoaction = "Detail" And rowid = 3) Then
-                    psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetModelListExceptSelectedFeature)
-                Else
-                    psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
-
-                End If
-                pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
-            Else
-
-                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetModelList)
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBench)
                 pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
-            End If
-
             Return pdsGetData.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -75,30 +39,16 @@ Public Class ModelBOMDL
     End Function
 
 
-
-
-
-
-
-
-
-
-    ''' <summary>
-    ''' Function to get the Price list fromthe table
-    ''' </summary>
-    ''' <param name="objDataTable"></param>
-    ''' <param name="objCmpnyInstance"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPriceList(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+    Public Shared Function GetAllDetailsForFeature(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
-            Dim psItemKey As String = String.Empty
             Dim psSQL As String = String.Empty
-            Dim pdsPriceList As DataSet
+            Dim pdsGetData As New DataSet
+            Dim psFeatureId As Integer = 29
+            Dim tempDV As DataView
+            Dim tempDV1, tempDVfeatureData As DataView
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            psItemKey = NullToString(objDataTable.Rows(0)("ItemKey"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -107,33 +57,69 @@ Public Class ModelBOMDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting featureID and it will be of Integer
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@ITEMKEY"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(0).Paramvalue = psItemKey
             ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetPriceList)
-            pdsPriceList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
-            Return pdsPriceList.Tables(0)
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllDetailsForFeature)
+            pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            'Create a Datatable 
+            Dim objdtFeatureData As New DataTable
+            'Add Column to the Datatable 
+            objdtFeatureData.Columns.Add("Item", GetType(String))
+            'Add Column to the Datatable 
+            objdtFeatureData.Columns.Add("DisplayName", GetType(String))
+            objdtFeatureData.Columns.Add("FeatureId", GetType(String))
+            Dim psChildFeatureID As Integer
+            For iRecordDetail As Integer = 0 To pdsGetData.Tables(0).Rows.Count - 1
+                tempDV = New DataView(pdsGetData.Tables(0))
+                'Filter the Data  According  to Feature ID
+                tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", psFeatureId)
+                tempDVfeatureData = New DataView(objdtFeatureData)
+                tempDVfeatureData.RowFilter = StringFormat("FeatureId ='{0}'", psFeatureId)
+                If tempDVfeatureData.Count = 0 Then
+                    If tempDV.Count > 0 Then
+                        For irecord As Integer = 0 To tempDV.Count - 1
+                            psChildFeatureID = NullToInteger(tempDV(irecord)("OPTM_CHILDFEATUREID"))
+                            If psChildFeatureID > 0 Then
+                                tempDV1 = New DataView(pdsGetData.Tables(0))
+                                'Filter the Data  According  to Feature ID
+                                tempDV1.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", psChildFeatureID)
+                                If tempDV1.Count > 0 Then
+                                    For iItemrecord As Integer = 0 To tempDV1.Count - 1
+                                        If tempDV1(iItemrecord)("OPTM_ITEMKEY").LENGTH > 0 Then
+                                            objdtFeatureData.Rows.Add(tempDV1(iItemrecord)("OPTM_ITEMKEY"), tempDV1(iItemrecord)("OPTM_DISPLAYNAME"), tempDV1(iItemrecord)("OPTM_FEATUREID"))
+                                        ElseIf tempDV1(iItemrecord)("OPTM_VALUE").LENGTH > 0 Then
+                                            objdtFeatureData.Rows.Add(tempDV1(iItemrecord)("OPTM_VALUE"), tempDV1(iItemrecord)("OPTM_DISPLAYNAME"), tempDV1(iItemrecord)("OPTM_FEATUREID"))
+                                        Else
+                                            psFeatureId = psChildFeatureID
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                            ElseIf tempDV(irecord)("OPTM_ITEMKEY").LENGTH > 0 Then
+                                objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_ITEMKEY"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_FEATUREID"))
+                            ElseIf tempDV(irecord)("OPTM_VALUE").LENGTH > 0 Then
+                                objdtFeatureData.Rows.Add(tempDV(irecord)("OPTM_VALUE"), tempDV(irecord)("OPTM_DISPLAYNAME"), tempDV(irecord)("OPTM_FEATUREID"))
+                            End If
+                        Next
+                    End If
+                End If
+            Next
+            Return objdtFeatureData
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try
         Return Nothing
     End Function
 
-    Public Shared Function GetDetailForModel(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+
+
+
+    Public Shared Function GetAllModelsForRuleWorkBench(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
-            Dim psModelID As Integer
             Dim psSQL As String = String.Empty
-            Dim pdsFeatureDetail As DataSet
+            Dim pdsGetData As New DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            'Get the Feature ID From the Datatable 
-            psModelID = NullToInteger(objDataTable.Rows(0)("ModelID"))
-
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -142,34 +128,106 @@ Public Class ModelBOMDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllModelsForRuleWorkBench)
+            pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return pdsGetData.Tables(0)
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
 
+   
+    Public Shared Function CheckValidModelEntered(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim piModelId As Integer
+            Dim psSQL As String = String.Empty
+            Dim pdsModelList As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            piModelId = NullToInteger(objDataTable.Rows(0)("ModelId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
             Dim pSqlParam(1) As MfgDBParameter
             'Parameter 0 consisting featureID and it will be of Integer
             pSqlParam(0) = New MfgDBParameter
             pSqlParam(0).ParamName = "@MODELID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(0).Paramvalue = psModelID
-
+            pSqlParam(0).Paramvalue = piModelId
             ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetDetailForModel)
-            'get the Result of Query in Dataset
-            pdsFeatureDetail = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
-            'Returns A DataTable 
-            Return pdsFeatureDetail.Tables(0)
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidModelEntered)
+            pdsModelList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If (pdsModelList.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try
         Return Nothing
     End Function
 
+
+    Public Shared Function CheckValidFeatureEntered(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim piFeatureId As Integer
+            Dim psSQL As String = String.Empty
+            Dim pdsFeatureList As DataSet
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            piFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting featureID and it will be of Integer
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@FEATUREID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+            pSqlParam(0).Paramvalue = piFeatureId
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidFeatureEntered)
+            pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If (pdsFeatureList.Tables(0).Rows(0)("TOTALCOUNT") > 0) Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+    
+
 #Region "Add Update Delete Through Update dataset "
-    Public Shared Function AddUpdateModelBOM(ByVal ObjDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+    Public Shared Function AddUpdateDataForRuleWorkBench(ByVal objDataset As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
         Dim psStatus As String
         Try
             'Variable to get the Company ID
             Dim psCompanyDBId As String
             'Get the Company Name
-            psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = NullToString(objDataset.Tables(0).Rows(0)("CompanyDBId"))
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -188,9 +246,9 @@ Public Class ModelBOMDL
             'New DataSet 
             Dim pdsModelBOMData As DataSet
             'Get all the Saved Record For the Particular Item Code
-            pdsModelBOMData = ModelBOMDL.GetAllSavedData(ObjDataTable, objCmpnyInstance)
+            pdsModelBOMData = RuleWorkBenchDL.GetAllSavedData(objDataset, objCmpnyInstance)
             'PreaParing the Dataset ,Which Entry is to be Updated and Added
-            PrepareFeatureBOMData(ObjDataTable, pdsModelBOMData, objCmpnyInstance)
+            PrepareRuleWBData(objDataset, pdsModelBOMData, objCmpnyInstance)
             For index As Integer = 0 To pdsModelBOMData.Tables.Count - 1
                 'Get the Table Name
                 psForTable = pdsModelBOMData.Tables.Item(index).TableName
@@ -214,46 +272,43 @@ Public Class ModelBOMDL
     End Function
 
     ''Function to Get all the Save Data According to the Item Code
-    Public Shared Function GetAllSavedData(ByVal ObjDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataSet
+    Public Shared Function GetAllSavedData(ByVal objDataset As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataSet
         Try
             'Variable ffr the Company DBID
             Dim psCompanyDBId As String
             'Variable to get the SQl Query
-            Dim psSQLHDR, psSQLDTL As String
+            Dim psSQLHDR, psSQLDTL, psSQLItem As String
             'Variable for the Item Code 
-            Dim psModelID As Integer
+            Dim piRuleID As Integer
             'Declare a Data set in which we will pass to UI
             Dim dsRecord As New DataSet
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Get the Company Name
-            psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = NullToString(objDataset.Tables(0).Rows(0)("CompanyDBId"))
             'Company Connection
             pObjCompany.CompanyDbName = psCompanyDBId
             'get the the Item Code Key 
-            psModelID = ObjDataTable.Rows(0).Item("ModelId")
+            piRuleID = NullToInteger(objDataset.Tables(0).Rows(0).Item("RuleId"))
             pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
             Dim pSqlParam(1) As MfgDBParameter
             'Parameter 0 consisting itemCode and it's datatype will be nvarchar
             pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@MODELID"
+            pSqlParam(0).ParamName = "@RULEID"
             pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(0).Paramvalue = psModelID
-
-            pSqlParam(1) = New MfgDBParameter
-            pSqlParam(1).ParamName = "@COMPANYID"
-            pSqlParam(1).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(1).Paramvalue = psCompanyDBId
-
+            pSqlParam(0).Paramvalue = piRuleID
             ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataByModelIdFromHDR)
+            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataFromRuleHDR)
             'This method will fill the same dataset with table ParentTable
-            ObjIConnection.FillDataset(psSQLHDR, CommandType.Text, dsRecord, "OPCONFIG_MBOMHDR", pSqlParam)
-            psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataByModelIdFromDTL)
+            ObjIConnection.FillDataset(psSQLHDR, CommandType.Text, dsRecord, "OPCONFIG_RULEHEADER", pSqlParam)
+            psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataFromRuleInput)
             'This method will fill the same dataset with table ParentTable
-            ObjIConnection.FillDataset(psSQLDTL, CommandType.Text, dsRecord, "OPCONFIG_MBOMDTL", pSqlParam)
+            ObjIConnection.FillDataset(psSQLDTL, CommandType.Text, dsRecord, "OPCONFIG_RULEINPUT", pSqlParam)
+            psSQLItem = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataFromRuleOutput)
+            'This method will fill the same dataset with table ParentTable
+            ObjIConnection.FillDataset(psSQLItem, CommandType.Text, dsRecord, "OPCONFIG_RULEOUTPUT", pSqlParam)
             Return dsRecord
         Catch ex As Exception
             ErrorLogging.LogError(ex)
@@ -269,11 +324,11 @@ Public Class ModelBOMDL
     ''' <param name="objCmpnyInstance"></param>
     ''' <remarks></remarks>
 
-    Private Shared Sub PrepareFeatureBOMData(ByVal objdsFeatureBOM As DataTable, ByRef tempds As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company)
+    Private Shared Sub PrepareRuleWBData(ByVal objdsRuleWB As DataSet, ByRef tempds As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company)
         'Variable Declaration for Datarow
         Dim pdr As DataRow
         'variable to get Item Code
-        Dim psModelId As Integer
+        Dim psRuleId As Integer
         'DataTable to get the Server DateTime
         Dim pdtServerDate As DataTable
         'varriable for Server Date Time
@@ -281,7 +336,7 @@ Public Class ModelBOMDL
         'get the Data for the Record 
         Dim tempDtRecord As DataTable
         'Get the Company DB 
-        Dim psCmapnyDBID As String = NullToString(objdsFeatureBOM.Rows(0)("CompanyDBId"))
+        Dim psCmapnyDBID As String = NullToString(objdsRuleWB.Tables(0).Rows(0)("CompanyDBId"))
         'Function to get the Server Date Time
         pdtServerDate = BaseDL.GetServerDate(psCmapnyDBID, objCmpnyInstance)
         'Get Server Date
@@ -290,64 +345,48 @@ Public Class ModelBOMDL
         Dim tempDV As DataView = Nothing
         Dim tempDVReferalCheck As DataView = Nothing
 
-        For Each iModelBOMHdrRow As DataRow In objdsFeatureBOM.Rows
+        For Each iModelBOMHdrRow As DataRow In objdsRuleWB.Tables(0).Rows
             'get Item Code
-            psModelId = OptiPro.Config.Common.Utilites.NullToInteger(iModelBOMHdrRow("ModelId"))
+            psRuleId = OptiPro.Config.Common.Utilites.NullToInteger(iModelBOMHdrRow("ModelId"))
             psCmapnyDBID = OptiPro.Config.Common.Utilites.NullToString(iModelBOMHdrRow("CompanyDBId"))
-            tempDV = New DataView(tempds.Tables("OPCONFIG_MBOMHDR"))
-            tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}' AND OPTM_COMPANYID='{1}'", psModelId, psCmapnyDBID)
-            '  tempDV.RowFilter = StringFormat("OPTM_USERGROUP ='{1}' AND OPTM_ROLEID ='{2}'", AuthCode, UserCode, Roles)
+            tempDV = New DataView(tempds.Tables("OPCONFIG_RULEHEADER"))
+            tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}' AND OPTM_COMPANYID='{1}'", psRuleId, psCmapnyDBID)
             If tempDV.Count > 0 Then
                 tempDV(0)("OPTM_READYTOUSE") = NullToString(iModelBOMHdrRow("ReadyToUse"))
                 tempDV(0)("OPTM_MODIFIEDBY") = NullToString(iModelBOMHdrRow("CreatedUser"))
                 tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
             Else
-                pdr = tempds.Tables("OPCONFIG_MBOMHDR").NewRow()
-                pdr("OPTM_MODELID") = NullToInteger(iModelBOMHdrRow("ModelId"))
+                pdr = tempds.Tables("OPCONFIG_RULEHEADER").NewRow()
+                pdr("OPTM_RULECODE") = NullToInteger(iModelBOMHdrRow("rule_code"))
                 pdr("OPTM_DESCRIPTION") = NullToString(iModelBOMHdrRow("description"))
-                pdr("OPTM_READYTOUSE") = NullToString(iModelBOMHdrRow("readytouse"))
+                pdr("OPTM_EFFECTIVEFROM") = NullToString(iModelBOMHdrRow("effective_from"))
+                pdr("OPTM_EFFECTIVETO") = NullToString(iModelBOMHdrRow("effective_to"))
+                pdr("OPTM_DISCONTINUE") = NullToString(iModelBOMHdrRow("discontinue"))
+                pdr("OPTM_APPLICABLEFOR") = NullToString(iModelBOMHdrRow("applicablefor"))
                 pdr("OPTM_COMPANYID") = NullToString(iModelBOMHdrRow("CompanyDBId"))
                 pdr("OPTM_CREATEDBY") = NullToString(iModelBOMHdrRow("CreatedUser"))
                 pdr("OPTM_CREATEDDATETIME") = dtServerDate
-                tempds.Tables("OPCONFIG_MBOMHDR").Rows.Add(pdr)
+                tempds.Tables("OPCONFIG_RULEHEADER").Rows.Add(pdr)
             End If
         Next
-        'get all record from the Datatable
-        tempDtRecord = ModelBOMDL.GetAllRecordForModelBOMForCyclicCheck(psCmapnyDBID, objCmpnyInstance)
-        'These will execute and add and update datain the detail table 
-        For Each childRow As DataRow In objdsFeatureBOM.Rows
+        For Each childRow As DataRow In objdsRuleWB.Tables(1).Rows
             'get the feature id for the child table
-            Dim psChildModelId As Integer
+            Dim psChildRuleId As Integer
             'get the line id from the ui 
-            Dim psLineId As Integer
+            Dim piSeqId, piRowId As Integer
             Dim psValue As String
             'get feture id
-            psChildModelId = OptiPro.Config.Common.Utilites.NullToInteger(childRow("ModelId"))
-            'get the line id 
-            psLineId = OptiPro.Config.Common.Utilites.NullToString(childRow("rowindex"))
+            psChildRuleId = OptiPro.Config.Common.Utilites.NullToInteger(childRow("RuleId"))
+            'get the Seq id 
+            piSeqId = OptiPro.Config.Common.Utilites.NullToString(childRow("rowindex"))
+            'get the Row ID
+            piRowId = OptiPro.Config.Common.Utilites.NullToString(childRow("rowindex"))
             'new data view for the  detail table
-            tempDV = New DataView(tempds.Tables("OPCONFIG_MBOMDTL"))
+            tempDV = New DataView(tempds.Tables("OPCONFIG_RULEINPUT"))
             'filter data according to the feature id and line id 
-            tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}'and OPTM_LINENO='{1}'", psChildModelId, psLineId)
-            'psValue = OptiPro.Config.Common.Utilites.NullToString(childRow("type_value"))
-            ''------------This Code is Used to check the Cyclic Dependency for the Feature,if F1 consist F2 Then F2 cannot Consist F1
-            'If childRow("type") = 1 Then
-            '    tempDVReferalCheck = New DataView(tempDtRecord)
-            '    tempDVReferalCheck.RowFilter = StringFormat("OPTM_CHILDMODELID ='{0}' AND OPTM_MODELID ='{1}'", psChildModelId, psValue)
-
-            'End If
-            ''-------------End Of the Referal Check --------------------
+            tempDV.RowFilter = StringFormat("OPTM_RULEID ='{0}'AND OPTM_SEQID='{1}' AND OPTM_ROWID='{2}'", psChildRuleId, piSeqId, piRowId)
             If tempDV.Count > 0 Then
-                tempDV(0)("OPTM_TYPE") = childRow("type")
-                If childRow("type") = 1 Then
-                    tempDV(0)("OPTM_FEATUREID") = childRow("type_value")
-                End If
-                If childRow("type") = 2 Then
-                    tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
-                End If
-                If childRow("type") = 3 Then
-                    tempDV(0)("OPTM_CHILDMODELID") = childRow("type_value")
-                End If
+                tempDV(0)("OPTM_LINENO") = childRow("rowindex")
                 tempDV(0)("OPTM_LINENO") = childRow("rowindex")
                 tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
                 tempDV(0)("OPTM_UOM") = childRow("uom")
@@ -361,7 +400,6 @@ Public Class ModelBOMDL
                 tempDV(0)("OPTM_COMPANYID") = childRow("CompanyDBId")
                 tempDV(0)("OPTM_MODIFIEDBY") = childRow("CreatedUser")
                 tempDV(0)("OPTM_MODIFIEDDATETIME") = dtServerDate
-
             Else
                 'if no record is found then we will add new record to the table 
                 pdr = tempds.Tables("OPCONFIG_MBOMDTL").NewRow()
@@ -394,7 +432,7 @@ Public Class ModelBOMDL
             End If
         Next
         Dim seqlist1 As String = ""
-        tempDV = New DataView(objdsFeatureBOM)
+        tempDV = New DataView(objdsRuleWB.Tables(1))
         If tempDV.Count > 0 Then
             ' Filter Data According to row 
             tempDV.RowFilter = String.Format("IsNull(rowindex, 0) <> 0")

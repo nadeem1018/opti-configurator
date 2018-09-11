@@ -189,6 +189,7 @@
     <Compile Include="Controllers\ItemGenerationController.vb" />
     <Compile Include="Controllers\FeatureBOMController.vb" />
     <Compile Include="Controllers\FeatureHeaderController.vb" />
+    <Compile Include="Controllers\RueWorkBenchController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -368,9 +369,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63849</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:65399/</IISUrl>
+          <IISUrl>http://localhost:65397/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:65399/</IISAppRootUrl>
+          <IISAppRootUrl>http://localhost:65397/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

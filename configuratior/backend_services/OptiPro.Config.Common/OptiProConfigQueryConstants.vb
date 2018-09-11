@@ -73,7 +73,6 @@
 
     Public Const OptiPro_Config_GetModelList As String = "GetModelList"
     Public Const OptiPro_Config_GetModelListExceptSelectedFeature As String = "GetModelListExceptSelectedFeature"
-
     Public Const OptiPro_Config_GetPriceList As String = "GetPriceList"
     Public Const OptiPro_Config_GetDetailForModel As String = "GetDetailForModel"
     Public Const OptiPro_Config_GetSavedDataByModelIdFromHDR As String = "GetSavedDataByModelIdFromHDR"
@@ -90,6 +89,18 @@
     Public Const OptiPro_Config_DeleteDataFromDTLForModelBOM As String = "DeleteDataFromDTLForModelBOM"
     Public Const OptiPro_Config_GetDataForExplodeViewForModelBOM As String = "GetDataForExplodeViewForModelBOM"
     Public Const OptiPro_Config_GetAllRecordForModelBOMForCyclicCheck As String = "GetAllRecordForModelBOMForCyclicCheck"
+#End Region
+
+#Region "RuleWorkBench"
+    Public Const OptiPro_Config_GetAllFeatureForRuleWorkBench As String = "GetAllFeatureForRuleWorkBench"
+    Public Const OptiPro_Config_GetAllDetailsForFeature As String = "GetAllDetailsForFeature"
+    Public Const OptiPro_Config_GetAllModelsForRuleWorkBench As String = "GetAllModelsForRuleWorkBench"
+    Public Const OptiPro_Config_CheckValidModelEntered As String = "CheckValidModelEntered"
+    Public Const OptiPro_Config_CheckValidFeatureEntered As String = "CheckValidFeatureEntered"
+    Public Const OptiPro_Config_GetSavedDataFromRuleHDR As String = "GetSavedDataFromRuleHDR"
+    Public Const OptiPro_Config_GetSavedDataFromRuleInput As String = "GetSavedDataFromRuleInput"
+    Public Const OptiPro_Config_GetSavedDataFromRuleOutput As String = "GetSavedDataFromRuleOutput"
+
 
 #End Region
 
