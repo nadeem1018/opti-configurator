@@ -105,7 +105,7 @@ Public Class FeatureBOMController
 
     'FUNCTION TO UPLOAD THE PATH FO THE ATTACHAMENT 
     <HttpPost, HttpGet>
-   <Route("UploadFeatureBOMAttachments")>
+ <Route("UploadFeatureBOMAttachments")>
     Public Function UploadFeatureBOMAttachments() As String
         Dim file = HttpContext.Current.Request.Form
         Dim filePath As String = ""
@@ -115,14 +115,19 @@ Public Class FeatureBOMController
                 Dim postedFiles As HttpPostedFile = HttpContext.Current.Request.Files(idxFiles)
                 If (postedFiles.ContentLength > 0) Then
                     Dim fName As String = System.IO.Path.GetFileNameWithoutExtension(postedFiles.FileName)
-                    '  Dim pbFileExists As Boolean = System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory & "UploadFile")
+                    ' Dim pbFileExists As Boolean = System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory & "UploadFile")
                     Dim pbFileServerPath As String = AppDomain.CurrentDomain.BaseDirectory
-                    If (Not System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))) Then
-                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))
+                    If (Not System.IO.Directory.Exists(pbFileServerPath + "\assets\image\UploadFile\Image")) Then
+                        System.IO.Directory.CreateDirectory(pbFileServerPath + "\assets\image\UploadFile\Image")
                     End If
-                    filePath = HttpContext.Current.Server.MapPath("~/UploadFile/Image/" + postedFiles.FileName)
+                    'If (Not System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))) Then
+                    ' System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))
+                    'End If
+                    ' filePath = HttpContext.Current.Server.MapPath("~/UploadFile/Image/" + postedFiles.FileName)
+                    filePath = pbFileServerPath + "\assets\image\UploadFile\Image\" + postedFiles.FileName
                     postedFiles.SaveAs(filePath)
                     uploadFilePath = Split(filePath, pbFileServerPath)
+
                 End If
             Next
             Return uploadFilePath(1).ToString

@@ -196,7 +196,7 @@ Public Class SQLQuery
 
     'SQL Query to get the List of all the Features Except the Selected Feature
     Function GetFeatureListForSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"",""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
 
@@ -363,7 +363,6 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT ""OPTM_MODELID"",""OPTM_CHILDMODELID"" FROM ""OPCONFIG_MBOMDTL"""
         Return psSQL
     End Function
-
 #End Region
 
 #Region "Rule WorkBench"
