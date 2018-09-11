@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -26,24 +26,37 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public ViewData: any = [];
+    public toDelete: any = {
+    };
+
     show_table_footer: boolean = false;
+    public CheckedData: any = [];
+
+
+
+
+
+
 
     //custom dialoag params
-    public dialog_params:any = [];
-    public show_dialog:boolean = false;
-    public dialog_box_value:any;
-    public row_id:any;
-
+    public dialog_params: any = [];
+    public show_dialog: boolean = false;
+    public dialog_box_value: any;
+    public row_id: any;
+    public selectall: boolean = false;
     public GetItemData: any = [];
 
 
-    table_head_foot = ['#', 'Code', 'Final String', 'Action'];
+    table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
+        //this.CheckedData.CheckedRow=[];
+        //   this.CheckedData.CompanyDBId=[];
+
     }
     ngAfterViewInit() {
         this._el.nativeElement.focus();
@@ -58,8 +71,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
 
+    log(data) {
+        console.log(data);
+    }
+
     service_call(page_number, search) {
-        var dataset = this.itemgen.viewItemGenerationData(this.companyName,search,page_number,this.record_per_page).subscribe(
+        var dataset = this.itemgen.viewItemGenerationData(this.companyName, search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
                 console.log(dataset)
@@ -98,25 +115,25 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         // button click function in here
     }
     button_click2(id) {
-        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
-        this.show_dialog = true;    
+        this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+        this.show_dialog = true;
         this.row_id = id;
-      
-       // var result = confirm(this.language.DeleteConfimation);
+
+        // var result = confirm(this.language.DeleteConfimation);
 
     }
 
     //This will take confimation box value
-    get_dialog_value(userSelectionValue){
-        console.log("GET DUIALOG VALUE")  
-        if(userSelectionValue == true){
-                this.delete_row();
-            }
-            this.show_dialog = false;
+    get_dialog_value(userSelectionValue) {
+        console.log("GET DUIALOG VALUE")
+        if (userSelectionValue == true) {
+            this.delete_row();
+        }
+        this.show_dialog = false;
     }
 
     //delete values
-    delete_row(){
+    delete_row() {
         // console.log("YES DELETE--"+this.row_id);
         this.GetItemData = []
         this.GetItemData.push({
@@ -148,7 +165,107 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 }
             }
         )
-      }
+    }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i] == row_data) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            ItemCode: row_data,
+                            CompanyDBId: this.companyName
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    ItemCode: row_data,
+                    CompanyDBId: this.companyName
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                ItemCode: row_data,
+                CompanyDBId: this.companyName
+            })
+        }
+
+
+    }
+
+    on_Selectall_checkbox_checked(checkedvalue) {
+        var isExist = 0;
+        this.CheckedData = []
+        this.selectall = false
+
+        if (checkedvalue == true) {
+            if (this.rows.length > 0) {
+                this.selectall = true
+                for (let i = 0; i < this.rows.length; ++i) {
+
+                    this.CheckedData.push({
+                        ItemCode: this.rows[i][2],
+                        CompanyDBId: this.companyName
+                    })
+                }
+            }
+
+
+
+        }
+        else {
+            this.selectall = false
+        }
+
+
+
+
+    }
+
+    delete() {
+        if (this.CheckedData.length > 0) {
+            //for (let i = 0; i < this.CheckedData.length; ++i) {
+            this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
+                data => {
+                    if (data == "True") {
+                        this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                        return;
+                    }
+                    else {
+                        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+                            data => {
+                                if (data === "True") {
+                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                    this.service_call(this.current_page, this.search_string);
+                                    this.router.navigateByUrl('item-code-generation/view');
+                                    return;
+                                }
+                                else {
+                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                    return;
+                                }
+                            }
+                        )
+                    }
+                }
+            )
+            // }
+        }
+        else {
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+
+    }
+
+
 
 
 }

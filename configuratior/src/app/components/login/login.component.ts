@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
       this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
       return;
     } 
-    sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
+    sessionStorage.setItem('selectedComp', "SFDCDB");
     sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
     //sessionStorage.setItem('selectedWhse',this.warehouseName);
     sessionStorage.setItem('isLoggedIn', "true");
@@ -132,6 +132,8 @@ export class LoginComponent implements OnInit {
           //For code analysis remove in live enviorments.
            this.psURL = "http://localhost:57962";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
+
+          sessionStorage.setItem('psURL', this.psURL);
         }
       }
     )
@@ -158,7 +160,7 @@ export class LoginComponent implements OnInit {
       else{
         //if No companies are retriving then we will consider that user have no company assignment
        // alert("You Don't have Permission to Access this Product");
-        this.toastr.success('', this.language.isUserPermitted, this.commonData.toast_config);
+        this.toastr.error('', this.language.isUserPermitted, this.commonData.toast_config);
       }
       }
     )

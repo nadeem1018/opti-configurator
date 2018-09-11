@@ -632,7 +632,7 @@ Public Class FeatureBOMDL
             Dim psCompanyDBId As String
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
-           
+
             'Used To The Company Instance
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -691,12 +691,10 @@ Public Class FeatureBOMDL
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Get the Company Name
             psCompanyDBId = NullToString(ObjDataTable.Rows(0)("CompanyDBId"))
-           
             'Company Connection
             pObjCompany.CompanyDbName = psCompanyDBId
             'get the the Item Code Key 
             psFeatureid = ObjDataTable.Rows(0).Item("FeatureId")
-
             pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
@@ -710,7 +708,6 @@ Public Class FeatureBOMDL
             psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataByFeatureCodeFromHDR)
             'This method will fill the same dataset with table ParentTable
             ObjIConnection.FillDataset(psSQLHDR, CommandType.Text, dsRecord, "OPCONFIG_FEATUREBOMHDR", pSqlParam)
-
             psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetSavedDataByFeatureCodeFromDTL)
             'This method will fill the same dataset with table ParentTable
             ObjIConnection.FillDataset(psSQLDTL, CommandType.Text, dsRecord, "OPCONFIG_FEATUREBOMDTL", pSqlParam)
@@ -742,16 +739,15 @@ Public Class FeatureBOMDL
         Dim dtServerDate As DateTime
         'Get the Company DB 
         Dim psCmapnyDBID As String = NullToString(objdsFeatureBOM.Rows(0)("CompanyDBId"))
-
         ' Dim psCmapnyDBID As String = "DEVQAS2BRANCHING"
-
         'Function to get the Server Date Time
         pdtServerDate = BaseDL.GetServerDate(psCmapnyDBID, objCmpnyInstance)
         'Get Server Date
         dtServerDate = pdtServerDate.Rows(0)("DATEANDTIME")
         'get the DataView
         Dim tempDV As DataView = Nothing
-
+        Dim tempDVReferalCheck As DataView = Nothing
+        Dim tempDtRecord As DataTable
         For Each iFeaturetHdrRow As DataRow In objdsFeatureBOM.Rows
             'get Item Code
             psFeatureId = OptiPro.Config.Common.Utilites.NullToInteger(iFeaturetHdrRow("FeatureId"))
@@ -770,10 +766,13 @@ Public Class FeatureBOMDL
                 tempds.Tables("OPCONFIG_FEATUREBOMHDR").Rows.Add(pdr)
             End If
         Next
+        'get all record from the Datatable
+        tempDtRecord = GetAllRecordForCyclicCheck(psCmapnyDBID, objCmpnyInstance)
         'These will execute and add and update datain the detail table 
         For Each childRow As DataRow In objdsFeatureBOM.Rows
             'get the feature id for the child table
             Dim psChildFeatureId As Integer
+            Dim psvalue As String
             'get the line id from the ui 
             Dim psLineId As Integer
             'get feture id
@@ -784,90 +783,93 @@ Public Class FeatureBOMDL
             tempDV = New DataView(tempds.Tables("OPCONFIG_FEATUREBOMDTL"))
             'filter data according to the feature id and line id 
             tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'and OPTM_LINENO='{1}'", psChildFeatureId, psLineId)
-            ' tempDV.RowFilter = StringFormat("OPTM_CODE ='{0}'and OPTM_LINEID= '{1}'", psItemCode, piLineID)
-            'if data is already present then we willupdate the data 
-            If tempDV.Count > 0 Then
-                ''feature id
-                tempDV(0)("OPTM_FEATUREID") = childRow("FeatureId")
-                'type may be item or odel
-                tempDV(0)("OPTM_TYPE") = childRow("type")
-                'get the line number
-                tempDV(0)("OPTM_LINENO") = childRow("rowindex")
-                'get the child feature id 
-                If childRow("type") = 1 Then
-                    tempDV(0)("OPTM_CHILDFEATUREID") = childRow("type_value")
-                End If
-                If childRow("type") = 2 Then
-                    tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
+            'get the value for the value
+            psvalue = OptiPro.Config.Common.Utilites.NullToString(childRow("type_value"))
+            ''------------This Code is Used to check the Cyclic Dependency for the Feature,if F1 consist F2 Then F2 cannot Consist F1
+            'If childRow("type") = 1 Then
+            '    tempDVReferalCheck = New DataView(tempDtRecord)
+            '    tempDVReferalCheck.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}' AND OPTM_FEATUREID ='{1}'", psFeatureId, psvalue)
+            'End If
+            ''-------------End Of the Referal Check --------------------
+            'If the no record present then we will add and update 
+            If tempDVReferalCheck.Count = 0 Then
+                'if data is already present then we willupdate the data 
+                If tempDV.Count > 0 Then
+                    ''feature id
+                    tempDV(0)("OPTM_FEATUREID") = childRow("FeatureId")
+                    'type may be item or odel
+                    tempDV(0)("OPTM_TYPE") = childRow("type")
+                    'get the line number
+                    tempDV(0)("OPTM_LINENO") = childRow("rowindex")
+                    'get the child feature id 
+                    If childRow("type") = 1 Then
+                        tempDV(0)("OPTM_CHILDFEATUREID") = childRow("type_value")
+                    End If
+                    If childRow("type") = 2 Then
+                        tempDV(0)("OPTM_ITEMKEY") = childRow("type_value")
+                    Else
+                        tempDV(0)("OPTM_ITEMKEY") = ""
+                    End If
+                    If childRow("type") = 3 Then
+                        tempDV(0)("OPTM_VALUE") = childRow("type_value")
+                    Else
+                        tempDV(0)("OPTM_VALUE") = ""
+                    End If
+                    'get the display name 
+                    tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
+                    'get attachment ppath
+                    If childRow.Table.Columns.Contains("attachment") Then
+                        tempDV(0)("OPTM_ATTACHMENT") = childRow("attachment")
+                    Else
+                        tempDV(0)("OPTM_ATTACHMENT") = ""
+                    End If
+                    'get the Remarks
+                    If childRow.Table.Columns.Contains("attachment") Then
+                        'get the remarks
+                        tempDV(0)("OPTM_REMARKS") = childRow("remark")
+                    Else
+                        tempDV(0)("OPTM_REMARKS") = ""
+                    End If
+                    'get company id
+                    tempDV(0)("OPTM_COMPANYID") = childRow("CompanyDBId")
+                    'get created user
+                    tempDV(0)("OPTM_CREATEDBY") = childRow("createduser")
+                    'get created date time 
+                    tempDV(0)("OPTM_CREATEDATETIME") = dtServerDate
+                    'get the Quantity
+                    tempDV(0)("OPTM_Quantity") = childRow("quantity")
                 Else
-                    tempDV(0)("OPTM_ITEMKEY") = ""
+                    'if no record is found then we will add new record to the table 
+                    pdr = tempds.Tables("OPCONFIG_FEATUREBOMDTL").NewRow()
+                    'get the feature id
+                    pdr("OPTM_FEATUREID") = childRow("FeatureId")
+                    pdr("OPTM_TYPE") = childRow("type")
+                    If childRow("type") = 1 Then
+                        pdr("OPTM_CHILDFEATUREID") = childRow("type_value")
+                    End If
+                    If childRow("type") = 2 Then
+                        pdr("OPTM_ITEMKEY") = childRow("type_value")
+                    Else
+                        pdr("OPTM_ITEMKEY") = ""
+                    End If
+                    If childRow("type") = 3 Then
+                        pdr("OPTM_VALUE") = childRow("type_value")
+                    Else
+                        pdr("OPTM_VALUE") = ""
+                    End If
+                    pdr("OPTM_LINENO") = childRow("rowindex")
+                    pdr("OPTM_DISPLAYNAME") = childRow("display_name")
+                    pdr("OPTM_DEFAULT") = childRow("default")
+                    pdr("OPTM_REMARKS") = childRow("remark")
+                    pdr("OPTM_ATTACHMENT") = childRow("attachment")
+                    pdr("OPTM_COMPANYID") = childRow("CompanyDBId")
+                    pdr("OPTM_CREATEDBY") = childRow("CreatedUser")
+                    pdr("OPTM_CREATEDATETIME") = dtServerDate
+                    pdr("OPTM_QUANTITY") = childRow("quantity")
+                    tempds.Tables("OPCONFIG_FEATUREBOMDTL").Rows.Add(pdr)
                 End If
-                If childRow("type") = 3 Then
-                    tempDV(0)("OPTM_VALUE") = childRow("type_value")
-                Else
-                    tempDV(0)("OPTM_VALUE") = ""
-                End If
-                'get the display name 
-                tempDV(0)("OPTM_DISPLAYNAME") = childRow("display_name")
-
-                'get attachment ppath
-                If childRow.Table.Columns.Contains("attachment") Then
-                    tempDV(0)("OPTM_ATTACHMENT") = childRow("attachment")
-                Else
-                    tempDV(0)("OPTM_ATTACHMENT") = ""
-                End If
-
-                'get the Remarks
-                If childRow.Table.Columns.Contains("attachment") Then
-                    'get the remarks
-                    tempDV(0)("OPTM_REMARKS") = childRow("remark")
-                Else
-                    tempDV(0)("OPTM_REMARKS") = ""
-                End If
-
-
-                'get company id
-                tempDV(0)("OPTM_COMPANYID") = childRow("CompanyDBId")
-                'get created user
-                tempDV(0)("OPTM_CREATEDBY") = childRow("createduser")
-                'get created date time 
-                tempDV(0)("OPTM_CREATEDATETIME") = dtServerDate
-                'get the Quantity
-                tempDV(0)("OPTM_Quantity") = childRow("quantity")
-            Else
-                'if no record is found then we will add new record to the table 
-                pdr = tempds.Tables("OPCONFIG_FEATUREBOMDTL").NewRow()
-                'get the feature id
-                pdr("OPTM_FEATUREID") = childRow("FeatureId")
-                pdr("OPTM_TYPE") = childRow("type")
-
-                If childRow("type") = 1 Then
-                    pdr("OPTM_CHILDFEATUREID") = childRow("type_value")
-                End If
-                If childRow("type") = 2 Then
-                    pdr("OPTM_ITEMKEY") = childRow("type_value")
-                Else
-                    pdr("OPTM_ITEMKEY") = ""
-                End If
-                If childRow("type") = 3 Then
-                    pdr("OPTM_VALUE") = childRow("type_value")
-                Else
-                    pdr("OPTM_VALUE") = ""
-                End If
-                pdr("OPTM_LINENO") = childRow("rowindex")
-                pdr("OPTM_DISPLAYNAME") = childRow("display_name")
-                pdr("OPTM_DEFAULT") = childRow("default")
-
-                pdr("OPTM_REMARKS") = childRow("remark")
-                pdr("OPTM_ATTACHMENT") = childRow("attachment")
-                pdr("OPTM_COMPANYID") = childRow("CompanyDBId")
-                pdr("OPTM_CREATEDBY") = childRow("CreatedUser")
-                pdr("OPTM_CREATEDATETIME") = dtServerDate
-                pdr("OPTM_QUANTITY") = childRow("quantity")
-                tempds.Tables("OPCONFIG_FEATUREBOMDTL").Rows.Add(pdr)
             End If
         Next
-
         Dim seqlist1 As String = ""
         tempDV = New DataView(objdsFeatureBOM)
         If tempDV.Count > 0 Then
@@ -899,11 +901,7 @@ Public Class FeatureBOMDL
                 tempRow = deletedFGDV(fgRowCnt).Row
                 tempRow.Delete()
             Next
-
         End If
-
-
-
     End Sub
     'This method will help to Update the Data set into the Database
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
@@ -919,16 +917,10 @@ Public Class FeatureBOMDL
             Return False
         End Try
     End Function
-
-
-
 #End Region
 
 
-
-
     Public Shared Function GetDataForCommonView(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
-
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
@@ -942,10 +934,8 @@ Public Class FeatureBOMDL
                 'if there is no Column then we will be Coonsider page Limit as 25 
                 piPageLimit = 25
             End If
-
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
             'psCompanyDBId = "DEVQAS2BRANCHING"
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -1004,7 +994,6 @@ Public Class FeatureBOMDL
                 psSQL = psSQL.Replace("@ENDCOUNT", piEndCount)
                 'here we need to Replace the Serach String 
                 psSQL = psSQL.Replace("@SEARCHSTRING", psSearchString)
-
             Else
                 Dim pSqlParam(2) As MfgDBParameter
                 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
@@ -1033,6 +1022,8 @@ Public Class FeatureBOMDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(Integer))
+            'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("#", GetType(Integer))
             'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("ID", GetType(String))
@@ -1044,7 +1035,7 @@ Public Class FeatureBOMDL
             Dim Counter As Integer = 1
             'Loop to Insert Value to Action and Sequence 
             For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"))
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"))
                 Counter = Counter + 1
             Next
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
@@ -1052,7 +1043,6 @@ Public Class FeatureBOMDL
             Dim rows As New Collection
             Dim final_array As New Collection
             Dim row As Dictionary(Of String, Object) = Nothing
-
             For Each dr As DataRow In objdtOrderedData.Rows
                 Dim temp_array As New Collection
                 row = New Dictionary(Of String, Object)()
@@ -1096,19 +1086,45 @@ Public Class FeatureBOMDL
         Return Nothing
     End Function
 
+
+    Public Shared Function GetAllRecordForCyclicCheck(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsRecord As DataSet
+            'Get the Company Name
+            psCompanyDBId = objCompanyDBID
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllRecordForCyclicCheck)
+            pdsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return pdsRecord.Tables(0)
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+
     Public Shared Function GetDataByFeatureID(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataSet
 
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQLHDR As String = String.Empty
             Dim psSQLDTL As String = String.Empty
-
             Dim dsRecord As New DataSet
             'VARIABLE TO GET THE ITEM CODE
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
             'get the ItemCode name  
             psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
@@ -1151,9 +1167,6 @@ Public Class FeatureBOMDL
             Dim psFeatureId As Integer
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
-            'get the ItemCode name  
-            psFeatureId = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -1162,25 +1175,30 @@ Public Class FeatureBOMDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@FEATUREID"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(0).Paramvalue = psFeatureId
-            ' Get the Query on the basis of objIQuery
-            psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromHDR)
-            iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
-            If iDeleteRecordHDR > 0 Then
-                psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromDTL)
-                iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
-                If iDeleteRecordDTL > 0 Then
-                    psStatus = "True"
-                Else
-                    psStatus = "False"
-                End If
 
-            End If
+            For iRecord As Integer = 0 To objDataTable.Rows.Count - 1
+                'get the ItemCode name  
+                psFeatureId = NullToInteger(objDataTable.Rows(iRecord)("FeatureId"))
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@FEATUREID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(0).Paramvalue = psFeatureId
+                ' Get the Query on the basis of objIQuery
+                psSQLHDR = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromHDR)
+                iDeleteRecordHDR = (ObjIConnection.ExecuteNonQuery(psSQLHDR, CommandType.Text, pSqlParam))
+                If iDeleteRecordHDR > 0 Then
+                    psSQLDTL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteDataFromDTL)
+                    iDeleteRecordDTL = (ObjIConnection.ExecuteNonQuery(psSQLDTL, CommandType.Text, pSqlParam))
+                    If iDeleteRecordDTL > 0 Then
+                        psStatus = "True"
+                    Else
+                        psStatus = "False"
+                    End If
+                End If
+            Next
+
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -1193,12 +1211,11 @@ Public Class FeatureBOMDL
     Public Shared Function GetDataForExplodeViewForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
-            Dim psFeatureID As Integer
+            Dim psFeatureID As String = NullToString(objDataTable.Rows(0)("FeatureID"))
             Dim psSQL As String = String.Empty
             Dim pdsFeatureDetail As DataSet
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
             'Get the Feature ID From the Datatable 
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
@@ -1224,95 +1241,122 @@ Public Class FeatureBOMDL
             'Add Column 
             objdtOrderedData.Columns.Add("level", GetType(String))
             Dim counter As Integer = 1
+            'For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
+            '    'variable to get parent Feature ID
+            '    Dim tempParentFeatureID As Integer
+            '    'variable to get Item key 
+            '    Dim tempitemkey As String
+            '    'avariable to get value for Item Value
+            '    Dim tempvalue As String
+            '    tempParentFeatureID = NullToInteger(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_FEATUREID"))
+            '    tempitemkey = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_ITEMKEY")))
+            '    tempvalue = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_VALUE")))
+            '    Dim tempChildId As String = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"))
+            '    'dataView
+            '    Dim tempDV As DataView
+            '    Dim tempDV1, tempDataView2, tempDataView3 As DataView
+            '    'get the data from the Parent Table 
+            '    tempDV = New DataView(pdsFeatureDetail.Tables(0))
+            '    'Filter the Data  According  to Feature ID
+            '    tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", tempParentFeatureID)
+            '    'filter the Data According to the Child Feature ID from the table 
+            '    tempDataView2 = New DataView(pdsFeatureDetail.Tables(0))
+            '    tempDataView2.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}'", tempParentFeatureID)
+            '    'Filter the Data which we are Making and Find the Count of it 
+            '    tempDataView3 = New DataView(objdtOrderedData)
+            '    tempDataView3.RowFilter = StringFormat("component ='{0}' ", tempParentFeatureID)
+            '    Dim tempDVCount As Integer = tempDataView3.Count - 1
 
-            For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
-                'variable to get parent Feature ID
-                Dim tempParentFeatureID As Integer
-                'variable to get Item key 
-                Dim tempitemkey As String
-                'avariable to get value for Item Value
-                Dim tempvalue As String
-                tempParentFeatureID = NullToInteger(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_FEATUREID"))
-                tempitemkey = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_ITEMKEY")))
-                tempvalue = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_VALUE")))
-                Dim tempChildId As String = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDFEATUREID"))
-                'dataView
-                Dim tempDV As DataView
-                Dim tempDV1, tempDataView2, tempDataView3 As DataView
-                'get the data from the Parent Table 
+            '    If tempDataView3.Count = 0 Then
+            '        tempDVCount = 0
+            '    Else
+            '        tempDVCount = tempDataView3.Count - 1
+            '    End If
+
+            '    'this will get all the Parents with parent ID as blank 
+            '    If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
+            '        objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
+            '        counter = counter + 1
+            '    End If
+
+            '    If tempChildId.Length = 0 Then
+            '        If tempitemkey.Length > 0 Then
+            '            tempChildId = tempitemkey
+            '        Else
+            '            tempChildId = tempvalue
+            '        End If
+            '    End If
+            '    tempDV1 = New DataView(objdtOrderedData)
+            '    tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentFeatureID)
+            '    Dim piLevel As Integer = 1
+            '    'if tempDVView Count 
+            '    If tempDataView3.Count > 0 Then
+            '        piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
+            '    End If
+
+            '    If tempDV1.Count = 0 Then
+            '        If tempDV.Count > 0 Then
+            '            For iChildRecord As Integer = 0 To tempDV.Count - 1
+            '                'piLevel = piLevel + 1
+            '                Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_FEATUREID"))
+            '                Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDFEATUREID")))
+            '                If (psChildID.Length > 0) Then
+            '                    objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDFEATUREID"), piLevel)
+            '                    counter = counter + 1
+            '                ElseIf NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY").Length > 0)) Then
+            '                    objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_ITEMKEY"), piLevel)
+            '                    counter = counter + 1
+            '                ElseIf NullToString((tempDV(iChildRecord)("OPTM_VALUE").Length > 0)) Then
+            '                    objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_VALUE"), piLevel)
+            '                    counter = counter + 1
+            '                End If
+            '            Next
+            '            'Else
+            '            '    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
+            '            '    counter = counter + 1
+            '        End If
+            '    End If
+            '    If (tempitemkey.Length > 0) And tempDataView3.Count = 0 Then
+
+            '        piLevel = piLevel + 1
+            '        objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempitemkey, piLevel)
+            '        counter = counter + 1
+            '    ElseIf (tempvalue.Length > 0) And tempDataView3.Count = 0 Then
+            '        piLevel = piLevel + 1
+            '        objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempvalue, piLevel)
+            '        counter = counter + 1
+            '    End If
+            'Next
+            Dim tempDV As DataView
+            Dim psChildFeatureID As String
+            Dim piLevel As Integer = 0
+            'to fill for the Parent dATA 
+            objdtOrderedData.Rows.Add(counter, "", psFeatureID, 0)
+            counter = counter + 1
+            For iRecordDetail As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
+                piLevel = piLevel + 1
                 tempDV = New DataView(pdsFeatureDetail.Tables(0))
-                'Filter the Data  According  to Feature ID
-                tempDV.RowFilter = StringFormat("OPTM_FEATUREID ='{0}'", tempParentFeatureID)
-
-                tempDataView2 = New DataView(pdsFeatureDetail.Tables(0))
-                tempDataView2.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}'", tempParentFeatureID)
-
-                tempDataView3 = New DataView(objdtOrderedData)
-                tempDataView3.RowFilter = StringFormat("component ='{0}' ", tempParentFeatureID)
-                Dim tempDVCount As Integer = tempDataView3.Count - 1
-
-                If tempDataView3.Count = 0 Then
-                    tempDVCount = 0
-                Else
-                    tempDVCount = tempDataView3.Count - 1
-                End If
-
-
-                If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
-                    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
-                    counter = counter + 1
-                End If
-                If tempChildId.Length = 0 Then
-                    If tempitemkey.Length > 0 Then
-                        tempChildId = tempitemkey
-                    Else
-                        tempChildId = tempvalue
-                    End If
-                End If
-                tempDV1 = New DataView(objdtOrderedData)
-                tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentFeatureID)
-                Dim piLevel As Integer = 1
-                If tempDataView3.Count > 0 Then
-                    piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
-                End If
-
-                If tempDV1.Count = 0 Then
-                    If tempDV.Count > 0 Then
-
-                        For iChildRecord As Integer = 0 To tempDV.Count - 1
-                            'piLevel = piLevel + 1
-                            Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_FEATUREID"))
-                            Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDFEATUREID")))
-                            If (psChildID.Length > 0) Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDFEATUREID"), piLevel)
-                                counter = counter + 1
-                            ElseIf NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY").Length > 0)) Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_ITEMKEY"), piLevel)
-                                counter = counter + 1
-                            ElseIf NullToString((tempDV(iChildRecord)("OPTM_VALUE").Length > 0)) Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_VALUE"), piLevel)
-                                counter = counter + 1
-                            End If
-                        Next
-                        'Else
-                        '    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
-                        '    counter = counter + 1
-                    End If
-                End If
-                If (tempitemkey.Length > 0) And tempDataView3.Count = 0 Then
-
-                    piLevel = piLevel + 1
-                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempitemkey, piLevel)
-                    counter = counter + 1
-                ElseIf (tempvalue.Length > 0) And tempDataView3.Count = 0 Then
-                    piLevel = piLevel + 1
-                    objdtOrderedData.Rows.Add(counter, tempParentFeatureID, tempvalue, piLevel)
-                    counter = counter + 1
+                tempDV.RowFilter = String.Format("OPTM_FEATUREID IN (" & psFeatureID & ")")
+                'to fill Parent record 
+                If tempDV.Count > 0 Then
+                    psFeatureID = "0"
+                    For irecord As Integer = 0 To tempDV.Count - 1
+                        If NullToString(tempDV(irecord)("OPTM_ITEMKEY")).Length > 0 Then
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_FEATUREID"), tempDV(irecord)("OPTM_ITEMKEY"), piLevel)
+                            counter = counter + 1
+                        ElseIf NullToString(tempDV(irecord)("OPTM_VALUE")).Length > 0 Then
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_FEATUREID"), tempDV(irecord)("OPTM_VALUE"), piLevel)
+                            counter = counter + 1
+                        Else
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_FEATUREID"), tempDV(irecord)("OPTM_CHILDFEATUREID"), piLevel)
+                            counter = counter + 1
+                            psChildFeatureID = tempDV(irecord)("OPTM_CHILDFEATUREID")
+                            psFeatureID = psFeatureID & "," & "'" & psChildFeatureID & "'"
+                        End If
+                    Next
                 End If
             Next
             Return objdtOrderedData
-
-
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try
@@ -1320,6 +1364,47 @@ Public Class FeatureBOMDL
     End Function
 
 
+    Public Shared Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psFeatureId As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name  
+            psFeatureId = NullToString(objDataTable.Rows(0)("FeatureId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@FEATUREID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psFeatureId
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidFeatureIdEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
 
 
     ''' <summary>

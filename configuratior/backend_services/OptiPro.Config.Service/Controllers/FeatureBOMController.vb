@@ -102,4 +102,45 @@ Public Class FeatureBOMController
     Public Function GetDataForExplodeViewForFeatureBOM(ByVal oGetData As FeatureBOMModel) As DataTable
         Return FeatureBOMBL.GetDataForExplodeViewForFeatureBOM(oGetData)
     End Function
+
+    'FUNCTION TO UPLOAD THE PATH FO THE ATTACHAMENT 
+    <HttpPost, HttpGet>
+ <Route("UploadFeatureBOMAttachments")>
+    Public Function UploadFeatureBOMAttachments() As String
+        Dim file = HttpContext.Current.Request.Form
+        Dim filePath As String = ""
+        Dim uploadFilePath As String()
+        Try
+            For idxFiles As Integer = 0 To HttpContext.Current.Request.Files.Count - 1
+                Dim postedFiles As HttpPostedFile = HttpContext.Current.Request.Files(idxFiles)
+                If (postedFiles.ContentLength > 0) Then
+                    Dim fName As String = System.IO.Path.GetFileNameWithoutExtension(postedFiles.FileName)
+                    ' Dim pbFileExists As Boolean = System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory & "UploadFile")
+                    Dim pbFileServerPath As String = AppDomain.CurrentDomain.BaseDirectory
+                    If (Not System.IO.Directory.Exists(pbFileServerPath + "\assets\image\UploadFile\Image")) Then
+                        System.IO.Directory.CreateDirectory(pbFileServerPath + "\assets\image\UploadFile\Image")
+                    End If
+                    'If (Not System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))) Then
+                    ' System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/UploadFile/Image"))
+                    'End If
+                    ' filePath = HttpContext.Current.Server.MapPath("~/UploadFile/Image/" + postedFiles.FileName)
+                    filePath = pbFileServerPath + "\assets\image\UploadFile\Image\" + postedFiles.FileName
+                    postedFiles.SaveAs(filePath)
+                    uploadFilePath = Split(filePath, pbFileServerPath)
+
+                End If
+            Next
+            Return uploadFilePath(1).ToString
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from File Upload " & ex.Message)
+        End Try
+        Return False
+    End Function
+
+    <HttpPost, HttpGet>
+<Route("CheckValidFeatureIdEnteredForFeatureBOM")>
+    Public Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal oGetData As FeatureBOMModel) As String
+        Return FeatureBOMBL.CheckValidFeatureIdEnteredForFeatureBOM(oGetData)
+    End Function
+
 End Class

@@ -145,9 +145,6 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
-            'get the ItemCode name  
-            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             'Assign the DB Name
@@ -158,21 +155,26 @@ Public Class ItemGenerationDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            Dim pSqlParam(1) As MfgDBParameter
-            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@ITEMCODE"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
-            pSqlParam(0).Paramvalue = psItemCode
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteItemGenerationCode)
-            'Execute the Query 
-            iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
-            If iDelete > 0 Then
-                psStatus = "True"
-            Else
-                psStatus = "False"
-            End If
+            For irecord As Integer = 0 To objDataTable.Rows.Count - 1
+                'get the ItemCode name  
+                psItemCode = NullToString(objDataTable.Rows(irecord)("ItemCode"))
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@ITEMCODE"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(0).Paramvalue = psItemCode
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteItemGenerationCode)
+                'Execute the Query 
+                iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
+                If iDelete > 0 Then
+                    psStatus = "True"
+                Else
+                    psStatus = "False"
+                End If
+            Next
+
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -684,6 +686,8 @@ Public Class ItemGenerationDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(String))
+            'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("#", GetType(Integer))
             'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("Code", GetType(String))
@@ -694,7 +698,7 @@ Public Class ItemGenerationDL
             Dim Counter As Integer = 1
             'Loop to Insert Value to Action and Sequence 
             For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("Code"), pdsItemData.Tables(0).Rows(irow)("FinalString"), pdsItemData.Tables(0).Rows(irow)("Code"))
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("Code"), Counter, pdsItemData.Tables(0).Rows(irow)("Code"), pdsItemData.Tables(0).Rows(irow)("FinalString"), pdsItemData.Tables(0).Rows(irow)("Code"))
                 Counter = Counter + 1
             Next
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
@@ -731,7 +735,6 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany

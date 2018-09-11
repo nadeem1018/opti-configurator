@@ -71,6 +71,13 @@ OptiPro.Config.Service
 	<summary>
  This is used to identify the place where the sample should be applied.
  </summary>
+</member><member name="M:OptiPro.Config.Service.RuleWorkBenchController.GetAllFeatureForRuleWorkBench(OptiPro.Config.Entity.RuleWorkBenchModel)">
+	<summary>
+ vb Controller to get the List of all the Feture from the Fature Header
+ </summary>
+	<param name="oFeatureList"></param>
+	<returns></returns>
+	<remarks></remarks>
 </member><member name="T:OptiPro.Config.Service.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
 	<summary>
  Generates model descriptions for given types.

@@ -68,6 +68,7 @@
     <Compile Include="Models\FeatureHeaderModel.vb" />
     <Compile Include="Models\FeatureBOMModel.vb" />
     <Compile Include="Models\ItemGenerationModel.vb" />
+    <Compile Include="Models\RuleWorkBenchModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

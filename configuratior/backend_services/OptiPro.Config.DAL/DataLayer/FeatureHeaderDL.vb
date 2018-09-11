@@ -240,7 +240,7 @@ Public Class FeatureHeaderDL
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Shared Function DeleteFeatures(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
-        Dim psStatus As String
+        Dim psStatus As String = String.Empty
         Try
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
@@ -249,8 +249,6 @@ Public Class FeatureHeaderDL
             Dim ChkReferenceForFeature As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-            'get the Display NAme 
-            psFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -259,30 +257,29 @@ Public Class FeatureHeaderDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-
-            ChkReferenceForFeature = ChkReferenceForFeatureID(objDataTable, objCmpnyInstance)
-            If (ChkReferenceForFeature = "True") Then
-                psStatus = "Reference Already Exist in Feature BOM or Model BOM"
-                Return psStatus
-            End If
-
-
-
-            Dim pSqlParam(1) As MfgDBParameter'Parameter 0 consisting warehouse and it's datatype will be nvarchar
-            pSqlParam(0) = New MfgDBParameter
-            pSqlParam(0).ParamName = "@FEATUREID"
-            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
-            pSqlParam(0).Paramvalue = psFeatureID
-
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteFeatures)
-
-            iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
-            If iDelete > 0 Then
-                psStatus = "True"
-            Else
-                psStatus = "False"
-            End If
+            For iRecord As Integer = 0 To objDataTable.Rows.Count - 1
+                'get the Display NAme 
+                psFeatureID = NullToInteger(objDataTable.Rows(iRecord)("FeatureId"))
+                'check for efrence if Already Exists 
+                ChkReferenceForFeature = ChkReferenceForFeatureID(psFeatureID, psCompanyDBId, objCmpnyInstance)
+                If (ChkReferenceForFeature = "True") Then
+                    psStatus = "Reference Already Exist in Feature BOM or Model BOM for ID :" + (psFeatureID).ToString
+                    Return psStatus
+                End If
+                Dim pSqlParam(1) As MfgDBParameter 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@FEATUREID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+                pSqlParam(0).Paramvalue = psFeatureID
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_DeleteFeatures)
+                iDelete = (ObjIConnection.ExecuteNonQuery(psSQL, CommandType.Text, pSqlParam))
+                If iDelete > 0 Then
+                    psStatus = "True"
+                Else
+                    psStatus = "False"
+                End If
+            Next
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -963,7 +960,7 @@ Public Class FeatureHeaderDL
     End Function
 
 
-    Public Shared Function ChkReferenceForFeatureID(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+    Public Shared Function ChkReferenceForFeatureID(ByVal objFeatureID As Integer, ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
         Dim psStatus As String = String.Empty
         Try
             Dim psCompanyDBId As String = String.Empty
@@ -972,9 +969,9 @@ Public Class FeatureHeaderDL
             Dim piFeatureID As Integer
             Dim pdsGetDataFBOM, pdsGetDataMBOM As DataSet
             'Get the Company Name
-            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = objCompanyDBID
             'get the Search String
-            piFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
+            piFeatureID = objFeatureID
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -1030,7 +1027,7 @@ Public Class FeatureHeaderDL
                     psStatus = "False"
                 End If
             End If
-           
+
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)

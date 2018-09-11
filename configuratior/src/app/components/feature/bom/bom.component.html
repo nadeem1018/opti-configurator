@@ -49,7 +49,16 @@
                  <div class="form-group row clearfix">
                      <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                      <div class="col-sm-4">
-                         <input type="text" name='image_path' readonly class="form-control  form-control-sm mt3-file" id="image" [(ngModel)] ="feature_bom_data.image_path">
+                        <div class="row image_data" *ngIf="showImageBlock">
+                            <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" >
+                              <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
+                                <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                              </a>
+                            </div>
+                          </div>
+                            <!-- <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  /> -->
+
+                           
                      </div>
                  </div>
    
@@ -134,8 +143,7 @@
                                
                                </td>
                                <td>
-                                   <input type="file" class="form-control  form-control-sm mt3" id="attachment" value={{row.attachment}} #attachment />
-                               
+                                   <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname"  #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)" />
                                </td>
                                  <td>
                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
@@ -146,7 +154,17 @@
                              </tbody>
                              </table>
                      </div>
-                   </div>    
+                   </div>  
+                   <hr>
+          <div class="clearfix"></div>
+          <div class="row image_data" *ngIf="showImageBlock">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of image_data" style="width: 100px;">
+              <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
+                <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="clearfix"></div>  
          </div>
          <div class="card-footer small text-muted">
              <div class="footer-buttons">
@@ -191,3 +209,7 @@
 
 
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"></app-lookup>
+
+
+<!--Custom Dialog-->
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
