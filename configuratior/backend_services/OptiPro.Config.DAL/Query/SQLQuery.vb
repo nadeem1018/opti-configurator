@@ -363,4 +363,62 @@ Public Class SQLQuery
 
 #End Region
 
+#Region "Rule WorkBench"
+
+    Function GetAllFeatureForRuleWorkBench() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"",""OPTM_FEATURECODE"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE""='Feature'"
+        Return psSQL
+    End Function
+
+    Function GetAllModelsForRuleWorkBench() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_DISPLAYNAME"",""OPTM_FEATURECODE"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE""='Model'"
+        Return psSQL
+    End Function
+
+    Function GetAllDetailsForFeature() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_FEATUREBOMDTL"""
+        Return psSQL
+    End Function
+
+    Function CheckValidModelEntered() As String
+        Dim psSQL As String = "SELECT COUNT(""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@MODELID"
+        Return psSQL
+    End Function
+
+    Function CheckValidFeatureEntered() As String
+        Dim psSQL As String = "SELECT COUNT(""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_FEATUREID""=@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataFromRuleHDR() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_RULEHEADER"" WHERE ""OPTM_RULEID""=@RULEID"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataFromRuleInput() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_RULEINPUT"" WHERE ""OPTM_RULEID""=@RULEID"
+        Return psSQL
+    End Function
+
+    Function GetSavedDataFromRuleOutput() As String
+        Dim psSQL As String = "SELECT * FROM ""OPCONFIG_RULEOUTPUT"" WHERE ""OPTM_RULEID""=@RULEID"
+        Return psSQL
+    End Function
+
+    Function GetRuleIDByGUID() As String
+        Dim psSQL As String = "SELECT ""OPTM_RULEID"" FROM ""OPCONFIG_RULEHEADER"" WHERE ""OPTM_GUID""=@GUID"
+        Return psSQL
+    End Function
+
+    Function GetItemMasterDataforRuleWB() As String
+        Dim psSQL As String = "SELECT * FROM ""OPConfig_ItemMaster"""
+        Return psSQL
+    End Function
+
+
+
+
+#End Region
+
+
 End Class

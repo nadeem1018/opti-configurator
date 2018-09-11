@@ -1,25 +1,3 @@
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll.config
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.pdb
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbprojResolveAssemblyReference.cache
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.Resources.resources
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbproj.GenerateResource.Cache
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.dll
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.xml
-C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.pdb
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll.config
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.pdb
@@ -42,3 +20,25 @@ C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.dll
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.xml
 C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll.config
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.pdb
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbprojResolveAssemblyReference.cache
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.Resources.resources
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbproj.GenerateResource.Cache
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.dll
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.xml
+C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.pdb

@@ -4,6 +4,7 @@ import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
+import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-bom',
@@ -37,15 +38,15 @@ export class BomComponent implements OnInit {
   public isQuanity: number;
   public isFeatureIdEnable: boolean = true;
   public FeatureLookupBtnhide: boolean = true;
-
-
+  config_params: any;
   serviceData: any;
   counter = 0;
 
 
-  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute) { }
+  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 
   ngOnInit() {
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
     this.update_id = "";
@@ -116,7 +117,7 @@ export class BomComponent implements OnInit {
                 isTypeDisabled: this.isTypeDisabled,
                 hide: this.ishide,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
-                CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY
+                CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
 
             }
@@ -127,6 +128,7 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
+            
           }
 
 
@@ -177,6 +179,51 @@ export class BomComponent implements OnInit {
     });
   };
 
+
+  uploadheaderfile(files: any) {
+    if (files.length === 0)
+      return;
+    const formData = new FormData();
+
+    for (let file of files) {
+      formData.append(file.name, file);
+    }
+
+    this.fbom.UploadFeatureBOM(formData).subscribe(data => {
+      if (data.body === "False") {
+        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+      }
+      else {
+        this.feature_bom_data.image_path=data.body
+      }
+    })
+  }
+
+  uploaddetailfile(files: any,rowindex) {
+    if (files.length === 0)
+      return;
+    const formData = new FormData();
+
+    for (let file of files) {
+      formData.append(file.name, file);
+    }
+
+    this.fbom.UploadFeatureBOM(formData).subscribe(data => {
+      if (data.body === "False") {
+        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+      }
+      else {
+        if (this.feature_bom_table.length > 0) {
+          for (let i = 0; i < this.feature_bom_table.length; ++i) {
+            if (this.feature_bom_table[i].rowindex === rowindex) {
+              this.feature_bom_table[i].attachment=data.body
+            }
+          }
+        }
+      }
+    })
+  }
+
   onDeleteRow(rowindex) {
     if (this.feature_bom_table.length > 0) {
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
@@ -226,8 +273,8 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].type_value=""
-        this.feature_bom_table[i].display_name=""
+        this.feature_bom_table[i].type_value = ""
+        this.feature_bom_table[i].display_name = ""
         if (selectedvalue == 3) {
           this.feature_bom_table[i].isDisplayNameDisabled = false
           this.feature_bom_table[i].isTypeDisabled = false
