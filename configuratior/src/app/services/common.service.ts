@@ -64,4 +64,10 @@ export class CommonService {
     let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
     return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
   }
+
+   //This will get he service according to user settings done on Admin Portal
+   getPermissionDetails(): Observable<any>{
+    let jObject = { Permission: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') , MenuId:  sessionStorage.getItem('currentMenu') }]) }
+    return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetPermissionDetails", jObject, this.common_params.httpOptions);
+  }
 }
