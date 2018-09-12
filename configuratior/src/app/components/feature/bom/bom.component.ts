@@ -140,8 +140,9 @@ export class BomComponent implements OnInit {
           // this.header_image_data = [
           //   "../../backend_services/OptiPro.Config.Service/" + this.feature_bom_data.image_path
           // ];
+        
           this.header_image_data = [
-            "../../assets/images/bg.jpg" 
+            this.commonData.get_current_url + "/assets/images/bg.jpg" 
           ];
 
 
@@ -272,6 +273,10 @@ export class BomComponent implements OnInit {
           this.route.navigateByUrl('feature/bom/view');
           return;
         }
+        else if (data === "Cyclic Reference") {
+          this.toastr.error('', "Cyclic Reference", this.commonData.toast_config);
+          return;
+        }
         else {
           this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
@@ -367,6 +372,36 @@ export class BomComponent implements OnInit {
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         this.feature_bom_table[i].type_value = value
+        if(this.feature_bom_table[i].type == 1){
+          this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
+            data => {
+              
+              if (data === "False" ) {
+                this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                this.feature_bom_table[i].type_value= "";
+                return;
+              }
+              else{
+                //this.lookupfor = 'feature_lookup';
+                this.getFeatureDetails(this.feature_bom_table[i].type_value, "Header", i);
+              }
+            })
+        }
+        else if(this.feature_bom_table[i].type == 2){
+          this.fbom.onItemIdChange(this.feature_bom_table[i].type_value).subscribe(
+            data => {
+              
+              if (data === "False" ) {
+                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+                this.feature_bom_table[i].type_value= "";
+                return;
+              }
+              else{
+                this.lookupfor = "";
+                this.getItemDetails(this.feature_bom_table[i].type_value);
+              }
+            })
+        }
       }
     }
   }
@@ -468,7 +503,7 @@ export class BomComponent implements OnInit {
               //   "/assets/images/bg.jpg" 
               // ];
               this.header_image_data = [
-                "/assets/images/" + this.feature_bom_data.image_path
+                this.commonData.get_current_url +  "/assets/images/" + this.feature_bom_data.image_path
               ];
             }
             else {
@@ -606,5 +641,22 @@ export class BomComponent implements OnInit {
     }
     
   }
-
+  onFeatureIdChange(){
+    this.fbom.onFeatureIdChange(this.feature_bom_data.feature_id).subscribe(
+      data => {
+        
+        if (data === "False" ) {
+          this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+          this.feature_bom_data.feature_id="";
+          this.feature_bom_data.feature_name = "";
+          this.feature_bom_data.feature_desc = "";
+          this.feature_bom_data.is_accessory = "";
+          return;
+        }
+        else{
+          this.lookupfor = 'feature_lookup';
+          this.getFeatureDetails(this.feature_bom_data.feature_id, "Header", 0);
+        }
+      })
+  }
 }

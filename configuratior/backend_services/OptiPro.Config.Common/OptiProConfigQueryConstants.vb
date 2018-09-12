@@ -21,6 +21,7 @@
 
 
 
+
 #End Region
 
 #Region "Feature BOM"
@@ -46,9 +47,12 @@
     Public Const OptiPro_Config_GetAllRecordForCyclicCheck As String = "GetAllRecordForCyclicCheck"
     Public Const OptiPro_Config_CheckValidFeatureIdEnteredForFeatureBOM As String = "CheckValidFeatureIdEnteredForFeatureBOM"
     Public Const OptiPro_Config_CheckValidItemEnteredForFeatureBOM As String = "CheckValidItemEnteredForFeatureBOM"
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
 
 #End Region
 

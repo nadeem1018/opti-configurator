@@ -51,6 +51,38 @@ OptiPro.Config.Common
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
+</member><member name="T:OptiPro.Config.Common.Enumerations.ExceptionTypeEnum">
+	<summary>
+ Exception Return Type
+ </summary>
+	<remarks></remarks>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu1">
+	<summary>Level 1 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu2">
+	<summary>Level 2 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Menu3">
+	<summary>Level 3 Menu</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.MasterScreen">
+	<summary>Master Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.TransactionScreen">
+	<summary>Transactional Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Report">
+	<summary>Report</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Utility">
+	<summary>Utility</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.Exe">
+	<summary>Exe</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.URL">
+	<summary>URL</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomScreen">
+	<summary>Custom Screen</summary>
+</member><member name="F:OptiPro.Config.Common.Enumerations.MenuItemType.CustomReport">
+	<summary>Custom Report</summary>
+</member><member name="T:OptiPro.Config.Common.Enumerations.SAPUDFFieldType">
+	<summary>
+ SAPbobui.BoFieldsType
+ </summary>
+	<remarks>SAPbobui.BoFieldsType</remarks>
 </member><member name="M:OptiPro.Config.Common.IniFile.GetPrivateProfileString(System.String,System.String,System.String,System.Text.StringBuilder,System.Int32,System.String)">
 	<summary>
  Declare INI Functions

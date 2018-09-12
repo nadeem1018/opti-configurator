@@ -142,11 +142,17 @@ Public Class FeatureBOMController
     Public Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal oGetData As FeatureBOMModel) As String
         Return FeatureBOMBL.CheckValidFeatureIdEnteredForFeatureBOM(oGetData)
     End Function
+<<<<<<< HEAD
+=======
 
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
     <HttpPost, HttpGet>
 <Route("CheckValidItemEnteredForFeatureBOM")>
     Public Function CheckValidItemEnteredForFeatureBOM(ByVal oGetData As FeatureBOMModel) As String
         Return FeatureBOMBL.CheckValidItemEnteredForFeatureBOM(oGetData)
     End Function
+<<<<<<< HEAD
+=======
 
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
 End Class
