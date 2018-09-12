@@ -20,9 +20,9 @@ export class LoginComponent implements OnInit {
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
   public config_data:string = "";
-  public background = "/assets/images/bg.jpg";
-
   private commonData = new CommonData();
+  public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
+
   public page_title = this.commonData.project_name;
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(   

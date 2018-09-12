@@ -37,6 +37,8 @@ export class RulewbComponent implements OnInit {
   public isUOMDisabled = true;
   public update_id: string = "";
   public typevaluefromdatabase: string = "";
+  //public rule_wb_data_header: any = [];
+
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
@@ -48,6 +50,7 @@ export class RulewbComponent implements OnInit {
   public showOutputBtn: boolean = true;
   public generated_expression_value = "";
   public seq_count = 0;
+  public outputrowcounter: number = 0;
   ngOnInit() {
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
     this.rule_wb_data.companyName = sessionStorage.getItem('selectedComp');
@@ -117,6 +120,81 @@ export class RulewbComponent implements OnInit {
     });
   }
 
+  getFetureListLookup(status) {
+    console.log('inopen feature');
+    this.serviceData = []
+    this.lookupfor = 'feature_lookup';
+    this.service.getFeatureList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.serviceData = data;
+          console.log(this.serviceData);
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
+
+
+
+  getLookupValue($event) {
+    if (this.lookupfor == 'feature_lookup') {
+      this.rule_wb_data.applicable_for_feature_id = $event;
+      this.getFeatureDetailsForOutput();
+    }
+    if (this.lookupfor == 'feature_Detail_lookup') {
+      for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+        if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
+          this.rule_sequence_data[i].type_value = $event
+        }
+      }
+    }
+    if (this.lookupfor == 'ModelBom_lookup') {
+      for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+        if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
+          this.rule_sequence_data[i].type_value = $event
+
+        }
+      }
+    }
+
+
+
+  }
+
+  getFeatureDetails(feature_code, press_location, index) {
+    console.log('inopen feature');
+    this.serviceData = []
+    //this.lookupfor = 'feature_lookup';
+    this.service.getFeatureDetails(feature_code, press_location, index).subscribe(
+      data => {
+        if (data.length > 0) {
+          if (press_location == "Detail") {
+            if (index == 1) {
+              this.lookupfor = 'feature_Detail_lookup';
+            }
+
+
+            this.serviceData = data;
+          }
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
   onDeleteRow(rowindex) {
     if (this.rule_sequence_data.length > 0) {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
@@ -131,6 +209,38 @@ export class RulewbComponent implements OnInit {
     }
   }
 
+  getFeatureDetailsForOutput() {
+    this.rule_feature_data = [];
+    //this.outputrowcounter=0;
+    this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          for (let i = 0; i < data.length; ++i) {
+            this.outputrowcounter++;
+            this.rule_feature_data.push({
+              rowindex: i,
+              check_child:false,
+              feature: data[i].Feature,
+              item: data[i].Item,
+              value: data[i].Value,
+              uom: data[i].UOM,
+              quantity: data[i].Quantity,
+              edit_quantity: "n",
+              price_source: data[i].PriceSource,
+              edit_price: "n",
+              default: false,
+              type: data[i].type
+
+            });
+
+          }
+        }
+
+      }
+
+    )
+  }
+
   genearate_expression() {
     let current_seq = this.seq_count;
     console.log(current_seq);
@@ -140,18 +250,18 @@ export class RulewbComponent implements OnInit {
     });
     let current_exp = '';
     for (var index in seq_data) {
-      if (seq_data[index].type != "" && seq_data[index].type_value != "" && seq_data[index].condition && seq_data[index].operand_1){
-        this.rule_sequence_data[index].row_expression =  seq_data[index].operator + ' ' + seq_data[index].braces + ' ' + seq_data[index].type_value + ' ' + seq_data[index].condition + ' ' + seq_data[index].operand_1 + ' ' + seq_data[index].operand_2;
+      if (seq_data[index].type != "" && seq_data[index].type_value != "" && seq_data[index].condition && seq_data[index].operand_1) {
+        this.rule_sequence_data[index].row_expression = seq_data[index].operator + ' ' + seq_data[index].braces + ' ' + seq_data[index].type_value + ' ' + seq_data[index].condition + ' ' + seq_data[index].operand_1 + ' ' + seq_data[index].operand_2;
         current_exp += " " + seq_data[index].row_expression;
       } else {
         let error_fields = '';
-        if (seq_data[index].type == ""){
+        if (seq_data[index].type == "") {
           error_fields += " Type";
-        } 
-        if(seq_data[index].type_value == ""){
+        }
+        if (seq_data[index].type_value == "") {
           error_fields += ", Type Value";
-        } 
-        if (seq_data[index].condition ){
+        }
+        if (seq_data[index].condition) {
 
         }
         if (seq_data[index].operand_1 == "") {
@@ -170,17 +280,39 @@ export class RulewbComponent implements OnInit {
     }
   }
 
-  show_input_lookup(selected_type, rowindex) {
-    if (selected_type != "") {
+  getModelDetails() {
+    this.serviceData = [];
+    this.service.GetModelList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'ModelBom_lookup';
+          this.serviceData = data;
+        }
 
-      if (selected_type == "1") {
-        // feature service 
-      } else if (selected_type == "2") {
-        // modal service 
       }
-    } else {
 
+    )
+  }
+
+  show_input_lookup(selected_type, rowindex) {
+    // if (selected_type != "") {
+
+    //   if (selected_type == "1") {
+    //     // feature service 
+    //   } else if (selected_type == "2") {
+    //     // modal service 
+    //   }
+    // } else {
+
+    // }
+    this.currentrowindex = rowindex
+    if (selected_type == 1) {
+      this.getFeatureDetails(this.rule_wb_data.applicable_for_feature_id, "Detail", selected_type);
     }
+    else {
+      this.getModelDetails();
+    }
+
   }
 
   on_typevalue_change(value, rowindex) {
@@ -190,11 +322,58 @@ export class RulewbComponent implements OnInit {
 
   add_rule_sequence() {
     console.log(this.rule_sequence_data);
-    if (this.rule_sequence_data.length > 0){
-   
-       //  this.rule_expression_data
+    if (this.rule_sequence_data.length > 0) {
+
+      //  this.rule_expression_data
     } else {
       this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
+    }
+  }
+
+  output_change_event(name, value, rowindex) {
+    for (let i = 0; i < this.rule_feature_data.length; ++i) {
+      if (this.rule_feature_data[i].rowindex == rowindex) {
+        if (name == "check_child") {
+          this.rule_feature_data[i].check_child=value
+        }
+        else if(name=="feature_name"){
+          this.rule_feature_data[i].feature=value
+        }
+        else if(name=="feature_item"){
+          this.rule_feature_data[i].item=value
+        }
+        else if(name=="feature_value"){
+          this.rule_feature_data[i].value=value
+        }
+        else if(name=="uom"){
+          this.rule_feature_data[i].uom=value
+        }
+        else if(name=="quantity"){
+          this.rule_feature_data[i].quantity=value
+        }
+        else if(name=="edit_quanity"){
+          this.rule_feature_data[i].edit_quantity=value
+        }
+        else if(name=="price_soure"){
+          this.rule_feature_data[i].price_source=value
+        }
+        else if(name=="edit_price"){
+          this.rule_feature_data[i].edit_price=value
+        }
+        else{
+          this.rule_feature_data[i].default=value
+        }
+      }
+
+    }
+  }
+
+  validation(btnpress) {
+    if (btnpress == "AddRow") {
+      if (this.rule_wb_data.rule_code == "" || this.rule_wb_data.rule_code == null) {
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return false;
+      }
     }
   }
 
