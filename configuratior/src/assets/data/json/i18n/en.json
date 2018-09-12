@@ -169,7 +169,8 @@
     "edit_quantity": "Edit Quantity",
     "edit_price": "Edit Price",
     "default": "Default",
-    "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row"
+    "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row",
+    "EnterString": "String field cannot be blank"
     
   
     
