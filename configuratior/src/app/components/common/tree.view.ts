@@ -1,10 +1,4 @@
-import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
-import { CommonService } from '../../services/common.service';
-import { CommonData } from "../../models/CommonData";
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
-
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'treeview',
@@ -30,7 +24,7 @@ export class TreeViewComponent {
 
     get_childrens(component) {
         let data = this.complete_dataset.filter(function (obj) {
-            return obj['parent'] == component;
+            return obj['parentId'] == component;
         });
         return data;
     }

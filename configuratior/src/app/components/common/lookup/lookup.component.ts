@@ -303,36 +303,91 @@ export class LookupComponent implements OnInit {
     this.popup_title = this.language.explode;
     this.showLoader = true;
     this.LookupDataLoaded = false;
-    this.tree_data_json = this.dummy_json();
+    //this.tree_data_json = this.dummy_json();
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        this.tree_data_json =  this.dummy_json();
+        //this.tree_data_json =this.serviceData;
+      
+       // setTimeout(function(){
+          $("#tree_view").modal('show');
+        //}, 5000);
+      
+        
+      }
+    }
     
   }
 
   check_component_exist(component, level){
     level = (parseInt(level) + 1);
     let data = this.tree_data_json.filter(function (obj) {
-      return obj['parent'] == component && obj['level'] == level;
+      return obj['parentId'] == component && obj['level'] == level;
     });
     return data;
   }
 
+  // dummy_json(){
+  //   return [
+  //     { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
+  //     { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
+  //     { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
+  //     { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
+  //     { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
+  //     { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
+  //     { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
+  //     { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
+  //     { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
+  //     { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
+  //     { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
+  //     { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
+  //     { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
+  //     { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
+  //   ];
+  // }
+
   dummy_json(){
     return [
-      { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
-      { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
-      { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
-      { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
-      { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
-      { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
-      { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
-      { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
-      { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
-      { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
-      { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
-      { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
-      { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
-      { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
-    ];
+      {"sequence":1,"parentId":"","component":"29","level":"0"},
+      {"sequence":2,"parentId":"29","component":"19","level":"1"},
+      {"sequence":3,"parentId":"29","component":"8","level":"1"},
+      {"sequence":4,"parentId":"29","component":"Wind Sensor","level":"1"},
+      {"sequence":5,"parentId":"29","component":"WMT70BIRDKIT","level":"1"},
+      {"sequence":6,"parentId":"19","component":"21","level":"2"},
+      {"sequence":7,"parentId":"19","component":"20","level":"2"},
+      {"sequence":8,"parentId":"8","component":"Item02","level":"2"},
+      {"sequence":9,"parentId":"8","component":"VALUE","level":"2"},
+      {"sequence":10,"parentId":"19","component":"Wind Sensor","level":"2"},
+      {"sequence":11,"parentId":"20","component":"22","level":"3"},
+      {"sequence":12,"parentId":"20","component":"21","level":"3"},
+      {"sequence":13,"parentId":"22","component":"26","level":"4"},
+      {"sequence":14,"parentId":"22","component":"23","level":"4"},
+      {"sequence":15,"parentId":"23","component":"19","level":"5"},
+      {"sequence":16,"parentId":"19","component":"21","level":"6"},
+      {"sequence":17,"parentId":"19","component":"20","level":"6"},
+      {"sequence":18,"parentId":"19","component":"Wind Sensor","level":"6"},
+      {"sequence":19,"parentId":"20","component":"22","level":"7"},
+      {"sequence":20,"parentId":"20","component":"21","level":"7"},
+      {"sequence":21,"parentId":"22","component":"26","level":"8"},
+      {"sequence":22,"parentId":"22","component":"23","level":"8"},
+      {"sequence":23,"parentId":"23","component":"19","level":"9"},
+      {"sequence":24,"parentId":"19","component":"21","level":"10"},
+      {"sequence":25,"parentId":"19","component":"20","level":"10"},
+      {"sequence":26,"parentId":"19","component":"Wind Sensor","level":"10"},
+      {"sequence":27,"parentId":"20","component":"22","level":"11"},
+      {"sequence":28,"parentId":"20","component":"21","level":"11"},
+      {"sequence":29,"parentId":"22","component":"26","level":"12"},
+      {"sequence":30,"parentId":"22","component":"23","level":"12"},
+      {"sequence":31,"parentId":"23","component":"19","level":"13"},
+      {"sequence":32,"parentId":"19","component":"21","level":"14"},
+      {"sequence":33,"parentId":"19","component":"20","level":"14"},
+      {"sequence":34,"parentId":"19","component":"Wind Sensor","level":"14"},
+      {"sequence":35,"parentId":"20","component":"22","level":"15"},
+      {"sequence":36,"parentId":"20","component":"21","level":"15"},
+      {"sequence":37,"parentId":"22","component":"26","level":"16"},
+      {"sequence":38,"parentId":"22","component":"23","level":"16"}
+    ]
   }
 }

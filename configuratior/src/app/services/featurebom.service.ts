@@ -66,4 +66,11 @@ export class FeaturebomService {
     return this.httpclient.request(req);
     
   }
+
+  GetDataForExplodeViewForFeatureBOM(CompanyDBID,featureId): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId }]) }
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
 }

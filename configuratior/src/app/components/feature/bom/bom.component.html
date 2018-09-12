@@ -42,7 +42,7 @@
                <div class="form-group row clearfix">
                    <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
                    <div class="col-sm-4">
-                     <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.Bom_FeatureDesc}}" readonly [(ngModel)] ="feature_bom_data.feature_desc">
+                     <input type="text"  class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc" placeholder="{{language.Bom_FeatureDesc}}" readonly [(ngModel)] ="feature_bom_data.feature_desc">
                    </div>
                  </div>
    
@@ -50,7 +50,7 @@
                      <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                      <div class="col-sm-4">
                          
-                            <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  />
+                            <input #file type="file"  id="fileid" name="fileName" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  />
                            
                      </div>
                  </div>
@@ -159,7 +159,7 @@
                              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSaveClick()" class="btn btn-sm btn-info mr-10">
                                  <i class="fa fa-save"></i> {{language.update}}</button>
                          
-                                 <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick()"  class="btn btn-sm btn-secondary  mr-10" data-toggle="modal" data-target="#tree_view">
+                                 <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick()"  class="btn btn-sm btn-secondary  mr-10" >
                                 <i class="fa fa-window-maximize"></i> {{language.explode}}
                             </button>
                             

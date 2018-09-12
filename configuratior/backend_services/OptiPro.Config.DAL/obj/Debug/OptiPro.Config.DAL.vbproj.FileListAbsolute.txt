@@ -11,3 +11,16 @@ C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configurati
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.dll
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.xml
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.pdb
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.pdb
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.DAL.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\System.Data.Common.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.pdb
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\bin\Debug\OptiPro.Config.Common.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbprojResolveAssemblyReference.cache
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.Resources.resources
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.vbproj.GenerateResource.Cache
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.dll
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.DAL\obj\Debug\OptiPro.Config.DAL.pdb

@@ -189,7 +189,7 @@
                 <i class="fa fa-save"></i> {{language.save}}</button>
               <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
                 <i class="fa fa-save"></i> {{language.update}}</button>
-              <button type="button" (click)="onExplodeClick()" data-toggle="modal" data-target="#tree_view"  *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
+              <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
                 <i class="fa fa-window-maximize"></i> {{language.explode}}
               </button>
 

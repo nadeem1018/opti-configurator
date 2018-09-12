@@ -560,7 +560,31 @@ export class BomComponent implements OnInit {
   }
 
   onExplodeClick() {
-    this.lookupfor = 'tree_view_lookup';
+    if(this.feature_bom_data.feature_id != undefined){
+      //now call bom id
+      
+      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName,this.feature_bom_data.feature_id).subscribe(
+        data => {
+          if(data !=null || data != undefined){
+              this.serviceData = data;
+              this.lookupfor = 'tree_view_lookup';
+            }
+            else{
+            }
+            
+          },
+          error =>
+          {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return; 
+          }
+        )
+    }
+    else{
+      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      return;
+    }
+    
   }
 
 }
