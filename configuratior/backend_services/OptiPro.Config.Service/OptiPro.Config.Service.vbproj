@@ -369,15 +369,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63849</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-<<<<<<< HEAD
           <IISUrl>http://localhost:9500/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost:9500/</IISAppRootUrl>
-=======
-          <IISUrl>http://localhost:65197/</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:65197/</IISAppRootUrl>
->>>>>>> d67f9774241b122afc417b82d9187c96ae6c6b7b
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

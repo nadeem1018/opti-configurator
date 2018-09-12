@@ -192,7 +192,7 @@ Public Class ItemGenerationDL
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
 
             'get the ItemCode name  
-            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            psItemCode = NullToString(objDataTable.Rows(0)("codekey"))
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -211,6 +211,11 @@ Public Class ItemGenerationDL
             ' Get the Query on the basis of objIQuery
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckDuplicateItemCode)
             pdsItemCodeCount = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If pdsItemCodeCount.Tables(0).Rows(0).Item("Column1") > 0 Then
+
+
+            End If
+
             Return pdsItemCodeCount.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)

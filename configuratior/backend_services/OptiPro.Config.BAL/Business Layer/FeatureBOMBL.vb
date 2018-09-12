@@ -247,7 +247,23 @@ Public Class FeatureBOMBL
             Return Nothing
         End Try
     End Function
+    Public Shared Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal objDataByFeatureID As FeatureBOMModel) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDataByFeatureID.ModelItem)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatus = FeatureBOMDL.CheckValidFeatureIdEnteredForFeatureBOM(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psStatus
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
 
+<<<<<<< HEAD
+=======
 
     Public Shared Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal objDataByFeatureID As FeatureBOMModel) As String
         Dim psStatus As String = String.Empty
@@ -264,6 +280,25 @@ Public Class FeatureBOMBL
         End Try
     End Function
 
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataByFeatureID As FeatureBOMModel) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDataByFeatureID.ModelItem)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatus = FeatureBOMDL.CheckValidItemEnteredForFeatureBOM(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psStatus
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+<<<<<<< HEAD
+=======
 
+
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
 
 End Class

@@ -21,7 +21,7 @@
         <label class="col-sm-2 col-form-label" for="feature">{{language.code}}</label>
         <div class="col-sm-4">
           <input type="text" [disabled]="!isCodeDisabled" class="form-control  form-control-sm mt3" placeholder="{{language.code}}"
-            id="usrID" name="code" [(ngModel)]="codekey" #inputBox>
+            id="usrID" name="code" (change)= "CheckDuplicateCode()" [(ngModel)]="codekey" #inputBox>
         </div>
         <div class="col-sm-2">
           <a *ngIf = "showAddRowbtn" href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>

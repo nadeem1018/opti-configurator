@@ -60,6 +60,12 @@ export class ItemcodegenerationService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/DeleteItemGenerationCode", jObject, this.common_params.httpOptions);
   }
+  CheckDuplicateCode(CompanyDBID: string,codekey:string): Observable<any> {
 
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ItemList: JSON.stringify([{ CompanyDBID: CompanyDBID, codekey:codekey}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/CheckDuplicateItemCode", jObject, this.common_params.httpOptions);
+  }
 
 }

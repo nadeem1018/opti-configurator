@@ -129,16 +129,21 @@ export class ViewFeatureModelComponent implements OnInit {
         });
         this.fms.DeleteData(this.GetItemData).subscribe(
             data => {
+                
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('feature/model/view');
                     return;
                 }
-                else {
+                else if(data === "Exist"){
+                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+                    return;
+                  }
+                  else{
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
                     return;
-                }
+                  }
             }
         )
     }

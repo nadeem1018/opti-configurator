@@ -20,5 +20,27 @@ export class RulewbService {
     return this.httpclient.post(this.config_params.service_url + "/ruleWb/GetRuleList", jObject, this.common_params.httpOptions);
   }
 
+  getFeatureList(): Observable<any> {
+    console.log(' in rule service');
+
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllFeatureForRuleWorkBench", jObject, this.common_params.httpOptions);
+  }
+
+  getFeatureDetails(feature_code,press_location,index): Observable<any>{
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_code ,pressLocation:press_location,rowid:index}]) }
+      return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllFeatureForRuleWorkBench", jObject, this.common_params.httpOptions);
+  }
+
+  GetModelList(): Observable<any> {
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllModelsForRuleWorkBench", jObject, this.common_params.httpOptions);
+  }
+
+  
+  getFeatureDetailsForOutput(feature_code): Observable<any> {
+    let jObject = { FeatureDetails: JSON.stringify([{ CompanyDBID: this.logged_in_company , FeatureId: feature_code }]) }
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllDetailsForFeature", jObject, this.common_params.httpOptions);
+  }
   
 }

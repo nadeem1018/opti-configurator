@@ -140,6 +140,8 @@
     "filecannotupload":"file cannot upload ",
     "rule_WB":"Rule WB",
     "rule_workbench":"Rule Workbench",
+    "Refrence" :"Cannot delete. Reference exists.",
+    "InvalidFeatureId": "Invalid Feature Id",
     "rule_id" : "Rule ID",
     "rule_code" : "Rule Code",
     "effective_from":"Effective From",
@@ -176,6 +178,18 @@
     "": "",
     "": "",
     "": "",
-    "": ""
+    "": "",
+    "selectrulecode":"Select rule code",
+    "selectdescription":"Select description",
+    "selecteffromdate":"Select effective from date",
+    "selectefftodate":"Select effective to date",
+    "selectoperator":"Select operator at row index: ",
+    "selectbraces":"Select braces at row index: ",
+    "selectcondition":"Select condition at row index:",
+    "selectoperand1":"Select operand 1 at row index: ",
+    "selectoperand2":"Select operand 2 at row index: "
+    
+    
+  
     
 }
