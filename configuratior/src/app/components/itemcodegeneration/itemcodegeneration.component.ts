@@ -193,8 +193,9 @@ export class ItemcodegenerationComponent implements OnInit {
 
   onSaveClick() {
     if (this.validateRowData("SaveData") == false) {
-      return
+      return;
     }
+    console.log(this.itemcodetable);
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
         if (data === "True") {
@@ -378,6 +379,18 @@ export class ItemcodegenerationComponent implements OnInit {
       return false;
     }
 
+  }
+  CheckDuplicateCode(){
+    this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
+      data => {
+        
+        if(data[0].Column1> 0){
+          this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
+          this.codekey= "";
+          return;
+        }
+      }
+    )
   }
 
   //get user permission

@@ -6,12 +6,44 @@ OptiPro.Config.DAL
 </name>
 </assembly>
 <members>
-<member name="M:OptiPro.Config.DAL.QueryFactory.GetInstance(OptiPro.Config.Common.Company)">
+<member name="M:OptiPro.Config.DAL.IConnection.ExecuteQuery(System.String)">
 	<summary>
-	</summary>
-	<param name="pObjCompany"></param>
+ Executes SQL Query and returns no of rows affected. 
+ </summary>
+	<param name="sqlQry"></param>
 	<returns></returns>
 	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteDataset(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Returns a dataset based on a command text.
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteScalar(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Executes scalar command text and return single value
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteScalar(System.String,System.Data.CommandType,System.Boolean,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Executes scalar command text and return single value
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="T:OptiPro.Config.DAL.AssemblyProvider">
+	<summary>
+ A Singlton class which provides and loads the necessary assembly
+ </summary>
 </member><member name="M:OptiPro.Config.DAL.FeatureBOMDL.GetItemForFeatureBOM(System.Data.DataTable,OptiPro.Config.Common.Company)">
 	<summary>
  Funtion to get the Item List from the Table for the Grid
@@ -71,91 +103,29 @@ OptiPro.Config.DAL
  </summary>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteQuery(System.String)">
+</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.Add(OptiPro.Config.DAL.MfgDBParameter)">
 	<summary>
- Executes SQL Query and returns no of rows affected. 
+ Adds a DBParameter to the ParameterCollection
  </summary>
-	<param name="sqlQry"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteDataset(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<param name="parameter">Parameter to be added</param>
+</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.Remove(OptiPro.Config.DAL.MfgDBParameter)">
 	<summary>
- Returns a dataset based on a command text.
+ Removes parameter from the Parameter Collection
  </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteScalar(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<param name="parameter">Parameter to be removed</param>
+</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.RemoveAll">
 	<summary>
- Executes scalar command text and return single value
+ Removes all the parameters from the Parameter Collection
  </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.IConnection.ExecuteScalar(System.String,System.Data.CommandType,System.Boolean,OptiPro.Config.DAL.MfgDBParameter[])">
+</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.RemoveAt(System.Int32)">
 	<summary>
- Executes scalar command text and return single value
+ Removes parameter from the specified index.
  </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:OptiPro.Config.DAL.My.Resources.Resources.ResourceManager">
+	<param name="index">Index from which parameter is supposed to be removed</param>
+</member><member name="P:OptiPro.Config.DAL.DBParameterCollection.Parameters">
 	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:OptiPro.Config.DAL.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:OptiPro.Config.DAL.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="T:OptiPro.Config.DAL.AssemblyProvider">
-	<summary>
- A Singlton class which provides and loads the necessary assembly
+ Gets list of parameters
  </summary>
-</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteQuery(System.String)">
-	<summary>
- Executes SQL Query and returns no of rows affected. 
- </summary>
-	<param name="sqlQry"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteDataset(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
-	<summary>
- Returns a dataset based on a command text.
- </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteScalar(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
-	<summary>
- Executes scalar command text and return single value
- </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteScalar(System.String,System.Data.CommandType,System.Boolean,OptiPro.Config.DAL.MfgDBParameter[])">
-	<summary>
- Executes scalar command text and return single value
- </summary>
-	<param name="commandtext"></param>
-	<param name="commandType"></param>
-	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
 </member><member name="M:OptiPro.Config.DAL.ModelBOMDL.GetPriceList(System.Data.DataTable,OptiPro.Config.Common.Company)">
 	<summary>
  Function to get the Price list fromthe table
@@ -196,45 +166,6 @@ OptiPro.Config.DAL
 	<param name="commandtext"></param>
 	<param name="commandType"></param>
 	<param name="Params"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.DeleteFeatures(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Function to Delete the Feature From Feature Header 
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.UpdateFeatures(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Feature to Update the Features in Feature Header 
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.GetModelTemplateItem(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Function to get the Model Template Item From the Database ,This Function will execeute in case if Model is Selected in UI Part
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.GetItemCodeGenerationReference(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Function to get the Item Code generation on the Basis
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.CheckDuplicateFeatureCode(System.Data.DataTable,OptiPro.Config.Common.Company)">
-	<summary>
- Function to Check Duplicate Feature Code on the Basis of Feature Code while Adding the Record
- </summary>
-	<param name="objDataTable"></param>
-	<param name="objCmpnyInstance"></param>
 	<returns></returns>
 	<remarks></remarks>
 </member><member name="M:OptiPro.Config.DAL.ItemGenerationDL.GetItemListForGeneration(System.Data.DataTable,OptiPro.Config.Common.Company)">
@@ -285,29 +216,25 @@ OptiPro.Config.DAL
 	<param name="tempds"></param>
 	<param name="objCmpnyInstance"></param>
 	<remarks></remarks>
-</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.Add(OptiPro.Config.DAL.MfgDBParameter)">
+</member><member name="P:OptiPro.Config.DAL.My.Resources.Resources.ResourceManager">
 	<summary>
- Adds a DBParameter to the ParameterCollection
- </summary>
-	<param name="parameter">Parameter to be added</param>
-</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.Remove(OptiPro.Config.DAL.MfgDBParameter)">
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:OptiPro.Config.DAL.My.Resources.Resources.Culture">
 	<summary>
- Removes parameter from the Parameter Collection
- </summary>
-	<param name="parameter">Parameter to be removed</param>
-</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.RemoveAll">
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:OptiPro.Config.DAL.My.Resources.Resources">
 	<summary>
- Removes all the parameters from the Parameter Collection
- </summary>
-</member><member name="M:OptiPro.Config.DAL.DBParameterCollection.RemoveAt(System.Int32)">
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:OptiPro.Config.DAL.QueryFactory.GetInstance(OptiPro.Config.Common.Company)">
 	<summary>
- Removes parameter from the specified index.
- </summary>
-	<param name="index">Index from which parameter is supposed to be removed</param>
-</member><member name="P:OptiPro.Config.DAL.DBParameterCollection.Parameters">
-	<summary>
- Gets list of parameters
- </summary>
+	</summary>
+	<param name="pObjCompany"></param>
+	<returns></returns>
+	<remarks></remarks>
 </member><member name="M:OptiPro.Config.DAL.MfgDBParameter.#ctor">
 	<summary>
  Defaule constructor. Paramete name, vale, type and direction needs to be assigned explicitly by using the public properties exposed.
@@ -366,6 +293,79 @@ OptiPro.Config.DAL
 	<param name="xmlSchemaCollectionOwingSchema">The owning relational schema where the schema collection for this XML instance is located.</param>
 	<param name="xmlSchemaxCollectionDatabase">The name of the database where the schema collection for this XML instance is located.</param>
 	<param name="xmlSchemaxCollectionName"> The name of the schema collection for this parameter.</param>
+</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.DeleteFeatures(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Function to Delete the Feature From Feature Header 
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.UpdateFeatures(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Feature to Update the Features in Feature Header 
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.GetModelTemplateItem(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Function to get the Model Template Item From the Database ,This Function will execeute in case if Model is Selected in UI Part
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.GetItemCodeGenerationReference(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Function to get the Item Code generation on the Basis
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.FeatureHeaderDL.CheckDuplicateFeatureCode(System.Data.DataTable,OptiPro.Config.Common.Company)">
+	<summary>
+ Function to Check Duplicate Feature Code on the Basis of Feature Code while Adding the Record
+ </summary>
+	<param name="objDataTable"></param>
+	<param name="objCmpnyInstance"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteQuery(System.String)">
+	<summary>
+ Executes SQL Query and returns no of rows affected. 
+ </summary>
+	<param name="sqlQry"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteDataset(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Returns a dataset based on a command text.
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteScalar(System.String,System.Data.CommandType,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Executes scalar command text and return single value
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:OptiPro.Config.DAL.CompanyHanaConnection.ExecuteScalar(System.String,System.Data.CommandType,System.Boolean,OptiPro.Config.DAL.MfgDBParameter[])">
+	<summary>
+ Executes scalar command text and return single value
+ </summary>
+	<param name="commandtext"></param>
+	<param name="commandType"></param>
+	<param name="Params"></param>
+	<returns></returns>
+	<remarks></remarks>
 </member>
 </members>
 </doc>

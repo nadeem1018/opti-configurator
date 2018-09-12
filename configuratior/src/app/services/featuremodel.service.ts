@@ -99,18 +99,18 @@ export class FeaturemodelService {
     
     //Submit feature bom data 
     onItemCodeChange(CompanyDBID:string,TemplateItem:string):Observable<any>{
+    //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-        //JSON Obeject Prepared to be send as a param to API
-        let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, TemplateItem: TemplateItem }]) };
-        
-      //Return the response form the API  
-      return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemTemplate", jObject, this.common_params.httpOptions);
+      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, TemplateItem: TemplateItem }]) };
       
-      }
-
-      UploadFeature(form:FormData): Observable<any> {
-        let req=new HttpRequest('POST',this.config_params.service_url + "/FeatureBOM/UploadFeatureBOMAttachments",form);  
-        return this.httpclient.request(req);
-        
-      }
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemTemplate", jObject, this.common_params.httpOptions);
+      
+    }
+   
+    UploadFeature(form:FormData): Observable<any> {
+      let req=new HttpRequest('POST',this.config_params.service_url + "/FeatureBOM/UploadFeatureBOMAttachments",form);  
+      return this.httpclient.request(req);
+      
+    }
 }

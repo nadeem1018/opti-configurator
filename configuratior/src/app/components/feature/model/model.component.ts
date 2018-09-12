@@ -297,9 +297,9 @@ if (validateStatus == true){
     }
 
     onDeleteClick(){
-      //var result = confirm(this.language.DeleteConfimation);
-      this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-      this.show_dialog = true;
+       //var result = confirm(this.language.DeleteConfimation);
+       this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+       this.show_dialog = true;
     }
 
     
@@ -307,6 +307,7 @@ if (validateStatus == true){
     get_dialog_value(userSelectionValue) {
       if (userSelectionValue == true) {
         this.delete_record();
+
       }
       this.show_dialog = false;
     }
@@ -324,6 +325,10 @@ if (validateStatus == true){
           if (data === "True" ) {
             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
+            return;
+          }
+          else if(data === "Exist"){
+            this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
             return;
           }
           else{

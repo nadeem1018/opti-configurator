@@ -170,7 +170,7 @@
                         <div class="tree well">
                             <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
                                 <div *ngFor="let element of tree_data_json; let i= index;">
-                                    <li *ngIf="element.level == 0 && element.parent==''">
+                                    <li *ngIf="element.level == 0 && element.parentId==''">
                                         <span>
                                             <i class="fa fa-folder"></i> {{element.component}}
                                         </span>

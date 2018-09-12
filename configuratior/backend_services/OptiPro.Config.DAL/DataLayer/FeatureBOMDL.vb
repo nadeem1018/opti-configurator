@@ -648,27 +648,36 @@ Public Class FeatureBOMDL
             Dim psSQLforDS As String
             ' Declaring Variable
             Dim bUpdate As Boolean
+            Dim psreturn As String
             'New DataSet 
             Dim pdsItemCodeGen As DataSet
             'Get all the Saved Record For the Particular Item Code
             pdsItemCodeGen = FeatureBOMDL.GetAllSavedData(ObjDataTable, objCmpnyInstance)
             'PreaParing the Dataset ,Which Entry is to be Updated and Added
-            PrepareFeatureBOMData(ObjDataTable, pdsItemCodeGen, objCmpnyInstance)
-            For index As Integer = 0 To pdsItemCodeGen.Tables.Count - 1
-                'Get the Table Name
-                psForTable = pdsItemCodeGen.Tables.Item(index).TableName
-                'Get the Table structure with a Generic Query
-                psSQLforDS = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetTableStructure)
-                'at runtime we will replace the "select * from ...." query with the Table name at current Index
-                psSQLforDS = psSQLforDS.Replace("@TABLENAME", psForTable)
-                'Call method with coresponding params needed
-                bUpdate = updateDataSetToDataBase(psSQLforDS, pdsItemCodeGen, psForTable, ObjIConnection)
-            Next
-            If (bUpdate = True) Then
-                psStatus = "True"
+            psreturn = PrepareFeatureBOMData(ObjDataTable, pdsItemCodeGen, objCmpnyInstance)
+            If psreturn = "True" Then
+                For index As Integer = 0 To pdsItemCodeGen.Tables.Count - 1
+                    'Get the Table Name
+                    psForTable = pdsItemCodeGen.Tables.Item(index).TableName
+                    'Get the Table structure with a Generic Query
+                    psSQLforDS = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetTableStructure)
+                    'at runtime we will replace the "select * from ...." query with the Table name at current Index
+                    psSQLforDS = psSQLforDS.Replace("@TABLENAME", psForTable)
+                    'Call method with coresponding params needed
+                    bUpdate = updateDataSetToDataBase(psSQLforDS, pdsItemCodeGen, psForTable, ObjIConnection)
+                Next
+                If (bUpdate = True) Then
+                    psStatus = "True"
+                Else
+                    psStatus = "False"
+                End If
             Else
-                psStatus = "False"
+                psStatus = psreturn
+                Return psStatus
+
             End If
+
+            
         Catch ex As Exception
             ErrorLogging.LogError(ex)
             psStatus = ex.Message().ToString
@@ -726,7 +735,8 @@ Public Class FeatureBOMDL
     ''' <param name="objCmpnyInstance"></param>
     ''' <remarks></remarks>
 
-    Private Shared Sub PrepareFeatureBOMData(ByVal objdsFeatureBOM As DataTable, ByRef tempds As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company)
+    Private Shared Function PrepareFeatureBOMData(ByVal objdsFeatureBOM As DataTable, ByRef tempds As DataSet, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
         'Variable Declaration for Datarow
         Dim pdr As DataRow
         'variable to get Item Code
@@ -786,10 +796,9 @@ Public Class FeatureBOMDL
             'get the value for the value
             psvalue = OptiPro.Config.Common.Utilites.NullToString(childRow("type_value"))
             ''------------This Code is Used to check the Cyclic Dependency for the Feature,if F1 consist F2 Then F2 cannot Consist F1
-            'If childRow("type") = 1 Then
-            '    tempDVReferalCheck = New DataView(tempDtRecord)
-            '    tempDVReferalCheck.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}' AND OPTM_FEATUREID ='{1}'", psFeatureId, psvalue)
-            'End If
+            If childRow("type") = 1 Then
+                tempDVReferalCheck = New DataView(tempDtRecord)
+                tempDVReferalCheck.RowFilter = StringFormat("OPTM_CHILDFEATUREID ='{0}' AND OPTM_FEATUREID ='{1}'", psFeatureId, psvalue)
             ''-------------End Of the Referal Check --------------------
             'If the no record present then we will add and update 
             If tempDVReferalCheck.Count = 0 Then
@@ -867,9 +876,14 @@ Public Class FeatureBOMDL
                     pdr("OPTM_CREATEDATETIME") = dtServerDate
                     pdr("OPTM_QUANTITY") = childRow("quantity")
                     tempds.Tables("OPCONFIG_FEATUREBOMDTL").Rows.Add(pdr)
+                    End If
+                Else
+                    psStatus = "Cyclic Reference"
+                    Return psStatus
                 End If
             End If
         Next
+        
         Dim seqlist1 As String = ""
         tempDV = New DataView(objdsFeatureBOM)
         If tempDV.Count > 0 Then
@@ -902,7 +916,10 @@ Public Class FeatureBOMDL
                 tempRow.Delete()
             Next
         End If
-    End Sub
+        psStatus = "True"
+        Return psStatus
+
+    End Function
     'This method will help to Update the Data set into the Database
     Public Shared Function updateDataSetToDataBase(psSQLforDS As String, objdsBatchSerialLinkData As DataSet, psForTable As String, ObjIConnection As IConnection) As Boolean
         Try
@@ -1362,7 +1379,88 @@ Public Class FeatureBOMDL
         End Try
         Return Nothing
     End Function
-
+    Public Shared Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psFeatureId As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name 
+            psFeatureId = NullToString(objDataTable.Rows(0)("FeatureId"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@FEATUREID"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psFeatureId
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidFeatureIdEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psItemCode As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name 
+            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemCode
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidItemEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
 
     Public Shared Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
         Dim psStatus As String = String.Empty
@@ -1405,6 +1503,49 @@ Public Class FeatureBOMDL
         End Try
         Return Nothing
     End Function
+
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psItemCode As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name  
+            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemCode
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidItemEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
 
 
     ''' <summary>

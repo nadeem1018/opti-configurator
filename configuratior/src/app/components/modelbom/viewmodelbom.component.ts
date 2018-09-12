@@ -115,12 +115,7 @@ export class ViewModelBomComponent implements OnInit {
 
     //delete values
     delete_row(){
-        this.GetItemData=[]
-        this.GetItemData.push({
-            CompanyDBId: this.companyName,
-            ModelId:this.row_id
-        });
-        this.service.DeleteData(this.GetItemData).subscribe(
+        this.service.DeleteData(this.row_id).subscribe(
             data => {
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
