@@ -409,6 +409,10 @@ Public Class HanaQuery
         Return psSQL
     End Function
 
+    Function GetAllFeatureForRuleWorkBenchExceptSelected() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""<>?"
+        Return psSQL
+    End Function
 #End Region
 
 

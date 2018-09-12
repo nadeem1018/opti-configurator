@@ -104,6 +104,7 @@
     Public Const OptiPro_Config_GetSavedDataFromRuleOutput As String = "GetSavedDataFromRuleOutput"
     Public Const OptiPro_Config_GetRuleIDByGUID As String = "GetRuleIDByGUID"
     Public Const OptiPro_Config_GetItemMasterDataforRuleWB As String = "GetItemMasterDataforRuleWB"
+    Public Const OptiPro_Config_GetAllFeatureForRuleWorkBenchExceptSelected As String = "GetAllFeatureForRuleWorkBenchExceptSelected"
 
 
 #End Region

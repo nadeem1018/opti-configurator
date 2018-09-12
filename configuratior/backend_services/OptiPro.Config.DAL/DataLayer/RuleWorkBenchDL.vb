@@ -18,8 +18,15 @@ Public Class RuleWorkBenchDL
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
             Dim pdsGetData As New DataSet
+            Dim psFeatureId As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get FeatureId 
+            If objDataTable.Columns.Contains("FeatureId") Then
+                psFeatureId = NullToString(objDataTable.Rows(0)("FeatureId"))
+            Else
+                psFeatureId = ""
+            End If
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -28,9 +35,23 @@ Public Class RuleWorkBenchDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBench)
+
+            If psFeatureId.Length > 0 Then
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting featureID and it will be of Integer
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@FEATUREID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(0).Paramvalue = psFeatureId
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBenchExceptSelected)
+                pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+
+            Else
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBench)
                 pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+
+            End If
             Return pdsGetData.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
