@@ -20,15 +20,9 @@ export class LoginComponent implements OnInit {
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
   public config_data:string = "";
-<<<<<<< HEAD
-  
-  private commonData = new CommonData();
-  public background = this.commonData.get_current_url() + "/assets/images/bg.jpg";
-=======
   private commonData = new CommonData();
   public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
 
->>>>>>> 0a74576e89d2d17e69e1cb7067904845cfe41e92
   public page_title = this.commonData.project_name;
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(   
@@ -136,7 +130,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-           this.psURL = "http://localhost:57962";
+          // this.psURL = "http://localhost:57962";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
 
           sessionStorage.setItem('psURL', this.psURL);
