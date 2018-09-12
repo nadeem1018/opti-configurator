@@ -35,8 +35,8 @@ export class HeaderComponent implements OnInit {
     this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
     /* sessionStorage.clear();
     localStorage.clear(); */
-    let login_page = this.commonData.application_path + '/login';
-    
+    let login_page = this.commonData.application_path + '/index.html#login';
+        
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('selectedComp');
     sessionStorage.removeItem('loggedInUser');

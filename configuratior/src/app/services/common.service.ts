@@ -29,7 +29,11 @@ export class CommonService {
  
   async get_config() {
 
+<<<<<<< HEAD
+    let service_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/config.json");
+=======
     let service_call = await fetch( this.common_params.get_current_url() +  "/assets/data/json/config.json");
+>>>>>>> 0a74576e89d2d17e69e1cb7067904845cfe41e92
     let data = await service_call.json();
     
     sessionStorage.setItem('system_config', JSON.stringify(data));
@@ -37,7 +41,11 @@ export class CommonService {
 
   async set_language(language) {
 
+<<<<<<< HEAD
+    let service_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/i18n/" + language + ".json");
+=======
     let service_call = await fetch( this.common_params.get_current_url() + "/assets/data/json/i18n/" + language + ".json");
+>>>>>>> 0a74576e89d2d17e69e1cb7067904845cfe41e92
     let data = await service_call.json();
     sessionStorage.setItem('current_lang', JSON.stringify(data));
   }
