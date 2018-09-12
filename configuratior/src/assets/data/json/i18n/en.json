@@ -17,6 +17,7 @@
     "feature": "Feature",
     "feature_Model": "Feature Model",
     "feature_Bom": "Feature BOM",
+    "permission_load_error": "There was some error while loading user wright permission",
 
     "model": "Model",
     "bom": "BOM",
@@ -131,7 +132,7 @@
     "SelectValue":"Select value at row index: ",
     "quantityblank":"Select quantity at row index: ",
     "quantityvalid":"Quantity cannot be 0",
-
+    "quantity":"Quantity",
     "ModelIDBlank":"Model id cannot be blank",
     "SelectModel":"Select model at row index: ",
     "NoDataAvailable" :"No data available",
@@ -140,6 +141,36 @@
     "rule_WB":"Rule WB",
     "rule_workbench":"Rule Workbench",
     "Refrence" :"Cannot delete. Reference exists.",
-    "InvalidFeatureId": "Invalid Feature Id"
+    "InvalidFeatureId": "Invalid Feature Id",
+    "rule_id" : "Rule ID",
+    "rule_code" : "Rule Code",
+    "effective_from":"Effective From",
+    "effective_to":"Effective To",
+    "discontinued":"Discontinued",
+    "applicable_for":"Applicable For",
+    "add_sequence":"Add Sequence",
+    "add_seq": "Add Seq.",
+    "input": "Input",
+    "seq_row_no": "Seq. #",
+    "operator": "Operator",
+    "bracket": "Bracket",
+    "condition": "Condition",
+    "operand_1": "Operand 1",
+    "operand_2": "Operand 2",
+    "add_rule": "Add Rule",
+    "model_feature": "Model/Feature",
+    "show_output": "Show Output",
+    "hide_output": "Hide Output",
+    "output": "Output",
+    "expression": "Expression",
+    "item": "Item",
+    "value": "value",
+    "quantity_edit": "Quantity Edit",
+    "edit_quantity": "Edit Quantity",
+    "edit_price": "Edit Price",
+    "default": "Default",
+    "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row"
+    
+  
     
 }

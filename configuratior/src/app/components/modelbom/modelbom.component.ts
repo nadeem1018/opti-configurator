@@ -43,6 +43,11 @@ export class ModelbomComponent implements OnInit {
   page_main_title = this.language.Model_Bom
   public username: string = "";
   serviceData: any;
+
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
+
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
@@ -726,26 +731,67 @@ export class ModelbomComponent implements OnInit {
 
 
   onDelete() {
-    var result = confirm(this.language.DeleteConfimation);
-    if (result) {
-      this.service.DeleteData(this.modelbom_data.modal_id).subscribe(
-        data => {
-          if (data === "True") {
-            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-            this.route.navigateByUrl('modelbom/view');
-            return;
-          }
-          else {
-            this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-            return;
-          }
-        }
-      )
-    }
+   // var result = confirm(this.language.DeleteConfimation);
+   this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+   this.show_dialog = true;
   }
+
+  //delete record will be execute from here
+  delete_record(){
+    this.service.DeleteData(this.modelbom_data.modal_id).subscribe(
+      data => {
+        if (data === "True") {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.route.navigateByUrl('modelbom/view');
+          return;
+        }
+        else {
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
+      this.delete_record();
+    }
+    this.show_dialog = false;
+  }
+
 
   onExplodeClick() {
     this.lookupfor = 'tree_view_lookup';
+
+    if(this.modelbom_data.modal_id != undefined){
+      //now call bom id
+      
+  //     this.service.GetDataForExplodeViewForModelBOM(this.companyName,this.modelbom_data.modal_id).subscribe(
+  //       data => {
+  //         if(data !=null || data != undefined){
+  //             this.serviceData = data;
+  //             this.lookupfor = 'tree_view_lookup';
+  //           }
+  //           else{
+  //           }
+            
+  //         },
+  //         error =>
+  //         {
+  //           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+  //           return; 
+  //         }
+  //       )
+  //   }
+  //   else{
+  //     this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+  //     return;
+  //   }
+    
+   }
+
   }
 
   onVerifyOutput() {

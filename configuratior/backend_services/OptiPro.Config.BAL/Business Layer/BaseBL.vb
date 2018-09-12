@@ -41,20 +41,6 @@ Public Class BaseBL
         Return Nothing
     End Function
 
-    'Public Shared Function GetPermissionDetails(ByVal objgetMenu As BaseModel) As DataTable
-    '    Dim pdGetData As DataTable
-    '    Try
-    '        Dim pdtDetails As DataTable = Nothing
-    '        ' Deserialize JSON Object in DataTable Send through the Service
-    '        pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objgetMenu.GetMenuRecord)
-    '        'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
-    '        pdGetData = BaseDL.GetPermissionDetails(pdtDetails, mObjCompany)
-    '        'Return the Datasetset
-    '        Return pdGetData
-    '    Catch ex As Exception
-    '        Return Nothing
-    '    End Try
-    'End Function
 #Region "License Code"
 
     Public Shared Function BMGFDecrypt(vsPassword) As String

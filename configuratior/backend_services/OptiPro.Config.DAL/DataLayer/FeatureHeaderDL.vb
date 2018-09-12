@@ -263,7 +263,11 @@ Public Class FeatureHeaderDL
                 'check for efrence if Already Exists 
                 ChkReferenceForFeature = ChkReferenceForFeatureID(psFeatureID, psCompanyDBId, objCmpnyInstance)
                 If (ChkReferenceForFeature = "True") Then
+<<<<<<< HEAD
                     psStatus = "Exist"
+=======
+                    psStatus = "Reference Already Exist in Feature BOM or Model BOM for ID :" + (psFeatureID).ToString
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
                     Return psStatus
                 End If
                 Dim pSqlParam(1) As MfgDBParameter 'Parameter 0 consisting warehouse and it's datatype will be nvarchar
@@ -280,6 +284,7 @@ Public Class FeatureHeaderDL
                     psStatus = "False"
                 End If
             Next
+<<<<<<< HEAD
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -355,6 +360,8 @@ Public Class FeatureHeaderDL
                 End If
             End If
 
+=======
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -1037,7 +1044,7 @@ Public Class FeatureHeaderDL
     End Function
 
 
-    Public Shared Function ChkReferenceForFeatureID(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+    Public Shared Function ChkReferenceForFeatureID(ByVal objFeatureID As Integer, ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
         Dim psStatus As String = String.Empty
         Try
             Dim psCompanyDBId As String = String.Empty
@@ -1046,9 +1053,9 @@ Public Class FeatureHeaderDL
             Dim piFeatureID As Integer
             Dim pdsGetDataFBOM, pdsGetDataMBOM As DataSet
             'Get the Company Name
-            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            psCompanyDBId = objCompanyDBID
             'get the Search String
-            piFeatureID = NullToInteger(objDataTable.Rows(0)("FeatureId"))
+            piFeatureID = objFeatureID
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -1104,7 +1111,7 @@ Public Class FeatureHeaderDL
                     psStatus = "False"
                 End If
             End If
-           
+
             Return psStatus
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)

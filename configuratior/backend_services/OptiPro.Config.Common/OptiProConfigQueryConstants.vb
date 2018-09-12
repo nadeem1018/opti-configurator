@@ -47,6 +47,12 @@
     Public Const OptiPro_Config_GetAllRecordForCyclicCheck As String = "GetAllRecordForCyclicCheck"
     Public Const OptiPro_Config_CheckValidFeatureIdEnteredForFeatureBOM As String = "CheckValidFeatureIdEnteredForFeatureBOM"
     Public Const OptiPro_Config_CheckValidItemEnteredForFeatureBOM As String = "CheckValidItemEnteredForFeatureBOM"
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
 
 #End Region
 
@@ -105,6 +111,9 @@
     Public Const OptiPro_Config_GetSavedDataFromRuleOutput As String = "GetSavedDataFromRuleOutput"
     Public Const OptiPro_Config_GetRuleIDByGUID As String = "GetRuleIDByGUID"
     Public Const OptiPro_Config_GetItemMasterDataforRuleWB As String = "GetItemMasterDataforRuleWB"
+    Public Const OptiPro_Config_GetAllFeatureForRuleWorkBenchExceptSelected As String = "GetAllFeatureForRuleWorkBenchExceptSelected"
+    Public Const OptiPro_Config_GetRuleWBDataForCommonView As String = "GetRuleWBDataForCommonView"
+    Public Const OptiPro_Config_GetTotalCountOfRecordForRuleWB As String = "GetTotalCountOfRecordForRuleWB"
 
 
 #End Region

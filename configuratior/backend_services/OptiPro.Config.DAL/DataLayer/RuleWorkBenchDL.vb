@@ -18,8 +18,15 @@ Public Class RuleWorkBenchDL
             Dim psCompanyDBId As String = String.Empty
             Dim psSQL As String = String.Empty
             Dim pdsGetData As New DataSet
+            Dim psFeatureId As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get FeatureId 
+            If objDataTable.Columns.Contains("FeatureId") Then
+                psFeatureId = NullToString(objDataTable.Rows(0)("FeatureId"))
+            Else
+                psFeatureId = ""
+            End If
             'Now assign the Company object Instance to a variable pObjCompany
             Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
             pObjCompany.CompanyDbName = psCompanyDBId
@@ -28,9 +35,23 @@ Public Class RuleWorkBenchDL
             Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
             'Now we will connect to the required Query Instance of SQL/HANA
             Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
-            ' Get the Query on the basis of objIQuery
-            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBench)
+
+            If psFeatureId.Length > 0 Then
+                Dim pSqlParam(1) As MfgDBParameter
+                'Parameter 0 consisting featureID and it will be of Integer
+                pSqlParam(0) = New MfgDBParameter
+                pSqlParam(0).ParamName = "@FEATUREID"
+                pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+                pSqlParam(0).Paramvalue = psFeatureId
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBenchExceptSelected)
+                pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+
+            Else
+                ' Get the Query on the basis of objIQuery
+                psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllFeatureForRuleWorkBench)
                 pdsGetData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+
+            End If
             Return pdsGetData.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
@@ -923,6 +944,141 @@ Public Class RuleWorkBenchDL
             psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetAllRecordForModelBOMForCyclicCheck)
             pdsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
             Return pdsRecord.Tables(0)
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+
+    Public Shared Function GetRuleWBDataForCommonView(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsItemData As DataSet
+            Dim psTotalCount As Integer
+            Dim piPageLimit As Integer
+            If objDataTable.Columns.Contains("SearchString") Then
+                '  get Search String,
+                piPageLimit = NullToInteger(objDataTable.Rows(0)("PageLimit"))
+            Else
+                'if there is no Column then we will be Coonsider page Limit as 25 
+                piPageLimit = 25
+            End If
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'psCompanyDBId = "DEVQAS2BRANCHING"
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            'Variable to Fet Starting Limit and The End Limit
+            Dim piStartCount, piEndCount As Integer
+            Dim piPageNumber As Integer
+            'get the PAge Number which is Coming from UI 
+            ' piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
+            piPageNumber = NullToInteger(objDataTable.Rows(0)("PageNumber"))
+            'logic to get the End Count 
+            piEndCount = piPageNumber * piPageLimit
+            'Logic to get the Starting Count 
+            If piPageNumber = 1 Then
+                piStartCount = 0
+            Else
+                piStartCount = piEndCount - piPageLimit + 1
+            End If
+            Dim pSqlParam(2) As MfgDBParameter
+            'Parameter 0 consisting warehouse and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ENDCOUNT"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_Integer
+            pSqlParam(0).Paramvalue = piEndCount
+
+            pSqlParam(1) = New MfgDBParameter
+            pSqlParam(1).ParamName = "@STARTCOUNT"
+            pSqlParam(1).Dbtype = BMMDbType.HANA_Integer
+            pSqlParam(1).Paramvalue = piStartCount
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetRuleWBDataForCommonView)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            psSQL = psSQL.Replace("@STARTCOUNT", piStartCount)
+            'here we needto Replace the Parameter as Like is Used inthe where Clause
+            psSQL = psSQL.Replace("@ENDCOUNT", piEndCount)
+            pdsItemData = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            'function to get Total Count of Record 
+            Dim dtTotalCount As DataTable
+            dtTotalCount = GetTotalCountOfRecordForRuleWB(psCompanyDBId, objCmpnyInstance)
+            psTotalCount = NullToInteger(dtTotalCount.Rows(0)("TOTALCOUNT"))
+            'Create a Datatable 
+            Dim objdtOrderedData As New DataTable
+            'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(String))
+            'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("#", GetType(Integer))
+            'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("RuleID", GetType(String))
+            'Add new Column to Datatble 
+            objdtOrderedData.Columns.Add("RuleCode", GetType(String))
+            'Add new Column to Datatble 
+            objdtOrderedData.Columns.Add("RuleDescription", GetType(String))
+            'Add new Column to Datatble 
+            objdtOrderedData.Columns.Add("Discontinue", GetType(String))
+            'Add Column 
+            objdtOrderedData.Columns.Add("Action", GetType(String))
+            Dim Counter As Integer = 1
+            'Loop to Insert Value to Action and Sequence 
+            For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("OPTM_RULEID"), Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_RULEID"), pdsItemData.Tables(0).Rows(irow)("OPTM_RULECODE"), pdsItemData.Tables(0).Rows(irow)("OPTM_RULEDESCRIPTION"), pdsItemData.Tables(0).Rows(irow)("OPTM_OPTM_DISCONTINUE"), pdsItemData.Tables(0).Rows(irow)("OPTM_RULEID"))
+                Counter = Counter + 1
+            Next
+            Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
+            serializer.MaxJsonLength = Integer.MaxValue
+            Dim rows As New Collection
+            Dim final_array As New Collection
+            Dim row As Dictionary(Of String, Object) = Nothing
+
+            For Each dr As DataRow In objdtOrderedData.Rows
+                Dim temp_array As New Collection
+                row = New Dictionary(Of String, Object)()
+                For Each dc As DataColumn In objdtOrderedData.Columns
+                    temp_array.Add(dr.Item(dc))
+                Next
+                rows.Add(temp_array)
+            Next
+            final_array.Add(rows)
+            final_array.Add(psTotalCount)
+            Return serializer.Serialize(final_array)
+            ' Return objdtOrderedData
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
+    Public Shared Function GetTotalCountOfRecordForRuleWB(ByVal objCompanyDBID As String, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim pdsFeatureList As DataSet
+            'Get the Company Name
+            psCompanyDBId = objCompanyDBID
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_GetTotalCountOfRecordForRuleWB)
+            pdsFeatureList = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, Nothing))
+            Return pdsFeatureList.Tables(0)
         Catch ex As Exception
             Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
         End Try

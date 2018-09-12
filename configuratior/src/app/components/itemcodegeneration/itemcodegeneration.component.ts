@@ -2,6 +2,7 @@ import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
+import { CommonService } from 'src/app/services/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 
@@ -19,7 +20,7 @@ export class ItemcodegenerationComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/item-code-generation/view';
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  constructor(private router: ActivatedRoute, private route: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) {
+  constructor(private router: ActivatedRoute, private route: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService,private commanService: CommonService) {
 
   }
   companyName: string;
@@ -42,10 +43,27 @@ export class ItemcodegenerationComponent implements OnInit {
   public isCodeDisabled: boolean = true;
   public username: string = "";
 
+  //button show/hide variables
+  public showAddRowbtn:boolean = true;
+  public showRemoveBtn:boolean = true;
+  public isReadOnly:boolean
+  public isUpdationAllowed:boolean
+  public isAdditionAllowed:boolean
+  public isDeletionAllowed:boolean
+  public isFullPermitted:boolean
+  public PermissionStr:any = [];
+
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
 
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
+    
+    //get permissions
+    this.getUserPermissionDetials();
+    
     this.stringtypevalue = this.commonData.stringtypevalue
     this.opertions = this.commonData.opertions
     this.codekey = "";
@@ -85,13 +103,11 @@ export class ItemcodegenerationComponent implements OnInit {
             })
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING
           }
-
-
-
         }
-
-
       )
+
+      //Check Permission
+      this.checkPermission("edit");
     }
     else{
       
@@ -112,11 +128,14 @@ export class ItemcodegenerationComponent implements OnInit {
         CreatedUser:this.username,
         isOperationDisable:true
       })
+     
+      //Check Permission
+      this.checkPermission("save");
+      
     }
 
-
-
-
+      //Check Permission
+      this.checkPermission("general");
   }
   ngAfterViewInit() {
     if(this.codekey === "" || this.codekey === null){
@@ -149,8 +168,6 @@ export class ItemcodegenerationComponent implements OnInit {
       CreatedUser: this.username,
       isOperationDisable:true
     })
-
-
 
   }
 
@@ -222,12 +239,22 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onDeleteClick() {
-    var result = confirm(this.language.DeleteConfimation);
-    if (result) {
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
+    // var result = confirm(this.language.DeleteConfimation);
+    // if (result) {
+    //   this.validateRowData("Delete")
+    // }
+  }
+
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
       this.validateRowData("Delete")
     }
-  
+    this.show_dialog = false;
   }
+
 
   onStrBlur(selectedvalue, rowindex) {
     if (this.itemcodetable.length > 0) {
@@ -366,5 +393,175 @@ export class ItemcodegenerationComponent implements OnInit {
     )
   }
 
+  //get user permission
+  getUserPermissionDetials(){
+
+    this.commanService.getPermissionDetails().subscribe(
+      data => {
+        if(data !=null || data != undefined){
+          // let isReadOnly:boolean
+          // let isUpdationAllowed:boolean
+          // let isAdditionAllowed:boolean
+          // let isDeletionAllowed:boolean
+          // let isFullPermitted:boolean
+
+         this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
+
+          // PermissionStr.forEach(function (indexValue) {
+          //   if (PermissionStr[indexValue] == "A") {
+          //       isAdditionAllowed = true;
+          //   }
+          //   else if (PermissionStr[indexValue] == "U") {
+          //       isUpdationAllowed = true;
+          //   }
+          //   else if (PermissionStr[indexValue] == "D") {
+          //       isDeletionAllowed = true;
+          //   }
+          //   else if (PermissionStr[indexValue] == "R") {
+          //       isReadOnly = true;
+          //   }
+          // }); 
+
+          // if (isAdditionAllowed === true && isUpdationAllowed == true && isDeletionAllowed === true) {
+          //     this.showAddRowbtn = false;
+
+          // }
+        // else if (isAdditionAllowed === true && isUpdationAllowed == true) {
+        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+        //     var oTable = oCurrentController.getView().byId("tblResourceId");
+        //     oTable.setShowOverlay(false);
+        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+        // }
+      
+        // else if (isUpdationAllowed === true && isDeletionAllowed === true) {
+        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+        //     var oTable = oCurrentController.getView().byId("tblResourceId");
+        //     oTable.setShowOverlay(false);
+        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+        // }
+      
+        // else if (isUpdationAllowed === true) {
+        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+        //     var oTable = oCurrentController.getView().byId("tblResourceId");
+        //     oTable.setShowOverlay(false);
+        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+        // }
+      
+          
+        }
+        else{
+          this.toastr.error('', this.language.permission_load_error, this.commonData.toast_config);
+        }
+      },
+      error =>{
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
+    ) 
+  }
+
+  checkPermission(mode){
+    setTimeout(function(){
+    
+    if(this.PermissionStr != undefined){
+
+    this.PermissionStr.forEach(function (indexValue) {
+      if (this.PermissionStr[indexValue] == "A") {
+          this.isAdditionAllowed = true;
+      }
+      else if (this.PermissionStr[indexValue] == "U") {
+          this.isUpdationAllowed = true;
+      }
+      else if (this.PermissionStr[indexValue] == "D") {
+          this.isDeletionAllowed = true;
+      }
+      else if (this.PermissionStr[indexValue] == "R") {
+          this.isReadOnly = true;
+      }
+    }); 
+
+    if(mode == "add"){
+        if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
+          this.isSaveButtonVisible = true;
+        }
+        else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
+          this.isSaveButtonVisible = true;
+        }
+        // else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
+          
+        // }
+        // else if (this.isUpdationAllowed === true) {
+      
+        // }
+    }
+    if(mode == "edit"){
+      if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
+        this.isUpdateButtonVisible = true;
+      }
+      else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
+        this.isUpdateButtonVisible = true;
+      }
+      else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
+        this.isUpdateButtonVisible = true;
+      }
+      else if (this.isUpdationAllowed === true) {
+        this.isUpdateButtonVisible = true;
+      }
+
+    }
+    // if(mode == "delete"){
+    //    this.showRemoveBtn = true;
+    // }
+    if(mode == "general"){
+          if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
+              this.showAddRowbtn = false;
+              this.showRemoveBtn = true;
+          }
+          else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
+            this.showAddRowbtn = false;
+          }
+          else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
+            this.showRemoveBtn = true;
+          }
+          else if (this.isUpdationAllowed === true) {
+         
+          }
+    }
+  }
+    
+    }, 3000);
+ }
 
 }

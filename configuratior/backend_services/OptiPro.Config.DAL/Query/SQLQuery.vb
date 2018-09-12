@@ -196,7 +196,7 @@ Public Class SQLQuery
 
     'SQL Query to get the List of all the Features Except the Selected Feature
     Function GetFeatureListForSelectedFeature() As String
-        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"",""OPTM_FEATUREDESC"",""OPTM_ACCESSORY"",""OPTM_PHOTO"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""=@FEATUREID"
         Return psSQL
     End Function
 
@@ -279,10 +279,18 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_CHILDFEATUREID"" FROM ""OPCONFIG_FEATUREBOMDTL"""
         Return psSQL
     End Function
+<<<<<<< HEAD
+=======
+
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
     Function CheckValidFeatureIdEnteredForFeatureBOM() As String
         Dim psSQL As String = "SELECT COUNT (""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID=@FEATUREID"
         Return psSQL
     End Function
+<<<<<<< HEAD
+=======
+
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9
     Function CheckValidItemEnteredForFeatureBOM() As String
         Dim psSQL As String = "SELECT COUNT (""ItemKey"") AS ""TOTALCOUNT"" FROM ""OPConfig_ItemMaster"" WHERE ""ItemKey""=@ITEMCODE"
         Return psSQL
@@ -419,6 +427,20 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function GetAllFeatureForRuleWorkBenchExceptSelected() As String
+        Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""<>@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function GetRuleWBDataForCommonView() As String
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT ""OPTM_RULEID"",""OPTM_RULECODE"",""OPTM_DESCRIPTION"",""OPTM_DISCONTINUE"" FROM ""OPCONFIG_RULEHEADER"" EXCEPT SELECT TOP @STARTCOUNT ""OPTM_RULEID"",""OPTM_RULECODE"",""OPTM_DESCRIPTION"",""OPTM_DISCONTINUE"" FROM ""OPCONFIG_RULEHEADER"""
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForRuleWB() As String
+        Dim psSQL As String = "SELECT COUNT(""OPTM_RULEID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_RULEHEADER"""
+        Return psSQL
+    End Function
 
 
 

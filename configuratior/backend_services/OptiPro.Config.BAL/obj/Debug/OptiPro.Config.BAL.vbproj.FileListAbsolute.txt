@@ -40,6 +40,7 @@ C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configurati
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.dll
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.xml
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.pdb
+<<<<<<< HEAD
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\OptiPro.Config.BAL.dll
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\OptiPro.Config.BAL.pdb
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\OptiPro.Config.BAL.xml
@@ -61,3 +62,8 @@ C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backe
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.dll
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.xml
 C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\obj\Debug\OptiPro.Config.BAL.pdb
+=======
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\Newtonsoft.Json.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\System.Web.Http.xml
+C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.BAL\bin\Debug\System.Net.Http.Formatting.xml
+>>>>>>> a849f46527beb787de3b25dc712b833c1e3666c9

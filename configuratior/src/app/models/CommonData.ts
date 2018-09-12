@@ -61,6 +61,45 @@ export class CommonData {
         { "value": 3, "Name": "Model" }
     ];
 
+    public rule_seq_type: any = [
+        { "value": '', "Name": "" },
+        { "value": 1, "Name": "Feature" },
+        { "value": 2, "Name": "Model" }
+    ];
+
+    public operator_type: any = [
+        { "value": '', "Name": "" },
+        { "value": 'or', "Name": "OR" },
+        { "value": 'and', "Name": "AND" }
+    ];
+
+    public yes_no_option: any = [
+        { "value": '', "Name": "" },
+        { "value": 'n', "Name": "No" },
+        { "value": 'y', "Name": "Yes" }
+    ];
+
+    public bracket_list = [
+        { "value": '' },
+        { "value": "[" },
+        { "value": "{", },
+        { "value" : "(" },
+        { "value": "]" },
+        { "value": "}", },
+        { "value": ")" },
+    ];
+
+    public express_conditions = [
+        { "value": "=" },
+        { "value": "<" },
+        { "value": ">" },
+        { "value": "<=" },
+        { "value": ">=" },
+        { "value": "Between" },
+        { "value" : "In"},
+    ];
+
+
     // for common view
     public default_limits = [10, 25, 50, 100];
     public default_count = 10;
