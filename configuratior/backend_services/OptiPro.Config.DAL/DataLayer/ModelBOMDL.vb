@@ -591,6 +591,8 @@ Public Class ModelBOMDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(Integer))
+            'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("#", GetType(Integer))
             'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("ID", GetType(String))
@@ -602,7 +604,7 @@ Public Class ModelBOMDL
             Dim Counter As Integer = 1
             'Loop to Insert Value to Action and Sequence 
             For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_MODELID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_MODELID"))
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("OPTM_MODELID"), Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_MODELID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_MODELID"))
                 Counter = Counter + 1
             Next
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
@@ -715,7 +717,7 @@ Public Class ModelBOMDL
     Public Shared Function GetDataForExplodeViewForModelBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As DataTable
         Try
             Dim psCompanyDBId As String = String.Empty
-            Dim psFeatureID As Integer
+            Dim psModelID As String = NullToString(objDataTable.Rows(0)("ModelID"))
             Dim psSQL As String = String.Empty
             Dim pdsFeatureDetail As DataSet
             'Get the Company Name
@@ -745,88 +747,33 @@ Public Class ModelBOMDL
             'Add Column 
             objdtOrderedData.Columns.Add("level", GetType(String))
             Dim counter As Integer = 1
-
-            For iRecord As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
-                'variable to get parent Feature ID
-                Dim tempParentModelID As String
-                'variable to get Item key 
-                Dim tempitemkey As String
-                'avariable to get value for Item Value
-                Dim tempFeature As String
-                tempParentModelID = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_MODELID"))
-                tempitemkey = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_ITEMKEY")))
-                tempFeature = NullToString((pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_FEATUREID")))
-                Dim tempChildId As String = NullToString(pdsFeatureDetail.Tables(0).Rows(iRecord)("OPTM_CHILDMODELID"))
-                'dataView
-                Dim tempDV As DataView
-                Dim tempDV1, tempDataView2, tempDataView3 As DataView
-                'get the data from the Parent Table 
+           Dim tempDV As DataView
+            Dim psChildModelID As String
+            Dim piLevel As Integer = 0
+            'to fill for the Parent dATA 
+            objdtOrderedData.Rows.Add(counter, "", psModelID, 0)
+            counter = counter + 1
+            For iRecordDetail As Integer = 0 To pdsFeatureDetail.Tables(0).Rows.Count - 1
+                piLevel = piLevel + 1
                 tempDV = New DataView(pdsFeatureDetail.Tables(0))
-                'Filter the Data  According  to Feature ID
-                tempDV.RowFilter = StringFormat("OPTM_MODELID ='{0}'", tempParentModelID)
-
-                tempDataView2 = New DataView(pdsFeatureDetail.Tables(0))
-                tempDataView2.RowFilter = StringFormat("OPTM_CHILDMODELID ='{0}'", tempParentModelID)
-
-                tempDataView3 = New DataView(objdtOrderedData)
-                tempDataView3.RowFilter = StringFormat("component ='{0}' ", tempParentModelID)
-                Dim tempDVCount As Integer = tempDataView3.Count - 1
-
-                If tempDataView3.Count = 0 Then
-                    tempDVCount = 0
-                Else
-                    tempDVCount = tempDataView3.Count - 1
-                End If
-
-                If tempDataView2.Count = 0 And tempDataView3.Count = 0 Then
-                    objdtOrderedData.Rows.Add(counter, "", tempParentModelID, 0)
-                    counter = counter + 1
-                End If
-                If tempChildId.Length = 0 Then
-                    If tempitemkey.Length > 0 Then
-                        tempChildId = tempitemkey
-                    Else
-                        tempChildId = tempFeature
-                    End If
-                End If
-                tempDV1 = New DataView(objdtOrderedData)
-                tempDV1.RowFilter = StringFormat("component ='{0}' and ParentId = '{1}'", tempChildId, tempParentModelID)
-                Dim piLevel As Integer = 1
-                piLevel = NullToInteger(tempDataView3(tempDVCount)("level")) + 1
-                If tempDV1.Count = 0 Then
-                    If tempDV.Count > 0 Then
-
-                        For iChildRecord As Integer = 0 To tempDV.Count - 1
-                            'piLevel = piLevel + 1
-                            Dim psParentId As String = NullToInteger(tempDV(iChildRecord)("OPTM_MODELID"))
-                            Dim psChildID As String = NullToString((tempDV(iChildRecord)("OPTM_CHILDMODELID")))
-                            Dim pschildItemKey As String = NullToString((tempDV(iChildRecord)("OPTM_ITEMKEY")))
-                            Dim psChildFeatureID As String = NullToString((tempDV(iChildRecord)("OPTM_FEATUREID")))
-                            If (psChildID.Length > 0) Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_CHILDMODELID"), piLevel)
-                                counter = counter + 1
-                            ElseIf ((pschildItemKey.Length > 0)) Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_ITEMKEY"), piLevel)
-                                counter = counter + 1
-                            ElseIf psChildFeatureID.Length > 0 Then
-                                objdtOrderedData.Rows.Add(counter, psParentId, tempDV(iChildRecord)("OPTM_FEATUREID"), piLevel)
-                                counter = counter + 1
-                            End If
-                        Next
-                        'Else
-                        '    objdtOrderedData.Rows.Add(counter, "", tempParentFeatureID, 0)
-                        '    counter = counter + 1
-                    End If
-                End If
-                If (tempitemkey.Length > 0) And tempDataView3.Count = 0 Then
-
-                    piLevel = piLevel + 1
-                    objdtOrderedData.Rows.Add(counter, tempParentModelID, tempitemkey, piLevel)
-                    counter = counter + 1
-                ElseIf (tempFeature.Length > 0) And tempDataView3.Count = 0 Then
-                    piLevel = piLevel + 1
-                    objdtOrderedData.Rows.Add(counter, tempParentModelID, tempFeature, piLevel)
-                    counter = counter + 1
+                tempDV.RowFilter = String.Format("OPTM_MODELID IN (" & psModelID & ")")
+                'to fill Parent record 
+                If tempDV.Count > 0 Then
+                    psModelID = "0"
+                    For irecord As Integer = 0 To tempDV.Count - 1
+                        If NullToString(tempDV(irecord)("OPTM_ITEMKEY")).Length > 0 Then
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_MODELID"), tempDV(irecord)("OPTM_ITEMKEY"), piLevel)
+                            counter = counter + 1
+                        ElseIf NullToInteger(tempDV(irecord)("OPTM_FEATUREID")) > 0 Then
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_MODELID"), tempDV(irecord)("OPTM_FEATUREID"), piLevel)
+                            counter = counter + 1
+                        Else
+                            objdtOrderedData.Rows.Add(counter, tempDV(irecord)("OPTM_MODELID"), tempDV(irecord)("OPTM_CHILDMODELID"), piLevel)
+                            counter = counter + 1
+                            psChildModelID = tempDV(irecord)("OPTM_CHILDMODELID")
+                            psModelID = psModelID & "," & "'" & psChildModelID & "'"
+                        End If
+                    Next
                 End If
             Next
             Return objdtOrderedData

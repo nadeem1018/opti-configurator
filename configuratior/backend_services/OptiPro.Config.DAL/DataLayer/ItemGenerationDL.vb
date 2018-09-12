@@ -686,6 +686,8 @@ Public Class ItemGenerationDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(String))
+            'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("#", GetType(Integer))
             'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("Code", GetType(String))
@@ -696,7 +698,7 @@ Public Class ItemGenerationDL
             Dim Counter As Integer = 1
             'Loop to Insert Value to Action and Sequence 
             For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("Code"), pdsItemData.Tables(0).Rows(irow)("FinalString"), pdsItemData.Tables(0).Rows(irow)("Code"))
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("Code"), Counter, pdsItemData.Tables(0).Rows(irow)("Code"), pdsItemData.Tables(0).Rows(irow)("FinalString"), pdsItemData.Tables(0).Rows(irow)("Code"))
                 Counter = Counter + 1
             Next
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
@@ -733,7 +735,6 @@ Public Class ItemGenerationDL
             Dim psItemCode As String
             'Get the Company Name
             psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
-
             'get the ItemCode name  
             psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
             'Now assign the Company object Instance to a variable pObjCompany

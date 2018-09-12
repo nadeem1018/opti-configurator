@@ -264,6 +264,21 @@ Public Class FeatureBOMBL
         End Try
     End Function
 
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataByFeatureID As FeatureBOMModel) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim pdtDetails As DataTable = Nothing
+            ' Deserialize JSON Object in DataTable Send through the Service
+            pdtDetails = JsonConvert.DeserializeObject(Of DataTable)(objDataByFeatureID.ModelItem)
+            'Get the result from DataLayer Function in a DataSet by just passing Required Paramenters
+            psStatus = FeatureBOMDL.CheckValidItemEnteredForFeatureBOM(pdtDetails, mObjCompany)
+            'Return the Datasetset
+            Return psStatus
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
 
 
 End Class

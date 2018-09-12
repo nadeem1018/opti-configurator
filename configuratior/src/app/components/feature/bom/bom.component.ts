@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
+import { timepickerReducer } from '../../../../../node_modules/ngx-bootstrap/timepicker/reducer/timepicker.reducer';
 
 @Component({
   selector: 'app-bom',
@@ -38,9 +39,11 @@ export class BomComponent implements OnInit {
   public isQuanity: number;
   public isFeatureIdEnable: boolean = true;
   public FeatureLookupBtnhide: boolean = true;
+  public showImageBlock: boolean = true;
   config_params: any;
   serviceData: any;
   counter = 0;
+  public header_image_data: any = [];
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -131,10 +134,15 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
-            
+
           }
 
-
+          // this.header_image_data = [
+          //   "../../backend_services/OptiPro.Config.Service/" + this.feature_bom_data.image_path
+          // ];
+          this.header_image_data = [
+            "../../assets/images/bg.jpg" 
+          ];
 
 
         }
@@ -183,26 +191,26 @@ export class BomComponent implements OnInit {
   };
 
 
-  uploadheaderfile(files: any) {
-    if (files.length === 0)
-      return;
-    const formData = new FormData();
+  // uploadheaderfile(files: any) {
+  //   if (files.length === 0)
+  //     return;
+  //   const formData = new FormData();
 
-    for (let file of files) {
-      formData.append(file.name, file);
-    }
+  //   for (let file of files) {
+  //     formData.append(file.name, file);
+  //   }
 
-    this.fbom.UploadFeatureBOM(formData).subscribe(data => {
-      if (data.body === "False") {
-        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
-      }
-      else {
-        this.feature_bom_data.image_path=data.body
-      }
-    })
-  }
+  //   this.fbom.UploadFeatureBOM(formData).subscribe(data => {
+  //     if (data.body === "False") {
+  //       this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+  //     }
+  //     else {
+  //       this.feature_bom_data.image_path = data.body
+  //     }
+  //   })
+  // }
 
-  uploaddetailfile(files: any,rowindex) {
+  uploaddetailfile(files: any, rowindex) {
     if (files.length === 0)
       return;
     const formData = new FormData();
@@ -219,7 +227,7 @@ export class BomComponent implements OnInit {
         if (this.feature_bom_table.length > 0) {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === rowindex) {
-              this.feature_bom_table[i].attachment=data.body
+              this.feature_bom_table[i].attachment = data.body
             }
           }
         }
@@ -448,8 +456,20 @@ export class BomComponent implements OnInit {
               // this.feature_bom_data.feature_id = data;
               this.feature_bom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-              // this.feature_bom_data.image_path = data[0];
+              this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
+              this.header_image_data =[];
+              // this.header_image_data = [
+              //   // "/backend_services/OptiPro.Config.Service/" +  this.feature_bom_data.image_path
+              //   "/uploadfile/images/bg.jpg" 
+              // ];
+              // this.header_image_data =[];
+              // this.header_image_data = [
+              //   "/assets/images/bg.jpg" 
+              // ];
+              this.header_image_data = [
+                "/assets/images/" + this.feature_bom_data.image_path
+              ];
             }
             else {
               // this.feature_bom_table=data;

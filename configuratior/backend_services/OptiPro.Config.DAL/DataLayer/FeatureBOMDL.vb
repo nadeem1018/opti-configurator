@@ -1022,6 +1022,8 @@ Public Class FeatureBOMDL
             'Create a Datatable 
             Dim objdtOrderedData As New DataTable
             'Add Column to the Datatable 
+            objdtOrderedData.Columns.Add("Select", GetType(Integer))
+            'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("#", GetType(Integer))
             'Add Column to the Datatable 
             objdtOrderedData.Columns.Add("ID", GetType(String))
@@ -1029,10 +1031,11 @@ Public Class FeatureBOMDL
             objdtOrderedData.Columns.Add("DISPLAYNAME", GetType(String))
             'Add new Column to Datatble 
             objdtOrderedData.Columns.Add("Action", GetType(String))
+
             Dim Counter As Integer = 1
             'Loop to Insert Value to Action and Sequence 
             For irow As Integer = 0 To pdsItemData.Tables(0).Rows.Count - 1
-                objdtOrderedData.Rows.Add(Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"))
+                objdtOrderedData.Rows.Add(pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), Counter, pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"), pdsItemData.Tables(0).Rows(irow)("OPTM_DISPLAYNAME"), pdsItemData.Tables(0).Rows(irow)("OPTM_FEATUREID"))
                 Counter = Counter + 1
             Next
             Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer()
@@ -1402,6 +1405,49 @@ Public Class FeatureBOMDL
         End Try
         Return Nothing
     End Function
+
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psItemCode As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name  
+            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemCode
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidItemEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
 
 
     ''' <summary>
