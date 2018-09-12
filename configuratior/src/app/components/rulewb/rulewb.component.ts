@@ -100,6 +100,8 @@ export class RulewbComponent implements OnInit {
   }
 
   onAddRow() {
+    if (this.validation("AddRow") == false)
+      return;
     this.counter = 0;
     if (this.rule_sequence_data.length > 0) {
       this.counter = this.rule_sequence_data.length
@@ -219,7 +221,7 @@ export class RulewbComponent implements OnInit {
             this.outputrowcounter++;
             this.rule_feature_data.push({
               rowindex: i,
-              check_child:false,
+              check_child: false,
               feature: data[i].Feature,
               item: data[i].Item,
               value: data[i].Value,
@@ -295,16 +297,6 @@ export class RulewbComponent implements OnInit {
   }
 
   show_input_lookup(selected_type, rowindex) {
-    // if (selected_type != "") {
-
-    //   if (selected_type == "1") {
-    //     // feature service 
-    //   } else if (selected_type == "2") {
-    //     // modal service 
-    //   }
-    // } else {
-
-    // }
     this.currentrowindex = rowindex
     if (selected_type == 1) {
       this.getFeatureDetails(this.rule_wb_data.applicable_for_feature_id, "Detail", selected_type);
@@ -334,34 +326,34 @@ export class RulewbComponent implements OnInit {
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
       if (this.rule_feature_data[i].rowindex == rowindex) {
         if (name == "check_child") {
-          this.rule_feature_data[i].check_child=value
+          this.rule_feature_data[i].check_child = value
         }
-        else if(name=="feature_name"){
-          this.rule_feature_data[i].feature=value
+        else if (name == "feature_name") {
+          this.rule_feature_data[i].feature = value
         }
-        else if(name=="feature_item"){
-          this.rule_feature_data[i].item=value
+        else if (name == "feature_item") {
+          this.rule_feature_data[i].item = value
         }
-        else if(name=="feature_value"){
-          this.rule_feature_data[i].value=value
+        else if (name == "feature_value") {
+          this.rule_feature_data[i].value = value
         }
-        else if(name=="uom"){
-          this.rule_feature_data[i].uom=value
+        else if (name == "uom") {
+          this.rule_feature_data[i].uom = value
         }
-        else if(name=="quantity"){
-          this.rule_feature_data[i].quantity=value
+        else if (name == "quantity") {
+          this.rule_feature_data[i].quantity = value
         }
-        else if(name=="edit_quanity"){
-          this.rule_feature_data[i].edit_quantity=value
+        else if (name == "edit_quanity") {
+          this.rule_feature_data[i].edit_quantity = value
         }
-        else if(name=="price_soure"){
-          this.rule_feature_data[i].price_source=value
+        else if (name == "price_soure") {
+          this.rule_feature_data[i].price_source = value
         }
-        else if(name=="edit_price"){
-          this.rule_feature_data[i].edit_price=value
+        else if (name == "edit_price") {
+          this.rule_feature_data[i].edit_price = value
         }
-        else{
-          this.rule_feature_data[i].default=value
+        else {
+          this.rule_feature_data[i].default = value
         }
       }
 
@@ -371,10 +363,73 @@ export class RulewbComponent implements OnInit {
   validation(btnpress) {
     if (btnpress == "AddRow") {
       if (this.rule_wb_data.rule_code == "" || this.rule_wb_data.rule_code == null) {
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        this.toastr.error('', this.language.selectrulecode, this.commonData.toast_config);
+        return false;
+      }
+      if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
+        this.toastr.error('', this.language.selectdescription, this.commonData.toast_config);
+        return false;
+      }
+      if (this.rule_wb_data.effective_from == "" || this.rule_wb_data.effective_from == null) {
+        this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
+        return false;
+      }
+      if (this.rule_wb_data.effective_to == "" || this.rule_wb_data.effective_to == null) {
+        this.toastr.error('', this.language.selectefftodate, this.commonData.toast_config);
+        return false;
+      }
+      if (this.rule_wb_data.applicable_for_feature_id == "" || this.rule_wb_data.applicable_for_feature_id == null) {
+        this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
         return false;
       }
     }
+    else if (btnpress == "Save") {
+      if (this.rule_sequence_data.length == 0) {
+        this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
+        return false;
+      }
+    }
+    else {
+      if (this.rule_sequence_data.length > 0) {
+        for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+          let currentrow= i+1;
+          if (this.rule_sequence_data[i].operator == "" || this.rule_sequence_data[i].operator == '' || this.rule_sequence_data[i].operator == null) {
+            this.toastr.error('', this.language.selectoperator + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.rule_sequence_data[i].braces == "" || this.rule_sequence_data[i].braces == '' || this.rule_sequence_data[i].braces == null) {
+            this.toastr.error('', this.language.selectbraces + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.rule_sequence_data[i].type_value == "" || this.rule_sequence_data[i].type_value == '' || this.rule_sequence_data[i].type_value == null) {
+            if(this.rule_sequence_data[i].type==1 ){
+              this.toastr.error('', this.language.SelectFeature + currentrow, this.commonData.toast_config);
+              return false;
+            }
+            else{
+              this.toastr.error('', this.language.SelectModel + currentrow, this.commonData.toast_config);
+              return false;
+            }
+
+          }
+          if (this.rule_sequence_data[i].condition == "" || this.rule_sequence_data[i].condition == '' || this.rule_sequence_data[i].condition == null) {
+            this.toastr.error('', this.language.selectcondition + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.rule_sequence_data[i].operand_1 == "" || this.rule_sequence_data[i].operand_1 == '' || this.rule_sequence_data[i].operand_1 == null) {
+            this.toastr.error('', this.language.selectoperand1 + currentrow, this.commonData.toast_config);
+            return false;
+          }
+          if (this.rule_sequence_data[i].operand_2 == "" || this.rule_sequence_data[i].operand_2 == '' || this.rule_sequence_data[i].operand_2 == null) {
+            this.toastr.error('', this.language.selectoperand2 + currentrow, this.commonData.toast_config);
+            return false;
+          }
+
+        }
+       
+      }
+    }
+    return true;
   }
 
 }

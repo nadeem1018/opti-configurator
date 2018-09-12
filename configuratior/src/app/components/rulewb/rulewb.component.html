@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group row clearfix">
-            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_from}}</label>
+            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_to}}</label>
             <div class="col-sm-8 input-group">
               <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
                 type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to">
@@ -76,12 +76,12 @@
       </div>
 
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.rule_code}}</label>
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.discontinued}}</label>
         <div class="col-sm-4 mt-3px">
           <div class="custom-control custom-checkbox custom-control-inline">
             <input type="checkbox" id="yes" name="discontinued" [(ngModel)]="rule_wb_data.discontinued" class="custom-control-input"
               value="1">
-            <label class="custom-control-label" for="yes">{{language.discontinued}}</label>
+            <label class="custom-control-label" for="yes"></label>
           </div>
         </div>
       </div>
