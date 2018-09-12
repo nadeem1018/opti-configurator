@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group row clearfix">
-            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_from}}</label>
+            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_to}}</label>
             <div class="col-sm-8 input-group">
               <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
                 type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to">
@@ -76,12 +76,12 @@
       </div>
 
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.rule_code}}</label>
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.discontinued}}</label>
         <div class="col-sm-4 mt-3px">
           <div class="custom-control custom-checkbox custom-control-inline">
             <input type="checkbox" id="yes" name="discontinued" [(ngModel)]="rule_wb_data.discontinued" class="custom-control-input"
               value="1">
-            <label class="custom-control-label" for="yes">{{language.discontinued}}</label>
+            <label class="custom-control-label" for="yes"></label>
           </div>
         </div>
       </div>
@@ -213,9 +213,12 @@
         <div class="form-group clearfix">
           <div class="col-md-8">
             <div class="pull-left">
-              <button type="button" (click)="add_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+              <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-info  mr-10">
                 <i class="fa fa-check-circle"></i> {{language.add_rule}}
               </button>
+                <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+                  <i class="fa fa-pencil"></i> {{language.update_rule}}
+                </button>
               <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
                 <i class="fa fa-times"></i> {{language.close}}
               </button>
@@ -240,14 +243,27 @@
               <tr>
                 <th width="4%">{{language.seq_row_no}}</th>
                 <th width="80%">{{language.expression}}</th>
-                <th width="4%">{{language.action}}</th>
+                <th width="9%">{{language.action}}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let row of rule_expression_data">
                 <td>
-                  <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> </td>
-                <td>
+                  <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> 
+                </td>
+               
+                  <td class="text-center" align="center">
+                   {{row.expression}}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm mr-10 btn-info" (click)="edit_expression(row, row.rowindex)"
+                      title="{{language.edit}}">
+                      <i class="fa fa-edit fa-fw"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="delete_expression(row.rowindex)" title="{{language.remove}}">
+                      <i class="fa fa-trash-o fa-fw"></i>
+                    </button>
+                  </td>
               </tr>
             </tbody>
           </table>

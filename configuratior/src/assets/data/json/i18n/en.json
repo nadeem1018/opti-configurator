@@ -169,7 +169,26 @@
     "edit_quantity": "Edit Quantity",
     "edit_price": "Edit Price",
     "default": "Default",
-    "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row"
+    "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row",
+    "required_fields": "Required Fields in Row:",
+    "update_rule": "Update Rule",
+    "expression_generated": "Expression Generated",
+    "expression_updated": "Expression Updated",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "": "",
+    "selectrulecode":"Select rule code",
+    "selectdescription":"Select description",
+    "selecteffromdate":"Select effective from date",
+    "selectefftodate":"Select effective to date",
+    "selectoperator":"Select operator at row index: ",
+    "selectbraces":"Select braces at row index: ",
+    "selectcondition":"Select condition at row index:",
+    "selectoperand1":"Select operand 1 at row index: ",
+    "selectoperand2":"Select operand 2 at row index: "
+    
     
   
     
