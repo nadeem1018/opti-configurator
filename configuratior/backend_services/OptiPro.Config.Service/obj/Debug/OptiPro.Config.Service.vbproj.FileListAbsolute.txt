@@ -42,3 +42,25 @@ C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configurati
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.dll
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.xml
 C:\Dheeraj Agrawal\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll.config
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Service.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.BAL.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Common.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.Entity.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.pdb
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\bin\OptiPro.Config.DAL.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbprojResolveAssemblyReference.cache
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.Resources.resources
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.vbproj.GenerateResource.Cache
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.dll
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.xml
+C:\Tamanna\OptiPro Configurator Git mapped\opti-configurator\configuratior\backend_services\OptiPro.Config.Service\obj\Debug\OptiPro.Config.Service.pdb

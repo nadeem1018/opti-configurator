@@ -279,8 +279,14 @@ Public Class SQLQuery
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_CHILDFEATUREID"" FROM ""OPCONFIG_FEATUREBOMDTL"""
         Return psSQL
     End Function
-
-
+    Function CheckValidFeatureIdEnteredForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT (""OPTM_FEATUREID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_FEATUREHDR"" WHERE OPTM_FEATUREID=@FEATUREID"
+        Return psSQL
+    End Function
+    Function CheckValidItemEnteredForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT (""ItemKey"") AS ""TOTALCOUNT"" FROM ""OPConfig_ItemMaster"" WHERE ""ItemKey""=@ITEMCODE"
+        Return psSQL
+    End Function
 
 #End Region
 
@@ -355,12 +361,10 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
-
     Function GetAllRecordForModelBOMForCyclicCheck() As String
         Dim psSQL As String = "SELECT ""OPTM_MODELID"",""OPTM_CHILDMODELID"" FROM ""OPCONFIG_MBOMDTL"""
         Return psSQL
     End Function
-
 #End Region
 
 #Region "Rule WorkBench"

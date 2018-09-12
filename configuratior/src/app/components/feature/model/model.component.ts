@@ -284,9 +284,14 @@ if (result) {
         });
      this.fms.DeleteData(this.GetItemData).subscribe(
       data => {
+        
         if (data === "True" ) {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.router.navigateByUrl(this.view_route_link);
+          return;
+        }
+        else if(data === "Exist"){
+          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
           return;
         }
         else{

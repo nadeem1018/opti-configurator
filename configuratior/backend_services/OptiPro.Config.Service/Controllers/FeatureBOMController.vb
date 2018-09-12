@@ -131,4 +131,15 @@ Public Class FeatureBOMController
         End Try
         Return False
     End Function
+
+    <HttpPost, HttpGet>
+<Route("CheckValidFeatureIdEnteredForFeatureBOM")>
+    Public Function CheckValidFeatureIdEnteredForFeatureBOM(ByVal oGetData As FeatureBOMModel) As String
+        Return FeatureBOMBL.CheckValidFeatureIdEnteredForFeatureBOM(oGetData)
+    End Function
+    <HttpPost, HttpGet>
+<Route("CheckValidItemEnteredForFeatureBOM")>
+    Public Function CheckValidItemEnteredForFeatureBOM(ByVal oGetData As FeatureBOMModel) As String
+        Return FeatureBOMBL.CheckValidItemEnteredForFeatureBOM(oGetData)
+    End Function
 End Class

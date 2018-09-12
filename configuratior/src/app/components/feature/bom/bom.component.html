@@ -22,7 +22,7 @@
                  <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
              
                  <div class="col-sm-4 input-group">
-                     <input type="text"  ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]   ="feature_bom_data.feature_id" name="featureName"  id="featureNameId" placeholder="{{language.Bom_FeatureId}}"
+                     <input type="number"  ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]   ="feature_bom_data.feature_id" name="featureName"  id="featureNameId" (change)= "onFeatureIdChange()" placeholder="{{language.Bom_FeatureId}}"
                        #featureinputbox  >
                      <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
                          <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="openFeatureLookUp()">
