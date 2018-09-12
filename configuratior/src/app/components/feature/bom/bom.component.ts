@@ -140,8 +140,9 @@ export class BomComponent implements OnInit {
           // this.header_image_data = [
           //   "../../backend_services/OptiPro.Config.Service/" + this.feature_bom_data.image_path
           // ];
+        
           this.header_image_data = [
-            "../../assets/images/bg.jpg" 
+            this.commonData.get_current_url + "/assets/images/bg.jpg" 
           ];
 
 
@@ -502,7 +503,7 @@ export class BomComponent implements OnInit {
               //   "/assets/images/bg.jpg" 
               // ];
               this.header_image_data = [
-                "/assets/images/" + this.feature_bom_data.image_path
+                this.commonData.get_current_url +  "/assets/images/" + this.feature_bom_data.image_path
               ];
             }
             else {

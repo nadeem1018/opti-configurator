@@ -100,7 +100,6 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="obj\Debug\OptiPro.Config.Common.Resources.resources" />
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -112,21 +111,13 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\OptiPro.Config.Common.dll" />
     <Content Include="bin\Debug\OptiPro.Config.Common.pdb" />
     <Content Include="bin\Debug\OptiPro.Config.Common.xml" />
-    <Content Include="obj\Debug\OptiPro.Config.Common.dll" />
-    <Content Include="obj\Debug\OptiPro.Config.Common.pdb" />
-    <Content Include="obj\Debug\OptiPro.Config.Common.vbproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\OptiPro.Config.Common.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

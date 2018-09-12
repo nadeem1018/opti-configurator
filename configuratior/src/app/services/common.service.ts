@@ -29,7 +29,7 @@ export class CommonService {
  
   async get_config() {
 
-    let service_call = await fetch("../../assets/data/json/config.json");
+    let service_call = await fetch( this.common_params.get_current_url() +  "/assets/data/json/config.json");
     let data = await service_call.json();
     
     sessionStorage.setItem('system_config', JSON.stringify(data));
@@ -37,7 +37,7 @@ export class CommonService {
 
   async set_language(language) {
 
-    let service_call = await fetch("../../assets/data/json/i18n/" + language + ".json");
+    let service_call = await fetch( this.common_params.get_current_url() + "/assets/data/json/i18n/" + language + ".json");
     let data = await service_call.json();
     sessionStorage.setItem('current_lang', JSON.stringify(data));
   }
