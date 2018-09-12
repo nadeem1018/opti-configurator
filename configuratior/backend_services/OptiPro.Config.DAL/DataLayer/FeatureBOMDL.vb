@@ -1406,6 +1406,49 @@ Public Class FeatureBOMDL
         Return Nothing
     End Function
 
+    Public Shared Function CheckValidItemEnteredForFeatureBOM(ByVal objDataTable As DataTable, ByVal objCmpnyInstance As OptiPro.Config.Common.Company) As String
+        Dim psStatus As String = String.Empty
+        Try
+            Dim psCompanyDBId As String = String.Empty
+            Dim psSQL As String = String.Empty
+            Dim dsRecord As New DataSet
+            'VARIABLE TO GET THE ITEM CODE
+            Dim psItemCode As String
+            'Get the Company Name
+            psCompanyDBId = NullToString(objDataTable.Rows(0)("CompanyDBId"))
+            'get the ItemCode name  
+            psItemCode = NullToString(objDataTable.Rows(0)("ItemCode"))
+            'Now assign the Company object Instance to a variable pObjCompany
+            Dim pObjCompany As OptiPro.Config.Common.Company = objCmpnyInstance
+            pObjCompany.CompanyDbName = psCompanyDBId
+            pObjCompany.RequireConnectionType = OptiPro.Config.Common.WMSRequireConnectionType.CompanyConnection
+            'Now get connection instance i.e SQL/HANA
+            Dim ObjIConnection As IConnection = ConnectionFactory.GetConnectionInstance(pObjCompany)
+            'Now we will connect to the required Query Instance of SQL/HANA
+            Dim ObjIQuery As IQuery = QueryFactory.GetInstance(pObjCompany)
+            Dim pSqlParam(1) As MfgDBParameter
+            'Parameter 0 consisting itemCode and it's datatype will be nvarchar
+            pSqlParam(0) = New MfgDBParameter
+            pSqlParam(0).ParamName = "@ITEMCODE"
+            pSqlParam(0).Dbtype = BMMDbType.HANA_NVarChar
+            pSqlParam(0).Paramvalue = psItemCode
+            ' Get the Query on the basis of objIQuery
+            psSQL = ObjIQuery.GetQuery(OptiPro.Config.Common.OptiProConfigQueryConstants.OptiPro_Config_CheckValidItemEnteredForFeatureBOM)
+            'This method will fill the same dataset with table ParentTable
+            dsRecord = (ObjIConnection.ExecuteDataset(psSQL, CommandType.Text, pSqlParam))
+            If dsRecord.Tables(0).Rows(0)("TOTALCOUNT") > 0 Then
+                psStatus = "True"
+            Else
+                psStatus = "False"
+            End If
+            Return psStatus
+        Catch ex As Exception
+            Logger.WriteTextLog("Log: Exception from MoveOrderDL " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+
 
     ''' <summary>
     ''' Thhis Function is USed to Generate the GUID

@@ -285,6 +285,11 @@ Public Class SQLQuery
         Return psSQL
     End Function
 
+    Function CheckValidItemEnteredForFeatureBOM() As String
+        Dim psSQL As String = "SELECT COUNT (""ItemKey"") AS ""TOTALCOUNT"" FROM ""OPConfig_ItemMaster"" WHERE ""ItemKey""=@ITEMCODE"
+        Return psSQL
+    End Function
+
 #End Region
 
 
@@ -419,6 +424,16 @@ Public Class SQLQuery
 
     Function GetAllFeatureForRuleWorkBenchExceptSelected() As String
         Dim psSQL As String = "SELECT ""OPTM_FEATUREID"",""OPTM_FEATURECODE"",""OPTM_DISPLAYNAME"" FROM ""OPCONFIG_FEATUREHDR"" WHERE ""OPTM_TYPE"" ='Feature' and ""OPTM_FEATUREID""<>@FEATUREID"
+        Return psSQL
+    End Function
+
+    Function GetRuleWBDataForCommonView() As String
+        Dim psSQL As String = "SELECT TOP @ENDCOUNT ""OPTM_RULEID"",""OPTM_RULECODE"",""OPTM_DESCRIPTION"",""OPTM_DISCONTINUE"" FROM ""OPCONFIG_RULEHEADER"" EXCEPT SELECT TOP @STARTCOUNT ""OPTM_RULEID"",""OPTM_RULECODE"",""OPTM_DESCRIPTION"",""OPTM_DISCONTINUE"" FROM ""OPCONFIG_RULEHEADER"""
+        Return psSQL
+    End Function
+
+    Function GetTotalCountOfRecordForRuleWB() As String
+        Dim psSQL As String = "SELECT COUNT(""OPTM_RULEID"") AS ""TOTALCOUNT"" FROM ""OPCONFIG_RULEHEADER"""
         Return psSQL
     End Function
 
