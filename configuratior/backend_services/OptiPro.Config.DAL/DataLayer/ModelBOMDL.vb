@@ -747,7 +747,7 @@ Public Class ModelBOMDL
             'Add Column 
             objdtOrderedData.Columns.Add("level", GetType(String))
             Dim counter As Integer = 1
-           Dim tempDV As DataView
+            Dim tempDV As DataView
             Dim psChildModelID As String
             Dim piLevel As Integer = 0
             'to fill for the Parent dATA 
