@@ -47,6 +47,7 @@ import { TreeViewComponent } from "./components/common/tree.view";
 import { CustomDialogsComponent } from './components/common/custom-dialogs/custom-dialogs.component';
 import { RulewbComponent } from './components/rulewb/rulewb.component';
 import { RuleWbViewComponent } from './components/rulewb/rulewb.view.component';
+import { OutputComponent } from './components/output/output.component';
 
 
 
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent },
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
+
   { path: 'modelbom/add', component: ModelbomComponent },
   { path: 'modelbom/edit/:id', component: ModelbomComponent },
   { path: 'modelbom/view', component: ViewModelBomComponent },
@@ -71,6 +73,10 @@ const routes: Routes = [
   { path: 'rulewb/add', component: RulewbComponent },
   { path: 'rulewb/edit/:id', component: RulewbComponent },
   { path: 'rulewb/view', component: RuleWbViewComponent },
+
+  { path: 'output/view', component: OutputComponent },
+  { path: 'output/view/:id', component: OutputComponent },
+
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
@@ -105,7 +111,8 @@ const routes: Routes = [
     CustomDialogsComponent,
     LookupFilterPipe,
     RulewbComponent,
-    RuleWbViewComponent
+    RuleWbViewComponent,
+    OutputComponent
   ],
   imports: [
     BrowserModule,
