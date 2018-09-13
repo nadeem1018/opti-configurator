@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
-import { timepickerReducer } from '../../../../../node_modules/ngx-bootstrap/timepicker/reducer/timepicker.reducer';
 
 @Component({
   selector: 'app-bom',
@@ -610,8 +609,28 @@ export class BomComponent implements OnInit {
     this.show_dialog = false;
   }
 
+  
+  //THis will get the BOMs associated to selected feature id
   onAssociatedBOMClick() {
-
+   if(this.feature_bom_data.feature_id != undefined){
+    this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
+      data => {
+        if(data != null || data != undefined){
+          this.serviceData = data;
+          this.lookupfor = 'associated_BOM';
+        }
+      },
+      error=>
+      {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return; 
+      }
+    )
+   }
+   else{
+    this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+    return;
+   }
   }
 
   onExplodeClick() {
@@ -641,6 +660,8 @@ export class BomComponent implements OnInit {
     }
     
   }
+
+
   onFeatureIdChange(){
     this.fbom.onFeatureIdChange(this.feature_bom_data.feature_id).subscribe(
       data => {
