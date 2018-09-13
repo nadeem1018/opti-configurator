@@ -285,7 +285,7 @@ if (validateStatus == true){
           return;
         }
         else if(data == "Record Already Exist"){
-          this.toastr.error('', 'Code already exists', this.commonData.toast_config);
+          this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           return;
         }
         else{
