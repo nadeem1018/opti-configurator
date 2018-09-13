@@ -184,9 +184,17 @@
     "selectbraces":"Select braces at row index: ",
     "selectcondition":"Select condition at row index:",
     "selectoperand1":"Select operand 1 at row index: ",
-    "selectoperand2":"Select operand 2 at row index: "
-    
-    
+    "selectoperand2":"Select operand 2 at row index: ",
+     "config_wizard":"Configuration Wizard",
+     "select_customer":"Select Customer and related document Details ",
+     "select_model_bom_config":"Select Model Bill of material to configure the desired Product",
+     "verify_select_accept":"Verify the Selection and Accept",
+     "fianl_document_creat":"Final Document Creation",
+     "customer_doc_detail":"Customer and Document Details",
+     "step_1_4":"Step 1 of 4",
+    "step_2_4": "Step 2 of 4",
+    "step_3_4": "Step 3 of 4",
+    "step_4_4":"Step 4 of 4"
   
     
 }

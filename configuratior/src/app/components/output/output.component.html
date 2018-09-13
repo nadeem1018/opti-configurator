@@ -1,20 +1,20 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+<!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
   <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
-</div>
-<ol class="breadcrumb breadcrumb_mini_margin">
-  <!--  <li class="breadcrumb-item">
+</div> -->
+<!-- <ol class="breadcrumb breadcrumb_mini_margin">
+   <li class="breadcrumb-item">
     <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
   </li> -->
-  <li class="breadcrumb-item ">
+  <!-- <li class="breadcrumb-item ">
     <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
   </li>
   <li class="breadcrumb-item active">{{language.add}}</li>
-</ol>
+</ol> -->
 <div class="card mb-3">
-  <form>
+  <!-- <form> -->
     <!-- <div class="card-header">
 <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
-    <div class="card-body">
+   <!--  <div class="card-body"> -->
       <!-- <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.rule_id}}</label>
         <div class="col-sm-4 input-group">
@@ -22,50 +22,47 @@
             [disabled]="isModelIdEnable" id="rulewbid" placeholder="{{language.rule_id}}" #Modelinputbox>
         </div>
       </div> -->
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-box">
+      <div class="">
+        <div class="form-box">
           <form role="form" action="" method="post" class="f1">
-            <h3 class="app_title_heading">Output Window</h3>
-            <p>Follow the simple steps</p>
+            <h3 class="app_title_heading"><b>{{language.config_wizard}}</b></h3>
             <div class="f1-steps">
               <div class="f1-progress">
-                <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+                <div class="f1-progress-line" data-now-value="25%" data-number-of-steps="4" style="width: 25%;"></div>
               </div>
-              <div class="f1-step active">
+              <div class="f1-step active f1-step_middle">
                 <div class="f1-step-icon">
                   <i class="fa fa-user"></i>
                 </div>
-                <p>Step 1</p>
+                <p>{{language.select_customer}}</p>
               </div>
-              <div class="f1-step">
+              <div class="f1-step f1-step_middle">
                 <div class="f1-step-icon">
-                  <i class="fa fa-key"></i>
+                  <i class="fa fa-sitemap"></i>
                 </div>
-                <p>Step 2</p>
+                <p>{{language.select_model_bom_config}}</p>
               </div>
-              <div class="f1-step">
+              <div class="f1-step f1-step_middle">
                 <div class="f1-step-icon">
-                  <i class="fa fa-twitter"></i>
+                  <i class="fa fa-check-circle"></i>
                 </div>
-                <p>Step 3</p>
+                <p>{{language.verify_select_accept}}</p>
               </div>
-              <div class="f1-step">
+              <div class="f1-step f1-step_middle">
                 <div class="f1-step-icon">
-                  <i class="fa fa-twitter"></i>
+                  <i class="fa fa-eye"></i>
                 </div>
-                <p>Step 4</p>
+                <p>{{language.fianl_document_creat}}</p>
               </div>
-              <div class="f1-step">
-                <div class="f1-step-icon">
-                  <i class="fa fa-twitter"></i>
-                </div>
-                <p>Step 5</p>
-              </div>
-      
             </div>
-      
-            <fieldset>
-              <h4>Tell us who you are:</h4>
+            <fieldset class="one_step_block" data-block_id="customer_details" style="display:block">
+              <div class="wizard_heading_section">
+                <div class="row bg-primary pb-1 pt-1 wizard_font">
+                 <div class="col-md-11 pull-left"> <i class="fa fa-user fa-fw"></i>  {{language.customer_doc_detail}} </div>
+                 <div class="col-md-1 pull-right">  {{language.step_1_4}} </div>
+                </div>
+                <hr>
+              </div>
               <div class="form-group">
                 <label class="sr-only" for="f1-first-name">First name</label>
                 <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" id="f1-first-name">
@@ -79,12 +76,20 @@
                 <textarea name="f1-about-yourself" placeholder="About yourself..." class="f1-about-yourself form-control" id="f1-about-yourself"></textarea>
               </div>
               <div class="f1-buttons">
-                <button type="button" class="btn btn-next">Next</button>
+                <hr>
+                <button type="button" class="btn btn-sm btn-success  mr-10 btn-next btn-sm" data-next-block="model_bom_config"> <i class="fa fa-arrow-right"></i> Next</button>
               </div>
             </fieldset>
       
-            <fieldset>
-              <h4>Set up your account:</h4>
+            <fieldset class="one_step_block" data-block_id="model_bom_config">
+              <div class="wizard_heading_section">
+                <div class="row bg-primary pb-1 pt-1 wizard_font">
+                  <div class="col-md-11 pull-left">
+                    <i class="fa fa-user fa-fw"></i> {{language.customer_doc_detail}} </div>
+                  <div class="col-md-1 pull-right"> {{language.step_2_4}} </div>
+                </div>
+                <hr>
+              </div>
               <div class="form-group">
                 <label class="sr-only" for="f1-email">Email</label>
                 <input type="text" name="f1-email" placeholder="Email..." class="f1-email form-control" id="f1-email">
@@ -99,12 +104,13 @@
                   id="f1-repeat-password">
               </div>
               <div class="f1-buttons">
-                <button type="button" class="btn btn-previous">Previous</button>
-                <button type="button" class="btn btn-next">Next</button>
+                <hr>
+                <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">Previous</button>
+                <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="accept_bom_so">Next</button>
               </div>
             </fieldset>
       
-            <fieldset>
+            <fieldset class="one_step_block" data-block_id="accept_bom_so">
               <h4>Social media profiles:</h4>
               <div class="form-group">
                 <label class="sr-only" for="f1-facebook">Facebook</label>
@@ -119,18 +125,19 @@
                 <input type="text" name="f1-google-plus" placeholder="Google plus..." class="f1-google-plus form-control" id="f1-google-plus">
               </div>
               <div class="f1-buttons">
-                <button type="button" class="btn btn-previous">Previous</button>
-                <button type="submit" class="btn btn-submit">Submit</button>
+                <hr>
+                <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="welcome">Previous</button>
+                <button type="submit" class="btn btn-sm btn-success  mr-10 btn-submit">Submit</button>
               </div>
             </fieldset>
       
           </form>
         </div>
       </div>
-      </div>
+     <!--  </div>
       <div class="card-footer small text-muted">
         
-      </div>
+      </div> -->
       
-    </form>
+    <!-- </form> -->
   </div>
