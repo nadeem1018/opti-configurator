@@ -142,6 +142,7 @@
     "rule_workbench":"Rule Workbench",
     "Refrence" :"Cannot delete. Reference exists.",
     "InvalidFeatureId": "Invalid Feature Id",
+    "InvalidModelId": "Invalid Model Id",
     "rule_id" : "Rule ID",
     "rule_code" : "Rule Code",
     "effective_from":"Effective From",
@@ -174,11 +175,6 @@
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
@@ -187,7 +183,9 @@
     "selectbraces":"Select braces at row index: ",
     "selectcondition":"Select condition at row index:",
     "selectoperand1":"Select operand 1 at row index: ",
-    "selectoperand2":"Select operand 2 at row index: "
+    "selectoperand2":"Select operand 2 at row index: ",
+    "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
+    "DateValidation":"From date cannot be greater than to date"
     
     
   

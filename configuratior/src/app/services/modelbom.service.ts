@@ -90,9 +90,9 @@ export class ModelbomService {
   }
 
   DeleteData(id): Observable<any> {
-
+    
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { DeleteModel:JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    let jObject = { DeleteModel: JSON.stringify(id) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/DeleteModelBOMFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
@@ -102,6 +102,30 @@ export class ModelbomService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
+
+  onModelIdChange(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
+  }
+
+  onFeatureIdChangeModelBom(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
+  
+  onItemIdChangeModelBom(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemCode:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidItemEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
 
 }

@@ -16,8 +16,8 @@ export class RulewbService {
   }
 
   GetRuleList(search:any, page_number:any, record_per_page:any): Observable<any> {
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
-    return this.httpclient.post(this.config_params.service_url + "/ruleWb/GetRuleList", jObject, this.common_params.httpOptions);
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:page_number, PageLimit:record_per_page }]) }
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetRuleWBDataForCommonView", jObject, this.common_params.httpOptions);
   }
 
   getFeatureList(): Observable<any> {
@@ -42,5 +42,47 @@ export class RulewbService {
     let jObject = { FeatureDetails: JSON.stringify([{ CompanyDBID: this.logged_in_company , FeatureId: feature_code }]) }
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllDetailsForFeature", jObject, this.common_params.httpOptions);
   }
+
+  //save data
+  SaveData(Data): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject: any = { AddRule: JSON.stringify(Data) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/AddUpdateDataForRuleWorkBench", jObject, this.common_params.httpOptions);
+  }
+
+  GetDataByRuleID(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company,RuleId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetDataByRuleID", jObject, this.common_params.httpOptions);
+  }
+
+  DeleteData(id): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelList: JSON.stringify(id) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/DeleteRule", jObject, this.common_params.httpOptions);
+  }
+
+  onFeatureIdChange(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
+
+  onModelIdChange(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
+  }
+
+  
   
 }
