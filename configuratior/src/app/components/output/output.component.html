@@ -1,0 +1,136 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+</div>
+<ol class="breadcrumb breadcrumb_mini_margin">
+  <!--  <li class="breadcrumb-item">
+    <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
+  </li> -->
+  <li class="breadcrumb-item ">
+    <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
+  </li>
+  <li class="breadcrumb-item active">{{language.add}}</li>
+</ol>
+<div class="card mb-3">
+  <form>
+    <!-- <div class="card-header">
+<i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
+    <div class="card-body">
+      <!-- <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.rule_id}}</label>
+        <div class="col-sm-4 input-group">
+          <input type="text" ngValue="1" class="form-control  form-control-sm mt3" [(ngModel)]="rule_wb_data.id" name="featureName"
+            [disabled]="isModelIdEnable" id="rulewbid" placeholder="{{language.rule_id}}" #Modelinputbox>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-box">
+          <form role="form" action="" method="post" class="f1">
+            <h3 class="app_title_heading">Output Window</h3>
+            <p>Follow the simple steps</p>
+            <div class="f1-steps">
+              <div class="f1-progress">
+                <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+              </div>
+              <div class="f1-step active">
+                <div class="f1-step-icon">
+                  <i class="fa fa-user"></i>
+                </div>
+                <p>Step 1</p>
+              </div>
+              <div class="f1-step">
+                <div class="f1-step-icon">
+                  <i class="fa fa-key"></i>
+                </div>
+                <p>Step 2</p>
+              </div>
+              <div class="f1-step">
+                <div class="f1-step-icon">
+                  <i class="fa fa-twitter"></i>
+                </div>
+                <p>Step 3</p>
+              </div>
+              <div class="f1-step">
+                <div class="f1-step-icon">
+                  <i class="fa fa-twitter"></i>
+                </div>
+                <p>Step 4</p>
+              </div>
+              <div class="f1-step">
+                <div class="f1-step-icon">
+                  <i class="fa fa-twitter"></i>
+                </div>
+                <p>Step 5</p>
+              </div>
+      
+            </div>
+      
+            <fieldset>
+              <h4>Tell us who you are:</h4>
+              <div class="form-group">
+                <label class="sr-only" for="f1-first-name">First name</label>
+                <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" id="f1-first-name">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-last-name">Last name</label>
+                <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control" id="f1-last-name">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-about-yourself">About yourself</label>
+                <textarea name="f1-about-yourself" placeholder="About yourself..." class="f1-about-yourself form-control" id="f1-about-yourself"></textarea>
+              </div>
+              <div class="f1-buttons">
+                <button type="button" class="btn btn-next">Next</button>
+              </div>
+            </fieldset>
+      
+            <fieldset>
+              <h4>Set up your account:</h4>
+              <div class="form-group">
+                <label class="sr-only" for="f1-email">Email</label>
+                <input type="text" name="f1-email" placeholder="Email..." class="f1-email form-control" id="f1-email">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-password">Password</label>
+                <input type="password" name="f1-password" placeholder="Password..." class="f1-password form-control" id="f1-password">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-repeat-password">Repeat password</label>
+                <input type="password" name="f1-repeat-password" placeholder="Repeat password..." class="f1-repeat-password form-control"
+                  id="f1-repeat-password">
+              </div>
+              <div class="f1-buttons">
+                <button type="button" class="btn btn-previous">Previous</button>
+                <button type="button" class="btn btn-next">Next</button>
+              </div>
+            </fieldset>
+      
+            <fieldset>
+              <h4>Social media profiles:</h4>
+              <div class="form-group">
+                <label class="sr-only" for="f1-facebook">Facebook</label>
+                <input type="text" name="f1-facebook" placeholder="Facebook..." class="f1-facebook form-control" id="f1-facebook">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-twitter">Twitter</label>
+                <input type="text" name="f1-twitter" placeholder="Twitter..." class="f1-twitter form-control" id="f1-twitter">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="f1-google-plus">Google plus</label>
+                <input type="text" name="f1-google-plus" placeholder="Google plus..." class="f1-google-plus form-control" id="f1-google-plus">
+              </div>
+              <div class="f1-buttons">
+                <button type="button" class="btn btn-previous">Previous</button>
+                <button type="submit" class="btn btn-submit">Submit</button>
+              </div>
+            </fieldset>
+      
+          </form>
+        </div>
+      </div>
+      </div>
+      <div class="card-footer small text-muted">
+        
+      </div>
+      
+    </form>
+  </div>

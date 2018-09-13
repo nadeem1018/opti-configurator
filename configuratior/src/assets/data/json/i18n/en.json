@@ -175,6 +175,7 @@
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
+    "output_window": "Output Window",
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
