@@ -49,10 +49,6 @@
                  <div class="form-group row clearfix">
                      <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                      <div class="col-sm-4">
-<<<<<<< HEAD
-                         
-                            <input #file type="file"  id="fileid" name="fileName" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  />
-=======
                         <div class="row image_data" *ngIf="showImageBlock">
                             <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" >
                               <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
@@ -62,7 +58,6 @@
                           </div>
                             <!-- <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  /> -->
 
->>>>>>> e5e80342c90cc0736a509a2c512472002916ef0f
                            
                      </div>
                  </div>
