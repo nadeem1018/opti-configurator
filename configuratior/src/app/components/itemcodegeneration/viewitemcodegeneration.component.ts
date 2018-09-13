@@ -144,7 +144,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
             data => {
                 if (data == "True") {
-                    this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
                     return false;
                 }
                 else {

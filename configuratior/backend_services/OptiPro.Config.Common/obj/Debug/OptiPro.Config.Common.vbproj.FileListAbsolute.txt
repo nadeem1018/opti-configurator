@@ -1,2 +1,0 @@
-C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.Resources.resources
-C:\Ashish\OptiPro Configurator\opti-configurator\configuratior\backend_services\OptiPro.Config.Common\obj\Debug\OptiPro.Config.Common.vbproj.GenerateResource.Cache

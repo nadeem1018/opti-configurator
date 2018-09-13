@@ -44,6 +44,7 @@
     "login": "Login",
     "titleInfo": "Enter your username and password to log on:",
     "connect": "Connect",
+    "connected": "Connected",
     "close": "Close",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Data not saved",
@@ -115,6 +116,7 @@
     "DuplicateCode": "Code already exists",
     "explode":"Explode",
     "verify_output":"Verify Output",
+    "associated_BOM":"Associated BOM",
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
@@ -171,10 +173,15 @@
     "edit_price": "Edit Price",
     "default": "Default",
     "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row",
+    "EnterString": "String field cannot be blank",
     "required_fields": "Required Fields in Row:",
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
+<<<<<<< HEAD
+=======
+    "output_window": "Output Window",
+>>>>>>> cc959866bc6cd632802afe590384fa7795163541
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
