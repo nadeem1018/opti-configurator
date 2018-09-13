@@ -22,18 +22,18 @@
             <form role="form" action="" method="post" class="login-form" (keydown)="enter_to_sublit($event)">
               <div class="form-group">
                 <label class="sr-only" for="form-username">{{language.username}}</label>
-                <input type="text" name="form-username" placeholder="John" class="form-username form-control" id="form-username"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
+                <input type="text" name="form-username" placeholder="{{language.isUsernameBlank}}" class="form-username form-control" id="form-username"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
               </div>
               <div class="form-group">
                 <label class="sr-only" for="form-password">{{language.password}}</label>
-                <input type="password" name="form-password" placeholder="******" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password" (change)="onPasswordBlur()">
+                <input type="password" name="form-password" placeholder="{{language.isPasswordBlank}}" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password" (change)="onPasswordBlur()">
               </div>
               <button type="button" class="btn" (click)="onConnectBtnPress()" ><i class="fa fa-plug"></i> {{language.connect}}</button>
               <div class="company_section" >
               <hr>
                 <div class="form-group" *ngIf="showCompDropDown">
                   <label class="sr-only" for="form-company">{{language.company}}</label>
-                  <select type="company" name="form-company" placeholder="Company" class="form-username form-control" id="form-company" [(ngModel)]="selecetedComp">
+                  <select type="company" name="form-company" placeholder="{{language.CompanyRequired}}" class="form-username form-control" id="form-company" [(ngModel)]="selecetedComp">
                     <option value="">Select a company</option>
                     <!-- <option value="aps">APS</option>
                     <option value="configurator">Configurator</option> -->

@@ -328,6 +328,10 @@ export class ItemcodegenerationComponent implements OnInit {
                 return false;
               }
             }
+            if(this.itemcodetable[i].string == ""){
+              this.toastr.error('', this.language.EnterString, this.commonData.toast_config);
+              return false;
+            }
 
           }
           if (this.countnumberrow == 0) {
