@@ -18,7 +18,7 @@ export class SidebarComponent implements OnInit {
     { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "feature/bom/view"},
     { "menu_code": 203, "menu_title": "Model BOM", "router_link": "modelbom/view" },
     { "menu_code": 204, "menu_title": "Rule Work Bench", "router_link": "rulewb/view" },
-    { "menu_code": 205, "menu_title": "Model BOM", "router_link": "modelbom/view" }
+    { "menu_code": 205, "menu_title": "Output Window", "router_link": "output/view" }
   ];
 
   showSidebar: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
