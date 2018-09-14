@@ -22,7 +22,7 @@
       
         <div class="col-sm-4 input-group">
           <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName" [disabled]="isModelIdEnable"
-            id="featureNameId" placeholder="{{language.model}}" #Modelinputbox>
+            id="featureNameId" placeholder="{{language.model}}" #Modelinputbox (change)= "onModelIdChange()">
           <div class="input-group-append" [hidden]=ModelLookupBtnhide>
             <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
               <i class="fa fa-bars"></i>

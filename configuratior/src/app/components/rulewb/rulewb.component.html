@@ -31,7 +31,7 @@
         <label class="col-sm-2 col-form-label" for="rule_code">{{language.rule_code}}</label>
         <div class="col-sm-4">
           <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
-            [(ngModel)]="rule_wb_data.rule_code">
+            [(ngModel)]="rule_wb_data.rule_code" #rulecode>
         </div>
 
         <label class="col-sm-2 col-form-label" for="rule_description">{{language.description}}</label>
@@ -90,7 +90,7 @@
         <label class="col-sm-2 col-form-label" for="feature_id">{{language.applicable_for}}</label>
 
         <div class="col-sm-4 input-group">
-          <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)="check_feature_id_exists()"
+          <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)= "onFeatureIdChange()" 
             placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id">
           <div class="input-group-append">
             <span class="input-group-text cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
@@ -99,7 +99,7 @@
           </div>
         </div>
         <div class="col-sm-1" *ngIf="showOutputBtn">
-          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="hide_show_output()">
+          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="hide_show_output()" #button >
             <i class="fa fa-eye"></i> {{showoutput_btn_text}}
           </a>
         </div>
@@ -107,13 +107,13 @@
       <hr>
       <div class="form-group clearfix">
         <div class="col-sm-1" *ngIf="show_add_sequence_btn">
-          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()"
-            #button>
+          <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()" 
+            >
             <i class="fa fa-plus"></i> {{language.add_seq}}
           </a>
         </div>
         <div class="col-sm-1" *ngIf="show_sequence">
-          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
+          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" >
             <i class="fa fa-plus"></i> {{language.add_row}}
           </a>
         </div>

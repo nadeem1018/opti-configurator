@@ -114,6 +114,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "tree_view_lookup"){
         this.showTreeView();
       }
+
+      if(this.lookupfor == "associated_BOM"){
+        this.showAssociatedBOMs();
+      }
     }
   }
 
@@ -194,7 +198,7 @@ export class LookupComponent implements OnInit {
 
   close_lookup(lookup_id){
     this.log("lookup id - " + lookup_id);
-    $("#" + lookup_id).modal('show');
+    $("#" + lookup_id).modal('hide');
   }
 
   get_Model_lookup() {
@@ -370,6 +374,27 @@ export class LookupComponent implements OnInit {
       return obj['parentId'] == component && obj['level'] == level;
     });
     return data;
+  }
+
+  //To show all associated BOM
+  showAssociatedBOMs(){
+
+    this.popup_title = this.language.associated_BOM;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+
+ 
+    this.table_head = ['Model Id','Model Name','Model Description'];
+    this.width_value = ((100 / this.table_head.length) + '%');
+    
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#simple_table_modal").modal('show');
+      }
+    }
+
   }
 
   // dummy_json(){

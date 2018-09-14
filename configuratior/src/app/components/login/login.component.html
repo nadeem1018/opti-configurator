@@ -28,7 +28,7 @@
                 <label class="sr-only" for="form-password">{{language.password}}</label>
                 <input type="password" name="form-password" placeholder="{{language.isPasswordBlank}}" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password" (change)="onPasswordBlur()">
               </div>
-              <button type="button" class="btn" (click)="onConnectBtnPress()" ><i class="fa fa-plug"></i> {{language.connect}}</button>
+              <button type="button" class="btn" (click)="onConnectBtnPress()" ><i class="fa fa-plug"></i> {{connectBtnText}}</button>
               <div class="company_section" >
               <hr>
                 <div class="form-group" *ngIf="showCompDropDown">
