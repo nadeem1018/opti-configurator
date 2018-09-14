@@ -97,11 +97,11 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/DeleteModelBOMFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
 
-  GetDataForExplodeViewForModelBOM(CompanyDBID,featureId): Observable<any> {
+  GetDataForExplodeViewForModelBOM(CompanyDBID,modelID): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId }]) }
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: CompanyDBID,ModelID: modelID }]) }
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataForExplodeViewForModelBOM", jObject, this.common_params.httpOptions);
   }
 
   getRuleLookupList(): Observable<any>{
@@ -123,7 +123,7 @@ export class ModelbomService {
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
   
   onItemIdChangeModelBom(id): Observable<any> {

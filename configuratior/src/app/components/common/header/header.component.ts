@@ -23,10 +23,13 @@ export class HeaderComponent implements OnInit {
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     this.checkSession();
+    console.log("locale - " + this.config_data['locale']);
     
     this.CommonService.set_language(this.config_data['locale']);
     this.project_name = this.config_data['app_title'];
     this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
+    
+    
   }
     
  
