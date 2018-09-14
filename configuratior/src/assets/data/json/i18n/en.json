@@ -194,7 +194,31 @@
      "step_1_4":"Step 1 of 4",
     "step_2_4": "Step 2 of 4",
     "step_3_4": "Step 3 of 4",
-    "step_4_4":"Step 4 of 4"
+    "step_4_4":"Step 4 of 4",
+    "model_bill_ofm":"Model Bill of Material",
+    "verify_select_final":"Verify Selection and Final Acceptance",
+    "next":"next",
+    "previous": "previous",
+    "document": "Document",
+    "customer": "Customer",
+    "posting_date": "Posting Date ",
+    "delivery_until": "Delivery / Valid Until ",
+
+    "contact_person": "Contact Person",
+    "ship_to": "Ship To",
+    "bill_to": "Bill To",
+    "address": "Address",
+    "sales_employee":"Sales Employee",
+    "owner":"Owner",
+    "remark": "Remarks",
+    "payment_terms": "Payment Terms",
+    "payment_method": "Payment Method",
+    "attachment": "Attachment",
+    "tax": "Tax",
+    "ship_to_address": "Ship to Address",
+    "bill_to_address": "Bill to Address",
+    "rule_selection": "Rule Selection",
+    "rule":"Rule"
   
     
 }

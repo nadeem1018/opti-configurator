@@ -35,6 +35,7 @@ export class LookupComponent implements OnInit {
   // mandatory variables
   public dataBind: any = [];
   public columns: any = [];
+  public checked_rules = [];
   public showLoader: boolean = false;
   public LookupDataLoaded: boolean = false;
   public click_operation;
@@ -106,7 +107,9 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "Price_lookup") {
         this.get_Price_lookup();
       }
-      
+      if (this.lookupfor == "rule_section_lookup") {
+        this.ruleSelection();
+      }
 
       if (this.lookupfor == "tree_view_lookup"){
         this.showTreeView();
@@ -262,6 +265,48 @@ export class LookupComponent implements OnInit {
         $("#lookup_modal").modal('show');
       }
     }
+  }
+
+  ruleSelection(){
+    this.popup_title = this.language.rule_selection;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.lookup_key = 'code';
+    this.table_head = ['Select', 'Rule', 'Description' ];
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+   /*  this.serviceData = [
+      { "RuleID": "1", "RuleCode": "r1", "Description": "r1" },
+      { "RuleID": "2", "RuleCode": "r2", "Description": "r2" },
+      { "RuleID": "3", "RuleCode": "r3", "Description": "r3" },
+      { "RuleID": "4", "RuleCode": "r4", "Description": "r4" },
+      { "RuleID": "5", "RuleCode": "r5", "Description": "r5" },
+      { "RuleID": "6", "RuleCode": "r6", "Description": "r6" },
+ 
+    ]; */
+    
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        $("#rule_selection").modal('show');
+      }
+    }
+  }
+
+
+  on_checkbox_checked(checkedvalue, row_data){
+    console.log("checkedvalue " + checkedvalue);
+    console.log(row_data);
+    
+    if (checkedvalue == true) {
+      this.checked_rules.push(row_data);
+    }
+    else {
+      let i = this.checked_rules.indexOf(row_data);
+      this.checked_rules.splice(i, 1)
+    }
+    console.log(this.checked_rules);
 
   }
 
@@ -314,8 +359,6 @@ export class LookupComponent implements OnInit {
        // setTimeout(function(){
           $("#tree_view").modal('show');
         //}, 5000);
-      
-        
       }
     }
     

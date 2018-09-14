@@ -104,4 +104,10 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
   }
 
+  getRuleLookupList(): Observable<any>{
+    let jObject = { RuleModel: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllRules", jObject, this.common_params.httpOptions);
+  }
+
 }

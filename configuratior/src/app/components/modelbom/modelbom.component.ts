@@ -423,6 +423,9 @@ export class ModelbomComponent implements OnInit {
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event, "Header", this.currentrowindex);
     }
+    else if (this.lookupfor == 'rule_selection_lookup') {
+    //   this.getPriceDetails($event, "Header", this.currentrowindex);
+    }
     else {
       this.lookupfor = 'Item_Detail_lookup';
       this.serviceData=[]
@@ -803,5 +806,27 @@ export class ModelbomComponent implements OnInit {
     this.lookupfor = 'large_image_view';
     this.selectedImage = image;
   }
+
+  on_rule_click(){
+    this.lookupfor = "rule_section_lookup";
+    this.serviceData = [];
+    this.service.getRuleLookupList().subscribe(
+      data => {
+        if (data.length > 0) {
+          for (let i = 0; i < this.modelbom_data.length; ++i) {
+            if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+              this.modelbom_data[i].type_value = data[0].ItemKey.toString()
+              this.modelbom_data[i].display_name = data[0].Description
+              this.modelbom_data[i].uom = data[0].InvUOM
+              this.modelbom_data[i].price_source = "";
+
+            }
+          }
+        }
+      });
+  }
 }
 
+
+
+ 

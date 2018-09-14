@@ -11,14 +11,21 @@ import { ActivatedRoute, Router } from '@angular/router'
 })
 export class OutputComponent implements OnInit {
   public commonData = new CommonData();
-  public common_output_data:any = [];
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public page_main_title = this.language.output_window;
+  public common_output_data:any = [];
+  public step1_data:any = [];
+  public step2_data:any = [];
+  public step3_data:any = [];
+  public step4_data:any = [];
+  public doctype:any = "";
+  public view_route_link:any = "/home";
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
+    this.doctype = this.commonData.document_type;
   }
 
 }
