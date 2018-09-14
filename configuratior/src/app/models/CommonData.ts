@@ -4,12 +4,12 @@ import { HttpHeaders } from '@angular/common/http';
 export class CommonData {
     public project_name: string = "Optipro Configurator";
     public adminDBName: string = "OPTIPROADMIN";
-    public href:any = window.location.href;
+    public href: any = window.location.href;
     public application_path = this.get_current_url();
 
-    public get_current_url(){
-        let temp:any = this.href.substring(0, this.href.lastIndexOf('/'));
-        if (temp.lastIndexOf('#') != '-1'){
+    public get_current_url() {
+        let temp: any = this.href.substring(0, this.href.lastIndexOf('/'));
+        if (temp.lastIndexOf('#') != '-1') {
             temp = temp.substring(0, temp.lastIndexOf('#'));
         }
         return temp;
@@ -55,7 +55,7 @@ export class CommonData {
         { "value": 3, "Name": "Value" }
     ];
 
-     public model_bom_type: any = [
+    public model_bom_type: any = [
         { "value": 1, "Name": "Feature" },
         { "value": 2, "Name": "Item" },
         { "value": 3, "Name": "Model" }
@@ -83,7 +83,7 @@ export class CommonData {
         { "value": '' },
         { "value": "[" },
         { "value": "{", },
-        { "value" : "(" },
+        { "value": "(" },
         { "value": "]" },
         { "value": "}", },
         { "value": ")" },
@@ -96,7 +96,7 @@ export class CommonData {
         { "value": "<=" },
         { "value": ">=" },
         { "value": "Between" },
-        { "value" : "In"},
+        { "value": "In" },
     ];
 
     public document_type = [
@@ -115,6 +115,13 @@ export class CommonData {
         b.lastModifiedDate = new Date();
         b.name = fileName;
         return <File>theBlob;
+    }
+
+    checkSession() {
+        let login_page = this.application_path + '/index.html#login';
+        if (sessionStorage.getItem('isLoggedIn') == null) {
+            window.location.href = login_page;
+        }
     }
 
 }

@@ -49,6 +49,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public selectall:boolean=false;
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         //this._el.nativeElement.focus();
         this.service_call(this.current_page, this.search_string);

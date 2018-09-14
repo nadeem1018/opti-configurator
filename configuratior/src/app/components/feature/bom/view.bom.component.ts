@@ -47,6 +47,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     public selectall:boolean=false;
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
         

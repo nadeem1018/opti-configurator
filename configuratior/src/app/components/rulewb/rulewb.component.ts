@@ -56,6 +56,7 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
   ngOnInit() {
+    this.commonData.checkSession();
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
     this.rule_wb_data.CompanyDBId = sessionStorage.getItem('selectedComp');
     this.rule_wb_data.RuleId = "";

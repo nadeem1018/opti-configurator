@@ -22,8 +22,7 @@ export class HeaderComponent implements OnInit {
      this.CommonService.get_config();
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-    this.checkSession();
-    console.log("locale - " + this.config_data['locale']);
+    this.commonData.checkSession();
     
     this.CommonService.set_language(this.config_data['locale']);
     this.project_name = this.config_data['app_title'];
@@ -31,7 +30,10 @@ export class HeaderComponent implements OnInit {
     
     
   }
-    
+
+  ngOnChanges() {
+    this.commonData.checkSession();
+  }
  
   logout(){
     
@@ -50,11 +52,12 @@ export class HeaderComponent implements OnInit {
    }, 1000);
   }
 
-  checkSession(){
+  /* checkSession(){
+    let login_page = this.commonData.application_path + '/index.html#login';
     if(sessionStorage.getItem('isLoggedIn') == null){
-      this.router.navigateByUrl('/login');
+      window.location.href = login_page;
     }  
-  }
+  } */
 
  
 
