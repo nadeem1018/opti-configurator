@@ -218,6 +218,7 @@
     "payment_method": "Payment Method",
     "attachment": "Attachment",
     "tax": "Tax",
+    "tax_code": "Tax Code",
     "ship_to_address": "Ship to Address",
     "bill_to_address": "Bill to Address",
     "rule_selection": "Rule Selection",

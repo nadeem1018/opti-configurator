@@ -52,6 +52,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
         //this.CheckedData.CheckedRow=[];

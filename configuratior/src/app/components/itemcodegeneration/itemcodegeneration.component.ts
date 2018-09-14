@@ -58,6 +58,7 @@ export class ItemcodegenerationComponent implements OnInit {
   public show_dialog: boolean = false;
 
   ngOnInit() {
+    this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
     

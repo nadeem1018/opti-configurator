@@ -49,6 +49,7 @@ export class ModelbomComponent implements OnInit {
   public show_dialog: boolean = false;
 
   ngOnInit() {
+    this.commonData.checkSession();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
     this.update_id = "";

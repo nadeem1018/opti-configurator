@@ -10,8 +10,9 @@ export class HomeComponent implements OnInit {
 
   private baseClassObj = new CommonData();
   constructor() { }
-
+  public commonData = new CommonData();
   ngOnInit() {
+    this.commonData.checkSession();
   }
 
 }

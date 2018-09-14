@@ -57,6 +57,7 @@ export class ModelComponent implements OnInit {
 
    
   ngOnInit() {
+    this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
     var todaysDate = new Date();

@@ -43,6 +43,7 @@ export class ViewModelBomComponent implements OnInit {
     constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
     }
