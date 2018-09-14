@@ -178,10 +178,7 @@
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
-<<<<<<< HEAD
-=======
     "output_window": "Output Window",
->>>>>>> cc959866bc6cd632802afe590384fa7795163541
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
@@ -224,8 +221,7 @@
     "ship_to_address": "Ship to Address",
     "bill_to_address": "Bill to Address",
     "rule_selection": "Rule Selection",
-    "rule":"Rule"
-    "selectoperand2":"Select operand 2 at row index: ",
+    "rule":"Rule",
     "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
     "DateValidation":"From date cannot be greater than to date"
     

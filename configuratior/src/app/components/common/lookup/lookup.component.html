@@ -221,7 +221,7 @@
                                     <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row); let i = index">
                                         <span *ngIf="i==0">
                                             <div class="custom-control custom-checkbox custom-control-inline">
-                                                <input type="checkbox" id="rule_check_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,row[row_data])"
+                                                <input type="checkbox" id="rule_check_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,row)"
                                                     class="custom-control-input">
                                                 <label class="custom-control-label" for="rule_check_{{row[row_data]}}"></label>
                                             </div>
