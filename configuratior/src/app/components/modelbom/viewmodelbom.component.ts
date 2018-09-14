@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
-import { ModelbomService } from '../../services/Modelbom.service';
+import { ModelbomService } from '../../services/modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
