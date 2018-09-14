@@ -44,6 +44,7 @@
     "login": "Login",
     "titleInfo": "Enter your username and password to log on:",
     "connect": "Connect",
+    "connected": "Connected",
     "close": "Close",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Data not saved",
@@ -115,6 +116,7 @@
     "DuplicateCode": "Code already exists",
     "explode":"Explode",
     "verify_output":"Verify Output",
+    "associated_BOM":"Associated BOM",
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
@@ -142,6 +144,7 @@
     "rule_workbench":"Rule Workbench",
     "Refrence" :"Cannot delete. Reference exists.",
     "InvalidFeatureId": "Invalid Feature Id",
+    "InvalidModelId": "Invalid Model Id",
     "rule_id" : "Rule ID",
     "rule_code" : "Rule Code",
     "effective_from":"Effective From",
@@ -175,7 +178,10 @@
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
+<<<<<<< HEAD
+=======
     "output_window": "Output Window",
+>>>>>>> cc959866bc6cd632802afe590384fa7795163541
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
@@ -219,6 +225,11 @@
     "bill_to_address": "Bill to Address",
     "rule_selection": "Rule Selection",
     "rule":"Rule"
+    "selectoperand2":"Select operand 2 at row index: ",
+    "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
+    "DateValidation":"From date cannot be greater than to date"
+    
+    
   
     
 }
