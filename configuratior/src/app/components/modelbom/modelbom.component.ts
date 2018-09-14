@@ -1,7 +1,7 @@
 import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
-import { ModelbomService } from '../../services/Modelbom.service';
+import { ModelbomService } from '../../services/modelbom.service';
 import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
@@ -813,36 +813,35 @@ export class ModelbomComponent implements OnInit {
 
 
   onExplodeClick() {
-    this.lookupfor = 'tree_view_lookup';
+    this.lookupfor = 'tree_view__model_bom_lookup"';
 
     if(this.modelbom_data.modal_id != undefined){
       //now call bom id
       
-  //     this.service.GetDataForExplodeViewForModelBOM(this.companyName,this.modelbom_data.modal_id).subscribe(
-  //       data => {
-  //         if(data !=null || data != undefined){
-  //             this.serviceData = data;
-  //             this.lookupfor = 'tree_view_lookup';
-  //           }
-  //           else{
-  //           }
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName,this.modelbom_data.modal_id).subscribe(
+        data => {
+          if(data !=null || data != undefined){
+              this.serviceData = data;
+              this.lookupfor = "tree_view__model_bom_lookup";
+            }
+            else{
+            }
             
-  //         },
-  //         error =>
-  //         {
-  //           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-  //           return; 
-  //         }
-  //       )
-  //   }
-  //   else{
-  //     this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
-  //     return;
-  //   }
+          },
+          error =>
+          {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return; 
+          }
+        );
+    }
+    else{
+      this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
+      return;
+    }
     
    }
 
-  }
 
   onVerifyOutput() {
 

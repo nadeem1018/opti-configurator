@@ -23,7 +23,7 @@ export class ViewFeatureModelComponent implements OnInit {
     // generate table default constants
     table_pages: any;
     search_key: any;
-    table_head_foot = ['Select','Code', 'Type', 'Display Name', 'Effective Date', 'Status', 'Action'];
+    table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;
@@ -168,7 +168,7 @@ export class ViewFeatureModelComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].FEATUREID == row_data) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
@@ -233,6 +233,11 @@ export class ViewFeatureModelComponent implements OnInit {
                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                         this.service_call(this.current_page, this.search_string);
                         this.router.navigateByUrl('feature/model/view');
+                        return;
+                    }
+
+                    else if(data=="Exist"){
+                        this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
                         return;
                     }
                     else {
