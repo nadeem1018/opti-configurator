@@ -1,3 +1,27 @@
+function set_active_block() {
+  $(".one_step_block").hide();
+  var active_div = $("div.f1-step.active").attr("id");
+  $("fieldset[data-block_id='" + active_div + "']").show();
+}
+
+function go_to_previous(previous_block) {
+  $("div.f1-step.active").removeClass("active");
+  $("#" + previous_block).addClass("active");
+  set_active_block();
+}
+
+function go_to_next(next_block) {
+  $("div.f1-step.active").removeClass("active");
+  $("#" + next_block).addClass("active");
+  set_active_block();
+}
+
+function calculate_progress(progress_block) {
+  var block_num = $("#" + progress_block).data("step");
+  var new_width = ($("#" + progress_block).offset().left) - ($("div.f1-progress").offset().left) + 50;
+  $("div.f1-progress-line").attr("style", "width: " + new_width + "px")
+}
+
 (function($) {
   "use strict"; // Start of use strict
 
@@ -73,6 +97,23 @@
       obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:none !important;");
     }
 
+  });
+
+  // wizard JS 
+
+  $(".btn-previous").on("click", function () {
+    var p_obj = $(this);
+    var previous_block = p_obj.data("previous-block");
+    calculate_progress(previous_block);
+    go_to_previous(previous_block);
+
+  });
+
+  $(".btn-next").on("click", function () {
+    var n_obj = $(this);
+    var next_block = n_obj.data("next-block");
+    calculate_progress(next_block);
+    go_to_next(next_block);
   });
 
 

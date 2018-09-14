@@ -44,6 +44,7 @@
     "login": "Login",
     "titleInfo": "Enter your username and password to log on:",
     "connect": "Connect",
+    "connected": "Connected",
     "close": "Close",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Data not saved",
@@ -115,6 +116,7 @@
     "DuplicateCode": "Code already exists",
     "explode":"Explode",
     "verify_output":"Verify Output",
+    "associated_BOM":"Associated BOM",
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
@@ -142,6 +144,7 @@
     "rule_workbench":"Rule Workbench",
     "Refrence" :"Cannot delete. Reference exists.",
     "InvalidFeatureId": "Invalid Feature Id",
+    "InvalidModelId": "Invalid Model Id",
     "rule_id" : "Rule ID",
     "rule_code" : "Rule Code",
     "effective_from":"Effective From",
@@ -175,6 +178,7 @@
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
+    "output_window": "Output Window",
     "selectrulecode":"Select rule code",
     "selectdescription":"Select description",
     "selecteffromdate":"Select effective from date",
@@ -183,8 +187,49 @@
     "selectbraces":"Select braces at row index: ",
     "selectcondition":"Select condition at row index:",
     "selectoperand1":"Select operand 1 at row index: ",
+<<<<<<< HEAD
     "selectoperand2":"Select operand 2 at row index: "
      
+=======
+    "selectoperand2":"Select operand 2 at row index: ",
+     "config_wizard":"Configuration Wizard",
+     "select_customer":"Select Customer and related document Details ",
+     "select_model_bom_config":"Select Model Bill of material to configure the desired Product",
+     "verify_select_accept":"Verify the Selection and Accept",
+     "fianl_document_creat":"Final Document Creation",
+     "customer_doc_detail":"Customer and Document Details",
+     "step_1_4":"Step 1 of 4",
+    "step_2_4": "Step 2 of 4",
+    "step_3_4": "Step 3 of 4",
+    "step_4_4":"Step 4 of 4",
+    "model_bill_ofm":"Model Bill of Material",
+    "verify_select_final":"Verify Selection and Final Acceptance",
+    "next":"next",
+    "previous": "previous",
+    "document": "Document",
+    "customer": "Customer",
+    "posting_date": "Posting Date ",
+    "delivery_until": "Delivery / Valid Until ",
+
+    "contact_person": "Contact Person",
+    "ship_to": "Ship To",
+    "bill_to": "Bill To",
+    "address": "Address",
+    "sales_employee":"Sales Employee",
+    "owner":"Owner",
+    "remark": "Remarks",
+    "payment_terms": "Payment Terms",
+    "payment_method": "Payment Method",
+    "attachment": "Attachment",
+    "tax": "Tax",
+    "ship_to_address": "Ship to Address",
+    "bill_to_address": "Bill to Address",
+    "rule_selection": "Rule Selection",
+    "rule":"Rule",
+    "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
+    "DateValidation":"From date cannot be greater than to date"
+    
+>>>>>>> 9b8ba654ac401f416b7af7daa44817be5dc628a3
     
   
     

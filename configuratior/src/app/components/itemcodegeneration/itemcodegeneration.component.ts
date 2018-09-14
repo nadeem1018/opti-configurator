@@ -388,7 +388,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
       data => {
         
-        if(data[0].Column1> 0){
+        if(data[0].TOTALCOUNT > 0){
           this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           this.codekey= "";
           return;

@@ -33,12 +33,15 @@ export class RuleWbViewComponent implements OnInit {
     public show_dialog:boolean = false;
     public dialog_box_value:any;
     public row_id:any;
-
-
+    public CheckedData :any = [];
+    public selectall:boolean=false;
     public GetItemData: any = [];
 
 
-    table_head_foot = ['#', 'Model Id', 'Name', 'Action'];
+    
+
+
+    table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.rule_workbench;
     table_title = this.page_main_title;
@@ -96,7 +99,7 @@ export class RuleWbViewComponent implements OnInit {
 
     button_click1(id) {
 
-        this.router.navigateByUrl('modelbom/edit/' + id);
+        this.router.navigateByUrl('rulewb/edit/' + id);
         // button click function in here
     }
     button_click2(id) {
@@ -106,8 +109,8 @@ export class RuleWbViewComponent implements OnInit {
         // var result = confirm(this.language.DeleteConfimation);
     }
 
-    //This will take confimation box value
-    get_dialog_value(userSelectionValue){
+     //This will take confimation box value
+     get_dialog_value(userSelectionValue){
         console.log("GET DUIALOG VALUE")  
         if(userSelectionValue == true){
                 this.delete_row();
@@ -115,14 +118,19 @@ export class RuleWbViewComponent implements OnInit {
             this.show_dialog = false;
     }
 
-    //delete values
-    delete_row(){
-       /*  this.service.DeleteData(this.row_id).subscribe(
+     //delete values
+     delete_row(){
+        this.GetItemData=[]
+        this.GetItemData.push({
+            CompanyDBId: this.companyName,
+            RuleId:this.row_id
+        });
+        this.service.DeleteData( this.GetItemData).subscribe(
             data => {
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
-                    this.router.navigateByUrl('modelbom/view');
+                    this.router.navigateByUrl('rulewb/view');
                     return;
                 }
                 else {
@@ -130,7 +138,92 @@ export class RuleWbViewComponent implements OnInit {
                     return;
                 }
             }
-        ) */
+        )
+    }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i] == row_data) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            RuleId: row_data,
+                            CompanyDBId: this.companyName
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    RuleId: row_data,
+                    CompanyDBId: this.companyName
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                RuleId: row_data,
+                CompanyDBId: this.companyName
+            })
+        }
+     
+
+    }
+
+    on_Selectall_checkbox_checked(checkedvalue) {
+        var isExist = 0;
+        this.CheckedData = []
+        this.selectall=false
+
+        if (checkedvalue == true) {
+            if(this.rows.length>0){
+                this.selectall=true
+                for (let i = 0; i < this.rows.length; ++i) {
+
+                    this.CheckedData.push({
+                        RuleId: this.rows[i][2],
+                        CompanyDBId: this.companyName
+                    })
+                }
+            }
+           
+         
+
+        }
+        else{
+            this.selectall=false
+        }
+       
+
+    }
+
+    delete() {
+        if (this.CheckedData.length > 0) {
+            this.service.DeleteData(this.CheckedData).subscribe(
+                data => {
+                    if (data === "True") {
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('rulewb/view');
+                        return;
+                    }
+                    else {
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                    }
+                }
+            )
+
+        }
+        else{
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+        
     }
 
 }

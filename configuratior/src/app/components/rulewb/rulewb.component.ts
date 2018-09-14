@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router'
   styleUrls: ['./rulewb.component.scss']
 })
 export class RulewbComponent implements OnInit {
-  @ViewChild("Modelinputbox") _el: ElementRef;
+  @ViewChild("rulecode") _el: ElementRef;
   @ViewChild("button") _ele: ElementRef;
   public commonData = new CommonData();
   public view_route_link = '/rulewb/view';
@@ -40,6 +40,7 @@ export class RulewbComponent implements OnInit {
   public update_id: string = "";
   public typevaluefromdatabase: string = "";
   //public rule_wb_data_header: any = [];
+  public ruleWorkBenchData = [];
 
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
@@ -56,24 +57,128 @@ export class RulewbComponent implements OnInit {
   public outputrowcounter: number = 0;
   ngOnInit() {
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
-    this.rule_wb_data.companyName = sessionStorage.getItem('selectedComp');
-    //  this.rule_wb_data.id = 1;
+    this.rule_wb_data.CompanyDBId = sessionStorage.getItem('selectedComp');
+    this.rule_wb_data.RuleId = "";
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
       this.isUpdateButtonVisible = false;
       this.isSaveButtonVisible = true;
       this.isDeleteButtonVisible = false;
+      this.show_sequence = false;
+      this.show_add_sequence_btn = true
+      this._el.nativeElement.focus();
     } else {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = false;
 
+
+      this.service.GetDataByRuleID(this.update_id).subscribe(
+        data => {
+          if (data.RuleWorkBenchHeader.length > 0) {
+            this.rule_wb_data.rule_code = data.RuleWorkBenchHeader[0].OPTM_RULECODE
+            this.rule_wb_data.description = data.RuleWorkBenchHeader[0].OPTM_DESCRIPTION;
+            this.rule_wb_data.effective_from = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM;
+            this.rule_wb_data.effective_to = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO;
+            this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
+            this.rule_wb_data.applicable_for_feature_id = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
+            this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
+
+          }
+
+          if (data.RuleWorkBenchInput.length > 0) {
+            this.show_sequence = true;
+            this.show_add_sequence_btn = false
+            this.seq_count = this.rule_expression_data.length;
+            this.seq_count++;
+            this.counter = 0;
+            for (let i = 0; i < data.RuleWorkBenchInput.length; ++i) {
+              this.counter++;
+              if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
+                this.typevaluefromdatabase = data.RuleWorkBenchInput[i].OPTM_FEATURE.toString()
+
+              }
+              else {
+                this.typevaluefromdatabase = data.RuleWorkBenchInput[i].OPTM_MODEL.toString()
+
+              }
+
+
+              this.rule_sequence_data.push({
+
+                rowindex: this.counter,
+                seq_count: data.RuleWorkBenchInput[0].OPTM_SEQID,
+                operator: data.RuleWorkBenchInput[0].OPTM_OPERATOR,
+                type: data.RuleWorkBenchInput[0].OPTM_TYPE,
+                braces: data.RuleWorkBenchInput[0].OPTM_BRACES,
+                type_value: this.typevaluefromdatabase,
+                condition: data.RuleWorkBenchInput[0].OPTM_CONDITION,
+                operand_1: data.RuleWorkBenchInput[0].OPTM_OPERAND1,
+                operand_2: data.RuleWorkBenchInput[0].OPTM_OPERAND2,
+                row_expression: "",
+              });
+
+            }
+            this.genearate_expression();
+          }
+
+          if (data.RuleWorkBenchOutput.length > 0) {
+            let typefromdatabase: any;
+            for (let i = 0; i < data.RuleWorkBenchOutput.length; ++i) {
+              if (data.RuleWorkBenchOutput[i].OPTM_FEATUREID != "" || data.RuleWorkBenchOutput[i].OPTM_FEATUREID != null) {
+                typefromdatabase = 1;
+
+              }
+              else {
+                typefromdatabase = 2;
+
+              }
+
+
+              this.rule_feature_data.push({
+                rowindex: i,
+                check_child: false,
+                feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
+                item: data.RuleWorkBenchOutput[i].OPTM_ITEMKEY,
+                value: data.RuleWorkBenchOutput[i].OPTM_VALUE,
+                uom: data.RuleWorkBenchOutput[i].OPTM_UOM,
+                quantity: data.RuleWorkBenchOutput[i].OPTM_QUANTITY,
+                edit_quantity: data.RuleWorkBenchOutput[i].OPTM_ISQTYEDIT,
+                price_source: data.RuleWorkBenchOutput[i].OPTM_PRICESOURCE,
+                edit_price: data.RuleWorkBenchOutput[i].OPTM_ISPRICEEDIT,
+                default: data.RuleWorkBenchOutput[i].OPTM_DEFAULT,
+                type: typefromdatabase
+
+              });
+
+            }
+          }
+
+
+
+
+
+        }
+
+
+      )
+
     }
   }
 
+  ngAfterViewInit() {
+    if (this.update_id === "" || this.update_id === null) {
+      this._el.nativeElement.focus();
+    }
+    else {
+      this._ele.nativeElement.focus();
+    }
+  }
 
   addNewSequence() {
+    if (this.validation("AddRow") == false)
+      return;
     if (this.rule_expression_data.length > 0) {
       this.seq_count = this.rule_expression_data.length;
     }
@@ -301,6 +406,32 @@ export class RulewbComponent implements OnInit {
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         this.rule_sequence_data[i][key] = value;
+        if (key === 'type_value') {
+          if (this.rule_sequence_data[i].type == 1) {
+            this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
+              data => {
+
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                  this.rule_sequence_data[i].type_value = "";
+                  return;
+                }
+              })
+          }
+          
+          else {
+            this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
+              data => {
+
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+                  this.rule_sequence_data[i].type_value = "";
+                  return;
+                }
+              })
+          }
+        }
+
       }
     }
   }
@@ -353,12 +484,28 @@ export class RulewbComponent implements OnInit {
       if (this.rule_sequence_data.length > 0) {
 
         //  this.rule_expression_data
-      } else {
-        this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
       }
+    }
+    else {
+      this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
     }
   }
 
+  onFeatureIdChange() {
+    this.service.onFeatureIdChange(this.rule_wb_data.applicable_for_feature_id).subscribe(
+      data => {
+
+        if (data === "False") {
+          this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+          this.rule_wb_data.applicable_for_feature_id = "";
+          return;
+        }
+        else {
+          this.lookupfor = 'feature_lookup';
+          this.getFeatureDetailsForOutput();
+        }
+      })
+  }
 
   update_rule_sequence() {
     if (this.rule_sequence_data.length > 0) {
@@ -480,10 +627,14 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
         return false;
       }
+      if (new Date(this.rule_wb_data.effective_to) < new Date(this.rule_wb_data.effective_from)) {
+        this.toastr.error('', this.language.DateValidation, this.commonData.toast_config);
+        return false;
+      }
     }
     else if (btnpress == "Save") {
-      if (this.rule_sequence_data.length == 0) {
-        this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
+      if (this.rule_expression_data.length == 0) {
+        this.toastr.error('', this.language.Nodataforsave, this.commonData.toast_config);
         return false;
       }
     }
@@ -530,4 +681,47 @@ export class RulewbComponent implements OnInit {
     return true;
   }
 
+  onSave() {
+    if (this.validation("Save") == false)
+      return;
+    if (this.rule_expression_data.length > 0) {
+      let single_data_set: any = {};
+      single_data_set.single_data_set_header = [];
+      single_data_set.single_data_set_output = [];
+      single_data_set.single_data_set_expression = [];
+      single_data_set.single_data_set_header.push({
+        ModelId: this.rule_wb_data.rule_code,
+        description: this.rule_wb_data.description,
+        effective_from: this.rule_wb_data.effective_from,
+        effective_to: this.rule_wb_data.effective_to,
+        discontinue: this.rule_wb_data.discontinued,
+        CreatedUser: this.rule_wb_data.username,
+        applicablefor: this.rule_wb_data.applicable_for_feature_id,
+        CompanyDBId: this.rule_wb_data.CompanyDBId,
+        RuleId: this.rule_wb_data.RuleId
+
+      })
+      single_data_set.single_data_set_output = this.rule_feature_data
+      let extracted_sequences: any = [];
+      for (var key in this.rule_expression_data) {
+        for (var rowkey in this.rule_expression_data[key].row_data) {
+          extracted_sequences.push(this.rule_expression_data[key].row_data[rowkey]);
+        }
+      }
+      single_data_set.single_data_set_expression = extracted_sequences
+      this.service.SaveData(single_data_set).subscribe(
+        data => {
+          if (data === "True") {
+            this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
+            this.route.navigateByUrl('rulewb/view');
+            return;
+          }
+          else {
+            this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+            return;
+          }
+        }
+      )
+    }
+  }
 }

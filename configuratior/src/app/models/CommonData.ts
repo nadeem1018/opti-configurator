@@ -99,6 +99,12 @@ export class CommonData {
         { "value" : "In"},
     ];
 
+    public document_type = [
+        { "value": '', "Name": "" },
+        { "value": 'sales_quote', "Name": "Sales Quote" },
+        { "value": 'sales_order', "Name": "Sales Order" }
+    ];
+
 
     // for common view
     public default_limits = [10, 25, 50, 100];

@@ -49,10 +49,6 @@
                  <div class="form-group row clearfix">
                      <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                      <div class="col-sm-4">
-<<<<<<< HEAD
-                         
-                            <input #file type="file"  id="fileid" name="fileName" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  />
-=======
                         <div class="row image_data" *ngIf="showImageBlock">
                             <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" >
                               <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
@@ -62,20 +58,11 @@
                           </div>
                             <!-- <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  /> -->
 
->>>>>>> e5e80342c90cc0736a509a2c512472002916ef0f
                            
                      </div>
                  </div>
    
-                 <!-- <div class="form-group row clearfix">
-                     <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
-                     <div class="col-sm-4">
-                         <select class="form-control  form-control-sm mt3" name="featureAccessory" gModel  id="featureAccessory">
-                             <option>Y</option>
-                             <option>N</option>
-                         </select>
-                     </div>
-                 </div> -->
+              
                <div class="form-group row clearfix"  >
                    <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                    <div class="col-sm-4 mt-3px">
@@ -185,8 +172,8 @@
                                 <i class="fa fa-window-maximize"></i> {{language.explode}}
                             </button>
                             
-                            <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10">
-                                <i class="fa fa-window-maximize"></i> {{language.verify_output}}
+                            <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10" (click)="onAssociatedBOMClick()">
+                                <i class="fa fa-window-maximize" ></i> {{language.associated_BOM}}
                             </button>
                         </div>
                      </div>

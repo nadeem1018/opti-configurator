@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
   public config_data:string = "";
+  public connectBtnText = '';
   private commonData = new CommonData();
   public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
 
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() { 
     //this.loginCredentials.userName = 'shashank';
     //this.loginCredentials.password = 'sha@123';
+    this.connectBtnText = this.language.connect;
     console.info('in LOGIN header');
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
@@ -72,6 +74,8 @@ export class LoginComponent implements OnInit {
         if(data!=null || data.Table.length > 0){
           if(data.Table.length > 0){
             if(data.Table[0].OPTM_ACTIVE == 1){
+
+              this.connectBtnText = this.language.connected;
               //If everything is ok then we will get comapnies
               this.getCompanies();
             }
@@ -104,7 +108,7 @@ export class LoginComponent implements OnInit {
       this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
       return;
     } 
-    sessionStorage.setItem('selectedComp', "SFDCDB");
+    sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
     sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
     //sessionStorage.setItem('selectedWhse',this.warehouseName);
     sessionStorage.setItem('isLoggedIn', "true");

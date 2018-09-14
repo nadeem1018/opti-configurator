@@ -423,6 +423,9 @@ export class ModelbomComponent implements OnInit {
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event, "Header", this.currentrowindex);
     }
+    else if (this.lookupfor == 'rule_selection_lookup') {
+    //   this.getPriceDetails($event, "Header", this.currentrowindex);
+    }
     else {
       this.lookupfor = 'Item_Detail_lookup';
       this.serviceData=[]
@@ -506,6 +509,52 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].type_value = value.toString()
+        if(this.modelbom_data[i].type == 1){
+          this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
+            data => {
+              
+              if (data === "False" ) {
+                this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                this.modelbom_data[i].type_value= "";
+                return;
+              }
+              else{
+                this.lookupfor=""
+                this.getModelFeatureDetails(this.modelbom_data[i].type_value, "Header", i)
+              }
+              
+            })
+        }
+        else if(this.modelbom_data[i].type == 2){
+          this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
+            data => {
+              
+              if (data === "False" ) {
+                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+                this.modelbom_data[i].type_value= "";
+                return;
+              }
+              else{
+                this.lookupfor = "";
+                this.getItemDetails(this.modelbom_data[i].type_value);
+              }
+            })
+        }
+        else{
+          this.service.onModelIdChange(this.modelbom_data[i].type_value).subscribe(
+            data => {
+              
+              if (data === "False" ) {
+                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+                this.modelbom_data[i].type_value= "";
+                return;
+              }
+              else{
+                this.lookupfor = "";
+              this.getModelDetails(this.modelbom_data.modal_id, "Header", i);
+              }
+            })
+        }
       }
     }
   }
@@ -803,5 +852,38 @@ export class ModelbomComponent implements OnInit {
     this.lookupfor = 'large_image_view';
     this.selectedImage = image;
   }
+
+ 
+
+  onModelIdChange(){
+    this.service.onModelIdChange(this.modelbom_data.modal_id).subscribe(
+      data => {
+        
+        if (data === "False" ) {
+          this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+          this.modelbom_data.modal_id="";
+          return;
+        }
+        else{
+          this.lookupfor="ModelBom_lookup"
+          this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
+        
+        }
+      })
+  }
+
+  on_rule_click(){
+    this.lookupfor = "rule_section_lookup";
+    this.serviceData = [];
+    this.service.getRuleLookupList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.serviceData = data;
+        }
+      });
+  }
 }
 
+
+
+ 
