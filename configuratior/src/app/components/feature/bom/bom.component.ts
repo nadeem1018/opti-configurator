@@ -138,11 +138,11 @@ export class BomComponent implements OnInit {
                   }
                 }
                 if(isExist==0){
-                  this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+                  this.detail_image_data.push(this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT)
                 }
               }
               else{
-                this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+                this.detail_image_data.push(this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT)
               }
 
             }
@@ -154,7 +154,7 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
-            this.header_image_data =this.feature_bom_data.image_path
+            this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path
             this.showImageBlock=true;
             
 
@@ -261,11 +261,15 @@ export class BomComponent implements OnInit {
                   }
                 }
                 if(isExist==0){
-                  this.detail_image_data.push(this.feature_bom_table[i].attachment)
+                  if(this.feature_bom_table[i].attachment != "" && this.feature_bom_table[i].attachment != undefined){
+                       this.detail_image_data.push(this.commonData.get_current_url() + this.feature_bom_table[i].attachment);
+                  }
                 }
               }
               else{
-                this.detail_image_data.push(this.feature_bom_table[i].attachment)
+                if(this.feature_bom_table[i].attachment != "" && this.feature_bom_table[i].attachment != undefined){
+                  this.detail_image_data.push(this.commonData.get_current_url() + this.feature_bom_table[i].attachment);
+                }
               }
              
             }
@@ -533,7 +537,7 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
               if(this.feature_bom_data.image_path!=null||this.feature_bom_data.image_path!=""){
-                this.header_image_data = this.feature_bom_data.image_path;
+                this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path;
                 this.showImageBlock=true;
               }
              

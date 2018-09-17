@@ -103,10 +103,9 @@
                     <label class="col-sm-4 col-form-label" for="image">{{language.image}}</label>
                     <div class="col-sm-4">
                             <div class="row image_data" >
-                        <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
                         <div class=" col-md-4 col-sm-4">
-                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                                <img src={{featureBom.Image}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(ModelImage)">
+                                <img src={{ModelImage}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
                             </a>
                         </div>
                     </div>

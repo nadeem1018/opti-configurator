@@ -95,7 +95,7 @@ export class ModelbomComponent implements OnInit {
             
             if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
               this.showheaderImageBlock = true;
-              this.header_image_data =this.modelbom_data.image_path
+              this.header_image_data =this.commonData.get_current_url() + this.modelbom_data.image_path
             }
            
 
@@ -470,7 +470,7 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.modelbom_data.image_path=data[0].OPTM_PHOTO;
               if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
-                this.header_image_data = this.modelbom_data.image_path;
+                this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path;
                 this.showheaderImageBlock=true;
               }
             }

@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   public connectBtnText = 'Connect';
   public language:any = "";
   private commonData = new CommonData();
-  public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
+  public background = this.commonData.get_current_url() + "/assets/images/bg.jpg";
 
   public page_title = this.commonData.project_name;
 
@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-          this.psURL = "http://localhost:9501";
+          //this.psURL = "http://localhost:9501";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
 
           sessionStorage.setItem('psURL', this.psURL);

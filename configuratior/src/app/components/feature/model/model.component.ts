@@ -55,6 +55,7 @@ export class ModelComponent implements OnInit {
    public dialog_params: any = [];
    public show_dialog: boolean = false;
    public selectedImage = "";
+   public ModelImage:string="";
 
    
   ngOnInit() {
@@ -97,7 +98,12 @@ this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
-this.featureBom.Image=data[0].OPTM_PHOTO
+if(data[0].OPTM_PHOTO!== undefined && data[0].OPTM_PHOTO!== "" && data[0].OPTM_PHOTO!== 0){
+  this.featureBom.Image=data[0].OPTM_PHOTO
+  this.ModelImage=this.commonData.get_current_url() + data[0].OPTM_PHOTO
+
+}
+
 console.log(data[0].OPTM_TYPE);
 if(data[0].OPTM_TYPE == "Feature"){
   this.model_name_label=this.language.Model_FeatureName;
@@ -193,15 +199,21 @@ if (validateStatus == true){
     }
 
     this.fms.UploadFeature(formData).subscribe(data => {
-      if (data.body === "False") {
-        this.showImageBlock=false;
-        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
-      }
-      else {
-        this.showImageBlock=true;
-        this.featureBom.Image= data.body
-        //this.featureBom.Image= "/assets/images/bg.jpg"
-      }
+      if(data!==undefined && data!=""){
+        if (data.body === "False") {
+         this.showImageBlock=false;
+         this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+       }
+       else {
+       
+         if(data.body!= "" && data.body!= undefined){
+
+           this.featureBom.Image= data.body
+           this.ModelImage= this.commonData.get_current_url() + data.body
+           this.showImageBlock=true;
+         }
+       }
+     }
     })
   }
 
