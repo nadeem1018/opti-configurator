@@ -65,6 +65,9 @@ export class ModelbomService {
 
   SaveModelBom(SaveData): Observable<any>{
     let jObject:any = { AddModel: JSON.stringify( SaveData) };
+
+    //let jObject:any={ AddModel: JSON.stringify(SaveData), RuleModel: JSON.stringify(RuleData)};
+
       return this.httpclient.post(this.config_params.service_url + "/ModelBOM/AddUpdateModelBOM", jObject, this.common_params.httpOptions);
   }
 
@@ -104,10 +107,10 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataForExplodeViewForModelBOM", jObject, this.common_params.httpOptions);
   }
 
-  getRuleLookupList(): Observable<any>{
-    let jObject = { RuleModel: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
+  getRuleLookupList(id): Observable<any>{
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id }]) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllRules", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetAllRules", jObject, this.common_params.httpOptions);
   }
 
   onModelIdChange(id): Observable<any> {

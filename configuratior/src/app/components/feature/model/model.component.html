@@ -99,10 +99,23 @@
                     <owl-date-time #dt12></owl-date-time>
                 </div>
             </div>
+            <div class="form-group row clearfix" *ngIf="showImageBlock"> 
+                    <label class="col-sm-4 col-form-label" for="image">{{language.image}}</label>
+                    <div class="col-sm-4">
+                            <div class="row image_data" >
+                        <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
+                        <div class=" col-md-4 col-sm-4">
+                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
+                                <img src={{featureBom.Image}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
                 <div class="col-sm-6">
-                    <input type="file" class="form-control  form-control-sm mt3-file" id="image" name="imagename" #image (change)="uploadimagefile(image.files)" >
+                    <input type="file" class="form-control  form-control-sm mt3-file" id="image" name="imagename" #image (change)="uploadimagefile(image.files)"  >
                 </div>
             </div>
             <div class="form-group row clearfix">
@@ -166,7 +179,7 @@
     </form>
 </div>
 
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"></app-lookup>
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
 
 <!--Custom Dialog-->
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>

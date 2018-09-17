@@ -198,8 +198,11 @@ mb-3, .my-3 {
   height: calc(1.7rem + 1px) !important;
 }
 
+
+
 .input-group-text {
   margin-top: 0.2rem;
+  padding: .2rem .29rem !important;
 }
 
 .card-footer {
@@ -386,3 +389,4 @@ li.breadcrumb-item a, li.breadcrumb-item {
   font-size: 12px;
   font-weight: 500;
 }
+

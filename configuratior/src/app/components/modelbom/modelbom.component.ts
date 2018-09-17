@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ModelbomService } from '../../services/modelbom.service';
@@ -27,6 +27,7 @@ export class ModelbomComponent implements OnInit {
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = false;
   public showImageBlock: boolean = false;
+  public showheaderImageBlock: boolean = false;
   public selectedImage = "";
   public isPriceDisabled = true;
   public pricehide = true;
@@ -35,7 +36,10 @@ export class ModelbomComponent implements OnInit {
   public typevaluefromdatabase: string = "";
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
-  
+  public rule_data: any = [];
+  ruleselected : any;
+  public header_image_data:string="";
+
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
@@ -54,16 +58,16 @@ export class ModelbomComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
-   /*  this.image_data = [
-      "../../../assets/images/test/1.jpg",
-      "../../../assets/images/test/2.jpg",
-      "../../../assets/images/test/3.jpg",
-      "../../../assets/images/test/4.jpg",
-      "../../../assets/images/test/5.jpg",
-      "../../../assets/images/test/6.jpg",
-      "../../../assets/images/test/7.jpg",
-      "../../../assets/images/test/8.jpg",
-    ]; */
+    /*  this.image_data = [
+       "../../../assets/images/test/1.jpg",
+       "../../../assets/images/test/2.jpg",
+       "../../../assets/images/test/3.jpg",
+       "../../../assets/images/test/4.jpg",
+       "../../../assets/images/test/5.jpg",
+       "../../../assets/images/test/6.jpg",
+       "../../../assets/images/test/7.jpg",
+       "../../../assets/images/test/8.jpg",
+     ]; */
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
     }
@@ -84,10 +88,18 @@ export class ModelbomComponent implements OnInit {
       this.service.GetDataByModelId(this.update_id).subscribe(
         data => {
           if (data.ModelHeader.length > 0) {
-            this.modelbom_data.modal_id=data.ModelDetail[0].OPTM_MODELID
+            this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
             this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
             this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
-           }
+            this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
+            
+            if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
+              this.showheaderImageBlock = true;
+              this.header_image_data =this.modelbom_data.image_path
+            }
+           
+
+          }
 
           if (data.ModelDetail.length > 0) {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
@@ -113,10 +125,10 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data.push({
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
-                description:this.modelbom_data.feature_name ,
+                description: this.modelbom_data.feature_name,
                 readytouse: data.ModelDetail[i].OPTM_READYTOUSE,
                 type: data.ModelDetail[i].OPTM_TYPE,
-                type_value:  this.typevaluefromdatabase,
+                type_value: this.typevaluefromdatabase,
                 display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
                 uom: data.ModelDetail[i].OPTM_UOM,
                 quantity: data.ModelDetail[i].OPTM_QUANTITY,
@@ -129,16 +141,16 @@ export class ModelbomComponent implements OnInit {
                 isDisplayNameDisabled: false,
                 isTypeDisabled: false,
                 hide: false,
-                CompanyDBId:data.ModelDetail[i].OPTM_COMPANYID,
+                CompanyDBId: data.ModelDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
-                isPriceDisabled:   this.isPriceDisabled,
-                pricehide: this.pricehide ,
-                isUOMDisabled:this.isUOMDisabled
+                isPriceDisabled: this.isPriceDisabled,
+                pricehide: this.pricehide,
+                isUOMDisabled: this.isUOMDisabled
               });
 
             }
           }
-          
+
 
 
 
@@ -151,16 +163,16 @@ export class ModelbomComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if(this.update_id === "" || this.update_id === null){
-    this._el.nativeElement.focus();
+    if (this.update_id === "" || this.update_id === null) {
+      this._el.nativeElement.focus();
     }
-    else{
+    else {
       this._ele.nativeElement.focus();
     }
   }
 
   onAddRow() {
-    if(this.validation("Add")==false){
+    if (this.validation("Add") == false) {
       return;
     }
     this.counter = 0;
@@ -192,8 +204,8 @@ export class ModelbomComponent implements OnInit {
       CreatedUser: this.username,
       isPriceDisabled: true,
       pricehide: true,
-      isUOMDisabled:true
-      
+      isUOMDisabled: true
+
     });
   };
 
@@ -211,17 +223,17 @@ export class ModelbomComponent implements OnInit {
     }
   }
 
-  clearData(rowindex){
+  clearData(rowindex) {
     //this.modelbom_data[rowindex].type_value="";
-    this.modelbom_data[rowindex].uom="";
-    this.modelbom_data[rowindex].display_name="";
-    this.modelbom_data[rowindex].quantity=0;
-    this.modelbom_data[rowindex].min_selected=1;
-    this.modelbom_data[rowindex].max_selected=1;
-    this.modelbom_data[rowindex].propagate_qty='N';
-    this.modelbom_data[rowindex].price_source='';
-    this.modelbom_data[rowindex].mandatory='N';
-    this.modelbom_data[rowindex].unique_identifer='N';
+    this.modelbom_data[rowindex].uom = "";
+    this.modelbom_data[rowindex].display_name = "";
+    this.modelbom_data[rowindex].quantity = 0;
+    this.modelbom_data[rowindex].min_selected = 1;
+    this.modelbom_data[rowindex].max_selected = 1;
+    this.modelbom_data[rowindex].propagate_qty = 'N';
+    this.modelbom_data[rowindex].price_source = '';
+    this.modelbom_data[rowindex].mandatory = 'N';
+    this.modelbom_data[rowindex].unique_identifer = 'N';
   }
 
   on_bom_type_change(selectedvalue, rowindex) {
@@ -229,7 +241,7 @@ export class ModelbomComponent implements OnInit {
       this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
       return false;
     }
-    this.serviceData =[]
+    this.serviceData = []
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
@@ -242,8 +254,8 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isPriceDisabled = true
           this.modelbom_data[i].pricehide = true
           this.modelbom_data[i].isUOMDisabled = true
-          this.modelbom_data[i].quantity=1
-         
+          this.modelbom_data[i].quantity = 1
+
 
 
 
@@ -252,7 +264,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
-          this.modelbom_data[i].quantity=1
+          this.modelbom_data[i].quantity = 1
           if (selectedvalue == 2) {
             this.lookupfor = 'Item_Detail_lookup';
             this.modelbom_data[i].type = 2
@@ -262,7 +274,7 @@ export class ModelbomComponent implements OnInit {
           }
           else {
             this.modelbom_data[i].type = 1
-           this.lookupfor = 'feature_lookup';
+            this.lookupfor = 'feature_lookup';
             this.modelbom_data[i].isPriceDisabled = true
             this.modelbom_data[i].pricehide = true
             this.modelbom_data[i].isUOMDisabled = true
@@ -292,10 +304,10 @@ export class ModelbomComponent implements OnInit {
     }
     this.currentrowindex = rowindex
     if (selectedvalue == 3) {
-      this.getModelDetails(this.modelbom_data.modal_id, "Detail",selectedvalue )
+      this.getModelDetails(this.modelbom_data.modal_id, "Detail", selectedvalue)
     }
     else {
-      this.lookupfor = 'Item_Detail_lookup';
+      // this.lookupfor = 'Item_Detail_lookup';
       this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
     }
 
@@ -304,7 +316,7 @@ export class ModelbomComponent implements OnInit {
   getModelFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
 
-    this.serviceData =[]
+    this.serviceData = []
     this.service.getModelFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
         if (data.length > 0) {
@@ -321,8 +333,8 @@ export class ModelbomComponent implements OnInit {
                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString()
                   this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
-                  
-                  
+
+
 
                 }
               }
@@ -339,9 +351,9 @@ export class ModelbomComponent implements OnInit {
             this.serviceData = data;
           }
         }
-        else{
+        else {
           this.lookupfor = "";
-          this.serviceData=[];
+          this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -371,7 +383,7 @@ export class ModelbomComponent implements OnInit {
 
   openFeatureLookUp(status) {
     console.log('inopen feature');
-    this.serviceData=[]
+    this.serviceData = []
     this.service.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
@@ -380,9 +392,9 @@ export class ModelbomComponent implements OnInit {
           console.log(this.serviceData);
 
         }
-        else{
+        else {
           this.lookupfor = "";
-          this.serviceData=[];
+          this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -391,7 +403,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   openPriceLookUp(ItemKey) {
-    this.serviceData=[]
+    this.serviceData = []
     this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
@@ -400,9 +412,9 @@ export class ModelbomComponent implements OnInit {
           console.log(this.serviceData);
 
         }
-        else{
+        else {
           this.lookupfor = "";
-          this.serviceData=[];
+          this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -412,6 +424,7 @@ export class ModelbomComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBom_lookup') {
+      //alert($event);
       this.modelbom_data.modal_id = $event;
       this.getModelDetails($event, "Header", 0);
     }
@@ -424,15 +437,14 @@ export class ModelbomComponent implements OnInit {
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event, "Header", this.currentrowindex);
     }
-    else if (this.lookupfor == 'rule_selection_lookup') {
-    //   this.getPriceDetails($event, "Header", this.currentrowindex);
+    else if (this.lookupfor == 'rule_section_lookup') {
+      this.rule_data = $event;
     }
-    else {
-      this.lookupfor = 'Item_Detail_lookup';
+    else if (this.lookupfor == 'Item_Detail_lookup') {
+      console.log("in here ");
       this.serviceData=[]
       this.getItemDetails($event);
-
-    }
+  }
 
 
   }
@@ -456,8 +468,13 @@ export class ModelbomComponent implements OnInit {
             if (this.lookupfor == 'ModelBom_lookup') {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
+              this.modelbom_data.image_path=data[0].OPTM_PHOTO;
+              if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
+                this.header_image_data = this.modelbom_data.image_path;
+                this.showheaderImageBlock=true;
+              }
             }
-            else{
+            else {
               for (let i = 0; i < this.modelbom_data.length; ++i) {
                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString()
@@ -476,9 +493,9 @@ export class ModelbomComponent implements OnInit {
 
 
         }
-        else{
+        else {
           this.lookupfor = "";
-          this.serviceData=[];
+          this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -488,7 +505,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   getItemDetails(ItemKey) {
-    this.serviceData =[]
+    this.serviceData = []
     this.service.getItemDetails(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
@@ -496,8 +513,8 @@ export class ModelbomComponent implements OnInit {
             if (this.modelbom_data[i].rowindex === this.currentrowindex) {
               this.modelbom_data[i].type_value = data[0].ItemKey.toString()
               this.modelbom_data[i].display_name = data[0].Description
-              this.modelbom_data[i].uom=data[0].InvUOM
-              this.modelbom_data[i].price_source="";
+              this.modelbom_data[i].uom = data[0].InvUOM
+              this.modelbom_data[i].price_source = "";
 
             }
           }
@@ -510,49 +527,49 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].type_value = value.toString()
-        if(this.modelbom_data[i].type == 1){
+        if (this.modelbom_data[i].type == 1) {
           this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
             data => {
-              
-              if (data === "False" ) {
+
+              if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                this.modelbom_data[i].type_value= "";
+                this.modelbom_data[i].type_value = "";
                 return;
               }
-              else{
-                this.lookupfor=""
+              else {
+                this.lookupfor = ""
                 this.getModelFeatureDetails(this.modelbom_data[i].type_value, "Header", i)
               }
-              
+
             })
         }
-        else if(this.modelbom_data[i].type == 2){
+        else if (this.modelbom_data[i].type == 2) {
           this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
             data => {
-              
-              if (data === "False" ) {
+
+              if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.modelbom_data[i].type_value= "";
+                this.modelbom_data[i].type_value = "";
                 return;
               }
-              else{
+              else {
                 this.lookupfor = "";
                 this.getItemDetails(this.modelbom_data[i].type_value);
               }
             })
         }
-        else{
+        else {
           this.service.onModelIdChange(this.modelbom_data[i].type_value).subscribe(
             data => {
-              
-              if (data === "False" ) {
+
+              if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.modelbom_data[i].type_value= "";
+                this.modelbom_data[i].type_value = "";
                 return;
               }
-              else{
+              else {
                 this.lookupfor = "";
-              this.getModelDetails(this.modelbom_data.modal_id, "Header", i);
+                this.getModelDetails(this.modelbom_data.modal_id, "Header", i);
               }
             })
         }
@@ -573,14 +590,14 @@ export class ModelbomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-        if(value == 0){
+        if (value == 0) {
           this.modelbom_data[i].quantity = ""
           this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
         }
-        else{
+        else {
           this.modelbom_data[i].quantity = value
         }
-      
+
 
 
       }
@@ -695,7 +712,7 @@ export class ModelbomComponent implements OnInit {
 
 
   onSave() {
-    if(this.validation("Save")==false){
+    if (this.validation("Save") == false) {
       return;
     }
     if (this.modelbom_data.length > 0) {
@@ -722,8 +739,13 @@ export class ModelbomComponent implements OnInit {
 
       }
     }
+    let objDataset: any= {};
+    objDataset.ModelData = [];
+    objDataset.RuleData =[];
 
-    this.service.SaveModelBom(this.modelbom_data).subscribe(
+objDataset.ModelData = this.modelbom_data;
+objDataset.RuleData = this.rule_data;
+    this.service.SaveModelBom(objDataset).subscribe(
       data => {
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
@@ -743,27 +765,24 @@ export class ModelbomComponent implements OnInit {
       this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
       return false;
     }
-    
-    if(btnpress=="Save"){
-      if (this.modelbom_data.length==0) {
+
+    if (btnpress == "Save") {
+      if (this.modelbom_data.length == 0) {
         this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
         return false;
       }
-      else{
+      else {
         for (let i = 0; i < this.modelbom_data.length; ++i) {
-          let currentrow= i+1;
-          if(this.modelbom_data[i].type==1 && this.modelbom_data[i].type_value == "")
-          {
+          let currentrow = i + 1;
+          if (this.modelbom_data[i].type == 1 && this.modelbom_data[i].type_value == "") {
             this.toastr.error('', this.language.SelectFeature + currentrow, this.commonData.toast_config);
             return false;
           }
-           if(this.modelbom_data[i].type==2 && this.modelbom_data[i].type_value == "")
-          {
+          if (this.modelbom_data[i].type == 2 && this.modelbom_data[i].type_value == "") {
             this.toastr.error('', this.language.SelectItem + currentrow, this.commonData.toast_config);
             return false;
           }
-          if(this.modelbom_data[i].type==3 && this.modelbom_data[i].type_value == "")
-          {
+          if (this.modelbom_data[i].type == 3 && this.modelbom_data[i].type_value == "") {
             this.toastr.error('', this.language.SelectModel + currentrow, this.commonData.toast_config);
             return false;
           }
@@ -771,23 +790,23 @@ export class ModelbomComponent implements OnInit {
             this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
             return false;
           }
-        } 
+        }
       }
 
     }
-   
+
 
   }
 
 
   onDelete() {
-   // var result = confirm(this.language.DeleteConfimation);
-   this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-   this.show_dialog = true;
+    // var result = confirm(this.language.DeleteConfimation);
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
   //delete record will be execute from here
-  delete_record(){
+  delete_record() {
     this.service.DeleteData(this.modelbom_data.modal_id).subscribe(
       data => {
         if (data === "True") {
@@ -815,32 +834,31 @@ export class ModelbomComponent implements OnInit {
   onExplodeClick() {
     this.lookupfor = 'tree_view__model_bom_lookup"';
 
-    if(this.modelbom_data.modal_id != undefined){
+    if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
-      
-      this.service.GetDataForExplodeViewForModelBOM(this.companyName,this.modelbom_data.modal_id).subscribe(
+
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id).subscribe(
         data => {
-          if(data !=null || data != undefined){
-              this.serviceData = data;
-              this.lookupfor = "tree_view__model_bom_lookup";
-            }
-            else{
-            }
-            
-          },
-          error =>
-          {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            return; 
+          if (data != null || data != undefined) {
+            this.serviceData = data;
+            this.lookupfor = "tree_view__model_bom_lookup";
           }
-        );
+          else {
+          }
+
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      );
     }
-    else{
+    else {
       this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
       return;
     }
-    
-   }
+
+  }
 
 
   onVerifyOutput() {
@@ -853,37 +871,39 @@ export class ModelbomComponent implements OnInit {
     this.selectedImage = image;
   }
 
- 
 
-  onModelIdChange(){
+
+  onModelIdChange() {
     this.service.onModelIdChange(this.modelbom_data.modal_id).subscribe(
       data => {
-        
-        if (data === "False" ) {
+
+        if (data === "False") {
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
-          this.modelbom_data.modal_id="";
+          this.modelbom_data.modal_id = "";
           return;
         }
-        else{
-          this.lookupfor="ModelBom_lookup"
+        else {
+          this.lookupfor = "ModelBom_lookup"
           this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
-        
+
         }
       })
   }
 
-  on_rule_click(){
+  on_rule_click() {
     this.lookupfor = "rule_section_lookup";
+    this.ruleselected = [];
+    //this.ruleselected=this.rule_data;
     this.serviceData = [];
-    this.service.getRuleLookupList().subscribe(
+    this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
         }
       });
   }
+
 }
 
 
 
- 

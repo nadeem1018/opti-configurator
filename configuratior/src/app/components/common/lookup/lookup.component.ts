@@ -23,6 +23,7 @@ export class LookupComponent implements OnInit {
   @Input() fillLookupArray: any;
   @Input() selectedImage: any
   @Output() lookupvalue = new EventEmitter();
+  @Input() ruleselected: any;
   // @ViewChild(searchlookupfield, { read: ElementRef }) lookup_search: ElementRef;
 
   public commonData = new CommonData();
@@ -53,7 +54,7 @@ export class LookupComponent implements OnInit {
   // intital Javascript object class 
   Object = Object;
   public preview_image = "";
-
+  public isRuleChecked = false;
   ngOnInit() {
     this.companyName = sessionStorage.getItem('selectedComp');
   }
@@ -297,6 +298,19 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
+        this.checked_rules=[];
+//console.log(this.serviceData);
+for(var i=0; i< this.serviceData.length; i++){
+  if(this.serviceData[i].Selected == "Y"){
+   this.serviceData[i].Selected = true;
+   this.checked_rules.push(this.serviceData[i]);
+  }
+  else{
+   this.serviceData[i].Selected = false;
+  }
+
+}
+      
         $("#rule_selection").modal('show');
       }
     }
@@ -308,14 +322,21 @@ export class LookupComponent implements OnInit {
     console.log(row_data);
     
     if (checkedvalue == true) {
+      row_data.Selected = true;
       this.checked_rules.push(row_data);
     }
     else {
       let i = this.checked_rules.indexOf(row_data);
+      row_data.Selected = false;
       this.checked_rules.splice(i, 1)
     }
     console.log(this.checked_rules);
 
+  }
+
+  rule_select_ok(){
+      this.lookupvalue.emit(this.checked_rules);
+      $("#rule_selection").modal('hide');
   }
 
   
