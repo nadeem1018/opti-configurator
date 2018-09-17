@@ -38,16 +38,19 @@ export class BomComponent implements OnInit {
   public isQuanity: number;
   public isFeatureIdEnable: boolean = true;
   public FeatureLookupBtnhide: boolean = true;
-  public showImageBlock: boolean = true;
+  public showImageBlock: boolean = false;
+  public selectedImage = "";
   config_params: any;
   serviceData: any;
   counter = 0;
-  public header_image_data: any = [];
+  public header_image_data: any;
+  public detail_image_data: any = [];
+
 
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
-  
+
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 
   ngOnInit() {
@@ -126,6 +129,23 @@ export class BomComponent implements OnInit {
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
 
+              this.detail_image_data=[];
+              if (this.detail_image_data.length > 0) {
+                let isExist = 0;
+                for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
+
+                  if (this.detail_image_data[idtlimg] == data.FeatureDetail[i].OPTM_ATTACHMENT) {
+                    isExist = 1;
+                  }
+                }
+                if(isExist==0){
+                  this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+                }
+              }
+              else{
+                this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+              }
+
             }
           }
           if (data.FeatureHeader.length > 0) {
@@ -135,15 +155,17 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
+            this.header_image_data =this.feature_bom_data.image_path
+            this.showImageBlock=true;
+            
+
           }
 
+
+
           // this.header_image_data = [
-          //   "../../backend_services/OptiPro.Config.Service/" + this.feature_bom_data.image_path
+          //   this.commonData.get_current_url + "/assets/images/bg.jpg" 
           // ];
-        
-          this.header_image_data = [
-            this.commonData.get_current_url + "/assets/images/bg.jpg" 
-          ];
 
 
         }
@@ -229,6 +251,24 @@ export class BomComponent implements OnInit {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === rowindex) {
               this.feature_bom_table[i].attachment = data.body
+              // this.detail_image_data.push(this.feature_bom_table[i].attachment)  
+
+              if (this.detail_image_data.length > 0) {
+                let isExist = 0;
+                for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
+
+                  if (this.detail_image_data[idtlimg] == this.feature_bom_table[i].attachment) {
+                    isExist = 1;
+                  }
+                }
+                if(isExist==0){
+                  this.detail_image_data.push(this.feature_bom_table[i].attachment)
+                }
+              }
+              else{
+                this.detail_image_data.push(this.feature_bom_table[i].attachment)
+              }
+             
             }
           }
         }
@@ -372,31 +412,31 @@ export class BomComponent implements OnInit {
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         this.feature_bom_table[i].type_value = value
-        if(this.feature_bom_table[i].type == 1){
+        if (this.feature_bom_table[i].type == 1) {
           this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
             data => {
-              
-              if (data === "False" ) {
+
+              if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                this.feature_bom_table[i].type_value= "";
+                this.feature_bom_table[i].type_value = "";
                 return;
               }
-              else{
+              else {
                 //this.lookupfor = 'feature_lookup';
                 this.getFeatureDetails(this.feature_bom_table[i].type_value, "Header", i);
               }
             })
         }
-        else if(this.feature_bom_table[i].type == 2){
+        else if (this.feature_bom_table[i].type == 2) {
           this.fbom.onItemIdChange(this.feature_bom_table[i].type_value).subscribe(
             data => {
-              
-              if (data === "False" ) {
+
+              if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.feature_bom_table[i].type_value= "";
+                this.feature_bom_table[i].type_value = "";
                 return;
               }
-              else{
+              else {
                 this.lookupfor = "";
                 this.getItemDetails(this.feature_bom_table[i].type_value);
               }
@@ -493,18 +533,14 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              this.header_image_data =[];
+              if(this.feature_bom_data.image_path!=null||this.feature_bom_data.image_path!=""){
+                this.header_image_data = this.feature_bom_data.image_path;
+                this.showImageBlock=true;
+              }
+             
               // this.header_image_data = [
-              //   // "/backend_services/OptiPro.Config.Service/" +  this.feature_bom_data.image_path
-              //   "/uploadfile/images/bg.jpg" 
-              // ];
-              // this.header_image_data =[];
-              // this.header_image_data = [
-              //   "/assets/images/bg.jpg" 
-              // ];
-              this.header_image_data = [
-                this.commonData.get_current_url +  "/assets/images/" + this.feature_bom_data.image_path
-              ];
+              //   "/assets/UploadFile/Image/hyundai-creta.jpg"
+              // ]
             }
             else {
               // this.feature_bom_table=data;
@@ -536,6 +572,11 @@ export class BomComponent implements OnInit {
         }
       }
     )
+  }
+
+  enlage_image(image) {
+    this.lookupfor = 'large_image_view';
+    this.selectedImage = image;
   }
 
   validation(btnpress) {
@@ -585,7 +626,7 @@ export class BomComponent implements OnInit {
   }
 
   //delete record 
-  delete_record(){
+  delete_record() {
     this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
       data => {
         if (data === "True") {
@@ -601,7 +642,7 @@ export class BomComponent implements OnInit {
     )
   }
 
-  
+
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
     if (userSelectionValue == true) {
@@ -610,72 +651,70 @@ export class BomComponent implements OnInit {
     this.show_dialog = false;
   }
 
-  
+
   //THis will get the BOMs associated to selected feature id
   onAssociatedBOMClick() {
-   if(this.feature_bom_data.feature_id != undefined){
-    this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
-      data => {
-        if(data != null || data != undefined){
-          this.serviceData = data;
-          this.lookupfor = 'associated_BOM';
-        }
-      },
-      error=>
-      {
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        return; 
-      }
-    )
-   }
-   else{
-    this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
-    return;
-   }
-  }
-
-  onExplodeClick() {
-    if(this.feature_bom_data.feature_id != undefined){
-      //now call bom id
-      
-      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName,this.feature_bom_data.feature_id).subscribe(
+    if (this.feature_bom_data.feature_id != undefined) {
+      this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
-          if(data !=null || data != undefined){
-              this.serviceData = data;
-              this.lookupfor = 'tree_view_lookup';
-            }
-            else{
-            }
-            
-          },
-          error =>
-          {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            return; 
+          if (data != null || data != undefined) {
+            this.serviceData = data;
+            this.lookupfor = 'associated_BOM';
           }
-        )
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      )
     }
-    else{
+    else {
       this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
       return;
     }
-    
+  }
+
+  onExplodeClick() {
+    if (this.feature_bom_data.feature_id != undefined) {
+      //now call bom id
+
+      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id).subscribe(
+        data => {
+          if (data != null || data != undefined) {
+            this.serviceData = data;
+            this.lookupfor = 'tree_view_lookup';
+          }
+          else {
+          }
+
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      )
+    }
+    else {
+      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      return;
+    }
+
   }
 
 
-  onFeatureIdChange(){
+  onFeatureIdChange() {
     this.fbom.onFeatureIdChange(this.feature_bom_data.feature_id).subscribe(
       data => {
-        
-        if (data === "False" ) {
+
+        if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-          this.feature_bom_data.feature_id="";
+          this.feature_bom_data.feature_id = "";
           this.feature_bom_data.feature_name = "";
           this.feature_bom_data.feature_desc = "";
           this.feature_bom_data.is_accessory = "";
           return;
         }
-        else{
+        else {
           this.lookupfor = 'feature_lookup';
           this.getFeatureDetails(this.feature_bom_data.feature_id, "Header", 0);
         }

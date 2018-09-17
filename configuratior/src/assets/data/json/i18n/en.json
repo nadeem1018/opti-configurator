@@ -91,6 +91,7 @@
     "Bom_Displayname": "Display Name",
     "Bom_FeatureDesc": "Feature Description",
     "Bom_FeatureValue": "Feature/Item/Value",
+    "ModelBom_FeatureValue": "Feature/Item/Model",
     "Bom_Qty": "Quantity",
     "Bom_Default": "Default",
     "Bom_Remarks": "Remarks",
