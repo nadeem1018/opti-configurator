@@ -163,7 +163,7 @@ mb-3, .my-3 {
 }
 
 .btn-group-sm>.btn, .btn-sm {
-  padding: .2rem 0.2rem !important;
+  padding: .2rem 0.35rem !important;
   font-size: .875rem !important;
   line-height: 1.0 !important;
   border-radius: .2rem !important;

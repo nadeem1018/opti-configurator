@@ -492,7 +492,20 @@ only screen and ( min-resolution: 2dppx) {
     color: #ffffff;
 }
 
-.wizard_font{
+.wizard_font {
     color: #ffffff;
     font-weight: 400;
+}
+
+.model_bom_buttons {
+    text-align: center;
+}
+
+.border-left-primary {
+    border-left: 1px solid #007bff;
+}
+
+.f1_button_top_border_padding {
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
 }

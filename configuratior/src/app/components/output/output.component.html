@@ -294,50 +294,151 @@
                   <div class="col-sm-9 ">
                     <table class="table table-bordered table-sm">
                       <thead class="thead-dark">
-                        <tr >
+                        <tr>
                           <th *ngFor="let label of accessory_table_head; let i= index">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox"
-                                  class="custom-control-input">
+                                <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox" class="custom-control-input">
                                 <label class="custom-control-label" for="acccessory_check{{label}}"></label>
                               </div>
                             </span>
-                            <span *ngIf="i==1">
-                               {{label}}
+                            <span *ngIf="i!=0">
+                              {{label}}
                             </span>
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <!-- <td *ngFor="let row_data of Object.keys(feature_accessory_list); let i= index ">
+                        <tr class="" *ngFor="let row of feature_accessory_list">
+                          <td *ngFor="let row_data of Object.keys(row); let i= index ">
                             <span *ngIf="i==0">
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                              <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
-                                class="custom-control-input">
-                              <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
-                            </div>
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
+                                  class="custom-control-input">
+                                <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
+                              </div>
                             </span>
-                            <span *ngIf="i==1">
-                             {{row[row_data]}}
+                            <span *ngIf="i!=0">
+                              {{row[row_data]}}
                             </span>
-                          </td> -->
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
-              <div class="col-md-8" style="border-left: 1px solid  #007bff; "></div>
+              <div class="col-md-8 border-left-primary">
+                <div class="form-group col-md-4 clearfix">
+                  <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
+                  <span class="col-sm-6 bg-light border border-primary">Test</span>
+                </div>
+                <div class="feature_block">
+                  <hr>
+                  <div class="form-group col-md-4 clearfix bg-primary text-white ">
+                    <label class="col-sm-12 col-form-label">{{language.features}}</label>
+                  </div>
+                  <div class="feature_table">
+                    <table class="table table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th *ngFor="let label of feature_itm_list_table_head; let i= index">
+                            <span >
+                              {{label}}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                  <div class="feature_discount_table">
+                    <div class="col-md-3 pull-right">
+                      <table class="table table-bordered table-sm">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th *ngFor="let label of model_discount_table_head; let i= index">
+                              <span>
+                                {{label}}
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="" *ngFor="let row of feature_tax_total">
+                            <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                              {{row[row_data]}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="accessories_block">
+                  <hr>
+                  <div class="form-group col-md-4 clearfix bg-primary text-white ">
+                    <label class="col-sm-12 col-form-label">{{language.accessories}}</label>
+                  </div>
+                  <div class="accessories_table">
+                    <table class="table table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th *ngFor="let label of itm_list_table_head; let i= index">
+                            <span>
+                              {{label}}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                  <div class="item_discount_table">
+                    <div class="col-md-3 pull-right">
+                      <table class="table table-bordered table-sm">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th *ngFor="let label of model_discount_table_head; let i= index">
+                              <span>
+                                {{label}}
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="" *ngFor="let row of item_tax_total">
+                            <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                              {{row[row_data]}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="f1-buttons">
-            <hr>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">
-              <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="accept_bom_so">
-              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+          <div class="row">
+            <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
+              <button type="button" class="btn btn-sm btn-secondary  mr-10">
+                <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
+              <button type="button" class="btn btn-sm btn-info  mr-10 ">
+                <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>
+            </div>
+            <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
+              <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+              <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="accept_bom_so">
+                <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+            </div>
           </div>
         </fieldset>
 
@@ -345,7 +446,7 @@
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-11 pull-left">
-                <i class="fa fa-user fa-fw"></i> {{language.verify_select_final }} </div>
+                <i class="fa fa-user fa-fw"></i> {{language.verify_select_final}} </div>
               <div class="col-md-1 pull-right"> {{language.step_3_4}} </div>
             </div>
             <hr>

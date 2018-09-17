@@ -224,9 +224,11 @@
     "rule_selection": "Rule Selection",
     "rule":"Rule",
     "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
-    "DateValidation":"From date cannot be greater than to date"
-    
-    
-  
-    
+    "DateValidation":"From date cannot be greater than to date",
+    "clear_selection":"Clear Selection",
+    "add_model":"Add Mdel",
+    "features":"Features",
+    "accessories":"Accessories",
+    "price_extn":"Price Extn.",
+    "discount_per":"Discount %"
 }

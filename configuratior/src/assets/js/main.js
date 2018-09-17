@@ -111,6 +111,7 @@ function calculate_progress(progress_block) {
 
   $(".btn-next").on("click", function () {
     var n_obj = $(this);
+    
     var next_block = n_obj.data("next-block");
     calculate_progress(next_block);
     go_to_next(next_block);
