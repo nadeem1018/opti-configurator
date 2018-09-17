@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   public connectBtnText = 'Connect';
   public language:any = "";
   private commonData = new CommonData();
-  public background = this.commonData.get_current_url() + "/assets/images/bg.jpg";
+  public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
 
   public page_title = this.commonData.project_name;
 
