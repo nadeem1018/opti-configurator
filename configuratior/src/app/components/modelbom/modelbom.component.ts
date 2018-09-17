@@ -121,12 +121,15 @@ export class ModelbomComponent implements OnInit {
                 this.pricehide = true
                 this.isUOMDisabled = true
               }
+              if(data.ModelDetail[i].OPTM_READYTOUSE==""||data.ModelDetail[i].OPTM_READYTOUSE==null||data.ModelDetail[i].OPTM_READYTOUSE==undefined){
+                data.ModelDetail[i].OPTM_READYTOUSE='N'
+              }
 
               this.modelbom_data.push({
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
                 description: this.modelbom_data.feature_name,
-                readytouse: data.ModelDetail[i].OPTM_READYTOUSE,
+                ReadyToUse: data.ModelDetail[i].OPTM_READYTOUSE,
                 type: data.ModelDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
                 display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
@@ -185,7 +188,7 @@ export class ModelbomComponent implements OnInit {
       rowindex: this.counter,
       ModelId: this.modelbom_data.modal_id,
       description: this.modelbom_data.feature_desc,
-      readytouse: "N",
+      ReadyToUse: "N",
       type: 1,
       type_value: "",
       display_name: "",
