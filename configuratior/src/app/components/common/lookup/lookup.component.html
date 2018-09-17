@@ -218,17 +218,19 @@
                             </thead>
                             <tbody class="lookup_table_body">
                                 <tr class="row_select" *ngFor="let row of serviceData">
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row); let i = index">
-                                        <span *ngIf="i==0">
-                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                <input type="checkbox" id="rule_check_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,row)"
-                                                    class="custom-control-input">
-                                                <label class="custom-control-label" for="rule_check_{{row[row_data]}}"></label>
-                                            </div>
+                                   
+                                        <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row); let i = index" [hidden]="i==(Object.keys(row).length-1)">
+                                            <span *ngIf="i==0">
+                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input type="checkbox" id="rule_check_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,row)"
+                                                        [checked]="row['Selected']" class="custom-control-input">
+                                                    <label class="custom-control-label" for="rule_check_{{row[row_data]}}"></label>
+                                                </div>
 
-                                        </span>
-                                        <span *ngIf="i!=0">{{row[row_data]}}</span>
-                                    </td>
+                                            </span>
+                                            <span *ngIf="i!=0">{{row[row_data]}}</span>
+                                        </td>
+                                    
                                 </tr>
                             </tbody>
                         </table>
@@ -236,6 +238,8 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-sm btn-success mr-10" type="button" (click)="rule_select_ok()">
+                    <i class="fa fa-check"></i> {{this.language.ok}}</button>
                 <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(rule_selection)">
                     <i class="fa fa-close"></i> {{this.language.close}}</button>
             </div>
@@ -245,8 +249,8 @@
 
 
 <!-- tree view modal -->
-<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal" aria-hidden="true" data-backdrop="static"
-    data-keyboard="false">
+<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -265,23 +269,23 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
-                            <div class="table-responsive">
-                        <table class="table table-bordered lookup_table  table-sm" id="dataTable">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th width="{{width_value}}" *ngFor="let table_columns of table_head">{{table_columns}}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="lookup_table_body">
-                                <tr class="row_select" *ngFor="let row of serviceData">
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)">
-                                        <span>{{row[row_data]}}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered lookup_table  table-sm" id="dataTable">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th width="{{width_value}}" *ngFor="let table_columns of table_head">{{table_columns}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="lookup_table_body">
+                                    <tr class="row_select" *ngFor="let row of serviceData">
+                                        <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)">
+                                            <span>{{row[row_data]}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                 </div>
                 </div>
             </div>
         </div>
@@ -290,8 +294,8 @@
 
 
 <!-- tree view modal -->
-<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal" aria-hidden="true" data-backdrop="static"
-    data-keyboard="false">
+<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -310,23 +314,23 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
-                            <div class="table-responsive">
-                        <table class="table table-bordered lookup_table  table-sm" id="dataTable">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th width="{{width_value}}" *ngFor="let table_columns of table_head">{{table_columns}}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="lookup_table_body">
-                                <tr class="row_select" *ngFor="let row of serviceData">
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)">
-                                        <span>{{row[row_data]}}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered lookup_table  table-sm" id="dataTable">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th width="{{width_value}}" *ngFor="let table_columns of table_head">{{table_columns}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="lookup_table_body">
+                                    <tr class="row_select" *ngFor="let row of serviceData">
+                                        <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row)">
+                                            <span>{{row[row_data]}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                 </div>
                 </div>
             </div>
         </div>

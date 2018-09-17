@@ -35,7 +35,8 @@ export class ModelbomComponent implements OnInit {
   public typevaluefromdatabase: string = "";
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
-  
+  public rule_data: any = [];
+  ruleselected : any;
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
@@ -294,7 +295,7 @@ export class ModelbomComponent implements OnInit {
       this.getModelDetails(this.modelbom_data.modal_id, "Detail",selectedvalue )
     }
     else {
-      this.lookupfor = 'Item_Detail_lookup';
+      // this.lookupfor = 'Item_Detail_lookup';
       this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
     }
 
@@ -411,6 +412,7 @@ export class ModelbomComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBom_lookup') {
+      //alert($event);
       this.modelbom_data.modal_id = $event;
       this.getModelDetails($event, "Header", 0);
     }
@@ -423,15 +425,14 @@ export class ModelbomComponent implements OnInit {
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event, "Header", this.currentrowindex);
     }
-    else if (this.lookupfor == 'rule_selection_lookup') {
-    //   this.getPriceDetails($event, "Header", this.currentrowindex);
+    else if (this.lookupfor == 'rule_section_lookup') {
+      this.rule_data = $event;
     }
-    else {
-      this.lookupfor = 'Item_Detail_lookup';
+    else if (this.lookupfor == 'Item_Detail_lookup') {
+      console.log("in here ");
       this.serviceData=[]
       this.getItemDetails($event);
-
-    }
+  }
 
 
   }
@@ -721,8 +722,13 @@ export class ModelbomComponent implements OnInit {
 
       }
     }
+    let objDataset: any= {};
+    objDataset.ModelData = [];
+    objDataset.RuleData =[];
 
-    this.service.SaveModelBom(this.modelbom_data).subscribe(
+objDataset.ModelData = this.modelbom_data;
+objDataset.RuleData = this.rule_data;
+    this.service.SaveModelBom(objDataset).subscribe(
       data => {
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
@@ -874,14 +880,17 @@ export class ModelbomComponent implements OnInit {
 
   on_rule_click(){
     this.lookupfor = "rule_section_lookup";
+    this.ruleselected = [];
+    //this.ruleselected=this.rule_data;
     this.serviceData = [];
-    this.service.getRuleLookupList().subscribe(
+    this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
         }
       });
   }
+
 }
 
 

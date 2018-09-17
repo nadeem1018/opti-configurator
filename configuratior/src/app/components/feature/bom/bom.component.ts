@@ -47,6 +47,7 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
+ 
   
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 

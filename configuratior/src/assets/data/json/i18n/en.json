@@ -187,10 +187,6 @@
     "selectbraces":"Select braces at row index: ",
     "selectcondition":"Select condition at row index:",
     "selectoperand1":"Select operand 1 at row index: ",
-<<<<<<< HEAD
-    "selectoperand2":"Select operand 2 at row index: "
-     
-=======
     "selectoperand2":"Select operand 2 at row index: ",
      "config_wizard":"Configuration Wizard",
      "select_customer":"Select Customer and related document Details ",
@@ -229,7 +225,6 @@
     "Nodataforsave":"No expression added to save in the system, please add expression before saving.",
     "DateValidation":"From date cannot be greater than to date"
     
->>>>>>> 9b8ba654ac401f416b7af7daa44817be5dc628a3
     
   
     
