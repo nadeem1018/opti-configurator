@@ -27,7 +27,8 @@ common_params = new CommonData();
   // //This function will get Company acc. to User
   getCompany(loginCredentials: any, psURL: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { Username: JSON.stringify([{ Username: loginCredentials.userName, Product: "SFES"}]) };
+    //Product: this.config_params.product_code
+    let jObject: any = { Username: JSON.stringify([{ Username: loginCredentials.userName, Product:  this.config_params.product_code}]) };
     //Return the response form the API  
     return this.httpclient.post(psURL + "/api/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
   }

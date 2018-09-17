@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
-import { ModelbomService } from '../../services/Modelbom.service';
+import { ModelbomService } from '../../services/modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
@@ -43,6 +43,7 @@ export class ViewModelBomComponent implements OnInit {
     constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
     }

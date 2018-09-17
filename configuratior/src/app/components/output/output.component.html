@@ -143,7 +143,79 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-5"></div>
+              <div class="col-md-5">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="payment_terms">{{language.payment_terms}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="payment_terms" id="payment_terms" placeholder="{{language.payment_terms}}"
+                      [(ngModel)]="step1_data.payment_terms" #paymentterms>
+
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="payment_method">{{language.payment_method}}</label>
+                  <div class="col-sm-8">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="payment_method" id="payment_method" placeholder="{{language.payment_method}}"
+                      [(ngModel)]="step1_data.payment_method" #paymentmethod>
+
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="attachment">{{language.attachment}}</label>
+                  <div class="col-sm-8">
+                    <input type="file" ngValue="" class="form-control  form-control-sm mt3" name="attachment" id="attachment" placeholder="{{language.attachment}}"
+                      [(ngModel)]="step1_data.attachment" #attachment>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-7">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
+                  <div class="col-sm-4 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="sales_employee" id="sales_employee" placeholder="{{language.sales_employee}}"
+                      [(ngModel)]="step1_data.sales_employee" #salesemployee>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openSalesEmpLookup()">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="owner">{{language.owner}}</label>
+                  <div class="col-sm-4">
+                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
+                      [(ngModel)]="step1_data.owner" #owner>
+
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="remark">{{language.remark}}</label>
+                  <div class="col-sm-4">
+                    <textarea type="text" rows="4" ngValue="" class="form-control  form-control-sm mt3" name="remark" id="remark" placeholder="{{language.remark}}"
+                      [(ngModel)]="step1_data.remark" #remark> </textarea>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-4 col-form-label" for="tax_code">{{language.tax_code}}</label>
+                  <div class="col-sm-8 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="tax_code" id="tax_code" placeholder="{{language.tax_code}}"
+                      [(ngModel)]="step1_data.tax_code" #taxcode>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openTaxCodes()">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="f1-buttons">
@@ -163,12 +235,103 @@
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-11 pull-left">
-                <i class="fa fa-user fa-fw"></i> {{language.model_bill_ofm}} </div>
+                <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}} </div>
               <div class="col-md-1 pull-right"> {{language.step_2_4}} </div>
             </div>
             <hr>
           </div>
-          <div class="form_section"></div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="model">{{language.model}}</label>
+                  <div class="col-sm-9 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="model" id="model" placeholder="{{language.model}}"
+                      [(ngModel)]="step1_data.model" #model>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openModalList()">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="quantity">{{language.quantity}}</label>
+                  <div class="col-sm-9">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="quantity" id="quantity" placeholder="{{language.quantity}}"
+                      [(ngModel)]="step1_data.quantity" #quantity>
+
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="feature">{{language.feature}}</label>
+                  <div class="col-sm-9 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature" id="feature" placeholder="{{language.feature}}"
+                      [(ngModel)]="step1_data.feature" #feature>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="feature2"></label>
+                  <div class="col-sm-9 input-group">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature2" id="feature2" placeholder="{{language.feature2}}"
+                      [(ngModel)]="step1_data.feature2" #feature2>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor_icon" id="basic-addon2">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
+                  <div class="col-sm-9 ">
+                    <table class="table table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr >
+                          <th *ngFor="let label of accessory_table_head; let i= index">
+                            <span *ngIf="i==0">
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox"
+                                  class="custom-control-input">
+                                <label class="custom-control-label" for="acccessory_check{{label}}"></label>
+                              </div>
+                            </span>
+                            <span *ngIf="i==1">
+                               {{label}}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <!-- <td *ngFor="let row_data of Object.keys(feature_accessory_list); let i= index ">
+                            <span *ngIf="i==0">
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                              <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
+                                class="custom-control-input">
+                              <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
+                            </div>
+                            </span>
+                            <span *ngIf="i==1">
+                             {{row[row_data]}}
+                            </span>
+                          </td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8" style="border-left: 1px solid  #007bff; "></div>
+            </div>
+          </div>
           <div class="f1-buttons">
             <hr>
             <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">

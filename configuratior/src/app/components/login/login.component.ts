@@ -20,12 +20,13 @@ export class LoginComponent implements OnInit {
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
   public config_data:string = "";
-  public connectBtnText = '';
+  public connectBtnText = 'Connect';
+  public language:any = "";
   private commonData = new CommonData();
   public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
 
   public page_title = this.commonData.project_name;
-  language = JSON.parse(sessionStorage.getItem('current_lang')); 
+
   constructor(   
     private auth: AuthenticationService, 
     private router: Router,
@@ -36,9 +37,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() { 
     //this.loginCredentials.userName = 'shashank';
     //this.loginCredentials.password = 'sha@123';
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+    this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
+
     this.connectBtnText = this.language.connect;
     console.info('in LOGIN header');
-    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
       this.router.navigateByUrl('/home');
     } else {
@@ -134,7 +137,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-           this.psURL = "http://localhost:57962";
+          //this.psURL = "http://localhost:9501";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
 
           sessionStorage.setItem('psURL', this.psURL);

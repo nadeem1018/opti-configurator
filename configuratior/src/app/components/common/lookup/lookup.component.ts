@@ -116,6 +116,10 @@ export class LookupComponent implements OnInit {
         this.showTreeView();
       }
 
+      if (this.lookupfor == "tree_view__model_bom_lookup"){
+        this.showModelBOMTreeView();
+      }
+
       if(this.lookupfor == "associated_BOM"){
         this.showAssociatedBOMs();
       }
@@ -416,6 +420,26 @@ for(var i=0; i< this.serviceData.length; i++){
       }
     }
 
+  }
+
+  showModelBOMTreeView(){
+    this.popup_title = this.language.explode;
+    this.showLoader = true;
+    this.LookupDataLoaded = false;
+    //this.tree_data_json = this.dummy_json();
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        this.tree_data_json =  this.dummy_json();
+        //this.tree_data_json =this.serviceData;
+      
+       // setTimeout(function(){
+          $("#tree_view").modal('show');
+        //}, 5000);
+      }
+    }
+    
   }
 
   // dummy_json(){

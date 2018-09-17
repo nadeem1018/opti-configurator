@@ -56,9 +56,11 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
   ngOnInit() {
+    this.commonData.checkSession();
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
     this.rule_wb_data.CompanyDBId = sessionStorage.getItem('selectedComp');
     this.rule_wb_data.RuleId = "";
+    this.rule_wb_data.discontinued=false;
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
@@ -108,19 +110,19 @@ export class RulewbComponent implements OnInit {
               this.rule_sequence_data.push({
 
                 rowindex: this.counter,
-                seq_count: data.RuleWorkBenchInput[0].OPTM_SEQID,
-                operator: data.RuleWorkBenchInput[0].OPTM_OPERATOR,
-                type: data.RuleWorkBenchInput[0].OPTM_TYPE,
-                braces: data.RuleWorkBenchInput[0].OPTM_BRACES,
+                seq_count: data.RuleWorkBenchInput[i].OPTM_SEQID,
+                operator: data.RuleWorkBenchInput[i].OPTM_OPERATOR,
+                type: data.RuleWorkBenchInput[i].OPTM_TYPE,
+                braces: data.RuleWorkBenchInput[i].OPTM_BRACES,
                 type_value: this.typevaluefromdatabase,
-                condition: data.RuleWorkBenchInput[0].OPTM_CONDITION,
-                operand_1: data.RuleWorkBenchInput[0].OPTM_OPERAND1,
-                operand_2: data.RuleWorkBenchInput[0].OPTM_OPERAND2,
+                condition: data.RuleWorkBenchInput[i].OPTM_CONDITION,
+                operand_1: data.RuleWorkBenchInput[i].OPTM_OPERAND1,
+                operand_2: data.RuleWorkBenchInput[i].OPTM_OPERAND2,
                 row_expression: "",
               });
 
             }
-            this.genearate_expression();
+            this.genearate_expression(); 
           }
 
           if (data.RuleWorkBenchOutput.length > 0) {
@@ -163,7 +165,7 @@ export class RulewbComponent implements OnInit {
 
 
       )
-
+     
     }
   }
 
@@ -418,7 +420,7 @@ export class RulewbComponent implements OnInit {
                 }
               })
           }
-          
+
           else {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
@@ -475,7 +477,7 @@ export class RulewbComponent implements OnInit {
         rowindex: this.expression_counter,
         seq_count: this.rule_sequence_data[0].seq_count,
         expression: this.generated_expression_value,
-        row_data: this.rule_sequence_data,
+        row_data: this.rule_sequence_data
       });
       this.toastr.info('', this.language.expression_generated, this.commonData.toast_config);
       this.close_rule_sequence();

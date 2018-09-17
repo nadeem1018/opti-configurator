@@ -48,6 +48,7 @@ export class RuleWbViewComponent implements OnInit {
     constructor(private router: Router, private service: RulewbService ,private toastr: ToastrService) { }
 
     ngOnInit() {
+        this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
     }
@@ -135,6 +136,8 @@ export class RuleWbViewComponent implements OnInit {
                 }
                 else {
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
                     return;
                 }
             }
