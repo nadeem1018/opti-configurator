@@ -2,7 +2,9 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { RulewbService } from '../../services/rulewb.service';
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from 'jquery';
+import 'bootstrap';
 
 @Component({
   selector: 'app-output',
