@@ -48,9 +48,6 @@ export class OutputComponent implements OnInit {
       { "id": "1", "key": "A1", "name": "Accessory 1"},
       { "id": "2", "key":"A2", "name": "Accessory 2"},
     ];
-
-
-   
   }
 
   openFeatureLookUp() { }
