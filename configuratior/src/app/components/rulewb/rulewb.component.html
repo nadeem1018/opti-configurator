@@ -272,6 +272,16 @@
     </div>
 
     <div class="output_window_box" *ngIf="is_showoutput_visible">
+        <div class="form-group row clearfix">
+            <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Excluded}}</label>
+            <div class="col-sm-2 mt-3px">
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" id="yess" name="Excluded" [(ngModel)]="rule_wb_data.Excluded" class="custom-control-input"
+                  value="1">
+                <label class="custom-control-label" for="yess"></label>
+              </div>
+            </div>
+          </div>
       <hr>
       <div class="col-sm-12">
         <div class="table-responsive table-responsive-sm">
@@ -285,7 +295,8 @@
               <tr>
                 <th width="3%">
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
+                    <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)"  class="custom-control-input" [(checked)]=selectall
+                    value="1" >
                     <label class="custom-control-label" for="check_all"></label>
                   </div>
 
@@ -307,7 +318,8 @@
 
                 <td>
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
+                    <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}
+                    [(checked)]=row.check_child>
                     <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
                   </div>
                 </td>

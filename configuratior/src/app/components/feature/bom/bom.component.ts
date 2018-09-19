@@ -123,6 +123,7 @@ export class BomComponent implements OnInit {
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
+                isQuanityDisabled: this.isQuanityDisabled ,
                 hide: this.ishide,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
@@ -133,16 +134,24 @@ export class BomComponent implements OnInit {
                 let isExist = 0;
                 for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
 
-                  if (this.detail_image_data[idtlimg] == data.FeatureDetail[i].OPTM_ATTACHMENT) {
+                  if (this.detail_image_data[idtlimg].value== data.FeatureDetail[i].OPTM_ATTACHMENT) {
                     isExist = 1;
                   }
                 }
                 if(isExist==0){
-                  this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+                  this.detail_image_data.push({
+                    index:i,
+                    value:data.FeatureDetail[i].OPTM_ATTACHMENT
+                  }
+                   )
                 }
               }
               else{
-                this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
+                this.detail_image_data.push({
+                  index:i,
+                  value:data.FeatureDetail[i].OPTM_ATTACHMENT
+                }
+                 )
               }
 
             }
@@ -154,22 +163,17 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
-            this.header_image_data =this.feature_bom_data.image_path
-            this.showImageBlock=true;
-            
-
+            if(this.feature_bom_data.image_path!=""){
+              if(this.feature_bom_data.image_path!=null){
+                this.header_image_data =this.feature_bom_data.image_path
+                this.showImageBlock=true;
+              }
+            }
           }
-
-
-
           // this.header_image_data = [
           //   this.commonData.get_current_url + "/assets/images/bg.jpg" 
           // ];
-
-
         }
-
-
       )
     }
   }
@@ -253,19 +257,18 @@ export class BomComponent implements OnInit {
               // this.detail_image_data.push(this.feature_bom_table[i].attachment)  
 
               if (this.detail_image_data.length > 0) {
-                let isExist = 0;
                 for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
-
-                  if (this.detail_image_data[idtlimg] == this.feature_bom_table[i].attachment) {
-                    isExist = 1;
+                  if (this.detail_image_data[idtlimg].index == i) {
+                    this.detail_image_data[idtlimg].value=this.feature_bom_table[i].attachment
                   }
                 }
-                if(isExist==0){
-                  this.detail_image_data.push(this.feature_bom_table[i].attachment)
-                }
+               
               }
               else{
-                this.detail_image_data.push(this.feature_bom_table[i].attachment)
+                this.detail_image_data.push({
+                  index:i,
+                  value:this.feature_bom_table[i].attachment
+                })
               }
              
             }
@@ -532,9 +535,11 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              if(this.feature_bom_data.image_path!=null||this.feature_bom_data.image_path!=""){
-                this.header_image_data = this.feature_bom_data.image_path;
-                this.showImageBlock=true;
+              if(this.feature_bom_data.image_path!=null){
+                if(this.feature_bom_data.image_path!=""){
+                  this.header_image_data = this.feature_bom_data.image_path;
+                  this.showImageBlock=true;
+                }
               }
              
               // this.header_image_data = [
@@ -604,7 +609,7 @@ export class BomComponent implements OnInit {
             this.toastr.error('', this.language.SelectValue + currentrow, this.commonData.toast_config);
             return false;
           }
-          if (this.feature_bom_table[i].quantity == "") {
+          if (this.feature_bom_table[i].quantity === "") {
             this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
             return false;
           }

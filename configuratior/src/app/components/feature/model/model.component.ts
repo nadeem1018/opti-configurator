@@ -83,7 +83,7 @@ export class ModelComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.section_title = this.language.edit;
       this.code_disabled= "true";
-      this.showImageBlock=true;
+      
       
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
@@ -98,6 +98,9 @@ this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
 this.featureBom.Image=data[0].OPTM_PHOTO
+if(this.featureBom.Image==""||this.featureBom.Image==null||this.featureBom.Image==undefined){
+  this.showImageBlock=false;
+}
 console.log(data[0].OPTM_TYPE);
 if(data[0].OPTM_TYPE == "Feature"){
   this.model_name_label=this.language.Model_FeatureName;

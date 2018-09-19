@@ -231,5 +231,6 @@
     "features":"Features",
     "accessories":"Accessories",
     "price_extn":"Price Extn.",
-    "discount_per":"Discount %"
+    "discount_per":"Discount %",
+    "Excluded":"Excluded"
 }

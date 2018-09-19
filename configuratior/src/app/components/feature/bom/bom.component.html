@@ -168,7 +168,7 @@
             <div class="row image_data" *ngIf="showImageBlock">
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of detail_image_data" style="width: 100px;">
                     <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                        <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                        <img src="{{image.value}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
                     </a>
                 </div>
             </div>
