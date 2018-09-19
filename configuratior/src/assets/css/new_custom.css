@@ -198,8 +198,6 @@ mb-3, .my-3 {
   height: calc(1.7rem + 1px) !important;
 }
 
-
-
 .input-group-text {
   margin-top: 0.2rem;
   padding: .2rem .29rem !important;
@@ -390,3 +388,6 @@ li.breadcrumb-item a, li.breadcrumb-item {
   font-weight: 500;
 }
 
+ol.breadcrumb.breadcrumb_mini_margin {
+  display: none;
+}

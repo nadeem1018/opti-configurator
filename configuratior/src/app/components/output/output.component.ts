@@ -27,6 +27,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, ""]; 
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn,   "X"];
   public feature_tax_total = [
     {"key":"Tax","value":"10%"},
     { "key": "Total", "": "$2000" },

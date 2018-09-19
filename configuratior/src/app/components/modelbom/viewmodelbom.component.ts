@@ -38,8 +38,9 @@ export class ViewModelBomComponent implements OnInit {
     public GetItemData: any = [];
 
 
-    table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
+    //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
+    table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.Name, this.language.action];
     constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 
     ngOnInit() {
