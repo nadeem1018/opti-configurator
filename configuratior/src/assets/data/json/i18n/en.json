@@ -231,5 +231,9 @@
     "features":"Features",
     "accessories":"Accessories",
     "price_extn":"Price Extn.",
-    "discount_per":"Discount %"
+    "discount_per":"Discount %",
+    "conflict": "Rules are conflicting",
+    "model_code_label": "Model/Feature Code",
+    "model_FeatureCode":"Feature Code",
+    "model_ModelCode": "Model Code"
 }

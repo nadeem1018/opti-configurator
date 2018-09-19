@@ -8,6 +8,7 @@ import { ActivatedRoute } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as XLSX from 'ts-xlsx';
 import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
+import * as $ from 'jquery';
 
 
 
@@ -48,6 +49,7 @@ export class ModelComponent implements OnInit {
    public selectedFile:string="";
    public model_name_label =  this.language.Model_Name;
    public model_desc_label =  this.language.Model_Desc;
+   public model_code_label = this.language.model_code_label;
    public code_disabled= "false";
    public GetItemData: any = [];
    public showImageBlock: boolean = false;
@@ -55,8 +57,12 @@ export class ModelComponent implements OnInit {
    public dialog_params: any = [];
    public show_dialog: boolean = false;
    public selectedImage = "";
+   public isRefCodeDisabled = true;
+   public isItemCodeDisabled = true;
+   public isItemlookupDisabled = true;
+   public isReflookupDisabled = true;
+  
 
-   
   ngOnInit() {
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
@@ -66,6 +72,8 @@ export class ModelComponent implements OnInit {
     this.codekey ="";
     this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
     this.showImageBlock = false;
+  
+
     if(this.codekey === "" || this.codekey === null){
       this.button="save";
       this.isUpdateButtonVisible = false;
@@ -74,6 +82,14 @@ export class ModelComponent implements OnInit {
       this.featureBom.Accessory = 'N';
       this.featureBom.Status= "Active";
       this.code_disabled= "false";
+      this.featureBom.type = "Feature";
+      if(this.featureBom.type == "Feature"){
+        this.model_code_label = this.language.model_FeatureCode;
+        this.model_name_label=this.language.Model_FeatureName;
+        this.model_desc_label= this.language.Model_FeatureDesc;
+        this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
+      }      
       this._el.nativeElement.focus();
     }
     else{
@@ -100,16 +116,27 @@ this.featureBom.Accessory=data[0].OPTM_ACCESSORY
 this.featureBom.Image=data[0].OPTM_PHOTO
 console.log(data[0].OPTM_TYPE);
 if(data[0].OPTM_TYPE == "Feature"){
+  this.model_code_label = this.language.model_FeatureCode;
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
+  this.isRefCodeDisabled = true;
+  this.isItemCodeDisabled = true;
+  this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
 }else{
+  this.model_code_label = this.language.model_ModelCode;
   this.model_name_label=this.language.Model_ModelName;
   this.model_desc_label= this.language.Model_ModelDesc;
+  this.isRefCodeDisabled = false;
+  this.isItemCodeDisabled = false;
+  this.isItemlookupDisabled = false;
+        this.isReflookupDisabled = false;
 }
         })
     }
   }
   ngAfterViewInit() {
+ 
     if(this.codekey === "" || this.codekey === null){
     this._el.nativeElement.focus();
     }
@@ -120,11 +147,21 @@ if(data[0].OPTM_TYPE == "Feature"){
 
   onTypeLookupChange(){
 if(this.featureBom.type == "Feature"){
+  this.model_code_label = this.language.model_FeatureCode;
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
+  this.isRefCodeDisabled = true;
+  this.isItemCodeDisabled = true;
+  this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
 }else{
+  this.model_code_label = this.language.model_ModelCode;
   this.model_name_label=this.language.Model_ModelName;
   this.model_desc_label= this.language.Model_ModelDesc;
+  this.isRefCodeDisabled = false;
+  this.isItemCodeDisabled = false;
+  this.isItemlookupDisabled = false;
+        this.isReflookupDisabled = false;
 }
 
   }
