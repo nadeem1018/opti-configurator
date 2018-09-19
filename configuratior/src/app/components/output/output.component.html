@@ -451,7 +451,108 @@
             </div>
             <hr>
           </div>
-          <div class="form_section"></div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.order_type}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.order_typey}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.posting_date}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.posting_date}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.delivery_date}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.delivery_date}}</label>
+                </div>
+                 <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.customer}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.customer}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.Name}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.name}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.contact_person}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.contact_person}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.ship_to}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to}}</label>
+                </div>
+                 <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.address}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to_address}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.bill_to}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to}}</label>
+                </div>
+                 <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.address}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to_address}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.payment_terms}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.payment_terms}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.payment_method}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.payment_method}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.sales_employee}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.sales_employee}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label"><b>{{language.remark}}</b></label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.remark}}</label>
+                </div>
+              </div>
+              <div class="col-md-9 border-left-primary">
+                <div class="step_3_selection_table">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th *ngFor="let label of final_selection_header; let i= index">
+                          <span>
+                            {{label}}
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="final_item_discount_table">
+                  <div class="col-md-3 pull-right">
+                    <table class="table table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th *ngFor="let label of model_discount_table_head; let i= index">
+                            <span>
+                              {{label}}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="" *ngFor="let row of item_tax_total">
+                          <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                            {{row[row_data]}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+                
+          </div>
           <div class="f1-buttons">
             <hr>
             <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="model_bom_config">
