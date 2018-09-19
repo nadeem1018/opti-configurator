@@ -27,7 +27,7 @@
     "code": "Code",
     "add": "Add",
     "string": "String",
-    "type": "Type",
+    "Type": "Type",
     "operations": "Operations",
     "add_itemcode": "Add Item Code",
     "row": "Row",
@@ -121,7 +121,7 @@
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
     "description":"Description",
-    "name":"Name",
+    "Name":"Name",
     "feature_image":"Feature Image",
     "Model_FeatureName":"Feature Name",
     "Model_ModelName":"Model Name",
@@ -205,8 +205,8 @@
     "previous": "previous",
     "document": "Document",
     "customer": "Customer",
-    "posting_date": "Posting Date ",
-    "delivery_until": "Delivery / Valid Until ",
+    "posting_date": "Posting Date",
+    "delivery_until": "Delivery / Valid Until",
 
     "contact_person": "Contact Person",
     "ship_to": "Ship To",
@@ -235,5 +235,35 @@
     "conflict": "Rules are conflicting",
     "model_code_label": "Model/Feature Code",
     "model_FeatureCode":"Feature Code",
-    "model_ModelCode": "Model Code"
+    "model_ModelCode": "Model Code",
+    "order_type":"Order Type",
+   "checkbox_here":"checkbox_here",
+    "hash":"#",
+    "Id": "Id",
+    "finalstring": "Final String",
+    "Effective Date": "Effective Date",
+    "select": "Select",
+    "ModelId": "Model Id",
+    "Fromdate": "From date",
+    "Todate": "To date",
+    "Number":"Number",
+    "NoOperation":"No Operation",
+    "Increase":"Increase",
+    "Decrease":"Decrease",
+    "OR":"OR",
+    "AND":"AND",
+    "NO":"No",
+    "YES":"Yes",
+    "SalesQuote":"Sales Quote",
+    "SalesOrder":"Sales Order",
+    "Between":"Between",
+    "In":"In",
+    "delivery_date":"Delivery Date",
+    "serial":"Sl#" 
+
+
+
+   
+    
+
 }
