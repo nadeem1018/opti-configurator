@@ -81,9 +81,9 @@ export class FeaturebomService {
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidItemEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
 
-  GetDataForExplodeViewForFeatureBOM(CompanyDBID,featureId): Observable<any> {
+  GetDataForExplodeViewForFeatureBOM(CompanyDBID,featureId,featureDisplayName): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId, featureDisplayName: featureDisplayName }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
   }
@@ -93,5 +93,12 @@ export class FeaturebomService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureID: featureId }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/ViewAssosciatedBOM", jObject, this.common_params.httpOptions);
+  }
+
+  checkFeaturesAlreadyAddedinParent(enteredFeatureID,parentFeatureID): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,parentFeatureID: parentFeatureID, enteredFeatureID: enteredFeatureID }]) }
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckFeaturesAlreadyAddedinParent", jObject, this.common_params.httpOptions);
   }
 }

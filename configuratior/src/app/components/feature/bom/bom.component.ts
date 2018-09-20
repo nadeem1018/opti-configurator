@@ -317,7 +317,7 @@ export class BomComponent implements OnInit {
           return;
         }
         else if (data === "Cyclic Reference") {
-          this.toastr.error('', "Cyclic Reference", this.commonData.toast_config);
+          this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
           return;
         }
         else {
@@ -426,7 +426,8 @@ export class BomComponent implements OnInit {
               }
               else {
                 //this.lookupfor = 'feature_lookup';
-                this.getFeatureDetails(this.feature_bom_table[i].type_value, "Header", i);
+                //First we will check the conflicts
+                this.checkFeaturesAlreadyAddedinParent(value,this.feature_bom_table[i].type_value, i, "change");
               }
             })
         }
@@ -472,6 +473,7 @@ export class BomComponent implements OnInit {
   getLookupValue($event) {
     if (this.lookupfor == 'feature_lookup') {
       this.feature_bom_data.feature_id = $event;
+      
       this.getFeatureDetails($event, "Header", 0);
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
@@ -481,7 +483,8 @@ export class BomComponent implements OnInit {
     }
     else {
       this.lookupfor = 'feature_Detail_lookup';
-      this.getFeatureDetails($event, "Header", 0);
+      //call the method cyclic chk
+      this.checkFeaturesAlreadyAddedinParent($event,"", this.currentrowindex - 1, "lookup");
     }
 
   }
@@ -661,8 +664,18 @@ export class BomComponent implements OnInit {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
           if (data != null || data != undefined) {
-            this.serviceData = data;
-            this.lookupfor = 'associated_BOM';
+            if(data.length > 0){
+              this.serviceData = data;
+              this.lookupfor = 'associated_BOM';
+            }
+            else{
+              this.toastr.error('', this.language.no_assocaited_bom, this.commonData.toast_config);
+              return;
+            }
+          }
+          else{
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
           }
         },
         error => {
@@ -681,7 +694,7 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_data.feature_id != undefined) {
       //now call bom id
 
-      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id).subscribe(
+      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id,this.feature_bom_data.feature_name).subscribe(
         data => {
           if (data != null || data != undefined) {
             this.serviceData = data;
@@ -723,4 +736,42 @@ export class BomComponent implements OnInit {
         }
       })
   }
+
+  //To chk the conflictions of the feature id (hierariechal cylic dependency)
+  checkFeaturesAlreadyAddedinParent(enteredFeatureID,feature_type,rowindex,fromEvent){
+    
+    this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID,this.feature_bom_data.feature_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          //If exists then will restrict user 
+          if(data == "Exist"){
+            this.toastr.error('',  this.language.cyclic_ref_restriction, this.commonData.toast_config);
+            this.feature_bom_table[rowindex].type_value = "";
+            this.feature_bom_table[rowindex].display_name = "";
+            return;
+          }
+          else if(data == "True"){
+
+            if(fromEvent == "lookup"){
+              //this.getFeatureDetails(enteredFeatureID, "Header", 0);
+              this.getFeatureDetails(enteredFeatureID, "Header", rowindex);
+            }
+            else if(fromEvent == "change"){
+              this.getFeatureDetails(feature_type, "Header", rowindex);
+            }
+            
+          }
+        }
+          else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            console.log("Failed when checking hierac check for feature ID")
+            return;
+        }
+      },
+      error=> {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+   }
 }

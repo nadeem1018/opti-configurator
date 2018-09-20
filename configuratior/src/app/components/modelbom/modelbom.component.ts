@@ -311,6 +311,7 @@ export class ModelbomComponent implements OnInit {
     }
     else {
       // this.lookupfor = 'Item_Detail_lookup';
+    
       this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
     }
 
@@ -435,7 +436,10 @@ export class ModelbomComponent implements OnInit {
       this.getModelFeatureDetails($event, "Header", 0);
     }
     else if (this.lookupfor == 'ModelBom_Detail_lookup') {
-      this.getModelDetails($event, "Header", 0);
+      //On choosing value from lookup we will chk its cyclic dependency
+       //First we will check the conflicts
+       this.checkModelAlreadyAddedinParent($event,this.modelbom_data.modal_id, this.currentrowindex - 1,"lookup");
+      
     }
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event, "Header", this.currentrowindex);
@@ -562,19 +566,9 @@ export class ModelbomComponent implements OnInit {
             })
         }
         else {
-          this.service.onModelIdChange(this.modelbom_data[i].type_value).subscribe(
-            data => {
-
-              if (data === "False") {
-                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.modelbom_data[i].type_value = "";
-                return;
-              }
-              else {
-                this.lookupfor = "";
-                this.getModelDetails(this.modelbom_data.modal_id, "Header", i);
-              }
-            })
+           //First we will check the conflicts
+           this.checkModelAlreadyAddedinParent(value,this.modelbom_data[i].ModelId, i,"change");
+        
         }
       }
     }
@@ -840,7 +834,7 @@ objDataset.RuleData = this.rule_data;
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
 
-      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id).subscribe(
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.description).subscribe(
         data => {
           if (data != null || data != undefined) {
             this.serviceData = data;
@@ -906,6 +900,58 @@ objDataset.RuleData = this.rule_data;
       });
   }
 
+  getModelItemDetails(rowIndex){
+    this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value).subscribe(
+      data => {
+
+        if (data === "False") {
+          this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          this.modelbom_data[rowIndex].type_value = "";
+          return;
+        }
+        else {
+          this.lookupfor = "";
+          this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
+        }
+      })
+  }
+
+  checkModelAlreadyAddedinParent(enteredModelID,modelbom_type_value, rowindex,fromEvent){
+    this.service.CheckModelAlreadyAddedinParent(enteredModelID,this.modelbom_data.modal_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          //If exists then will restrict user 
+          if(data == "Exist"){
+            this.toastr.error('',  this.language.cyclic_ref_restriction, this.commonData.toast_config);
+            this.modelbom_data[rowindex].type_value = "";
+            this.modelbom_data[rowindex].display_name = "";
+            
+            return;
+          }
+          else if(data == "True"){
+            if(fromEvent == "lookup"){
+              this.getModelDetails(enteredModelID, "Header", 0);
+            }
+            else if(fromEvent == "change")
+            {
+              this.getModelItemDetails(rowindex);
+            }
+            
+          }
+        }
+          else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            console.log("Failed when checking hierac check for feature ID")
+            return;
+        }
+      },
+      error=> {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+   }
+   
 }
 
 
