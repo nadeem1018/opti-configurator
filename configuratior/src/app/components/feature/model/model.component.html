@@ -28,9 +28,9 @@
 
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="feature">
-                    {{language.Model_Code}}</label>
+                    {{model_code_label}}</label>
                 <div class="col-sm-6">
-                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
+                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
                         [(ngModel)]="featureBom.Code" #inputBox>
                 </div>
             </div>
@@ -63,9 +63,9 @@
 
                 <div class="col-sm-6 input-group">
                     <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
-                        placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
-                    <div class="input-group-append">
-                        <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
+                        placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName" [disabled]="isItemCodeDisabled">
+                    <div class="input-group-append" [hidden] ="isItemlookupDisabled">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
                     </div>
@@ -76,8 +76,8 @@
 
                 <div class="col-sm-6 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
-                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref">
-                    <div class="input-group-append">
+                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" [disabled]="isRefCodeDisabled">
+                    <div class="input-group-append" [hidden] ="isReflookupDisabled">
                         <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>

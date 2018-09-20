@@ -902,7 +902,24 @@ export class ModelbomComponent implements OnInit {
 
 
   onVerifyOutput() {
+    let objDataset: any= {};
+    objDataset.ModelData =[];
+    objDataset.RuleData =[];
+    objDataset.ModelData.push({
+      CompanyDBId: this.companyName,
+      ModelId:this.modelbom_data.modal_id
+  });
+    objDataset.RuleData = this.rule_data;
 
+
+    this.service.onVerifyOutput(objDataset).subscribe(
+      data => {
+        console.log(data);
+      if(data == "Rules Conflict"){
+        this.toastr.error('',this.language.conflict, this.commonData.toast_config);
+        return;
+        }
+      })
   }
 
 
