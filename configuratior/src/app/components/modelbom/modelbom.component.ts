@@ -34,11 +34,15 @@ export class ModelbomComponent implements OnInit {
   public isUOMDisabled = true;
   public update_id: string = "";
   public typevaluefromdatabase: string = "";
+  public typevaluecodefromdatabase: string = "";
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
   public rule_data: any = [];
   ruleselected: any;
   public header_image_data: string = "";
+
+  public tree_data_json: any = [];
+  public complete_dataset: any = [];
 
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
@@ -89,7 +93,7 @@ export class ModelbomComponent implements OnInit {
         data => {
           if (data.ModelHeader.length > 0) {
             this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
-            this.modelbom_data.modal_code = data.ModelDetail[0].OPTM_MODELCODE
+            this.modelbom_data.modal_code = data.ModelHeader[0].OPTM_FEATURECODE
             this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
             this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
             this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
@@ -114,24 +118,27 @@ export class ModelbomComponent implements OnInit {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
               if (data.ModelDetail[i].OPTM_TYPE == 1) {
                 this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
+                this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isUOMDisabled = true
               }
               else if (data.ModelDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
+                this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
                 this.isPriceDisabled = false
                 this.pricehide = false
                 this.isUOMDisabled = false
               }
               else {
                 this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
+                this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isUOMDisabled = true
               }
-              if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined) {
-                data.ModelDetail[i].OPTM_READYTOUSE = 'N'
+              if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined||data.ModelDetail[i].OPTM_READYTOUSE == "N") {
+                data.ModelDetail[i].OPTM_READYTOUSE = false
               }
               if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
                 data.ModelDetail[i].OPTM_PROPOGATEQTY = true
@@ -161,7 +168,7 @@ export class ModelbomComponent implements OnInit {
                 ReadyToUse: data.ModelDetail[i].OPTM_READYTOUSE,
                 type: data.ModelDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
-                type_value_code: this.typevaluefromdatabase,
+                type_value_code: this.typevaluecodefromdatabase ,
                 display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
                 uom: data.ModelDetail[i].OPTM_UOM,
                 quantity: data.ModelDetail[i].OPTM_QUANTITY,
@@ -228,10 +235,10 @@ export class ModelbomComponent implements OnInit {
       quantity: 1,
       min_selected: 1,
       max_selected: 1,
-      propagate_qty: 'N',
+      propagate_qty: false,
       price_source: '',
-      mandatory: 'N',
-      unique_identifer: 'N',
+      mandatory: false,
+      unique_identifer: false,
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
@@ -467,7 +474,7 @@ export class ModelbomComponent implements OnInit {
       this.getPriceDetails($event[0], "Header", this.currentrowindex);
     }
     else if (this.lookupfor == 'rule_section_lookup') {
-      this.rule_data = $event[0];
+      this.rule_data = $event;
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.serviceData = []
@@ -671,10 +678,10 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         if (value.checked == true) {
-          this.modelbom_data[i].propagate_qty = "Y"
+          this.modelbom_data[i].propagate_qty = true
         }
         else {
-          this.modelbom_data[i].propagate_qty = "N"
+          this.modelbom_data[i].propagate_qty = false
         }
 
 
@@ -701,10 +708,10 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         if (value.checked == true) {
-          this.modelbom_data[i].mandatory = "Y"
+          this.modelbom_data[i].mandatory = true
         }
         else {
-          this.modelbom_data[i].mandatory = "N"
+          this.modelbom_data[i].mandatory = false
         }
 
 
@@ -719,10 +726,10 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         if (value.checked == true) {
-          this.modelbom_data[i].unique_identifer = "Y"
+          this.modelbom_data[i].unique_identifer = true
         }
         else {
-          this.modelbom_data[i].unique_identifer = "N"
+          this.modelbom_data[i].unique_identifer = false
         }
 
 
@@ -735,10 +742,10 @@ export class ModelbomComponent implements OnInit {
   on_isready_change(value, rowindex) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
         if (value.checked == true) {
-          this.modelbom_data[i].ReadyToUse = "Y"
+          this.modelbom_data[i].ReadyToUse = true
         }
         else {
-          this.modelbom_data[i].ReadyToUse = "N"
+          this.modelbom_data[i].ReadyToUse = false
         }
       }
     }
@@ -768,6 +775,12 @@ export class ModelbomComponent implements OnInit {
         }
         else {
           this.modelbom_data[i].propagate_qty = "Y"
+        }
+        if (this.modelbom_data[i].ReadyToUse == false) {
+          this.modelbom_data[i].ReadyToUse = "N"
+        }
+        else {
+          this.modelbom_data[i].ReadyToUse = "Y"
         }
 
 
@@ -871,13 +884,16 @@ export class ModelbomComponent implements OnInit {
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
 
-      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.description).subscribe(
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.feature_name).subscribe(
         data => {
           if (data != null || data != undefined) {
-            this.serviceData = data;
-            this.lookupfor = "tree_view__model_bom_lookup";
+            // this.serviceData = data;
+            // this.lookupfor = "tree_view__model_bom_lookup";
+            this.tree_data_json = data;
           }
           else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
           }
 
         },
@@ -1008,6 +1024,23 @@ export class ModelbomComponent implements OnInit {
     )
    }
    
+
+   
+  //This will recurse the tree
+  get_childrens(component) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['parentId'] == component;
+    });
+    return data;
+  }
+
+  check_component_exist(component, level) {
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parentId'] == component && obj['level'] == level;
+    });
+    return data;
+  }
 }
 
 
