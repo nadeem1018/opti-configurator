@@ -23,22 +23,11 @@
                 <div class="card-body">
                     <div class="form-group row clearfix">
                         <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
-                <div class="col-sm-4 input-group">
-
-                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
-                        name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}" #featureinputbox>
-                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
-                        name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Bom_FeatureId}}"
-                        #featureinputbox>
-                    <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
-                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
-                            <i class="fa fa-bars"></i>
-                        </span>
-                    </div>
-                </div>
-
                         <div class="col-sm-4 input-group">
-                            <input type="number" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
+                            <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
+                                name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                #featureinputbox>
+                            <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
                                 name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Bom_FeatureId}}"
                                 #featureinputbox>
                             <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
@@ -64,29 +53,11 @@
                                 readonly [(ngModel)]="feature_bom_data.feature_desc">
                         </div>
                     </div>
-
+ 
                     <div class="form-group row clearfix" *ngIf="showImageBlock">
                         <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                         <div class="col-sm-4">
                             <div class="row image_data">
-                                <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
-                                <div class=" col-md-4 col-sm-4">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
-                                        <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  /> -->
-
-
-                        </div>
-                    </div>
-
-                    <div class="form-group row clearfix" *ngIf="showImageBlock">
-                        <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
-                        <div class="col-sm-4">
-                            <div class="row image_data">
-                                <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
                                 <div class=" col-md-4 col-sm-4">
                                     <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
                                         <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
@@ -116,17 +87,10 @@
                             </a>
                         </div>
                     </div>
-                   
+
                     <hr>
-                    <div class="clearfix"></div>
-                    <div class="row image_data" *ngIf="showImageBlock">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of detail_image_data" style="width: 100px;">
-                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                                <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
-                            </a>
-                        </div>
-                    </div>
-                 
+                    
+
 
                     <hr>
                     <div class="col-sm-12">
@@ -224,140 +188,131 @@
                     </div>
 
                     <hr>
-                    <!-- <div class="clearfix"></div> -->
-                    <!-- <div class="row image_data" *ngIf="showImageBlock">
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of detail_image_data" style="width: 100px;">
-                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                        <img src="{{image.value}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
-                    </a>
+                  
                 </div>
-            </div>
-            <div class="clearfix"></div>
-        </div> -->
-</div>
-                    <div class="card-footer small text-muted">
-                        <div class="footer-buttons">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="pull-left">
-                                        <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
-                                            <i class="fa fa-save"></i> {{language.save}}</button>
-                                        <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSaveClick()" class="btn btn-sm btn-info mr-10">
-                                            <i class="fa fa-save"></i> {{language.update}}</button>
+                <div class="card-footer small text-muted">
+                    <div class="footer-buttons">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="pull-left">
+                                    <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                                        <i class="fa fa-save"></i> {{language.save}}</button>
+                                    <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSaveClick()" class="btn btn-sm btn-info mr-10">
+                                        <i class="fa fa-save"></i> {{language.update}}</button>
 
-                                        <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick()" class="btn btn-sm btn-secondary  mr-10">
-                                            <i class="fa fa-window-maximize"></i> {{language.explode}}
-                                        </button>
+                                    <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick()" class="btn btn-sm btn-secondary  mr-10">
+                                        <i class="fa fa-window-maximize"></i> {{language.explode}}
+                                    </button>
 
-                                        <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10" (click)="onAssociatedBOMClick()">
-                                            <i class="fa fa-window-maximize"></i> {{language.associated_BOM}}
-                                        </button>
-                                    </div>
+                                    <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10" (click)="onAssociatedBOMClick()">
+                                        <i class="fa fa-window-maximize"></i> {{language.associated_BOM}}
+                                    </button>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="pull-right">
-                                        <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                                            <i class="fa fa-times fa-fw"></i>
-                                            <span>{{language.cancel}}</span>
-                                        </button>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right">
+                                    <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                                        <i class="fa fa-times fa-fw"></i>
+                                        <span>{{language.cancel}}</span>
+                                    </button>
 
-                                        <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
-                                            <i class="fa fa-trash fa-fw"></i>
-                                            <span>{{language.delete}}</span>
-                                        </button>
-                                        <!-- only view when edit mode -->
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                        <span>{{language.delete}}</span>
+                                    </button>
+                                    <!-- only view when edit mode -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </form>
-            </div>
-        </div>
-
-        <div class="col-md-3 opti_overflow-auto">
-            <div class="tree well">
-                <ul class="parent_ul">
-                    <li>
-                        <span>
-                            <i class="icon-folder-open"></i> F1 </span>
-                        <ul>
-                            <li>
-                                <span>
-                                    <i class="icon-minus-sign"></i> F2 </span>
-                                <ul>
-                                    <li>
-                                        <span>
-                                            <i class="icon-leaf"></i> item007 </span>
-                                    </li>
-                                    <li>
-                                        <span>
-                                            <i class="icon-leaf"></i> item008 </span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <span>
-                                    <i class="icon-minus-sign"></i> F3 </span>
-                                <ul>
-                                    <li>
-                                        <span>
-                                            <i class="icon-leaf"></i>F4</span>
-                                    </li>
-                                    <li>
-                                        <span>
-                                            <i class="icon-minus-sign"></i> F5 </span>
-                                        <ul>
-                                            <li>
-                                                <span>
-                                                    <i class="icon-minus-sign"></i> F6 </span>
-                                                <ul>
-                                                    <li>
-                                                        <span>
-                                                            <i class="icon-leaf"></i> item001 </span>
-                                                    </li>
-                                                    <li>
-                                                        <span>
-                                                            <i class="icon-leaf"></i> item0002 </span>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="icon-leaf"></i> item003 </span>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <i class="icon-leaf"></i> item004 </span>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <span>
-                                    <i class="icon-minus-sign"></i> item005 </span>
-                            </li>
-                            <li>
-                                <span>
-                                    <i class="icon-minus-sign"></i> item006 </span>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </div>
         </div>
     </div>
 
-    <hr>
+    <div class="col-md-3 opti_overflow-auto">
+        <div class="tree well">
+            <ul class="parent_ul">
+                <li>
+                    <span>
+                        <i class="icon-folder-open"></i> F1 </span>
+                    <ul>
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> F2 </span>
+                            <ul>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i> item007 </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i> item008 </span>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> F3 </span>
+                            <ul>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i>F4</span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <i class="icon-minus-sign"></i> F5 </span>
+                                    <ul>
+                                        <li>
+                                            <span>
+                                                <i class="icon-minus-sign"></i> F6 </span>
+                                            <ul>
+                                                <li>
+                                                    <span>
+                                                        <i class="icon-leaf"></i> item001 </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        <i class="icon-leaf"></i> item0002 </span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <i class="icon-leaf"></i> item003 </span>
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <i class="icon-leaf"></i> item004 </span>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> item005 </span>
+                        </li>
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> item006 </span>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<hr>
 
 
-    <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
 
 
-    <!--Custom Dialog-->
-    <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
+<!--Custom Dialog-->
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
