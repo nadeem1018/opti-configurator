@@ -1,23 +1,23 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-    <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
-  </div>
-  <ol class="breadcrumb breadcrumb_mini_margin">
-    <!--  <li class="breadcrumb-item">
+  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+</div>
+<ol class="breadcrumb breadcrumb_mini_margin">
+  <!--  <li class="breadcrumb-item">
       <a href="javascript:;" routerLink="/home">{{language.dashboard}}</a>
     </li> -->
-    <li class="breadcrumb-item ">
-      <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
-    </li>
-    <li class="breadcrumb-item active">{{language.add}}</li>
-  </ol>
-  <!-- new design -->
-  
-  <div class="card mb-3">
-    <form>
-      <!-- <div class="card-header">
+  <li class="breadcrumb-item ">
+    <a routerLink="{{view_route_link}}" href="javascript:;">{{page_main_title}}</a>
+  </li>
+  <li class="breadcrumb-item active">{{language.add}}</li>
+</ol>
+<!-- new design -->
+
+<div class="card mb-3">
+  <form>
+    <!-- <div class="card-header">
   <i class="fa fa-book-open"></i> {{language.add_itemcode}}</div> -->
-      <div class="card-body">
-        <!-- <div class="form-group row clearfix">
+    <div class="card-body">
+      <!-- <div class="form-group row clearfix">
           <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.rule_id}}</label>
   
           <div class="col-sm-4 input-group">
@@ -27,400 +27,431 @@
           </div>
   
         </div> -->
-        <div class="form-group row clearfix">
-          <label class="col-sm-2 col-form-label" for="rule_code">{{language.rule_code}}</label>
-          <div class="col-sm-4">
-            <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
-              [(ngModel)]="rule_wb_data.rule_code" #rulecode>
-          </div>
-  
-          <label class="col-sm-2 col-form-label" for="rule_description">{{language.description}}</label>
-          <div class="col-sm-4">
-            <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
-              [(ngModel)]="rule_wb_data.description">
-          </div>
-  
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="rule_code">{{language.rule_code}}</label>
+        <div class="col-sm-4">
+          <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
+            [(ngModel)]="rule_wb_data.rule_code" #rulecode>
         </div>
-  
-        <div class="form-group row clearfic">
-          <div class="col-md-6">
-            <div class="form-group row clearfix">
-              <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_from}}</label>
-              <div class="col-sm-8 input-group">
-                <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]=""  [min]="min" class="form-control  form-control-sm mt3" name='datepicker'
-                  type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from">
-                <div class="input-group-append">
-                  <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </div>
-                <owl-date-time #dt12  [pickerType]="'calendar'" ></owl-date-time>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group row clearfix">
-              <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_to}}</label>
-              <div class="col-sm-8 input-group">
-                <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3" name='datepicker'
-                  type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to">
-                <div class="input-group-append">
-                  <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </div>
-                <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
-              </div>
-            </div>
-          </div> 
+
+        <label class="col-sm-2 col-form-label" for="rule_description">{{language.description}}</label>
+        <div class="col-sm-4">
+          <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+            [(ngModel)]="rule_wb_data.description">
         </div>
-  
-        <div class="form-group row clearfix" style=" margin-top: -9px; ">
-          <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.discontinued}}</label>
-          <div class="col-sm-4 mt-3px">
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input type="checkbox" id="yes" name="discontinued" [(ngModel)]="rule_wb_data.discontinued" class="custom-control-input"
-                value="1">
-              <label class="custom-control-label" for="yes"></label>
+
+      </div>
+
+      <div class="form-group row clearfic">
+        <div class="col-md-6">
+          <div class="form-group row clearfix">
+            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_from}}</label>
+            <div class="col-sm-8 input-group">
+              <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3"
+                name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_from}}"
+                [(ngModel)]="rule_wb_data.effective_from">
+              <div class="input-group-append">
+                <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+              <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
             </div>
           </div>
         </div>
-  
-        <div class="form-group row clearfix">
-          <label class="col-sm-2 col-form-label" for="feature_id">{{language.applicable_for}}</label>
-  
-          <div class="col-sm-4 input-group">
-            <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)= "onFeatureIdChange()"  placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id">
-              <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code" placeholder="{{language.applicable_for}}" (change)= "onFeatureIdChange()">
-            <div class="input-group-append">
-              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
-                <i class="fa fa-bars"></i>
-              </span>
-            </div>
-          
-            <div class="col-sm-1" *ngIf="showOutputBtn">
-              <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}}" style="display:none;" (click)="hide_show_output()" #button >
-                <i class="fa fa-eye"></i> {{showoutput_btn_text}}
-              </a>
-            </div>
-            <div class="col-sm-1" *ngIf="show_add_sequence_btn">
-              <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()">
-                <i class="fa fa-plus"></i> {{language.add_seq}}
-              </a>
-            </div>
-            <div class="col-sm-1" *ngIf="show_sequence">
-              <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
-                <i class="fa fa-plus"></i> {{language.add_row}}
-              </a>
-            </div>
-          </div>
-        </div>
-     
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-8 pl-0">
-              <!-- top table start -->
-              <div class="sequence_box" *ngIf="show_sequence">
-                  <hr>
-                  <div class="col-sm-12 pl-0 pr-0">
-                    <div class="table-responsive table-responsive-sm">
-                      <div class="form-group col-md-2 clearfix bg-primary text-white"><div class="">{{language.input}}</div></div>
-                      <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
-                        <thead class="thead-dark">
-                          <!-- <tr class="text-center">
-                            <th colspan="9" align="center">
-                              <span class="text-center">{{language.input}}</span>
-                            </th>
-                          </tr> -->
-                          <tr>
-                            <th width="3%">{{language.seq_row_no}}</th>
-                            <th width="5%">{{language.operator}}</th>
-                            <th width="4%">{{language.type}}</th>
-                            <th width="5%">{{language.bracket}}</th>
-                            <th width="10%">{{language.model_feature}}</th>
-                            <th width="4%">{{language.condition}}</th>
-                            <th width="4%">{{language.operand_1}}</th>
-                            <th width="4%">{{language.operand_2}}</th>
-                            <th width="2%">
-                              <i class="fa fa-times"></i>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let row of rule_sequence_data">
-                            <td>
-                              <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr"
-                                value={{row.seq_count}}/> </td>
-                            <td>
-                              <select class="form-control  form-control-sm mt3" #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )" >
-                                <option *ngFor="let v of commonData.operator_type" [value]="v.value" [selected]="row.operator==v.value" > {{v.Name}}</option>
-                              </select>
-                            </td>
-                            <td>
-                              <select class="form-control  form-control-sm mt3" #selected_type (change)="on_input_change(row.rowindex, 'type', selected_type.value )">
-                                <option *ngFor="let v of commonData.rule_seq_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
-                              </select>
-                            </td>
-          
-                            <td>
-                              <select class="form-control  form-control-sm mt3" #selected_bracket (change)="on_input_change(row.rowindex, 'braces', selected_bracket.value )">
-                                <option *ngFor="let v of commonData.bracket_list " [value]="v.value" [selected]="row.braces==v.value"> {{v.value}}</option>
-                              </select>
-                            </td>
-                            <td>
-                              <div class="input-group">
-                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex)"
-                                  value={{row.type_value_code}} #type_value_code>
-          
-                                <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
-                                  value={{row.type_value}} #type_value />
-                                <div class="input-group-append">
-                                  <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
-                                    <i class="fa fa-bars"></i>
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <select class="form-control  form-control-sm mt3" #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
-                                <option value=""></option>
-                                <option *ngFor="let v of commonData.express_conditions " [value]="v.value" [selected]="row.condition==v.value"> {{v.value}}</option>
-                              </select>
-                            </td>
-                            <td>
-                              <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}" (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )"/> </td>
-                            <td>
-                              <input type="text" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}" (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )"/> </td>
-                            <td>
-                              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
-                                <i class="fa fa-times"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tfoot class="thead-dark">
-                          <tr class='text-center'>
-                            <th colspan="9" align="center">
-                              {{language.expression}} &nbsp; &nbsp; <a href="javascript:;" (click)="genearate_expression()"><i class="fa fa-arrow-down"></i></a>
-                            </th>
-                          </tr>
-                          <tr class='text-center' style="color:white;">
-                            <td colspan="9" align="center" style="color:black;">
-                              {{generated_expression_value}}
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-          
-                  <!-- table section end -->
-                  <hr>
-                  <div class="form-group clearfix">
-                    <div class="col-md-8 pl-0">
-                      <div class="pull-left">
-                        <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-info  mr-10">
-                          <i class="fa fa-check-circle"></i> {{language.add_rule}}
-                        </button>
-                          <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-info  mr-10">
-                            <i class="fa fa-pencil"></i> {{language.update_rule}}
-                          </button>
-                        <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
-                          <i class="fa fa-times"></i> {{language.close}}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+        <div class="col-md-6">
+          <div class="form-group row clearfix">
+            <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_to}}</label>
+            <div class="col-sm-8 input-group">
+              <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3"
+                name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}"
+                [(ngModel)]="rule_wb_data.effective_to">
+              <div class="input-group-append">
+                <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
+                  <i class="fa fa-calendar"></i>
+                </span>
               </div>
-              <!-- top table end -->
-
-              <!-- bottom table start -->
-              <div class="expression_box">
-                <hr>
-                <div class="col-sm-12  pl-0 pr-0">
-                  <div class="table-responsive table-responsive-sm">
-                    <div class="form-group col-md-4 clearfix bg-primary text-white">
-                      <div class="">{{language.expression}}</div>
-                    </div>
-                    <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
-                      <thead class="thead-dark">
-                        <!-- <tr class="text-center">
-                          <th colspan="9" align="center">
-                            <span class="text-center">{{language.expression}}</span>
-                          </th>
-                        </tr> -->
-                        <tr>
-                          <th width="4%">{{language.seq_row_no}}</th>
-                          <th width="80%">{{language.expression}}</th>
-                          <th width="9%">{{language.action}}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let row of rule_expression_data">
-                          <td>
-                            <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> 
-                          </td>
-                          
-                            <td class="text-center" align="center">
-                              {{row.expression}}
-                            </td>
-                            <td>
-                              <button type="button" class="btn btn-sm mr-10 btn-info" (click)="edit_expression(row, row.rowindex)"
-                                title="{{language.edit}}">
-                                <i class="fa fa-edit fa-fw"></i>
-                              </button>
-                              <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="delete_expression(row.rowindex)" title="{{language.remove}}">
-                                <i class="fa fa-trash-o fa-fw"></i>
-                              </button>
-                            </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!-- bottom table end -->
-            </div>
-
-            <div class="col-md-4 p-0">
-                <div class="output_window_box" *ngIf="rule_feature_data.length">
-                    <hr>
-                    <div class="col-sm-12 pl-0 pr-0">
-                        <div class="form-group col-md-6 clearfix bg-primary text-white">
-                            <div class="">{{language.output}}</div>
-                          </div>
-                      <div class="table-responsive table-responsive-sm">
-                        
-                        <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
-                          <thead class="thead-dark">
-                            <!-- <tr>
-                              <th colspan="10" class="text-center" align="center">
-                                <span class="text-center">{{language.output}}</span>
-                              </th>
-                            </tr> -->
-                            <tr>
-                              <th style="width:50px">
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                  <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
-                                  <label class="custom-control-label" for="check_all"></label> -->
-                                    <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)"  class="custom-control-input" [(checked)]=selectall
-                                    value="1" >
-                                    <label class="custom-control-label" for="check_all"></label>
-                                </div>
-              
-                              </th>
-                              <th style="width:50px">{{language.feature}}</th>
-                              <th style="width:150px">{{language.item}}</th>
-                              <th style="width:150px">{{language.value}}</th>
-                              <th style="width:150px">{{language.uom}}</th>
-                              <th style="width:50px">{{language.quantity}}</th>
-                              <th style="width:100px">{{language.edit_quantity}}</th>
-                              <th style="width:50px">{{language.price_source}}</th>
-                              <th style="width:100px">{{language.edit_price}}</th>
-                              <th style="width:50px">{{language.default}}</th>
-              
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let row of rule_feature_data">
-              
-                              <td>
-                                <!-- <div class="custom-control custom-checkbox custom-control-inline">
-                                  <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
-                                  <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
-                                </div> -->
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                  <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}
-                                  [(checked)]=row.check_child>
-                                  <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
-                                </div>
-                              </td>
-                              <td>
-                                <input type="hidden"  [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}} #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)"/>
-
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)"/>                              </td>
-                              <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" id="feature_item" name="feature_item" #featureitem value={{row.item}} (change)="output_change_event('feature_item',featureitem.value,row.rowindex)"/>
-                              </td>
-                              <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" id="feature_value" name="feature_value" #featurevalue value={{row.value}} (change)="output_change_event('feature_value',featurevalue.value,row.rowindex)"/>
-                              </td>
-                              <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" #uom id="uom" name="uom" value={{row.uom}} (change)="output_change_event('uom',uom.value,row.rowindex)"/>
-                              </td>
-                              <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3 pull-right" id="quantity" name="quantity" value={{row.quantity}} #quantity (change)="output_change_event('quantity',quantity.value,row.rowindex)"/>
-                              </td>
-                              <td>
-                                <select class="form-control  form-control-sm mt3" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
-                                  <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_quantity==v.value" > {{v.Name}}</option>
-                                </select>
-                              </td>
-                              <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3 pull-right" #price_source id="price_soure" name="price_soure" value={{row.price_source}} (change)="output_change_event('price_soure',price_source.value,row.rowindex)"/>
-                              </td>
-                              <td>
-                                <select class="form-control  form-control-sm mt3" id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
-                                  <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_price==v.value" > {{v.Name}}</option>
-                                </select>
-                              </td>
-                              <td>
-                                <div class="custom-control custom-checkbox custom-control-inline">
-                                  <input type="checkbox" #default class="custom-control-input" id="is_default_{{row.rowindex}}"  name="is_default"
-                                    value={{row.is_default}} (change)="output_change_event('default',default.checked,row.rowindex)">
-                                  <label class="custom-control-label" for="is_default_{{row.rowindex}}"></label>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-
-          </div>
-        </div> 
-      </div>     
-
-
-  
-      
-  
-      
-  
-      <div class="card-footer small text-muted">
-        <div class="footer-buttons">
-          <div class="row">
-            <div class="col-md-8">
-              <div class="pull-left">
-                <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
-                  <i class="fa fa-save"></i> {{language.save}}</button>
-                <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
-                  <i class="fa fa-save"></i> {{language.update}}</button>
-  
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="pull-right">
-                <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                  <i class="fa fa-times fa-fw"></i>
-                  <span>{{language.cancel}}</span>
-                </button>
-  
-                <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
-                  <i class="fa fa-trash fa-fw"></i>
-                  <span>{{language.delete}}</span>
-                </button>
-                <!-- only view when edit mode -->
-  
-              </div>
+              <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
             </div>
           </div>
         </div>
       </div>
 
-    </form>
-  </div>
-  
-  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+      <div class="form-group row clearfix" style=" margin-top: -9px; ">
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.discontinued}}</label>
+        <div class="col-sm-4 mt-3px">
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" id="yes" name="discontinued" [(ngModel)]="rule_wb_data.discontinued" class="custom-control-input"
+              value="1">
+            <label class="custom-control-label" for="yes"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row clearfix">
+        <label class="col-sm-2 col-form-label" for="feature_id">{{language.applicable_for}}</label>
+
+        <div class="col-sm-4 input-group">
+          <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)="onFeatureIdChange()"
+            placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id">
+          <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code"
+            placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange()">
+          <div class="input-group-append">
+            <span class="input-group-text cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
+              <i class="fa fa-bars"></i>
+            </span>
+          </div>
+
+          <div class="col-sm-1" *ngIf="showOutputBtn">
+            <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}}" style="display:none;" (click)="hide_show_output()"
+              #button>
+              <i class="fa fa-eye"></i> {{showoutput_btn_text}}
+            </a>
+          </div>
+          <div class="col-sm-1" *ngIf="show_add_sequence_btn">
+            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()">
+              <i class="fa fa-plus"></i> {{language.add_seq}}
+            </a>
+          </div>
+          <div class="col-sm-1" *ngIf="show_sequence">
+            <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
+              <i class="fa fa-plus"></i> {{language.add_row}}
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 pl-0">
+            <!-- top table start -->
+            <div class="sequence_box" *ngIf="show_sequence">
+             
+              <div class="col-sm-12 pl-0 pr-0">
+                <div class="table-responsive table-responsive-sm">
+                  <div class="form-group col-md-2 clearfix bg-primary text-white">
+                    <div class="">{{language.input}}</div>
+                  </div>
+                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                    <thead class="thead-dark">
+                      <!-- <tr class="text-center">
+                            <th colspan="9" align="center">
+                              <span class="text-center">{{language.input}}</span>
+                            </th>
+                          </tr> -->
+                      <tr>
+                        <th width="3%">{{language.seq_row_no}}</th>
+                        <th width="5%">{{language.operator}}</th>
+                        <th width="4%">{{language.type}}</th>
+                        <th width="5%">{{language.bracket}}</th>
+                        <th width="10%">{{language.model_feature}}</th>
+                        <th width="4%">{{language.condition}}</th>
+                        <th width="4%">{{language.operand_1}}</th>
+                        <th width="4%">{{language.operand_2}}</th>
+                        <th width="2%">
+                          <i class="fa fa-times"></i>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of rule_sequence_data">
+                        <td>
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> </td>
+                        <td>
+                          <select class="form-control  form-control-sm mt3" #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )">
+                            <option *ngFor="let v of commonData.operator_type" [value]="v.value" [selected]="row.operator==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select class="form-control  form-control-sm mt3" #selected_type (change)="on_input_change(row.rowindex, 'type', selected_type.value )">
+                            <option *ngFor="let v of commonData.rule_seq_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+
+                        <td>
+                          <select class="form-control  form-control-sm mt3" #selected_bracket (change)="on_input_change(row.rowindex, 'braces', selected_bracket.value )">
+                            <option *ngFor="let v of commonData.bracket_list " [value]="v.value" [selected]="row.braces==v.value"> {{v.value}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="input-group">
+                            <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                              value={{row.type_value_code}} #type_value_code>
+
+                            <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                              value={{row.type_value}} #type_value />
+                            <div class="input-group-append">
+                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
+                                <i class="fa fa-bars"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <select class="form-control  form-control-sm mt3" #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
+                            <option value=""></option>
+                            <option *ngFor="let v of commonData.express_conditions " [value]="v.value" [selected]="row.condition==v.value"> {{v.value}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}"
+                            (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )" /> </td>
+                        <td>
+                          <input type="text" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}"
+                            (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )" /> </td>
+                        <td>
+                          <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot class="thead-dark">
+                      <tr class='text-center'>
+                        <th colspan="9" align="center">
+                          {{language.expression}} &nbsp; &nbsp;
+                          <a href="javascript:;" (click)="genearate_expression()">
+                            <i class="fa fa-arrow-down"></i>
+                          </a>
+                        </th>
+                      </tr>
+                      <tr class='text-center' style="color:white;">
+                        <td colspan="9" align="center" style="color:black;">
+                          {{generated_expression_value}}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+
+              <!-- table section end -->
+              <hr>
+              <div class="form-group clearfix">
+                <div class="col-md-8 pl-0">
+                  <div class="pull-left">
+                    <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+                      <i class="fa fa-check-circle"></i> {{language.add_rule}}
+                    </button>
+                    <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+                      <i class="fa fa-pencil"></i> {{language.update_rule}}
+                    </button>
+                    <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
+                      <i class="fa fa-times"></i> {{language.close}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- top table end -->
+
+            <!-- bottom table start -->
+            <div class="expression_box">
+            
+              <div class="col-sm-12  pl-0 pr-0">
+                <div class="table-responsive table-responsive-sm">
+                  <div class="form-group col-md-4 clearfix bg-primary text-white">
+                    <div class="">{{language.expression}}</div>
+                  </div>
+                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                    <thead class="thead-dark">
+                      <!-- <tr class="text-center">
+                          <th colspan="9" align="center">
+                            <span class="text-center">{{language.expression}}</span>
+                          </th>
+                        </tr> -->
+                      <tr>
+                        <th width="4%">{{language.seq_row_no}}</th>
+                        <th width="80%">{{language.expression}}</th>
+                        <th width="9%">{{language.action}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of rule_expression_data">
+                        <td>
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/>
+                        </td>
+
+                        <td class="text-center" align="center">
+                          {{row.expression}}
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm mr-10 btn-info" (click)="edit_expression(row, row.rowindex)" title="{{language.edit}}">
+                            <i class="fa fa-edit fa-fw"></i>
+                          </button>
+                          <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="delete_expression(row.rowindex)" title="{{language.remove}}">
+                            <i class="fa fa-trash-o fa-fw"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- bottom table end -->
+          </div>
+
+          <div class="col-md-4 p-0">
+            <div class="output_window_box" *ngIf="rule_feature_data.length">
+              <div class="col-sm-12 pl-0 pr-0">
+                <div class="form-group row col-md-12 clearfix">
+                  <div class="col-sm-4 bg-primary text-white">{{language.output}}</div>
+                  <label class="col-sm-4 text-right col-form-label" for="featureDisplay">{{language.Excluded}}</label>
+                  <div class="col-sm-2 text-right mt-3px">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" id="yess" name="Excluded" [(ngModel)]="rule_wb_data.Excluded" class="custom-control-input" value="1">
+                      <label class="custom-control-label" for="yess"></label>
+                    </div>
+                  </div>
+
+                </div>
+                <!-- <div class="form-group row clearfix">
+                  
+                </div> -->
+                <hr>
+                <div class="table-responsive table-responsive-sm">
+
+                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                    <thead class="thead-dark">
+                      <!-- <tr>
+                              <th colspan="10" class="text-center" align="center">
+                                <span class="text-center">{{language.output}}</span>
+                              </th>
+                            </tr> -->
+                      <tr>
+                        <th style="width:50px">
+                          <div class="custom-control custom-checkbox custom-control-inline">
+                            <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
+                                  <label class="custom-control-label" for="check_all"></label> -->
+                            <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)" class="custom-control-input"
+                              [(checked)]=selectall value="1">
+                            <label class="custom-control-label" for="check_all"></label>
+                          </div>
+
+                        </th>
+                        <th style="width:50px">{{language.feature}}</th>
+                        <th style="width:150px">{{language.item}}</th>
+                        <th style="width:150px">{{language.value}}</th>
+                        <th style="width:150px">{{language.uom}}</th>
+                        <th style="width:50px">{{language.quantity}}</th>
+                        <th style="width:100px">{{language.edit_quantity}}</th>
+                        <th style="width:50px">{{language.price_source}}</th>
+                        <th style="width:100px">{{language.edit_price}}</th>
+                        <th style="width:50px">{{language.default}}</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of rule_feature_data">
+
+                        <td>
+                          <!-- <div class="custom-control custom-checkbox custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
+                                  <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
+                                </div> -->
+                          <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)"
+                              value={{row.check_child}} [(checked)]=row.check_child>
+                            <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
+                          </div>
+                        </td>
+                        <td>
+                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}}
+                            #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)" />
+
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}}
+                            #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)" /> </td>
+                        <td>
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_item" name="feature_item" #featureitem
+                            value={{row.item}} (change)="output_change_event('feature_item',featureitem.value,row.rowindex)"
+                          />
+                        </td>
+                        <td>
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_value" name="feature_value" #featurevalue
+                            value={{row.value}} (change)="output_change_event('feature_value',featurevalue.value,row.rowindex)"
+                          />
+                        </td>
+                        <td>
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" #uom id="uom" name="uom" value={{row.uom}}
+                            (change)="output_change_event('uom',uom.value,row.rowindex)" />
+                        </td>
+                        <td>
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" id="quantity" name="quantity" value={{row.quantity}}
+                            #quantity (change)="output_change_event('quantity',quantity.value,row.rowindex)" />
+                        </td>
+                        <td>
+                          <select class="form-control  form-control-sm mt3" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
+                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_quantity==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" #price_source id="price_soure"
+                            name="price_soure" value={{row.price_source}} (change)="output_change_event('price_soure',price_source.value,row.rowindex)"
+                          />
+                        </td>
+                        <td>
+                          <select class="form-control  form-control-sm mt3" id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
+                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_price==v.value"> {{v.Name}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="custom-control custom-checkbox custom-control-inline">
+                            <input type="checkbox" #default class="custom-control-input" id="is_default_{{row.rowindex}}" name="is_default" value={{row.is_default}}
+                              (change)="output_change_event('default',default.checked,row.rowindex)">
+                            <label class="custom-control-label" for="is_default_{{row.rowindex}}"></label>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="card-footer small text-muted">
+      <div class="footer-buttons">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="pull-left">
+              <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                <i class="fa fa-save"></i> {{language.save}}</button>
+              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+                <i class="fa fa-save"></i> {{language.update}}</button>
+
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="pull-right">
+              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                <i class="fa fa-times fa-fw"></i>
+                <span>{{language.cancel}}</span>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+                <i class="fa fa-trash fa-fw"></i>
+                <span>{{language.delete}}</span>
+              </button>
+              <!-- only view when edit mode -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
