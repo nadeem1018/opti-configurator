@@ -8,6 +8,7 @@ import { ActivatedRoute } from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as XLSX from 'ts-xlsx';
 import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
+import * as $ from 'jquery';
 
 
 
@@ -48,6 +49,7 @@ export class ModelComponent implements OnInit {
    public selectedFile:string="";
    public model_name_label =  this.language.Model_Name;
    public model_desc_label =  this.language.Model_Desc;
+   public model_code_label = this.language.model_code_label;
    public code_disabled= "false";
    public GetItemData: any = [];
    public showImageBlock: boolean = false;
@@ -55,8 +57,13 @@ export class ModelComponent implements OnInit {
    public dialog_params: any = [];
    public show_dialog: boolean = false;
    public selectedImage = "";
+   public ModelImage:string="";
+   public isRefCodeDisabled = true;
+   public isItemCodeDisabled = true;
+   public isItemlookupDisabled = true;
+   public isReflookupDisabled = true;
+  
 
-   
   ngOnInit() {
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
@@ -66,6 +73,8 @@ export class ModelComponent implements OnInit {
     this.codekey ="";
     this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
     this.showImageBlock = false;
+  
+
     if(this.codekey === "" || this.codekey === null){
       this.button="save";
       this.isUpdateButtonVisible = false;
@@ -74,6 +83,14 @@ export class ModelComponent implements OnInit {
       this.featureBom.Accessory = 'N';
       this.featureBom.Status= "Active";
       this.code_disabled= "false";
+      this.featureBom.type = "Feature";
+      if(this.featureBom.type == "Feature"){
+        this.model_code_label = this.language.model_FeatureCode;
+        this.model_name_label=this.language.Model_FeatureName;
+        this.model_desc_label= this.language.Model_FeatureDesc;
+        this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
+      }      
       this._el.nativeElement.focus();
     }
     else{
@@ -83,7 +100,7 @@ export class ModelComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.section_title = this.language.edit;
       this.code_disabled= "true";
-      this.showImageBlock=true;
+      
       
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
@@ -97,19 +114,39 @@ this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
+if(data[0].OPTM_PHOTO!== undefined && data[0].OPTM_PHOTO!== "" && data[0].OPTM_PHOTO!== 0){
+  this.featureBom.Image=data[0].OPTM_PHOTO
+  this.ModelImage=this.commonData.get_current_url() + data[0].OPTM_PHOTO
+
+}
+
 this.featureBom.Image=data[0].OPTM_PHOTO
+if(this.featureBom.Image==""||this.featureBom.Image==null||this.featureBom.Image==undefined){
+  this.showImageBlock=false;
+}
 console.log(data[0].OPTM_TYPE);
 if(data[0].OPTM_TYPE == "Feature"){
+  this.model_code_label = this.language.model_FeatureCode;
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
+  this.isRefCodeDisabled = true;
+  this.isItemCodeDisabled = true;
+  this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
 }else{
+  this.model_code_label = this.language.model_ModelCode;
   this.model_name_label=this.language.Model_ModelName;
   this.model_desc_label= this.language.Model_ModelDesc;
+  this.isRefCodeDisabled = false;
+  this.isItemCodeDisabled = false;
+  this.isItemlookupDisabled = false;
+        this.isReflookupDisabled = false;
 }
         })
     }
   }
   ngAfterViewInit() {
+ 
     if(this.codekey === "" || this.codekey === null){
     this._el.nativeElement.focus();
     }
@@ -120,11 +157,21 @@ if(data[0].OPTM_TYPE == "Feature"){
 
   onTypeLookupChange(){
 if(this.featureBom.type == "Feature"){
+  this.model_code_label = this.language.model_FeatureCode;
   this.model_name_label=this.language.Model_FeatureName;
   this.model_desc_label= this.language.Model_FeatureDesc;
+  this.isRefCodeDisabled = true;
+  this.isItemCodeDisabled = true;
+  this.isItemlookupDisabled = true;
+        this.isReflookupDisabled = true;
 }else{
+  this.model_code_label = this.language.model_ModelCode;
   this.model_name_label=this.language.Model_ModelName;
   this.model_desc_label= this.language.Model_ModelDesc;
+  this.isRefCodeDisabled = false;
+  this.isItemCodeDisabled = false;
+  this.isItemlookupDisabled = false;
+        this.isReflookupDisabled = false;
 }
 
   }
@@ -193,15 +240,21 @@ if (validateStatus == true){
     }
 
     this.fms.UploadFeature(formData).subscribe(data => {
-      if (data.body === "False") {
-        this.showImageBlock=false;
-        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
-      }
-      else {
-        this.showImageBlock=true;
-        this.featureBom.Image= data.body
-        //this.featureBom.Image= "/assets/images/bg.jpg"
-      }
+      if(data!==undefined && data!=""){
+        if (data.body === "False") {
+         this.showImageBlock=false;
+         this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+       }
+       else {
+       
+         if(data.body!= "" && data.body!= undefined){
+
+           this.featureBom.Image= data.body
+           this.ModelImage= this.commonData.get_current_url() + data.body
+           this.showImageBlock=true;
+         }
+       }
+     }
     })
   }
 

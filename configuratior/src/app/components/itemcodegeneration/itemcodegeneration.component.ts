@@ -52,6 +52,7 @@ export class ItemcodegenerationComponent implements OnInit {
   public isDeletionAllowed:boolean
   public isFullPermitted:boolean
   public PermissionStr:any = [];
+  public isOperationDisable:boolean=true;
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -91,6 +92,12 @@ export class ItemcodegenerationComponent implements OnInit {
           this.finalstring = "";
 
           for (let i = 0; i < data.length; ++i) {
+            if(data[i].OPTM_TYPE==1){
+              this.isOperationDisable=true
+            }
+            else{
+              this.isOperationDisable=false
+            }
             this.itemcodetable.push({
               rowindex: data[i].OPTM_LINEID,
               string: data[i].OPTM_CODESTRING,
@@ -99,7 +106,8 @@ export class ItemcodegenerationComponent implements OnInit {
               delete: "",
               CompanyDBId: this.companyName,
               codekey: this.codekey,
-              CreatedUser: this.username
+              CreatedUser: this.username,
+              isOperationDisable:this.isOperationDisable
              
             })
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING

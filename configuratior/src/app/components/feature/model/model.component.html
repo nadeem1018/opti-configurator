@@ -28,9 +28,9 @@
 
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="feature">
-                    {{language.Model_Code}}</label>
+                    {{model_code_label}}</label>
                 <div class="col-sm-6">
-                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{language.Model_Code}}"
+                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
                         [(ngModel)]="featureBom.Code" #inputBox>
                 </div>
             </div>
@@ -75,8 +75,9 @@
                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"  placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref">
-                    <div class="input-group-append">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
+                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" [disabled]="isRefCodeDisabled">
+                    <div class="input-group-append" [hidden] ="isReflookupDisabled">
                         <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
@@ -102,10 +103,9 @@
                     <label class="col-sm-4 col-form-label" for="image">{{language.image}}</label>
                     <div class="col-sm-4">
                             <div class="row image_data" >
-                        <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
                         <div class=" col-md-4 col-sm-4">
-                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                                <img src={{featureBom.Image}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(ModelImage)">
+                                <img src={{ModelImage}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
                             </a>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
                 <div class="col-sm-6">
-                    <input type="file" class="form-control  form-control-sm mt3-file" id="image" name="imagename" #image (change)="uploadimagefile(image.files)"  >
+                   <div class="btn btn-outline-secondary btn-file btn-sm"> {{language.choose_image}} <input type="file" class="form-control  form-control-sm mt3-file" id="image" name="imagename" #image (change)="uploadimagefile(image.files)"  ></div> 
                 </div>
             </div>
             <div class="form-group row clearfix">

@@ -86,6 +86,7 @@
     "UserNameRequired": "Username required",
     "CompanyRequired": "Select Company",
     "DeleteConfimation": "Do you want to delete?",
+    "choose_image":"Choose Image",
     "ModelBom": "Model",
     "Model_Bom": "Model BOM",
     "Bom_FeatureId": "Feature ID",
@@ -121,6 +122,7 @@
     "associated_BOM":"Associated BOM",
     "on_associated_bom":"On Associated BOMs",
     "associated_modal_bom":"Associated Modal BOMs",
+    "no_assocaited_bom":"No BOMs are associated to this feature id",
     "description":"Description",
     "Name":"Name",
     "feature_image":"Feature Image",
@@ -147,6 +149,7 @@
     "Refrence" :"Cannot delete. Reference exists.",
     "InvalidFeatureId": "Invalid Feature Id",
     "InvalidModelId": "Invalid Model Id",
+    "cyclic_ref_restriction": "Cyclic reference not allowed",
     "rule_id" : "Rule ID",
     "rule_code" : "Rule Code",
     "effective_from":"Effective From",
@@ -233,6 +236,11 @@
     "accessories":"Accessories",
     "price_extn":"Price Extn.",
     "discount_per":"Discount %",
+    "Excluded":"Excluded",
+    "conflict": "Rules are conflicting",
+    "model_code_label": "Model/Feature Code",
+    "model_FeatureCode":"Feature Code",
+    "model_ModelCode": "Model Code",
     "order_type":"Order Type",
    "checkbox_here":"checkbox_here",
     "hash":"#",
@@ -256,7 +264,8 @@
     "Between":"Between",
     "In":"In",
     "delivery_date":"Delivery Date",
-    "serial":"Sl#" 
+    "serial":"Sl#" ,
+    "ReadyToUse":"Ready To Use"
 
 
 

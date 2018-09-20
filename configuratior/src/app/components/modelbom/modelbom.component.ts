@@ -93,10 +93,18 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
             this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
             this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
-
+            this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
             if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
               this.showheaderImageBlock = true;
-              this.header_image_data = this.modelbom_data.image_path
+              this.header_image_data =this.commonData.get_current_url() + this.modelbom_data.image_path
+            }
+
+
+            if (this.modelbom_data.is_ready_to_use == "Y") {
+              this.modelbom_data.is_ready_to_use = true;
+            }
+            else {
+              this.modelbom_data.is_ready_to_use = false;
             }
 
 
@@ -125,6 +133,26 @@ export class ModelbomComponent implements OnInit {
               if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined) {
                 data.ModelDetail[i].OPTM_READYTOUSE = 'N'
               }
+              if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
+                data.ModelDetail[i].OPTM_PROPOGATEQTY = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_PROPOGATEQTY = false
+              }
+              if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
+                data.ModelDetail[i].OPTM_UNIQUEIDNT = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_UNIQUEIDNT = false
+              }
+              if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
+                data.ModelDetail[i].OPTM_MANDATORY = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_MANDATORY = false
+              }
+
+
 
               this.modelbom_data.push({
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
@@ -157,7 +185,7 @@ export class ModelbomComponent implements OnInit {
           }
 
 
-
+          console.log(this.modelbom_data)
 
 
         }
@@ -303,6 +331,7 @@ export class ModelbomComponent implements OnInit {
     }
     else {
       // this.lookupfor = 'Item_Detail_lookup';
+    
       this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
     }
 
@@ -429,7 +458,10 @@ export class ModelbomComponent implements OnInit {
       this.getModelFeatureDetails($event[0], "Header", 0);
     }
     else if (this.lookupfor == 'ModelBom_Detail_lookup') {
-      this.getModelDetails($event[0], "Header", 0);
+      //On choosing value from lookup we will chk its cyclic dependency
+       //First we will check the conflicts
+       this.checkModelAlreadyAddedinParent($event[0],this.modelbom_data.modal_id, this.currentrowindex - 1,"lookup");
+      
     }
     else if (this.lookupfor == 'Price_lookup') {
       this.getPriceDetails($event[0], "Header", this.currentrowindex);
@@ -439,8 +471,8 @@ export class ModelbomComponent implements OnInit {
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.serviceData = []
-      this.getItemDetails($event[0]);
     }
+      this.getItemDetails($event[0]);
 
 
   }
@@ -464,10 +496,10 @@ export class ModelbomComponent implements OnInit {
             if (this.lookupfor == 'ModelBom_lookup') {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-              this.modelbom_data.image_path = data[0].OPTM_PHOTO;
-              if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
-                this.header_image_data = this.modelbom_data.image_path;
-                this.showheaderImageBlock = true;
+              this.modelbom_data.image_path=data[0].OPTM_PHOTO;
+              if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
+                this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path;
+                this.showheaderImageBlock=true;
               }
             }
             else {
@@ -562,20 +594,9 @@ export class ModelbomComponent implements OnInit {
             })
         }
         else {
-          this.service.onModelIdChange(this.modelbom_data[i].type_value).subscribe(
-            data => {
-
-              if (data === "False") {
-                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.modelbom_data[i].type_value = "";
-                this.modelbom_data[i].type_value_code = "";
-                return;
-              }
-              else {
-                this.lookupfor = "";
-                this.getModelDetails(this.modelbom_data.modal_id, "Header", i);
-              }
-            })
+           //First we will check the conflicts
+           this.checkModelAlreadyAddedinParent(value,this.modelbom_data[i].ModelId, i,"change");
+        
         }
       }
     }
@@ -711,8 +732,17 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-
-
+  on_isready_change(value, rowindex) {
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if (value.checked == true) {
+          this.modelbom_data[i].ReadyToUse = "Y"
+        }
+        else {
+          this.modelbom_data[i].ReadyToUse = "N"
+        }
+      }
+    }
+  
 
 
   onSave() {
@@ -724,19 +754,19 @@ export class ModelbomComponent implements OnInit {
         if (this.modelbom_data[i].unique_identifer == false) {
           this.modelbom_data[i].unique_identifer = "N"
         }
-        else if (this.modelbom_data[i].unique_identifer == true) {
+        else {
           this.modelbom_data[i].unique_identifer = "Y"
         }
-        else if (this.modelbom_data[i].mandatory == false) {
+        if (this.modelbom_data[i].mandatory == false) {
           this.modelbom_data[i].mandatory = "N"
         }
-        else if (this.modelbom_data[i].mandatory == true) {
+        else {
           this.modelbom_data[i].mandatory = "Y"
         }
-        else if (this.modelbom_data[i].propagate_qty == false) {
+        if (this.modelbom_data[i].propagate_qty == false) {
           this.modelbom_data[i].propagate_qty = "N"
         }
-        else if (this.modelbom_data[i].propagate_qty == true) {
+        else {
           this.modelbom_data[i].propagate_qty = "Y"
         }
 
@@ -841,7 +871,7 @@ export class ModelbomComponent implements OnInit {
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
 
-      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id).subscribe(
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.description).subscribe(
         data => {
           if (data != null || data != undefined) {
             this.serviceData = data;
@@ -866,7 +896,24 @@ export class ModelbomComponent implements OnInit {
 
 
   onVerifyOutput() {
+    let objDataset: any= {};
+    objDataset.ModelData =[];
+    objDataset.RuleData =[];
+    objDataset.ModelData.push({
+      CompanyDBId: this.companyName,
+      ModelId:this.modelbom_data.modal_id
+  });
+    objDataset.RuleData = this.rule_data;
 
+
+    this.service.onVerifyOutput(objDataset).subscribe(
+      data => {
+        console.log(data);
+      if(data == "Rules Conflict"){
+        this.toastr.error('',this.language.conflict, this.commonData.toast_config);
+        return;
+        }
+      })
   }
 
 
@@ -908,6 +955,59 @@ export class ModelbomComponent implements OnInit {
       });
   }
 
+  getModelItemDetails(rowIndex){
+    this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value).subscribe(
+      data => {
+
+        if (data === "False") {
+          this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          this.modelbom_data[rowIndex].type_value = "";
+          this.modelbom_data[rowIndex].type_value_code = "";
+          return;
+        }
+        else {
+          this.lookupfor = "";
+          this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
+        }
+      })
+  }
+
+  checkModelAlreadyAddedinParent(enteredModelID,modelbom_type_value, rowindex,fromEvent){
+    this.service.CheckModelAlreadyAddedinParent(enteredModelID,this.modelbom_data.modal_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          //If exists then will restrict user 
+          if(data == "Exist"){
+            this.toastr.error('',  this.language.cyclic_ref_restriction, this.commonData.toast_config);
+            this.modelbom_data[rowindex].type_value = "";
+            this.modelbom_data[rowindex].display_name = "";
+            
+            return;
+          }
+          else if(data == "True"){
+            if(fromEvent == "lookup"){
+              this.getModelDetails(enteredModelID, "Header", 0);
+            }
+            else if(fromEvent == "change")
+            {
+              this.getModelItemDetails(rowindex);
+            }
+            
+          }
+        }
+          else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            console.log("Failed when checking hierac check for feature ID")
+            return;
+        }
+      },
+      error=> {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+   }
+   
 }
 
 

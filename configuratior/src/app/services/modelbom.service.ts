@@ -100,9 +100,9 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/DeleteModelBOMFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
 
-  GetDataForExplodeViewForModelBOM(CompanyDBID,modelID): Observable<any> {
+  GetDataForExplodeViewForModelBOM(CompanyDBID,modelID,modalDesc): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: CompanyDBID,ModelID: modelID }]) }
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: CompanyDBID,ModelID: modelID ,ModelDisplayName: modalDesc}]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataForExplodeViewForModelBOM", jObject, this.common_params.httpOptions);
   }
@@ -135,6 +135,20 @@ export class ModelbomService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemCode:id}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidItemEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
+
+  CheckModelAlreadyAddedinParent(enteredModelID,parentModelID): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,parentModelID: parentModelID, enteredModelID: enteredModelID }]) }
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/CheckModelAlreadyAddedinParent", jObject, this.common_params.httpOptions);
+  }
+  onVerifyOutput(VerifyData): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject:any = { GetData: JSON.stringify( VerifyData) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/VerifyOutput", jObject, this.common_params.httpOptions);
   }
 
 }
