@@ -16,14 +16,14 @@
   <div class="col-md-9">
     <div class="card mb-3">
       <form>
-
         <div class="card-body">
           <div class="form-group row clearfix">
             <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.model}}</label>
-
             <div class="col-sm-4 input-group">
-              <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"
+              <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"
                 [disabled]="isModelIdEnable" id="featureNameId" placeholder="{{language.model}}" #Modelinputbox (change)="onModelIdChange()">
+              <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_code" name="featureCode"
+                [disabled]="isModelIdEnable" id="featureCodeId" placeholder="{{language.model}}" #Modelinputboxcode (change)="onModelIdChange()">
               <div class="input-group-append" [hidden]=ModelLookupBtnhide>
                 <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
                   <i class="fa fa-bars"></i>
@@ -49,7 +49,7 @@
 
           <div class="form-group row clearfix">
             <!-- <label class="col-sm-2 col-form-label"></label> -->
-            
+
           </div>
 
 
@@ -127,14 +127,18 @@
                     </td>
                     <td>
                       <div class="input-group">
-                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                        <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                           value={{row.type_value}} #type_value />
+
+                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                          value={{row.type_value_code}} #type_value_code />
                         <div class="input-group-append" [hidden]=row.hide>
                           <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_click(selectedvalue.value, row.rowindex)">
                             <i class="fa fa-bars"></i>
                           </span>
                         </div>
                       </div>
+
                     </td>
                     <td>
                       <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)"
@@ -192,7 +196,7 @@
             </div>
           </div>
 
-        <!--   <div class="form-group row clearfix" *ngIf="showImageBlock">
+          <!--   <div class="form-group row clearfix" *ngIf="showImageBlock">
             <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
             <div class="col-sm-4">
               <div class="row image_data">

@@ -40,7 +40,8 @@ export class ViewModelBomComponent implements OnInit {
 
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-    table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.Name, this.language.action];
+    table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.Name, this.language.description, this.language.action];
+    public table_hidden_elements = [false, true, false, false, false, false];  
     constructor(private router: Router,private service: ModelbomService ,private toastr: ToastrService) { }
 
     ngOnInit() {
@@ -66,7 +67,7 @@ export class ViewModelBomComponent implements OnInit {
             data => {
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
-                let pages: any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
+                let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
                     pages = 1;
                 }

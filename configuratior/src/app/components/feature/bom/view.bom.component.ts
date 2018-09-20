@@ -24,6 +24,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     search_key: any;
     //table_head_foot = ['Select','#', 'Feature ID', 'Display Name', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Bom_FeatureId, this.language.Bom_Displayname, this.language.action];
+    public table_hidden_elements = [false, true, false, false, false];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;
@@ -69,9 +70,10 @@ export class ViewFeatureBOMComponent implements OnInit {
     service_call(page_number, search) {
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
+                
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
-                let pages: any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
+                let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
                     pages = 1;
                 }

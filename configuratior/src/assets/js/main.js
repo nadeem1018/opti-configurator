@@ -84,7 +84,7 @@ function calculate_progress(progress_block) {
   $(document).on("click", ".row_select, .row_select td",  function(){
     var input_id = $(this).parents("tbody.lookup_table_body").attr("name");
     $("#"+input_id).trigger("keyup");
-    $("#lookup_modal").modal("hide");
+   //  $("#lookup_modal").modal("hide");
 
   });
   

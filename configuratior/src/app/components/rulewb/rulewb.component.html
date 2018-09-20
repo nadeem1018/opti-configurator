@@ -36,8 +36,8 @@
 
         <label class="col-sm-2 col-form-label" for="rule_description">{{language.description}}</label>
         <div class="col-sm-4">
-          <textarea type="text" rows="4" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
-            [(ngModel)]="rule_wb_data.description"></textarea>
+          <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+            [(ngModel)]="rule_wb_data.description">
         </div>
 
       </div>
@@ -47,14 +47,14 @@
           <div class="form-group row clearfix">
             <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_from}}</label>
             <div class="col-sm-8 input-group">
-              <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
+              <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]=""  [min]="min" class="form-control  form-control-sm mt3" name='datepicker'
                 type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from">
               <div class="input-group-append">
                 <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
                   <i class="fa fa-calendar"></i>
                 </span>
               </div>
-              <owl-date-time #dt12></owl-date-time>
+              <owl-date-time #dt12  [pickerType]="'calendar'" ></owl-date-time>
             </div>
           </div>
         </div>
@@ -62,20 +62,20 @@
           <div class="form-group row clearfix">
             <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.effective_to}}</label>
             <div class="col-sm-8 input-group">
-              <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
+              <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3" name='datepicker'
                 type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to">
               <div class="input-group-append">
                 <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
                   <i class="fa fa-calendar"></i>
                 </span>
               </div>
-              <owl-date-time #dt13></owl-date-time>
+              <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
 
-      <div class="form-group row clearfix">
+      <div class="form-group row clearfix" style=" margin-top: -9px; ">
         <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.discontinued}}</label>
         <div class="col-sm-4 mt-3px">
           <div class="custom-control custom-checkbox custom-control-inline">
@@ -90,16 +90,17 @@
         <label class="col-sm-2 col-form-label" for="feature_id">{{language.applicable_for}}</label>
 
         <div class="col-sm-4 input-group">
-          <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)= "onFeatureIdChange()" 
-            placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id">
+          <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)= "onFeatureIdChange()"  placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id">
+            <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code" placeholder="{{language.applicable_for}}" (change)= "onFeatureIdChange()">
           <div class="input-group-append">
             <span class="input-group-text cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
               <i class="fa fa-bars"></i>
             </span>
           </div>
+        
         </div>
         <div class="col-sm-1" *ngIf="showOutputBtn">
-          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="hide_show_output()" #button >
+          <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}}" style="display:none;" (click)="hide_show_output()" #button >
             <i class="fa fa-eye"></i> {{showoutput_btn_text}}
           </a>
         </div>
@@ -122,13 +123,14 @@
         <hr>
         <div class="col-sm-12">
           <div class="table-responsive table-responsive-sm">
+            <div class="form-group col-md-2 clearfix bg-primary text-white"><div class="">{{language.input}}</div></div>
             <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
               <thead class="thead-dark">
-                <tr class="text-center">
+                <!-- <tr class="text-center">
                   <th colspan="9" align="center">
                     <span class="text-center">{{language.input}}</span>
                   </th>
-                </tr>
+                </tr> -->
                 <tr>
                   <th width="3%">{{language.seq_row_no}}</th>
                   <th width="5%">{{language.operator}}</th>
@@ -166,7 +168,10 @@
                   </td>
                   <td>
                     <div class="input-group">
-                      <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                      <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                        value={{row.type_value_code}} #type_value_code>
+
+                      <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
                         value={{row.type_value}} #type_value />
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
@@ -233,13 +238,16 @@
       <hr>
       <div class="col-sm-12">
         <div class="table-responsive table-responsive-sm">
+          <div class="form-group col-md-2 clearfix bg-primary text-white">
+            <div class="">{{language.expression}}</div>
+          </div>
           <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
             <thead class="thead-dark">
-              <tr class="text-center">
+              <!-- <tr class="text-center">
                 <th colspan="9" align="center">
                   <span class="text-center">{{language.expression}}</span>
                 </th>
-              </tr>
+              </tr> -->
               <tr>
                 <th width="4%">{{language.seq_row_no}}</th>
                 <th width="80%">{{language.expression}}</th>
@@ -271,7 +279,7 @@
       </div>
     </div>
 
-    <div class="output_window_box" *ngIf="is_showoutput_visible">
+    <div class="output_window_box" *ngIf="rule_feature_data.length">
         <div class="form-group row clearfix">
             <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Excluded}}</label>
             <div class="col-sm-2 mt-3px">
@@ -285,13 +293,16 @@
       <hr>
       <div class="col-sm-12">
         <div class="table-responsive table-responsive-sm">
+          <div class="form-group col-md-2 clearfix bg-primary text-white">
+            <div class="">{{language.output}}</div>
+          </div>
           <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
             <thead class="thead-dark">
-              <tr>
+              <!-- <tr>
                 <th colspan="10" class="text-center" align="center">
                   <span class="text-center">{{language.output}}</span>
                 </th>
-              </tr>
+              </tr> -->
               <tr>
                 <th width="3%">
                   <div class="custom-control custom-checkbox custom-control-inline">

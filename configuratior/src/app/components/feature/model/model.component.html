@@ -62,10 +62,10 @@
                 <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName"
-                        placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName" [disabled]="isItemCodeDisabled">
-                    <div class="input-group-append" [hidden] ="isItemlookupDisabled">
-                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="onTemplateItemPress(true)">
+                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
+                    <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode">
+                    <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
                     </div>
@@ -96,17 +96,16 @@
                             <i class="fa fa-calendar"></i>
                         </span>
                     </div>
-                    <owl-date-time #dt12></owl-date-time>
+                    <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                 </div>
             </div>
             <div class="form-group row clearfix" *ngIf="showImageBlock"> 
                     <label class="col-sm-4 col-form-label" for="image">{{language.image}}</label>
                     <div class="col-sm-4">
                             <div class="row image_data" >
-                        <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
                         <div class=" col-md-4 col-sm-4">
-                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                                <img src={{featureBom.Image}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(ModelImage)">
+                                <img src={{ModelImage}} class="img-thumbnail rounded float-left mdelbom_image" alt="">
                             </a>
                         </div>
                     </div>

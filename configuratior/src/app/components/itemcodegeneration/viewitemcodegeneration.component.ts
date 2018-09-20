@@ -50,6 +50,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
 table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
+    public table_hidden_elements = [false, true, false, false, false];   
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
@@ -83,7 +84,7 @@ table_head_foot = [this.language.checkbox_here, this.language.hash, this.languag
                 dataset = JSON.parse(data);
                 console.log(dataset)
                 this.rows = dataset[0];
-                let pages: any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
+                let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
                     pages = 1;
                 }
