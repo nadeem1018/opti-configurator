@@ -95,7 +95,7 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
             if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
               this.showheaderImageBlock = true;
-              this.header_image_data = this.modelbom_data.image_path
+              this.header_image_data =this.commonData.get_current_url() + this.modelbom_data.image_path
             }
 
 
