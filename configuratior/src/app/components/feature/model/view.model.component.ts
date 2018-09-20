@@ -23,7 +23,9 @@ export class ViewFeatureModelComponent implements OnInit {
     // generate table default constants
     table_pages: any;
     search_key: any;
-    table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
+    language = JSON.parse(sessionStorage.getItem('current_lang'));
+    //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
+    table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.EffectiveDate, this.language.Type, this.language.Bom_Displayname, this.language.Model_Status, this.language.action];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;
@@ -33,7 +35,7 @@ export class ViewFeatureModelComponent implements OnInit {
     rows: any = "";
     public dataBind: any = "";
     CompanyDBId: string ;
-    language = JSON.parse(sessionStorage.getItem('current_lang'));
+    
     constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
 

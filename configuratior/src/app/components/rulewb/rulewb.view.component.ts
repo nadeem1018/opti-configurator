@@ -41,8 +41,9 @@ export class RuleWbViewComponent implements OnInit {
     
 
 
-    table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
+    // table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
+    table_head_foot = [this.language.select, this.language.hash, this.language.rule_id, this.language.rule_code, this.language.description, this.language.applicable_for, this.language.Fromdate, this.language.Todate, this.language.discontinued, this.language.action];
     page_main_title = this.language.rule_workbench;
     table_title = this.page_main_title;
     constructor(private router: Router, private service: RulewbService ,private toastr: ToastrService) { }

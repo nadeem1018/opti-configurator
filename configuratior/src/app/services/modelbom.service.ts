@@ -143,4 +143,12 @@ export class ModelbomService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/CheckModelAlreadyAddedinParent", jObject, this.common_params.httpOptions);
   }
+  onVerifyOutput(VerifyData): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject:any = { GetData: JSON.stringify( VerifyData) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/VerifyOutput", jObject, this.common_params.httpOptions);
+  }
+
 }

@@ -38,6 +38,7 @@ export class RulewbComponent implements OnInit {
   public pricehide = true;
   public isUOMDisabled = true;
   public update_id: string = "";
+  public selectall: boolean = true;
   public typevaluefromdatabase: string = "";
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = [];
@@ -60,7 +61,8 @@ export class RulewbComponent implements OnInit {
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
     this.rule_wb_data.CompanyDBId = sessionStorage.getItem('selectedComp');
     this.rule_wb_data.RuleId = "";
-    this.rule_wb_data.discontinued=false;
+    this.rule_wb_data.discontinued = false;
+    this.rule_wb_data.Excluded = false;
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
@@ -79,11 +81,24 @@ export class RulewbComponent implements OnInit {
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
           if (data.RuleWorkBenchHeader.length > 0) {
+            if(data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False"){
+              this.rule_wb_data.discontinued =false
+            }
+            else{
+              this.rule_wb_data.discontinued =true
+            }
+            if(data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === "False"){
+              this.rule_wb_data.Excluded = false
+            }
+            else{
+              this.rule_wb_data.Excluded = true
+            }
             this.rule_wb_data.rule_code = data.RuleWorkBenchHeader[0].OPTM_RULECODE
             this.rule_wb_data.description = data.RuleWorkBenchHeader[0].OPTM_DESCRIPTION;
             this.rule_wb_data.effective_from = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM;
             this.rule_wb_data.effective_to = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO;
-            this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
+          //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
+           // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
             this.rule_wb_data.applicable_for_feature_id = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
             this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
 
@@ -92,9 +107,12 @@ export class RulewbComponent implements OnInit {
           if (data.RuleWorkBenchInput.length > 0) {
             this.show_sequence = true;
             this.show_add_sequence_btn = false
-            this.seq_count = this.rule_expression_data.length;
-            this.seq_count++;
+
             this.counter = 0;
+            let managed_seq = [1];
+            let sequence_gen = [];
+            let expression = '';
+            let current_exp;
             for (let i = 0; i < data.RuleWorkBenchInput.length; ++i) {
               this.counter++;
               if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
@@ -106,23 +124,35 @@ export class RulewbComponent implements OnInit {
 
               }
 
-
-              this.rule_sequence_data.push({
-
-                rowindex: this.counter,
-                seq_count: data.RuleWorkBenchInput[i].OPTM_SEQID,
-                operator: data.RuleWorkBenchInput[i].OPTM_OPERATOR,
-                type: data.RuleWorkBenchInput[i].OPTM_TYPE,
-                braces: data.RuleWorkBenchInput[i].OPTM_BRACES,
+              let fetch_data = data.RuleWorkBenchInput[i];
+              this.seq_count = fetch_data.OPTM_SEQID;
+              let current_count = (this.seq_count - 1);
+              if (this.rule_expression_data[current_count] == undefined) {
+                this.rule_expression_data[current_count] = {};
+                this.rule_expression_data[current_count].expression ="";
+              }
+              this.rule_expression_data[current_count].rowindex = this.counter
+              this.rule_expression_data[current_count].seq_count = this.seq_count;
+              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
+              if (this.rule_expression_data[current_count].row_data == undefined) {
+                this.rule_expression_data[current_count].row_data = [];
+              }
+              this.rule_expression_data[current_count].row_data.push({
+                lineno:i + 1,
+                rowindex: fetch_data.OPTM_ROWID,
+                seq_count: fetch_data.OPTM_SEQID,
+                operator: fetch_data.OPTM_OPERATOR,
+                type: fetch_data.OPTM_TYPE,
+                braces: fetch_data.OPTM_BRACES,
                 type_value: this.typevaluefromdatabase,
-                condition: data.RuleWorkBenchInput[i].OPTM_CONDITION,
-                operand_1: data.RuleWorkBenchInput[i].OPTM_OPERAND1,
-                operand_2: data.RuleWorkBenchInput[i].OPTM_OPERAND2,
-                row_expression: "",
+                condition: fetch_data.OPTM_CONDITION,
+                operand_1: fetch_data.OPTM_OPERAND1,
+                operand_2: fetch_data.OPTM_OPERAND2,
+                row_expression: expression,
               });
 
             }
-            this.genearate_expression(); 
+
           }
 
           if (data.RuleWorkBenchOutput.length > 0) {
@@ -140,7 +170,7 @@ export class RulewbComponent implements OnInit {
 
               this.rule_feature_data.push({
                 rowindex: i,
-                check_child: false,
+                check_child: true,
                 feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
                 item: data.RuleWorkBenchOutput[i].OPTM_ITEMKEY,
                 value: data.RuleWorkBenchOutput[i].OPTM_VALUE,
@@ -165,7 +195,7 @@ export class RulewbComponent implements OnInit {
 
 
       )
-     
+
     }
   }
 
@@ -223,6 +253,7 @@ export class RulewbComponent implements OnInit {
     this.counter++;
 
     this.rule_sequence_data.push({
+      lineno:this.counter,
       rowindex: this.counter,
       seq_count: this.seq_count,
       operator: '',
@@ -330,7 +361,7 @@ export class RulewbComponent implements OnInit {
             this.outputrowcounter++;
             this.rule_feature_data.push({
               rowindex: i,
-              check_child: false,
+              check_child: true,
               feature: data[i].Feature,
               item: data[i].Item,
               value: data[i].Value,
@@ -607,6 +638,12 @@ export class RulewbComponent implements OnInit {
     }
   }
 
+  check_all(value) {
+    for (let i = 0; i < this.rule_feature_data.length; ++i) {
+      this.rule_feature_data[i].check_child = value
+    }
+  }
+
   validation(btnpress) {
     if (btnpress == "AddRow") {
       if (this.rule_wb_data.rule_code == "" || this.rule_wb_data.rule_code == null) {
@@ -697,6 +734,7 @@ export class RulewbComponent implements OnInit {
         effective_from: this.rule_wb_data.effective_from,
         effective_to: this.rule_wb_data.effective_to,
         discontinue: this.rule_wb_data.discontinued,
+        excluded:this.rule_wb_data.Excluded,
         CreatedUser: this.rule_wb_data.username,
         applicablefor: this.rule_wb_data.applicable_for_feature_id,
         CompanyDBId: this.rule_wb_data.CompanyDBId,

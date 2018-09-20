@@ -2,7 +2,9 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { RulewbService } from '../../services/rulewb.service';
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from 'jquery';
+import 'bootstrap';
 
 @Component({
   selector: 'app-output',
@@ -25,6 +27,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, ""]; 
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn,   "X"];
   public feature_tax_total = [
     {"key":"Tax","value":"10%"},
     { "key": "Total", "": "$2000" },
@@ -46,9 +49,6 @@ export class OutputComponent implements OnInit {
       { "id": "1", "key": "A1", "name": "Accessory 1"},
       { "id": "2", "key":"A2", "name": "Accessory 2"},
     ];
-
-
-   
   }
 
   openFeatureLookUp() { }

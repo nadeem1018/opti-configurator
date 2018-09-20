@@ -47,8 +47,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public GetItemData: any = [];
 
 
-    table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
+    //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
+table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
