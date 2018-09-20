@@ -41,6 +41,9 @@ export class ModelbomComponent implements OnInit {
   ruleselected: any;
   public header_image_data: string = "";
 
+  public tree_data_json: any = [];
+  public complete_dataset: any = [];
+
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
@@ -881,13 +884,16 @@ export class ModelbomComponent implements OnInit {
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
 
-      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.description).subscribe(
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id,this.modelbom_data.feature_name).subscribe(
         data => {
           if (data != null || data != undefined) {
-            this.serviceData = data;
-            this.lookupfor = "tree_view__model_bom_lookup";
+            // this.serviceData = data;
+            // this.lookupfor = "tree_view__model_bom_lookup";
+            this.tree_data_json = data;
           }
           else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
           }
 
         },
@@ -1018,6 +1024,23 @@ export class ModelbomComponent implements OnInit {
     )
    }
    
+
+   
+  //This will recurse the tree
+  get_childrens(component) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['parentId'] == component;
+    });
+    return data;
+  }
+
+  check_component_exist(component, level) {
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parentId'] == component && obj['level'] == level;
+    });
+    return data;
+  }
 }
 
 

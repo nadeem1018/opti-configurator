@@ -46,6 +46,8 @@ export class BomComponent implements OnInit {
   counter = 0;
   public header_image_data: any;
   public detail_image_data: any = [];
+  public tree_data_json: any = [];
+  public complete_dataset: any = [];
 
 
   //custom dialoag params
@@ -128,7 +130,7 @@ export class BomComponent implements OnInit {
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
-                isQuanityDisabled: this.isQuanityDisabled ,
+                isQuanityDisabled: this.isQuanityDisabled,
                 hide: this.ishide,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
@@ -169,10 +171,10 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
-            if(this.feature_bom_data.image_path!=""){
-              if(this.feature_bom_data.image_path!=null){
-                this.header_image_data =this.commonData.get_current_url() +  this.feature_bom_data.image_path
-                this.showImageBlock=true;
+            if (this.feature_bom_data.image_path != "") {
+              if (this.feature_bom_data.image_path != null) {
+                this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path
+                this.showImageBlock = true;
               }
             }
           }
@@ -266,18 +268,18 @@ export class BomComponent implements OnInit {
               if (this.detail_image_data.length > 0) {
                 for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
                   if (this.detail_image_data[idtlimg].index == i) {
-                    this.detail_image_data[idtlimg].value=this.feature_bom_table[i].attachment
+                    this.detail_image_data[idtlimg].value = this.feature_bom_table[i].attachment
                   }
                 }
-               
+
               }
-              else{
+              else {
                 this.detail_image_data.push({
-                  index:i,
-                  value:this.feature_bom_table[i].attachment
+                  index: i,
+                  value: this.feature_bom_table[i].attachment
                 })
               }
-             
+
             }
           }
         }
@@ -418,7 +420,7 @@ export class BomComponent implements OnInit {
   }
 
   on_typevalue_change(value, rowindex, code) {
-  
+
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -437,7 +439,7 @@ export class BomComponent implements OnInit {
               else {
                 //this.lookupfor = 'feature_lookup';
                 //First we will check the conflicts
-                this.checkFeaturesAlreadyAddedinParent(value,this.feature_bom_table[i].type_value, i, "change");
+                this.checkFeaturesAlreadyAddedinParent(value, this.feature_bom_table[i].type_value, i, "change");
               }
             })
         }
@@ -489,13 +491,13 @@ export class BomComponent implements OnInit {
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.lookupfor = 'Item_Detail_lookup';
-      
+
       this.getItemDetails($event[0]);
 
     }
     else if (this.lookupfor == 'feature_Detail_lookup') {
-      
-      this.getFeatureDetails($event[0], "Header", 0);
+      //call the method cyclic chk
+      this.checkFeaturesAlreadyAddedinParent($event[0], "", this.currentrowindex - 1, "lookup");
     }
 
   }
@@ -551,11 +553,11 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              if(this.feature_bom_data.image_path!=null || this.feature_bom_data.image_path!=""){
-                  this.header_image_data = this.feature_bom_data.image_path;
-                  this.showImageBlock=true;
+              if (this.feature_bom_data.image_path != null || this.feature_bom_data.image_path != "") {
+                this.header_image_data = this.feature_bom_data.image_path;
+                this.showImageBlock = true;
               }
-             
+
               // this.header_image_data = [
               //   "/assets/UploadFile/Image/hyundai-creta.jpg"
               // ]
@@ -677,16 +679,16 @@ export class BomComponent implements OnInit {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
           if (data != null || data != undefined) {
-            if(data.length > 0){
+            if (data.length > 0) {
               this.serviceData = data;
               this.lookupfor = 'associated_BOM';
             }
-            else{
+            else {
               this.toastr.error('', this.language.no_assocaited_bom, this.commonData.toast_config);
               return;
             }
           }
-          else{
+          else {
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
@@ -707,11 +709,14 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_data.feature_id != undefined) {
       //now call bom id
 
-      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id,this.feature_bom_data.feature_name).subscribe(
+      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id, this.feature_bom_data.feature_name).subscribe(
         data => {
           if (data != null || data != undefined) {
-            this.serviceData = data;
-            this.lookupfor = 'tree_view_lookup';
+            //Earlier we were opening this in lookup
+            // this.serviceData = data;
+            // this.lookupfor = 'tree_view_lookup';
+
+            this.tree_data_json = data;
           }
           else {
           }
@@ -751,40 +756,58 @@ export class BomComponent implements OnInit {
   }
 
   //To chk the conflictions of the feature id (hierariechal cylic dependency)
-  checkFeaturesAlreadyAddedinParent(enteredFeatureID,feature_type,rowindex,fromEvent){
-    
-    this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID,this.feature_bom_data.feature_id).subscribe(
+  checkFeaturesAlreadyAddedinParent(enteredFeatureID, feature_type, rowindex, fromEvent) {
+
+    this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID, this.feature_bom_data.feature_id).subscribe(
       data => {
         if (data.length > 0) {
           //If exists then will restrict user 
-          if(data == "Exist"){
-            this.toastr.error('',  this.language.cyclic_ref_restriction, this.commonData.toast_config);
+          if (data == "Exist") {
+            this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
             this.feature_bom_table[rowindex].type_value = "";
             this.feature_bom_table[rowindex].display_name = "";
             return;
           }
-          else if(data == "True"){
+          else if (data == "True") {
 
-            if(fromEvent == "lookup"){
+            if (fromEvent == "lookup") {
               //this.getFeatureDetails(enteredFeatureID, "Header", 0);
               this.getFeatureDetails(enteredFeatureID, "Header", rowindex);
             }
-            else if(fromEvent == "change"){
+            else if (fromEvent == "change") {
               this.getFeatureDetails(feature_type, "Header", rowindex);
             }
-            
+
           }
         }
-          else {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            console.log("Failed when checking hierac check for feature ID")
-            return;
+        else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          console.log("Failed when checking hierac check for feature ID")
+          return;
         }
       },
-      error=> {
+      error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
     )
-   }
+  }
+
+
+  //This will recurse the tree
+  get_childrens(component) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['parentId'] == component;
+    });
+    return data;
+  }
+
+  check_component_exist(component, level) {
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parentId'] == component && obj['level'] == level;
+    });
+    return data;
+  }
+
 }

@@ -275,77 +275,15 @@
   </div>
   <div class="col-md-3 opti_overflow-auto">
     <div class="tree well">
-      <ul class="parent_ul">
-        <li>
-          <span>
-            <i class="icon-folder-open"></i> F1 </span>
-          <ul>
-            <li>
-              <span>
-                <i class="icon-minus-sign"></i> F2 </span>
-              <ul>
-                <li>
-                  <span>
-                    <i class="icon-leaf"></i> item007 </span>
-                </li>
-                <li>
-                  <span>
-                    <i class="icon-leaf"></i> item008 </span>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <span>
-                <i class="icon-minus-sign"></i> F3 </span>
-              <ul>
-                <li>
-                  <span>
-                    <i class="icon-leaf"></i>F4</span>
-                </li>
-                <li>
-                  <span>
-                    <i class="icon-minus-sign"></i> F5 </span>
-                  <ul>
-                    <li>
-                      <span>
-                        <i class="icon-minus-sign"></i> F6 </span>
-                      <ul>
-                        <li>
-                          <span>
-                            <i class="icon-leaf"></i> item001 </span>
-                        </li>
-                        <li>
-                          <span>
-                            <i class="icon-leaf"></i> item0002 </span>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <span>
-                        <i class="icon-leaf"></i> item003 </span>
-                    </li>
-                    <li>
-                      <span>
-                        <i class="icon-leaf"></i> item004 </span>
-                    </li>
-                  </ul>
-                </li>
-
-              </ul>
-            </li>
-
-            <li>
-              <span>
-                <i class="icon-minus-sign"></i> item005 </span>
-            </li>
-            <li>
-              <span>
-                <i class="icon-minus-sign"></i> item006 </span>
-            </li>
-          </ul>
-        </li>
-
+      <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
+        <div *ngFor="let element of tree_data_json; let i= index;">
+          <li *ngIf="element.level == 0 && element.parentId==''">
+            <span>
+              <i class="fa fa-circle"></i> {{element.component}}
+            </span>
+            <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+          </li>
+        </div>
       </ul>
     </div>
   </div>

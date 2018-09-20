@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     template: `
      <ul >
         <li *ngFor="let inner_element of tree_data_json; let i= index;">
-            <span>  <i class="fa fa-minus"></i> {{inner_element.component}} </span>
+            <span>  <i class="fa fa-circle-o"></i> {{inner_element.component}} </span>
             <treeview [tree_data_json]="get_childrens(inner_element.component)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.component).length > 0"></treeview>
          </li>
     </ul>
