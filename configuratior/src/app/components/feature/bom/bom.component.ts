@@ -48,6 +48,7 @@ export class BomComponent implements OnInit {
   public detail_image_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
+  public row_image_data:any;
 
 
   //custom dialoag params
@@ -116,6 +117,7 @@ export class BomComponent implements OnInit {
                 this.defaultcheckbox = false
               }
 
+              this.row_image_data=this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
 
               this.feature_bom_table.push({
                 rowindex: data.FeatureDetail[i].OPTM_LINENO,
@@ -128,6 +130,7 @@ export class BomComponent implements OnInit {
                 default: this.defaultcheckbox,
                 remark: data.FeatureDetail[i].OPTM_REMARKS,
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
+                preview: this.row_image_data,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
                 isQuanityDisabled: this.isQuanityDisabled,
@@ -216,6 +219,7 @@ export class BomComponent implements OnInit {
       default: false,
       remark: "",
       attachment: "",
+      preview:"",
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
@@ -263,6 +267,7 @@ export class BomComponent implements OnInit {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === rowindex) {
               this.feature_bom_table[i].attachment = data.body
+              this.feature_bom_table[i].preview=this.commonData.get_current_url() + data.body
               // this.detail_image_data.push(this.feature_bom_table[i].attachment)  
 
               if (this.detail_image_data.length > 0) {

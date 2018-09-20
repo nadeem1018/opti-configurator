@@ -310,8 +310,11 @@
                             <tr>
                               <th style="width:50px">
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                  <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
-                                  <label class="custom-control-label" for="check_all"></label>
+                                  <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
+                                  <label class="custom-control-label" for="check_all"></label> -->
+                                    <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)"  class="custom-control-input" [(checked)]=selectall
+                                    value="1" >
+                                    <label class="custom-control-label" for="check_all"></label>
                                 </div>
               
                               </th>
@@ -331,8 +334,13 @@
                             <tr *ngFor="let row of rule_feature_data">
               
                               <td>
-                                <div class="custom-control custom-checkbox custom-control-inline">
+                                <!-- <div class="custom-control custom-checkbox custom-control-inline">
                                   <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
+                                  <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
+                                </div> -->
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}
+                                  [(checked)]=row.check_child>
                                   <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
                                 </div>
                               </td>
