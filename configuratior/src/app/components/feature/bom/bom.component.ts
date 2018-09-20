@@ -29,6 +29,7 @@ export class BomComponent implements OnInit {
   public companyName: string = "";
   public username: string = "";
   public typevaluefromdatabase: string = "";
+  public typevaluecodefromdatabase: string = "";
   public defaultcheckbox: boolean = false;
   public currentrowindex: number;
   public isDisplayNameDisabled: boolean = false;
@@ -79,6 +80,7 @@ export class BomComponent implements OnInit {
             for (let i = 0; i < data.FeatureDetail.length; ++i) {
               if (data.FeatureDetail[i].OPTM_TYPE == 1) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
+                this.typevaluecodefromdatabase= data.FeatureDetail[i].child_code.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
@@ -87,6 +89,7 @@ export class BomComponent implements OnInit {
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
+                this.typevaluecodefromdatabase= data.FeatureDetail[i].OPTM_ITEMKEY.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
@@ -95,6 +98,7 @@ export class BomComponent implements OnInit {
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
+                this.typevaluecodefromdatabase= data.FeatureDetail[i].OPTM_VALUE.toString()
                 // this.isDisplayNameDisabled = false
                 this.isDisplayNameDisabled = false
                 //  this.isTypeDisabled = false
@@ -103,7 +107,7 @@ export class BomComponent implements OnInit {
                 this.isQuanityDisabled = true
                 this.isQuanity = 0
               }
-              if (data.FeatureDetail[i].default == "Y") {
+              if (data.FeatureDetail[i].OPTM_DEFAULT == "Y") {
                 this.defaultcheckbox = true
               }
               else {
@@ -116,6 +120,7 @@ export class BomComponent implements OnInit {
                 FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
                 type: data.FeatureDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
+                type_value_code:this.typevaluecodefromdatabase,
                 display_name: data.FeatureDetail[i].OPTM_DISPLAYNAME,
                 quantity: this.isQuanity,
                 default: this.defaultcheckbox,
@@ -157,6 +162,7 @@ export class BomComponent implements OnInit {
             }
           }
           if (data.FeatureHeader.length > 0) {
+            this.feature_bom_data.feature_code= data.FeatureHeader[0].OPTM_FEATURECODE;
             this.feature_bom_data.feature_id = data.FeatureDetail[0].OPTM_FEATUREID;
             this.feature_bom_data.feature_name = data.FeatureHeader[0].OPTM_DISPLAYNAME;
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
@@ -205,7 +211,7 @@ export class BomComponent implements OnInit {
       type_value_code: "",
       display_name: "",
       quantity: 1,
-      default: "N",
+      default: false,
       remark: "",
       attachment: "",
       isDisplayNameDisabled: false,
@@ -299,7 +305,7 @@ export class BomComponent implements OnInit {
     }
     if (this.feature_bom_table.length > 0) {
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
-        if (this.feature_bom_table[i].default == false) {
+        if (this.feature_bom_table[i].default === false) {
           this.feature_bom_table[i].default = "N"
         }
         else {
@@ -460,10 +466,10 @@ export class BomComponent implements OnInit {
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         if (value.checked == true) {
-          this.feature_bom_table[i].default = "Y"
+          this.feature_bom_table[i].default = true
         }
         else {
-          this.feature_bom_table[i].default = "N"
+          this.feature_bom_table[i].default =false
         }
 
 

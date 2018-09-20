@@ -22,7 +22,7 @@
                     <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
                 <div class="card-body">
                     <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
+                        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
                         <div class="col-sm-4 input-group">
                             <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
                                 name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
@@ -151,7 +151,7 @@
                                         </td>
                                         <td>
                                             <input type="checkbox" value="1" class="form-control  form-control-sm mt3" style="margin-top:10px" id="default" (change)="on_defualt_change(default,row.rowindex)"
-                                                value={{row.default}} #default />
+                                                value={{row.default}} #default [(checked)]=row.default />
                                         </td>
                                         <td>
                                             <input type="text" class="form-control  form-control-sm mt3" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"
@@ -166,11 +166,11 @@
                                         </td>
                                         <td>
                                             <div class="clearfix"></div>
-                                            <div class="row image_data" *ngIf="row.attachment">
+                                            <div class="row image_data" *ngIf="row.preview">
                                                 <div>
                                                     <!-- class="col-md-2" style="width:150px" -->
-                                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(row.attachment)">
-                                                        <img src="{{row.attachment}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(row.preview)">
+                                                        <img src="{{row.preview}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
                                                     </a>
                                                 </div>
                                             </div>
