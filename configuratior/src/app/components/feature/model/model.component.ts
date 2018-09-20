@@ -119,6 +119,7 @@ export class ModelComponent implements OnInit {
           if (data[0].OPTM_PHOTO !== undefined && data[0].OPTM_PHOTO !== "" && data[0].OPTM_PHOTO !== 0) {
             this.featureBom.Image = data[0].OPTM_PHOTO
             this.ModelImage = this.commonData.get_current_url() + data[0].OPTM_PHOTO
+            this.showImageBlock = true;
 
           }
 

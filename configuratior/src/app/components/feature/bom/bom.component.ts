@@ -558,9 +558,12 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              if (this.feature_bom_data.image_path != null || this.feature_bom_data.image_path != "") {
-                this.header_image_data = this.feature_bom_data.image_path;
-                this.showImageBlock = true;
+              this.showImageBlock = false;
+              if (this.feature_bom_data.image_path != null ) {
+                if(this.feature_bom_data.image_path != ""){
+                  this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path;
+                  this.showImageBlock = true;
+                }
               }
 
               // this.header_image_data = [
