@@ -98,33 +98,24 @@
               </span>
             </div>
           
-          </div>
-          <div class="col-sm-1" *ngIf="showOutputBtn">
-            <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}}" style="display:none;" (click)="hide_show_output()" #button >
-              <i class="fa fa-eye"></i> {{showoutput_btn_text}}
-            </a>
-          </div>
-        </div>
-        <hr>
-        <div class="form-group clearfix">
-          <div class="col-sm-1" *ngIf="show_add_sequence_btn">
-            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()" 
-              >
-              <i class="fa fa-plus"></i> {{language.add_seq}}
-            </a>
-          </div>
-          <div class="col-sm-1" *ngIf="show_sequence">
-            <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" >
-              <i class="fa fa-plus"></i> {{language.add_row}}
-            </a>
+            <div class="col-sm-1" *ngIf="showOutputBtn">
+              <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}}" style="display:none;" (click)="hide_show_output()" #button >
+                <i class="fa fa-eye"></i> {{showoutput_btn_text}}
+              </a>
+            </div>
+            <div class="col-sm-1" *ngIf="show_add_sequence_btn">
+              <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_sequence}} " (click)="addNewSequence()">
+                <i class="fa fa-plus"></i> {{language.add_seq}}
+              </a>
+            </div>
+            <div class="col-sm-1" *ngIf="show_sequence">
+              <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()">
+                <i class="fa fa-plus"></i> {{language.add_row}}
+              </a>
+            </div>
           </div>
         </div>
-        
-        <hr>
-      </div>
-
-
-      <div class="card-body">
+     
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-8 pl-0">
@@ -248,7 +239,7 @@
                 <hr>
                 <div class="col-sm-12  pl-0 pr-0">
                   <div class="table-responsive table-responsive-sm">
-                    <div class="form-group col-md-2 clearfix bg-primary text-white">
+                    <div class="form-group col-md-4 clearfix bg-primary text-white">
                       <div class="">{{language.expression}}</div>
                     </div>
                     <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
@@ -345,7 +336,7 @@
                                 </div>
                               </td>
                               <td>
-                                <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}} #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)"/>
+                                <input type="hidden"  [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}} #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)"/>
 
                                 <input type="text"  [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)"/>                              </td>
                               <td>

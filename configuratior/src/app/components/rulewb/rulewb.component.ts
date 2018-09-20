@@ -86,7 +86,8 @@ export class RulewbComponent implements OnInit {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = false;
-
+      this.show_sequence = false;
+      this.show_add_sequence_btn = true
 
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
@@ -110,13 +111,14 @@ export class RulewbComponent implements OnInit {
             //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
             // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
             this.rule_wb_data.applicable_for_feature_id = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
+            this.rule_wb_data.applicable_for_feature_code = data.RuleWorkBenchHeader[0].OPTM_FEATURECODE;
             this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
 
           }
 
           if (data.RuleWorkBenchInput.length > 0) {
-            this.show_sequence = true;
-            this.show_add_sequence_btn = false
+            /* this.show_sequence = true;
+            this.show_add_sequence_btn = false */
 
             this.counter = 0;
             let managed_seq = [1];
