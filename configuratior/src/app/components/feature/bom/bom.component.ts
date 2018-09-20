@@ -198,6 +198,7 @@ export class BomComponent implements OnInit {
       FeatureId: this.feature_bom_data.feature_id,
       type: 1,
       type_value: "",
+      type_value_code: "",
       display_name: "",
       quantity: 1,
       default: "N",
@@ -328,7 +329,8 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].type_value = ""
+        this.feature_bom_table[i].type_value = "";
+        this.feature_bom_table[i].type_value_code = "";
         this.feature_bom_table[i].display_name = ""
         if (selectedvalue == 3) {
           this.feature_bom_table[i].isDisplayNameDisabled = false
@@ -406,11 +408,13 @@ export class BomComponent implements OnInit {
     }
   }
 
-  on_typevalue_change(value, rowindex) {
+  on_typevalue_change(value, rowindex, code) {
+  
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].type_value = value
+        this.feature_bom_table[i].type_value = value;
+        this.feature_bom_table[i].type_value_code = code;
         if (this.feature_bom_table[i].type == 1) {
           this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
             data => {
@@ -418,6 +422,7 @@ export class BomComponent implements OnInit {
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
+                this.feature_bom_table[i].type_value_code = "";
                 return;
               }
               else {
@@ -433,6 +438,7 @@ export class BomComponent implements OnInit {
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
+                this.feature_bom_table[i].type_value_code = "";
                 return;
               }
               else {
@@ -467,17 +473,19 @@ export class BomComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'feature_lookup') {
-      this.feature_bom_data.feature_id = $event;
-      this.getFeatureDetails($event, "Header", 0);
+      this.feature_bom_data.feature_id = $event[0];
+      this.feature_bom_data.feature_code = $event[1];
+      this.getFeatureDetails($event[0], "Header", 0);
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.lookupfor = 'Item_Detail_lookup';
-      this.getItemDetails($event);
+      
+      this.getItemDetails($event[0]);
 
     }
-    else {
-      this.lookupfor = 'feature_Detail_lookup';
-      this.getFeatureDetails($event, "Header", 0);
+    else if (this.lookupfor == 'feature_Detail_lookup') {
+      
+      this.getFeatureDetails($event[0], "Header", 0);
     }
 
   }
@@ -509,8 +517,9 @@ export class BomComponent implements OnInit {
         if (data.length > 0) {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-              this.feature_bom_table[i].type_value = data[0].ItemKey
-              this.feature_bom_table[i].display_name = data[0].Description
+              this.feature_bom_table[i].type_value = data[0].ItemKey;
+              this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+              this.feature_bom_table[i].display_name = data[0].Description;
 
             }
           }
@@ -532,7 +541,7 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              if(this.feature_bom_data.image_path!=null||this.feature_bom_data.image_path!=""){
+              if(this.feature_bom_data.image_path!=null || this.feature_bom_data.image_path!=""){
                 this.header_image_data = this.feature_bom_data.image_path;
                 this.showImageBlock=true;
               }
@@ -545,8 +554,9 @@ export class BomComponent implements OnInit {
               // this.feature_bom_table=data;
               for (let i = 0; i < this.feature_bom_table.length; ++i) {
                 if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-                  this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString()
-                  this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME
+                  this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
+                  this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
+                  this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
 
                 }
               }

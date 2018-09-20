@@ -3,6 +3,8 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { RulewbService } from '../../services/rulewb.service';
 import { ActivatedRoute, Router } from '@angular/router'
+import * as $ from 'jquery';
+import 'bootstrap';
 
 @Component({
   selector: 'app-rulewb',
@@ -55,7 +57,13 @@ export class RulewbComponent implements OnInit {
   public seq_count = 0;
   public editing_row = 0;
   public outputrowcounter: number = 0;
+  
+  public min;
+ 
+  
   ngOnInit() {
+    let d = new Date(); 
+    this.min = new Date(d.setDate(d.getDate() - 1));
     this.commonData.checkSession();
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
     this.rule_wb_data.CompanyDBId = sessionStorage.getItem('selectedComp');
@@ -262,20 +270,23 @@ export class RulewbComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'feature_lookup') {
-      this.rule_wb_data.applicable_for_feature_id = $event;
+      this.rule_wb_data.applicable_for_feature_id = $event[0];
+      this.rule_wb_data.applicable_for_feature_code = $event[1];
       this.getFeatureDetailsForOutput();
     }
     if (this.lookupfor == 'feature_Detail_lookup') {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
         if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-          this.rule_sequence_data[i].type_value = $event
+          this.rule_sequence_data[i].type_value = $event[0];
+          this.rule_sequence_data[i].type_value_code = $event[1];
         }
       }
     }
     if (this.lookupfor == 'ModelBom_lookup') {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
         if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-          this.rule_sequence_data[i].type_value = $event
+          this.rule_sequence_data[i].type_value = $event[0];
+          this.rule_sequence_data[i].type_value_code = $event[1];
 
         }
       }

@@ -60,6 +60,7 @@
     "CodeBlank": "Code cannot be blank",
     "ItemCodeGeneration": "Item Code Generation",
     "Model_Code": "Model/Feature Code",
+    "Feature_Code": "Feature Code",
     "Model_Type": "Type",
     "Model_Name": "Model/Feature Name",
     "Model_Desc": "Model/Feature Desc",
@@ -207,7 +208,7 @@
     "customer": "Customer",
     "posting_date": "Posting Date",
     "delivery_until": "Delivery / Valid Until",
-
+    "model_feature_master":"Model/Feature Master",
     "contact_person": "Contact Person",
     "ship_to": "Ship To",
     "bill_to": "Bill To",

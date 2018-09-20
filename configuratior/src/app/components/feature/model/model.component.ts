@@ -33,7 +33,7 @@ export class ModelComponent implements OnInit {
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router,private ActivatedRouter: ActivatedRoute) { }
-  page_main_title = 'Model/Feature Master';
+  page_main_title = this.language.model_feature_master;
   section_title="";
   companyName: string ;
   username: string;
@@ -354,10 +354,12 @@ if (validateStatus == true){
   getLookupValue($event){
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-       this.featureBom.ItemName = $event;
+        this.featureBom.ItemName = $event[0];
+       this.featureBom.ItemCode= $event[1];
       }
       if (this.lookupfor == "model_item_generation") {
-       this.featureBom.Ref = $event;
+        this.featureBom.Ref = $event[0];
+      //  this.featureBom.RefCode = $event[1];
       }
     }
   }

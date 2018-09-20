@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import 'bootstrap';
 
-// import { ContentChild, AfterViewInit, ViewChild, ViewChildren, AfterViewChecked, ElementRef } from "@angular/core"
 
 @Component({
   selector: 'app-lookup',
@@ -30,7 +29,7 @@ export class LookupComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
   constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
-  
+  public table_head_hidden_elements = [];
   
 
   // mandatory variables
@@ -135,6 +134,9 @@ export class LookupComponent implements OnInit {
   }
 
   on_item_select(lookup_key) {
+    console.log("lookup_key - " + lookup_key);
+    console.log( lookup_key);
+    
     this.lookupvalue.emit(lookup_key);
     $("#lookup_modal").modal('hide');
   }
@@ -145,6 +147,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
     this.table_head = ['Code', 'Name'];
+    this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -166,6 +169,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureItemCode';
     this.table_head = ['Code'];
+    this.table_head_hidden_elements = [false];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
    
@@ -189,6 +193,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id', 'Code', 'Name'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -215,6 +220,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Model Id', 'Code', 'Name'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -236,6 +242,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
     this.table_head = ['ItemKey', 'Name'];
+    this.table_head_hidden_elements = [false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -265,6 +272,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'price_source';
     this.lookup_key = 'PriceListID';
     this.table_head = ['Price Source'];
+    this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -282,6 +290,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.lookup_key = 'code';
     this.table_head = ['Select', 'Rule', 'Description' ];
+    this.table_head_hidden_elements = [false, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
    /*  this.serviceData = [
@@ -410,6 +419,7 @@ for(var i=0; i< this.serviceData.length; i++){
 
  
     this.table_head = ['Model Id','Model Name','Model Description'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
