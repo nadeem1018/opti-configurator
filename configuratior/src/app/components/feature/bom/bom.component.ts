@@ -129,30 +129,30 @@ export class BomComponent implements OnInit {
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
 
-              this.detail_image_data=[];
-              if (this.detail_image_data.length > 0) {
-                let isExist = 0;
-                for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
+              // this.detail_image_data=[];
+              // if (this.detail_image_data.length > 0) {
+              //   let isExist = 0;
+              //   for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
 
-                  if (this.detail_image_data[idtlimg].value== data.FeatureDetail[i].OPTM_ATTACHMENT) {
-                    isExist = 1;
-                  }
-                }
-                if(isExist==0){
-                  this.detail_image_data.push({
-                    index:i,
-                    value:data.FeatureDetail[i].OPTM_ATTACHMENT
-                  }
-                   )
-                }
-              }
-              else{
-                this.detail_image_data.push({
-                  index:i,
-                  value:data.FeatureDetail[i].OPTM_ATTACHMENT
-                }
-                 )
-              }
+              //     if (this.detail_image_data[idtlimg].value== data.FeatureDetail[i].OPTM_ATTACHMENT) {
+              //       isExist = 1;
+              //     }
+              //   }
+              //   if(isExist==0){
+              //     this.detail_image_data.push({
+              //       index:i,
+              //       value:data.FeatureDetail[i].OPTM_ATTACHMENT
+              //     }
+              //      )
+              //   }
+              // }
+              // else{
+              //   this.detail_image_data.push({
+              //     index:i,
+              //     value:data.FeatureDetail[i].OPTM_ATTACHMENT
+              //   }
+              //    )
+              // }
 
             }
           }

@@ -37,8 +37,8 @@ export class ModelbomComponent implements OnInit {
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
   public rule_data: any = [];
-  ruleselected : any;
-  public header_image_data:string="";
+  ruleselected: any;
+  public header_image_data: string = "";
 
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
@@ -92,12 +92,20 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
             this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
             this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
-            
-            if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
+            this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
+            if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
               this.showheaderImageBlock = true;
-              this.header_image_data =this.modelbom_data.image_path
+              this.header_image_data = this.modelbom_data.image_path
             }
-           
+
+
+            if (this.modelbom_data.is_ready_to_use == "Y") {
+              this.modelbom_data.is_ready_to_use = true;
+            }
+            else {
+              this.modelbom_data.is_ready_to_use = false;
+            }
+
 
           }
 
@@ -121,9 +129,29 @@ export class ModelbomComponent implements OnInit {
                 this.pricehide = true
                 this.isUOMDisabled = true
               }
-              if(data.ModelDetail[i].OPTM_READYTOUSE==""||data.ModelDetail[i].OPTM_READYTOUSE==null||data.ModelDetail[i].OPTM_READYTOUSE==undefined){
-                data.ModelDetail[i].OPTM_READYTOUSE='N'
+              if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined) {
+                data.ModelDetail[i].OPTM_READYTOUSE = 'N'
               }
+              if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
+                data.ModelDetail[i].OPTM_PROPOGATEQTY = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_PROPOGATEQTY = false
+              }
+              if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
+                data.ModelDetail[i].OPTM_UNIQUEIDNT = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_UNIQUEIDNT = false
+              }
+              if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
+                data.ModelDetail[i].OPTM_MANDATORY = true
+              }
+              else {
+                data.ModelDetail[i].OPTM_MANDATORY = false
+              }
+
+
 
               this.modelbom_data.push({
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
@@ -155,7 +183,7 @@ export class ModelbomComponent implements OnInit {
           }
 
 
-
+          console.log(this.modelbom_data)
 
 
         }
@@ -445,9 +473,9 @@ export class ModelbomComponent implements OnInit {
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       console.log("in here ");
-      this.serviceData=[]
+      this.serviceData = []
       this.getItemDetails($event);
-  }
+    }
 
 
   }
@@ -471,10 +499,10 @@ export class ModelbomComponent implements OnInit {
             if (this.lookupfor == 'ModelBom_lookup') {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-              this.modelbom_data.image_path=data[0].OPTM_PHOTO;
-              if(this.modelbom_data.image_path!=null||this.modelbom_data.image_path!=""){
+              this.modelbom_data.image_path = data[0].OPTM_PHOTO;
+              if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
                 this.header_image_data = this.modelbom_data.image_path;
-                this.showheaderImageBlock=true;
+                this.showheaderImageBlock = true;
               }
             }
             else {
@@ -710,8 +738,17 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-
-
+  on_isready_change(value, rowindex) {
+    for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if (value.checked == true) {
+          this.modelbom_data[i].ReadyToUse = "Y"
+        }
+        else {
+          this.modelbom_data[i].ReadyToUse = "N"
+        }
+      }
+    }
+  
 
 
   onSave() {
@@ -723,31 +760,31 @@ export class ModelbomComponent implements OnInit {
         if (this.modelbom_data[i].unique_identifer == false) {
           this.modelbom_data[i].unique_identifer = "N"
         }
-        else if (this.modelbom_data[i].unique_identifer == true) {
+        else {
           this.modelbom_data[i].unique_identifer = "Y"
         }
-        else if (this.modelbom_data[i].mandatory == false) {
+        if (this.modelbom_data[i].mandatory == false) {
           this.modelbom_data[i].mandatory = "N"
         }
-        else if (this.modelbom_data[i].mandatory == true) {
+        else {
           this.modelbom_data[i].mandatory = "Y"
         }
-        else if (this.modelbom_data[i].propagate_qty == false) {
+        if (this.modelbom_data[i].propagate_qty == false) {
           this.modelbom_data[i].propagate_qty = "N"
         }
-        else if (this.modelbom_data[i].propagate_qty == true) {
+        else {
           this.modelbom_data[i].propagate_qty = "Y"
         }
 
 
       }
     }
-    let objDataset: any= {};
+    let objDataset: any = {};
     objDataset.ModelData = [];
-    objDataset.RuleData =[];
+    objDataset.RuleData = [];
 
-objDataset.ModelData = this.modelbom_data;
-objDataset.RuleData = this.rule_data;
+    objDataset.ModelData = this.modelbom_data;
+    objDataset.RuleData = this.rule_data;
     this.service.SaveModelBom(objDataset).subscribe(
       data => {
         if (data === "True") {

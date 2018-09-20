@@ -85,6 +85,7 @@
     "UserNameRequired": "Username required",
     "CompanyRequired": "Select Company",
     "DeleteConfimation": "Do you want to delete?",
+    "choose_image":"Choose Image",
     "ModelBom": "Model",
     "Model_Bom": "Model BOM",
     "Bom_FeatureId": "Feature ID",
@@ -256,7 +257,8 @@
     "Between":"Between",
     "In":"In",
     "delivery_date":"Delivery Date",
-    "serial":"Sl#" 
+    "serial":"Sl#" ,
+    "ReadyToUse":"Ready To Use"
 
 
 

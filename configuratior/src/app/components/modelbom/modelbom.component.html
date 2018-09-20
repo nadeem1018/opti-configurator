@@ -32,19 +32,40 @@
       
       </div>
       <div class="form-group row clearfix">
-        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.name}}</label>
+        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Name}}</label>
         <div class="col-sm-4">
           <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.name}}"
             readonly [(ngModel)]="modelbom_data.feature_name">
         </div>
-        <div class="col-sm-4 mt-3px">
+        <!-- <div class="col-sm-4 mt-3px">
           <div class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="modelbom_data.is_ready_to_use" class="custom-control-input"
               value="Y">
             <label class="custom-control-label" for="yes">Is Ready To Use</label>
           </div>
+        </div> -->
+        <div class="form-group row clearfix">
+        <!-- <label class="col-sm-2 col-form-label"></label> -->
+          <div class="col-sm-4 mt-3px">
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" id="ReadyToUse" name="ReadyToUse" [(ngModel)]="modelbom_data.is_ready_to_use" class="custom-control-input"
+                value=modelbom_data.is_ready_to_use (change)="on_isready_change(isreadyuse)" #isreadyuse [(checked)]=modelbom_data.is_ready_to_use>
+              <label class="custom-control-label"  for="ReadyToUse">{{language.ReadyToUse}}</label>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- <div class="form-group row clearfix"> -->
+          <!-- <label class="col-sm-2 col-form-label" for="ReadyToUse">{{language.ReadyToUse}}</label>
+          <div class="col-sm-4 mt-3px">
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" id="yes" name="ReadyToUse" [(ngModel)]="modelbom_data.is_ready_to_use" class="custom-control-input"
+                value="1">
+              <label class="custom-control-label" for="yes"></label>
+            </div>
+          </div> -->
+        <!-- </div> -->
 
       <div class="form-group row clearfix">
         <label class="col-sm-2 col-form-label" for="featureDesc">{{language.description}}</label>
@@ -145,7 +166,7 @@
                   <input type="text" class="form-control  form-control-sm mt3 pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}} (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15 pull-right"  id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" #propagate_qty
+                  <input type="checkbox" class="form-control  form-control-sm mt15 pull-right"  id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)"  [(checked)]=row.propagate_qty #propagate_qty
                   />
                 </td>
                 <td>
@@ -159,10 +180,10 @@
                 </div>
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)" #mandatory />
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)" #mandatory [(checked)]=row.mandatory/>
                 </td>
                 <td>
-                  <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" #unique_identifer
+                  <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} [(checked)]=row.unique_identifer (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" #unique_identifer
                   />
                 </td>
                 <td>

@@ -138,6 +138,7 @@ export class RulewbComponent implements OnInit {
                 this.rule_expression_data[current_count].row_data = [];
               }
               this.rule_expression_data[current_count].row_data.push({
+                lineno:i + 1,
                 rowindex: fetch_data.OPTM_ROWID,
                 seq_count: fetch_data.OPTM_SEQID,
                 operator: fetch_data.OPTM_OPERATOR,
@@ -252,6 +253,7 @@ export class RulewbComponent implements OnInit {
     this.counter++;
 
     this.rule_sequence_data.push({
+      lineno:this.counter,
       rowindex: this.counter,
       seq_count: this.seq_count,
       operator: '',
