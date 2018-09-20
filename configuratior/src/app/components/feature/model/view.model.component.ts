@@ -16,22 +16,23 @@ import { ToastrService } from 'ngx-toastr';
 export class ViewFeatureModelComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
-    page_main_title = 'Model/Feature Master';
-    add_route_link = '/feature/model/add';
     public commonData = new CommonData();
-    table_title = this.page_main_title;
     // generate table default constants
     table_pages: any;
     search_key: any;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
-    table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.EffectiveDate, this.language.Type, this.language.Bom_Displayname, this.language.Model_Status, this.language.action];
+    table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code,this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
+    public table_hidden_elements = [false, true, true, false, false, false, false, false, false];   
     record_per_page_list: any = this.common_params.default_limits;
-
+    add_route_link = '/feature/model/add';
+    page_main_title = this.language.model_feature_master;
+    table_title = this.page_main_title;
+    
     record_per_page: any = this.common_params.default_count;
     search_string: any = "";
     current_page: any = 1;
-    page_numbers: any = "";
+    page_numbers: any = [];
     rows: any = "";
     public dataBind: any = "";
     CompanyDBId: string ;
@@ -74,7 +75,7 @@ export class ViewFeatureModelComponent implements OnInit {
             data => {
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
-                let pages: any = (parseInt(dataset[1]) / parseInt(this.record_per_page));
+                let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
                     pages = 1;
                 }

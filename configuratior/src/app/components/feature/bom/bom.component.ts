@@ -123,27 +123,36 @@ export class BomComponent implements OnInit {
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
+                isQuanityDisabled: this.isQuanityDisabled ,
                 hide: this.ishide,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
 
-              this.detail_image_data=[];
-              if (this.detail_image_data.length > 0) {
-                let isExist = 0;
-                for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
+              // this.detail_image_data=[];
+              // if (this.detail_image_data.length > 0) {
+              //   let isExist = 0;
+              //   for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
 
-                  if (this.detail_image_data[idtlimg] == data.FeatureDetail[i].OPTM_ATTACHMENT) {
-                    isExist = 1;
-                  }
-                }
-                if(isExist==0){
-                  this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
-                }
-              }
-              else{
-                this.detail_image_data.push(data.FeatureDetail[i].OPTM_ATTACHMENT)
-              }
+              //     if (this.detail_image_data[idtlimg].value== data.FeatureDetail[i].OPTM_ATTACHMENT) {
+              //       isExist = 1;
+              //     }
+              //   }
+              //   if(isExist==0){
+              //     this.detail_image_data.push({
+              //       index:i,
+              //       value:data.FeatureDetail[i].OPTM_ATTACHMENT
+              //     }
+              //      )
+              //   }
+              // }
+              // else{
+              //   this.detail_image_data.push({
+              //     index:i,
+              //     value:data.FeatureDetail[i].OPTM_ATTACHMENT
+              //   }
+              //    )
+              // }
 
             }
           }
@@ -154,22 +163,17 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
-            this.header_image_data =this.feature_bom_data.image_path
-            this.showImageBlock=true;
-            
-
+            if(this.feature_bom_data.image_path!=""){
+              if(this.feature_bom_data.image_path!=null){
+                this.header_image_data =this.commonData.get_current_url() +  this.feature_bom_data.image_path
+                this.showImageBlock=true;
+              }
+            }
           }
-
-
-
           // this.header_image_data = [
           //   this.commonData.get_current_url + "/assets/images/bg.jpg" 
           // ];
-
-
         }
-
-
       )
     }
   }
@@ -198,6 +202,7 @@ export class BomComponent implements OnInit {
       FeatureId: this.feature_bom_data.feature_id,
       type: 1,
       type_value: "",
+      type_value_code: "",
       display_name: "",
       quantity: 1,
       default: "N",
@@ -253,19 +258,18 @@ export class BomComponent implements OnInit {
               // this.detail_image_data.push(this.feature_bom_table[i].attachment)  
 
               if (this.detail_image_data.length > 0) {
-                let isExist = 0;
                 for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
-
-                  if (this.detail_image_data[idtlimg] == this.feature_bom_table[i].attachment) {
-                    isExist = 1;
+                  if (this.detail_image_data[idtlimg].index == i) {
+                    this.detail_image_data[idtlimg].value=this.feature_bom_table[i].attachment
                   }
                 }
-                if(isExist==0){
-                  this.detail_image_data.push(this.feature_bom_table[i].attachment)
-                }
+               
               }
               else{
-                this.detail_image_data.push(this.feature_bom_table[i].attachment)
+                this.detail_image_data.push({
+                  index:i,
+                  value:this.feature_bom_table[i].attachment
+                })
               }
              
             }
@@ -313,7 +317,7 @@ export class BomComponent implements OnInit {
           return;
         }
         else if (data === "Cyclic Reference") {
-          this.toastr.error('', "Cyclic Reference", this.commonData.toast_config);
+          this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
           return;
         }
         else {
@@ -328,7 +332,8 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].type_value = ""
+        this.feature_bom_table[i].type_value = "";
+        this.feature_bom_table[i].type_value_code = "";
         this.feature_bom_table[i].display_name = ""
         if (selectedvalue == 3) {
           this.feature_bom_table[i].isDisplayNameDisabled = false
@@ -406,11 +411,13 @@ export class BomComponent implements OnInit {
     }
   }
 
-  on_typevalue_change(value, rowindex) {
+  on_typevalue_change(value, rowindex, code) {
+  
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        this.feature_bom_table[i].type_value = value
+        this.feature_bom_table[i].type_value = value;
+        this.feature_bom_table[i].type_value_code = code;
         if (this.feature_bom_table[i].type == 1) {
           this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
             data => {
@@ -418,11 +425,13 @@ export class BomComponent implements OnInit {
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
+                this.feature_bom_table[i].type_value_code = "";
                 return;
               }
               else {
                 //this.lookupfor = 'feature_lookup';
-                this.getFeatureDetails(this.feature_bom_table[i].type_value, "Header", i);
+                //First we will check the conflicts
+                this.checkFeaturesAlreadyAddedinParent(value,this.feature_bom_table[i].type_value, i, "change");
               }
             })
         }
@@ -433,6 +442,7 @@ export class BomComponent implements OnInit {
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
+                this.feature_bom_table[i].type_value_code = "";
                 return;
               }
               else {
@@ -467,17 +477,19 @@ export class BomComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'feature_lookup') {
-      this.feature_bom_data.feature_id = $event;
-      this.getFeatureDetails($event, "Header", 0);
+      this.feature_bom_data.feature_id = $event[0];
+      this.feature_bom_data.feature_code = $event[1];
+      this.getFeatureDetails($event[0], "Header", 0);
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.lookupfor = 'Item_Detail_lookup';
-      this.getItemDetails($event);
+      
+      this.getItemDetails($event[0]);
 
     }
-    else {
-      this.lookupfor = 'feature_Detail_lookup';
-      this.getFeatureDetails($event, "Header", 0);
+    else if (this.lookupfor == 'feature_Detail_lookup') {
+      
+      this.getFeatureDetails($event[0], "Header", 0);
     }
 
   }
@@ -509,8 +521,9 @@ export class BomComponent implements OnInit {
         if (data.length > 0) {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-              this.feature_bom_table[i].type_value = data[0].ItemKey
-              this.feature_bom_table[i].display_name = data[0].Description
+              this.feature_bom_table[i].type_value = data[0].ItemKey;
+              this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+              this.feature_bom_table[i].display_name = data[0].Description;
 
             }
           }
@@ -532,9 +545,9 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              if(this.feature_bom_data.image_path!=null||this.feature_bom_data.image_path!=""){
-                this.header_image_data = this.feature_bom_data.image_path;
-                this.showImageBlock=true;
+              if(this.feature_bom_data.image_path!=null || this.feature_bom_data.image_path!=""){
+                  this.header_image_data = this.feature_bom_data.image_path;
+                  this.showImageBlock=true;
               }
              
               // this.header_image_data = [
@@ -545,8 +558,9 @@ export class BomComponent implements OnInit {
               // this.feature_bom_table=data;
               for (let i = 0; i < this.feature_bom_table.length; ++i) {
                 if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-                  this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString()
-                  this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME
+                  this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
+                  this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
+                  this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
 
                 }
               }
@@ -604,7 +618,7 @@ export class BomComponent implements OnInit {
             this.toastr.error('', this.language.SelectValue + currentrow, this.commonData.toast_config);
             return false;
           }
-          if (this.feature_bom_table[i].quantity == "") {
+          if (this.feature_bom_table[i].quantity === "") {
             this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
             return false;
           }
@@ -657,8 +671,18 @@ export class BomComponent implements OnInit {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
           if (data != null || data != undefined) {
-            this.serviceData = data;
-            this.lookupfor = 'associated_BOM';
+            if(data.length > 0){
+              this.serviceData = data;
+              this.lookupfor = 'associated_BOM';
+            }
+            else{
+              this.toastr.error('', this.language.no_assocaited_bom, this.commonData.toast_config);
+              return;
+            }
+          }
+          else{
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
           }
         },
         error => {
@@ -677,7 +701,7 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_data.feature_id != undefined) {
       //now call bom id
 
-      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id).subscribe(
+      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id,this.feature_bom_data.feature_name).subscribe(
         data => {
           if (data != null || data != undefined) {
             this.serviceData = data;
@@ -719,4 +743,42 @@ export class BomComponent implements OnInit {
         }
       })
   }
+
+  //To chk the conflictions of the feature id (hierariechal cylic dependency)
+  checkFeaturesAlreadyAddedinParent(enteredFeatureID,feature_type,rowindex,fromEvent){
+    
+    this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID,this.feature_bom_data.feature_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          //If exists then will restrict user 
+          if(data == "Exist"){
+            this.toastr.error('',  this.language.cyclic_ref_restriction, this.commonData.toast_config);
+            this.feature_bom_table[rowindex].type_value = "";
+            this.feature_bom_table[rowindex].display_name = "";
+            return;
+          }
+          else if(data == "True"){
+
+            if(fromEvent == "lookup"){
+              //this.getFeatureDetails(enteredFeatureID, "Header", 0);
+              this.getFeatureDetails(enteredFeatureID, "Header", rowindex);
+            }
+            else if(fromEvent == "change"){
+              this.getFeatureDetails(feature_type, "Header", rowindex);
+            }
+            
+          }
+        }
+          else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            console.log("Failed when checking hierac check for feature ID")
+            return;
+        }
+      },
+      error=> {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+   }
 }

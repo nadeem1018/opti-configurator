@@ -27,7 +27,7 @@ export class CommonData {
             warning: 'alert alert-warning'
         }
     };
-    language = JSON.parse(sessionStorage.getItem('current_lang'));V
+
     //defining properties for the call 
     public httpOptions = {
         headers: new HttpHeaders({
@@ -39,44 +39,44 @@ export class CommonData {
     public lookup_selected_value = '';
 
     public stringtypevalue: any = [
-        { "value": 1, "Name": this.language.string}, 
-        { "value": 2, "Name": this.language.Number } 
+        { "value": 1, "Name": "String" },
+        { "value": 2, "Name": "Number" }
     ];
 
     public opertions: any = [
-        { "value": 1, "Name": this.language.NoOperation},
-        { "value": 2, "Name": this.language.Increase }, 
-        { "value": 3, "Name": this.language.Decrease} 
+        { "value": 1, "Name": "No Operation" },
+        { "value": 2, "Name": "Increase" },
+        { "value": 3, "Name": "Decrease" }
     ];
 
     public bom_type: any = [
-        { "value": 1, "Name": this.language.feature }, 
-        { "value": 2, "Name": this.language.ItemLookupTitle }, 
-        { "value": 3, "Name": this.language.value}
+        { "value": 1, "Name": "Feature" },
+        { "value": 2, "Name": "Item" },
+        { "value": 3, "Name": "Value" }
     ];
 
     public model_bom_type: any = [
-        { "value": 1, "Name": this.language.feature }, 
-        { "value": 2, "Name": this.language.ItemLookupTitle }, 
-        { "value": 3, "Name": this.language.model } 
+        { "value": 1, "Name": "Feature" },
+        { "value": 2, "Name": "Item" },
+        { "value": 3, "Name": "Model" }
     ];
 
     public rule_seq_type: any = [
         { "value": '', "Name": "" },
-        { "value": 1, "Name": this.language.feature }, 
-        { "value": 2, "Name": this.language.model } 
+        { "value": 1, "Name": "Feature" },
+        { "value": 2, "Name": "Model" }
     ];
 
     public operator_type: any = [
         { "value": '', "Name": "" },
-        { "value": 'or', "Name": this.language.OR }, 
-        { "value": 'and', "Name": this.language.AND } 
+        { "value": 'or', "Name": "OR" },
+        { "value": 'and', "Name": "AND" }
     ];
 
     public yes_no_option: any = [
         { "value": '', "Name": "" },
-        { "value": 'n', "Name": this.language.NO },
-        { "value": 'y', "Name": this.language.YES }
+        { "value": 'n', "Name": "No" },
+        { "value": 'y', "Name": "Yes" }
     ];
 
     public bracket_list = [
@@ -95,14 +95,14 @@ export class CommonData {
         { "value": ">" },
         { "value": "<=" },
         { "value": ">=" },
-        { "value": this.language.Between },
-        { "value": this.language.In },
+        { "value": "Between" },
+        { "value": "In" },
     ];
 
     public document_type = [
         { "value": '', "Name": "" },
-        { "value": 'sales_quote', "Name": this.language.SalesQuote },
-        { "value": 'sales_order', "Name": this.language.SalesOrder }
+        { "value": 'sales_quote', "Name": "Sales Quote" },
+        { "value": 'sales_order', "Name": "Sales Order" }
     ];
 
 

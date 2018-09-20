@@ -22,11 +22,13 @@
                     <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
                 <div class="card-body">
                     <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Bom_FeatureId}}</label>
-
+                        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
                         <div class="col-sm-4 input-group">
-                            <input type="number" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
-                                name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Bom_FeatureId}}"
+                            <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
+                                name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                #featureinputbox>
+                            <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
+                                name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
                                 #featureinputbox>
                             <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
                                 <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
@@ -51,24 +53,19 @@
                                 readonly [(ngModel)]="feature_bom_data.feature_desc">
                         </div>
                     </div>
-
+ 
                     <div class="form-group row clearfix" *ngIf="showImageBlock">
                         <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
                         <div class="col-sm-4">
-                            <div class="row image_data" >
-                                <!-- <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" *ngFor="let image of header_image_data" > -->
-                                <div class=" col-md-4 col-sm-4" >
+                            <div class="row image_data">
+                                <div class=" col-md-4 col-sm-4">
                                     <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
                                         <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
                                     </a>
                                 </div>
                             </div>
-                            <!-- <input #file type="file"  id="fileid" (change)="uploadheaderfile(file.files)" [(ngModel)] ="feature_bom_data.image_path"  /> -->
-
-
                         </div>
                     </div>
-
 
                     <div class="form-group row clearfix">
                         <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
@@ -90,6 +87,11 @@
                             </a>
                         </div>
                     </div>
+
+                    <hr>
+                    
+
+
                     <hr>
                     <div class="col-sm-12">
                         <div class="table-responsive table-responsive-sm">
@@ -98,15 +100,16 @@
                                     <tr>
                                         <th width="4%">#</th>
                                         <th width="10%">{{language.Model_Type}}</th>
-                                        <th width="13%">{{language.Bom_FeatureValue}}</th>
-                                        <th width="13%">{{language.Bom_Displayname}}</th>
+                                        <th width="14%">{{language.Bom_FeatureValue}}</th>
+                                        <th width="14%">{{language.Bom_Displayname}}</th>
                                         <th width="5%">{{language.Bom_Qty}}</th>
                                         <th width="5%">{{language.Bom_Default}}</th>
-                                        <th width="10%">{{language.Bom_Remarks}}</th>
-                                        <th width="10%">{{language.Bom_Attach}}</th>
+                                        <th width="12%">{{language.Bom_Remarks}}</th>
+                                        <th width="12%">{{language.Bom_Attach}}</th>
+                                        <th width="5%">{{language.image}}</th>
                                         <th width="2%">
-                                                <i class="fa fa-times"></i>
-                                            </th>
+                                            <i class="fa fa-times"></i>
+                                        </th>
                                         <!-- <th width="4%">{{language.remove}}</th> -->
                                     </tr>
                                 </thead>
@@ -122,7 +125,9 @@
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex)"
+                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                                                    value={{row.type_value_code}} #type_value_code />
+                                                <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                                                     value={{row.type_value}} #type_value />
                                                 <div class="input-group-append" [hidden]=row.hide>
                                                     <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
@@ -130,6 +135,7 @@
                                                     </span>
                                                 </div>
                                             </div>
+
 
                                         </td>
                                         <td>
@@ -144,7 +150,7 @@
                                                 #quantity />
                                         </td>
                                         <td>
-                                            <input type="checkbox" value="1" class="form-control  form-control-sm mt3" id="default" (change)="on_defualt_change(default,row.rowindex)"
+                                            <input type="checkbox" value="1" class="form-control  form-control-sm mt3" style="margin-top:10px" id="default" (change)="on_defualt_change(default,row.rowindex)"
                                                 value={{row.default}} #default />
                                         </td>
                                         <td>
@@ -153,8 +159,22 @@
 
                                         </td>
                                         <td>
-                                            <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"
-                                            />
+                                            <div class="btn btn-outline-secondary btn-file btn-sm mt-1"> {{language.choose_image}}
+                                                <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"
+                                                />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="clearfix"></div>
+                                            <div class="row image_data" *ngIf="row.attachment">
+                                                <div>
+                                                    <!-- class="col-md-2" style="width:150px" -->
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(row.attachment)">
+                                                        <img src="{{row.attachment}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
@@ -166,16 +186,9 @@
                             </table>
                         </div>
                     </div>
+
                     <hr>
-                    <div class="clearfix"></div>
-                    <div class="row image_data" *ngIf="showImageBlock">
-                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" *ngFor="let image of detail_image_data" style="width: 100px;">
-                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(image)">
-                                <img src="{{image}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
+                  
                 </div>
                 <div class="card-footer small text-muted">
                     <div class="footer-buttons">
@@ -208,74 +221,90 @@
                                         <span>{{language.delete}}</span>
                                     </button>
                                     <!-- only view when edit mode -->
-
                                 </div>
                             </div>
-                            <hr>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    
-    <div class="col-md-3 opti_overflow-auto" >
-            <div class="tree well">
-                <ul class="parent_ul">
-                    <li>
-                        <span><i class="icon-folder-open"></i> F1 </span> 
-                        <ul>
-                            <li>
-                                <span><i class="icon-minus-sign"></i> F2 </span> 
-                                <ul>
-                                    <li>
-                                        <span><i class="icon-leaf"></i> item007 </span>
-                                    </li>
-                                    <li>
-                                        <span><i class="icon-leaf"></i> item008 </span>
-                                    </li>
-                                </ul>
-                            </li>
 
-                            <li>
-                                <span><i class="icon-minus-sign"></i> F3 </span>
-                                <ul>
-                                    <li>
-                                        <span><i class="icon-leaf"></i>F4</span>
-                                    </li>
-                                    <li>
-                                        <span><i class="icon-minus-sign"></i> F5 </span>
-                                        <ul>
-                                            <li>
-                                                <span><i class="icon-minus-sign"></i> F6 </span>
-                                                <ul>
-                                                    <li>
-                                                        <span><i class="icon-leaf"></i> item001 </span>
-                                                    </li>
-                                                    <li>
-                                                        <span><i class="icon-leaf"></i> item0002 </span> 
-                                                    </li>
-                                                    </ul>
-                                            </li>
-                                            <li>
-                                                <span><i class="icon-leaf"></i> item003 </span>
-                                            </li>
-                                            <li>
-                                                <span><i class="icon-leaf"></i> item004 </span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    
-                                </ul>
-                            </li>
+    <div class="col-md-3 opti_overflow-auto">
+        <div class="tree well">
+            <ul class="parent_ul">
+                <li>
+                    <span>
+                        <i class="icon-folder-open"></i> F1 </span>
+                    <ul>
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> F2 </span>
+                            <ul>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i> item007 </span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i> item008 </span>
+                                </li>
+                            </ul>
+                        </li>
 
-                            <li><span><i class="icon-minus-sign"></i> item005 </span></li>
-                            <li><span><i class="icon-minus-sign"></i> item006 </span> </li>
-                        </ul>
-                    </li>
-                    
-                </ul>
-            </div>
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> F3 </span>
+                            <ul>
+                                <li>
+                                    <span>
+                                        <i class="icon-leaf"></i>F4</span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <i class="icon-minus-sign"></i> F5 </span>
+                                    <ul>
+                                        <li>
+                                            <span>
+                                                <i class="icon-minus-sign"></i> F6 </span>
+                                            <ul>
+                                                <li>
+                                                    <span>
+                                                        <i class="icon-leaf"></i> item001 </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        <i class="icon-leaf"></i> item0002 </span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <i class="icon-leaf"></i> item003 </span>
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <i class="icon-leaf"></i> item004 </span>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> item005 </span>
+                        </li>
+                        <li>
+                            <span>
+                                <i class="icon-minus-sign"></i> item006 </span>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
     </div>
 </div>
 

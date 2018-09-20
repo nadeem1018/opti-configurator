@@ -34,7 +34,7 @@ export class ModelComponent implements OnInit {
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent,private toastr: ToastrService,private router: Router,private ActivatedRouter: ActivatedRoute) { }
-  page_main_title = 'Model/Feature Master';
+  page_main_title = this.language.model_feature_master;
   section_title="";
   companyName: string ;
   username: string;
@@ -57,6 +57,7 @@ export class ModelComponent implements OnInit {
    public dialog_params: any = [];
    public show_dialog: boolean = false;
    public selectedImage = "";
+   public ModelImage:string="";
    public isRefCodeDisabled = true;
    public isItemCodeDisabled = true;
    public isItemlookupDisabled = true;
@@ -99,7 +100,7 @@ export class ModelComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.section_title = this.language.edit;
       this.code_disabled= "true";
-      this.showImageBlock=true;
+      
       
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
@@ -113,7 +114,16 @@ this.featureBom.Status=data[0].OPTM_STATUS
 this.featureBom.ItemName=data[0].OPTM_MODELTEMPLATEITEM
 this.featureBom.Ref=data[0].OPTM_ITEMCODEGENREF
 this.featureBom.Accessory=data[0].OPTM_ACCESSORY
+if(data[0].OPTM_PHOTO!== undefined && data[0].OPTM_PHOTO!== "" && data[0].OPTM_PHOTO!== 0){
+  this.featureBom.Image=data[0].OPTM_PHOTO
+  this.ModelImage=this.commonData.get_current_url() + data[0].OPTM_PHOTO
+
+}
+
 this.featureBom.Image=data[0].OPTM_PHOTO
+if(this.featureBom.Image==""||this.featureBom.Image==null||this.featureBom.Image==undefined){
+  this.showImageBlock=false;
+}
 console.log(data[0].OPTM_TYPE);
 if(data[0].OPTM_TYPE == "Feature"){
   this.model_code_label = this.language.model_FeatureCode;
@@ -230,15 +240,21 @@ if (validateStatus == true){
     }
 
     this.fms.UploadFeature(formData).subscribe(data => {
-      if (data.body === "False") {
-        this.showImageBlock=false;
-        this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
-      }
-      else {
-        this.showImageBlock=true;
-        this.featureBom.Image= data.body
-        //this.featureBom.Image= "/assets/images/bg.jpg"
-      }
+      if(data!==undefined && data!=""){
+        if (data.body === "False") {
+         this.showImageBlock=false;
+         this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
+       }
+       else {
+       
+         if(data.body!= "" && data.body!= undefined){
+
+           this.featureBom.Image= data.body
+           this.ModelImage= this.commonData.get_current_url() + data.body
+           this.showImageBlock=true;
+         }
+       }
+     }
     })
   }
 
@@ -391,10 +407,12 @@ if (validateStatus == true){
   getLookupValue($event){
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-       this.featureBom.ItemName = $event;
+        this.featureBom.ItemName = $event[0];
+       this.featureBom.ItemCode= $event[1];
       }
       if (this.lookupfor == "model_item_generation") {
-       this.featureBom.Ref = $event;
+        this.featureBom.Ref = $event[0];
+      //  this.featureBom.RefCode = $event[1];
       }
     }
   }

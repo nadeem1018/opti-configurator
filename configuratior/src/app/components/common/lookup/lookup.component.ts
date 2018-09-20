@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import 'bootstrap';
 
-// import { ContentChild, AfterViewInit, ViewChild, ViewChildren, AfterViewChecked, ElementRef } from "@angular/core"
 
 @Component({
   selector: 'app-lookup',
@@ -30,7 +29,7 @@ export class LookupComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   popup_title = this.language.title;
   constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
-  
+  public table_head_hidden_elements = [];
   
 
   // mandatory variables
@@ -135,6 +134,9 @@ export class LookupComponent implements OnInit {
   }
 
   on_item_select(lookup_key) {
+    console.log("lookup_key - " + lookup_key);
+    console.log( lookup_key);
+    
     this.lookupvalue.emit(lookup_key);
     $("#lookup_modal").modal('hide');
   }
@@ -145,6 +147,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
     this.table_head = ['Code', 'Name'];
+    this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -166,6 +169,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureItemCode';
     this.table_head = ['Code'];
+    this.table_head_hidden_elements = [false];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
    
@@ -189,6 +193,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Id', 'Code', 'Name'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -215,6 +220,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Model Id', 'Code', 'Name'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -236,6 +242,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
     this.table_head = ['ItemKey', 'Name'];
+    this.table_head_hidden_elements = [false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -265,6 +272,7 @@ export class LookupComponent implements OnInit {
     this.fill_input_id = 'price_source';
     this.lookup_key = 'PriceListID';
     this.table_head = ['Price Source'];
+    this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -282,6 +290,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.lookup_key = 'code';
     this.table_head = ['Select', 'Rule', 'Description' ];
+    this.table_head_hidden_elements = [false, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
    /*  this.serviceData = [
@@ -382,8 +391,8 @@ for(var i=0; i< this.serviceData.length; i++){
     this.LookupDataLoaded = true;
     if(this.serviceData !== undefined){
       if (this.serviceData.length > 0) {
-        this.tree_data_json =  this.dummy_json();
-        //this.tree_data_json =this.serviceData;
+        //this.tree_data_json =  this.dummy_json();
+        this.tree_data_json =this.serviceData;
       
        // setTimeout(function(){
           $("#tree_view").modal('show');
@@ -410,6 +419,7 @@ for(var i=0; i< this.serviceData.length; i++){
 
  
     this.table_head = ['Model Id','Model Name','Model Description'];
+    this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
     
     this.showLoader = false;
@@ -431,8 +441,8 @@ for(var i=0; i< this.serviceData.length; i++){
     this.LookupDataLoaded = true;
     if(this.serviceData !== undefined){
       if (this.serviceData.length > 0) {
-        this.tree_data_json =  this.dummy_json();
-        //this.tree_data_json =this.serviceData;
+       // this.tree_data_json =  this.dummy_json();
+        this.tree_data_json =this.serviceData;
       
        // setTimeout(function(){
           $("#tree_view").modal('show');
@@ -477,30 +487,12 @@ for(var i=0; i< this.serviceData.length; i++){
       {"sequence":12,"parentId":"20","component":"21","level":"3"},
       {"sequence":13,"parentId":"22","component":"26","level":"4"},
       {"sequence":14,"parentId":"22","component":"23","level":"4"},
-      {"sequence":15,"parentId":"23","component":"19","level":"5"},
+      
+  //    {"sequence":15,"parentId":"23","component":"19","level":"5"},
       {"sequence":16,"parentId":"19","component":"21","level":"6"},
       {"sequence":17,"parentId":"19","component":"20","level":"6"},
       {"sequence":18,"parentId":"19","component":"Wind Sensor","level":"6"},
-      {"sequence":19,"parentId":"20","component":"22","level":"7"},
-      {"sequence":20,"parentId":"20","component":"21","level":"7"},
-      {"sequence":21,"parentId":"22","component":"26","level":"8"},
-      {"sequence":22,"parentId":"22","component":"23","level":"8"},
-      {"sequence":23,"parentId":"23","component":"19","level":"9"},
-      {"sequence":24,"parentId":"19","component":"21","level":"10"},
-      {"sequence":25,"parentId":"19","component":"20","level":"10"},
-      {"sequence":26,"parentId":"19","component":"Wind Sensor","level":"10"},
-      {"sequence":27,"parentId":"20","component":"22","level":"11"},
-      {"sequence":28,"parentId":"20","component":"21","level":"11"},
-      {"sequence":29,"parentId":"22","component":"26","level":"12"},
-      {"sequence":30,"parentId":"22","component":"23","level":"12"},
-      {"sequence":31,"parentId":"23","component":"19","level":"13"},
-      {"sequence":32,"parentId":"19","component":"21","level":"14"},
-      {"sequence":33,"parentId":"19","component":"20","level":"14"},
-      {"sequence":34,"parentId":"19","component":"Wind Sensor","level":"14"},
-      {"sequence":35,"parentId":"20","component":"22","level":"15"},
-      {"sequence":36,"parentId":"20","component":"21","level":"15"},
-      {"sequence":37,"parentId":"22","component":"26","level":"16"},
-      {"sequence":38,"parentId":"22","component":"23","level":"16"}
+   
     ]
   }
 }
