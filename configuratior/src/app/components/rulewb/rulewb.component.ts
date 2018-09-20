@@ -89,24 +89,24 @@ export class RulewbComponent implements OnInit {
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
           if (data.RuleWorkBenchHeader.length > 0) {
-            if(data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False"){
-              this.rule_wb_data.discontinued =false
+            if (data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False") {
+              this.rule_wb_data.discontinued = false
             }
-            else{
-              this.rule_wb_data.discontinued =true
+            else {
+              this.rule_wb_data.discontinued = true
             }
-            if(data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === "False"){
+            if (data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === "False") {
               this.rule_wb_data.Excluded = false
             }
-            else{
+            else {
               this.rule_wb_data.Excluded = true
             }
             this.rule_wb_data.rule_code = data.RuleWorkBenchHeader[0].OPTM_RULECODE
             this.rule_wb_data.description = data.RuleWorkBenchHeader[0].OPTM_DESCRIPTION;
             this.rule_wb_data.effective_from = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM;
             this.rule_wb_data.effective_to = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO;
-          //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
-           // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
+            //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
+            // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
             this.rule_wb_data.applicable_for_feature_id = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
             this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
 
@@ -121,6 +121,8 @@ export class RulewbComponent implements OnInit {
             let sequence_gen = [];
             let expression = '';
             let current_exp;
+            let forlineno = 0;
+            let lineno;
             for (let i = 0; i < data.RuleWorkBenchInput.length; ++i) {
               this.counter++;
               if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
@@ -137,7 +139,7 @@ export class RulewbComponent implements OnInit {
               let current_count = (this.seq_count - 1);
               if (this.rule_expression_data[current_count] == undefined) {
                 this.rule_expression_data[current_count] = {};
-                this.rule_expression_data[current_count].expression ="";
+                this.rule_expression_data[current_count].expression = "";
               }
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
@@ -145,8 +147,23 @@ export class RulewbComponent implements OnInit {
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }
+             
+              if (forlineno == 0) {
+                forlineno = fetch_data.OPTM_SEQID
+                lineno=i + 1;
+              }
+              else{
+                if(forlineno!=fetch_data.OPTM_SEQID){
+                  lineno = 1;
+                  forlineno=fetch_data.OPTM_SEQID
+                }
+                else{
+                  lineno=lineno + 1;
+                }
+              }
+
               this.rule_expression_data[current_count].row_data.push({
-                lineno:i + 1,
+                lineno: lineno,
                 rowindex: fetch_data.OPTM_ROWID,
                 seq_count: fetch_data.OPTM_SEQID,
                 operator: fetch_data.OPTM_OPERATOR,
@@ -261,7 +278,7 @@ export class RulewbComponent implements OnInit {
     this.counter++;
 
     this.rule_sequence_data.push({
-      lineno:this.counter,
+      lineno: this.counter,
       rowindex: this.counter,
       seq_count: this.seq_count,
       operator: '',
@@ -745,7 +762,7 @@ export class RulewbComponent implements OnInit {
         effective_from: this.rule_wb_data.effective_from,
         effective_to: this.rule_wb_data.effective_to,
         discontinue: this.rule_wb_data.discontinued,
-        excluded:this.rule_wb_data.Excluded,
+        excluded: this.rule_wb_data.Excluded,
         CreatedUser: this.rule_wb_data.username,
         applicablefor: this.rule_wb_data.applicable_for_feature_id,
         CompanyDBId: this.rule_wb_data.CompanyDBId,

@@ -165,7 +165,7 @@ export class BomComponent implements OnInit {
 
             if(this.feature_bom_data.image_path!=""){
               if(this.feature_bom_data.image_path!=null){
-                this.header_image_data =this.feature_bom_data.image_path
+                this.header_image_data =this.commonData.get_current_url() +  this.feature_bom_data.image_path
                 this.showImageBlock=true;
               }
             }
