@@ -84,7 +84,7 @@ function calculate_progress(progress_block) {
   $(document).on("click", ".row_select, .row_select td",  function(){
     var input_id = $(this).parents("tbody.lookup_table_body").attr("name");
     $("#"+input_id).trigger("keyup");
-   //  $("#lookup_modal").modal("hide");
+  
 
   });
   
@@ -96,12 +96,11 @@ function calculate_progress(progress_block) {
     } else if (obj.parents("li.li_with_dd").find(".custom_menu_click_option").is(":visible") == true) {
       obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:none !important;");
     }
-
   });
 
   // wizard JS 
 
-  $(".btn-previous").on("click", function () {
+  $(document).on("click", ".btn-previous", function () {
     var p_obj = $(this);
     var previous_block = p_obj.data("previous-block");
     calculate_progress(previous_block);
@@ -109,7 +108,7 @@ function calculate_progress(progress_block) {
 
   });
 
-  $(".btn-next").on("click", function () {
+  $(document).on("click", ".btn-next", function () {
     var n_obj = $(this);
     
     var next_block = n_obj.data("next-block");
