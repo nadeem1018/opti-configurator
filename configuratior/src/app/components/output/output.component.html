@@ -38,9 +38,9 @@
         <fieldset class="one_step_block" data-block_id="customer_details" style="display:block">
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
-              <div class="col-md-11 pull-left">
+              <div class="col-md-10 pull-left">
                 <i class="fa fa-user fa-fw"></i> {{language.customer_doc_detail}} </div>
-              <div class="col-md-1 pull-right"> {{language.step_1_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_1_4}} </div>
             </div>
             <hr>
           </div>
@@ -234,9 +234,9 @@
         <fieldset class="one_step_block" data-block_id="model_bom_config">
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
-              <div class="col-md-11 pull-left">
+              <div class="col-md-10 pull-left">
                 <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}} </div>
-              <div class="col-md-1 pull-right"> {{language.step_2_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_2_4}} </div>
             </div>
             <hr>
           </div>
@@ -343,7 +343,7 @@
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of feature_itm_list_table_head; let i= index">
-                            <span >
+                            <span>
                               {{label}}
                             </span>
                           </th>
@@ -445,9 +445,9 @@
         <fieldset class="one_step_block" data-block_id="accept_bom_so">
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
-              <div class="col-md-11 pull-left">
+              <div class="col-md-10 pull-left">
                 <i class="fa fa-user fa-fw"></i> {{language.verify_select_final}} </div>
-              <div class="col-md-1 pull-right"> {{language.step_3_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_3_4}} </div>
             </div>
             <hr>
           </div>
@@ -455,59 +455,87 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.order_type}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.order_type}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.order_typey}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.posting_date}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.posting_date}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.posting_date}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.delivery_date}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.delivery_date}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.delivery_date}}</label>
                 </div>
-                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.customer}}</b></label>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.customer}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.customer}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.Name}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.Name}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.name}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.contact_person}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.contact_person}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.contact_person}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.ship_to}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.ship_to}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.ship_to}}</label>
                 </div>
-                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.address}}</b></label>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.address}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.ship_to_address}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.bill_to}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.bill_to}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.bill_to}}</label>
                 </div>
-                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.address}}</b></label>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.address}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.bill_to_address}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.payment_terms}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.payment_terms}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.payment_terms}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.payment_method}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.payment_method}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.payment_method}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.sales_employee}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.sales_employee}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.sales_employee}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label"><b>{{language.remark}}</b></label>
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.remark}}</b>
+                  </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.remark}}</label>
                 </div>
               </div>
@@ -546,37 +574,86 @@
                           </td>
                         </tr>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>
+                            <span>{{this.language.total}}</span>
+                          </th>
+                          <th>$1000/-</th>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
-                
+
           </div>
           <div class="f1-buttons">
             <hr>
             <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="fina_doc_create">
-              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.submit}}</button>
           </div>
         </fieldset>
 
         <fieldset class="one_step_block" data-block_id="fina_doc_create">
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
-              <div class="col-md-11 pull-left">
-                <i class="fa fa-user fa-fw"></i> {{language.customer_doc_detail}} </div>
-              <div class="col-md-1 pull-right"> {{language.step_4_4}} </div>
+              <div class="col-md-10 pull-left">
+                <i class="fa fa-user fa-fw"></i> {{language.sales_order_creation}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_4_4}} </div>
             </div>
             <hr>
           </div>
-          <div class="form_section"></div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="new item section">
+                  <h6>List of New Items Created as per the selected configuration</h6>
+                  <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list" >
+                    <span class="list-group-item list-group-item-action text-primary" href="javascript:;">{{new_item}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-9 border-left-primary">
+                <div class="customer_detail_section">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-2 col-form-label">
+                          <b>Order Type</b>
+                        </label>
+                        <label class="col-sm-6 col-form-label">Sales Order</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-2 col-form-label">
+                          <b>Document No.</b>
+                        </label>
+                        <label class="col-sm-6 col-form-label">10089</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="order_detail_section">
+
+                </div>
+                <hr>
+                <div class="pricing_detail_section">
+
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="f1-buttons">
             <hr>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="accept_bom_so">
-              <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button type="submit" class="btn btn-sm btn-success  mr-10 btn-submit">Submit</button>
+            <button type="button" class="btn btn-sm btn-secondary  mr-10 btn-previous" data-previous-block="accept_bom_so">
+              <i class="fa fa-times fa-fw"></i> {{language.cancel}}</button>
+          <!--   <button type="submit" class="btn btn-sm btn-success  mr-10 btn-submit">Submit</button> -->
           </div>
         </fieldset>
 
