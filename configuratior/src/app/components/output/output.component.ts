@@ -3,12 +3,11 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
-import 'bootstrap';
-import { LookupComponent } from '../common/lookup/lookup.component';
+
+//import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
-  providers:[LookupComponent],
+  //providers:[LookupComponent],
   selector: 'app-output',
   templateUrl: './output.component.html',
   styleUrls: ['./output.component.scss']
@@ -40,7 +39,7 @@ export class OutputComponent implements OnInit {
   ]; 
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: OutputService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
   lookupfor:string = '';
   serviceData: any;
 
@@ -56,13 +55,23 @@ export class OutputComponent implements OnInit {
   }
 
   openCustomerLookUp() {
-    this.lookupfor = 'output_customer';
-    this.service.getCustomers(this.common_output_data.companyName).subscribe(
+  
+    this.serviceData = [];
+    this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
       data => {
-        this.serviceData = data;
-       
+        if (data.length > 0) {
+          this.lookupfor = 'output_customer';
+          this.serviceData = data;
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
       }
     )
+ 
   }
 
   openSalesEmpLookup() { } 

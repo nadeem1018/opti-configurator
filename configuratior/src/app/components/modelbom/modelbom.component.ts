@@ -467,7 +467,7 @@ export class ModelbomComponent implements OnInit {
       this.getPriceDetails($event[0], "Header", this.currentrowindex);
     }
     else if (this.lookupfor == 'rule_section_lookup') {
-      this.rule_data = $event[0];
+      this.rule_data = $event;
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.serviceData = []
