@@ -37,12 +37,15 @@ export class OutputComponent implements OnInit {
     { "key": "Tax", "value": "12%" },
     { "key": "Total", "": "$1500" },
   ];
-  public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5" ];
+  public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
-  lookupfor:string = '';
+  lookupfor: string = '';
   serviceData: any;
+  public contact_persons:any;
+  public customer_ship_to:any;
+  public customer_bill_to:any;
 
   ngOnInit() {
     this.commonData.checkSession();
@@ -56,7 +59,7 @@ export class OutputComponent implements OnInit {
   }
 
   openCustomerLookUp() {
-  
+
     this.serviceData = [];
     this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
       data => {
@@ -72,7 +75,7 @@ export class OutputComponent implements OnInit {
         }
       }
     )
- 
+
   }
 
   openSalesEmpLookup() { }
@@ -80,4 +83,46 @@ export class OutputComponent implements OnInit {
   openTaxCodes() { }
 
   openModalList() { }
+  
+  onContactPersonSelectChange(selectedValue,rowIndex){
+this.console.log(selectedValue);
+  }
+
+  getLookupValue($event) {
+    if (this.lookupfor == 'output_customer') {
+      this.step1_data.customer = $event[0];
+      this.step1_data.customer_name = $event[1];
+
+      if(this.step1_data.customer != undefined){
+        //get contact person
+        this.fillContactPerson();
+      }
+
+    }
+
+  }
+
+  //this will get the contact person
+  fillContactPerson(){
+    this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+        if(data.ContactPerson.length > 0){
+            this.contact_persons = data.ContactPerson;
+        }
+          
+        }
+        else {
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error =>{
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+
+
+  }
 }

@@ -11,6 +11,7 @@ export class OutputService {
 
   config_params:any;
   common_params = new CommonData();
+  
   constructor(private httpclient:HttpClient) { 
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
@@ -24,4 +25,12 @@ export class OutputService {
    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerList",jObject,this.common_params.httpOptions);
   }
 
+
+  fillContactPerson(CompanyDBID:string,Customer:string):Observable<any>{
+  //JSON Obeject Prepared to be send as a param to API
+  let jObject = { ContactPerson: JSON.stringify([{ CompanyDBID: CompanyDBID,Customer: Customer }]) };
+
+  //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/FillContactPerson",jObject,this.common_params.httpOptions);
+  }
 }
