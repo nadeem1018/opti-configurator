@@ -111,9 +111,9 @@ export class LookupComponent implements OnInit {
         this.ruleSelection();
       }
 
-      if (this.lookupfor == "tree_view_lookup"){
-        this.showTreeView();
-      }
+      // if (this.lookupfor == "tree_view_lookup"){
+      //   this.showTreeView();
+      // }
 
       if (this.lookupfor == "tree_view__model_bom_lookup"){
         this.showModelBOMTreeView();
@@ -386,34 +386,24 @@ for(var i=0; i< this.serviceData.length; i++){
   public tree_data_json:any = '';
   @Input() component;
 
-  showTreeView(){
-    this.popup_title = this.language.explode;
-    this.showLoader = true;
-    this.LookupDataLoaded = false;
-    //this.tree_data_json = this.dummy_json();
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
-      if (this.serviceData.length > 0) {
-        //this.tree_data_json =  this.dummy_json();
-        this.tree_data_json =this.serviceData;
-      
-       // setTimeout(function(){
-          $("#tree_view").modal('show');
-        //}, 5000);
-      }
-    }
+  // showTreeView(){
+  //   this.popup_title = this.language.explode;
+  //   this.showLoader = true;
+  //   this.LookupDataLoaded = false;
+  //   //this.tree_data_json = this.dummy_json();
+  //   this.showLoader = false;
+  //   this.LookupDataLoaded = true;
+  //   if(this.serviceData !== undefined){
+  //     if (this.serviceData.length > 0) {
+  //       //this.tree_data_json =  this.dummy_json();
+  //       this.tree_data_json =this.serviceData;
+  //         $("#tree_view").modal('show');
+  //     }
+  //   }
     
-  }
+  // }
 
-  check_component_exist(component, level){
-    level = (parseInt(level) + 1);
-    let data = this.tree_data_json.filter(function (obj) {
-      return obj['parentId'] == component && obj['level'] == level;
-    });
-    return data;
-  }
-
+  
   //To show all associated BOM
   showAssociatedBOMs(){
 

@@ -42,6 +42,8 @@ export class RulewbComponent implements OnInit {
   public update_id: string = "";
   public selectall: boolean = true;
   public typevaluefromdatabase: string = "";
+  public typevaluecodefromdatabase: string = "";
+  
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = [];
 
@@ -84,7 +86,8 @@ export class RulewbComponent implements OnInit {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = false;
-
+      this.show_sequence = false;
+      this.show_add_sequence_btn = true
 
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
@@ -108,13 +111,14 @@ export class RulewbComponent implements OnInit {
             //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
             // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
             this.rule_wb_data.applicable_for_feature_id = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
+            this.rule_wb_data.applicable_for_feature_code = data.RuleWorkBenchHeader[0].OPTM_FEATURECODE;
             this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
 
           }
 
           if (data.RuleWorkBenchInput.length > 0) {
-            this.show_sequence = true;
-            this.show_add_sequence_btn = false
+            /* this.show_sequence = true;
+            this.show_add_sequence_btn = false */
 
             this.counter = 0;
             let managed_seq = [1];
@@ -133,6 +137,14 @@ export class RulewbComponent implements OnInit {
                 this.typevaluefromdatabase = data.RuleWorkBenchInput[i].OPTM_MODEL.toString()
 
               }
+              if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
+                this.typevaluecodefromdatabase = data.RuleWorkBenchInput[i].feature_parent_code.toString()
+
+              }
+              else {
+                this.typevaluecodefromdatabase = data.RuleWorkBenchInput[i].child_code.toString()
+
+              }
 
               let fetch_data = data.RuleWorkBenchInput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
@@ -143,7 +155,7 @@ export class RulewbComponent implements OnInit {
               }
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
-              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
+              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }
@@ -166,6 +178,7 @@ export class RulewbComponent implements OnInit {
                 lineno: lineno,
                 rowindex: fetch_data.OPTM_ROWID,
                 seq_count: fetch_data.OPTM_SEQID,
+                type_value_code: this.typevaluecodefromdatabase,
                 operator: fetch_data.OPTM_OPERATOR,
                 type: fetch_data.OPTM_TYPE,
                 braces: fetch_data.OPTM_BRACES,
@@ -197,6 +210,7 @@ export class RulewbComponent implements OnInit {
                 rowindex: i,
                 check_child: true,
                 feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
+                featureCode: data.RuleWorkBenchOutput[i].OPTM_FEATURECODE,
                 item: data.RuleWorkBenchOutput[i].OPTM_ITEMKEY,
                 value: data.RuleWorkBenchOutput[i].OPTM_VALUE,
                 uom: data.RuleWorkBenchOutput[i].OPTM_UOM,
@@ -391,6 +405,7 @@ export class RulewbComponent implements OnInit {
               rowindex: i,
               check_child: true,
               feature: data[i].Feature,
+              featureCode: data[i].featureCode,
               item: data[i].Item,
               value: data[i].Value,
               uom: data[i].UOM,

@@ -17,7 +17,7 @@ export class OutputComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public page_main_title = this.language.output_window;
   public common_output_data: any = [];
-  public feature_accessory_list:any  [];
+  public feature_accessory_list: any[];
   public step1_data: any = [];
   public step2_data: any = [];
   public step3_data: any = [];
@@ -27,16 +27,17 @@ export class OutputComponent implements OnInit {
   public accessory_table_head = ["#", this.language.code, this.language.name];
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
-  public model_discount_table_head = [this.language.discount_per, ""]; 
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn,   "X"];
+  public model_discount_table_head = [this.language.discount_per, "10%"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "X"];
   public feature_tax_total = [
-    {"key":"Tax","value":"10%"},
+    { "key": "Tax", "value": "10%" },
     { "key": "Total", "": "$2000" },
   ];
   public item_tax_total = [
     { "key": "Tax", "value": "12%" },
     { "key": "Total", "": "$1500" },
-  ]; 
+  ];
+  public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5" ];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
@@ -49,8 +50,8 @@ export class OutputComponent implements OnInit {
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
     this.feature_accessory_list = [
-      { "id": "1", "key": "A1", "name": "Accessory 1"},
-      { "id": "2", "key":"A2", "name": "Accessory 2"},
+      { "id": "1", "key": "A1", "name": "Accessory 1" },
+      { "id": "2", "key": "A2", "name": "Accessory 2" },
     ];
   }
 
@@ -74,8 +75,8 @@ export class OutputComponent implements OnInit {
  
   }
 
-  openSalesEmpLookup() { } 
-  
+  openSalesEmpLookup() { }
+
   openTaxCodes() { }
 
   openModalList() { }
