@@ -38,6 +38,8 @@ export class OutputComponent implements OnInit {
     { "key": "Total", "": "$1500" },
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
+  
+  public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }

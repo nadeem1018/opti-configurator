@@ -509,3 +509,7 @@ only screen and ( min-resolution: 2dppx) {
     padding-top: 20px;
     border-top: 1px solid #ccc;
 }
+
+.list-group-item {
+    padding: .1rem 0.5rem !important;
+}
