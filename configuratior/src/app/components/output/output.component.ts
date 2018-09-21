@@ -1,12 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
-import { RulewbService } from '../../services/rulewb.service';
+import { OutputService } from '../../services/output.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as $ from 'jquery';
-import 'bootstrap';
+
+//import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
+  //providers:[LookupComponent],
   selector: 'app-output',
   templateUrl: './output.component.html',
   styleUrls: ['./output.component.scss']
@@ -40,7 +41,9 @@ export class OutputComponent implements OnInit {
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
+  lookupfor:string = '';
+  serviceData: any;
 
   ngOnInit() {
     this.commonData.checkSession();
@@ -53,7 +56,25 @@ export class OutputComponent implements OnInit {
     ];
   }
 
-  openFeatureLookUp() { }
+  openCustomerLookUp() {
+  
+    this.serviceData = [];
+    this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'output_customer';
+          this.serviceData = data;
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+ 
+  }
 
   openSalesEmpLookup() { }
 

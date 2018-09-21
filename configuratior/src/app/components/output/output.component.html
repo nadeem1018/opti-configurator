@@ -94,7 +94,7 @@
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="customer" id="customer" placeholder="{{language.customer}}"
                       [(ngModel)]="step1_data.customer" #customer>
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
@@ -799,3 +799,5 @@
     </div>
   </div>
 </div>
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
