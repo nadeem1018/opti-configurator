@@ -32,12 +32,6 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     show_table_footer: boolean = false;
     public CheckedData: any = [];
 
-
-
-
-
-
-
     //custom dialoag params
     public dialog_params: any = [];
     public show_dialog: boolean = false;
@@ -45,12 +39,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public row_id: any;
     public selectall: boolean = false;
     public GetItemData: any = [];
+    public isMultiDelete: boolean = false;
 
 
     //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
-    public table_hidden_elements = [false, true, false, false, false];   
+    table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
+    public table_hidden_elements = [false, true, false, false, false];
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
@@ -118,6 +113,7 @@ table_head_foot = [this.language.checkbox_here, this.language.hash, this.languag
         // button click function in here
     }
     button_click2(id) {
+        this.isMultiDelete = false;
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
         this.row_id = id;
@@ -128,9 +124,13 @@ table_head_foot = [this.language.checkbox_here, this.language.hash, this.languag
 
     //This will take confimation box value
     get_dialog_value(userSelectionValue) {
-        console.log("GET DUIALOG VALUE")
         if (userSelectionValue == true) {
-            this.delete_row();
+            if (this.isMultiDelete == false) {
+                this.delete_row();
+            }
+            else {
+                this.delete_multi_row();
+            }
         }
         this.show_dialog = false;
     }
@@ -220,47 +220,17 @@ table_head_foot = [this.language.checkbox_here, this.language.hash, this.languag
                     })
                 }
             }
-
-
-
         }
         else {
             this.selectall = false
         }
-
-
-
-
     }
 
     delete() {
         if (this.CheckedData.length > 0) {
-            //for (let i = 0; i < this.CheckedData.length; ++i) {
-            this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
-                data => {
-                    if (data == "True") {
-                        this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
-                        return;
-                    }
-                    else {
-                        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
-                            data => {
-                                if (data === "True") {
-                                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                    this.service_call(this.current_page, this.search_string);
-                                    this.router.navigateByUrl('item-code-generation/view');
-                                    return;
-                                }
-                                else {
-                                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                    return;
-                                }
-                            }
-                        )
-                    }
-                }
-            )
-            // }
+            this.isMultiDelete = true;
+            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+            this.show_dialog = true;
         }
         else {
             this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
@@ -268,7 +238,34 @@ table_head_foot = [this.language.checkbox_here, this.language.hash, this.languag
 
     }
 
-
+    delete_multi_row() {
+        //for (let i = 0; i < this.CheckedData.length; ++i) {
+        this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
+            data => {
+                if (data == "True") {
+                    this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                    return;
+                }
+                else {
+                    this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+                        data => {
+                            if (data === "True") {
+                                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                this.service_call(this.current_page, this.search_string);
+                                this.router.navigateByUrl('item-code-generation/view');
+                                return;
+                            }
+                            else {
+                                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                return;
+                            }
+                        }
+                    )
+                }
+            }
+        )
+        // }
+    }
 
 
 }
