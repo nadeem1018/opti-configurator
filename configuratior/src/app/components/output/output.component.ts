@@ -53,7 +53,7 @@ export class OutputComponent implements OnInit {
   public bill_data:any =[];
   public owner_list: any =[];
   public customerBillTo:any;
-
+  public document: any;
   public customerShipTo:any;
 
   ngOnInit() {
@@ -61,6 +61,7 @@ export class OutputComponent implements OnInit {
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
+    this.step1_data.document = "sales_quote";
     this.feature_accessory_list = [
       { "id": "1", "key": "A1", "name": "Accessory 1" },
       { "id": "2", "key": "A2", "name": "Accessory 2" },

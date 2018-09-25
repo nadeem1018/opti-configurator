@@ -100,7 +100,7 @@ export class CommonData {
     ];
 
     public document_type = [
-        { "value": '', "Name": "" },
+        //{ "value": '', "Name": "" },
         { "value": 'sales_quote', "Name": "Sales Quote" },
         { "value": 'sales_order', "Name": "Sales Order" }
     ];
