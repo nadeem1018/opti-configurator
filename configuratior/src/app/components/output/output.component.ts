@@ -55,7 +55,8 @@ export class OutputComponent implements OnInit {
   public customerBillTo:any;
   public document: any;
   public customerShipTo:any;
-
+  public isNextButtonVisible: boolean = false;
+  
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -72,6 +73,7 @@ export class OutputComponent implements OnInit {
      let formated_posting_date = new Date( todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
     //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
     this.step1_data.posting_date= formated_posting_date;
+    this.isNextButtonVisible = false;
   }
 
   openCustomerLookUp() {
@@ -110,11 +112,15 @@ export class OutputComponent implements OnInit {
       this.step1_data.customer_name = $event[1];
 
       if(this.step1_data.customer != undefined){
+        this.isNextButtonVisible = true;
         //get contact person
         this.fillContactPerson();
         this.fillShipTo();
         this.fillBillTo();
         this.fillOwners();
+      }
+      else{
+        this.isNextButtonVisible = false;
       }
 
     }
@@ -280,6 +286,7 @@ else{
         data => {
           if (data === "False") {
             this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
+            this.isNextButtonVisible = false;
             this.step1_data.customer = "";
             this.step1_data.customer_name='';
             this.contact_persons = [];
@@ -293,6 +300,7 @@ else{
           }
 
           else{
+            this.isNextButtonVisible = true;
             this.GetCustomername();
             this.fillContactPerson();
             this.fillShipTo();

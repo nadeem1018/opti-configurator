@@ -233,8 +233,8 @@
                 <span>{{language.cancel}}</span>
               </button>
             </div>
-            <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
-              <i class="fa fa-arrow-right fa-fw"></i> Next</button>
+            <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>
         </fieldset>
 
