@@ -59,12 +59,21 @@ export class OutputComponent implements OnInit {
   public person: any;
   public salesemployee: any;
 
+  public document_date = '';
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
     this.step1_data.document = "sales_quote";
+    if (this.step1_data.document == "sales_quote") {
+      this.document_date = this.language.valid_date;
+      this.step1_data.document_name = "Sales Quote";
+    }
+    else {
+      this.document_date = this.language.delivery_date;
+      this.step1_data.document_name = "Sales Order";
+    }
     this.feature_accessory_list = [
       { "id": "1", "key": "A1", "name": "Accessory 1" },
       { "id": "2", "key": "A2", "name": "Accessory 2" },
@@ -109,7 +118,7 @@ export class OutputComponent implements OnInit {
     this.step1_data.person_name = this.person;
   }
 
-  onSalesPersonChange(selectedSalesEmp){
+  onSalesPersonChange(selectedSalesEmp) {
     this.console.log(selectedSalesEmp);
     this.salesemployee = selectedSalesEmp;
     this.step1_data.sales_employee = selectedSalesEmp;
@@ -344,6 +353,36 @@ export class OutputComponent implements OnInit {
         }
       }
     )
+  }
+
+  onDocumentChange() {
+    if (this.step1_data.document == "sales_quote") {
+      this.document_date = this.language.valid_date;
+      this.step1_data.document_name = "Sales Quote";
+    }
+    else {
+      this.document_date = this.language.delivery_date;
+      this.step1_data.document_name = "Sales Order";
+    }
+  }
+
+  onFinishPress(){
+    let final_dataset_to_save:any = {};
+    final_dataset_to_save.OPConfig_OUTPUTHDR = [];
+    final_dataset_to_save.OPConfig_OUTPUTHDR = this.step1_data;
+
+    this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
+      data => {
+        this.console.log(data);
+        if (data != null || data != undefined && data.length > 0) {
+          this.step1_data.customer_name = data[0].Name;
+        }
+        else {
+          this.step1_data.customer_name = '';
+        }
+      }
+    )
+
   }
 
 }

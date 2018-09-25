@@ -90,4 +90,11 @@ export class OutputService {
         //Return the response form the API  
           return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerName",jObject,this.common_params.httpOptions);
       }
+
+      AddUpdateCustomerData(final_dataset_to_save):Observable<any>{
+        var jObject = { GetData:  JSON.stringify(final_dataset_to_save) };
+      
+        //Return the response form the API  
+          return this.httpclient.post(this.config_params.service_url + "/Wizard/AddUpdateCustomerData",jObject,this.common_params.httpOptions);
+      }
 }
