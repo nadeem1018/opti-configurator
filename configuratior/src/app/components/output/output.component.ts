@@ -267,7 +267,10 @@ else{
         this.step1_data.bill_to_address =  data.BillingAdress[0].BillingAdress;
         }
         else{
-          this.step1_data.bill_to_address='';        
+          this.step1_data.bill_to_address='';  
+          
+
+
         }
       })
     }
@@ -275,12 +278,42 @@ else{
       this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
         data => {
           if (data === "False") {
-            this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-            //this.featureBom.ItemName = "";
+            this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
+            this.step1_data.customer = "";
+            this.step1_data.customer_name='';
+            this.contact_persons = [];
+            this.sales_employee = [];
+            this.ship_to= [];
+            this.step1_data.ship_to_address='';  
+            this.step1_data.bill_to_address= '';
+            this.bill_to= [];
+            this.owner_list=[];
             return;
+          }
+
+          else{
+            this.GetCustomername();
+            this.fillContactPerson();
+            this.fillShipTo();
+            this.fillBillTo();
+            this.fillOwners();
           }
         })
 
+    }
+
+    GetCustomername(){
+      this.OutputService.GetCustomername(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+        data => {
+          this.console.log(data);
+          if (data != null || data != undefined && data.length > 0) {
+            this.step1_data.customer_name= data[0].Name;
+          }
+          else{
+            this.step1_data.customer_name ='';
+          }
+        }
+      )
     }
 
 }

@@ -273,7 +273,8 @@
     "In":"In",
     "delivery_date":"Delivery Date",
     "serial":"Sl#" ,
-    "ReadyToUse":"Ready To Use"
+    "ReadyToUse":"Ready To Use",
+    "invalidcustomer": "Enter valid customer"
 
 
 

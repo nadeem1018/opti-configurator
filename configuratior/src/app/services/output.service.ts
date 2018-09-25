@@ -82,4 +82,12 @@ export class OutputService {
         //Return the response form the API  
           return this.httpclient.post(this.config_params.service_url + "/Wizard/ValidateCustomer",jObject,this.common_params.httpOptions);
       }
+
+      GetCustomername(CompanyDBID:string, Customer : string ):Observable<any>{
+        //JSON Obeject Prepared to be send as a param to API
+        let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer:Customer }]) };
+      
+        //Return the response form the API  
+          return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerName",jObject,this.common_params.httpOptions);
+      }
 }
