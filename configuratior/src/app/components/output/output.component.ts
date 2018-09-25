@@ -85,9 +85,36 @@ export class OutputComponent implements OnInit {
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
+
+    this.step1_data.document = "sales_quote";
+    if (this.step1_data.document == "sales_quote"){
+      this.document_date = this.language.valid_date;  
+      this.step1_data.document_name = "Sales Quote";
+    }
+    else{
+      this.document_date = this.language.delivery_date;
+      this.step1_data.document_name = "Sales Order";
+    }
+    
+    this.feature_accessory_list = [
+      { "id": "1", "key": "A1", "name": "Accessory 1" },
+      { "id": "2", "key": "A2", "name": "Accessory 2" },
+    ];
+
     this.feature_accessory_list = []
     this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
+
+
+
+    var todaysDate = new Date();
+    //var mindate =new Date(todaysDate) ;
+     let formated_posting_date = new Date( todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
+    //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
+    this.step1_data.posting_date= formated_posting_date;
+    this.isNextButtonVisible = false;
+    
+
     // this.feature_accessory_list = [
     //   { "id": "1", "key": "A1", "name": "Accessory 1" },
     //   { "id": "2", "key": "A2", "name": "Accessory 2" },
