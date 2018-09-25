@@ -56,13 +56,19 @@ export class OutputComponent implements OnInit {
   public document: any;
   public customerShipTo:any;
   public isNextButtonVisible: boolean = false;
-  
+  public document_date ='';
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
     this.step1_data.document = "sales_quote";
+    if (this.step1_data.document == "sales_quote"){
+      this.document_date = this.language.valid_date;  
+    }
+    else{
+      this.document_date = this.language.delivery_date;
+    }
     this.feature_accessory_list = [
       { "id": "1", "key": "A1", "name": "Accessory 1" },
       { "id": "2", "key": "A2", "name": "Accessory 2" },
@@ -323,6 +329,14 @@ else{
           }
         }
       )
+    }
+    onDocumentChange(){
+      if (this.step1_data.document == "sales_quote"){
+        this.document_date = this.language.valid_date;  
+      }
+      else{
+        this.document_date = this.language.delivery_date;
+      }
     }
 
 }

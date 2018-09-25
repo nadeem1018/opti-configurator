@@ -274,5 +274,6 @@
     "serial": "Sl#",
     "ReadyToUse": "Ready To Use",
     "child_exist_cannot_remove": "Child exist in th following component, First Remove the child of this component. ",
-    "invalidcustomer": "Enter valid customer"
+    "invalidcustomer": "Enter valid customer",
+    "valid_date": "Valid Until"
 }
