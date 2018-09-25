@@ -46,9 +46,10 @@ export class BomComponent implements OnInit {
   counter = 0;
   public header_image_data: any;
   public detail_image_data: any = [];
+  public live_tree_view_data = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
-  public row_image_data:any;
+  public row_image_data: any;
 
 
   //custom dialoag params
@@ -83,7 +84,7 @@ export class BomComponent implements OnInit {
             for (let i = 0; i < data.FeatureDetail.length; ++i) {
               if (data.FeatureDetail[i].OPTM_TYPE == 1) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
-                this.typevaluecodefromdatabase= data.FeatureDetail[i].child_code.toString()
+                this.typevaluecodefromdatabase = data.FeatureDetail[i].child_code.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
@@ -92,7 +93,7 @@ export class BomComponent implements OnInit {
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
-                this.typevaluecodefromdatabase= data.FeatureDetail[i].OPTM_ITEMKEY.toString()
+                this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
@@ -101,7 +102,7 @@ export class BomComponent implements OnInit {
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
-                this.typevaluecodefromdatabase= data.FeatureDetail[i].OPTM_VALUE.toString()
+                this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
                 // this.isDisplayNameDisabled = false
                 this.isDisplayNameDisabled = false
                 //  this.isTypeDisabled = false
@@ -117,14 +118,14 @@ export class BomComponent implements OnInit {
                 this.defaultcheckbox = false
               }
 
-              this.row_image_data=this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
+              this.row_image_data = this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
 
               this.feature_bom_table.push({
                 rowindex: data.FeatureDetail[i].OPTM_LINENO,
                 FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
                 type: data.FeatureDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
-                type_value_code:this.typevaluecodefromdatabase,
+                type_value_code: this.typevaluecodefromdatabase,
                 display_name: data.FeatureDetail[i].OPTM_DISPLAYNAME,
                 quantity: this.isQuanity,
                 default: this.defaultcheckbox,
@@ -139,35 +140,12 @@ export class BomComponent implements OnInit {
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
 
-              // this.detail_image_data=[];
-              // if (this.detail_image_data.length > 0) {
-              //   let isExist = 0;
-              //   for (let idtlimg = 0; idtlimg < this.detail_image_data.length; ++idtlimg) {
 
-              //     if (this.detail_image_data[idtlimg].value== data.FeatureDetail[i].OPTM_ATTACHMENT) {
-              //       isExist = 1;
-              //     }
-              //   }
-              //   if(isExist==0){
-              //     this.detail_image_data.push({
-              //       index:i,
-              //       value:data.FeatureDetail[i].OPTM_ATTACHMENT
-              //     }
-              //      )
-              //   }
-              // }
-              // else{
-              //   this.detail_image_data.push({
-              //     index:i,
-              //     value:data.FeatureDetail[i].OPTM_ATTACHMENT
-              //   }
-              //    )
-              // }
 
             }
           }
           if (data.FeatureHeader.length > 0) {
-            this.feature_bom_data.feature_code= data.FeatureHeader[0].OPTM_FEATURECODE;
+            this.feature_bom_data.feature_code = data.FeatureHeader[0].OPTM_FEATURECODE;
             this.feature_bom_data.feature_id = data.FeatureDetail[0].OPTM_FEATUREID;
             this.feature_bom_data.feature_name = data.FeatureHeader[0].OPTM_DISPLAYNAME;
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
@@ -180,10 +158,9 @@ export class BomComponent implements OnInit {
                 this.showImageBlock = true;
               }
             }
+            this.onExplodeClick();
           }
-          // this.header_image_data = [
-          //   this.commonData.get_current_url + "/assets/images/bg.jpg" 
-          // ];
+
         }
       )
     }
@@ -219,7 +196,7 @@ export class BomComponent implements OnInit {
       default: false,
       remark: "",
       attachment: "",
-      preview:"",
+      preview: "",
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
@@ -228,26 +205,6 @@ export class BomComponent implements OnInit {
       CreatedUser: this.username
     });
   };
-
-
-  // uploadheaderfile(files: any) {
-  //   if (files.length === 0)
-  //     return;
-  //   const formData = new FormData();
-
-  //   for (let file of files) {
-  //     formData.append(file.name, file);
-  //   }
-
-  //   this.fbom.UploadFeatureBOM(formData).subscribe(data => {
-  //     if (data.body === "False") {
-  //       this.toastr.error('', this.language.filecannotupload, this.commonData.toast_config);
-  //     }
-  //     else {
-  //       this.feature_bom_data.image_path = data.body
-  //     }
-  //   })
-  // }
 
   uploaddetailfile(files: any, rowindex) {
     if (files.length === 0)
@@ -267,7 +224,7 @@ export class BomComponent implements OnInit {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === rowindex) {
               this.feature_bom_table[i].attachment = data.body
-              this.feature_bom_table[i].preview=this.commonData.get_current_url() + data.body
+              this.feature_bom_table[i].preview = this.commonData.get_current_url() + data.body
               // this.detail_image_data.push(this.feature_bom_table[i].attachment)  
 
               if (this.detail_image_data.length > 0) {
@@ -296,6 +253,28 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_table.length > 0) {
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].rowindex === rowindex) {
+          let display_name = this.feature_bom_table[i].display_name;
+          if (this.tree_data_json.length > 0) {
+            let remove_tree_data = this.tree_data_json.filter(function (obj) {
+              return (obj['component'] == display_name);
+            });
+            if (remove_tree_data.length > 0) {
+              let tree_element_child = this.tree_data_json.filter(function (obj) {
+                return obj['parentId'] == remove_tree_data[0]['component'];
+              });
+             
+              if (tree_element_child.length > 0) {
+                this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
+                return false;
+              } else {
+                for (let j = 0; j < this.tree_data_json.length; j++) {
+                  if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
+                    this.tree_data_json.splice(j, 1);
+                  }
+                }
+              }
+            }
+          }
           this.feature_bom_table.splice(i, 1);
           i = i - 1;
         }
@@ -420,6 +399,7 @@ export class BomComponent implements OnInit {
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         this.feature_bom_table[i].display_name = value
+        this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
       }
     }
   }
@@ -476,7 +456,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].default = true
         }
         else {
-          this.feature_bom_table[i].default =false
+          this.feature_bom_table[i].default = false
         }
 
 
@@ -537,7 +517,7 @@ export class BomComponent implements OnInit {
               this.feature_bom_table[i].type_value = data[0].ItemKey;
               this.feature_bom_table[i].type_value_code = data[0].ItemKey;
               this.feature_bom_table[i].display_name = data[0].Description;
-
+              this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
             }
           }
         }
@@ -559,8 +539,8 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
               this.showImageBlock = false;
-              if (this.feature_bom_data.image_path != null ) {
-                if(this.feature_bom_data.image_path != ""){
+              if (this.feature_bom_data.image_path != null) {
+                if (this.feature_bom_data.image_path != "") {
                   this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path;
                   this.showImageBlock = true;
                 }
@@ -581,6 +561,7 @@ export class BomComponent implements OnInit {
                 }
               }
             }
+            this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex });
           }
           else {
             if (index == 1) {
@@ -716,25 +697,40 @@ export class BomComponent implements OnInit {
   onExplodeClick() {
     if (this.feature_bom_data.feature_id != undefined) {
       //now call bom id
+      if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+        this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id, this.feature_bom_data.feature_name).subscribe(
+          data => {
+            if (data != null || data != undefined) {
+              //Earlier we were opening this in lookup
+              // this.serviceData = data;
+              // this.lookupfor = 'tree_view_lookup';
+              let counter_temp = 0;
+              let temp_data = data.filter(function (obj) {
+                obj['live_row_id'] = (counter_temp++);
+                return obj;
+              });
+              this.tree_data_json = temp_data;
+              console.log(this.tree_data_json);
+              
+            }
+            else {
+            }
 
-      this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id, this.feature_bom_data.feature_name).subscribe(
-        data => {
-          if (data != null || data != undefined) {
-            //Earlier we were opening this in lookup
-            // this.serviceData = data;
-            // this.lookupfor = 'tree_view_lookup';
-
-            this.tree_data_json = data;
+          },
+          error => {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
           }
-          else {
+        );
+      } else {
+        let sequence_count = parseInt(this.tree_data_json.length + 1);
+        if (this.live_tree_view_data.length > 0) {
+          for (var key in this.live_tree_view_data) {
+            this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
           }
-
-        },
-        error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-          return;
+          this.live_tree_view_data = [];
         }
-      )
+      }
     }
     else {
       this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);

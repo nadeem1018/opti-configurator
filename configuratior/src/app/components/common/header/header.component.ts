@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
      this.CommonService.get_config();
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-    this.commonData.checkSession();
+   // this.commonData.checkSession();
     
     this.CommonService.set_language(this.config_data['locale']);
     this.project_name = this.config_data['app_title'];
@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.commonData.checkSession();
+   // this.commonData.checkSession();
   }
  
   logout(){

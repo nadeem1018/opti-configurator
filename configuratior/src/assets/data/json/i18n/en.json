@@ -273,8 +273,8 @@
     "In":"In",
     "delivery_date":"Delivery Date",
     "serial":"Sl#" ,
-    "ReadyToUse":"Ready To Use"
-
+    "ReadyToUse":"Ready To Use",
+    "child_exist_cannot_remove":"Child exist in th following component, First Remove the child of this component. "
 
 
    
