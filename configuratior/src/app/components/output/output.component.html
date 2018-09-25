@@ -246,8 +246,9 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="model">{{language.model}}</label>
                   <div class="col-sm-9 input-group">
+                      <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.modal_id" name="modelName" id="modelNameId">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="model" id="model" placeholder="{{language.model}}"
-                      [(ngModel)]="step1_data.model" #model>
+                      [(ngModel)]="step2_data.model_code" #modelcode  (change)="onModelCodeChange()">
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openModalList()">
                         <i class="fa fa-bars"></i>
@@ -258,8 +259,8 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="quantity">{{language.quantity}}</label>
                   <div class="col-sm-9">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="quantity" id="quantity" placeholder="{{language.quantity}}"
-                      [(ngModel)]="step1_data.quantity" #quantity>
+                    <input type="number" ngValue="" pattern="\d+" class="form-control  form-control-sm mt3 pull-right" name="quantity" id="quantity" placeholder="{{language.quantity}}"
+                      [(ngModel)]="step2_data.quantity" #quantity (change)="on_input_change('quantity',quantity.value)" style="text-align:right">
 
                   </div>
                 </div>
@@ -267,8 +268,10 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="feature">{{language.feature}}</label>
                   <div class="col-sm-9 input-group">
+                      <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.feature_id"
+                      name="featureName" id="featureNameId" >
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature" id="feature" placeholder="{{language.feature}}"
-                      [(ngModel)]="step1_data.feature" #feature>
+                      [(ngModel)]="step2_data.feature_code" #featurecode>
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
                         <i class="fa fa-bars"></i>
@@ -276,13 +279,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row clearfix">
+                <div class="form-group row clearfix" *ngFor="let featurechidrow of feature_child_data">
                   <label class="col-sm-3 col-form-label" for="feature2"></label>
                   <div class="col-sm-9 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature2" id="feature2" placeholder="{{language.feature2}}"
-                      [(ngModel)]="step1_data.feature2" #feature2>
+                       value={{featurechidrow.featurechildcode}} #feature2>
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openChildFeatureLookUp(featurechidrow.featureparentid,featurechidrow.featureparentcode)">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
@@ -295,10 +298,10 @@
                     <table class="table table-bordered table-sm">
                       <thead class="thead-dark">
                         <tr>
-                          <th *ngFor="let label of accessory_table_head; let i= index">
+                          <th *ngFor="let label of accessory_table_head; let i= index"  [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox" class="custom-control-input">
+                                <input type="checkbox" id="acccessory_check{{label}}"name="child_checkbox" class="custom-control-input" #accallcheckbox (click)="selectall(accallcheckbox.checked)" >
                                 <label class="custom-control-label" for="acccessory_check{{label}}"></label>
                               </div>
                             </span>
@@ -310,10 +313,10 @@
                       </thead>
                       <tbody>
                         <tr class="" *ngFor="let row of feature_accessory_list">
-                          <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                          <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
+                                <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" [(checked)]=row.checked #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
                                   class="custom-control-input">
                                 <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
                               </div>
@@ -329,9 +332,9 @@
                 </div>
               </div>
               <div class="col-md-8 border-left-primary">
-                <div class="form-group col-md-4 clearfix">
+                <div class="form-group col-md-4 clearfix"  *ngIf="isModelVisible">
                   <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
-                  <span class="col-sm-6 bg-light border border-primary">Test</span>
+                  <span class="col-sm-6 bg-light border border-primary">{{step2_data.model_code}}</span>
                 </div>
                 <div class="feature_block">
                   <hr>
@@ -349,7 +352,44 @@
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody> 
+                        <tr class="" *ngFor="let featurerow of feature_itm_list_table">
+                          <td>
+                            <div class="input-group">
+                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/>
+                              <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label>
+                            </div>
+      
+                          </td>
+                          <td>
+                              <div class="input-group">
+                            <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="input-group">
+                                  <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
+                                    </div>
+                          </td>
+                          <td>
+                              <div class="input-group">
+                            <input type="number" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
+                              (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)" #quantity />
+                            </div>
+                          </td>
+                          <td>
+                            <div class="input-group">
+                          <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
+                            (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price />
+                          </div>
+                        </td>
+                          <td>
+                              <div class="input-group">
+                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
+                              (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)" #pricextn />
+                            </div>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -395,6 +435,37 @@
                         </tr>
                       </thead>
                       <tbody>
+                          <tr class="" *ngFor="let accessoryrow of accessory_itm_list_table">
+                              <td>
+                                  <div class="input-group">
+                                      <input [disabled]="accessoryrow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{accessoryrow.FeatureId}}/>
+                                <label class="col-sm-12 col-form-label">{{accessoryrow.Item}}</label>
+                                  </div>
+                              </td>
+                              <td>
+                                  <div class="input-group">
+                                      <label class="col-sm-12 col-form-label">{{accessoryrow.Description}}</label>
+                                        </div>
+                              </td>
+                              <td>
+                                  <div class="input-group">
+                                <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{accessoryrow.quantity}}
+                                  (change)="on_accessory_input_change('quantity',quantity.value,accessoryrow.FeatureId,accessoryrow.Item)" #quantity />
+                                </div>
+                              </td>
+                              <td>
+                                <div class="input-group">
+                              <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{accessoryrow.price}}
+                                (change)="on_accessory_input_change('price',price.value,accessoryrow.FeatureId,accessoryrow.Item)" #price />
+                              </div>
+                            </td>
+                              <td>
+                                  <div class="input-group">
+                                <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{accessoryrow.pricextn}}
+                                  (change)="on_accessory_input_change('priceext',pricextn.value,accessoryrow.FeatureId,accessoryrow.Item)" #pricextn />
+                                </div>
+                              </td>
+                            </tr>
                       </tbody>
                     </table>
                   </div>
@@ -428,10 +499,10 @@
           </div>
           <div class="row">
             <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
-              <button type="button" class="btn btn-sm btn-secondary  mr-10">
+              <button type="button" class="btn btn-sm btn-secondary  mr-10" (click)="onclearselection()">
                 <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
-              <button type="button" class="btn btn-sm btn-info  mr-10 ">
-                <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>
+              <!-- <button type="button" class="btn btn-sm btn-info  mr-10 ">
+                <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
               <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">
@@ -661,3 +732,4 @@
     </div>
   </div>
 </div>
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>

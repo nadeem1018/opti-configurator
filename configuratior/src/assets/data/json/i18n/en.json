@@ -235,6 +235,7 @@
     "add_model":"Add Mdel",
     "features":"Features",
     "accessories":"Accessories",
+    "price":"Price",
     "price_extn":"Price Extn.",
     "discount_per":"Discount %",
     "Excluded":"Excluded",
@@ -269,7 +270,11 @@
     "In":"In",
     "delivery_date":"Delivery Date",
     "serial":"Sl#" ,
-    "ReadyToUse":"Ready To Use"
+    "ReadyToUse":"Ready To Use",
+    "pricevalid":"Price cannot be negative",
+    "pricevalidextn":"Price extension cannot be negative",
+    "negativequantityvalid":"Quantity cannot be negative",
+    "decimalquantityvalid":"Quantity cannot be decimal"
 
 
 
