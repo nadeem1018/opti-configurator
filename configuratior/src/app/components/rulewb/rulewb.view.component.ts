@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { RulewbService } from '../../services/rulewb.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,8 +14,8 @@ import { CommonData } from "../../models/CommonData";
 export class RuleWbViewComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
-   
- 
+
+
     public companyName: string = "";
     public username: string = "";
     add_route_link = '/rulewb/add';
@@ -29,16 +29,17 @@ export class RuleWbViewComponent implements OnInit {
     show_table_footer: boolean = false;
 
     //custom dialoag params
-    public dialog_params:any = [];
-    public show_dialog:boolean = false;
-    public dialog_box_value:any;
-    public row_id:any;
-    public CheckedData :any = [];
-    public selectall:boolean=false;
+    public dialog_params: any = [];
+    public show_dialog: boolean = false;
+    public dialog_box_value: any;
+    public row_id: any;
+    public CheckedData: any = [];
+    public selectall: boolean = false;
     public GetItemData: any = [];
+    public isMultiDelete: boolean = false;
 
 
-    
+
 
 
     // table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
@@ -47,7 +48,7 @@ export class RuleWbViewComponent implements OnInit {
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false, false, false];
     page_main_title = this.language.rule_workbench;
     table_title = this.page_main_title;
-    constructor(private router: Router, private service: RulewbService ,private toastr: ToastrService) { }
+    constructor(private router: Router, private service: RulewbService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.commonData.checkSession();
@@ -68,7 +69,7 @@ export class RuleWbViewComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        var dataset = this.service.GetRuleList(search,page_number,this.record_per_page).subscribe(
+        var dataset = this.service.GetRuleList(search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
@@ -106,29 +107,33 @@ export class RuleWbViewComponent implements OnInit {
         // button click function in here
     }
     button_click2(id) {
-        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
-        this.show_dialog = true;    
+        this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+        this.show_dialog = true;
         this.row_id = id;
         // var result = confirm(this.language.DeleteConfimation);
     }
 
-     //This will take confimation box value
-     get_dialog_value(userSelectionValue){
-        console.log("GET DUIALOG VALUE")  
-        if(userSelectionValue == true){
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue) {
+        if (userSelectionValue == true) {
+            if (this.isMultiDelete == false) {
                 this.delete_row();
             }
-            this.show_dialog = false;
+            else {
+                this.delete_multi_row();
+            }
+        }
+        this.show_dialog = false;
     }
 
-     //delete values
-     delete_row(){
-        this.GetItemData=[]
+    //delete values
+    delete_row() {
+        this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            RuleId:this.row_id
+            RuleId: this.row_id
         });
-        this.service.DeleteData( this.GetItemData).subscribe(
+        this.service.DeleteData(this.GetItemData).subscribe(
             data => {
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
@@ -176,18 +181,16 @@ export class RuleWbViewComponent implements OnInit {
                 CompanyDBId: this.companyName
             })
         }
-     
-
     }
 
     on_Selectall_checkbox_checked(checkedvalue) {
         var isExist = 0;
         this.CheckedData = []
-        this.selectall=false
+        this.selectall = false
 
         if (checkedvalue == true) {
-            if(this.rows.length>0){
-                this.selectall=true
+            if (this.rows.length > 0) {
+                this.selectall = true
                 for (let i = 0; i < this.rows.length; ++i) {
 
                     this.CheckedData.push({
@@ -196,39 +199,37 @@ export class RuleWbViewComponent implements OnInit {
                     })
                 }
             }
-           
-         
-
         }
-        else{
-            this.selectall=false
+        else {
+            this.selectall = false
         }
-       
-
     }
 
     delete() {
         if (this.CheckedData.length > 0) {
-            this.service.DeleteData(this.CheckedData).subscribe(
-                data => {
-                    if (data === "True") {
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('rulewb/view');
-                        return;
-                    }
-                    else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
-                    }
-                }
-            )
-
+            this.isMultiDelete = true;
+            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+            this.show_dialog = true;
         }
-        else{
+        else {
             this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
         }
-        
     }
 
+    delete_multi_row() {
+        this.service.DeleteData(this.CheckedData).subscribe(
+            data => {
+                if (data === "True") {
+                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
+                    return;
+                }
+                else {
+                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    return;
+                }
+            }
+        )
+    }
 }

@@ -2,28 +2,9 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
-	"service_url":"http://localhost:9501/",
+	"service_url":"http://localhost:9999/",
 	"admin_db_name":"OPTIPROADMIN",
 	"product_code":"CNF",
-	"system_version":"3.0",
-	 "default_db_driver":"ms_sql_srv",
-	 "connection_parameter":
-	 {
-	 	"ms_sql_srv":
-	 	{
-	 		"server_name":"OPTI-POC1",
-		 	"username":"sa",
-			 "password":"sql2k14@opti",
-			"pointing_db":""
-		},
-		"sap_hana":
-		{
-			"driver":"0HDBODBC32",
-			"server_name":"172.16.6.50"
-			,"port":"30015",
-			"username":"SYSTEM",
-			"password":"Batch123"
-		}
-	},
+	"system_version":"2.0",
 	"installed" : 1
 }

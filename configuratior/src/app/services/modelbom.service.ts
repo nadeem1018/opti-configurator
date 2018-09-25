@@ -64,7 +64,7 @@ export class ModelbomService {
   }
 
   SaveModelBom(SaveData): Observable<any>{
-    let jObject:any = { AddModel: JSON.stringify( SaveData) };
+    var jObject = { AddModel:  JSON.stringify(SaveData) };
 
     //let jObject:any={ AddModel: JSON.stringify(SaveData), RuleModel: JSON.stringify(RuleData)};
 

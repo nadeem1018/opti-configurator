@@ -125,6 +125,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "feature_Detail_Output_lookup") {
         this.get_features_Output_lookup();
       }
+
+      if(this.lookupfor == "output_customer"){
+        this.customer_lookup();
+      }
     }
   }
 
@@ -465,6 +469,28 @@ for(var i=0; i< this.serviceData.length; i++){
       }
     }
     
+  }
+
+  customer_lookup() {
+    this.popup_title = this.language.model_template;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'featureItemName';
+    this.table_head = ['Customer Code', 'Name'];
+    this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'Name';
+
+    this.width_value = ((100 / this.table_head.length) + '%');
+   
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if(this.serviceData !== undefined){
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
+    }
+   
   }
 
   // dummy_json(){

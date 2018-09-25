@@ -50,7 +50,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="customer_doc">{{language.document}}</label>
                   <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" #document>
+                    <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" (change)= "onDocumentChange(document.value)" #document>
                       <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value"> {{v.Name}}</option>
                     </select>
                   </div>
@@ -58,12 +58,13 @@
               </div>
               <div class="col-md-5">
                 <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
+                  <label class="col-sm-4 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
                   <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
-                      type="text" value="" id="datetime_input" readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
+                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
+                      type="text" value="" id="posting_date" readonly placeholder="{{language.posting_date}}"
+                      [(ngModel)]="step1_data.posting_date">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
                         <i class="fa fa-calendar"></i>
                       </span>
                     </div>
@@ -71,12 +72,12 @@
                   </div>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.delivery_until}}</label>
+                  <label class="col-sm-4 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{document_date}}</label>
                   <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
-                      type="text" value="" id="datetime_input" readonly placeholder="{{language.delivery_until}}" [(ngModel)]="step1_data.delivery_until">
+                    <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
+                      type="text" value="" id="delivery_until" readonly placeholder="{{document_date}}" [(ngModel)]="step1_data.delivery_until">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
+                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
                         <i class="fa fa-calendar"></i>
                       </span>
                     </div>
@@ -91,40 +92,47 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="customer_doc">{{language.customer}}</label>
                   <div class="col-sm-4 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="customer" id="customer" placeholder="{{language.customer}}"
+                    <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()" name="customer" id="customer" placeholder="{{language.customer}}"
                       [(ngModel)]="step1_data.customer" #customer>
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
+                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="customer_doc">{{language.name}}</label>
+                  <label class="col-sm-3 col-form-label" for="customer_doc">{{language.Name}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="customer_name" id="customer_name" placeholder="{{language.name}}"
-                      [(ngModel)]="step1_data.customer_namename" #customername>
+                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name" id="customer_name" placeholder="{{language.name}}"
+                      [(ngModel)]="step1_data.customer_name" #customername>
 
                   </div>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="contact_person">{{language.contact_person}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="contact_person" id="contact_person" placeholder="{{language.contact_person}}"
-                      [(ngModel)]="step1_data.contact_person" #contactperson>
+                    <!-- <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="contact_person" id="contact_person" placeholder="{{language.contact_person}}"
+                      [(ngModel)]="step1_data.contact_person" #contactperson> -->
+
+                      <select class="form-control  form-control-sm mt3" #contactperson name="contact_person" id="contact_person">
+                          <option *ngFor="let v of contact_persons" [value]="v.value" > {{v.Name}}</option>
+                        </select>
                   </div>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="ship_to">{{language.ship_to}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="ship_to" id="ship_to" placeholder="{{language.ship_to}}"
-                      [(ngModel)]="step1_data.ship_to" #shipto>
+                   <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
+                      <option [selected]="customerShipTo == v" *ngFor="let v of ship_to" [value]="v.ShipToDef">  {{v.ShipToDef}}</option>
+                    </select>
                   </div>
+
+                  
 
                   <label class="col-sm-2 col-form-label" for="ship_to_address">{{language.address}}</label>
                   <div class="col-sm-3">
-                    <textarea type="text" ngValue="" class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address" placeholder="{{language.ship_to_address}}"
+                    <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address" placeholder="{{language.ship_to_address}}"
                       [(ngModel)]="step1_data.ship_to_address" #shipto></textarea>
                   </div>
 
@@ -132,18 +140,19 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="bill_to">{{language.bill_to}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="bill_to" id="bill_to" placeholder="{{language.bill_to}}"
-                      [(ngModel)]="step1_data.bill_to" #billto>
+                      <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to"  (change)="onBillToChange(customerBillTo.value)">
+                          <option [selected]="customerBillTo == v" *ngFor="let v of bill_to" [value]="v.BillToDef" > {{v.BillToDef}}</option>
+                        </select>
                   </div>
 
                   <label class="col-sm-2 col-form-label" for="bill_to_address">{{language.address}}</label>
                   <div class="col-sm-3">
-                    <textarea type="text" rows="3" ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
+                    <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
                       placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address" #shipto></textarea>
                   </div>
                 </div>
               </div>
-              <div class="col-md-5">
+              <!-- <div class="col-md-5">
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label" for="payment_terms">{{language.payment_terms}}</label>
                   <div class="col-sm-8">
@@ -168,29 +177,27 @@
 
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <hr>
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
-                  <div class="col-sm-4 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="sales_employee" id="sales_employee" placeholder="{{language.sales_employee}}"
-                      [(ngModel)]="step1_data.sales_employee" #salesemployee>
-                    <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openSalesEmpLookup()">
-                        <i class="fa fa-bars"></i>
-                      </span>
+                  <div class="col-sm-4">
+                      <select class="form-control  form-control-sm mt3" #contactperson name="sales_employee" id="sales_employee">
+                          <option *ngFor="let v of sales_employee" [value]="v.value" > {{v.SlpName}}</option>
+                        </select>
                     </div>
-                  </div>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="owner">{{language.owner}}</label>
+                  <label class="col-sm-3 col-form-label" for="owner_list">{{language.owner}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
-                      [(ngModel)]="step1_data.owner" #owner>
-
+                    <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
+                      [(ngModel)]="step1_data.owner" #owner> -->
+                      <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
+                          <option *ngFor="let v of owner_list" [value]="v.value" > {{v.lastName}}</option>
+                        </select>
                   </div>
                 </div>
                 <div class="form-group row clearfix">
@@ -202,7 +209,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-5">
+              <!-- <div class="col-md-5">
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label" for="tax_code">{{language.tax_code}}</label>
                   <div class="col-sm-8 input-group">
@@ -215,7 +222,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="f1-buttons">
@@ -226,8 +233,8 @@
                 <span>{{language.cancel}}</span>
               </button>
             </div>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
-              <i class="fa fa-arrow-right fa-fw"></i> Next</button>
+            <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>
         </fieldset>
 
@@ -505,9 +512,9 @@
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
-              <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="customer_details">
+              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-              <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="accept_bom_so">
+              <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
           </div>
@@ -535,7 +542,7 @@
                   <label class="col-sm-6 col-form-label">
                     <b>{{language.posting_date}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.posting_date}}</label>
+                  <label class="col-sm-6 col-form-label">{{step3_data.posting_date}}</label>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label">
@@ -662,10 +669,10 @@
           </div>
           <div class="f1-buttons">
             <hr>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-previous" data-previous-block="model_bom_config">
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button type="button" class="btn btn-sm btn-success  mr-10 btn-next" data-next-block="fina_doc_create">
-              <i class="fa fa-arrow-right fa-fw"></i> {{language.submit}}</button>
+            <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
+              <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
           </div>
         </fieldset>
 
@@ -682,8 +689,8 @@
             <div class="row">
               <div class="col-sm-3">
                 <div class="new item section">
-                  <h6>List of New Items Created as per the selected configuration</h6>
-                  <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list" >
+                  <h6>{{language.lsit_of_new_item_created}}</h6>
+                  <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list">
                     <span class="list-group-item list-group-item-action text-primary" href="javascript:;">{{new_item}}</span>
                   </div>
                 </div>
@@ -694,37 +701,175 @@
                     <div class="col-md-8">
                       <div class="form-group row clearfix">
                         <label class="col-sm-2 col-form-label">
-                          <b>Order Type</b>
+                          <b>{{language.order_type}}</b>
                         </label>
-                        <label class="col-sm-6 col-form-label">Sales Order</label>
+                        <label class="col-sm-6 col-form-label">{{language.SalesOrder}}</label>
                       </div>
                     </div>
                     <div class="col-md-4">
-                      <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label">
-                          <b>Document No.</b>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.doc_no}}</b>
                         </label>
-                        <label class="col-sm-6 col-form-label">10089</label>
+                        <label class="col-sm-5 col-form-label text-right">10089</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.posting_date}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label text-right">{{step4_data.posting_date}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.delivery_date}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label text-right">{{step1_data.delivery_date}}</label>
                       </div>
                     </div>
                   </div>
                 </div>
                 <hr>
                 <div class="order_detail_section">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.customer}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.customer}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.name}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.name}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-3 col-form-label">
+                          <b>{{language.contact_person}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.contact_person}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.ship_to}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.ship_to}}</label>
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.address}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.ship_to_address}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.bill_to}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.bill_to}}</label>
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.address}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.bill_to_address}}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
 
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-6 col-form-label text-left">
+                          <b>{{language.payment_terms}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_terms}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-6 col-form-label text-left">
+                          <b>{{language.payment_method}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_method}}</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <hr>
                 <div class="pricing_detail_section">
-
+                  <div class="row">
+                    <div class="col-md-3"> </div>
+                    <div class="col-md-9">
+                      <div class="accessories_table">
+                        <table class="table table-bordered table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th *ngFor="let label of order_creation_table_head; let i= index">
+                                <span>
+                                  {{label}}
+                                </span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                  <div class="">
+                    <div class="col-md-3 pull-left">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-7 col-form-label">
+                          <b>{{language.sales_employee}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label">{{step1_data.sales_employee}}</label>
+                      </div>
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-7 col-form-label">
+                          <b>{{language.remark}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label">{{step1_data.remark}}</label>
+                      </div>
+                    </div>
+                    <div class="item_discount_table">
+                      <div class="col-md-4 pull-right">
+                        <table class="table table-bordered table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>{{this.language.total_before_discount}}</th>
+                              <th></th>
+                            </tr>
+                            <tr>
+                              <th *ngFor="let label of model_discount_table_head; let i= index">
+                                <span>
+                                  {{label}}
+                                </span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="" *ngFor="let row of item_tax_total">
+                              <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                                {{row[row_data]}}
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <th>{{this.language.total}}</th>
+                              <th>$5000/-</th>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="f1-buttons">
             <hr>
-            <button type="button" class="btn btn-sm btn-secondary  mr-10 btn-previous" data-previous-block="accept_bom_so">
-              <i class="fa fa-times fa-fw"></i> {{language.cancel}}</button>
-          <!--   <button type="submit" class="btn btn-sm btn-success  mr-10 btn-submit">Submit</button> -->
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
+              <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+            <button type="button" class="btn btn-sm btn-danger  mr-10  ">
+              <i class="fa fa-times fa-fw"></i> {{language.close}}</button>
+            <!--   <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit">Submit</button> -->
           </div>
         </fieldset>
 
@@ -732,4 +877,9 @@
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+=======
+
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+>>>>>>> daa811f4b0a6b223c5d815976ba25746f2bcbc85
