@@ -38,25 +38,27 @@ export class OutputComponent implements OnInit {
     { "key": "Total", "": "$1500" },
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
-  
+
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
   lookupfor: string = '';
   serviceData: any;
-  public contact_persons:any;
-  public sales_employee:any =[];
-  public ship_to:any;
-  public bill_to:any;
-  public ship_data:any =[];
-  public bill_data:any =[];
-  public owner_list: any =[];
-  public customerBillTo:any;
+  public contact_persons: any;
+  public sales_employee: any = [];
+  public ship_to: any;
+  public bill_to: any;
+  public ship_data: any = [];
+  public bill_data: any = [];
+  public owner_list: any = [];
+  public customerBillTo: any;
   public document: any;
-  public customerShipTo:any;
+  public customerShipTo: any;
   public isNextButtonVisible: boolean = false;
-  
+  public person: any;
+  public salesemployee: any;
+
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -70,9 +72,9 @@ export class OutputComponent implements OnInit {
 
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
-     let formated_posting_date = new Date( todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
+    let formated_posting_date = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
     //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
-    this.step1_data.posting_date= formated_posting_date;
+    this.step1_data.posting_date = formated_posting_date;
     this.isNextButtonVisible = false;
   }
 
@@ -101,17 +103,25 @@ export class OutputComponent implements OnInit {
   openTaxCodes() { }
 
   openModalList() { }
-  
-  onContactPersonSelectChange(selectedValue,rowIndex){
-//this.console.log(selectedValue);
+
+  onContactPersonChange(contact) {
+    this.person = contact;
+    this.step1_data.person_name = this.person;
   }
+
+  onSalesPersonChange(selectedSalesEmp){
+    this.console.log(selectedSalesEmp);
+    this.salesemployee = selectedSalesEmp;
+    this.step1_data.sales_employee = selectedSalesEmp;
+  }
+
 
   getLookupValue($event) {
     if (this.lookupfor == 'output_customer') {
       this.step1_data.customer = $event[0];
       this.step1_data.customer_name = $event[1];
 
-      if(this.step1_data.customer != undefined){
+      if (this.step1_data.customer != undefined) {
         this.isNextButtonVisible = true;
         //get contact person
         this.fillContactPerson();
@@ -119,40 +129,44 @@ export class OutputComponent implements OnInit {
         this.fillBillTo();
         this.fillOwners();
       }
-      else{
+      else {
         this.isNextButtonVisible = false;
       }
-
     }
-
   }
 
   //this will get the contact person
-  fillContactPerson(){
+  fillContactPerson() {
     this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
         console.log(data);
         if (data != null || data != undefined && data.length > 0) {
-        if(data.ContactPerson.length > 0){
+          if (data.ContactPerson.length > 0) {
             this.contact_persons = data.ContactPerson;
-        }
-        else{
-          this.contact_persons = [];
-        }
-        if(data.DefaultSalesPerson.length > 0){
+            console.log(data);
+            this.person = data.ContactPerson[0].Name;
+            this.console.log(this.person);
+            this.step1_data.person_name = this.person;
+          }
+          else {
+            this.contact_persons = [];
+          }
+          if (data.DefaultSalesPerson.length > 0) {
             this.sales_employee = data.DefaultSalesPerson;
+            this.salesemployee = data.DefaultSalesPerson[0].SlpName;
+            this.step1_data.sales_employee = data.DefaultSalesPerson[0].SlpName;
 
-      }
-      else{
-        this.sales_employee = [];
-      }
+          }
+          else {
+            this.sales_employee = [];
+          }
         }
         else {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
       },
-      error =>{
+      error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -160,169 +174,176 @@ export class OutputComponent implements OnInit {
 
 
   }
-  fillShipTo(){
+  fillShipTo() {
     this.OutputService.fillShipTo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
 
-if (data != null || data != undefined && data.length > 0) {
- 
-  if(data.ShipDetail.length > 0){   
-    this.ship_to = data.ShipDetail;
-    this.customerShipTo = data.ShipDetail[0].ShipToDef;
-
-    this.ship_data.push({
-      CompanyDBId:this.common_output_data.companyName,
-      Customer:this.step1_data.customer,
-      ShipTo: this.customerShipTo
-
-    });
-    this.OutputService.fillShipAddress(this.ship_data).subscribe(
-      data => {
         if (data != null || data != undefined && data.length > 0) {
-        this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+
+          if (data.ShipDetail.length > 0) {
+            this.ship_to = data.ShipDetail;
+            this.customerShipTo = data.ShipDetail[0].ShipToDef;
+            this.step1_data.ship_to = data.ShipDetail[0].ShipToDef;
+
+
+            this.ship_data.push({
+              CompanyDBId: this.common_output_data.companyName,
+              Customer: this.step1_data.customer,
+              ShipTo: this.customerShipTo
+
+            });
+            this.OutputService.fillShipAddress(this.ship_data).subscribe(
+              data => {
+                if (data != null || data != undefined && data.length > 0) {
+                  this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+                }
+                else {
+                  this.step1_data.ship_to_address = '';
+                }
+              })
+          }
+          else {
+            this.ship_to = [];
+            this.step1_data.ship_to_address = '';
+          }
         }
-        else{
-          this.step1_data.ship_to_address='';        
-        }
-      })
-}
-else{
-  this.ship_to= [];
-  this.step1_data.ship_to_address='';
-}
-}
       }
     )
   }
 
-  fillBillTo(){
+  fillBillTo() {
     this.OutputService.fillBillTo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
-if (data != null || data != undefined && data.length > 0) {
-  if(data.BillToDef.length > 0){
-      this.bill_to = data.BillToDef;
-      this.customerBillTo = data.BillToDef[0].BillToDef;
+        if (data != null || data != undefined && data.length > 0) {
+          if (data.BillToDef.length > 0) {
+            this.bill_to = data.BillToDef;
+            this.customerBillTo = data.BillToDef[0].BillToDef;
+            this.step1_data.bill_to = data.BillToDef[0].BillToDef;
 
-       this.bill_data.push({
-         CompanyDBId:this.common_output_data.companyName,
-         Customer:this.step1_data.customer,
-         BillTo: this.customerBillTo
-  
-       });
-       this.OutputService.fillBillAddress(this.bill_data).subscribe(
-         data => {
-           if (data != null || data != undefined && data.length > 0) {
-           this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
-           }
-           else{
-            this.step1_data.bill_to_address= '';
-           }
-         })
-  }
-  else{
-    this.bill_to= [];
-    this.step1_data.bill_to_address= '';
-  }
-}
+            this.bill_data.push({
+              CompanyDBId: this.common_output_data.companyName,
+              Customer: this.step1_data.customer,
+              BillTo: this.customerBillTo
 
-})
-  }
+            });
+            this.OutputService.fillBillAddress(this.bill_data).subscribe(
+              data => {
+                if (data != null || data != undefined && data.length > 0) {
+                  this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+                }
+                else {
+                  this.step1_data.bill_to_address = '';
+                }
+              })
+          }
+          else {
+            this.bill_to = [];
+            this.step1_data.bill_to_address = '';
+          }
+        }
 
-  fillOwners(){
-    this.OutputService.fillAllOwners(this.common_output_data.companyName).subscribe(
-      data => {
-
-if (data != null || data != undefined && data.length > 0) {
-this.owner_list= data;
-}
-else{
-  this.owner_list=[];
-}
       })
   }
 
-  onShipToChange(SelectedShipTo){
-    this.ship_data=[];
+  fillOwners() {
+    this.OutputService.fillAllOwners(this.common_output_data.companyName).subscribe(
+      data => {
+
+        if (data != null || data != undefined && data.length > 0) {
+          this.owner_list = data;
+        }
+        else {
+          this.owner_list = [];
+        }
+      })
+  }
+
+  onShipToChange(SelectedShipTo) {
+
+    this.step1_data.ship_to = SelectedShipTo;
+
+    this.ship_data = [];
     this.ship_data.push({
-      CompanyDBId:this.common_output_data.companyName,
-      Customer:this.step1_data.customer,
+      CompanyDBId: this.common_output_data.companyName,
+      Customer: this.step1_data.customer,
       ShipTo: SelectedShipTo
 
     });
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
-        this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+          this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
         }
-        else{
-          this.step1_data.ship_to_address='';        
+        else {
+          this.step1_data.ship_to_address = '';
         }
       })
   }
 
-  onBillToChange(SelectedBillTo){
-    this.bill_data=[];
+  onBillToChange(SelectedBillTo) {
+    this.step1_data.bill_to = SelectedBillTo;
+    this.bill_data = [];
     this.bill_data.push({
-      CompanyDBId:this.common_output_data.companyName,
-      Customer:this.step1_data.customer,
+      CompanyDBId: this.common_output_data.companyName,
+      Customer: this.step1_data.customer,
       ShipTo: SelectedBillTo
 
     });
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
-        this.step1_data.bill_to_address =  data.BillingAdress[0].BillingAdress;
+          this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
         }
-        else{
-          this.step1_data.bill_to_address='';  
-          
+        else {
+          this.step1_data.bill_to_address = '';
+
 
 
         }
       })
-    }
-    onCustomerChange(){
-      this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
-        data => {
-          if (data === "False") {
-            this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
-            this.isNextButtonVisible = false;
-            this.step1_data.customer = "";
-            this.step1_data.customer_name='';
-            this.contact_persons = [];
-            this.sales_employee = [];
-            this.ship_to= [];
-            this.step1_data.ship_to_address='';  
-            this.step1_data.bill_to_address= '';
-            this.bill_to= [];
-            this.owner_list=[];
-            return;
-          }
-
-          else{
-            this.isNextButtonVisible = true;
-            this.GetCustomername();
-            this.fillContactPerson();
-            this.fillShipTo();
-            this.fillBillTo();
-            this.fillOwners();
-          }
-        })
-
-    }
-
-    GetCustomername(){
-      this.OutputService.GetCustomername(this.common_output_data.companyName, this.step1_data.customer).subscribe(
-        data => {
-          this.console.log(data);
-          if (data != null || data != undefined && data.length > 0) {
-            this.step1_data.customer_name= data[0].Name;
-          }
-          else{
-            this.step1_data.customer_name ='';
-          }
+  }
+  onCustomerChange() {
+    this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+        if (data === "False") {
+          this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
+          this.isNextButtonVisible = false;
+          this.step1_data.customer = "";
+          this.step1_data.customer_name = '';
+          this.contact_persons = [];
+          this.sales_employee = [];
+          this.ship_to = [];
+          this.step1_data.ship_to_address = '';
+          this.step1_data.bill_to_address = '';
+          this.bill_to = [];
+          this.owner_list = [];
+          return;
         }
-      )
-    }
+
+        else {
+          this.isNextButtonVisible = true;
+          this.GetCustomername();
+          this.fillContactPerson();
+          this.fillShipTo();
+          this.fillBillTo();
+          this.fillOwners();
+        }
+      })
+
+  }
+
+  GetCustomername() {
+    this.OutputService.GetCustomername(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+        this.console.log(data);
+        if (data != null || data != undefined && data.length > 0) {
+          this.step1_data.customer_name = data[0].Name;
+        }
+        else {
+          this.step1_data.customer_name = '';
+        }
+      }
+    )
+  }
 
 }
