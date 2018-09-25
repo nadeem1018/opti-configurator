@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
@@ -23,8 +23,8 @@ export class ViewFeatureBOMComponent implements OnInit {
     table_pages: any;
     search_key: any;
     //table_head_foot = ['Select','#', 'Feature ID', 'Display Name', 'Action'];
-    table_head_foot = [this.language.select, this.language.hash, this.language.Bom_FeatureId, this.language.Feature_Code,this.language.Bom_Displayname, this.language.action];
-    public table_hidden_elements = [false, true,true, false, false, false];
+    table_head_foot = [this.language.select, this.language.hash, this.language.Bom_FeatureId, this.language.Feature_Code, this.language.Bom_Displayname, this.language.action];
+    public table_hidden_elements = [false, true, true, false, false, false];
     record_per_page_list: any = this.common_params.default_limits;
 
     record_per_page: any = this.common_params.default_count;
@@ -33,26 +33,27 @@ export class ViewFeatureBOMComponent implements OnInit {
     page_numbers: any = "";
     rows: any = "";
     public dataBind: any = "";
-    
+
     constructor(private fbs: FeaturebomService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
 
     //custom dialoag params
-    public dialog_params:any = [];
-    public show_dialog:boolean = false;
-    public dialog_box_value:any;
-    public row_id:any;
-    public CheckedData :any = [];
+    public dialog_params: any = [];
+    public show_dialog: boolean = false;
+    public dialog_box_value: any;
+    public row_id: any;
+    public CheckedData: any = [];
     public companyName: string = "";
     public username: string = "";
     public GetItemData: any = [];
-    public selectall:boolean=false;
+    public selectall: boolean = false;
+    public isMultiDelete: boolean = false;
 
     ngOnInit() {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.service_call(this.current_page, this.search_string);
-        
+
     }
     ngAfterViewInit() {
         this._el.nativeElement.focus();
@@ -70,7 +71,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     service_call(page_number, search) {
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                
+
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
                 let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
@@ -108,28 +109,32 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     button_click2(id) {
-        this.dialog_params.push({'dialog_type':'delete_confirmation','message':this.language.DeleteConfimation});
-        this.show_dialog = true;    
+        this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+        this.show_dialog = true;
         this.row_id = id;
-       
-       // var result = confirm(this.language.DeleteConfimation);
+
+        // var result = confirm(this.language.DeleteConfimation);
     }
 
     //This will take confimation box value
-    get_dialog_value(userSelectionValue){
-        console.log("GET DUIALOG VALUE")  
-        if(userSelectionValue == true){
+    get_dialog_value(userSelectionValue) {
+        if (userSelectionValue == true) {
+            if (this.isMultiDelete == false) {
                 this.delete_row();
             }
-            this.show_dialog = false;
+            else {
+                this.delete_multi_row();
+            }
+        }
+        this.show_dialog = false;
     }
 
     //delete values
-    delete_row(){
-        this.GetItemData=[]
+    delete_row() {
+        this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            FeatureId:this.row_id
+            FeatureId: this.row_id
         });
         this.fbs.DeleteData(this.GetItemData).subscribe(
             data => {
@@ -145,9 +150,9 @@ export class ViewFeatureBOMComponent implements OnInit {
                 }
             }
         )
-     }
+    }
 
-     on_checkbox_checked(checkedvalue, row_data) {
+    on_checkbox_checked(checkedvalue, row_data) {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
@@ -177,19 +182,19 @@ export class ViewFeatureBOMComponent implements OnInit {
                 CompanyDBId: this.companyName
             })
         }
-     
+
 
     }
 
     on_Selectall_checkbox_checked(checkedvalue) {
-        
+
         var isExist = 0;
         this.CheckedData = [];
-        this.selectall=false
+        this.selectall = false
 
         if (checkedvalue == true) {
-            this.selectall=true
-            if(this.rows.length>0){
+            this.selectall = true
+            if (this.rows.length > 0) {
                 for (let i = 0; i < this.rows.length; ++i) {
 
                     this.CheckedData.push({
@@ -198,18 +203,29 @@ export class ViewFeatureBOMComponent implements OnInit {
                     })
                 }
             }
-           
-         
+
+
 
         }
-        else{
-            this.selectall=false
+        else {
+            this.selectall = false
         }
-       
+
 
     }
 
     delete() {
+        if (this.CheckedData.length > 0) {
+            this.isMultiDelete = true;
+            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+            this.show_dialog = true;
+        }
+        else {
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+    }
+
+    delete_multi_row() {
         if (this.CheckedData.length > 0) {
             this.fbs.DeleteData(this.CheckedData).subscribe(
                 data => {
@@ -227,16 +243,15 @@ export class ViewFeatureBOMComponent implements OnInit {
             )
 
         }
-        else{
-            
+        else {
+
             this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
         }
-        
     }
 
 }
-    
-  
+
+
 
 
 
