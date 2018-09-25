@@ -59,8 +59,8 @@ export class OutputComponent implements OnInit {
   public Accessory_table_hidden_elements = [false, false, false, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-  
- 
+
+
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
@@ -85,41 +85,25 @@ export class OutputComponent implements OnInit {
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
-
     this.step1_data.document = "sales_quote";
-    if (this.step1_data.document == "sales_quote"){
-      this.document_date = this.language.valid_date;  
+    if (this.step1_data.document == "sales_quote") {
+      this.document_date = this.language.valid_date;
       this.step1_data.document_name = "Sales Quote";
     }
-    else{
+    else {
       this.document_date = this.language.delivery_date;
       this.step1_data.document_name = "Sales Order";
     }
-    
-    this.feature_accessory_list = [
-      { "id": "1", "key": "A1", "name": "Accessory 1" },
-      { "id": "2", "key": "A2", "name": "Accessory 2" },
-    ];
 
     this.feature_accessory_list = []
     this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
-
-
-
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
-     let formated_posting_date = new Date( todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
+    let formated_posting_date = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
     //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
-    this.step1_data.posting_date= formated_posting_date;
+    this.step1_data.posting_date = formated_posting_date;
     this.isNextButtonVisible = false;
-    
-
-    // this.feature_accessory_list = [
-    //   { "id": "1", "key": "A1", "name": "Accessory 1" },
-    //   { "id": "2", "key": "A2", "name": "Accessory 2" },
-    // ];
-
   }
 
   openFeatureLookUp() {
@@ -148,28 +132,8 @@ export class OutputComponent implements OnInit {
       data => {
         if (data.AllFeatures.length > 0) {
           this.serviceData = data.AllFeatures
-    this.step1_data.document = "sales_quote";
-    if (this.step1_data.document == "sales_quote") {
-      this.document_date = this.language.valid_date;
-      this.step1_data.document_name = "Sales Quote";
-    }
-    else {
-      this.document_date = this.language.delivery_date;
-      this.step1_data.document_name = "Sales Order";
-    }
-    this.feature_accessory_list = [
-      { "id": "1", "key": "A1", "name": "Accessory 1" },
-      { "id": "2", "key": "A2", "name": "Accessory 2" },
-    ];
-
-    var todaysDate = new Date();
-    //var mindate =new Date(todaysDate) ;
-    let formated_posting_date = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
-    //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
-    this.step1_data.posting_date = formated_posting_date;
-    this.isNextButtonVisible = false;
-  }
-   })
+        }
+      })
   }
 
   openCustomerLookUp() {
@@ -200,7 +164,7 @@ export class OutputComponent implements OnInit {
     this.person = contact;
     this.step1_data.person_name = this.person;
   }
-  
+
   openModalList() {
     this.serviceData = []
     this.OutputService.GetModelList().subscribe(
@@ -255,7 +219,7 @@ export class OutputComponent implements OnInit {
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.serviceData = []
     }
-   else if (this.lookupfor == 'output_customer') {
+    else if (this.lookupfor == 'output_customer') {
       this.step1_data.customer = $event[0];
       this.step1_data.customer_name = $event[1];
 
@@ -301,10 +265,6 @@ export class OutputComponent implements OnInit {
                 featureparentid: feature_id,
                 featurechildcode: ""
               });
-
-
-
-
             }
           }
           else {
@@ -331,13 +291,13 @@ export class OutputComponent implements OnInit {
 
   on_input_change(inputid, value) {
     if (inputid == "quantity") {
-      if(value<0){
+      if (value < 0) {
         this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
         this.step2_data.quantity = 0;
         return;
       }
       var rgexp = /^\d+$/;
-      if (rgexp.test(value)==false) {
+      if (rgexp.test(value) == false) {
         this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
         this.step2_data.quantity = 0;
         return;
@@ -551,7 +511,7 @@ export class OutputComponent implements OnInit {
             return;
           }
           var rgexp = /^\d+$/;
-          if (rgexp.test(value)==false) {
+          if (rgexp.test(value) == false) {
             this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
             this.accessory_itm_list_table[i].quantity = 0;
             return;
@@ -585,7 +545,7 @@ export class OutputComponent implements OnInit {
             return;
           }
           var rgexp = /^\d+$/;
-          if (rgexp.test(value)==false) {
+          if (rgexp.test(value) == false) {
             this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
             this.feature_itm_list_table[i].quantity = 0;
             return;
@@ -686,12 +646,6 @@ export class OutputComponent implements OnInit {
     this._el.nativeElement.focus();
 
   }
-  
-  onContactPersonSelectChange(selectedValue,rowIndex){
-//this.console.log(selectedValue);
-  }
-
-
   //this will get the contact person
   fillContactPerson() {
     this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
@@ -914,8 +868,8 @@ export class OutputComponent implements OnInit {
     }
   }
 
-  onFinishPress(){
-    let final_dataset_to_save:any = {};
+  onFinishPress() {
+    let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTHDR = this.step1_data;
 
