@@ -58,12 +58,13 @@
               </div>
               <div class="col-md-5">
                 <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
+                  <label class="col-sm-4 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
                   <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
-                      type="text" value="" id="datetime_input" readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
+                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
+                      type="text" value="" id="posting_date" readonly placeholder="{{language.posting_date}}"
+                      [(ngModel)]="step1_data.posting_date">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
                         <i class="fa fa-calendar"></i>
                       </span>
                     </div>
@@ -71,12 +72,12 @@
                   </div>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.delivery_until}}</label>
+                  <label class="col-sm-4 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{language.delivery_until}}</label>
                   <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
-                      type="text" value="" id="datetime_input" readonly placeholder="{{language.delivery_until}}" [(ngModel)]="step1_data.delivery_until">
+                    <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
+                      type="text" value="" id="delivery_until" readonly placeholder="{{language.delivery_until}}" [(ngModel)]="step1_data.delivery_until">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
+                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
                         <i class="fa fa-calendar"></i>
                       </span>
                     </div>
@@ -91,7 +92,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="customer_doc">{{language.customer}}</label>
                   <div class="col-sm-4 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="customer" id="customer" placeholder="{{language.customer}}"
+                    <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()" name="customer" id="customer" placeholder="{{language.customer}}"
                       [(ngModel)]="step1_data.customer" #customer>
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
@@ -103,7 +104,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="customer_doc">{{language.Name}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="customer_name" id="customer_name" placeholder="{{language.name}}"
+                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name" id="customer_name" placeholder="{{language.name}}"
                       [(ngModel)]="step1_data.customer_name" #customername>
 
                   </div>
@@ -114,25 +115,24 @@
                     <!-- <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="contact_person" id="contact_person" placeholder="{{language.contact_person}}"
                       [(ngModel)]="step1_data.contact_person" #contactperson> -->
 
-                      <select class="form-control  form-control-sm mt3" #contactperson name="contact_person" id="contact_person"  (change)="onContactPersonSelectChange(selectedvalue.value,row.rowindex)">
+                      <select class="form-control  form-control-sm mt3" #contactperson name="contact_person" id="contact_person">
                           <option *ngFor="let v of contact_persons" [value]="v.value" > {{v.Name}}</option>
                         </select>
                   </div>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="ship_to">{{language.ship_to}}</label>
-                  <!-- <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="ship_to" id="ship_to" placeholder="{{language.ship_to}}"
-                      [(ngModel)]="step1_data.ship_to" #shipto>
-                  </div> -->
-
-                  <select class="col-sm-4" #customerShipTo name="customer_ship_to" id="customer_ship_to" >
-                      <option *ngFor="let v of contact_persons" [value]="v.value" > {{v.Name}}</option>
+                  <div class="col-sm-4">
+                   <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
+                      <option [selected]="customerShipTo == v" *ngFor="let v of ship_to" [value]="v.ShipToDef">  {{v.ShipToDef}}</option>
                     </select>
+                  </div>
+
+                  
 
                   <label class="col-sm-2 col-form-label" for="ship_to_address">{{language.address}}</label>
                   <div class="col-sm-3">
-                    <textarea type="text" ngValue="" class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address" placeholder="{{language.ship_to_address}}"
+                    <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address" placeholder="{{language.ship_to_address}}"
                       [(ngModel)]="step1_data.ship_to_address" #shipto></textarea>
                   </div>
 
@@ -140,18 +140,19 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="bill_to">{{language.bill_to}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="bill_to" id="bill_to" placeholder="{{language.bill_to}}"
-                      [(ngModel)]="step1_data.bill_to" #billto>
+                      <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to"  (change)="onBillToChange(customerBillTo.value)">
+                          <option [selected]="customerBillTo == v" *ngFor="let v of bill_to" [value]="v.BillToDef" > {{v.BillToDef}}</option>
+                        </select>
                   </div>
 
                   <label class="col-sm-2 col-form-label" for="bill_to_address">{{language.address}}</label>
                   <div class="col-sm-3">
-                    <textarea type="text" rows="3" ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
+                    <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
                       placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address" #shipto></textarea>
                   </div>
                 </div>
               </div>
-              <div class="col-md-5">
+              <!-- <div class="col-md-5">
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label" for="payment_terms">{{language.payment_terms}}</label>
                   <div class="col-sm-8">
@@ -176,29 +177,27 @@
 
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <hr>
             <div class="row">
               <div class="col-md-7">
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
-                  <div class="col-sm-4 input-group">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="sales_employee" id="sales_employee" placeholder="{{language.sales_employee}}"
-                      [(ngModel)]="step1_data.sales_employee" #salesemployee>
-                    <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openSalesEmpLookup()">
-                        <i class="fa fa-bars"></i>
-                      </span>
+                  <div class="col-sm-4">
+                      <select class="form-control  form-control-sm mt3" #contactperson name="sales_employee" id="sales_employee">
+                          <option *ngFor="let v of sales_employee" [value]="v.value" > {{v.SlpName}}</option>
+                        </select>
                     </div>
-                  </div>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="owner">{{language.owner}}</label>
+                  <label class="col-sm-3 col-form-label" for="owner_list">{{language.owner}}</label>
                   <div class="col-sm-4">
-                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
-                      [(ngModel)]="step1_data.owner" #owner>
-
+                    <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
+                      [(ngModel)]="step1_data.owner" #owner> -->
+                      <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
+                          <option *ngFor="let v of owner_list" [value]="v.value" > {{v.lastName}}</option>
+                        </select>
                   </div>
                 </div>
                 <div class="form-group row clearfix">
@@ -210,7 +209,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-5">
+              <!-- <div class="col-md-5">
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label" for="tax_code">{{language.tax_code}}</label>
                   <div class="col-sm-8 input-group">
@@ -223,7 +222,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="f1-buttons">
@@ -472,7 +471,7 @@
                   <label class="col-sm-6 col-form-label">
                     <b>{{language.posting_date}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.posting_date}}</label>
+                  <label class="col-sm-6 col-form-label">{{step3_data.posting_date}}</label>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label">
@@ -647,7 +646,7 @@
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.posting_date}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label text-right">{{step1_data.posting_date}}</label>
+                        <label class="col-sm-5 col-form-label text-right">{{step4_data.posting_date}}</label>
                       </div>
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">

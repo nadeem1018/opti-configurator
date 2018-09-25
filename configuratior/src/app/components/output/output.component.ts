@@ -46,8 +46,15 @@ export class OutputComponent implements OnInit {
   lookupfor: string = '';
   serviceData: any;
   public contact_persons:any;
-  public customer_ship_to:any;
-  public customer_bill_to:any;
+  public sales_employee:any =[];
+  public ship_to:any;
+  public bill_to:any;
+  public ship_data:any =[];
+  public bill_data:any =[];
+  public owner_list: any =[];
+  public customerBillTo:any;
+
+  public customerShipTo:any;
 
   ngOnInit() {
     this.commonData.checkSession();
@@ -58,6 +65,12 @@ export class OutputComponent implements OnInit {
       { "id": "1", "key": "A1", "name": "Accessory 1" },
       { "id": "2", "key": "A2", "name": "Accessory 2" },
     ];
+
+    var todaysDate = new Date();
+    //var mindate =new Date(todaysDate) ;
+     let formated_posting_date = new Date( todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
+    //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
+    this.step1_data.posting_date= formated_posting_date;
   }
 
   openCustomerLookUp() {
@@ -87,7 +100,7 @@ export class OutputComponent implements OnInit {
   openModalList() { }
   
   onContactPersonSelectChange(selectedValue,rowIndex){
-this.console.log(selectedValue);
+//this.console.log(selectedValue);
   }
 
   getLookupValue($event) {
@@ -98,6 +111,9 @@ this.console.log(selectedValue);
       if(this.step1_data.customer != undefined){
         //get contact person
         this.fillContactPerson();
+        this.fillShipTo();
+        this.fillBillTo();
+        this.fillOwners();
       }
 
     }
@@ -108,11 +124,21 @@ this.console.log(selectedValue);
   fillContactPerson(){
     this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
+        console.log(data);
         if (data != null || data != undefined && data.length > 0) {
         if(data.ContactPerson.length > 0){
             this.contact_persons = data.ContactPerson;
         }
-          
+        else{
+          this.contact_persons = [];
+        }
+        if(data.DefaultSalesPerson.length > 0){
+            this.sales_employee = data.DefaultSalesPerson;
+
+      }
+      else{
+        this.sales_employee = [];
+      }
         }
         else {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
@@ -127,4 +153,134 @@ this.console.log(selectedValue);
 
 
   }
+  fillShipTo(){
+    this.OutputService.fillShipTo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+
+if (data != null || data != undefined && data.length > 0) {
+ 
+  if(data.ShipDetail.length > 0){   
+    this.ship_to = data.ShipDetail;
+    this.customerShipTo = data.ShipDetail[0].ShipToDef;
+
+    this.ship_data.push({
+      CompanyDBId:this.common_output_data.companyName,
+      Customer:this.step1_data.customer,
+      ShipTo: this.customerShipTo
+
+    });
+    this.OutputService.fillShipAddress(this.ship_data).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+        this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+        }
+        else{
+          this.step1_data.ship_to_address='';        
+        }
+      })
+}
+else{
+  this.ship_to= [];
+  this.step1_data.ship_to_address='';
+}
+}
+      }
+    )
+  }
+
+  fillBillTo(){
+    this.OutputService.fillBillTo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+if (data != null || data != undefined && data.length > 0) {
+  if(data.BillToDef.length > 0){
+      this.bill_to = data.BillToDef;
+      this.customerBillTo = data.BillToDef[0].BillToDef;
+
+       this.bill_data.push({
+         CompanyDBId:this.common_output_data.companyName,
+         Customer:this.step1_data.customer,
+         BillTo: this.customerBillTo
+  
+       });
+       this.OutputService.fillBillAddress(this.bill_data).subscribe(
+         data => {
+           if (data != null || data != undefined && data.length > 0) {
+           this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+           }
+           else{
+            this.step1_data.bill_to_address= '';
+           }
+         })
+  }
+  else{
+    this.bill_to= [];
+    this.step1_data.bill_to_address= '';
+  }
+}
+
+})
+  }
+
+  fillOwners(){
+    this.OutputService.fillAllOwners(this.common_output_data.companyName).subscribe(
+      data => {
+
+if (data != null || data != undefined && data.length > 0) {
+this.owner_list= data;
+}
+else{
+  this.owner_list=[];
+}
+      })
+  }
+
+  onShipToChange(SelectedShipTo){
+    this.ship_data=[];
+    this.ship_data.push({
+      CompanyDBId:this.common_output_data.companyName,
+      Customer:this.step1_data.customer,
+      ShipTo: SelectedShipTo
+
+    });
+    this.OutputService.fillShipAddress(this.ship_data).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+        this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+        }
+        else{
+          this.step1_data.ship_to_address='';        
+        }
+      })
+  }
+
+  onBillToChange(SelectedBillTo){
+    this.bill_data=[];
+    this.bill_data.push({
+      CompanyDBId:this.common_output_data.companyName,
+      Customer:this.step1_data.customer,
+      ShipTo: SelectedBillTo
+
+    });
+    this.OutputService.fillBillAddress(this.bill_data).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+        this.step1_data.bill_to_address =  data.BillingAdress[0].BillingAdress;
+        }
+        else{
+          this.step1_data.bill_to_address='';        
+        }
+      })
+    }
+    onCustomerChange(){
+      this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+        data => {
+          if (data === "False") {
+            this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+            //this.featureBom.ItemName = "";
+            return;
+          }
+        })
+
+    }
+
 }
