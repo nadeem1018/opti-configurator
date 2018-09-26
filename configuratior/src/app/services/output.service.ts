@@ -9,14 +9,48 @@ import { CommonData } from "src/app/models/CommonData";
 
 export class OutputService {
 
-  config_params:any;
+  config_params: any;
   common_params = new CommonData();
+  logged_in_company = sessionStorage.selectedComp;
   
-  constructor(private httpclient:HttpClient) { 
+  constructor(private httpclient: HttpClient) {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
   }
+  
+ 
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'multipart/form-data',
+      'Accept': 'application/json'
+    })
+  }
 
+  GetModelList(): Observable<any> {
+    let jObject = { GetModel: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelForConfigureWizard", jObject, this.common_params.httpOptions);
+  }
+
+  getFeatureList(): Observable<any> {
+    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
+  }
+
+  getFeatureDetails(feature_id): Observable<any>{
+    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_id}]) }
+      return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureListForSelectedFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
+  }
+
+  GetAccessory(): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAccessorry", jObject, this.common_params.httpOptions);
+  }
+
+  GetItemDataForSelectedAccessorry(feature_id): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company , FeatureId: feature_id}]) }
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetItemDataForSelectedAccessorry", jObject, this.common_params.httpOptions);
+  }
+  
   getCustomerLookupData(CompanyDBID:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
@@ -89,5 +123,12 @@ export class OutputService {
       
         //Return the response form the API  
           return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerName",jObject,this.common_params.httpOptions);
+      }
+
+      AddUpdateCustomerData(final_dataset_to_save):Observable<any>{
+        var jObject = { GetData:  JSON.stringify(final_dataset_to_save) };
+      
+        //Return the response form the API  
+          return this.httpclient.post(this.config_params.service_url + "/Wizard/AddUpdateCustomerData",jObject,this.common_params.httpOptions);
       }
 }
