@@ -40,7 +40,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public selectall: boolean = false;
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
-
+    public showImportButton: boolean = false;
 
     //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));

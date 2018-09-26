@@ -701,9 +701,11 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
         return false;
       }
-      if (this.rule_wb_data.effective_to == "" || this.rule_wb_data.effective_to == null) {
-        this.toastr.error('', this.language.selectefftodate, this.commonData.toast_config);
-        return false;
+      if (this.rule_wb_data.discontinued == true){
+        if (this.rule_wb_data.effective_to == "" || this.rule_wb_data.effective_to == null) {
+          this.toastr.error('', this.language.selectefftodate, this.commonData.toast_config);
+          return false;
+        }
       }
       if (this.rule_wb_data.applicable_for_feature_id == "" || this.rule_wb_data.applicable_for_feature_id == null) {
         this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);

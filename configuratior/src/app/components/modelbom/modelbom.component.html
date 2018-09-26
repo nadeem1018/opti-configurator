@@ -168,7 +168,7 @@
                         <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
                           #price_source [disabled]="row.isPriceDisabled" />
                         <div class="input-group-append" [hidden]=row.pricehide>
-                          <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value)">
+                          <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
                             <i class="fa fa-bars"></i>
                           </span>
                         </div>
@@ -237,7 +237,7 @@
             <div class="row">
               <div class="col-md-8">
                 <div class="pull-left">
-                  <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                  <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-info  mr-10">
                     <i class="fa fa-save"></i> {{language.save}}</button>
                   <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
                     <i class="fa fa-save"></i> {{language.update}}</button>

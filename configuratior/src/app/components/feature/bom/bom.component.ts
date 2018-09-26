@@ -50,7 +50,7 @@ export class BomComponent implements OnInit {
   public tree_data_json: any = [];
   public complete_dataset: any = [];
   public row_image_data: any;
-
+  public detail_select_options = '';
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -59,6 +59,7 @@ export class BomComponent implements OnInit {
 
   ngOnInit() {
     this.commonData.checkSession();
+    this.detail_select_options =  this.commonData.bom_type;
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
@@ -151,6 +152,14 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
+            console.log('accesory - ' + this.feature_bom_data.is_accessory);
+            if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y'){
+              this.detail_select_options = this.commonData.less_bom_type;
+              console.log('in if  ');
+            }  else {
+              this.detail_select_options = this.commonData.bom_type;
+              console.log('in else ');
+            }
 
             if (this.feature_bom_data.image_path != "") {
               if (this.feature_bom_data.image_path != null) {
@@ -412,7 +421,7 @@ export class BomComponent implements OnInit {
         this.feature_bom_table[i].type_value = value;
         this.feature_bom_table[i].type_value_code = code;
         if (this.feature_bom_table[i].type == 1) {
-          this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
+          this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
               if (data === "False") {
@@ -538,6 +547,14 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
+              console.log('accesory - ' + this.feature_bom_data.is_accessory);
+              if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
+                this.detail_select_options = this.commonData.less_bom_type;
+                console.log('in if  ');
+              } else {
+                this.detail_select_options = this.commonData.bom_type;
+                console.log('in else ');
+              }
               this.showImageBlock = false;
               if (this.feature_bom_data.image_path != null) {
                 if (this.feature_bom_data.image_path != "") {

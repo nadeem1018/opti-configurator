@@ -62,9 +62,8 @@ export class ModelComponent implements OnInit {
   public isItemCodeDisabled = true;
   public isItemlookupDisabled = true;
   public isReflookupDisabled = true;
-
-  
-
+  public IsAccessoryVisible = true;
+  public minimum_date = new Date();
 
   ngOnInit() {
     this.commonData.checkSession();
@@ -92,6 +91,9 @@ export class ModelComponent implements OnInit {
         this.model_desc_label = this.language.Model_FeatureDesc;
         this.isItemlookupDisabled = true;
         this.isReflookupDisabled = true;
+        this.IsAccessoryVisible = false;
+      } else {
+        this.IsAccessoryVisible = true;
       }
       this._el.nativeElement.focus();
     }
@@ -136,6 +138,7 @@ export class ModelComponent implements OnInit {
             this.isItemCodeDisabled = true;
             this.isItemlookupDisabled = true;
             this.isReflookupDisabled = true;
+            this.IsAccessoryVisible = false;
           } else {
             this.model_code_label = this.language.model_ModelCode;
             this.model_name_label = this.language.Model_ModelName;
@@ -144,6 +147,7 @@ export class ModelComponent implements OnInit {
             this.isItemCodeDisabled = false;
             this.isItemlookupDisabled = false;
             this.isReflookupDisabled = false;
+            this.IsAccessoryVisible = true;
           }
         })
     }
@@ -167,6 +171,7 @@ export class ModelComponent implements OnInit {
       this.isItemCodeDisabled = true;
       this.isItemlookupDisabled = true;
       this.isReflookupDisabled = true;
+      this.IsAccessoryVisible = false;
     } else {
       this.model_code_label = this.language.model_ModelCode;
       this.model_name_label = this.language.Model_ModelName;
@@ -175,6 +180,7 @@ export class ModelComponent implements OnInit {
       this.isItemCodeDisabled = false;
       this.isItemlookupDisabled = false;
       this.isReflookupDisabled = false;
+      this.IsAccessoryVisible = true;
     }
 
   }
@@ -290,12 +296,6 @@ export class ModelComponent implements OnInit {
       }
     )
   }
-
-  openImportPopup() {
-    this.lookupfor = 'import_popup';
-
-  }
-
 
   //validation of inputs
   Validation() {

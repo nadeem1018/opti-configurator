@@ -29,12 +29,13 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_temp_table = [];
   public parentfeatureid: string = "";
   public feature_discount_percent: number = 0;
+  public accessory_discount_percent: number = 0;
   //public step2_data_all_data={};
   public doctype: any = "";
   public lookupfor: string = '';
   public view_route_link: any = "/home";
   public accessory_table_head = ["#", this.language.code, this.language.Name];
-  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
+  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "X"];
@@ -46,13 +47,16 @@ export class OutputComponent implements OnInit {
   public isModelVisible: boolean = false;
 
   public feature_tax_total = [
-    { "key": "Tax", "value": this.feature_item_tax },
-    { "key": "Total", "value": this.feature_item_total },
+    { "key": this.language.tax, "value": this.feature_item_tax },
+    { "key": this.language.total, "value": this.feature_item_total },
   ];
   public item_tax_total = [
-    { "key": "Tax", "value": this.acc_item_tax },
-    { "key": "Total", "value": this.acc_total },
-    { "key": "Grand Total", "value": this.acc_grand_total }
+    { "key": this.language.product_tax, "value": this.acc_item_tax },
+    { "key": this.language.product_total, "value": this.acc_total },
+    { "key": this.language.accessories_discount, "value": this.acc_item_tax },
+    { "key": this.language.accessories_tax, "value": this.acc_item_tax },
+    { "key": this.language.accessories_total, "value": this.acc_total },
+    { "key": this.language.grand_total, "value": this.acc_grand_total }
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
 
@@ -109,7 +113,7 @@ export class OutputComponent implements OnInit {
   openFeatureLookUp() {
     this.serviceData = []
     this.lookupfor = 'feature_lookup';
-    this.OutputService.getFeatureList().subscribe(
+    this.OutputService.getFeatureList(this.step2_data.model_id).subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
@@ -275,7 +279,7 @@ export class OutputComponent implements OnInit {
               featurechildcode: ""
             });
           }
-          this.accesory_price_calculate();
+         // this.accesory_price_calculate();
           this.feature_price_calculate();
         }
         else {
@@ -351,7 +355,7 @@ export class OutputComponent implements OnInit {
         let isExist = 0;
         for (let i = 0; i < ItemData.length; ++i) {
           for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
-            if (this.feature_itm_list_table[j].id == ItemData[i].id) {
+            if (this.feature_itm_list_table[j].FeatureId == ItemData[i].id) {
               isExist = 1;
             }
           }
@@ -386,60 +390,101 @@ export class OutputComponent implements OnInit {
     this.feature_price_calculate();
   }
 
+  // feature_price_calculate() {
+  //   // if (this.feature_itm_list_table.length > 0) {
+  //   let itotal = 0;
+  //   let isumofpriceitem = 0;
+  //   let itax = 0;
+  //   let idiscount = 0;
+
+  //   for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+  //     isumofpriceitem = isumofpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+  //   }
+  //   if (isumofpriceitem > 0) {
+  //     itax = (isumofpriceitem * this.feature_item_tax) / 100
+  //   }
+  //   if (isumofpriceitem > 0) {
+  //     idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
+  //   }
+  //   itotal = isumofpriceitem + itax + idiscount
+  //   this.feature_item_total = itotal
+  //   this.acc_grand_total = this.feature_item_total + this.acc_total
+
+  //   this.feature_tax_total[0].value = this.feature_item_tax
+  //   this.feature_tax_total[1].value = this.feature_item_total
+  //   this.item_tax_total[2].value = this.acc_grand_total
+  //   // }
+  // }
+
   feature_price_calculate() {
-    // if (this.feature_itm_list_table.length > 0) {
-    let itotal = 0;
-    let isumofpriceitem = 0;
-    let itax = 0;
-    let idiscount = 0;
+    let igrandtotal = 0;
+    let iproducttotal = 0;
+    let iacctotal = 0;
+    let isumofpropriceitem = 0;
+    let isumofaccpriceitem = 0;
+    let iprotax = 0;
+    let iaccotax = 0;
+    let iaccdiscount = 0;
+    let iprodiscount = 0;
 
     for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-      isumofpriceitem = isumofpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+      if(this.feature_itm_list_table[iacc].accessory=="Y"){
+        isumofaccpriceitem = isumofaccpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+      }
+      else{
+        isumofpropriceitem = isumofpropriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+      }
+     
     }
-    if (isumofpriceitem > 0) {
-      itax = (isumofpriceitem * this.feature_item_tax) / 100
+    if (isumofpropriceitem > 0) {
+      iprotax = (isumofpropriceitem * this.feature_item_tax) / 100
+      iprodiscount= (isumofpropriceitem * this.feature_discount_percent) / 100
     }
-    if (isumofpriceitem > 0) {
-      idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
+    if (isumofaccpriceitem > 0) {
+      iaccotax = (isumofaccpriceitem * this.acc_item_tax) / 100
+      iaccdiscount= (isumofaccpriceitem * this.accessory_discount_percent) / 100
     }
-    itotal = isumofpriceitem + itax + idiscount
-    this.feature_item_total = itotal
-    this.acc_grand_total = this.feature_item_total + this.acc_total
 
-    this.feature_tax_total[0].value = this.feature_item_tax
-    this.feature_tax_total[1].value = this.feature_item_total
-    this.item_tax_total[2].value = this.acc_grand_total
+    iproducttotal = isumofpropriceitem + iprotax - iprodiscount
+    iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
+    igrandtotal=iproducttotal + iacctotal
+    this.feature_item_total = iproducttotal
+    this.acc_grand_total = igrandtotal
+
+    // this.feature_tax_total[0].value = this.feature_item_tax
+    // this.feature_tax_total[1].value = this.feature_item_total
+    // this.item_tax_total[2].value = this.acc_grand_total
     // }
   }
 
-  accesory_price_calculate() {
-    // if (this.accessory_itm_list_table.length > 0) {
-    let itotal = 0;
-    let isumofpriceitem = 0;
-    let itax = 0;
-    let idiscount = 0;
+  // accesory_price_calculate() {
+  //   // if (this.accessory_itm_list_table.length > 0) {
+  //   let itotal = 0;
+  //   let isumofpriceitem = 0;
+  //   let itax = 0;
+  //   let idiscount = 0;
 
-    for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-      isumofpriceitem = isumofpriceitem + (this.accessory_itm_list_table[iacc].quantity * this.accessory_itm_list_table[iacc].price);
-    }
-    if (isumofpriceitem > 0) {
-      itax = (isumofpriceitem * this.acc_item_tax) / 100
-    }
-    if (isumofpriceitem > 0) {
-      idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
-    }
-    itotal = isumofpriceitem + itax + idiscount
-    this.acc_total = itotal
+  //   for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
+  //     isumofpriceitem = isumofpriceitem + (this.accessory_itm_list_table[iacc].quantity * this.accessory_itm_list_table[iacc].price);
+  //   }
+  //   if (isumofpriceitem > 0) {
+  //     itax = (isumofpriceitem * this.acc_item_tax) / 100
+  //   }
+  //   if (isumofpriceitem > 0) {
+  //     idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
+  //   }
+  //   itotal = isumofpriceitem + itax + idiscount
+  //   this.acc_total = itotal
 
-    this.acc_grand_total = this.feature_item_total + this.acc_total
+  //   this.acc_grand_total = this.feature_item_total + this.acc_total
 
-    this.item_tax_total[0].value = this.acc_item_tax
-    this.item_tax_total[1].value = this.acc_total
-    this.item_tax_total[2].value = this.acc_grand_total
+  //   this.item_tax_total[0].value = this.acc_item_tax
+  //   this.item_tax_total[1].value = this.acc_total
+  //   this.item_tax_total[2].value = this.acc_grand_total
 
 
-    //  }
-  }
+  //   //  }
+  // }
 
   onAccessoryChange(value, row) {
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
@@ -450,21 +495,52 @@ export class OutputComponent implements OnInit {
             if (data.length > 0) {
               for (let i = 0; i < data.length; ++i) {
                 let isExist = 0;
-                for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-                  if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
-                    isExist = 1;
+                // for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
+                //   if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
+                //     isExist = 1;
+                //   }
+                // }
+                // if (isExist == 0) {
+                //   this.accessory_itm_list_table.push({
+                //     FeatureId: data[i].OPTM_FEATUREID,
+                //     Item: data[i].OPTM_ITEMKEY,
+                //     Description: data[i].OPTM_DISPLAYNAME,
+                //     quantity: data[i].OPTM_QUANTITY,
+                //     price: 0,
+                //     pricextn: 0
+                //   });
+                // }
+                if(this.feature_itm_list_table.length>0){
+                  for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
+                    if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
+                      isExist = 1;
+                    }
+                  }
+                  if (isExist == 0) {
+                    this.feature_itm_list_table.push({
+                      FeatureId: data[i].OPTM_FEATUREID,
+                      featureName: "",
+                      Item: data[i].OPTM_ITEMKEY,,
+                      Description: data[i].OPTM_DISPLAYNAME,
+                      quantity: data[i].OPTM_QUANTITY,
+                      price: 0,
+                      pricextn: 0
+                    });
                   }
                 }
-                if (isExist == 0) {
-                  this.accessory_itm_list_table.push({
+                else{
+                  this.feature_itm_list_table.push({
                     FeatureId: data[i].OPTM_FEATUREID,
-                    Item: data[i].OPTM_ITEMKEY,
+                    featureName: "",
+                    Item: data[i].OPTM_ITEMKEY,,
                     Description: data[i].OPTM_DISPLAYNAME,
                     quantity: data[i].OPTM_QUANTITY,
                     price: 0,
                     pricextn: 0
                   });
                 }
+               
+
               }
 
 
@@ -488,7 +564,7 @@ export class OutputComponent implements OnInit {
         }
       }
     }
-    this.accesory_price_calculate();
+   // this.accesory_price_calculate();
     this.feature_price_calculate();
 
   }
@@ -527,7 +603,7 @@ export class OutputComponent implements OnInit {
           this.accessory_itm_list_table[i].pricextn = value
         }
 
-        this.accesory_price_calculate();
+       // this.accesory_price_calculate();
 
 
       }
@@ -620,7 +696,7 @@ export class OutputComponent implements OnInit {
 
       }
     }
-    this.accesory_price_calculate();
+    //this.accesory_price_calculate();
     this.feature_price_calculate();
 
   }
@@ -930,6 +1006,10 @@ export class OutputComponent implements OnInit {
       }
     )
 
+  }
+
+  openPriceListLookup(){
+    
   }
 
 }
