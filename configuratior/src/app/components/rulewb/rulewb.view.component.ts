@@ -37,7 +37,7 @@ export class RuleWbViewComponent implements OnInit {
     public selectall: boolean = false;
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
-
+    public showImportButton: boolean = false;
 
 
 

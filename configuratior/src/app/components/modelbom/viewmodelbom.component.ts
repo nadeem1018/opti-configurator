@@ -37,7 +37,7 @@ export class ViewModelBomComponent implements OnInit {
     public selectall: boolean = false;
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
-
+    public showImportButton: boolean = false;
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.model_ModelCode, this.language.Name, this.language.description, this.language.action];

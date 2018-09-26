@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
     <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <!-- <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
             <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal">
                 <i class="fa fa-plus fa-fw"></i> {{language.import}}
             </button>
         </div>
-    </div>
+    </div> -->
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
     <!-- <li class="breadcrumb-item" style="display:none;">
@@ -62,9 +62,9 @@
                 <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
                 <div class="col-sm-6 input-group">
-                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
-                    <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode">
-                    <div class="input-group-append">
+                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
+                    <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode">
+                    <div class="input-group-append" [hidden] ="isItemlookupDisabled">
                         <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
                         </span>
@@ -89,7 +89,7 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
                 <div class="col-sm-6 input-group">
-                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='datepicker'
+                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="minimum_date" class="form-control  form-control-sm mt3" name='datepicker'
                         type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
                     <div class="input-group-append">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="form-group row clearfix">
+            <div class="form-group row clearfix" [hidden]="IsAccessoryVisible">
                 <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                 <div class="col-sm-6 mt-3px">
                     <div class="custom-control custom-radio custom-control-inline">
@@ -147,7 +147,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="pull-left">
-                            <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-success  mr-10">
+                            <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-info  mr-10">
                                 <i class="fa fa-save"></i> {{language.save}}
                             </button>
 

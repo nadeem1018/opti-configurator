@@ -39,7 +39,7 @@ export class ViewFeatureModelComponent implements OnInit {
 
     constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
-
+    public lookupfor = '';
     //custom dialoag params
     public dialog_params: any = [];
     public show_dialog: boolean = false;
@@ -51,7 +51,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public GetItemData: any = [];
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
-
+    public showImportButton:boolean = true;
     ngOnInit() {
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
@@ -254,6 +254,12 @@ export class ViewFeatureModelComponent implements OnInit {
                 }
             }
         )
+
+    }
+
+
+    openImportPopup() {
+        this.lookupfor = 'import_popup';
 
     }
 }
