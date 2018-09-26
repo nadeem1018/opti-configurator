@@ -31,8 +31,8 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
-  getFeatureList(): Observable<any> {
-    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+  getFeatureList(modelid): Observable<any> {
+    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
