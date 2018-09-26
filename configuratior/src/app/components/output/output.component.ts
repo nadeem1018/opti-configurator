@@ -520,7 +520,7 @@ export class OutputComponent implements OnInit {
                     this.feature_itm_list_table.push({
                       FeatureId: data[i].OPTM_FEATUREID,
                       featureName: "",
-                      Item: data[i].OPTM_ITEMKEY,,
+                      Item: data[i].OPTM_ITEMKEY,
                       Description: data[i].OPTM_DISPLAYNAME,
                       quantity: data[i].OPTM_QUANTITY,
                       price: 0,
