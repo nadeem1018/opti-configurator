@@ -451,8 +451,9 @@ export class ModelbomComponent implements OnInit {
     )
   }
 
-  openPriceLookUp(ItemKey) {
+  openPriceLookUp(ItemKey,rowindex) {
     this.serviceData = []
+    this.currentrowindex=rowindex;
     this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {

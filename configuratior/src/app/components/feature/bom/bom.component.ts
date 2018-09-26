@@ -421,7 +421,7 @@ export class BomComponent implements OnInit {
         this.feature_bom_table[i].type_value = value;
         this.feature_bom_table[i].type_value_code = code;
         if (this.feature_bom_table[i].type == 1) {
-          this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value).subscribe(
+          this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
               if (data === "False") {
