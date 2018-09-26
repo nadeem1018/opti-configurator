@@ -113,10 +113,10 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetAllRules", jObject, this.common_params.httpOptions);
   }
 
-  onModelIdChange(id): Observable<any> {
+  onModelIdChange(code): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelCode:code}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
   }
@@ -126,7 +126,7 @@ export class ModelbomService {
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
   
   onItemIdChangeModelBom(id): Observable<any> {

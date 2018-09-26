@@ -95,11 +95,11 @@ export class OutputComponent implements OnInit {
     this.step1_data.document = "sales_quote";
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;
-      this.step1_data.document_name = "Sales Quote";
+      this.step1_data.document_name = this.language.SalesQuote;
     }
     else {
       this.document_date = this.language.delivery_date;
-      this.step1_data.document_name = "Sales Order";
+      this.step1_data.document_name = this.language.SalesOrder;
     }
 
     this.feature_accessory_list = []
@@ -1050,18 +1050,63 @@ export class OutputComponent implements OnInit {
   onDocumentChange() {
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;
-      this.step1_data.document_name = "Sales Quote";
+      this.step1_data.document_name = this.language.SalesQuote;
     }
     else {
       this.document_date = this.language.delivery_date;
-      this.step1_data.document_name = "Sales Order";
+      this.step1_data.document_name = this.language.SalesOrder;
     }
   }
 
   onFinishPress() {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
-    final_dataset_to_save.OPConfig_OUTPUTHDR = this.step1_data;
+    final_dataset_to_save.OPConfig_OUTPUTDTL = [];
+    final_dataset_to_save.ConnectionDetails = []; 
+
+    //creating header data
+    final_dataset_to_save.OPConfig_OUTPUTHDR.push({
+      "OPTM_OUTPUTID": "",
+      "OPTM_DOCTYPE": this.step1_data.document,
+      "OPTM_BPCODE": this.step1_data.customer,
+      "OPTM_SHIPTO": this.step1_data.customerShipTo,
+      "OPTM_BILLTO": this.step1_data.customerBillTo,
+      "OPTM_CONTACTPERSON": this.step1_data.person_name,
+      "OPTM_TAX": "",
+      "OPTM_PAYMENTTERM": "",
+      "OPTM_FGITEM": "DEMO-ITEM",
+      "OPTM_KEY": "DEMO-KEY",
+      "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
+      "OPTM_QUANTITY": "",
+      "OPTM_CREATEDBY": this.common_output_data.username,
+      "OPTM_MODIFIEDBY": this.common_output_data.username
+    })
+
+    //creating detail data
+    final_dataset_to_save.OPConfig_OUTPUTDTL.push({
+      "OPTM_OUTPUTID" : "",
+      "OPTM_OUTPUTDTLID" : "",
+      "OPTM_ITEMNUMBER" : "", 
+      "OPTM_ITEMCODE" : "",
+      "OPTM_KEY" : "",
+      "OPTM_PARENTKEY" : "", 
+      "OPTM_TEMPLATEID" : "",
+      "OPTM_ITMCODEGENKEY" : "",
+      "OPTM_ITEMTYPE" : "", 
+      "OPTM_WHSE" : "", 
+      "OPTM_QUANTITY" : "",
+      "OPTM_PRICELIST" : "",
+      "OPTM_UNITPRICE" : "",
+      "OPTM_TOTALPRICE" : "",
+      "OPTM_DISCPERCENT" : "",
+      "OPTM_CREATEDBY": this.common_output_data.username,
+      "OPTM_MODIFIEDBY" : this.common_output_data.username,
+    })
+
+    //creating connection detials
+    final_dataset_to_save.ConnectionDetails.push({
+      CompanyDBID: this.common_output_data.companyName
+    })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
