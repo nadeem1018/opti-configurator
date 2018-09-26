@@ -36,7 +36,7 @@ export class ViewFeatureBOMComponent implements OnInit {
 
     constructor(private fbs: FeaturebomService, private router: Router, private toastr: ToastrService) { }
     show_table_footer: boolean = false;
-
+    public showImportButton: boolean = false;
     //custom dialoag params
     public dialog_params: any = [];
     public show_dialog: boolean = false;

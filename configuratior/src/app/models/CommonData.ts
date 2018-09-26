@@ -55,6 +55,11 @@ export class CommonData {
         { "value": 3, "Name": "Value" }
     ];
 
+    public less_bom_type: any = [
+        { "value": 2, "Name": "Item" }
+       /*  , { "value": 3, "Name": "Value" } */
+    ];
+
     public model_bom_type: any = [
         { "value": 1, "Name": "Feature" },
         { "value": 2, "Name": "Item" },

@@ -35,7 +35,7 @@ export class OutputComponent implements OnInit {
   public lookupfor: string = '';
   public view_route_link: any = "/home";
   public accessory_table_head = ["#", this.language.code, this.language.Name];
-  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
+  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "X"];
@@ -47,13 +47,16 @@ export class OutputComponent implements OnInit {
   public isModelVisible: boolean = false;
 
   public feature_tax_total = [
-    { "key": "Tax", "value": this.feature_item_tax },
-    { "key": "Total", "value": this.feature_item_total },
+    { "key": this.language.tax, "value": this.feature_item_tax },
+    { "key": this.language.total, "value": this.feature_item_total },
   ];
   public item_tax_total = [
-    { "key": "Tax", "value": this.acc_item_tax },
-    { "key": "Total", "value": this.acc_total },
-    { "key": "Grand Total", "value": this.acc_grand_total }
+    { "key": this.language.product_tax, "value": this.acc_item_tax },
+    { "key": this.language.product_total, "value": this.acc_total },
+    { "key": this.language.accessories_discount, "value": this.acc_item_tax },
+    { "key": this.language.accessories_tax, "value": this.acc_item_tax },
+    { "key": this.language.accessories_total, "value": this.acc_total },
+    { "key": this.language.grand_total, "value": this.acc_grand_total }
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
 
@@ -958,6 +961,10 @@ export class OutputComponent implements OnInit {
       }
     )
 
+  }
+
+  openPriceListLookup(){
+    
   }
 
 }
