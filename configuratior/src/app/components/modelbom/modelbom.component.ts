@@ -587,41 +587,45 @@ export class ModelbomComponent implements OnInit {
         this.modelbom_data[i].type_value = value.toString()
         this.modelbom_data[i].type_value_code = code.toString()
         if (this.modelbom_data[i].type == 1) {
-          this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
+          this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
 
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.modelbom_data[i].type_value = "";
                 this.modelbom_data[i].type_value_code = "";
+                this.modelbom_data[i].display_name= "";
                 return;
               }
               else {
                 this.lookupfor = ""
+                this.modelbom_data[i].type_value = data;
                 this.getModelFeatureDetails(this.modelbom_data[i].type_value, "Header", i)
               }
 
             })
         }
         else if (this.modelbom_data[i].type == 2) {
-          this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value).subscribe(
+          this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
-
+                console.log(data);
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.modelbom_data[i].type_value = "";
                 this.modelbom_data[i].type_value_code = "";
+                this.modelbom_data[i].display_name= "";
                 return;
               }
               else {
                 this.lookupfor = "";
+                this.modelbom_data[i].type_value= data;
                 this.getItemDetails(this.modelbom_data[i].type_value);
               }
             })
         }
         else {
           //First we will check the conflicts
-          this.checkModelAlreadyAddedinParent(value, this.modelbom_data[i].ModelId, i, "change");
+          this.checkModelAlreadyAddedinParent(value, code, i, "change");
 
         }
       }
@@ -977,17 +981,19 @@ export class ModelbomComponent implements OnInit {
 
 
   onModelIdChange() {
-    this.service.onModelIdChange(this.modelbom_data.modal_id).subscribe(
+    this.service.onModelIdChange(this.modelbom_data.modal_code).subscribe(
       data => {
-
         if (data === "False") {
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
           this.modelbom_data.modal_id = "";
           this.modelbom_data.modal_code = "";
+          this.modelbom_data.feature_name = "";
+          this.modelbom_data.feature_desc = "";
           return;
         }
         else {
           this.lookupfor = "ModelBom_lookup"
+          this.modelbom_data.modal_id= data;
           this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
 
         }
@@ -1008,23 +1014,27 @@ export class ModelbomComponent implements OnInit {
   }
 
   getModelItemDetails(rowIndex) {
-    this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value).subscribe(
+    this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value_code).subscribe(
       data => {
 
         if (data === "False") {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
           this.modelbom_data[rowIndex].type_value = "";
           this.modelbom_data[rowIndex].type_value_code = "";
+          this.modelbom_data[rowIndex].display_name = "";
           return;
         }
         else {
           this.lookupfor = "";
+          this.modelbom_data.modal_id= data;
           this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
         }
+       
       })
   }
 
   checkModelAlreadyAddedinParent(enteredModelID, modelbom_type_value, rowindex, fromEvent) {
+    console.log(modelbom_type_value);
     this.service.CheckModelAlreadyAddedinParent(enteredModelID, this.modelbom_data.modal_id).subscribe(
       data => {
         if (data.length > 0) {
@@ -1038,7 +1048,7 @@ export class ModelbomComponent implements OnInit {
           }
           else if (data == "True") {
             if (fromEvent == "lookup") {
-              this.getModelDetails(enteredModelID, "Header", 0);
+              this.getModelDetails(modelbom_type_value, "Header", 0);
             }
             else if (fromEvent == "change") {
               this.getModelItemDetails(rowindex);
