@@ -206,8 +206,8 @@
     "step_4_4": "Step 4 of 4",
     "model_bill_ofm": "Model Bill of Material",
     "verify_select_final": "Verify Selection and Final Acceptance",
-    "next": "next",
-    "previous": "previous",
+    "next": "Next",
+    "previous": "Previous",
     "document": "Document",
     "customer": "Customer",
     "posting_date": "Posting Date",
@@ -278,5 +278,13 @@
     "child_exist_cannot_remove": "Child exist in th following component, First Remove the child of this component. ",
     "valid_date": "Valid Until",
     "invalidcustomer": "Enter valid customer",
-    "string_number":"String/Number"
+    "string_number":"String/Number",
+    "tax": "Tax",
+    "product_tax": "Product Tax",
+    "product_total": "Product Total",
+    "accessories_discount": "Accessories Discount",
+    "product_discount": "Product Discount",
+    "accessories_tax": "Accessories Tax",
+    "accessories_total": "Accessories Total",
+    "grand_total": "Grand Total"
 }
