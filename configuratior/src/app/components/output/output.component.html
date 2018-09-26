@@ -405,7 +405,7 @@
                 <div class="feature_discount_table">
                   <div class="col-md-4 pull-right">
                     <table class="table table-bordered table-sm">
-                      <thead class="">
+                      <thead class="" style=" font-size: 14px; ">
                         <!-- <tr>
                           <th *ngFor="let label of model_discount_table_head; let i= index">
                             <span>
@@ -414,8 +414,8 @@
                           </th>
                         </tr> -->
                         <tr>
-                          <th>{{language.product_discount}}</th>
-                          <th>
+                          <th width="70%">{{language.product_discount}}</th>
+                          <th width="30%">
                             <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="product_discount"  #product_discount />
                           </th>
                         </tr>
@@ -443,7 +443,7 @@
                             {{this.language.accessories_discount}}
                           </td>
                           <td>
-                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="accessory_item_discount" #accessory_item_discount value="{{this.accessory_item_discount}}"
+                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="accessory_item_discount" #accessory_item_discount value=""
                             />
                             </td>
                         </tr>
@@ -460,8 +460,8 @@
                         <td>{{this.accessory_item_total}}</td>
                         </tr>   
                       </tbody>
-                      <tfoot>
-                        <tr>
+                      <tfoot >
+                        <tr style=" font-size: 14px; ">
                           <th>{{this.language.grand_total}}</th>
                           <td>{{this.acc_grand_total}}</td>
                         </tr>
