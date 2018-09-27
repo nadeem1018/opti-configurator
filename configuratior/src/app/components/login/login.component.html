@@ -11,8 +11,8 @@
         <div class="ml-4 col-sm-5 form-box">
           <div class="form-top">
             <div class="form-top-left">
-              <h3>{{language.login}}</h3>
-              <p>{{language.titleInfo}}</p>
+              <h3>{{login}}</h3>
+              <p>{{titleInfo}}</p>
             </div>
             <div class="form-top-right">
               <i class="fa fa-key"></i>
@@ -21,12 +21,12 @@
           <div class="form-bottom">
             <form role="form" action="" method="post" class="login-form" (keydown)="enter_to_sublit($event)">
               <div class="form-group">
-                <label class="sr-only" for="form-username">{{language.username}}</label>
-                <input type="text" name="form-username" placeholder="{{language.isUsernameBlank}}" class="form-username form-control" id="form-username"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
+                <label class="sr-only" for="form-username">{{username}}</label>
+                <input type="text" name="form-username" placeholder="{{isUsernameBlank}}" class="form-username form-control" id="form-username"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
               </div>
               <div class="form-group">
-                <label class="sr-only" for="form-password">{{language.password}}</label>
-                <input type="password" name="form-password" placeholder="{{language.isPasswordBlank}}" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password" (change)="onPasswordBlur()">
+                <label class="sr-only" for="form-password">{{password}}</label>
+                <input type="password" name="form-password" placeholder="{{isPasswordBlank}}" class="form-password form-control" id="form-password" [(ngModel)]="loginCredentials.password" (change)="onPasswordBlur()">
               </div>
               <button type="button" class="btn" (click)="onConnectBtnPress()" ><i class="fa fa-plug"></i> {{connectBtnText}}</button>
               <div class="company_section" >
@@ -40,7 +40,7 @@
                     <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.OPTM_COMPID}}</option>
                   </select>
                 </div>
-                <button type="button" class="btn" (click)="onLoginBtnPress()" *ngIf="showLoginBtn"><i class="fa fa-sign-in" ></i> {{language.login}}</button>
+                <button type="button" class="btn" (click)="onLoginBtnPress()" *ngIf="showLoginBtn"><i class="fa fa-sign-in" ></i> {{login_btn}}</button>
               </div>
             </form>
           </div>

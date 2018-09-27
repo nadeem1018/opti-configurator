@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import { CommonData } from "../../models/CommonData";
+import { CommonService } from "../../services/common.service";
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
@@ -19,37 +20,63 @@ export class LoginComponent implements OnInit {
   public assignedCompanies:any;
   public selecetedComp:any;
   public disbleConnectBtn:boolean = true;
-  public config_data:string = "";
-  public connectBtnText = 'Connect';
-  public language:any = "";
+  public config_data:any = [];
+  public connectBtnText = "Connect";
+  public language:any = [];
   private commonData = new CommonData();
   public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
-
+  public login = "Login..";
+  public titleInfo = "Enter username and password";
+  public username = "Username";
+  public isUsernameBlank = "Enter Username";
+  public password = "Password";
+  public isPasswordBlank = "Enter Password";
+  public login_btn = "Login";
   public page_title = this.commonData.project_name;
 
   constructor(   
     private auth: AuthenticationService, 
     private router: Router,
     private httpClientSer: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private CommonService: CommonService
   ) { }
 
   ngOnInit() { 
-    //this.loginCredentials.userName = 'shashank';
-    //this.loginCredentials.password = 'sha@123';
-    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-    this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
-
-    this.connectBtnText = this.language.connect;
-    console.info('in LOGIN header');
+    console.log(new Date());
+    // this.CommonService.get_config();
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
       this.router.navigateByUrl('/home');
     } else {
       //This Function will get the url from Database to hit Admin Portal Services
       setTimeout(()=>{
         this.getPSURL();
-      }, 1000);
+      }, 2000);
     }
+  }
+
+  ngAfterViewInit(){
+    setTimeout(function () {
+      console.log(new Date());
+      this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+      if (this.language == undefined && this.language != "" && this.language != 0) {
+        if (this.config_data != undefined && this.config_data != "") {
+          if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
+            //   this.CommonService.set_language(this.config_data['locale']);
+            this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+          }
+        }
+        this.connectBtnText = this.language.connect;
+        this.login = this.language.login;
+        this.titleInfo = this.language.titleInfo;
+        this.username = this.language.username;
+        this.isUsernameBlank = this.language.isUsernameBlank;
+        this.password = this.language.password;
+        this.isPasswordBlank = this.language.isPasswordBlank;
+        this.login_btn = this.language.login;
+      }
+    }, 2000);
   }
 
   enter_to_sublit(event){
@@ -78,7 +105,7 @@ export class LoginComponent implements OnInit {
           if(data.Table.length > 0){
             if(data.Table[0].OPTM_ACTIVE == 1){
 
-              this.connectBtnText = this.language.connected;
+              this.connectBtnText = (this.language.connected != undefined) ? this.language.connected : "Connected";
               //If everything is ok then we will get comapnies
               this.getCompanies();
             }

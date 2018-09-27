@@ -12,6 +12,8 @@ export class CommonData {
         if (temp.lastIndexOf('#') != '-1') {
             temp = temp.substring(0, temp.lastIndexOf('#'));
         }
+        let sanitized = temp.replace(/^http\:\/\//, '').replace(/\/+/g, '/').replace(/\/+$/, '');
+        temp = (window.location.protocol + '//' + sanitized);
         return temp;
     }
 
