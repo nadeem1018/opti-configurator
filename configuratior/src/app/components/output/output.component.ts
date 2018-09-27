@@ -44,11 +44,11 @@ export class OutputComponent implements OnInit {
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
   public acc_total: number = 0
-  public accessory_item_tax:number=0;
-  public accessory_item_total:number=0;
+  public accessory_item_tax: number = 0;
+  public accessory_item_total: number = 0;
   public acc_grand_total: number = 0
   public isModelVisible: boolean = false;
-  public final_document_number:any = '';
+  public final_document_number: any = '';
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -66,7 +66,7 @@ export class OutputComponent implements OnInit {
   public Accessory_table_hidden_elements = [false, false, false, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-
+  public refresh_btn_text = '<i class="fa fa-refresh fa-fw"></i>' + this.language.refresh;
 
   Object = Object;
   console = console;
@@ -85,7 +85,7 @@ export class OutputComponent implements OnInit {
   public isNextButtonVisible: boolean = false;
   public person: any;
   public salesemployee: any;
-
+  public step3_data_final = [];
   public document_date = '';
   ngOnInit() {
     this.commonData.checkSession();
@@ -111,6 +111,14 @@ export class OutputComponent implements OnInit {
     //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
     this.step1_data.posting_date = formated_posting_date;
     this.isNextButtonVisible = false;
+
+    //dummy data for 3rd screen 
+    this.step3_data_final = [
+      { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+      { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
+      { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
+      { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+    ];
   }
 
   openFeatureLookUp() {
@@ -481,7 +489,7 @@ export class OutputComponent implements OnInit {
     iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
     igrandtotal = iproducttotal + iacctotal
     this.feature_item_total = iproducttotal
-    this.accessory_item_total=iacctotal
+    this.accessory_item_total = iacctotal
     this.acc_grand_total = igrandtotal
 
     // this.feature_tax_total[0].value = this.feature_item_tax
@@ -609,8 +617,8 @@ export class OutputComponent implements OnInit {
                 this.feature_itm_list_table.splice(iacc, 1)
                 iacc = iacc - 1;
               }
-  
-  
+
+
             }
           }
           this.feature_price_calculate();
@@ -618,7 +626,7 @@ export class OutputComponent implements OnInit {
       }
     }
     // this.accesory_price_calculate();
-   
+
   }
 
   // on_accessory_input_change(inputid, value, rowid, item) {
@@ -797,20 +805,20 @@ export class OutputComponent implements OnInit {
       }
     }
     //this.accesory_price_calculate();
-   
+
 
   }
 
-  on_calculation_change(inputid,value){
+  on_calculation_change(inputid, value) {
     if (value < 0) {
       this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
       return;
     }
-    if(inputid=="product_discount"){
-      this.feature_discount_percent=value;
+    if (inputid == "product_discount") {
+      this.feature_discount_percent = value;
     }
-    else{
-     this.accessory_discount_percent=value;
+    else {
+      this.accessory_discount_percent = value;
     }
     this.feature_price_calculate();
   }
@@ -1062,7 +1070,7 @@ export class OutputComponent implements OnInit {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
-    final_dataset_to_save.ConnectionDetails = []; 
+    final_dataset_to_save.ConnectionDetails = [];
 
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
@@ -1084,23 +1092,23 @@ export class OutputComponent implements OnInit {
 
     //creating detail data
     final_dataset_to_save.OPConfig_OUTPUTDTL.push({
-      "OPTM_OUTPUTID" : "",
-      "OPTM_OUTPUTDTLID" : "",
-      "OPTM_ITEMNUMBER" : "", 
-      "OPTM_ITEMCODE" : "",
-      "OPTM_KEY" : "",
-      "OPTM_PARENTKEY" : "", 
-      "OPTM_TEMPLATEID" : "",
-      "OPTM_ITMCODEGENKEY" : "",
-      "OPTM_ITEMTYPE" : "", 
-      "OPTM_WHSE" : "", 
-      "OPTM_QUANTITY" : "",
-      "OPTM_PRICELIST" : "",
-      "OPTM_UNITPRICE" : "",
-      "OPTM_TOTALPRICE" : "",
-      "OPTM_DISCPERCENT" : "",
+      "OPTM_OUTPUTID": "",
+      "OPTM_OUTPUTDTLID": "",
+      "OPTM_ITEMNUMBER": "",
+      "OPTM_ITEMCODE": "",
+      "OPTM_KEY": "",
+      "OPTM_PARENTKEY": "",
+      "OPTM_TEMPLATEID": "",
+      "OPTM_ITMCODEGENKEY": "",
+      "OPTM_ITEMTYPE": "",
+      "OPTM_WHSE": "",
+      "OPTM_QUANTITY": "",
+      "OPTM_PRICELIST": "",
+      "OPTM_UNITPRICE": "",
+      "OPTM_TOTALPRICE": "",
+      "OPTM_DISCPERCENT": "",
       "OPTM_CREATEDBY": this.common_output_data.username,
-      "OPTM_MODIFIEDBY" : this.common_output_data.username,
+      "OPTM_MODIFIEDBY": this.common_output_data.username,
     })
 
     //creating connection detials
@@ -1126,6 +1134,29 @@ export class OutputComponent implements OnInit {
 
   }
 
+  delete_multiple_final_modal() {
+    if (confirm(this.language.confirm_remove_selected_modal)) {
+
+    }
+  }
+
+  remove_final_modal(row) {
+    if (confirm(this.language.confirm_remove_modal)) {
+
+    }
+  }
+
+  on_checkbox_checked(checkedvalue, row_data) {
+
+  }
+
+  refresh_bom_status() {
+
+    this.refresh_btn_text = '<i class="fa fa-spinner fa-spin fa-fw"></i>' + this.language.refreshing;
+    setTimeout(function () {
+      this.refresh_btn_text = '<i class="fa fa-refresh fa-fw"></i>' + this.language.refresh;
+    }, 5000);
+  }
 }
 
 
