@@ -3,6 +3,7 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animations';
 
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
@@ -43,6 +44,8 @@ export class OutputComponent implements OnInit {
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
   public acc_total: number = 0
+  public accessory_item_tax:number=0;
+  public accessory_item_total:number=0;
   public acc_grand_total: number = 0
   public isModelVisible: boolean = false;
   public final_document_number:any = '';
@@ -132,7 +135,7 @@ export class OutputComponent implements OnInit {
     this.serviceData = []
     this.parentfeatureid = feature_id
     this.lookupfor = 'feature_Detail_Output_lookup';
-    this.OutputService.getFeatureDetails(feature_id).subscribe(
+    this.OutputService.getFeatureDetails(feature_id, this.step2_data.model_id).subscribe(
       data => {
         if (data.AllFeatures.length > 0) {
           this.serviceData = data.AllFeatures
@@ -244,7 +247,7 @@ export class OutputComponent implements OnInit {
 
   getFeatureDetails(feature_id, feature_code) {
     this.serviceData = []
-    this.OutputService.getFeatureDetails(feature_id).subscribe(
+    this.OutputService.getFeatureDetails(feature_id, this.step2_data.model_id).subscribe(
       data => {
         if (data.AllFeatures.length > 0) {
           this.FeatureChildData = data.AllFeatures;
@@ -279,7 +282,7 @@ export class OutputComponent implements OnInit {
               featurechildcode: ""
             });
           }
-         // this.accesory_price_calculate();
+          // this.accesory_price_calculate();
           this.feature_price_calculate();
         }
         else {
@@ -350,15 +353,27 @@ export class OutputComponent implements OnInit {
   }
 
   getItemDataForFeature(ItemData) {
+    let isPriceDisabled: boolean = false;
+    let isPricehide: boolean = false;
     if (ItemData.length > 0) {
       if (this.feature_itm_list_table.length > 0) {
         let isExist = 0;
+
         for (let i = 0; i < ItemData.length; ++i) {
           for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
             if (this.feature_itm_list_table[j].FeatureId == ItemData[i].id) {
               isExist = 1;
             }
           }
+          if (ItemData[i].OPTM_ISPRICEEDIT == "y") {
+            isPriceDisabled = false
+            isPricehide = false
+          }
+          else {
+            isPriceDisabled = true
+            isPricehide = true
+          }
+
           if (isExist == 0) {
             this.feature_itm_list_table.push({
               FeatureId: ItemData[i].OPTM_FEATUREID,
@@ -366,22 +381,39 @@ export class OutputComponent implements OnInit {
               Item: ItemData[i].OPTM_ITEMKEY,
               Description: ItemData[i].OPTM_FEATUREDESC,
               quantity: ItemData[i].OPTM_QUANTITY,
-              price: 0,
-              pricextn: 0
+              price: ItemData[i].Pricesource,
+              Actualprice: ItemData[i].Price,
+              pricextn: 0,
+              is_accessory: "N",
+              isPriceDisabled: isPriceDisabled,
+              pricehide: isPricehide
+
             });
           }
         }
       }
       else {
         for (let i = 0; i < ItemData.length; ++i) {
+          if (ItemData[i].OPTM_ISPRICEEDIT == "y") {
+            isPriceDisabled = false
+            isPricehide = false
+          }
+          else {
+            isPriceDisabled = true
+            isPricehide = true
+          }
           this.feature_itm_list_table.push({
             FeatureId: ItemData[i].OPTM_FEATUREID,
             featureName: ItemData[i].OPTM_DISPLAYNAME,
             Item: ItemData[i].OPTM_ITEMKEY,
             Description: ItemData[i].OPTM_FEATUREDESC,
             quantity: ItemData[i].OPTM_QUANTITY,
-            price: 0,
-            pricextn: 0
+            price: ItemData[i].Pricesource,
+            Actualprice: ItemData[i].Price,
+            pricextn: 0,
+            is_accessory: "N",
+            isPriceDisabled: isPriceDisabled,
+            pricehide: isPricehide
           });
         }
       }
@@ -428,27 +460,28 @@ export class OutputComponent implements OnInit {
     let iprodiscount = 0;
 
     for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-      if(this.feature_itm_list_table[iacc].accessory=="Y"){
-        isumofaccpriceitem = isumofaccpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+      if (this.feature_itm_list_table[iacc].is_accessory == "Y") {
+        isumofaccpriceitem = isumofaccpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].Actualprice);
       }
-      else{
-        isumofpropriceitem = isumofpropriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
+      else {
+        isumofpropriceitem = isumofpropriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].Actualprice);
       }
-     
+
     }
     if (isumofpropriceitem > 0) {
       iprotax = (isumofpropriceitem * this.feature_item_tax) / 100
-      iprodiscount= (isumofpropriceitem * this.feature_discount_percent) / 100
+      iprodiscount = (isumofpropriceitem * this.feature_discount_percent) / 100
     }
     if (isumofaccpriceitem > 0) {
       iaccotax = (isumofaccpriceitem * this.acc_item_tax) / 100
-      iaccdiscount= (isumofaccpriceitem * this.accessory_discount_percent) / 100
+      iaccdiscount = (isumofaccpriceitem * this.accessory_discount_percent) / 100
     }
 
     iproducttotal = isumofpropriceitem + iprotax - iprodiscount
     iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
-    igrandtotal=iproducttotal + iacctotal
+    igrandtotal = iproducttotal + iacctotal
     this.feature_item_total = iproducttotal
+    this.accessory_item_total=iacctotal
     this.acc_grand_total = igrandtotal
 
     // this.feature_tax_total[0].value = this.feature_item_tax
@@ -491,10 +524,20 @@ export class OutputComponent implements OnInit {
       if (this.feature_accessory_list[i].id == row.id) {
         this.feature_accessory_list[i].checked = value;
         if (this.feature_accessory_list[i].checked == true) {
-          this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id).subscribe(data => {
+          this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id, this.step2_data.model_id).subscribe(data => {
             if (data.length > 0) {
               for (let i = 0; i < data.length; ++i) {
                 let isExist = 0;
+                let isPriceDisabled: boolean = false;
+                let isPricehide: boolean = false;
+                if (data[i].OPTM_ISPRICEEDIT == "y") {
+                  isPriceDisabled = false
+                  isPricehide = false
+                }
+                else {
+                  isPriceDisabled = true
+                  isPricehide = true
+                }
                 // for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
                 //   if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
                 //     isExist = 1;
@@ -510,7 +553,7 @@ export class OutputComponent implements OnInit {
                 //     pricextn: 0
                 //   });
                 // }
-                if(this.feature_itm_list_table.length>0){
+                if (this.feature_itm_list_table.length > 0) {
                   for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
                     if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
                       isExist = 1;
@@ -523,25 +566,35 @@ export class OutputComponent implements OnInit {
                       Item: data[i].OPTM_ITEMKEY,
                       Description: data[i].OPTM_DISPLAYNAME,
                       quantity: data[i].OPTM_QUANTITY,
-                      price: 0,
-                      pricextn: 0
+                      price: data[i].Pricesource,
+                      Actualprice: data[i].Price,
+                      pricextn: 0,
+                      is_accessory: "Y",
+                      isPriceDisabled: true,
+                      pricehide: true
+
                     });
                   }
                 }
-                else{
+                else {
                   this.feature_itm_list_table.push({
                     FeatureId: data[i].OPTM_FEATUREID,
                     featureName: "",
                     Item: data[i].OPTM_ITEMKEY,
                     Description: data[i].OPTM_DISPLAYNAME,
                     quantity: data[i].OPTM_QUANTITY,
-                    price: 0,
-                    pricextn: 0
+                    price: data[i].Pricesource,
+                    Actualprice: data[i].Price,
+                    pricextn: 0,
+                    is_accessory: "Y",
+                    isPriceDisabled: isPriceDisabled,
+                    pricehide: isPricehide
                   });
                 }
-               
+
 
               }
+              this.feature_price_calculate();
 
 
             }
@@ -550,66 +603,65 @@ export class OutputComponent implements OnInit {
 
         }
         else {
-          if (this.accessory_itm_list_table.length > 0) {
-            for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-              if (this.accessory_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-                this.accessory_itm_list_table.splice(iacc, 1)
+          if (this.feature_itm_list_table.length > 0) {
+            for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+                this.feature_itm_list_table.splice(iacc, 1)
                 iacc = iacc - 1;
               }
-
-
+  
+  
             }
           }
-          //this.accessory_itm_list_table[iacc]
+          this.feature_price_calculate();
         }
       }
     }
-   // this.accesory_price_calculate();
-    this.feature_price_calculate();
-
+    // this.accesory_price_calculate();
+   
   }
 
-  on_accessory_input_change(inputid, value, rowid, item) {
-    for (let i = 0; i < this.accessory_itm_list_table.length; ++i) {
-      if (rowid == this.accessory_itm_list_table[i].FeatureId && item == this.accessory_itm_list_table[i].Item) {
-        if (inputid == "quantity") {
-          if (value < 0) {
-            this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].quantity = 0;
-            return;
-          }
-          this.accessory_itm_list_table[i].quantity = value
-        }
-        else if (inputid == "price") {
-          if (value < 0) {
-            this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].price = 0;
-            return;
-          }
-          var rgexp = /^\d+$/;
-          if (rgexp.test(value) == false) {
-            this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].quantity = 0;
-            return;
-          }
-          this.accessory_itm_list_table[i].price = value
-        }
-        else {
-          if (value < 0) {
-            this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].pricextn = 0;
-            return;
-          }
-          this.accessory_itm_list_table[i].pricextn = value
-        }
+  // on_accessory_input_change(inputid, value, rowid, item) {
+  //   for (let i = 0; i < this.accessory_itm_list_table.length; ++i) {
+  //     if (rowid == this.accessory_itm_list_table[i].FeatureId && item == this.accessory_itm_list_table[i].Item) {
+  //       if (inputid == "quantity") {
+  //         if (value < 0) {
+  //           this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+  //           this.accessory_itm_list_table[i].quantity = 0;
+  //           return;
+  //         }
+  //         this.accessory_itm_list_table[i].quantity = value
+  //       }
+  //       else if (inputid == "price") {
+  //         if (value < 0) {
+  //           this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
+  //           this.accessory_itm_list_table[i].price = 0;
+  //           return;
+  //         }
+  //         var rgexp = /^\d+$/;
+  //         if (rgexp.test(value) == false) {
+  //           this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
+  //           this.accessory_itm_list_table[i].quantity = 0;
+  //           return;
+  //         }
+  //         this.accessory_itm_list_table[i].price = value
+  //       }
+  //       else {
+  //         if (value < 0) {
+  //           this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
+  //           this.accessory_itm_list_table[i].pricextn = 0;
+  //           return;
+  //         }
+  //         this.accessory_itm_list_table[i].pricextn = value
+  //       }
 
-       // this.accesory_price_calculate();
+  //       // this.accesory_price_calculate();
 
 
-      }
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   on_feature_input_change(inputid, value, rowid, item) {
     for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
@@ -656,49 +708,111 @@ export class OutputComponent implements OnInit {
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
       this.feature_accessory_list[i].checked = value;
       if (value == true) {
-        this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id).subscribe(data => {
+        this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id, this.step2_data.model_id).subscribe(data => {
           if (data.length > 0) {
             for (let i = 0; i < data.length; ++i) {
               let isExist = 0;
-              for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-                if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
-                  isExist = 1;
+              let isPriceDisabled: boolean = false;
+              let isPricehide: boolean = false;
+              if (data[i].OPTM_ISPRICEEDIT == "y") {
+                isPriceDisabled = false
+                isPricehide = false
+              }
+              else {
+                isPriceDisabled = true
+                isPricehide = true
+              }
+
+              // for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
+              //   if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
+              //     isExist = 1;
+              //   }
+              // }
+              // if (isExist == 0) {
+              //   this.accessory_itm_list_table.push({
+              //     FeatureId: data[i].OPTM_FEATUREID,
+              //     Item: data[i].OPTM_ITEMKEY,
+              //     Description: data[i].OPTM_DISPLAYNAME,
+              //     quantity: data[i].OPTM_QUANTITY,
+              //     price: 0,
+              //     pricextn: 0
+              //   });
+              // }
+              if (this.feature_itm_list_table.length > 0) {
+                for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
+                  if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
+                    isExist = 1;
+                  }
+                }
+                if (isExist == 0) {
+                  this.feature_itm_list_table.push({
+                    FeatureId: data[i].OPTM_FEATUREID,
+                    featureName: "",
+                    Item: data[i].OPTM_ITEMKEY,
+                    Description: data[i].OPTM_DISPLAYNAME,
+                    quantity: data[i].OPTM_QUANTITY,
+                    price: data[i].Pricesource,
+                    Actualprice: data[i].Price,
+                    pricextn: 0,
+                    is_accessory: "Y",
+                    isPriceDisabled: true,
+                    pricehide: true
+                  });
                 }
               }
-              if (isExist == 0) {
-                this.accessory_itm_list_table.push({
+              else {
+                this.feature_itm_list_table.push({
                   FeatureId: data[i].OPTM_FEATUREID,
+                  featureName: "",
                   Item: data[i].OPTM_ITEMKEY,
                   Description: data[i].OPTM_DISPLAYNAME,
                   quantity: data[i].OPTM_QUANTITY,
-                  price: 0,
-                  pricextn: 0
+                  price: data[i].Pricesource,
+                  Actualprice: data[i].Price,
+                  pricextn: 0,
+                  is_accessory: "Y",
+                  isPriceDisabled: true,
+                  pricehide: true
                 });
               }
             }
-
+            this.feature_price_calculate();
 
           }
 
         })
       }
       else {
-        if (this.accessory_itm_list_table.length > 0) {
-          for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-            if (this.accessory_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-              this.accessory_itm_list_table.splice(iacc, 1)
+        if (this.feature_itm_list_table.length > 0) {
+          for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+            if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+              this.feature_itm_list_table.splice(iacc, 1)
               iacc = iacc - 1;
             }
 
 
           }
         }
-
+        this.feature_price_calculate();
       }
     }
     //this.accesory_price_calculate();
-    this.feature_price_calculate();
+   
 
+  }
+
+  on_calculation_change(inputid,value){
+    if (value < 0) {
+      this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+      return;
+    }
+    if(inputid=="product_discount"){
+      this.feature_discount_percent=value;
+    }
+    else{
+     this.accessory_discount_percent=value;
+    }
+    this.feature_price_calculate();
   }
 
   onclearselection() {
@@ -1008,8 +1122,8 @@ export class OutputComponent implements OnInit {
 
   }
 
-  openPriceListLookup(){
-    
+  openPriceListLookup() {
+
   }
 
 }

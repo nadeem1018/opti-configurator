@@ -36,8 +36,8 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
-  getFeatureDetails(feature_id): Observable<any>{
-    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_id}]) }
+  getFeatureDetails(feature_id,modelid): Observable<any>{
+    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_id,ModelId:modelid}]) }
       return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureListForSelectedFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
@@ -46,8 +46,8 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAccessorry", jObject, this.common_params.httpOptions);
   }
 
-  GetItemDataForSelectedAccessorry(feature_id): Observable<any> {
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company , FeatureId: feature_id}]) }
+  GetItemDataForSelectedAccessorry(feature_id,modelid): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company , FeatureId: feature_id,ModelId:modelid}]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetItemDataForSelectedAccessorry", jObject, this.common_params.httpOptions);
   }
   

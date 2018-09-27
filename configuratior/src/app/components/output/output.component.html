@@ -381,8 +381,8 @@
                       (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
                       <div class=" input-group">
                         <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"   id="priceId">
-                        <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"  (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"  [(ngModel)]="featurerow.price_code" #price_code>
-                        <div class="input-group-append">
+                        <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"  (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"  value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
+                        <div class="input-group-append" [hidden]=featurerow.pricehide>
                           <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
                             <i class="fa fa-bars"></i>
                           </span>
@@ -395,7 +395,8 @@
                     />
                   </td>
                   <td>
-                    <input type="number" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  />
+                      <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
+                    <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
                   </td>
                   </tr>
                   </tbody>
@@ -416,7 +417,7 @@
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
                           <th width="30%">
-                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"  #product_discount />
+                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"  #product_discount (change)="on_calculation_change('product_discount',product_discount.value)" [(ngModel)]="this.feature_discount_percent"/>
                           </th>
                         </tr>
                       </thead>
@@ -443,7 +444,7 @@
                             {{this.language.accessories_discount}}
                           </td>
                           <td>
-                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount" #accessory_item_discount value=""
+                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)" [(ngModel)]="this.accessory_discount_percent"
                             />
                             </td>
                         </tr>
@@ -451,7 +452,7 @@
                           <td>
                             {{this.language.accessories_tax}}
                           </td>
-                        <td>{{this.accessory_item_tax}}</td>
+                        <td>{{this.acc_item_tax}}</td>
                         </tr>
                         <tr>
                           <td>

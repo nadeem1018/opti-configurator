@@ -428,27 +428,31 @@ export class BomComponent implements OnInit {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
                 this.feature_bom_table[i].type_value_code = "";
+                this.feature_bom_table[i].display_name = "";
                 return;
               }
               else {
                 //this.lookupfor = 'feature_lookup';
                 //First we will check the conflicts
+                this.feature_bom_table[i].type_value = data;
                 this.checkFeaturesAlreadyAddedinParent(value, this.feature_bom_table[i].type_value, i, "change");
               }
             })
         }
         else if (this.feature_bom_table[i].type == 2) {
-          this.fbom.onItemIdChange(this.feature_bom_table[i].type_value).subscribe(
+          this.fbom.onItemIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
                 this.feature_bom_table[i].type_value_code = "";
+                this.feature_bom_table[i].display_name = "";
                 return;
               }
               else {
                 this.lookupfor = "";
+                this.feature_bom_table[i].type_value= data;
                 this.getItemDetails(this.feature_bom_table[i].type_value);
               }
             })
@@ -758,12 +762,13 @@ export class BomComponent implements OnInit {
 
 
   onFeatureIdChange() {
-    this.fbom.onFeatureIdChange(this.feature_bom_data.feature_id).subscribe(
+    this.fbom.onFeatureIdChange(this.feature_bom_data.feature_code).subscribe(
       data => {
-
+        console.log(data);
         if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
           this.feature_bom_data.feature_id = "";
+          this.feature_bom_data.feature_code = "";
           this.feature_bom_data.feature_name = "";
           this.feature_bom_data.feature_desc = "";
           this.feature_bom_data.is_accessory = "";
@@ -771,6 +776,7 @@ export class BomComponent implements OnInit {
         }
         else {
           this.lookupfor = 'feature_lookup';
+          this.feature_bom_data.feature_id = data;
           this.getFeatureDetails(this.feature_bom_data.feature_id, "Header", 0);
         }
       })
@@ -796,6 +802,7 @@ export class BomComponent implements OnInit {
               this.getFeatureDetails(enteredFeatureID, "Header", rowindex);
             }
             else if (fromEvent == "change") {
+              this.lookupfor = 'feature_Detail_lookup';
               this.getFeatureDetails(feature_type, "Header", rowindex);
             }
 
