@@ -62,7 +62,8 @@
                   <label class="col-sm-4 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
                   <div class="col-sm-8 input-group">
                     <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
-                      type="text" value="" id="posting_date" readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
+                      type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}"
+                      [(ngModel)]="step1_data.posting_date">
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
                         <i class="fa fa-calendar"></i>
@@ -75,7 +76,8 @@
                   <label class="col-sm-4 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{document_date}}</label>
                   <div class="col-sm-8 input-group">
                     <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
-                      type="text" value="" id="delivery_until" readonly placeholder="{{document_date}}" [(ngModel)]="step1_data.delivery_until">
+                      type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
+                      [(ngModel)]="step1_data.delivery_until">
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
                         <i class="fa fa-calendar"></i>
@@ -271,7 +273,7 @@
                   </div>
                 </div>
                 <hr>
-                <div class="form-group row clearfix">
+                <!-- <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="feature">{{language.feature}}</label>
                   <div class="col-sm-9 input-group">
                     <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.feature_id" name="featureName"
@@ -285,7 +287,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row clearfix" *ngFor="let featurechidrow of feature_child_data">
+               <div class="form-group row clearfix" *ngFor="let featurechidrow of feature_child_data">
                   <label class="col-sm-3 col-form-label" for="feature2"></label>
                   <div class="col-sm-9 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature2" id="feature2" placeholder="{{language.feature2}}"
@@ -295,6 +297,30 @@
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
+                  </div>
+                </div> -->
+                <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
+                  <div class="tree well">
+                    <ul>
+                      <span *ngFor="let element of tree_data_json; let i= index;">
+                        <li  class="tree_label_li" *ngIf="element.level == 0 && element.parentId==''">
+                          <div class="has_elements" *ngIf="check_component_exist(element.component, i).length > 0">
+                            <span class="parent_span"  >
+                              <i class=" btn btn-sm expand_cllapse_click fa " data-visible="0"></i>
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                              <formelementstreeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json"></formelementstreeview>
+                          </div>
+                          <div *ngIf="check_component_exist(element.component, i).length == 0">
+                            <span>
+                              <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" value="{{element.component}}">
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                          </div>
+                          
+                        </li>
+                      </span>
+                    </ul>
                   </div>
                 </div>
                 <hr>
@@ -340,14 +366,14 @@
               </div>
               <div class="col-md-8 border-left-primary">
                 <div class="modal_heading_block" *ngIf="isModelVisible">
-                  <div class="form-group col-md-4 clearfix" >
+                  <div class="form-group col-md-4 clearfix">
                     <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
                     <span class="col-sm-6 bg-light border border-primary">{{step2_data.model_code}}</span>
                     <hr>
                   </div>
                 </div>
                 <div class="feature_block">
-                <div class="form-group col-md-4 clearfix bg-primary text-white ">
+                  <div class="form-group col-md-4 clearfix bg-primary text-white ">
                     <label class="col-sm-12 col-form-label">{{language.features}}</label>
                   </div>
                   <div class="feature_table">
@@ -365,114 +391,122 @@
                         <tr class="" *ngFor="let featurerow of feature_itm_list_table">
                           <td>
                             <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/>
-                            <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label> 
-                  </td>
-                  <td>
-                    <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
-                  </td>
-                  <td>
-                    <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
-                  </td>
-                  <td>
-                    <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}} (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)" #quantity />
-                  </td>
-                  <td>
-                    <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
+                            <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label>
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
+                          </td>
+                          <td>
+                            <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
+                              (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
+                              #quantity />
+                          </td>
+                          <td>
+                            <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
                       (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
-                      <div class=" input-group">
-                        <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"   id="priceId">
-                        <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"  (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"  value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
-                        <div class="input-group-append" [hidden]=featurerow.pricehide>
-                          <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
-                            <i class="fa fa-bars"></i>
-                          </span>
-                        </div>
-                      </div>
-                  </td>
-                  <td>
-                    <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
-                      (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)" #pricextn
-                    />
-                  </td>
-                  <td>
-                      <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
-                    <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
-                  </td>
-                  </tr>
-                  </tbody>
-                  </table>
-                </div>
-                <br>
-                <div class="feature_discount_table">
-                  <div class="col-md-4 pull-right">
-                    <table class="table table-bordered table-sm">
-                      <thead class="" style=" font-size: 14px; ">
-                        <!-- <tr>
+                            <div class=" input-group">
+                              <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
+                                id="priceId">
+                              <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
+                                (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
+                                value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
+                              <div class="input-group-append" [hidden]=featurerow.pricehide>
+                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
+                                  <i class="fa fa-bars"></i>
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
+                              (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
+                              #pricextn />
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
+                            <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                  <div class="feature_discount_table">
+                    <div class="col-md-4 pull-right">
+                      <table class="table table-bordered table-sm">
+                        <thead class="" style=" font-size: 14px; ">
+                          <!-- <tr>
                           <th *ngFor="let label of model_discount_table_head; let i= index">
                             <span>
                               {{label}}
                             </span>
                           </th>
                         </tr> -->
-                        <tr>
-                          <th width="70%">{{language.product_discount}}</th>
-                          <th width="30%">
-                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"  #product_discount (change)="on_calculation_change('product_discount',product_discount.value)" value="{{this.feature_discount_percent}}"/>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                       <!--  <tr class="" *ngFor="let row of item_tax_total">
+                          <tr>
+                            <th width="70%">{{language.product_discount}}</th>
+                            <th width="30%">
+                              <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"
+                                name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
+                                [(ngModel)]="this.feature_discount_percent" />
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!--  <tr class="" *ngFor="let row of item_tax_total">
                           <td *ngFor="let row_data of Object.keys(row); let i= index ">
                             {{row[row_data]}}
                           </td>
                         </tr> -->
-                        <tr>
-                          <td>
-                            {{this.language.product_tax}}
-                          </td>
-                          <td>{{this.feature_item_tax}}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{this.language.product_total}}
-                          </td>
-                          <td>{{this.feature_item_total}}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{this.language.accessories_discount}}
-                          </td>
-                          <td>
-                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)" value="{{this.accessory_discount_percent}}"
-                            />
+                          <tr>
+                            <td>
+                              {{this.language.product_tax}}
                             </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{this.language.accessories_tax}}
-                          </td>
-                        <td>{{this.acc_item_tax}}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{this.language.accessories_total}}
-                          </td>
-                        <td>{{this.accessory_item_total}}</td>
-                        </tr>   
-                      </tbody>
-                      <tfoot >
-                        <tr style=" font-size: 14px; ">
-                          <th>{{this.language.grand_total}}</th>
-                          <td>{{this.acc_grand_total}}</td>
-                        </tr>
-                      </tfoot>
-                    </table>
+                            <td>{{this.feature_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.product_total}}
+                            </td>
+                            <td>{{this.feature_item_total}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_discount}}
+                            </td>
+                            <td>
+                              <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount"
+                                name="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)"
+                                [(ngModel)]="this.accessory_discount_percent" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_tax}}
+                            </td>
+                            <td>{{this.acc_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_total}}
+                            </td>
+                            <td>{{this.accessory_item_total}}</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr style=" font-size: 14px; ">
+                            <th>{{this.language.grand_total}}</th>
+                            <td>{{this.acc_grand_total}}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="clearfix"></div>
-              <!-- <div class="accessories_block">
+                <div class="clearfix"></div>
+                <!-- <div class="accessories_block">
                   <hr>
                   <div class="form-group col-md-4 clearfix bg-primary text-white ">
                     <label class="col-sm-12 col-form-label">{{language.accessories}}</label>
@@ -548,98 +582,98 @@
                   </div>
                   <div class="clearfix"></div>
                 </div> -->
+              </div>
             </div>
           </div>
-    </div>
-    <div class="row">
-      <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
-        <button type="button" class="btn btn-sm btn-secondary  mr-10" (click)="onclearselection()">
-          <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
-        <!-- <button type="button" class="btn btn-sm btn-info  mr-10 ">
+          <div class="row">
+            <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
+              <button type="button" class="btn btn-sm btn-secondary  mr-10" (click)="onclearselection()">
+                <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
+              <!-- <button type="button" class="btn btn-sm btn-info  mr-10 ">
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
-      </div>
-      <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
-        <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
-          <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-        <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so">
-          <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
-      </div>
-    </div>
-    </fieldset>
+            </div>
+            <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
+              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+              <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so">
+                <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+            </div>
+          </div>
+        </fieldset>
 
-    <fieldset class="one_step_block" data-block_id="accept_bom_so">
-      <div class="wizard_heading_section">
-        <div class="row bg-primary pb-1 pt-1 wizard_font">
-          <div class="col-md-10 pull-left">
-            <i class="fa fa-user fa-fw"></i> {{language.verify_select_final}} </div>
-          <div class="col-md-2 pull-right text-right"> {{language.step_3_4}} </div>
-        </div>
-        <hr>
-      </div>
-      <div class="form_section">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.order_type}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.document_name}}</label>
+        <fieldset class="one_step_block" data-block_id="accept_bom_so">
+          <div class="wizard_heading_section">
+            <div class="row bg-primary pb-1 pt-1 wizard_font">
+              <div class="col-md-10 pull-left">
+                <i class="fa fa-user fa-fw"></i> {{language.verify_select_final}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_3_4}} </div>
             </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.posting_date}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.posting_date | date: 'MM/dd/yyyy' }}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.delivery_date}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.customer}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.customer}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.Name}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.customer_name}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.contact_person}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.person_name}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.ship_to}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.ship_to}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.address}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.ship_to_address}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.bill_to}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.bill_to}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.address}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.bill_to_address}}</label>
-            </div>
-            <!-- <div class="form-group row clearfix">
+            <hr>
+          </div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.order_type}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.document_name}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.posting_date}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.posting_date | date: 'MM/dd/yyyy' }}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.delivery_date}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.customer}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.customer}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.Name}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.customer_name}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.contact_person}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.person_name}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.ship_to}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.address}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to_address}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.bill_to}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to}}</label>
+                </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.address}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to_address}}</label>
+                </div>
+                <!-- <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label">
                     <b>{{language.payment_terms}}</b>
                   </label>
@@ -651,241 +685,64 @@
                   </label>
                   <label class="col-sm-6 col-form-label">{{step1_data.payment_method}}</label>
                 </div> -->
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.sales_employee}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.sales_employee}}</label>
-            </div>
-            <div class="form-group row clearfix">
-              <label class="col-sm-6 col-form-label">
-                <b>{{language.remark}}</b>
-              </label>
-              <label class="col-sm-6 col-form-label">{{step1_data.remark}}</label>
-            </div>
-          </div>
-          <div class="col-md-9 border-left-primary">
-            <div class="step_3_selection_table">
-              <table class="table table-bordered table-sm">
-                <thead class="thead-dark">
-                  <tr>
-                    <th *ngFor="let label of final_selection_header; let i= index">
-                      <span>
-                        {{label}}
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
-            </div>
-            <div class="final_item_discount_table">
-              <div class="col-md-3 pull-right">
-                <table class="table table-bordered table-sm">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th *ngFor="let label of model_discount_table_head; let i= index">
-                        <span>
-                          {{label}}
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="" *ngFor="let row of item_tax_total">
-                      <td *ngFor="let row_data of Object.keys(row); let i= index ">
-                        {{row[row_data]}}
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>
-                        <span>{{this.language.total}}</span>
-                      </th>
-                      <th>$1000/-</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="f1-buttons">
-        <hr>
-        <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
-          <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-        <button (click)="onFinishPress()" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
-          <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
-      </div>
-    </fieldset>
-
-    <fieldset class="one_step_block" data-block_id="fina_doc_create">
-      <div class="wizard_heading_section">
-        <div class="row bg-primary pb-1 pt-1 wizard_font">
-          <div class="col-md-10 pull-left">
-            <i class="fa fa-user fa-fw"></i> {{language.sales_order_creation}} </div>
-          <div class="col-md-2 pull-right text-right"> {{language.step_4_4}} </div>
-        </div>
-        <hr>
-      </div>
-      <div class="form_section">
-        <div class="row">
-          <div class="col-sm-3">
-            <div class="new item section">
-              <h6>{{language.lsit_of_new_item_created}}</h6>
-              <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list">
-                <span class="list-group-item list-group-item-action text-primary" href="javascript:;">{{new_item}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-9 border-left-primary">
-            <div class="customer_detail_section">
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group row clearfix">
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.order_type}}</b>
-                    </label>
-                    <label class="col-sm-6 col-form-label">{{language.SalesOrder}}</label>
-                  </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.sales_employee}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.sales_employee}}</label>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-5 col-form-label text-left">
-                      <b>{{language.doc_no}}</b>
-                    </label>
-                    <label class="col-sm-5 col-form-label text-right">10089</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-5 col-form-label text-left">
-                      <b>{{language.posting_date}}</b>
-                    </label>
-                    <label class="col-sm-5 col-form-label text-right">{{step1_data.posting_date | date: 'MM/dd/yyyy'}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-5 col-form-label text-left">
-                      <b>{{language.delivery_date}}</b>
-                    </label>
-                    <label class="col-sm-5 col-form-label text-right">{{step1_data.delivery_date}}</label>
-                  </div>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label">
+                    <b>{{language.remark}}</b>
+                  </label>
+                  <label class="col-sm-6 col-form-label">{{step1_data.remark}}</label>
                 </div>
               </div>
-            </div>
-            <hr>
-            <div class="order_detail_section">
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group row clearfix">
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.customer}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.customer}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.name}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.name}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-3 col-form-label">
-                      <b>{{language.contact_person}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.contact_person}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.ship_to}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.ship_to}}</label>
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.address}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.ship_to_address}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.bill_to}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.bill_to}}</label>
-                    <label class="col-sm-2 col-form-label">
-                      <b>{{language.address}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label">{{step1_data.bill_to_address}}</label>
-                  </div>
+              <div class="col-md-9 border-left-primary">
+                <div class="pull-right">
+                  <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()">
+                    <i class="fa fa-trash fa-fw"></i> {{language.delete}}
+                  </button>
                 </div>
-                <div class="col-md-4">
-
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-6 col-form-label text-left">
-                      <b>{{language.payment_terms}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_terms}}</label>
-                  </div>
-                  <div class="form-group row clearfix ">
-                    <label class="col-sm-6 col-form-label text-left">
-                      <b>{{language.payment_method}}</b>
-                    </label>
-                    <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_method}}</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="pricing_detail_section">
-              <div class="row">
-                <div class="col-md-3"> </div>
-                <div class="col-md-9">
-                  <div class="accessories_table">
-                    <table class="table table-bordered table-sm">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th *ngFor="let label of order_creation_table_head; let i= index">
-                            <span>
-                              {{label}}
+                <div class="step_3_selection_table">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th *ngFor="let label of final_selection_header; let i= index">
+                          <span>
+                            {{label}}
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="" *ngFor="let row of step3_data_final">
+                        <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                          <span *ngIf="(Object.keys(row).length-1) != i">
+                            <span *ngIf="i==0">
+                              <input type="checkbox" name="modal_checkbox" (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
                             </span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                  <br>
+                            <span *ngIf="i!=0">
+                              {{row[row_data]}}
+                            </span>
+                          </span>
+                          <span *ngIf="(Object.keys(row).length-1) == i">
+                            <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
+                              <i class="fa fa-times fa-fw"></i>
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-              <div class="">
-                <div class="col-md-3 pull-left">
-                  <div class="form-group row clearfix">
-                    <label class="col-sm-7 col-form-label">
-                      <b>{{language.sales_employee}}</b>
-                    </label>
-                    <label class="col-sm-5 col-form-label">{{step1_data.sales_employee}}</label>
-                  </div>
-                  <div class="form-group row clearfix">
-                    <label class="col-sm-7 col-form-label">
-                      <b>{{language.remark}}</b>
-                    </label>
-                    <label class="col-sm-5 col-form-label">{{step1_data.remark}}</label>
-                  </div>
-                </div>
-                <div class="item_discount_table">
-                  <div class="col-md-4 pull-right">
+                <div class="final_item_discount_table">
+                  <div class="col-md-3 pull-right">
                     <table class="table table-bordered table-sm">
                       <thead class="thead-dark">
-                        <tr>
-                          <th>{{this.language.total_before_discount}}</th>
-                          <th></th>
-                        </tr>
                         <tr>
                           <th *ngFor="let label of model_discount_table_head; let i= index">
-                            <span>
-                              {{label}}
-                            </span>
+                            {{label}}
                           </th>
                         </tr>
                       </thead>
@@ -898,8 +755,10 @@
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>{{this.language.total}}</th>
-                          <th>$5000/-</th>
+                          <th>
+                            <span>{{this.language.total}}</span>
+                          </th>
+                          <th>$1000/-</th>
                         </tr>
                       </tfoot>
                     </table>
@@ -907,22 +766,228 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="f1-buttons">
-        <hr>
-        <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
-          <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-        <button type="button" class="btn btn-sm btn-danger  mr-10  ">
-          <i class="fa fa-times fa-fw"></i> {{language.close}}</button>
-        <!--   <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit">Submit</button> -->
-      </div>
-    </fieldset>
 
-    </form>
+          </div>
+          <div class="f1-buttons">
+            <hr>
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
+              <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+            <button (click)="onFinishPress()" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
+              <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="one_step_block" data-block_id="fina_doc_create">
+          <div class="wizard_heading_section">
+            <div class="row bg-primary pb-1 pt-1 wizard_font">
+              <div class="col-md-10 pull-left">
+                <i class="fa fa-user fa-fw"></i> {{language.sales_order_creation}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_4_4}} </div>
+            </div>
+            <hr>
+          </div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="new item section">
+                  <h6>{{language.lsit_of_new_item_created}}</h6>
+                  <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list">
+                    <span class="list-group-item list-group-item-action text-primary" href="javascript:;">{{new_item}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-9 border-left-primary">
+                <div class="customer_detail_section">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.order_type}}</b>
+                        </label>
+                        <label class="col-sm-6 col-form-label">{{language.SalesOrder}}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="pull-right">
+                        <button type="button" (click)="refresh_bom_status()" class="mr-10 btn btn-sm btn-outline-primary refresh_btn">
+                          <span class="showLoader" [hidden]="showFinalLoader">
+                            <i class="fa fa-spinner fa-spin fa-fw"></i> {{this.language.refreshing}}
+                          </span>
+                          <span class="dontShowLoader" [hidden]="dontShowFinalLoader">
+                            <i class="fa fa-refresh fa-fw"></i> {{this.language.refresh}}
+                          </span>
+                        </button>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.doc_no}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label text-right">{{final_document_number}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.posting_date}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label text-right">{{step1_data.posting_date | date: 'MM/dd/yyyy'}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.delivery_date}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label text-right">{{step1_data.delivery_date}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="order_detail_section">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.customer}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.customer}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.name}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.name}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-3 col-form-label">
+                          <b>{{language.contact_person}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.contact_person}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.ship_to}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.ship_to}}</label>
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.address}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.ship_to_address}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.bill_to}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.bill_to}}</label>
+                        <label class="col-sm-2 col-form-label">
+                          <b>{{language.address}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label">{{step1_data.bill_to_address}}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-6 col-form-label text-left">
+                          <b>{{language.payment_terms}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_terms}}</label>
+                      </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-6 col-form-label text-left">
+                          <b>{{language.payment_method}}</b>
+                        </label>
+                        <label class="col-sm-4 col-form-label text-right">{{step1_data.payment_method}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="pricing_detail_section">
+                  <div class="row">
+                    <div class="col-md-3"> </div>
+                    <div class="col-md-9">
+                      <div class="accessories_table">
+                        <table class="table table-bordered table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th *ngFor="let label of order_creation_table_head; let i= index">
+                                <span>
+                                  {{label}}
+                                </span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                  <div class="">
+                    <div class="col-md-3 pull-left">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-7 col-form-label">
+                          <b>{{language.sales_employee}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label">{{step1_data.sales_employee}}</label>
+                      </div>
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-7 col-form-label">
+                          <b>{{language.remark}}</b>
+                        </label>
+                        <label class="col-sm-5 col-form-label">{{step1_data.remark}}</label>
+                      </div>
+                    </div>
+                    <div class="item_discount_table">
+                      <div class="col-md-4 pull-right">
+                        <table class="table table-bordered table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>{{this.language.total_before_discount}}</th>
+                              <th></th>
+                            </tr>
+                            <tr>
+                              <th *ngFor="let label of model_discount_table_head; let i= index">
+                                <span>
+                                  {{label}}
+                                </span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="" *ngFor="let row of item_tax_total">
+                              <td *ngFor="let row_data of Object.keys(row); let i= index ">
+                                {{row[row_data]}}
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <th>{{this.language.total}}</th>
+                              <th>$5000/-</th>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="f1-buttons">
+            <hr>
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
+              <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+            <button type="button" class="btn btn-sm btn-danger  mr-10  ">
+              <i class="fa fa-times fa-fw"></i> {{language.close}}</button>
+            <!--   <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit">Submit</button> -->
+          </div>
+        </fieldset>
+
+      </form>
+    </div>
   </div>
-</div>
 </div>
 
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>

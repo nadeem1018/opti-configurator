@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   private commonData = new CommonData();
   config_data: any = "";
   language: any = "";
-  project_name:any = '';
+  project_name:any = 'OptiPro Product Configurator';
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) {}
   showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
   
@@ -23,10 +23,13 @@ export class HeaderComponent implements OnInit {
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
    // this.commonData.checkSession();
-    
-    this.CommonService.set_language(this.config_data['locale']);
-    this.project_name = this.config_data['app_title'];
-    this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
+    if (this.config_data != undefined && this.config_data != "" ){
+       if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0){
+       // this.CommonService.set_language(this.config_data['locale']);
+      }
+      this.project_name = this.config_data['app_title'];
+      this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
+    }
     
     
   }

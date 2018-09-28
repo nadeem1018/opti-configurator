@@ -116,5 +116,26 @@ function calculate_progress(progress_block) {
     go_to_next(next_block);
   });
 
+  
+  $(document).on('click', '.expand_cllapse_click', function (e) {
+    var obj = $(this);
+    var children = obj.parent("span").parent('div.has_elements').find('ul > li');
+    children.each(function () {
+      var child = $(this);
+      if (child.is(":visible") == true) {
+        child.hide('fast');
+        child.find("i").removeClass('fa-minus').addClass('fa-plus');
+       // obj.parent("span").attr('title', laguage.expand_this_branch);
+        obj.removeClass('fa-minus').addClass('fa-plus');
+      } else {
+        child.show('fast');
+      //  obj.parent("span").attr('title', laguage.collapse_this_branch);
+        child.find("i").removeClass('fa-plus').addClass('fa-minus');
+        obj.removeClass('fa-plus').addClass('fa-minus');
+      }
+    });
+
+  });
+
 
 })(jQuery); // End of use strict

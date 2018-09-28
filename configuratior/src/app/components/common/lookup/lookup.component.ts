@@ -321,16 +321,6 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Select', 'Rule', 'Description' ];
     this.table_head_hidden_elements = [false, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
-
-   /*  this.serviceData = [
-      { "RuleID": "1", "RuleCode": "r1", "Description": "r1" },
-      { "RuleID": "2", "RuleCode": "r2", "Description": "r2" },
-      { "RuleID": "3", "RuleCode": "r3", "Description": "r3" },
-      { "RuleID": "4", "RuleCode": "r4", "Description": "r4" },
-      { "RuleID": "5", "RuleCode": "r5", "Description": "r5" },
-      { "RuleID": "6", "RuleCode": "r6", "Description": "r6" },
- 
-    ]; */
     
     this.showLoader = false;
     this.LookupDataLoaded = true;

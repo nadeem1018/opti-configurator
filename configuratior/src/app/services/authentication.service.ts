@@ -35,9 +35,11 @@ common_params = new CommonData();
 
   //Get psURL
   getPSURL(): Observable<any> {
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config')); 
+    let admin_db = this.config_params.admin_db_name;
     //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { GetPSURL: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name }]) };
-    //Return the response form the API  
+    let jObject: any = { GetPSURL: JSON.stringify([{ CompanyDBID: admin_db }]) };
+    //Return the response form the API 
     return this.httpclient.post(this.config_params.service_url + "/Base/GetPSURL", jObject, this.common_params.httpOptions);
   }
 

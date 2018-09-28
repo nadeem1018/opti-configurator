@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animations';
-
+import * as $ from 'jquery';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -15,6 +15,7 @@ import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animat
 })
 export class OutputComponent implements OnInit {
   @ViewChild("modelcode") _el: ElementRef;
+  @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public page_main_title = this.language.output_window;
@@ -44,11 +45,11 @@ export class OutputComponent implements OnInit {
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
   public acc_total: number = 0
-  public accessory_item_tax:number=0;
-  public accessory_item_total:number=0;
+  public accessory_item_tax: number = 0;
+  public accessory_item_total: number = 0;
   public acc_grand_total: number = 0
   public isModelVisible: boolean = false;
-
+  public final_document_number: any = '';
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -62,15 +63,17 @@ export class OutputComponent implements OnInit {
     { "key": this.language.grand_total, "value": this.acc_grand_total }
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
-
+  /* public refresh_button_text = '<i class="fa fa-refresh fa-fw"></i> ' + this.language.refresh; */
+  public showFinalLoader: boolean = true;
+  public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-
-
+  public tree_data_json:any =[];
+  public complete_dataset:any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
   serviceData: any;
   public contact_persons: any;
   public sales_employee: any = [];
@@ -85,7 +88,7 @@ export class OutputComponent implements OnInit {
   public isNextButtonVisible: boolean = false;
   public person: any;
   public salesemployee: any;
-
+  public step3_data_final = [];
   public document_date = '';
   ngOnInit() {
     this.commonData.checkSession();
@@ -101,7 +104,6 @@ export class OutputComponent implements OnInit {
       this.document_date = this.language.delivery_date;
       this.step1_data.document_name = this.language.SalesOrder;
     }
-
     this.feature_accessory_list = []
     this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
@@ -111,6 +113,37 @@ export class OutputComponent implements OnInit {
     //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
     this.step1_data.posting_date = formated_posting_date;
     this.isNextButtonVisible = false;
+
+    //dummy data for 3rd screen 
+    this.step3_data_final = [
+      { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+      { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
+      { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
+      { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+    ];
+
+    // dummy data for 2nd screen 
+    this.tree_data_json = [
+      { "sequence": "1", "component": "F1", "level": "0", "parentId": "", "element_type": "radio" },
+      { "sequence": "2", "component": "F2", "level": "1", "parentId": "F1", "element_type": "radio" },
+      { "sequence": "3", "component": "F3", "level": "1", "parentId": "F1", "element_type": "radio" },
+      { "sequence": "4", "component": "Item0001", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      { "sequence": "5", "component": "Item0002", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      { "sequence": "6", "component": "F4", "level": "2", "parentId": "F3", "element_type": "radio" },
+      { "sequence": "7", "component": "F5", "level": "2", "parentId": "F3", "element_type": "radio" },
+      { "sequence": "7", "component": "F6", "level": "3", "parentId": "F4", "element_type": "radio" },
+      { "sequence": "8", "component": "Item0003", "level": "3", "parentId": "F5", "element_type": "radio" },
+      { "sequence": "9", "component": "Item0004", "level": "3", "parentId": "F5", "element_type": "radio" },
+      { "sequence": "10", "component": "Item0005", "level": "4", "parentId": "F6", "element_type": "radio" },
+      { "sequence": "11", "component": "Item0006", "level": "4", "parentId": "F6", "element_type": "radio" },
+      { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
+      { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
+    ];
+    console.log(this.tree_data_json);
+    // initialize jquery 
+   setTimeout(()=>{
+      this.tree_view_expand_collapse()
+   }, 2000);
   }
 
   openFeatureLookUp() {
@@ -201,7 +234,9 @@ export class OutputComponent implements OnInit {
     if (this.lookupfor == 'ModelBom_lookup') {
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
+      this.step2_data.model_name = $event[2];
       this.isModelVisible = true
+      this.GetDataForModelBomOutput();
     }
     else if (this.lookupfor == 'feature_lookup') {
       this.step2_data.feature_id = $event[0];
@@ -481,7 +516,7 @@ export class OutputComponent implements OnInit {
     iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
     igrandtotal = iproducttotal + iacctotal
     this.feature_item_total = iproducttotal
-    this.accessory_item_total=iacctotal
+    this.accessory_item_total = iacctotal
     this.acc_grand_total = igrandtotal
 
     // this.feature_tax_total[0].value = this.feature_item_tax
@@ -609,8 +644,8 @@ export class OutputComponent implements OnInit {
                 this.feature_itm_list_table.splice(iacc, 1)
                 iacc = iacc - 1;
               }
-  
-  
+
+
             }
           }
           this.feature_price_calculate();
@@ -618,7 +653,7 @@ export class OutputComponent implements OnInit {
       }
     }
     // this.accesory_price_calculate();
-   
+
   }
 
   // on_accessory_input_change(inputid, value, rowid, item) {
@@ -797,20 +832,20 @@ export class OutputComponent implements OnInit {
       }
     }
     //this.accesory_price_calculate();
-   
+
 
   }
 
-  on_calculation_change(inputid,value){
+  on_calculation_change(inputid, value) {
     if (value < 0) {
       this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
       return;
     }
-    if(inputid=="product_discount"){
-      this.feature_discount_percent=value;
+    if (inputid == "product_discount") {
+      this.feature_discount_percent = value;
     }
-    else{
-     this.accessory_discount_percent=value;
+    else {
+      this.accessory_discount_percent = value;
     }
     this.feature_price_calculate();
   }
@@ -835,6 +870,49 @@ export class OutputComponent implements OnInit {
     this._el.nativeElement.focus();
    
   }
+
+  GetDataForModelBomOutput() {
+    this.lookupfor = 'tree_view__model_bom_Output_lookup"';
+    this.tree_data_json=[];
+      if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+        this.OutputService.GetDataForModelBomOutput(this.step2_data.modal_id,this.step2_data.model_name).subscribe(
+          data => {
+            if (data != null || data != undefined) {
+              // this.serviceData = data;
+              // this.lookupfor = "tree_view__model_bom_lookup";
+              let counter_temp = 0;
+              let temp_data = data.filter(function (obj) {
+                obj['live_row_id'] = (counter_temp++);
+                return obj;
+              });
+              this.tree_data_json = temp_data;
+            }
+            else {
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+              return;
+            }
+
+          },
+          error => {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
+          }
+        );
+      }
+      else {
+        // let sequence_count = parseInt(this.tree_data_json.length + 1);
+        // if (this.live_tree_view_data.length > 0) {
+        //   console.log(this.live_tree_view_data);
+        //   for (var key in this.live_tree_view_data) {
+        //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
+        //   }
+
+        //   this.live_tree_view_data = [];
+        //   console.log(this.tree_data_json);
+        // }
+      }
+    }
+
   //this will get the contact person
   fillContactPerson() {
     this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
@@ -1061,7 +1139,7 @@ export class OutputComponent implements OnInit {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
-    final_dataset_to_save.ConnectionDetails = []; 
+    final_dataset_to_save.ConnectionDetails = [];
 
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
@@ -1083,23 +1161,23 @@ export class OutputComponent implements OnInit {
 
     //creating detail data
     final_dataset_to_save.OPConfig_OUTPUTDTL.push({
-      "OPTM_OUTPUTID" : "",
-      "OPTM_OUTPUTDTLID" : "",
-      "OPTM_ITEMNUMBER" : "", 
-      "OPTM_ITEMCODE" : "",
-      "OPTM_KEY" : "",
-      "OPTM_PARENTKEY" : "", 
-      "OPTM_TEMPLATEID" : "",
-      "OPTM_ITMCODEGENKEY" : "",
-      "OPTM_ITEMTYPE" : "", 
-      "OPTM_WHSE" : "", 
-      "OPTM_QUANTITY" : "",
-      "OPTM_PRICELIST" : "",
-      "OPTM_UNITPRICE" : "",
-      "OPTM_TOTALPRICE" : "",
-      "OPTM_DISCPERCENT" : "",
+      "OPTM_OUTPUTID": "",
+      "OPTM_OUTPUTDTLID": "",
+      "OPTM_ITEMNUMBER": "",
+      "OPTM_ITEMCODE": "",
+      "OPTM_KEY": "",
+      "OPTM_PARENTKEY": "",
+      "OPTM_TEMPLATEID": "",
+      "OPTM_ITMCODEGENKEY": "",
+      "OPTM_ITEMTYPE": "",
+      "OPTM_WHSE": "",
+      "OPTM_QUANTITY": "",
+      "OPTM_PRICELIST": "",
+      "OPTM_UNITPRICE": "",
+      "OPTM_TOTALPRICE": "",
+      "OPTM_DISCPERCENT": "",
       "OPTM_CREATEDBY": this.common_output_data.username,
-      "OPTM_MODIFIEDBY" : this.common_output_data.username,
+      "OPTM_MODIFIEDBY": this.common_output_data.username,
     })
 
     //creating connection detials
@@ -1125,8 +1203,54 @@ export class OutputComponent implements OnInit {
 
   }
 
+  delete_multiple_final_modal() {
+    if (confirm(this.language.confirm_remove_selected_modal)) {
+
+    }
+  }
+
+  remove_final_modal(row) {
+    if (confirm(this.language.confirm_remove_modal)) {
+
+    }
+  }
+
+  on_checkbox_checked(checkedvalue, row_data) {
+
+  }
+
+  refresh_bom_status() {
+    console.log(' in here ');
+    this.dontShowFinalLoader = true;
+   this.showFinalLoader = false;
+
+    setTimeout(() => {
+       this.dontShowFinalLoader = false;
+      this.showFinalLoader = true;
+      this.showFinalLoader = true;
+    }, 4000);
+  }
+
+  tree_view_expand_collapse(){
+     let laguage = this.language;
+    $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
+  }
+ 
+  //This will recurse the tree
+  get_childrens(component) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['parentId'] == component;
+    });
+    return data;
+  }
+
+  check_component_exist(component, level) {
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parentId'] == component && obj['level'] == level;
+    });
+    return data;
+  }
+
+
 }
-
-
-
-
