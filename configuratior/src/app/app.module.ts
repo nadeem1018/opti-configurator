@@ -44,6 +44,7 @@ import { ViewFeatureBOMComponent } from './components/feature/bom/view.bom.compo
 import { ModelbomComponent } from './components/modelbom/modelbom.component';
 import { ViewModelBomComponent } from "./components/modelbom/viewmodelbom.component";
 import { TreeViewComponent } from "./components/common/tree.view";
+import { FormElementTreeViewComponent } from "./components/common/output.tree.view";
 import { CustomDialogsComponent } from './components/common/custom-dialogs/custom-dialogs.component';
 import { RulewbComponent } from './components/rulewb/rulewb.component';
 import { RuleWbViewComponent } from './components/rulewb/rulewb.view.component';
@@ -108,6 +109,7 @@ const routes: Routes = [
     ViewModelBomComponent, 
     FilterPipe,
     TreeViewComponent,
+    FormElementTreeViewComponent,
     CustomDialogsComponent,
     LookupFilterPipe,
     RulewbComponent,

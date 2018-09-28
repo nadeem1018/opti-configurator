@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animations';
-
+import * as $ from 'jquery';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -15,6 +15,7 @@ import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animat
 })
 export class OutputComponent implements OnInit {
   @ViewChild("modelcode") _el: ElementRef;
+  @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public page_main_title = this.language.output_window;
@@ -62,15 +63,17 @@ export class OutputComponent implements OnInit {
     { "key": this.language.grand_total, "value": this.acc_grand_total }
   ];
   public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
-
+  /* public refresh_button_text = '<i class="fa fa-refresh fa-fw"></i> ' + this.language.refresh; */
+  public showFinalLoader: boolean = true;
+  public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-  public refresh_btn_text = '<i class="fa fa-refresh fa-fw"></i>' + this.language.refresh;
-
+  public tree_data_json:any =[];
+  public complete_dataset:any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
   serviceData: any;
   public contact_persons: any;
   public sales_employee: any = [];
@@ -101,7 +104,6 @@ export class OutputComponent implements OnInit {
       this.document_date = this.language.delivery_date;
       this.step1_data.document_name = this.language.SalesOrder;
     }
-
     this.feature_accessory_list = []
     this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
@@ -119,6 +121,29 @@ export class OutputComponent implements OnInit {
       { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
       { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
     ];
+
+    // dummy data for 2nd screen 
+    this.tree_data_json = [
+      { "sequence": "1", "component": "F1", "level": "0", "parentId": "", "element_type": "radio" },
+      { "sequence": "2", "component": "F2", "level": "1", "parentId": "F1", "element_type": "radio" },
+      { "sequence": "3", "component": "F3", "level": "1", "parentId": "F1", "element_type": "radio" },
+      { "sequence": "4", "component": "Item0001", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      { "sequence": "5", "component": "Item0002", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      { "sequence": "6", "component": "F4", "level": "2", "parentId": "F3", "element_type": "radio" },
+      { "sequence": "7", "component": "F5", "level": "2", "parentId": "F3", "element_type": "radio" },
+      { "sequence": "7", "component": "F6", "level": "3", "parentId": "F4", "element_type": "radio" },
+      { "sequence": "8", "component": "Item0003", "level": "3", "parentId": "F5", "element_type": "radio" },
+      { "sequence": "9", "component": "Item0004", "level": "3", "parentId": "F5", "element_type": "radio" },
+      { "sequence": "10", "component": "Item0005", "level": "4", "parentId": "F6", "element_type": "radio" },
+      { "sequence": "11", "component": "Item0006", "level": "4", "parentId": "F6", "element_type": "radio" },
+      { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
+      { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
+    ];
+    console.log(this.tree_data_json);
+    // initialize jquery 
+   setTimeout(()=>{
+      this.tree_view_expand_collapse()
+   }, 2000);
   }
 
   openFeatureLookUp() {
@@ -1151,14 +1176,37 @@ export class OutputComponent implements OnInit {
   }
 
   refresh_bom_status() {
+    console.log(' in here ');
+    this.dontShowFinalLoader = true;
+   this.showFinalLoader = false;
 
-    this.refresh_btn_text = '<i class="fa fa-spinner fa-spin fa-fw"></i>' + this.language.refreshing;
-    setTimeout(function () {
-      this.refresh_btn_text = '<i class="fa fa-refresh fa-fw"></i>' + this.language.refresh;
-    }, 5000);
+    setTimeout(() => {
+       this.dontShowFinalLoader = false;
+      this.showFinalLoader = true;
+      this.showFinalLoader = true;
+    }, 4000);
   }
+
+  tree_view_expand_collapse(){
+     let laguage = this.language;
+    $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
+  }
+ 
+  //This will recurse the tree
+  get_childrens(component) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['parentId'] == component;
+    });
+    return data;
+  }
+
+  check_component_exist(component, level) {
+    level = (parseInt(level) + 1);
+    let data = this.tree_data_json.filter(function (obj) {
+      return obj['parentId'] == component && obj['level'] == level;
+    });
+    return data;
+  }
+
+
 }
-
-
-
-

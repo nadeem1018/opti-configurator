@@ -292,5 +292,7 @@
     "confirm_remove_modal":"Are you sure, you want to remove this modal?",
     "confirm_remove_selected_modal":"Are you sure, you want to remove selected modal?",
     "refreshing":"Refreshing",
-    "refresh":"Refresh"
+    "refresh":"Refresh",
+    "expand_this_branch":"Expand this branch",
+    "collapse_this_branch":"Collapse this branch"
 }

@@ -273,7 +273,7 @@
                   </div>
                 </div>
                 <hr>
-                <div class="form-group row clearfix">
+                <!-- <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="feature">{{language.feature}}</label>
                   <div class="col-sm-9 input-group">
                     <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.feature_id" name="featureName"
@@ -287,7 +287,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row clearfix" *ngFor="let featurechidrow of feature_child_data">
+               <div class="form-group row clearfix" *ngFor="let featurechidrow of feature_child_data">
                   <label class="col-sm-3 col-form-label" for="feature2"></label>
                   <div class="col-sm-9 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="feature2" id="feature2" placeholder="{{language.feature2}}"
@@ -297,6 +297,30 @@
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
+                  </div>
+                </div> -->
+                <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
+                  <div class="tree well">
+                    <ul>
+                      <span *ngFor="let element of tree_data_json; let i= index;">
+                        <li  class="tree_label_li" *ngIf="element.level == 0 && element.parentId==''">
+                          <div class="has_elements" *ngIf="check_component_exist(element.component, i).length > 0">
+                            <span class="parent_span"  >
+                              <i class=" btn btn-sm expand_cllapse_click fa " data-visible="0"></i>
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                              <formelementstreeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json"></formelementstreeview>
+                          </div>
+                          <div *ngIf="check_component_exist(element.component, i).length == 0">
+                            <span>
+                              <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" value="{{element.component}}">
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                          </div>
+                          
+                        </li>
+                      </span>
+                    </ul>
                   </div>
                 </div>
                 <hr>
@@ -696,11 +720,10 @@
                         <td *ngFor="let row_data of Object.keys(row); let i= index ">
                           <span *ngIf="(Object.keys(row).length-1) != i">
                             <span *ngIf="i==0">
-                              <input type="checkbox" name="modal_checkbox" (change)="on_checkbox_checked(checkedvalue.checked,row_data)"
-                                [checked]=selectall>
+                              <input type="checkbox" name="modal_checkbox" (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
                             </span>
                             <span *ngIf="i!=0">
-                              {{row[row_data]}} 
+                              {{row[row_data]}}
                             </span>
                           </span>
                           <span *ngIf="(Object.keys(row).length-1) == i">
@@ -786,8 +809,13 @@
                     </div>
                     <div class="col-md-4">
                       <div class="pull-right">
-                        <button type="button" click="refresh_bom_status()" class="mr-10 btn btn-sm btn-outline-primary">
-                        {{refresh_btn_text}}
+                        <button type="button" (click)="refresh_bom_status()" class="mr-10 btn btn-sm btn-outline-primary refresh_btn">
+                          <span class="showLoader" [hidden]="showFinalLoader">
+                            <i class="fa fa-spinner fa-spin fa-fw"></i> {{this.language.refreshing}}
+                          </span>
+                          <span class="dontShowLoader" [hidden]="dontShowFinalLoader">
+                            <i class="fa fa-refresh fa-fw"></i> {{this.language.refresh}}
+                          </span>
                         </button>
                       </div>
                       <div class="clearfix"></div>
