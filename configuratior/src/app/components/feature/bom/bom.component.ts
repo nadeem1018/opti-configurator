@@ -51,6 +51,8 @@ export class BomComponent implements OnInit {
   public complete_dataset: any = [];
   public row_image_data: any;
   public detail_select_options = '';
+  public isPriceDisabled:boolean=false
+  public  pricehide:boolean=false;
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -59,7 +61,7 @@ export class BomComponent implements OnInit {
 
   ngOnInit() {
     this.commonData.checkSession();
-    this.detail_select_options =  this.commonData.bom_type;
+    this.detail_select_options = this.commonData.bom_type;
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
@@ -90,6 +92,8 @@ export class BomComponent implements OnInit {
                 this.isTypeDisabled = false
                 this.ishide = false
                 this.isQuanityDisabled = false
+                this.isPriceDisabled=true
+                this.pricehide=true
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
@@ -98,7 +102,9 @@ export class BomComponent implements OnInit {
                 this.isDisplayNameDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = false
+                this.pricehide=false
                 this.isQuanityDisabled = false
+                this.isPriceDisabled=false
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else {
@@ -109,7 +115,9 @@ export class BomComponent implements OnInit {
                 //  this.isTypeDisabled = false
                 this.isTypeDisabled = false
                 this.ishide = true
+                this.pricehide=true
                 this.isQuanityDisabled = true
+                this.isPriceDisabled=true
                 this.isQuanity = 0
               }
               if (data.FeatureDetail[i].OPTM_DEFAULT == "Y") {
@@ -117,6 +125,12 @@ export class BomComponent implements OnInit {
               }
               else {
                 this.defaultcheckbox = false
+              }
+              if (data.FeatureDetail[i].OPTM_PROPOGATEQTY == "Y") {
+                data.FeatureDetail[i].OPTM_PROPOGATEQTY = true
+              }
+              else {
+                data.FeatureDetail[i].OPTM_PROPOGATEQTY = false
               }
 
               this.row_image_data = this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
@@ -133,10 +147,14 @@ export class BomComponent implements OnInit {
                 remark: data.FeatureDetail[i].OPTM_REMARKS,
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
                 preview: this.row_image_data,
+                propagate_qty: data.FeatureDetail[i].OPTM_PROPOGATEQTY,
+                price_source: data.FeatureDetail[i].OPTM_PRICESOURCE,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
                 isQuanityDisabled: this.isQuanityDisabled,
                 hide: this.ishide,
+                pricehide: this.pricehide,
+                isPriceDisabled: this.isPriceDisabled,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
@@ -153,10 +171,10 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
             console.log('accesory - ' + this.feature_bom_data.is_accessory);
-            if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y'){
+            if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
               this.detail_select_options = this.commonData.less_bom_type;
               console.log('in if  ');
-            }  else {
+            } else {
               this.detail_select_options = this.commonData.bom_type;
               console.log('in else ');
             }
@@ -206,10 +224,14 @@ export class BomComponent implements OnInit {
       remark: "",
       attachment: "",
       preview: "",
+      propagate_qty: false,
+      price_source: "",
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
       isQuanityDisabled: false,
+      isPriceDisabled: this.isPriceDisabled,
+      pricehide: this.pricehide,
       CompanyDBId: this.companyName,
       CreatedUser: this.username
     });
@@ -271,7 +293,7 @@ export class BomComponent implements OnInit {
               let tree_element_child = this.tree_data_json.filter(function (obj) {
                 return obj['parentId'] == remove_tree_data[0]['component'];
               });
-             
+
               if (tree_element_child.length > 0) {
                 this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
                 return false;
@@ -305,6 +327,12 @@ export class BomComponent implements OnInit {
         }
         else {
           this.feature_bom_table[i].default = "Y"
+        }
+        if (this.feature_bom_table[i].propagate_qty === false) {
+          this.feature_bom_table[i].propagate_qty = "N"
+        }
+        else {
+          this.feature_bom_table[i].propagate_qty = "Y"
         }
 
       }
@@ -343,6 +371,8 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].type = 3
           this.feature_bom_table[i].quantity = 0;
           this.feature_bom_table[i].isQuanityDisabled = true
+          this.feature_bom_table[i].isPriceDisabled = true
+          this.feature_bom_table[i].pricehide = true
 
 
 
@@ -355,11 +385,15 @@ export class BomComponent implements OnInit {
             this.feature_bom_table[i].type = 2
             this.feature_bom_table[i].quantity = 1;
             this.feature_bom_table[i].isQuanityDisabled = false
+            this.feature_bom_table[i].isPriceDisabled = false
+          this.feature_bom_table[i].pricehide = false
           }
           else {
             this.feature_bom_table[i].type = 1
             this.feature_bom_table[i].quantity = 1;
             this.feature_bom_table[i].isQuanityDisabled = false
+            this.feature_bom_table[i].isPriceDisabled = true
+            this.feature_bom_table[i].pricehide = true
           }
         }
 
@@ -452,7 +486,7 @@ export class BomComponent implements OnInit {
               }
               else {
                 this.lookupfor = "";
-                this.feature_bom_table[i].type_value= data;
+                this.feature_bom_table[i].type_value = data;
                 this.getItemDetails(this.feature_bom_table[i].type_value);
               }
             })
@@ -497,7 +531,18 @@ export class BomComponent implements OnInit {
       //call the method cyclic chk
       this.checkFeaturesAlreadyAddedinParent($event[0], "", this.currentrowindex - 1, "lookup");
     }
+    else if (this.lookupfor == 'Price_lookup') {
+      this.getPriceDetails($event[0], this.currentrowindex);
+    }
 
+  }
+
+  getPriceDetails(price, index) {
+    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+      if (this.feature_bom_table[i].rowindex === index) {
+        this.feature_bom_table[i].price_source = price.toString()
+      }
+    }
   }
 
   openFeatureLookUp(status) {
@@ -528,6 +573,7 @@ export class BomComponent implements OnInit {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
               this.feature_bom_table[i].type_value = data[0].ItemKey;
+              this.feature_bom_table[i].type=2
               this.feature_bom_table[i].type_value_code = data[0].ItemKey;
               this.feature_bom_table[i].display_name = data[0].Description;
               this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
@@ -554,9 +600,13 @@ export class BomComponent implements OnInit {
               console.log('accesory - ' + this.feature_bom_data.is_accessory);
               if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
                 this.detail_select_options = this.commonData.less_bom_type;
+                this.pricehide=false
+                this.isPriceDisabled=false
                 console.log('in if  ');
               } else {
                 this.detail_select_options = this.commonData.bom_type;
+                this.pricehide=true
+                this.isPriceDisabled=true
                 console.log('in else ');
               }
               this.showImageBlock = false;
@@ -565,6 +615,9 @@ export class BomComponent implements OnInit {
                   this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path;
                   this.showImageBlock = true;
                 }
+              }
+              if(this.feature_bom_table.length>0){
+                this.feature_bom_table=[];
               }
 
               // this.header_image_data = [
@@ -594,6 +647,26 @@ export class BomComponent implements OnInit {
 
             this.serviceData = data;
           }
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
+  openPriceLookUp(ItemKey,rowindex) {
+    this.serviceData = []
+    this.currentrowindex=rowindex;
+    this.fbom.GetPriceList(ItemKey).subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'Price_lookup';
+          this.serviceData = data;
+
         }
         else {
           this.lookupfor = "";
@@ -645,6 +718,31 @@ export class BomComponent implements OnInit {
 
     }
 
+
+  }
+
+  on_propagate_qty_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.feature_bom_data.length; ++i) {
+      if (this.feature_bom_data[i].rowindex === this.currentrowindex) {
+        if (value.checked == true) {
+          this.feature_bom_data[i].propagate_qty = true
+        }
+        else {
+          this.feature_bom_data[i].propagate_qty = false
+        }
+      }
+    }
+
+  }
+
+  on_price_source_change(value, rowindex) {
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.feature_bom_data.length; ++i) {
+      if (this.feature_bom_data[i].rowindex === this.currentrowindex) {
+        this.feature_bom_data[i].price_source = value
+      }
+    }
 
   }
 
@@ -732,7 +830,7 @@ export class BomComponent implements OnInit {
               });
               this.tree_data_json = temp_data;
               console.log(this.tree_data_json);
-              
+
             }
             else {
             }

@@ -101,4 +101,9 @@ export class FeaturebomService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckFeaturesAlreadyAddedinParent", jObject, this.common_params.httpOptions);
   }
+
+  GetPriceList(ItemKey): Observable<any> {
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey }]) }
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetPriceListForFeatureBOM", jObject, this.common_params.httpOptions);
+  }
 }

@@ -99,12 +99,14 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th width="4%">#</th>
-                                        <th width="22%">{{language.Model_Type}}</th>
-                                        <th width="22%">{{language.Bom_FeatureValue}}</th>
-                                        <th width="22%">{{language.Bom_Displayname}}</th>
+                                        <th width="18%">{{language.Model_Type}}</th>
+                                        <th width="18%">{{language.Bom_FeatureValue}}</th>
+                                        <th width="18%">{{language.Bom_Displayname}}</th>
                                         <th width="5%">{{language.Bom_Qty}}</th>
                                         <th width="5%">{{language.Bom_Default}}</th>
                                         <th width="12%">{{language.Bom_Remarks}}</th>
+                                        <th width="5%">{{language.propagate_qty}}</th>
+                                        <th width="18%">{{language.price_source}}</th>
                                         <th width="12%">{{language.Bom_Attach}}</th>
                                         <th width="5%">{{language.image}}</th>
                                         <th width="2%">
@@ -158,6 +160,22 @@
                                                 value={{row.remark}} #remark />
 
                                         </td>
+                                        <td>
+                                            <input type="checkbox" class="form-control  form-control-sm mt15 pull-right" id="propagate_qty" value={{row.propagate_qty}}
+                                              (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty
+                                            />
+                                          </td>
+                                          <td>
+                                            <div class="input-group">
+                                              <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
+                                                #price_source [disabled]="row.isPriceDisabled" />
+                                              <div class="input-group-append" [hidden]=row.pricehide>
+                                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
+                                                  <i class="fa fa-bars"></i>
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </td>
                                         <td>
                                             <div class="btn btn-outline-secondary btn-file btn-sm mt-1"> {{language.choose_image}}
                                                 <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"

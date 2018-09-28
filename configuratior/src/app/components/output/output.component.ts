@@ -683,7 +683,7 @@ export class OutputComponent implements OnInit {
         else if (inputid == "price") {
           if (value < 0) {
             this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].price = 0;
+            this.feature_itm_list_table[i].price = 0;
             return;
           }
           this.feature_itm_list_table[i].price = value
@@ -691,7 +691,7 @@ export class OutputComponent implements OnInit {
         else {
           if (value < 0) {
             this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-            this.accessory_itm_list_table[i].pricextn = 0;
+            this.feature_itm_list_table[i].pricextn = 0;
             return;
           }
           this.feature_itm_list_table[i].pricextn = value
@@ -821,20 +821,19 @@ export class OutputComponent implements OnInit {
     this.feature_child_data = [];
     this.feature_accessory_list = [];
     this.feature_itm_list_table = [];
-    this.accessory_itm_list_table = [];
-    this.feature_item_tax = 0
-    this.feature_item_total = 0
-    this.acc_item_tax = 0
-    this.acc_total = 0
-    this.acc_grand_total = 0
-    this.item_tax_total[0].value = 0;
-    this.item_tax_total[1].value = 0;
-    this.item_tax_total[2].value = 0;
+    this.feature_item_tax = 0;
+    this.feature_item_total = 0;
+    this.acc_item_tax = 0;
+    this.accessory_item_total=0
+    this.acc_total = 0;
+    this.acc_grand_total = 0;
     this.feature_tax_total[0].value = 0;
     this.feature_tax_total[1].value = 0;
-    this.item_tax_total[2].value = 0;
+    this.feature_discount_percent=0;
+    this.accessory_discount_percent=0;
+    this.step2_data.quantity=0;
     this._el.nativeElement.focus();
-
+   
   }
   //this will get the contact person
   fillContactPerson() {

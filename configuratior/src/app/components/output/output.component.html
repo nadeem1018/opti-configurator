@@ -417,7 +417,7 @@
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
                           <th width="30%">
-                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"  #product_discount (change)="on_calculation_change('product_discount',product_discount.value)" [(ngModel)]="this.feature_discount_percent"/>
+                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"  #product_discount (change)="on_calculation_change('product_discount',product_discount.value)" value="{{this.feature_discount_percent}}"/>
                           </th>
                         </tr>
                       </thead>
@@ -444,7 +444,7 @@
                             {{this.language.accessories_discount}}
                           </td>
                           <td>
-                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)" [(ngModel)]="this.accessory_discount_percent"
+                            <input type="text" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)" value="{{this.accessory_discount_percent}}"
                             />
                             </td>
                         </tr>

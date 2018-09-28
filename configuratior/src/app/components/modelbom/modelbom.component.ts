@@ -491,7 +491,7 @@ export class ModelbomComponent implements OnInit {
 
     }
     else if (this.lookupfor == 'Price_lookup') {
-      this.getPriceDetails($event[0], "Header", this.currentrowindex);
+      this.getPriceDetails($event[0],  this.currentrowindex);
     }
     else if (this.lookupfor == 'rule_section_lookup') {
       this.rule_data = $event;
@@ -505,7 +505,7 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  getPriceDetails(price, press_location, index) {
+  getPriceDetails(price, index) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === index) {
         this.modelbom_data[i].price_source = price.toString()
