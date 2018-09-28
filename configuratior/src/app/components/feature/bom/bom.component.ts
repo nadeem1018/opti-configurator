@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
+import { jaLocale } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-bom',
@@ -416,6 +417,28 @@ export class BomComponent implements OnInit {
   on_typevalue_change(value, rowindex, code) {
 
     this.currentrowindex = rowindex
+    var iCheckTwice = 0;
+
+   for (let j = 0; j < this.feature_bom_table.length; j++) {
+      var SerialNumber = code;
+      var OPTM_BTCHSERNO = this.feature_bom_table[j].type_value_code;
+      if (OPTM_BTCHSERNO != undefined && OPTM_BTCHSERNO != "") {
+          if (OPTM_BTCHSERNO == SerialNumber) {
+              iCheckTwice = iCheckTwice + 1;
+          }
+      }
+      if (iCheckTwice > 1) {
+        //var rowindextemp = rowindex - 1;
+        this.toastr.error('',"Duplicate", this.commonData.toast_config);
+        this.feature_bom_table[j].type_value = "";
+        this.feature_bom_table[j].type_value_code = "";
+        this.feature_bom_table[j].display_name = "";
+        code="";
+        return;
+
+      }
+    }
+   
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         this.feature_bom_table[i].type_value = value;
@@ -459,6 +482,8 @@ export class BomComponent implements OnInit {
         }
       }
     }
+
+    
   }
 
   on_defualt_change(value, rowindex) {

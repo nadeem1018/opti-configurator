@@ -67,7 +67,7 @@ export class ViewModelBomComponent implements OnInit {
             data => {
                 dataset = JSON.parse(data);
                 this.rows = dataset[0];
-                let pages: any = Math.round(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 if (parseInt(pages) == 0 || parseInt(pages) < 0) {
                     pages = 1;
                 }
