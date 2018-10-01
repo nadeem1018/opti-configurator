@@ -280,7 +280,6 @@
     "valid_date": "Valid Until",
     "invalidcustomer": "Enter valid customer",
     "string_number":"String/Number",
-    "tax": "Tax",
     "product_tax": "Product Tax",
     "product_total": "Product Total",
     "accessories_discount": "Accessories Discount",
@@ -294,5 +293,6 @@
     "refreshing":"Refreshing",
     "refresh":"Refresh",
     "expand_this_branch":"Expand this branch",
-    "collapse_this_branch":"Collapse this branch"
+    "collapse_this_branch":"Collapse this branch",
+    "DuplicateId":"Duplicate ID"
 }

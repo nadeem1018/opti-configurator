@@ -127,7 +127,7 @@
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value,type_value_code)"
                                                     value={{row.type_value_code}} #type_value_code />
                                                 <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                                                     value={{row.type_value}} #type_value />
