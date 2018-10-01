@@ -454,7 +454,7 @@ export class BomComponent implements OnInit {
    for (let j = 0; j < this.feature_bom_table.length; j++) {
       var psTypeCode = this.feature_bom_table[j].type_value_code;
       if (psTypeCode != undefined && psTypeCode != "") {
-          if (psTypeCode == code) {
+          if (psTypeCode.toUpperCase() == code.toUpperCase()) {
             this.toastr.error('',this.language.DuplicateId, this.commonData.toast_config);
             $(type_value_code).val("");
             return;
