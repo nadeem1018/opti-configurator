@@ -313,7 +313,8 @@
                           </div>
                           <div *ngIf="check_component_exist(element.component, i).length == 0">
                             <span>
-                              <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" value="{{element.component}}">
+                              <!-- <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" value="{{element.component}}"> -->
+                              <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" #treeinput (click)="on_element_input_change(element,treeinput.checked)">
                               <span class="tree_label">{{element.component}}</span>
                             </span>
                           </div>

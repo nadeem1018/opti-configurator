@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { OutputComponent } from '../../components/output/output.component';
 
 @Component({
     selector: 'formelementstreeview',
@@ -14,7 +15,7 @@ import { Component, Input } from '@angular/core';
     </div>
     <div *ngIf="form_tree_get_children(inner_element.component).length == 0">
         <span>
-            <input type="{{inner_element.element_type}}" name="tree_el_{{inner_element.parentId}}" value="{{inner_element.component}}">
+            <input type="{{inner_element.element_type}}" name="tree_el_{{inner_element.parentId}}" #treeinput value="{{inner_element.component}}"  (click)="on_element_input_change(inner_element,treeinput.checked)">
             <span class="tree_label">{{inner_element.component}}</span>
         </span>
     </div>
@@ -25,12 +26,14 @@ import { Component, Input } from '@angular/core';
 })
 
 export class FormElementTreeViewComponent {
+    
     @Input() tree_data_json;
     @Input() complete_dataset;
 
     log(data) {
         console.log(data);
     }
+    constructor(private OutputObject: OutputComponent) { }
 
     form_tree_get_children(component) {
         let data = this.complete_dataset.filter(function (obj) {
@@ -38,4 +41,8 @@ export class FormElementTreeViewComponent {
         });
         return data;
     }
+
+    on_element_input_change(data,value) {
+        this.OutputObject.on_element_input_change(data,value)
+      }
 }

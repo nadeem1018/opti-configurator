@@ -50,6 +50,7 @@ export class OutputComponent implements OnInit {
   public acc_grand_total: number = 0
   public isModelVisible: boolean = false;
   public final_document_number: any = '';
+  public selectfeaturedata=[];
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -66,11 +67,11 @@ export class OutputComponent implements OnInit {
   /* public refresh_button_text = '<i class="fa fa-refresh fa-fw"></i> ' + this.language.refresh; */
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
-  public Accessory_table_hidden_elements = [false, false, false, true];
+  public Accessory_table_hidden_elements = [false, false, false, true,true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-  public tree_data_json:any =[];
-  public complete_dataset:any = [];
+  public tree_data_json: any = [];
+  public complete_dataset: any = [];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
@@ -124,26 +125,26 @@ export class OutputComponent implements OnInit {
 
     // dummy data for 2nd screen 
     this.tree_data_json = [
-      { "sequence": "1", "component": "F1", "level": "0", "parentId": "", "element_type": "radio" },
-      { "sequence": "2", "component": "F2", "level": "1", "parentId": "F1", "element_type": "radio" },
-      { "sequence": "3", "component": "F3", "level": "1", "parentId": "F1", "element_type": "radio" },
-      { "sequence": "4", "component": "Item0001", "level": "2", "parentId": "F2", "element_type": "checkbox" },
-      { "sequence": "5", "component": "Item0002", "level": "2", "parentId": "F2", "element_type": "checkbox" },
-      { "sequence": "6", "component": "F4", "level": "2", "parentId": "F3", "element_type": "radio" },
-      { "sequence": "7", "component": "F5", "level": "2", "parentId": "F3", "element_type": "radio" },
-      { "sequence": "7", "component": "F6", "level": "3", "parentId": "F4", "element_type": "radio" },
-      { "sequence": "8", "component": "Item0003", "level": "3", "parentId": "F5", "element_type": "radio" },
-      { "sequence": "9", "component": "Item0004", "level": "3", "parentId": "F5", "element_type": "radio" },
-      { "sequence": "10", "component": "Item0005", "level": "4", "parentId": "F6", "element_type": "radio" },
-      { "sequence": "11", "component": "Item0006", "level": "4", "parentId": "F6", "element_type": "radio" },
-      { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
-      { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
+      // { "sequence": "1", "component": "F1", "level": "0", "parentId": "", "element_type": "radio" },
+      // { "sequence": "2", "component": "F2", "level": "1", "parentId": "F1", "element_type": "radio" },
+      // { "sequence": "3", "component": "F3", "level": "1", "parentId": "F1", "element_type": "radio" },
+      // { "sequence": "4", "component": "Item0001", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      // { "sequence": "5", "component": "Item0002", "level": "2", "parentId": "F2", "element_type": "checkbox" },
+      // { "sequence": "6", "component": "F4", "level": "2", "parentId": "F3", "element_type": "radio" },
+      // { "sequence": "7", "component": "F5", "level": "2", "parentId": "F3", "element_type": "radio" },
+      // { "sequence": "7", "component": "F6", "level": "3", "parentId": "F4", "element_type": "radio" },
+      // { "sequence": "8", "component": "Item0003", "level": "3", "parentId": "F5", "element_type": "radio" },
+      // { "sequence": "9", "component": "Item0004", "level": "3", "parentId": "F5", "element_type": "radio" },
+      // { "sequence": "10", "component": "Item0005", "level": "4", "parentId": "F6", "element_type": "radio" },
+      // { "sequence": "11", "component": "Item0006", "level": "4", "parentId": "F6", "element_type": "radio" },
+      // { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
+      // { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
     ];
     console.log(this.tree_data_json);
     // initialize jquery 
-   setTimeout(()=>{
+    setTimeout(() => {
       this.tree_view_expand_collapse()
-   }, 2000);
+    }, 2000);
   }
 
   openFeatureLookUp() {
@@ -284,49 +285,42 @@ export class OutputComponent implements OnInit {
     this.serviceData = []
     this.OutputService.getFeatureDetails(feature_id, this.step2_data.model_id).subscribe(
       data => {
-        if (data.AllFeatures.length > 0) {
-          this.FeatureChildData = data.AllFeatures;
-          if (data.ItemDataForFeature.length > 0) {
-            this.getItemDataForFeature(data.ItemDataForFeature);
-            this.feature_itm_list_temp_table.push(data.ItemDataForFeature);
-          }
-          if (data.FeaturesWithAccessoryYes.length > 0) {
-            this.getAccessory(data.FeaturesWithAccessoryYes)
-          }
-          if (this.feature_child_data.length > 0) {
-            let isExist = 0;
-            for (let i = 0; i < this.feature_child_data.length; ++i) {
-              if (this.feature_child_data[i].featureparentid == feature_id) {
-                isExist = 1;
-              }
-            }
-            if (isExist == 0) {
-              this.feature_child_data.push({
-                index: this.feature_child_data.length + 1,
-                featureparentcode: feature_code,
-                featureparentid: feature_id,
-                featurechildcode: ""
-              });
-            }
-          }
-          else {
-            this.feature_child_data.push({
-              index: this.feature_child_data.length + 1,
-              featureparentcode: feature_code,
-              featureparentid: feature_id,
-              featurechildcode: ""
-            });
-          }
-          // this.accesory_price_calculate();
-          this.feature_price_calculate();
+        if (data.ItemDataForFeature.length > 0) {
+          this.getItemDataForFeature(data.ItemDataForFeature);
+          this.feature_itm_list_temp_table.push(data.ItemDataForFeature);
         }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          // this.getAccessory();
-          // this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
+        if (data.FeaturesWithAccessoryYes.length > 0) {
+          this.getAccessory(data.FeaturesWithAccessoryYes)
         }
+        this.feature_price_calculate();
+        // if (data.AllFeatures.length > 0) {
+        //   if (this.feature_child_data.length > 0) {
+        //     let isExist = 0;
+        //     for (let i = 0; i < this.feature_child_data.length; ++i) {
+        //       if (this.feature_child_data[i].featureparentid == feature_id) {
+        //         isExist = 1;
+        //       }
+        //     }
+        //     if (isExist == 0) {
+        //       this.feature_child_data.push({
+        //         index: this.feature_child_data.length + 1,
+        //         featureparentcode: feature_code,
+        //         featureparentid: feature_id,
+        //         featurechildcode: ""
+        //       });
+        //     }
+        //   }
+        //   else {
+        //     this.feature_child_data.push({
+        //       index: this.feature_child_data.length + 1,
+        //       featureparentcode: feature_code,
+        //       featureparentid: feature_id,
+        //       featurechildcode: ""
+        //     });
+        //   }
+        // this.accesory_price_calculate();
+
+
       }
     )
   }
@@ -358,7 +352,7 @@ export class OutputComponent implements OnInit {
         let isExist = 0;
         for (let i = 0; i < accesorydata.length; ++i) {
           for (let j = 0; j < this.feature_accessory_list.length; ++j) {
-            if (this.feature_accessory_list[j].id == accesorydata[i].id) {
+            if (this.feature_accessory_list[j].id == accesorydata[i].OPTM_CHILDFEATUREID) {
               isExist = 1;
             }
           }
@@ -367,7 +361,8 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
-              checked: false
+              checked: false,
+              parentId:this.selectfeaturedata[0].parentId
             });
           }
         }
@@ -378,7 +373,8 @@ export class OutputComponent implements OnInit {
             id: accesorydata[i].OPTM_CHILDFEATUREID,
             key: accesorydata[i].OPTM_FEATURECODE,
             name: accesorydata[i].OPTM_DISPLAYNAME,
-            checked: false
+            checked: false,
+            parentId:this.selectfeaturedata[0].parentId
           });
         }
       }
@@ -410,6 +406,7 @@ export class OutputComponent implements OnInit {
           }
 
           if (isExist == 0) {
+            if(this.selectfeaturedata[0].component==ItemData[i].OPTM_DISPLAYNAME){
             this.feature_itm_list_table.push({
               FeatureId: ItemData[i].OPTM_FEATUREID,
               featureName: ItemData[i].OPTM_DISPLAYNAME,
@@ -421,9 +418,11 @@ export class OutputComponent implements OnInit {
               pricextn: 0,
               is_accessory: "N",
               isPriceDisabled: isPriceDisabled,
-              pricehide: isPricehide
+              pricehide: isPricehide,
+              parentId:this.selectfeaturedata[0].parentId
 
             });
+          }
           }
         }
       }
@@ -437,6 +436,7 @@ export class OutputComponent implements OnInit {
             isPriceDisabled = true
             isPricehide = true
           }
+          if(this.selectfeaturedata[0].component==ItemData[i].OPTM_DISPLAYNAME){
           this.feature_itm_list_table.push({
             FeatureId: ItemData[i].OPTM_FEATUREID,
             featureName: ItemData[i].OPTM_DISPLAYNAME,
@@ -448,8 +448,10 @@ export class OutputComponent implements OnInit {
             pricextn: 0,
             is_accessory: "N",
             isPriceDisabled: isPriceDisabled,
-            pricehide: isPricehide
+            pricehide: isPricehide,
+            parentId:this.selectfeaturedata[0].parentId
           });
+        }
         }
       }
 
@@ -606,7 +608,8 @@ export class OutputComponent implements OnInit {
                       pricextn: 0,
                       is_accessory: "Y",
                       isPriceDisabled: true,
-                      pricehide: true
+                      pricehide: true,
+                      parentId:this.selectfeaturedata[0].parentId
 
                     });
                   }
@@ -623,7 +626,8 @@ export class OutputComponent implements OnInit {
                     pricextn: 0,
                     is_accessory: "Y",
                     isPriceDisabled: isPriceDisabled,
-                    pricehide: isPricehide
+                    pricehide: isPricehide,
+                    parentId:this.selectfeaturedata[0].parentId
                   });
                 }
 
@@ -791,7 +795,8 @@ export class OutputComponent implements OnInit {
                     pricextn: 0,
                     is_accessory: "Y",
                     isPriceDisabled: true,
-                    pricehide: true
+                    pricehide: true,
+                    parentId:this.selectfeaturedata[0].parentId
                   });
                 }
               }
@@ -807,7 +812,8 @@ export class OutputComponent implements OnInit {
                   pricextn: 0,
                   is_accessory: "Y",
                   isPriceDisabled: true,
-                  pricehide: true
+                  pricehide: true,
+                  parentId:this.selectfeaturedata[0].parentId
                 });
               }
             }
@@ -853,65 +859,99 @@ export class OutputComponent implements OnInit {
   onclearselection() {
     this.serviceData = [];
     this.step2_data = [];
+    this.tree_data_json = [];
     this.feature_child_data = [];
     this.feature_accessory_list = [];
     this.feature_itm_list_table = [];
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
-    this.accessory_item_total=0
+    this.accessory_item_total = 0
     this.acc_total = 0;
     this.acc_grand_total = 0;
     this.feature_tax_total[0].value = 0;
     this.feature_tax_total[1].value = 0;
-    this.feature_discount_percent=0;
-    this.accessory_discount_percent=0;
-    this.step2_data.quantity=0;
+    this.feature_discount_percent = 0;
+    this.accessory_discount_percent = 0;
+    this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
-   
+
   }
 
   GetDataForModelBomOutput() {
     this.lookupfor = 'tree_view__model_bom_Output_lookup"';
-    this.tree_data_json=[];
-      if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-        this.OutputService.GetDataForModelBomOutput(this.step2_data.modal_id,this.step2_data.model_name).subscribe(
-          data => {
-            if (data != null || data != undefined) {
-              // this.serviceData = data;
-              // this.lookupfor = "tree_view__model_bom_lookup";
-              let counter_temp = 0;
-              let temp_data = data.filter(function (obj) {
-                obj['live_row_id'] = (counter_temp++);
-                return obj;
-              });
-              this.tree_data_json = temp_data;
-            }
-            else {
-              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-              return;
-            }
-
-          },
-          error => {
+    this.tree_data_json = [];
+    if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+      this.OutputService.GetDataForModelBomOutput(this.step2_data.model_id, this.step2_data.model_name).subscribe(
+        data => {
+          if (data != null || data != undefined) {
+            // this.serviceData = data;
+            // this.lookupfor = "tree_view__model_bom_lookup";
+            let counter_temp = 0;
+            let temp_data = data.filter(function (obj) {
+              // obj['live_row_id'] = (counter_temp++);
+              return obj;
+            });
+            this.tree_data_json = temp_data;
+            setTimeout(() => {
+              this.tree_view_expand_collapse()
+            }, 2000);
+          }
+          else {
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-        );
-      }
-      else {
-        // let sequence_count = parseInt(this.tree_data_json.length + 1);
-        // if (this.live_tree_view_data.length > 0) {
-        //   console.log(this.live_tree_view_data);
-        //   for (var key in this.live_tree_view_data) {
-        //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
-        //   }
 
-        //   this.live_tree_view_data = [];
-        //   console.log(this.tree_data_json);
-        // }
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      );
+    }
+    else {
+      // let sequence_count = parseInt(this.tree_data_json.length + 1);
+      // if (this.live_tree_view_data.length > 0) {
+      //   console.log(this.live_tree_view_data);
+      //   for (var key in this.live_tree_view_data) {
+      //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
+      //   }
+
+      //   this.live_tree_view_data = [];
+      //   console.log(this.tree_data_json);
+      // }
+    }
+  }
+
+  on_element_input_change(data, value) {
+    this.selectfeaturedata=[];
+    this.selectfeaturedata.push(data)
+    if (this.feature_accessory_list.length > 0) {
+      for (let i = 0; i < this.feature_accessory_list.length; ++i) {
+        if (this.feature_accessory_list[i].parentId == data.parentId) {
+          if (this.feature_itm_list_table.length > 0) {
+            for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+                this.feature_itm_list_table.splice(iacc, 1)
+                iacc = iacc - 1;
+              }
+            }
+          }
+          this.feature_price_calculate();
+          this.feature_accessory_list.splice(i, 1);
+          i = i - 1;
+        }
       }
     }
+    for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+      if (this.feature_itm_list_table[iacc].parentId ==data.parentId) {
+        this.feature_itm_list_table.splice(iacc, 1)
+        iacc = iacc - 1;
+      }
+    }
+    this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+
+  }
 
   //this will get the contact person
   fillContactPerson() {
@@ -1222,20 +1262,20 @@ export class OutputComponent implements OnInit {
   refresh_bom_status() {
     console.log(' in here ');
     this.dontShowFinalLoader = true;
-   this.showFinalLoader = false;
+    this.showFinalLoader = false;
 
     setTimeout(() => {
-       this.dontShowFinalLoader = false;
+      this.dontShowFinalLoader = false;
       this.showFinalLoader = true;
       this.showFinalLoader = true;
     }, 4000);
   }
 
-  tree_view_expand_collapse(){
-     let laguage = this.language;
+  tree_view_expand_collapse() {
+    let laguage = this.language;
     $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
   }
- 
+
   //This will recurse the tree
   get_childrens(component) {
     let data = this.complete_dataset.filter(function (obj) {
