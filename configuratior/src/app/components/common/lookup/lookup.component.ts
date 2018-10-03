@@ -1,4 +1,4 @@
-import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter,ElementRef,ViewChild } from '@angular/core';
+import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import 'bootstrap';
-
 
 @Component({
   selector: 'app-lookup',
@@ -23,14 +22,16 @@ export class LookupComponent implements OnInit {
   @Input() selectedImage: any
   @Output() lookupvalue = new EventEmitter();
   @Input() ruleselected: any;
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
   // @ViewChild(searchlookupfield, { read: ElementRef }) lookup_search: ElementRef;
 
   public commonData = new CommonData();
-  language = JSON.parse(sessionStorage.getItem('current_lang')); 
+  language = JSON.parse(sessionStorage.getItem('current_lang'));
   popup_title = this.language.title;
-  constructor(private common_service: CommonService,private fms: FeaturemodelService,private toastr: ToastrService,private router: Router) { }
+  constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router) { }
   public table_head_hidden_elements = [];
-  
+
 
   // mandatory variables
   public dataBind: any = [];
@@ -47,17 +48,20 @@ export class LookupComponent implements OnInit {
   public table_head = [];
   public lookup_key = "";
   public width_value = '100%';
-  public selectedFile: string = "";
+  public selectedFile: any = "";
   public xls_dataset;
   companyName: string;
   // intital Javascript object class 
   Object = Object;
   public preview_image = "";
   public isRuleChecked = false;
+  username: string;
+  public fileType = "";
   ngOnInit() {
+    this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
   }
-  
+
   ngOnChanges(): void {
 
     this.showLoader = true;
@@ -70,11 +74,11 @@ export class LookupComponent implements OnInit {
     this.dataBind = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
-   
+
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
-       this.model_template_lookup();
+        this.model_template_lookup();
       }
       if (this.lookupfor == "model_item_generation") {
         this.model_item_generation_lookup();
@@ -97,7 +101,7 @@ export class LookupComponent implements OnInit {
         this.import_popup();
       }
 
-      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup" ) {
+      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup") {
         this.get_Model_lookup();
       }
 
@@ -115,35 +119,35 @@ export class LookupComponent implements OnInit {
       //   this.showTreeView();
       // }
 
-      if (this.lookupfor == "tree_view__model_bom_lookup"){
+      if (this.lookupfor == "tree_view__model_bom_lookup") {
         this.showModelBOMTreeView();
       }
 
-      if(this.lookupfor == "associated_BOM"){
+      if (this.lookupfor == "associated_BOM") {
         this.showAssociatedBOMs();
       }
       if (this.lookupfor == "feature_Detail_Output_lookup") {
         this.get_features_Output_lookup();
       }
 
-      if(this.lookupfor == "output_customer"){
+      if (this.lookupfor == "output_customer") {
         this.customer_lookup();
       }
     }
   }
 
- /*  ngAfterViewChecked() {
-    
-  } */
-  
+  /*  ngAfterViewChecked() {
+     
+   } */
+
   log(val) {
     console.log(val);
   }
 
   on_item_select(lookup_key) {
     console.log("lookup_key - " + lookup_key);
-    console.log( lookup_key);
-    
+    console.log(lookup_key);
+
     this.lookupvalue.emit(lookup_key);
     $("#lookup_modal").modal('hide');
   }
@@ -158,16 +162,16 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
-   
+
 
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
     }
-   
+
   }
 
   model_item_generation_lookup() {
@@ -179,20 +183,20 @@ export class LookupComponent implements OnInit {
     this.table_head_hidden_elements = [false];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
-   
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
     }
-    
-   
+
+
   }
 
   get_features_lookup() {
-    
+
 
     this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
@@ -202,24 +206,24 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Id', 'Code', 'Name'];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
-    
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
     }
-   
+
   }
 
-  close_lookup(lookup_id){
+  close_lookup(lookup_id) {
     this.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
   }
 
   get_Model_lookup() {
-    
+
 
     this.popup_title = this.language.ModelBom;
     this.LookupDataLoaded = false;
@@ -229,19 +233,19 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Model Id', 'Code', 'Name'];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
-    
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
     }
-    
+
   }
 
   get_Item_lookup() {
-    
+
 
     this.popup_title = this.language.ItemLookupTitle;
     this.LookupDataLoaded = false;
@@ -251,25 +255,26 @@ export class LookupComponent implements OnInit {
     this.table_head = ['ItemKey', 'Name'];
     this.table_head_hidden_elements = [false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
-    
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
     this.log('this.serviceData');
     this.log(this.serviceData);
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
     }
-  
+
   }
 
   import_popup() {
     this.popup_title = this.language.import_features;
     this.showLoader = false;
     this.LookupDataLoaded = true;
+    this.fileType = "excel";
     $("#import_modal").modal('show');
-   
+
   }
 
   get_Price_lookup() {
@@ -281,10 +286,10 @@ export class LookupComponent implements OnInit {
     this.table_head = ['Price Source'];
     this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
-    
+
     this.showLoader = false;
     this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
+    if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
         $("#lookup_modal").modal('show');
       }
@@ -292,63 +297,63 @@ export class LookupComponent implements OnInit {
   }
 
   get_features_Output_lookup() {
-    
+
 
     this.popup_title = this.language.Bom_FeatureId;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Id', 'Code', 'Name','Accesory'];
-    this.table_head_hidden_elements = [true, false, false,true];
+    this.table_head = ['Id', 'Code', 'Name', 'Accesory'];
+    this.table_head_hidden_elements = [true, false, false, true];
     this.width_value = ((100 / this.table_head.length) + '%');
-    
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
-      if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
-      }
-    }
-   
-  }
 
-  ruleSelection(){
-    this.popup_title = this.language.rule_selection;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.lookup_key = 'code';
-    this.table_head = ['Select', 'Rule', 'Description' ];
-    this.table_head_hidden_elements = [false, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
-    
     this.showLoader = false;
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        this.checked_rules=[];
-//console.log(this.serviceData);
-for(var i=0; i< this.serviceData.length; i++){
-  if(this.serviceData[i].Selected == "Y"){
-   this.serviceData[i].Selected = true;
-   this.checked_rules.push(this.serviceData[i]);
-  }
-  else{
-   this.serviceData[i].Selected = false;
+        $("#lookup_modal").modal('show');
+      }
+    }
+
   }
 
-}
-      
+  ruleSelection() {
+    this.popup_title = this.language.rule_selection;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.lookup_key = 'code';
+    this.table_head = ['Select', 'Rule', 'Description'];
+    this.table_head_hidden_elements = [false, false, false];
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        this.checked_rules = [];
+        //console.log(this.serviceData);
+        for (var i = 0; i < this.serviceData.length; i++) {
+          if (this.serviceData[i].Selected == "Y") {
+            this.serviceData[i].Selected = true;
+            this.checked_rules.push(this.serviceData[i]);
+          }
+          else {
+            this.serviceData[i].Selected = false;
+          }
+
+        }
+
         $("#rule_selection").modal('show');
       }
     }
   }
 
 
-  on_checkbox_checked(checkedvalue, row_data){
+  on_checkbox_checked(checkedvalue, row_data) {
     console.log("checkedvalue " + checkedvalue);
     console.log(row_data);
-    
+
     if (checkedvalue == true) {
       row_data.Selected = true;
       this.checked_rules.push(row_data);
@@ -362,168 +367,219 @@ for(var i=0; i< this.serviceData.length; i++){
 
   }
 
-  rule_select_ok(){
-      this.lookupvalue.emit(this.checked_rules);
-      $("#rule_selection").modal('hide');
+  rule_select_ok() {
+    this.lookupvalue.emit(this.checked_rules);
+    $("#rule_selection").modal('hide');
   }
 
-  
   file_input($event) {
- 
+    var obj = this;
+    var proceed = true;
+    this.selectedFile = $event.target.files[0];
+    let file_name_array = this.selectedFile.name.split(".");
+    var index = file_name_array.length - 1;
+    var file_extension = file_name_array[index];
+    if(this.fileType == "excel" && (file_extension == "xlsx" || file_extension == "xls")){
+      proceed = true;
+    }
+    else if(this.fileType == "csv" && file_extension == "csv"){
+      proceed = true;
+     }
+     else{
+      this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+      this.selectedFile = "";
+      this.reset();
+      return;
+     }
+    var reader = new FileReader();
+    var XLS_DATA = '';
+    reader.onload = function (loadEvent) {
+      var data = loadEvent.target.result;
+      var workbook = XLSX.read(data, { type: 'binary' });
+      workbook.SheetNames.forEach(function (sheetName) {
+        // Here is your object
+        XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+        obj.xls_dataset = XLS_DATA;
+      })
+
+    }
+    reader.readAsBinaryString($event.target.files[0]);
   }
 
   importclick() {
+    console.log(this.selectedFile);
+    if (this.selectedFile == "" || this.selectedFile == null){
+      this.toastr.error('', this.language.nofileattach, this.commonData.toast_config);
+      return;
+    }
+
     var xls_data = this.xls_dataset;
+    var objData:any = {}
+    objData.ExcelData = [];
+    objData.Common = [];
+    objData.ExcelData = xls_data;
+    objData.Common.push({
+      CompanyDBId: this.companyName,
+      CreatedUser: this.username
+    }); 
 
-    if (this.lookupfor == 'import_popup') {
-
-      this.fms.importData(this.companyName, xls_data).subscribe(
+      this.fms.importData(objData).subscribe(
         data => {
-          console.log("imported result"+ data);
-          this.toastr.success('', data, this.commonData.toast_config);
-            $("#import_modal").modal("hide");
-        
-          this.router.navigateByUrl('/feature/model/view');
-          return;
-        })
-    }
-  }
-
-  showImage() {
-    this.popup_title = this.language.feature_image;
-    this.showLoader = true;
-    this.LookupDataLoaded = false;
-    this.preview_image = this.selectedImage;
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-  }
-
-  public tree_data_json:any = '';
-  @Input() component;
-
-  // showTreeView(){
-  //   this.popup_title = this.language.explode;
-  //   this.showLoader = true;
-  //   this.LookupDataLoaded = false;
-  //   //this.tree_data_json = this.dummy_json();
-  //   this.showLoader = false;
-  //   this.LookupDataLoaded = true;
-  //   if(this.serviceData !== undefined){
-  //     if (this.serviceData.length > 0) {
-  //       //this.tree_data_json =  this.dummy_json();
-  //       this.tree_data_json =this.serviceData;
-  //         $("#tree_view").modal('show');
-  //     }
-  //   }
-    
-  // }
-
+          console.log(data);
+          if (data !== '' && data !== undefined && data !== null) {
+          this.toastr.warning('', data, this.commonData.toast_config);
+          // this.close_lookup();
+        } else {
+          this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+          // this.close_lookup();
+        }
+        $("#import_modal").modal('hide');
+        //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
+       })
   
-  //To show all associated BOM
-  showAssociatedBOMs(){
+}
 
-    this.popup_title = this.language.associated_BOM;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
+showImage() {
+  this.popup_title = this.language.feature_image;
+  this.showLoader = true;
+  this.LookupDataLoaded = false;
+  this.preview_image = this.selectedImage;
+  this.showLoader = false;
+  this.LookupDataLoaded = true;
+}
 
- 
-    this.table_head = ['Model Id','Model Name','Model Description'];
-    this.table_head_hidden_elements = [true, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
-    
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
-      if (this.serviceData.length > 0) {
-        $("#simple_table_modal").modal('show');
-      }
+  public tree_data_json: any = '';
+@Input() component;
+
+// showTreeView(){
+//   this.popup_title = this.language.explode;
+//   this.showLoader = true;
+//   this.LookupDataLoaded = false;
+//   //this.tree_data_json = this.dummy_json();
+//   this.showLoader = false;
+//   this.LookupDataLoaded = true;
+//   if(this.serviceData !== undefined){
+//     if (this.serviceData.length > 0) {
+//       //this.tree_data_json =  this.dummy_json();
+//       this.tree_data_json =this.serviceData;
+//         $("#tree_view").modal('show');
+//     }
+//   }
+
+// }
+
+
+//To show all associated BOM
+showAssociatedBOMs() {
+
+  this.popup_title = this.language.associated_BOM;
+  this.LookupDataLoaded = false;
+  this.showLoader = true;
+
+
+  this.table_head = ['Model Id', 'Model Name', 'Model Description'];
+  this.table_head_hidden_elements = [true, false, false];
+  this.width_value = ((100 / this.table_head.length) + '%');
+
+  this.showLoader = false;
+  this.LookupDataLoaded = true;
+  if (this.serviceData !== undefined) {
+    if (this.serviceData.length > 0) {
+      $("#simple_table_modal").modal('show');
     }
-
   }
 
-  showModelBOMTreeView(){
-    this.popup_title = this.language.explode;
-    this.showLoader = true;
-    this.LookupDataLoaded = false;
-    //this.tree_data_json = this.dummy_json();
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
-      if (this.serviceData.length > 0) {
-       // this.tree_data_json =  this.dummy_json();
-        this.tree_data_json =this.serviceData;
-      
-       // setTimeout(function(){
-          $("#tree_view").modal('show');
-        //}, 5000);
-      }
+}
+
+showModelBOMTreeView() {
+  this.popup_title = this.language.explode;
+  this.showLoader = true;
+  this.LookupDataLoaded = false;
+  //this.tree_data_json = this.dummy_json();
+  this.showLoader = false;
+  this.LookupDataLoaded = true;
+  if (this.serviceData !== undefined) {
+    if (this.serviceData.length > 0) {
+      // this.tree_data_json =  this.dummy_json();
+      this.tree_data_json = this.serviceData;
+
+      // setTimeout(function(){
+      $("#tree_view").modal('show');
+      //}, 5000);
     }
-    
   }
 
-  customer_lookup() {
-    this.popup_title = this.language.model_template;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureItemName';
-    this.table_head = ['Customer Code', 'Name'];
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
+}
 
-    this.width_value = ((100 / this.table_head.length) + '%');
-   
+customer_lookup() {
+  this.popup_title = this.language.model_template;
+  this.LookupDataLoaded = false;
+  this.showLoader = true;
+  this.fill_input_id = 'featureItemName';
+  this.table_head = ['Customer Code', 'Name'];
+  this.table_head_hidden_elements = [false, false];
+  this.lookup_key = 'Name';
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if(this.serviceData !== undefined){
-      if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
-      }
+  this.width_value = ((100 / this.table_head.length) + '%');
+
+
+  this.showLoader = false;
+  this.LookupDataLoaded = true;
+  if (this.serviceData !== undefined) {
+    if (this.serviceData.length > 0) {
+      $("#lookup_modal").modal('show');
     }
-   
   }
 
-  // dummy_json(){
-  //   return [
-  //     { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
-  //     { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
-  //     { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
-  //   ];
-  // }
+}
 
-  dummy_json(){
-    return [
-      {"sequence":1,"parentId":"","component":"29","level":"0"},
-      {"sequence":2,"parentId":"29","component":"19","level":"1"},
-      {"sequence":3,"parentId":"29","component":"8","level":"1"},
-      {"sequence":4,"parentId":"29","component":"Wind Sensor","level":"1"},
-      {"sequence":5,"parentId":"29","component":"WMT70BIRDKIT","level":"1"},
-      {"sequence":6,"parentId":"19","component":"21","level":"2"},
-      {"sequence":7,"parentId":"19","component":"20","level":"2"},
-      {"sequence":8,"parentId":"8","component":"Item02","level":"2"},
-      {"sequence":9,"parentId":"8","component":"VALUE","level":"2"},
-      {"sequence":10,"parentId":"19","component":"Wind Sensor","level":"2"},
-      {"sequence":11,"parentId":"20","component":"22","level":"3"},
-      {"sequence":12,"parentId":"20","component":"21","level":"3"},
-      {"sequence":13,"parentId":"22","component":"26","level":"4"},
-      {"sequence":14,"parentId":"22","component":"23","level":"4"},
-      
-  //    {"sequence":15,"parentId":"23","component":"19","level":"5"},
-      {"sequence":16,"parentId":"19","component":"21","level":"6"},
-      {"sequence":17,"parentId":"19","component":"20","level":"6"},
-      {"sequence":18,"parentId":"19","component":"Wind Sensor","level":"6"},
-   
-    ]
-  }
+reset() {
+  console.log(this.myInputVariable.nativeElement.files);
+  this.myInputVariable.nativeElement.value = "";
+  console.log(this.myInputVariable.nativeElement.files);
+}
+
+// dummy_json(){
+//   return [
+//     { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
+//     { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
+//     { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
+//     { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
+//     { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
+//     { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
+//     { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
+//     { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
+//     { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
+//     { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
+//     { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
+//     { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
+//     { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
+//     { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
+//   ];
+// }
+
+dummy_json() {
+  return [
+    { "sequence": 1, "parentId": "", "component": "29", "level": "0" },
+    { "sequence": 2, "parentId": "29", "component": "19", "level": "1" },
+    { "sequence": 3, "parentId": "29", "component": "8", "level": "1" },
+    { "sequence": 4, "parentId": "29", "component": "Wind Sensor", "level": "1" },
+    { "sequence": 5, "parentId": "29", "component": "WMT70BIRDKIT", "level": "1" },
+    { "sequence": 6, "parentId": "19", "component": "21", "level": "2" },
+    { "sequence": 7, "parentId": "19", "component": "20", "level": "2" },
+    { "sequence": 8, "parentId": "8", "component": "Item02", "level": "2" },
+    { "sequence": 9, "parentId": "8", "component": "VALUE", "level": "2" },
+    { "sequence": 10, "parentId": "19", "component": "Wind Sensor", "level": "2" },
+    { "sequence": 11, "parentId": "20", "component": "22", "level": "3" },
+    { "sequence": 12, "parentId": "20", "component": "21", "level": "3" },
+    { "sequence": 13, "parentId": "22", "component": "26", "level": "4" },
+    { "sequence": 14, "parentId": "22", "component": "23", "level": "4" },
+
+    //    {"sequence":15,"parentId":"23","component":"19","level":"5"},
+    { "sequence": 16, "parentId": "19", "component": "21", "level": "6" },
+    { "sequence": 17, "parentId": "19", "component": "20", "level": "6" },
+    { "sequence": 18, "parentId": "19", "component": "Wind Sensor", "level": "6" },
+
+  ]
+}
 }

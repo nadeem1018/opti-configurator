@@ -294,5 +294,8 @@
     "refresh":"Refresh",
     "expand_this_branch":"Expand this branch",
     "collapse_this_branch":"Collapse this branch",
-    "DuplicateId":"Duplicate ID"
+    "DuplicateId":"Duplicate ID",
+    "incorrectfile":"Incorrect file attached",
+    "nofileattach":"No file attached"
+
 }

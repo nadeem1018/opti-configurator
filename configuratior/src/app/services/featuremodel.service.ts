@@ -76,10 +76,10 @@ export class FeaturemodelService {
 
     
     //Submit feature bom data
-    importData(CompanyDBID:string,featureBom):Observable<any>{
+    importData(featureBom):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-      let jObject:any={ GetRecord: JSON.stringify(featureBom), FeatureCode:JSON.stringify([{ CompanyDBID: CompanyDBID}])};
+      let jObject:any={ GetRecord: JSON.stringify(featureBom)};
       
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ImportDataFromExcel", jObject, this.common_params.httpOptions);
