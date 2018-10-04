@@ -69,8 +69,8 @@ export class OutputComponent implements OnInit {
   public Accessory_table_hidden_elements = [false, false, false, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
-  public tree_data_json:any =[];
-  public complete_dataset:any = [];
+  public tree_data_json: any = [];
+  public complete_dataset: any = [];
   Object = Object;
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
@@ -88,8 +88,13 @@ export class OutputComponent implements OnInit {
   public isNextButtonVisible: boolean = false;
   public person: any;
   public salesemployee: any;
+  public step3_data_final_hidden_elements = [];
   public step3_data_final = [];
   public document_date = '';
+  public final_row_data: any;
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -115,11 +120,31 @@ export class OutputComponent implements OnInit {
     this.isNextButtonVisible = false;
 
     //dummy data for 3rd screen 
+    // this.step3_data_final = [
+    //   { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" }
+    //   ,
+    //   { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
+    //   { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
+    //   { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+    // ];
+
     this.step3_data_final = [
-      { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
-      { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
-      { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
-      { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+      {
+        "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id":"10",
+        "feature": [{
+          "feature_name": "Feature001",
+          "item": "item001",
+          "item_desc": "itemdesc001",
+          "quantity": 100,
+          "price": 2000,
+          "price_ext": 20,
+          "feature_accessories": "FEATUREACCESS001"
+        }],
+        "accessories": [{
+          "code": "ACCES001",
+          "name": "ACCESSNAME001"
+        }]
+      }
     ];
 
     // dummy data for 2nd screen 
@@ -141,9 +166,9 @@ export class OutputComponent implements OnInit {
     ];
     console.log(this.tree_data_json);
     // initialize jquery 
-   setTimeout(()=>{
+    setTimeout(() => {
       this.tree_view_expand_collapse()
-   }, 2000);
+    }, 2000);
   }
 
   openFeatureLookUp() {
@@ -367,6 +392,7 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
+              modal_id: this.this.step2_data.modal_id,
               checked: false
             });
           }
@@ -859,59 +885,59 @@ export class OutputComponent implements OnInit {
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
-    this.accessory_item_total=0
+    this.accessory_item_total = 0
     this.acc_total = 0;
     this.acc_grand_total = 0;
     this.feature_tax_total[0].value = 0;
     this.feature_tax_total[1].value = 0;
-    this.feature_discount_percent=0;
-    this.accessory_discount_percent=0;
-    this.step2_data.quantity=0;
+    this.feature_discount_percent = 0;
+    this.accessory_discount_percent = 0;
+    this.step2_data.quantity = 0;
     this._el.nativeElement.focus();
-   
+
   }
 
   GetDataForModelBomOutput() {
     this.lookupfor = 'tree_view__model_bom_Output_lookup"';
-    this.tree_data_json=[];
-      if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-        this.OutputService.GetDataForModelBomOutput(this.step2_data.modal_id,this.step2_data.model_name).subscribe(
-          data => {
-            if (data != null || data != undefined) {
-              // this.serviceData = data;
-              // this.lookupfor = "tree_view__model_bom_lookup";
-              let counter_temp = 0;
-              let temp_data = data.filter(function (obj) {
-                obj['live_row_id'] = (counter_temp++);
-                return obj;
-              });
-              this.tree_data_json = temp_data;
-            }
-            else {
-              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-              return;
-            }
-
-          },
-          error => {
+    this.tree_data_json = [];
+    if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+      this.OutputService.GetDataForModelBomOutput(this.step2_data.modal_id, this.step2_data.model_name).subscribe(
+        data => {
+          if (data != null || data != undefined) {
+            // this.serviceData = data;
+            // this.lookupfor = "tree_view__model_bom_lookup";
+            let counter_temp = 0;
+            let temp_data = data.filter(function (obj) {
+              obj['live_row_id'] = (counter_temp++);
+              return obj;
+            });
+            this.tree_data_json = temp_data;
+          }
+          else {
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-        );
-      }
-      else {
-        // let sequence_count = parseInt(this.tree_data_json.length + 1);
-        // if (this.live_tree_view_data.length > 0) {
-        //   console.log(this.live_tree_view_data);
-        //   for (var key in this.live_tree_view_data) {
-        //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
-        //   }
 
-        //   this.live_tree_view_data = [];
-        //   console.log(this.tree_data_json);
-        // }
-      }
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      );
     }
+    else {
+      // let sequence_count = parseInt(this.tree_data_json.length + 1);
+      // if (this.live_tree_view_data.length > 0) {
+      //   console.log(this.live_tree_view_data);
+      //   for (var key in this.live_tree_view_data) {
+      //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
+      //   }
+
+      //   this.live_tree_view_data = [];
+      //   console.log(this.tree_data_json);
+      // }
+    }
+  }
 
   //this will get the contact person
   fillContactPerson() {
@@ -1205,14 +1231,17 @@ export class OutputComponent implements OnInit {
 
   delete_multiple_final_modal() {
     if (confirm(this.language.confirm_remove_selected_modal)) {
-
     }
   }
 
-  remove_final_modal(row) {
-    if (confirm(this.language.confirm_remove_modal)) {
+  remove_final_modal(row_data) {
+    // if (confirm(this.language.confirm_remove_modal)) {
 
-    }
+    // }
+    this.final_row_data = row_data;
+    this.console.log(row_data)
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
   on_checkbox_checked(checkedvalue, row_data) {
@@ -1222,20 +1251,20 @@ export class OutputComponent implements OnInit {
   refresh_bom_status() {
     console.log(' in here ');
     this.dontShowFinalLoader = true;
-   this.showFinalLoader = false;
+    this.showFinalLoader = false;
 
     setTimeout(() => {
-       this.dontShowFinalLoader = false;
+      this.dontShowFinalLoader = false;
       this.showFinalLoader = true;
       this.showFinalLoader = true;
     }, 4000);
   }
 
-  tree_view_expand_collapse(){
-     let laguage = this.language;
+  tree_view_expand_collapse() {
+    let laguage = this.language;
     $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
   }
- 
+
   //This will recurse the tree
   get_childrens(component) {
     let data = this.complete_dataset.filter(function (obj) {
@@ -1252,5 +1281,16 @@ export class OutputComponent implements OnInit {
     return data;
   }
 
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
+      this.delete_row();
+    }
+    this.show_dialog = false;
+  }
+
+  delete_row() {
+
+  }
 
 }
