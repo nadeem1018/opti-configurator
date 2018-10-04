@@ -333,7 +333,7 @@
                         <tr>
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
-                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox" class="custom-control-input" #accallcheckbox
                                   (click)="selectall(accallcheckbox.checked)">
                                 <label class="custom-control-label" for="acccessory_check{{label}}"></label>
@@ -349,7 +349,7 @@
                         <tr class="" *ngFor="let row of feature_accessory_list">
                           <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
-                              <div class="custom-control custom-checkbox custom-control-inline">
+                              <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" [(checked)]=row.checked #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
                                   class="custom-control-input">
                                 <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
