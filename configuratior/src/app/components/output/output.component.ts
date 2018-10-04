@@ -40,7 +40,8 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "X"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "X"];
+  public step3_data_final_hidden_elements = [false, false, false, false, false,false,true, true,false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
@@ -91,11 +92,14 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
-
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
   public final_row_data: any;
+  public final_order_status = this.language.new;
+  public final_order_status_class = "text-primary";
+  public final_reference_number = "";
+  public final_ref_doc_entry = "";
 
   ngOnInit() {
     this.commonData.checkSession();
@@ -1263,9 +1267,8 @@ export class OutputComponent implements OnInit {
   }
 
   delete_multiple_final_modal() {
-    if (confirm(this.language.confirm_remove_selected_modal)) {
-
-    }
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
   remove_final_modal(row_data) {
@@ -1326,6 +1329,13 @@ export class OutputComponent implements OnInit {
     this.cleanupFinalArray();
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
+    this.cleanuptree()
+    this.feature_item_tax = 0;
+    this.feature_item_total = 0;
+    this.acc_item_tax = 0;
+    this.accessory_discount_percent = 0;
+    this.accessory_item_total = 0;
+    this.acc_grand_total  = 0;
   }
 
   cleanupAccessories() {
@@ -1358,6 +1368,13 @@ export class OutputComponent implements OnInit {
     }
   }
 
+  cleanuptree(){
+    this.tree_data_json = [];
+    this.complete_dataset = [];
+    this.tree_data_json.length = 0;
+    this.complete_dataset.length = 0;
+  }
+
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
@@ -1370,9 +1387,9 @@ export class OutputComponent implements OnInit {
       "qunatity": this.step2_data.quantity,
       "price": this.acc_grand_total,
       "price_ext": 0,
-      "model_id": this.step2_data.model_id,
       "feature": this.feature_itm_list_table,
-      "accesories": this.feature_accessory_list
+      "accesories": this.feature_accessory_list,
+      "model_id": this.step2_data.model_id,
     })
 
     if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
