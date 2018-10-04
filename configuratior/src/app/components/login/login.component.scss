@@ -117,7 +117,6 @@ button.btn {
     margin: 0;
     padding: 0 20px;
     vertical-align: middle;
-    background: #4aaf51;
     border: 0;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -136,6 +135,18 @@ button.btn {
     -webkit-transition: all .3s;
     -ms-transition: all .3s;
     transition: all .3s;
+}
+
+.btn-green {
+    background: #4aaf51;
+}
+
+.btn-blue {
+    background: #4aaf51;
+}
+
+.btn-grey {
+    background: #4aaf51;
 }
 
 button.btn:hover {
@@ -419,8 +430,7 @@ img {
 .inner-bg {
     /* padding: 100px 0 170px 0; */
     /* padding: 130px 0 170px 34%; */
-   padding: 0px 0 0px 34%;
-   
+    padding: 0px 0 0px 34%;
 }
 
 .top-content .text {
@@ -551,6 +561,6 @@ select {
     transition: all .3s;
 }
 
-.width-45{
- width:45%
+.width-45 {
+    width: 45%
 }
