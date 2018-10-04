@@ -296,6 +296,8 @@
     "collapse_this_branch":"Collapse this branch",
     "DuplicateId":"Duplicate ID",
     "incorrectfile":"Incorrect file attached",
-    "nofileattach":"No file attached"
+    "nofileattach":"No file attached",
+    "download_template": "Download Template",
+    "ruleValidated": "Rules are valid"
 
 }

@@ -781,6 +781,7 @@ export class ModelbomComponent implements OnInit {
     if (this.validation("Save") == false) {
       return;
     }
+    if(this.onVerifyOutput() == true){
     if (this.modelbom_data.length > 0) {
       for (let i = 0; i < this.modelbom_data.length; ++i) {
         if (this.modelbom_data[i].unique_identifer == false) {
@@ -830,6 +831,10 @@ export class ModelbomComponent implements OnInit {
         }
       }
     )
+  }
+  else{
+    return;
+  }
   }
 
   validation(btnpress) {
@@ -952,7 +957,7 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  onVerifyOutput() {
+  onVerifyOutput(): any {
     let objDataset: any = {};
     objDataset.ModelData = [];
     objDataset.RuleData = [];
@@ -968,7 +973,11 @@ export class ModelbomComponent implements OnInit {
         console.log(data);
         if (data == "Rules Conflict") {
           this.toastr.error('', this.language.conflict, this.commonData.toast_config);
-          return;
+          return false;
+        }
+        else{
+          this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
+          return true;
         }
       })
   }
