@@ -98,7 +98,7 @@ export class RulewbComponent implements OnInit {
             else {
               this.rule_wb_data.discontinued = true
             }
-            if (data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === "False") {
+            if (data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === "False" || data.RuleWorkBenchHeader[0].OPTM_EXCLUDED === null) {
               this.rule_wb_data.Excluded = false
             }
             else {
