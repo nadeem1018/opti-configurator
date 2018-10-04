@@ -234,6 +234,7 @@ export class OutputComponent implements OnInit {
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
           this.serviceData = data;
+
         }
         else {
           this.lookupfor = "";
@@ -253,6 +254,7 @@ export class OutputComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBom_lookup') {
+      this.onclearselection();
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
@@ -977,9 +979,26 @@ export class OutputComponent implements OnInit {
         iacc = iacc - 1;
       }
     }
-    this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+     if (data.FeatureId == this.step2_data.model_id) {
+       this.GetDataByModelId(this.step2_data.model_id)
+     }
+    else {
+      this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+    }
+
 
   }
+
+   GetDataByModelId(id) {
+     this.OutputService.GetDataByModelId(id).subscribe(
+       data => {
+         this.getItemDataForFeature(data.ModelDetail);
+       }
+     )
+
+   }
+
+
 
   //this will get the contact person
   fillContactPerson() {
