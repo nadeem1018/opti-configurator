@@ -130,7 +130,7 @@ export class OutputComponent implements OnInit {
 
     this.step3_data_final = [
       {
-        "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id":"10",
+        "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step1_data.model_id,
         "feature": [{
           "feature_name": "Feature001",
           "item": "item001",
@@ -392,7 +392,7 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
-              modal_id: this.step2_data.modal_id,
+              model_id: this.step2_data.model_id,
               checked: false
             });
           }
@@ -474,7 +474,9 @@ export class OutputComponent implements OnInit {
             pricextn: 0,
             is_accessory: "N",
             isPriceDisabled: isPriceDisabled,
-            pricehide: isPricehide
+            pricehide: isPricehide,
+            model_id: this.step1_data.model_id
+
           });
         }
       }
@@ -901,7 +903,7 @@ export class OutputComponent implements OnInit {
     this.lookupfor = 'tree_view__model_bom_Output_lookup"';
     this.tree_data_json = [];
     if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-      this.OutputService.GetDataForModelBomOutput(this.step2_data.modal_id, this.step2_data.model_name).subscribe(
+      this.OutputService.GetDataForModelBomOutput(this.step2_data.model_id, this.step2_data.model_name).subscribe(
         data => {
           if (data != null || data != undefined) {
             // this.serviceData = data;
@@ -1290,7 +1292,16 @@ export class OutputComponent implements OnInit {
   }
 
   delete_row() {
-
+    console.log(this.final_row_data.rowIndex);
+    this.cleanupAccessories();
   }
 
+  cleanupAccessories(){
+    //Get the modal id and clean the data of accessories here
+    for (let count = 0; count < this.accessory_itm_list_table.length; ++count) {
+        if(this.final_row_data.model_id == this.accessory_itm_list_table[count].model_id){
+          console.log("FOUND");
+        }
+    }
+  }
 }
