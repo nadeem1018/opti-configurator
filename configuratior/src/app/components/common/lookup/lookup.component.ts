@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import 'bootstrap';
+// import { Http, ResponseContentType } from '@angular/http';
 
 @Component({
   selector: 'app-lookup',
@@ -57,9 +58,12 @@ export class LookupComponent implements OnInit {
   public isRuleChecked = false;
   username: string;
   public fileType = "";
+  public template_path = "";
+ 
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
+    this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
   }
 
   ngOnChanges(): void {
@@ -534,10 +538,37 @@ customer_lookup() {
 }
 
 reset() {
-  console.log(this.myInputVariable.nativeElement.files);
   this.myInputVariable.nativeElement.value = "";
-  console.log(this.myInputVariable.nativeElement.files);
 }
+
+/*downloadFile() {
+  return this.http
+    .get('https://jslim.net/path/to/file/download', {
+      responseType: ResponseContentType.Blob
+    })
+    .map(res => {
+      return {
+        filename: 'filename.pdf',
+        data: res.blob()
+      };
+    })
+    .subscribe(res => {
+        console.log('start download:',res);
+        var url = window.URL.createObjectURL(res.data);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.href = url;
+        a.download = res.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove(); // remove the element
+      }, error => {
+        console.log('download error:', JSON.stringify(error));
+      }, () => {
+        console.log('Completed file download.')
+      });
+}*/
 
 // dummy_json(){
 //   return [

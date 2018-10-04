@@ -65,6 +65,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
+               
                 <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(import_modal)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
@@ -83,9 +84,10 @@
                         <div class="col-sm-6">
                             <select class="form-control  form-control-sm mt3" [(ngModel)]="fileType" name="fileType" id="fileTypeID">
                                 <option value="excel">{{language.excel}}</option>
-                                <option value="csv">{{language.csv}}</option>
+                                <!-- <option value="csv">{{language.csv}}</option> -->
                             </select>
                         </div>
+                         
                     </div>
                     <hr>
                     <div class="form-group row clearfix">
@@ -97,9 +99,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a href="{{template_path}}" class="btn btn-sm btn btn-success mr-10" download title="{{this.language.download_template}}"><i class="fa fa-download"></i> {{this.language.download_template}} </a>
                 <button class="btn btn-sm btn-info mr-10" type="button" (click)="importclick()">
-                    <i class="fa fa-check"></i> {{this.language.import}}</button>
-            </div>
+                    <i class="fa fa-check"></i> {{this.language.import}}</button></div>
         </div>
     </div>
     <script src="Scripts/angular.min.js"></script>
