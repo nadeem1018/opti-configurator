@@ -1020,6 +1020,10 @@ export class ModelbomComponent implements OnInit {
         if (data.length > 0) {
           this.serviceData = data;
         }
+        else{
+          this.toastr.error('', this.language.norules, this.commonData.toast_config);
+          return;
+        }
       });
   }
 

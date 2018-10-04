@@ -40,7 +40,8 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "X"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "X"];
+  public step3_data_final_hidden_elements = [false, false, false, false, false,false,true, true,false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
@@ -91,6 +92,15 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
+  public final_row_data: any;
+  public final_order_status = this.language.new;
+  public final_order_status_class = "text-primary";
+  public final_reference_number = "";
+  public final_ref_doc_entry = "";
+
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -116,12 +126,24 @@ export class OutputComponent implements OnInit {
     this.isNextButtonVisible = false;
 
     //dummy data for 3rd screen 
-    this.step3_data_final = [
-      { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
-      { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
-      { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
-      { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
-    ];
+    // this.step3_data_final = [
+    //   {
+    //     "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step2_data.model_id,
+    //     "feature": [{
+    //       "feature_name": "Feature001",
+    //       "item": "item001",
+    //       "item_desc": "itemdesc001",
+    //       "quantity": 100,
+    //       "price": 2000,
+    //       "price_ext": 20,
+    //       "feature_accessories": "FEATUREACCESS001"
+    //     }],
+    //     "accessories": [{
+    //       "code": "ACCES001",
+    //       "name": "ACCESSNAME001"
+    //     }]
+    //   }
+    // ];
 
     // dummy data for 2nd screen 
     this.tree_data_json = [
@@ -140,7 +162,6 @@ export class OutputComponent implements OnInit {
       // { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
       // { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
     ];
-    console.log(this.tree_data_json);
     // initialize jquery 
     setTimeout(() => {
       this.tree_view_expand_collapse()
@@ -213,6 +234,7 @@ export class OutputComponent implements OnInit {
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
           this.serviceData = data;
+
         }
         else {
           this.lookupfor = "";
@@ -225,7 +247,6 @@ export class OutputComponent implements OnInit {
   }
 
   onSalesPersonChange(selectedSalesEmp) {
-    this.console.log(selectedSalesEmp);
     this.salesemployee = selectedSalesEmp;
     this.step1_data.sales_employee = selectedSalesEmp;
   }
@@ -233,6 +254,7 @@ export class OutputComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBom_lookup') {
+      this.onclearselection();
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
@@ -361,6 +383,7 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
+              model_id: this.step2_data.model_id,
               checked: false,
               parentId: this.selectfeaturedata[0].parentId
             });
@@ -373,6 +396,7 @@ export class OutputComponent implements OnInit {
             id: accesorydata[i].OPTM_CHILDFEATUREID,
             key: accesorydata[i].OPTM_FEATURECODE,
             name: accesorydata[i].OPTM_DISPLAYNAME,
+            model_id: this.step2_data.model_id,
             checked: false,
             parentId: this.selectfeaturedata[0].parentId
           });
@@ -419,7 +443,8 @@ export class OutputComponent implements OnInit {
                 is_accessory: "N",
                 isPriceDisabled: isPriceDisabled,
                 pricehide: isPricehide,
-                parentId: this.selectfeaturedata[0].parentId
+                parentId: this.selectfeaturedata[0].parentId,
+                model_id: this.step2_data.model_id
 
               });
             }
@@ -449,7 +474,8 @@ export class OutputComponent implements OnInit {
               is_accessory: "N",
               isPriceDisabled: isPriceDisabled,
               pricehide: isPricehide,
-              parentId: this.selectfeaturedata[0].parentId
+              parentId: this.selectfeaturedata[0].parentId,
+              model_id: this.step2_data.model_id
             });
           }
         }
@@ -609,7 +635,8 @@ export class OutputComponent implements OnInit {
                       is_accessory: "Y",
                       isPriceDisabled: true,
                       pricehide: true,
-                      parentId: this.selectfeaturedata[0].parentId
+                      parentId: this.selectfeaturedata[0].parentId,
+                      model_id: this.step2_data.model_id
 
                     });
                   }
@@ -627,7 +654,8 @@ export class OutputComponent implements OnInit {
                     is_accessory: "Y",
                     isPriceDisabled: isPriceDisabled,
                     pricehide: isPricehide,
-                    parentId: this.selectfeaturedata[0].parentId
+                    parentId: this.selectfeaturedata[0].parentId,
+                    model_id: this.step2_data.model_id
                   });
                 }
 
@@ -796,7 +824,8 @@ export class OutputComponent implements OnInit {
                     is_accessory: "Y",
                     isPriceDisabled: true,
                     pricehide: true,
-                    parentId: this.selectfeaturedata[0].parentId
+                    parentId: this.selectfeaturedata[0].parentId,
+                    model_id: this.step2_data.model_id
                   });
                 }
               }
@@ -813,7 +842,8 @@ export class OutputComponent implements OnInit {
                   is_accessory: "Y",
                   isPriceDisabled: true,
                   pricehide: true,
-                  parentId: this.selectfeaturedata[0].parentId
+                  parentId: this.selectfeaturedata[0].parentId,
+                  model_id: this.step2_data.model_id
                 });
               }
             }
@@ -949,21 +979,35 @@ export class OutputComponent implements OnInit {
         iacc = iacc - 1;
       }
     }
-    this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+     if (data.FeatureId == this.step2_data.model_id) {
+       this.GetDataByModelId(this.step2_data.model_id)
+     }
+    else {
+      this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+    }
+
 
   }
+
+   GetDataByModelId(id) {
+     this.OutputService.GetDataByModelId(id).subscribe(
+       data => {
+         this.getItemDataForFeature(data.ModelDetail);
+       }
+     )
+
+   }
+
+
 
   //this will get the contact person
   fillContactPerson() {
     this.OutputService.fillContactPerson(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
-        console.log(data);
         if (data != null || data != undefined && data.length > 0) {
           if (data.ContactPerson.length > 0) {
             this.contact_persons = data.ContactPerson;
-            console.log(data);
             this.person = data.ContactPerson[0].Name;
-            this.console.log(this.person);
             this.step1_data.person_name = this.person;
           }
           else {
@@ -1153,7 +1197,6 @@ export class OutputComponent implements OnInit {
   GetCustomername() {
     this.OutputService.GetCustomername(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
-        this.console.log(data);
         if (data != null || data != undefined && data.length > 0) {
           this.step1_data.customer_name = data[0].Name;
         }
@@ -1186,15 +1229,15 @@ export class OutputComponent implements OnInit {
       "OPTM_OUTPUTID": "",
       "OPTM_DOCTYPE": this.step1_data.document,
       "OPTM_BPCODE": this.step1_data.customer,
-      "OPTM_SHIPTO": this.step1_data.customerShipTo,
-      "OPTM_BILLTO": this.step1_data.customerBillTo,
+      "OPTM_SHIPTO": this.step1_data.ship_to,
+      "OPTM_BILLTO": this.step1_data.bill_to,
       "OPTM_CONTACTPERSON": this.step1_data.person_name,
-      "OPTM_TAX": "",
+      "OPTM_TAX": this.acc_item_tax,
       "OPTM_PAYMENTTERM": "",
-      "OPTM_FGITEM": "DEMO-ITEM",
+      "OPTM_FGITEM": this.step2_data.model_code,
       "OPTM_KEY": "DEMO-KEY",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
-      "OPTM_QUANTITY": "",
+      "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username
     })
@@ -1227,7 +1270,6 @@ export class OutputComponent implements OnInit {
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
-        this.console.log(data);
         if (data != null || data != undefined && data.length > 0) {
           this.step1_data.customer_name = data[0].Name;
         }
@@ -1244,15 +1286,14 @@ export class OutputComponent implements OnInit {
   }
 
   delete_multiple_final_modal() {
-    if (confirm(this.language.confirm_remove_selected_modal)) {
-
-    }
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
-  remove_final_modal(row) {
-    if (confirm(this.language.confirm_remove_modal)) {
-
-    }
+  remove_final_modal(row_data) {
+    this.final_row_data = row_data;
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
   on_checkbox_checked(checkedvalue, row_data) {
@@ -1260,7 +1301,6 @@ export class OutputComponent implements OnInit {
   }
 
   refresh_bom_status() {
-    console.log(' in here ');
     this.dontShowFinalLoader = true;
     this.showFinalLoader = false;
 
@@ -1292,5 +1332,89 @@ export class OutputComponent implements OnInit {
     return data;
   }
 
+  //Row Deletion
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
+      this.delete_row();
+    }
+    this.show_dialog = false;
+  }
 
+  delete_row() {
+    this.cleanupAccessories();
+    this.cleanupFeatureItemList();
+
+    this.cleanupFinalArray();
+    //After the removal of all data of that model will recalculate the prices
+    this.feature_price_calculate();
+    this.cleanuptree()
+    this.feature_item_tax = 0;
+    this.feature_item_total = 0;
+    this.acc_item_tax = 0;
+    this.accessory_discount_percent = 0;
+    this.accessory_item_total = 0;
+    this.acc_grand_total  = 0;
+  }
+
+  cleanupAccessories() {
+    //Get the modal id and clean the data of accessories here
+    for (let count = 0; count < this.feature_accessory_list.length; count++) {
+      if (this.final_row_data.model_id == this.feature_accessory_list[count].model_id) {
+        this.feature_accessory_list.splice(count, 1);
+        count = count - 1;
+      }
+    }
+  }
+
+  cleanupFeatureItemList() {
+    //Get the modal id and clean the data of Features List here
+    for (let count = 0; count < this.feature_itm_list_table.length; count++) {
+      if (this.final_row_data.model_id == this.feature_itm_list_table[count].model_id) {
+        this.feature_itm_list_table.splice(count, 1);
+        count = count - 1;
+      }
+    }
+  }
+
+  cleanupFinalArray() {
+    //Get the modal id and clean the data of Features List here
+    for (let count = 0; count < this.step3_data_final.length; count++) {
+      if (this.final_row_data.model_id == this.step3_data_final[count].model_id) {
+        this.step3_data_final.splice(count, 1);
+        count = count - 1;
+      }
+    }
+  }
+
+  cleanuptree(){
+    this.tree_data_json = [];
+    this.complete_dataset = [];
+    this.tree_data_json.length = 0;
+    this.complete_dataset.length = 0;
+  }
+
+  //For next press towards finsh screen
+  onModelBillNextPress() {
+    //Clear the array
+    this.step3_data_final = [];
+
+    this.step3_data_final.push({
+      "rowIndex": "1",
+      "sl_no": "1",
+      "item": this.step2_data.model_code,
+      "qunatity": this.step2_data.quantity,
+      "price": this.acc_grand_total,
+      "price_ext": 0,
+      "feature": this.feature_itm_list_table,
+      "accesories": this.feature_accessory_list,
+      "model_id": this.step2_data.model_id,
+    })
+
+    if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
+      //Clear the array when user play with next prev button
+      this.step3_data_final = [];
+    }
+
+  }
 }
