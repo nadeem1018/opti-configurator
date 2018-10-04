@@ -91,6 +91,12 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
+
+  //custom dialoag params
+  public dialog_params: any = [];
+  public show_dialog: boolean = false;
+  public final_row_data: any;
+
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -117,10 +123,22 @@ export class OutputComponent implements OnInit {
 
     //dummy data for 3rd screen 
     this.step3_data_final = [
-      { "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
-      { "rowIndex": "2", "sl_no": "2", "item": "Model 2", "qunatity": "20", "price": "2000", "price_ext": "20", "rowIndexBtn": "2" },
-      { "rowIndex": "3", "sl_no": "3", "item": "Model 3", "qunatity": "30", "price": "2000", "price_ext": "20", "rowIndexBtn": "3" },
-      { "rowIndex": "4", "sl_no": "4", "item": "Model 4", "qunatity": "40", "price": "2000", "price_ext": "20", "rowIndexBtn": "1" },
+      {
+        "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step2_data.model_id,
+        "feature": [{
+          "feature_name": "Feature001",
+          "item": "item001",
+          "item_desc": "itemdesc001",
+          "quantity": 100,
+          "price": 2000,
+          "price_ext": 20,
+          "feature_accessories": "FEATUREACCESS001"
+        }],
+        "accessories": [{
+          "code": "ACCES001",
+          "name": "ACCESSNAME001"
+        }]
+      }
     ];
 
     // dummy data for 2nd screen 
@@ -361,6 +379,7 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
+              model_id: this.step2_data.model_id,
               checked: false,
               parentId: this.selectfeaturedata[0].parentId
             });
@@ -373,6 +392,7 @@ export class OutputComponent implements OnInit {
             id: accesorydata[i].OPTM_CHILDFEATUREID,
             key: accesorydata[i].OPTM_FEATURECODE,
             name: accesorydata[i].OPTM_DISPLAYNAME,
+            model_id: this.step2_data.model_id,
             checked: false,
             parentId: this.selectfeaturedata[0].parentId
           });
@@ -419,7 +439,8 @@ export class OutputComponent implements OnInit {
                 is_accessory: "N",
                 isPriceDisabled: isPriceDisabled,
                 pricehide: isPricehide,
-                parentId: this.selectfeaturedata[0].parentId
+                parentId: this.selectfeaturedata[0].parentId,
+                model_id: this.step2_data.model_id
 
               });
             }
@@ -1249,10 +1270,14 @@ export class OutputComponent implements OnInit {
     }
   }
 
-  remove_final_modal(row) {
-    if (confirm(this.language.confirm_remove_modal)) {
+  remove_final_modal(row_data) {
+    // if (confirm(this.language.confirm_remove_modal)) {
 
-    }
+    // }
+    this.final_row_data = row_data;
+    this.console.log(row_data)
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
   }
 
   on_checkbox_checked(checkedvalue, row_data) {
@@ -1292,5 +1317,27 @@ export class OutputComponent implements OnInit {
     return data;
   }
 
+  //Row Deletion
+  //This will take confimation box value
+  get_dialog_value(userSelectionValue) {
+    if (userSelectionValue == true) {
+      this.delete_row();
+    }
+    this.show_dialog = false;
+  }
+
+  delete_row() {
+    console.log(this.final_row_data.rowIndex);
+    this.cleanupAccessories();
+  }
+
+  cleanupAccessories(){
+    //Get the modal id and clean the data of accessories here
+    for (let count = 0; count < this.feature_accessory_list.length; ++count) {
+        if(this.final_row_data.model_id == this.feature_accessory_list[count].model_id){
+          console.log("FOUND");
+        }
+    }
+  }
 
 }
