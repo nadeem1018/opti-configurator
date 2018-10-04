@@ -392,7 +392,7 @@ export class OutputComponent implements OnInit {
               id: accesorydata[i].OPTM_CHILDFEATUREID,
               key: accesorydata[i].OPTM_FEATURECODE,
               name: accesorydata[i].OPTM_DISPLAYNAME,
-              modal_id: this.this.step2_data.modal_id,
+              modal_id: this.step2_data.modal_id,
               checked: false
             });
           }

@@ -81,10 +81,9 @@
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="Status">{{language.file_type}}</label>
                         <div class="col-sm-6">
-                            <select class="form-control  form-control-sm mt3" name="fileType" id="fileTypeID">
-                                <option>{{language.choose_file_msg}}</option>
-                                <option value="csv">{{language.csv}}</option>
+                            <select class="form-control  form-control-sm mt3" [(ngModel)]="fileType" name="fileType" id="fileTypeID">
                                 <option value="excel">{{language.excel}}</option>
+                                <option value="csv">{{language.csv}}</option>
                             </select>
                         </div>
                     </div>
@@ -92,7 +91,7 @@
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>
                         <div class="col-sm-6">
-                            <input type="file" class="form-control  form-control-sm mt3-file" id="image" (change)="file_input($event)">
+                            <input type="file" class="form-control  form-control-sm mt3-file" #myInput id="image" (change)="file_input($event)">
                         </div>
                     </div>
                 </div>
