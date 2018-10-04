@@ -298,6 +298,7 @@
     "incorrectfile":"Incorrect file attached",
     "nofileattach":"No file attached",
     "download_template": "Download Template",
-    "ruleValidated": "Rules are valid"
+    "ruleValidated": "Rules are valid",
+    "norules": "No rules are found for this Model"
 
 }
