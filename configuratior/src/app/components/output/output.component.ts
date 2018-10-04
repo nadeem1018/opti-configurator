@@ -95,6 +95,7 @@ export class OutputComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
+  public selectfeaturedata=[];
   ngOnInit() {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
@@ -1304,4 +1305,33 @@ export class OutputComponent implements OnInit {
         }
     }
   }
-}
+  
+  on_element_input_change(data, value) {
+    this.selectfeaturedata=[];
+    this.selectfeaturedata.push(data)
+    if (this.feature_accessory_list.length > 0) {
+      for (let i = 0; i < this.feature_accessory_list.length; ++i) {
+        if (this.feature_accessory_list[i].parentId == data.parentId) {
+          if (this.feature_itm_list_table.length > 0) {
+            for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+                this.feature_itm_list_table.splice(iacc, 1)
+                iacc = iacc - 1;
+              }
+            }
+          }
+          this.feature_price_calculate();
+          this.feature_accessory_list.splice(i, 1);
+          i = i - 1;
+        }
+      }
+    }
+    for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
+      if (this.feature_itm_list_table[iacc].parentId ==data.parentId) {
+        this.feature_itm_list_table.splice(iacc, 1)
+        iacc = iacc - 1;
+      }
+    }
+    this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
+   }
+  }
