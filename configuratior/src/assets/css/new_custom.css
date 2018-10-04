@@ -470,3 +470,26 @@ ol.breadcrumb.breadcrumb_mini_margin {
 i.btn.btn-sm.expand_cllapse_click {
   margin-top: -0.3rem;
 }
+
+.table-wrapper-scroll-y {
+  display: block;
+  max-height: 200px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+hr {
+  margin-top: 0.6rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.custom-control {
+  min-height: 0.5rem !important;
+  padding-left: 1rem !important;
+}
+
+.custom-control-inline {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  margin-right: 0rem !important;
+}

@@ -32,6 +32,8 @@ export class LoginComponent implements OnInit {
   public password = "Password";
   public isPasswordBlank = "Enter Password";
   public login_btn = "Login";
+  public reset_button_text = "Reset";
+  public onConnectSuccess:boolean = false;
   public page_title = this.commonData.project_name;
 
   constructor(   
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() { 
+    this.selecetedComp = "";
     console.log(new Date());
     // this.CommonService.get_config();
     if (sessionStorage.getItem('isLoggedIn') == 'true') {
@@ -75,6 +78,7 @@ export class LoginComponent implements OnInit {
         this.password = this.language.password;
         this.isPasswordBlank = this.language.isPasswordBlank;
         this.login_btn = this.language.login;
+        this.reset_button_text = this.language.reset;
       }
     }, 2000);
   }
@@ -129,7 +133,7 @@ export class LoginComponent implements OnInit {
 
   onLoginBtnPress(){
    
-    if(this.selecetedComp == undefined){
+    if (this.selecetedComp == undefined && this.selecetedComp == "" ){
       this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
       return;
     }
@@ -183,11 +187,13 @@ export class LoginComponent implements OnInit {
           //If comp found
           this.showCompDropDown = true;
           this.showLoginBtn = true;
+          this.onConnectSuccess = true;
         }
         else{
           //If no companies found then will hide elements
-          this.showCompDropDown = false;
+          this.onConnectSuccess = false;
           this.showLoginBtn = false;
+          this.showCompDropDown = false;
         }
 
       }
@@ -198,6 +204,14 @@ export class LoginComponent implements OnInit {
       }
       }
     )
+  }
+
+  onResetClick(){
+    this.onConnectSuccess = false;
+    this.showLoginBtn = false;
+    this.showCompDropDown = false;
+    this.loginCredentials = [];
+    this.loginCredentials.length = 0;
   }
 
   

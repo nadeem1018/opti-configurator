@@ -302,7 +302,7 @@
                 <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
                   <div class="tree well">
                     <ul>
-                      <span *ngFor="let element of tree_data_json; let i= index;">
+                      <ng-container *ngFor="let element of tree_data_json; let i= index;">
                         <li  class="tree_label_li" *ngIf="element.level == 0 && element.parentId==''">
                           <div class="has_elements" *ngIf="check_component_exist(element.component, i).length > 0">
                             <span class="parent_span"  >
@@ -320,7 +320,7 @@
                           </div>
                           
                         </li>
-                      </span>
+                      </ng-container>
                     </ul>
                   </div>
                 </div>

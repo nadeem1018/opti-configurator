@@ -513,3 +513,14 @@ only screen and ( min-resolution: 2dppx) {
 .list-group-item {
     padding: .1rem 0.5rem !important;
 }
+
+.new_tree_structure_area{
+    width: 400px;
+    height: 400px;
+    overflow: auto;
+    .tree.well{
+        background: none;
+        border: none;
+        width: 600px;
+    }
+}
