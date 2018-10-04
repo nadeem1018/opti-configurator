@@ -40,7 +40,9 @@
                     <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.OPTM_COMPID}}</option>
                   </select>
                 </div>
-                <button type="button" class="btn" (click)="onLoginBtnPress()" *ngIf="showLoginBtn"><i class="fa fa-sign-in" ></i> {{login_btn}}</button>
+                <button type="button" class="btn btn-sm mr-3 width-45 btn-success" (click)="onLoginBtnPress()" *ngIf="showLoginBtn" style="width:45%"><i class="fa fa-sign-in" ></i> {{login_btn}}</button>
+                <button type="button" class="btn btn-sm width-45 btn-primary" (click)="onLoginBtnPress()" *ngIf="showLoginBtn" style="width:45%" >
+                  <i class="fa fa-sign-in"></i> {{login_btn}}</button>
               </div>
             </form>
           </div>
