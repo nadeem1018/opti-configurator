@@ -567,6 +567,7 @@ export class ModelbomComponent implements OnInit {
     this.serviceData = []
     this.service.getItemDetails(ItemKey).subscribe(
       data => {
+        if (data != null) {
         if (data.length > 0) {
           for (let i = 0; i < this.modelbom_data.length; ++i) {
             if (this.modelbom_data[i].rowindex === this.currentrowindex) {
@@ -579,6 +580,7 @@ export class ModelbomComponent implements OnInit {
             }
           }
         }
+      }
       })
   }
 
@@ -927,6 +929,7 @@ export class ModelbomComponent implements OnInit {
 
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
+        if (data !== undefined && data != "") {
         if (data == "Rules Conflict") {
           this.toastr.error('', this.language.conflict, this.commonData.toast_config);
           success_call(false);
@@ -937,6 +940,7 @@ export class ModelbomComponent implements OnInit {
           success_call(true);
           return true;
         }
+      }
       })
   }
 
