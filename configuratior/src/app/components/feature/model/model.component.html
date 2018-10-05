@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-    <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+    <h4 class="h4"><strong> {{page_main_title}}</strong></h4>
     <!-- <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
             <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal">
@@ -29,14 +29,14 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="feature">
                     {{model_code_label}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
                         [(ngModel)]="featureBom.Code" #inputBox>
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="type">{{language.Model_Type}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <select class="form-control  form-control-sm mt3" (change)= "onTypeLookupChange()" id="typeID" name="typeName" [(ngModel)]="featureBom.type" #select>
                         <option value="Feature">{{language.feature}}</option>
                         <option value="Model">{{language.model}}</option>
@@ -46,14 +46,14 @@
 
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featurename">{{model_name_label}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
                         [(ngModel)]="featureBom.Name">
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureDesc">{{model_desc_label}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
                         [(ngModel)]="featureBom.Desc">
                 </div>
@@ -61,7 +61,7 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
-                <div class="col-sm-6 input-group">
+                <div class="col-sm-4 input-group">
                     <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
                     <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode">
                     <div class="input-group-append" [hidden] ="isItemlookupDisabled">
@@ -74,7 +74,7 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
 
-                <div class="col-sm-6 input-group">
+                <div class="col-sm-4 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
                         placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" [disabled]="isRefCodeDisabled">
                     <div class="input-group-append" [hidden] ="isReflookupDisabled">
@@ -88,7 +88,7 @@
 
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
-                <div class="col-sm-6 input-group">
+                <div class="col-sm-4 input-group">
                     <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="minimum_date" class="form-control  form-control-sm mt3" name='datepicker'
                         type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
                     <div class="input-group-append">
@@ -113,13 +113,13 @@
                 </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="image">{{language.Model_Image}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                    <div class="btn btn-outline-secondary btn-file btn-sm"> {{language.choose_image}} <input type="file" class="form-control  form-control-sm mt3-file" id="image" name="imagename" #image (change)="uploadimagefile(image.files)"  ></div> 
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <select class="form-control  form-control-sm mt3" name="featureTypeName" [(ngModel)]="featureBom.Status" id="featureTypeNameID">
                         <option value="Active">{{language.Model_Active}}</option>
                         <option value="Inactive">{{language.Model_InActive}}</option>
@@ -129,12 +129,12 @@
 
             <div class="form-group row clearfix" [hidden]="IsAccessoryVisible">
                 <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
-                <div class="col-sm-6 mt-3px">
+                <div class="col-sm-4 mt-3px">
                     <div class="custom-control custom-radio custom-control-inline">
                         <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory">
                         <label class="custom-control-label" for="yes">Yes</label>
                     </div>
-                    <div class="custom-control custom-radio custom-control-inline">
+                    <div class="custom-control custom-radio custom-control-inline ml-2">
                         <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory">
                         <label class="custom-control-label" for="no">No</label>
                     </div>
@@ -147,11 +147,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="pull-left">
-                            <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-info  mr-10">
+                            <button type="button" (click)="onSaveClick()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-primary  mr-10">
                                 <i class="fa fa-save"></i> {{language.save}}
                             </button>
 
-                            <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-info mr-10">
+                            <button type="button" *ngIf="isUpdateButtonVisible" (click)="onUpdateClick()" class="btn btn-sm btn-primary mr-10">
                                 <i class="fa fa-save"></i> {{language.update}}
                             </button>
 

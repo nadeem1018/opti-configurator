@@ -21,6 +21,7 @@
 $primaryColor:#007bff;
 $errorColor:red;
 $whiteColor:#fff;
+
 .field-nobg-noborder{
     background: transparent !important;
     border: none !important;
@@ -36,4 +37,7 @@ table th .fa-trash{
 }
 body .ps__rail-y{
     opacity: 1;
+}
+.sidebar .nav-item .nav-link:hover {
+    color: $primaryColor;
 }
