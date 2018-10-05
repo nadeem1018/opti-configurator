@@ -15,7 +15,7 @@ import { OutputComponent } from '../../components/output/output.component';
     </div>
     <div *ngIf="form_tree_get_children(inner_element.component).length == 0">
         <span>
-            <input type="{{inner_element.element_type}}" name="tree_el_{{inner_element.parentId}}" #treeinput value="{{inner_element.component}}"  (click)="on_element_input_change(inner_element,treeinput.checked)">
+            <input type="{{inner_element.element_type}}" name="tree_el_{{inner_element.parentId}}" #treeinput value="{{inner_element.component}}"  (click)="on_element_input_change(inner_element,treeinput.checked)"  [(checked)]="inner_element.checked">
             <span class="tree_label">{{inner_element.component}}</span>
         </span>
     </div>
