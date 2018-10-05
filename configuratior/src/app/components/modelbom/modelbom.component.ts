@@ -159,8 +159,6 @@ export class ModelbomComponent implements OnInit {
                 data.ModelDetail[i].OPTM_MANDATORY = false
               }
 
-
-
               this.modelbom_data.push({
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
@@ -190,7 +188,10 @@ export class ModelbomComponent implements OnInit {
 
             }
           }
-          console.log(this.modelbom_data)
+
+          if(data.RuleData.length > 0){
+            this.rule_data = data.RuleData;
+          }
           this.onExplodeClick();
         }
       )
@@ -778,63 +779,19 @@ export class ModelbomComponent implements OnInit {
 
 
   onSave() {
-    if (this.validation("Save") == false) {
+    var obj = this;
+    if (obj.validation("Save") == false) {
       return;
     }
-    if(this.onVerifyOutput() == true){
-    if (this.modelbom_data.length > 0) {
-      for (let i = 0; i < this.modelbom_data.length; ++i) {
-        if (this.modelbom_data[i].unique_identifer == false) {
-          this.modelbom_data[i].unique_identifer = "N"
-        }
-        else {
-          this.modelbom_data[i].unique_identifer = "Y"
-        }
-        if (this.modelbom_data[i].mandatory == false) {
-          this.modelbom_data[i].mandatory = "N"
-        }
-        else {
-          this.modelbom_data[i].mandatory = "Y"
-        }
-        if (this.modelbom_data[i].propagate_qty == false) {
-          this.modelbom_data[i].propagate_qty = "N"
-        }
-        else {
-          this.modelbom_data[i].propagate_qty = "Y"
-        }
-        if (this.modelbom_data[i].ReadyToUse == false) {
-          this.modelbom_data[i].ReadyToUse = "N"
-        }
-        else {
-          this.modelbom_data[i].ReadyToUse = "Y"
-        }
 
+    obj.onVerifyOutput(function(response){
+      console.log('in validate true '+ response);
+      if(response == true){
+        obj.save_data();
+      } 
+    });
 
-      }
-    }
-    let objDataset: any = {};
-    objDataset.ModelData = [];
-    objDataset.RuleData = [];
-
-    objDataset.ModelData = this.modelbom_data;
-    objDataset.RuleData = this.rule_data;
-    this.service.SaveModelBom(objDataset).subscribe(
-      data => {
-        if (data === "True") {
-          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
-          this.route.navigateByUrl('modelbom/view');
-          return;
-        }
-        else {
-          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
-          return;
-        }
-      }
-    )
-  }
-  else{
-    return;
-  }
+    
   }
 
   validation(btnpress) {
@@ -957,7 +914,7 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  onVerifyOutput(): any {
+  onVerifyOutput(success_call): any {
     let objDataset: any = {};
     objDataset.ModelData = [];
     objDataset.RuleData = [];
@@ -970,13 +927,14 @@ export class ModelbomComponent implements OnInit {
 
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
-        console.log(data);
         if (data == "Rules Conflict") {
           this.toastr.error('', this.language.conflict, this.commonData.toast_config);
+          success_call(false);
           return false;
         }
         else{
           this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
+          success_call(true);
           return true;
         }
       })
@@ -1100,7 +1058,61 @@ export class ModelbomComponent implements OnInit {
     });
     return data;
   }
+  save_data(){
+    if (this.modelbom_data.length > 0) {
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if (this.modelbom_data[i].unique_identifer == false) {
+          this.modelbom_data[i].unique_identifer = "N"
+        }
+        else {
+          this.modelbom_data[i].unique_identifer = "Y"
+        }
+        if (this.modelbom_data[i].mandatory == false) {
+          this.modelbom_data[i].mandatory = "N"
+        }
+        else {
+          this.modelbom_data[i].mandatory = "Y"
+        }
+        if (this.modelbom_data[i].propagate_qty == false) {
+          this.modelbom_data[i].propagate_qty = "N"
+        }
+        else {
+          this.modelbom_data[i].propagate_qty = "Y"
+        }
+        if (this.modelbom_data[i].ReadyToUse == false) {
+          this.modelbom_data[i].ReadyToUse = "N"
+        }
+        else {
+          this.modelbom_data[i].ReadyToUse = "Y"
+        }
+
+
+      }
+    }
+    let objDataset: any = {};
+    objDataset.ModelData = [];
+    objDataset.RuleData = [];
+
+    objDataset.ModelData = this.modelbom_data;
+    objDataset.RuleData = this.rule_data;
+    this.service.SaveModelBom(objDataset).subscribe(
+      data => {
+        if (data === "True") {
+          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
+          this.route.navigateByUrl('modelbom/view');
+          return;
+        }
+        else {
+          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  
+  }
 }
+
+
 
 
 
