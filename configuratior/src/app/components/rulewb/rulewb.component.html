@@ -128,12 +128,14 @@
             <div class="sequence_box" *ngIf="show_sequence">
              
               <div class="col-sm-12 pl-0 pr-0">
-                <div class="table-responsive table-responsive-sm table-wrapper-scroll-y">
+                <div class="table-responsive table-responsive-sm">
                   <div class="form-group col-md-2 clearfix bg-primary text-white">
                     <div class="">{{language.input}}</div>
                   </div>
                   <hr>
-                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                  <table class="table table-bordered top-table  table-sm" id="dataTable" cellspacing="0">
+
+                    <!-- start head section -->
                     <thead class="thead-dark">
                       <!-- <tr class="text-center">
                             <th colspan="9" align="center">
@@ -154,6 +156,9 @@
                         </th>
                       </tr>
                     </thead>
+                    <!-- end head section -->
+
+                    <!-- start body section -->
                     <tbody>
                       <tr *ngFor="let row of rule_sequence_data">
                         <td>
@@ -207,6 +212,9 @@
                         </td>
                       </tr>
                     </tbody>
+                    <!-- end body section -->
+
+                    <!-- foot section -->
                     <tfoot class="thead-dark">
                       <tr class='text-center'>
                         <th colspan="9" align="center">
@@ -222,6 +230,8 @@
                         </td>
                       </tr>
                     </tfoot>
+                    <!-- end foot section -->
+
                   </table>
                 </div>
               </div>
@@ -250,11 +260,11 @@
             <div class="expression_box">
             
               <div class="col-sm-12  pl-0 pr-0">
-                <div class="table-responsive table-responsive-sm table-wrapper-scroll-y">
+                <div class="table-responsive table-responsive-sm">
                   <div class="form-group col-md-4 clearfix bg-primary text-white">
                     <div class="">{{language.expression}}</div>
                   </div>
-                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                  <table class="table table-bordered bottom-table table-sm" id="dataTable" cellspacing="0">
                     <thead class="thead-dark">
                       <!-- <tr class="text-center">
                           <th colspan="9" align="center">
@@ -311,9 +321,9 @@
                   
                 </div> -->
                 <hr>
-                <div class="table-responsive table-responsive-sm table-wrapper-scroll-y">
+                <div class="table-responsive table-responsive-sm">
 
-                  <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0">
+                  <table class="table table-bordered output-table table-sm" id="dataTable" cellspacing="0">
                     <thead class="thead-dark">
                       <!-- <tr>
                               <th colspan="10" class="text-center" align="center">
@@ -321,7 +331,7 @@
                               </th>
                             </tr> -->
                       <tr>
-                        <th style="width:50px">
+                        <th>
                           <div class="custom-control custom-checkbox">
                             <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
                                   <label class="custom-control-label" for="check_all"></label> -->
@@ -331,15 +341,15 @@
                           </div>
 
                         </th>
-                        <th style="width:50px">{{language.feature}}</th>
-                        <th style="width:150px">{{language.item}}</th>
-                        <th style="width:150px">{{language.value}}</th>
-                        <th style="width:150px">{{language.uom}}</th>
-                        <th style="width:50px">{{language.quantity}}</th>
-                        <th style="width:100px">{{language.edit_quantity}}</th>
-                        <th style="width:50px">{{language.price_source}}</th>
-                        <th style="width:100px">{{language.edit_price}}</th>
-                        <th style="width:50px">{{language.default}}</th>
+                        <th>{{language.feature}}</th>
+                        <th>{{language.item}}</th>
+                        <th>{{language.value}}</th>
+                        <th>{{language.uom}}</th>
+                        <th>{{language.quantity}}</th>
+                        <th>{{language.edit_quantity}}</th>
+                        <th>{{language.price_source}}</th>
+                        <th>{{language.edit_price}}</th>
+                        <th>{{language.default}}</th>
 
                       </tr>
                     </thead>
