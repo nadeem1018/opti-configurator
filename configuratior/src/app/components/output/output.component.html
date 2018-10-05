@@ -582,9 +582,9 @@
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
-              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
-                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-              <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
+              <!-- <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button> -->
+              <button *ngIf="feature_accessory_list.length || feature_itm_list_table.length" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
           </div>
@@ -709,7 +709,7 @@
                         <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
                           <span *ngIf="(Object.keys(row).length-1) != i">
                             <span *ngIf="i==0">
-                              <input type="checkbox" name="modal_checkbox" (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
+                              <input type="checkbox" name="modal_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue, row)">
                             </span>
                             <span *ngIf="i!=0">
                               {{row[row_data]}}
@@ -787,7 +787,7 @@
             <hr>
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button (click)="onFinishPress()" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
+            <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
               <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
           </div>
         </fieldset>
@@ -827,17 +827,17 @@
                         </label>
                         <label class="col-sm-5 col-form-label"><b class="final_order_status_class">{{final_order_status}}</b></label>
                       </div>
-                      <div class="form-group row clearfix" >
-                        <label class="col-sm-3 col-form-label">
-                          <b>{{language.ref_no}}</b>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-3 col-form-label ">
+                          <b>{{language.ref_doc_no}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label">{{final_reference_number}}</label>
+                        <label class="col-sm-3 col-form-label ">{{final_document_number}}</label>
                       </div>
                       <div class="form-group row clearfix">
                         <label class="col-sm-3 col-form-label">
                           <b>{{language.ref_doc_entry}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label">{{final_ref_doc_entry}}</label>
+                        <label class="col-sm-3 col-form-label">{{final_ref_doc_entry}}</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -852,12 +852,7 @@
                         </button>
                       </div>
                       <div class="clearfix"></div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-5 col-form-label text-left">
-                          <b>{{language.doc_no}}</b>
-                        </label>
-                        <label class="col-sm-5 col-form-label text-right">{{final_document_number}}</label>
-                      </div>
+                      
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.posting_date}}</b>

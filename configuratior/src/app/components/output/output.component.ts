@@ -49,11 +49,15 @@ export class OutputComponent implements OnInit {
   public acc_total: number = 0
   public accessory_item_tax: number = 0;
   public accessory_item_total: number = 0;
-  public acc_grand_total: number = 0
+  public acc_grand_total: number = 0;
   public isModelVisible: boolean = false;
   public final_document_number: any = '';
   public selectfeaturedata = [];
+<<<<<<< HEAD
   public modelitemflag: number = 0;
+=======
+  public final_array_checked_options = [];
+>>>>>>> b710797d33501ba931d381178cc0c8c5a103289a
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -94,6 +98,11 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
+  public iLogID:any = '1';
+  public CheckedData: any = [];
+  public selectallRows: boolean = false;
+  public isMultiDelete:boolean = false;
+  rows: any = "";
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -1418,29 +1427,43 @@ export class OutputComponent implements OnInit {
   }
 
   delete_multiple_final_modal() {
-    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-    this.show_dialog = true;
+    console.log(this.final_array_checked_options);
+    if(this.final_array_checked_options.length > 0){
+
+      this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+      this.show_dialog = true;
+
+      
+    } else {
+      this.toastr.error('', this.language.no_model_selected, this.commonData.toast_config);
+    }
+
   }
 
   remove_final_modal(row_data) {
+    this.isMultiDelete = false;
     this.final_row_data = row_data;
     this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
     this.show_dialog = true;
   }
 
   on_checkbox_checked(checkedvalue, row_data) {
-
+    this.rows = row_data;
+    if (checkedvalue.checked == true) {
+      this.isMultiDelete = true;
+      this.final_array_checked_options.push(row_data);
+    }
+    else {
+      let i = this.final_array_checked_options.indexOf(row_data);
+      this.final_array_checked_options.splice(i, 1)
+    }
+    console.log(this.final_array_checked_options);
   }
 
   refresh_bom_status() {
     this.dontShowFinalLoader = true;
     this.showFinalLoader = false;
-
-    setTimeout(() => {
-      this.dontShowFinalLoader = false;
-      this.showFinalLoader = true;
-      this.showFinalLoader = true;
-    }, 4000);
+    this.getFinalBOMStatus();
   }
 
   tree_view_expand_collapse() {
@@ -1468,7 +1491,44 @@ export class OutputComponent implements OnInit {
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
     if (userSelectionValue == true) {
-      this.delete_row();
+      if(this.isMultiDelete == false){
+        this.delete_row();
+      }
+      else{
+        
+        for(let iCount=0;this.final_array_checked_options.length;iCount++){
+           console.log(this.final_array_checked_options);
+          // let row_index_value = this.final_array_checked_options[iCount].rowIndex
+
+          // for(let jCount=0;this.step3_data_final.length;jCount++){
+          //   if (row_index_value == this.step3_data_final[jCount].rowIndex){
+          //     let model_id = this.step3_data_final[jCount].model_id;
+             
+          //     //removing accessory list data
+          //     for (let count = 0; count < this.feature_accessory_list.length; count++) {
+          //       if (model_id == this.feature_accessory_list[count].model_id) {
+          //         this.feature_accessory_list.splice(count, 1);
+          //         count = count - 1;
+          //       }
+          //     }
+
+          //     //Removing features data
+          //     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
+          //       if (model_id == this.feature_itm_list_table[count].model_id) {
+          //         this.feature_itm_list_table.splice(count, 1);
+          //         count = count - 1;
+          //       }
+          //     }
+
+          //     //Final delete
+          //     this.step3_data_final.splice(jCount, 1);
+          //     jCount = jCount - 1;
+          //   }
+          // }
+        }
+        
+      }
+      
     }
     this.show_dialog = false;
   }
@@ -1548,5 +1608,41 @@ export class OutputComponent implements OnInit {
       this.step3_data_final = [];
     }
 
+  }
+
+  //For getting final status this mehod will handle 
+  getFinalBOMStatus(){
+    this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
+      data => {
+        if (data !=null && data.length > 0) {
+          if (data[0].Status == "P"){
+            this.final_order_status = this.language.process_status;
+            this.final_ref_doc_entry = data[0].RefDocEntry;
+            this.final_document_number = data[0].RefDocNo;
+            this.stoprefreshloader();
+          }
+          else{
+            this.final_order_status = this.language.pending_status;
+            this.stoprefreshloader();
+          }
+        }
+        else {
+          this.stoprefreshloader();
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      },
+      error=>{
+        this.stoprefreshloader();
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+    
+  }
+
+  stoprefreshloader(){
+    this.dontShowFinalLoader = false;
+    this.showFinalLoader = true;
   }
 }

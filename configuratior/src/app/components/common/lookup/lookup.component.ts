@@ -398,10 +398,12 @@ export class LookupComponent implements OnInit {
     var reader = new FileReader();
     var XLS_DATA = '';
     reader.onload = function (loadEvent) {
+        // @ts-ignore: Unreachable code error
       var data = loadEvent.target.result;
       var workbook = XLSX.read(data, { type: 'binary' });
       workbook.SheetNames.forEach(function (sheetName) {
         // Here is your object
+         // @ts-ignore: Unreachable code error
         XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
         obj.xls_dataset = XLS_DATA;
       })
