@@ -52,6 +52,7 @@ import { OutputComponent } from './components/output/output.component';
 
 
 
+
 // routing & navigation
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
