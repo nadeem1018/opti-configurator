@@ -14,3 +14,30 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~ngx-toastr/toastr-bs4-alert';
+
+
+// commoncss
+
+$primaryColor:#007bff;
+$errorColor:red;
+$whiteColor:#fff;
+
+.field-nobg-noborder{
+    background: transparent !important;
+    border: none !important;
+    padding-left: 0 !important;
+}
+
+label {
+    font-weight: bold !important;
+}
+
+table th .fa-trash{
+    margin-left: 5px;
+}
+body .ps__rail-y{
+    opacity: 1;
+}
+.sidebar .nav-item .nav-link:hover {
+    color: $primaryColor;
+}
