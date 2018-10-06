@@ -53,11 +53,8 @@ export class OutputComponent implements OnInit {
   public isModelVisible: boolean = false;
   public final_document_number: any = '';
   public selectfeaturedata = [];
-<<<<<<< HEAD
   public modelitemflag: number = 0;
-=======
   public final_array_checked_options = [];
->>>>>>> b710797d33501ba931d381178cc0c8c5a103289a
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -98,7 +95,7 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
-  public iLogID: any = '1';
+  public iLogID: any;
   public CheckedData: any = [];
   public selectallRows: boolean = false;
   public isMultiDelete: boolean = false;
@@ -1399,6 +1396,8 @@ export class OutputComponent implements OnInit {
       "OPTM_PRICELIST": "",
       "OPTM_UNITPRICE": "",
       "OPTM_TOTALPRICE": "",
+      "OPTM_FGCREATEDATE":"",
+      "OPTM_REFITEMCODE":"",
       "OPTM_DISCPERCENT": "",
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -1412,11 +1411,23 @@ export class OutputComponent implements OnInit {
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
-          this.step1_data.customer_name = data[0].Name;
+          if(data[0].Status == "True"){
+            this.iLogID = data[0].LogId;
+          }
+          else {
+            this.toastr.error('', this.language. DataNotSaved, this.commonData.toast_config);
+            return;
+          }
+         
         }
         else {
-          this.step1_data.customer_name = '';
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
         }
+      },
+      error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
       }
     )
 

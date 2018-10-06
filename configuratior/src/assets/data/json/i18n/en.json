@@ -50,7 +50,7 @@
     "close": "Close",
     "total_before_discount": "Total Before Discount",
     "DataSaved": "Data saved successfully",
-    "DataNotSaved": "Data not saved",
+    "DataNotSaved": "Failed to save data",
     "DataDeleteSuccesfully": "Data deleted successfully",
     "DataNotDelete": "Data not deleted",
     "DataUpdateSuccesfully": "Data updated successfully",
