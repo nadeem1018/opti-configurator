@@ -41,7 +41,7 @@ export class OutputComponent implements OnInit {
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "X"];
-  public step3_data_final_hidden_elements = [false, false, false, false, false,false,true, true,false];
+  public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
@@ -93,10 +93,10 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
-  public iLogID:any = '1';
+  public iLogID: any = '1';
   public CheckedData: any = [];
   public selectallRows: boolean = false;
-  public isMultiDelete:boolean = false;
+  public isMultiDelete: boolean = false;
   rows: any = "";
   //custom dialoag params
   public dialog_params: any = [];
@@ -985,9 +985,9 @@ export class OutputComponent implements OnInit {
         iacc = iacc - 1;
       }
     }
-     if (data.FeatureId == this.step2_data.model_id) {
-       this.GetDataByModelId(this.step2_data.model_id)
-     }
+    if (data.FeatureId == this.step2_data.model_id) {
+      this.GetDataByModelId(this.step2_data.model_id)
+    }
     else {
       this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
     }
@@ -995,14 +995,14 @@ export class OutputComponent implements OnInit {
 
   }
 
-   GetDataByModelId(id) {
-     this.OutputService.GetDataByModelId(id).subscribe(
-       data => {
-         this.getItemDataForFeature(data.ModelDetail);
-       }
-     )
+  GetDataByModelId(id) {
+    this.OutputService.GetDataByModelId(id).subscribe(
+      data => {
+        this.getItemDataForFeature(data.ModelDetail);
+      }
+    )
 
-   }
+  }
 
 
 
@@ -1293,12 +1293,12 @@ export class OutputComponent implements OnInit {
 
   delete_multiple_final_modal() {
     console.log(this.final_array_checked_options);
-    if(this.final_array_checked_options.length > 0){
+    if (this.final_array_checked_options.length > 0) {
 
       this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
       this.show_dialog = true;
 
-      
+
     } else {
       this.toastr.error('', this.language.no_model_selected, this.commonData.toast_config);
     }
@@ -1356,95 +1356,82 @@ export class OutputComponent implements OnInit {
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
     if (userSelectionValue == true) {
-      if(this.isMultiDelete == false){
+      if (this.isMultiDelete == false) {
         this.delete_row();
       }
-      else{
-        
-        for(let iCount=0;this.final_array_checked_options.length;iCount++){
-           console.log(this.final_array_checked_options);
-          // let row_index_value = this.final_array_checked_options[iCount].rowIndex
-
-          // for(let jCount=0;this.step3_data_final.length;jCount++){
-          //   if (row_index_value == this.step3_data_final[jCount].rowIndex){
-          //     let model_id = this.step3_data_final[jCount].model_id;
-             
-          //     //removing accessory list data
-          //     for (let count = 0; count < this.feature_accessory_list.length; count++) {
-          //       if (model_id == this.feature_accessory_list[count].model_id) {
-          //         this.feature_accessory_list.splice(count, 1);
-          //         count = count - 1;
-          //       }
-          //     }
-
-          //     //Removing features data
-          //     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-          //       if (model_id == this.feature_itm_list_table[count].model_id) {
-          //         this.feature_itm_list_table.splice(count, 1);
-          //         count = count - 1;
-          //       }
-          //     }
-
-          //     //Final delete
-          //     this.step3_data_final.splice(jCount, 1);
-          //     jCount = jCount - 1;
-          //   }
-          // }
-        }
-        
+      else {
+        this.delete_all_row_data();
       }
-      
     }
     this.show_dialog = false;
   }
 
   delete_row() {
-    this.cleanupAccessories();
-    this.cleanupFeatureItemList();
+    this.cleanupAccessories(this.final_row_data.model_id);
+    this.cleanupFeatureItemList(this.final_row_data.model_id);
+    this.cleanuptree();
+    this.cleanupFinalArray(this.final_row_data.model_id);
 
-    this.cleanupFinalArray();
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
-    this.cleanuptree()
+
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
     this.accessory_discount_percent = 0;
     this.accessory_item_total = 0;
-    this.acc_grand_total  = 0;
+    this.acc_grand_total = 0;
   }
 
-  cleanupAccessories() {
+  delete_all_row_data(){
+    for (let iCount = 0; iCount < this.final_array_checked_options.length; iCount++) {
+      //clean Accessory List Array
+      this.cleanupAccessories(this.final_array_checked_options[iCount].model_id);
+      //Clean Feature List Array
+      this.cleanupFeatureItemList(this.final_array_checked_options[iCount].model_id);
+      //Clean Final Array (step3_data_final_data)
+      this.cleanupFinalArray(this.final_array_checked_options[iCount].model_id);
+    }
+
+    //Clean Tree Data
+    this.cleanuptree();
+
+    //After the removal of all data of that model will recalculate the prices
+    this.feature_price_calculate();
+  }
+
+  cleanupAccessories(current_model_id) {
     //Get the modal id and clean the data of accessories here
     for (let count = 0; count < this.feature_accessory_list.length; count++) {
-      if (this.final_row_data.model_id == this.feature_accessory_list[count].model_id) {
+      if (current_model_id == this.feature_accessory_list[count].model_id) {
         this.feature_accessory_list.splice(count, 1);
         count = count - 1;
       }
     }
   }
 
-  cleanupFeatureItemList() {
+  cleanupFeatureItemList(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-      if (this.final_row_data.model_id == this.feature_itm_list_table[count].model_id) {
+      if (current_model_id == this.feature_itm_list_table[count].model_id) {
         this.feature_itm_list_table.splice(count, 1);
         count = count - 1;
       }
     }
+
   }
 
-  cleanupFinalArray() {
+  cleanupFinalArray(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.step3_data_final.length; count++) {
-      if (this.final_row_data.model_id == this.step3_data_final[count].model_id) {
+      if (current_model_id == this.step3_data_final[count].model_id) {
         this.step3_data_final.splice(count, 1);
         count = count - 1;
       }
     }
   }
 
-  cleanuptree(){
+  cleanuptree() {
     this.tree_data_json = [];
     this.complete_dataset = [];
     this.tree_data_json.length = 0;
@@ -1454,6 +1441,9 @@ export class OutputComponent implements OnInit {
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
+    console.log('this.feature_itm_list_table');
+    console.log(this.feature_itm_list_table);
+
     this.step3_data_final = [];
 
     this.step3_data_final.push({
@@ -1476,17 +1466,17 @@ export class OutputComponent implements OnInit {
   }
 
   //For getting final status this mehod will handle 
-  getFinalBOMStatus(){
+  getFinalBOMStatus() {
     this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
       data => {
-        if (data !=null && data.length > 0) {
-          if (data[0].Status == "P"){
+        if (data != null && data.length > 0) {
+          if (data[0].Status == "P") {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data[0].RefDocEntry;
             this.final_document_number = data[0].RefDocNo;
             this.stoprefreshloader();
           }
-          else{
+          else {
             this.final_order_status = this.language.pending_status;
             this.stoprefreshloader();
           }
@@ -1497,16 +1487,16 @@ export class OutputComponent implements OnInit {
           return;
         }
       },
-      error=>{
+      error => {
         this.stoprefreshloader();
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
     )
-    
+
   }
 
-  stoprefreshloader(){
+  stoprefreshloader() {
     this.dontShowFinalLoader = false;
     this.showFinalLoader = true;
   }
