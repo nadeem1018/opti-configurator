@@ -3,8 +3,8 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { RulewbService } from '../../services/rulewb.service';
 import { ActivatedRoute, Router } from '@angular/router'
-import * as $ from 'jquery';
 import 'bootstrap';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-rulewb',
@@ -477,7 +477,7 @@ export class RulewbComponent implements OnInit {
 
   }
 
-  on_input_change(rowindex, key, value) {
+  on_input_change(rowindex, key, value,actualvalue) {
     this.currentrowindex = rowindex;
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
@@ -486,28 +486,26 @@ export class RulewbComponent implements OnInit {
           if (this.rule_sequence_data[i].type == 1) {
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
-
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                  this.rule_sequence_data[i].type_value = "";
+                  $(actualvalue).val("");
                   return;
                 }
-              })
+              });
           }
 
           else {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
-
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
-                  this.rule_sequence_data[i].type_value = "";
+                  $(actualvalue).val("");
                   return;
                 }
-              })
+              });
           }
         }
-
+        console.log(this.rule_sequence_data[i]);
       }
     }
   }
@@ -534,9 +532,9 @@ export class RulewbComponent implements OnInit {
     }
   }
 
-  on_typevalue_change(value, rowindex) {
+  on_typevalue_change(value, rowindex, actualvalue) {
     // apply validation 
-    this.on_input_change(rowindex, 'type_value', value);
+    this.on_input_change(rowindex, 'type_value', value,actualvalue);
   }
 
   add_rule_sequence() {
