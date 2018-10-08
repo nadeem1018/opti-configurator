@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+  <h4 class="h4"> <strong> {{page_main_title}} </strong> </h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
   <!--  <li class="breadcrumb-item">
@@ -128,11 +128,12 @@
             <div class="sequence_box" *ngIf="show_sequence">
              
               <div class="col-sm-12 pl-0 pr-0">
+                <div class="form-group col-md-2 clearfix bg-primary text-white" style="padding-bottom:3px;">
+                  <div class="">{{language.input}}</div>
+                </div>
+                <hr>
                 <div class="table-responsive table-responsive-sm">
-                  <div class="form-group col-md-2 clearfix bg-primary text-white">
-                    <div class="">{{language.input}}</div>
-                  </div>
-                  <hr>
+                  
                   <table class="table table-bordered top-table  table-sm" id="dataTable" cellspacing="0">
 
                     <!-- start head section -->
@@ -152,17 +153,17 @@
                         <th width="4%">{{language.operand_1}}</th>
                         <th width="4%">{{language.operand_2}}</th>
                         <th width="2%">
-                          <i class="fa fa-times"></i>
+                          <i class="fa fa-trash"></i>
                         </th>
                       </tr>
                     </thead>
                     <!-- end head section -->
 
                     <!-- start body section -->
-                    <tbody>
+                    <tbody style="position: relative;" [perfectScrollbar]="">
                       <tr *ngFor="let row of rule_sequence_data">
                         <td>
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> </td>
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> </td>
                         <td>
                           <select class="form-control  form-control-sm mt3" #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )">
                             <option *ngFor="let v of commonData.operator_type" [value]="v.value" [selected]="row.operator==v.value"> {{v.Name}}</option>
@@ -207,7 +208,7 @@
                             (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )" /> </td>
                         <td>
                           <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
-                            <i class="fa fa-times"></i>
+                            <i class="fa fa-trash"></i>
                           </button>
                         </td>
                       </tr>
@@ -241,10 +242,10 @@
               <div class="form-group clearfix">
                 <div class="col-md-8 pl-0">
                   <div class="pull-left">
-                    <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+                    <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
                       <i class="fa fa-check-circle"></i> {{language.add_rule}}
                     </button>
-                    <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-info  mr-10">
+                    <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
                       <i class="fa fa-pencil"></i> {{language.update_rule}}
                     </button>
                     <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
@@ -272,21 +273,21 @@
                           </th>
                         </tr> -->
                       <tr>
-                        <th width="4%">{{language.seq_row_no}}</th>
-                        <th width="80%">{{language.expression}}</th>
-                        <th width="9%">{{language.action}}</th>
+                        <th width="10%">{{language.seq_row_no}}</th>
+                        <th width="75%">{{language.expression}}</th>
+                        <th width="15%">{{language.action}}</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="position: relative;" [perfectScrollbar]="">
                       <tr *ngFor="let row of rule_expression_data">
-                        <td>
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/>
+                        <td width="10%">
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/>
                         </td>
 
-                        <td class="text-center" align="center">
+                        <td class="text-center" align="center" width="75%">
                           {{row.expression}}
                         </td>
-                        <td>
+                        <td width="15%">
                           <button type="button" class="btn btn-sm mr-10 btn-info" (click)="edit_expression(row, row.rowindex)" title="{{language.edit}}">
                             <i class="fa fa-edit fa-fw"></i>
                           </button>
@@ -429,9 +430,9 @@
         <div class="row">
           <div class="col-md-8">
             <div class="pull-left">
-              <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-info  mr-10">
+              <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-primary  mr-10">
                 <i class="fa fa-save"></i> {{language.save}}</button>
-              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+              <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-primary mr-10">
                 <i class="fa fa-save"></i> {{language.update}}</button>
 
             </div>
