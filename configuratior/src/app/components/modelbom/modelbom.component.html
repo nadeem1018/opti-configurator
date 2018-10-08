@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-  <h4 class="h4 smaller_font"> {{page_main_title}}</h4>
+  <h4 class="h4"><strong> {{page_main_title}}</strong> </h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
   <!--  <li class="breadcrumb-item">
@@ -77,53 +77,53 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-1">
+          <div class="col-sm-1 p-0">
             <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
               <i class="fa fa-plus"></i>
             </a>
           </div>
           <hr>
           <div class="">
-            <div class="col-md-12">
+            <div class="col-md-12 p-0">
               <button type="button" (click)="on_rule_click()" class="btn btn-sm btn-secondary  mr-10">
                 <i class="fa fa-circle"></i> {{language.rule}}</button>
             </div>
           </div>
           <br>
-          <div class="col-sm-12">
-            <div class="table-responsive table-responsive-sm table-wrapper-scroll-y">
-              <table class="table table-bordered  table-sm" id="dataTable" cellspacing="0" style=" width: 1200px; ">
+          <div class="col-sm-12 p-0">
+            <div class="table-responsive table-responsive-sm">
+              <table class="table top-table table-bordered  table-sm" id="dataTable" cellspacing="0" style=" width: 1200px; ">
                 <thead class="thead-dark">
                   <tr>
-                    <th width="4%">#</th>
-                    <th width="20%">{{language.Model_Type}}</th>
-                    <th width="20%">{{language.ModelBom_FeatureValue}}</th>
-                    <th width="20%">{{language.Bom_Displayname}}</th>
-                    <th width="13%">{{language.uom}}</th>
-                    <th width="5%">{{language.Bom_Qty}}</th>
-                    <th width="5%">{{language.min_selectable}}</th>
-                    <th width="5%">{{language.max_selectable}}</th>
-                    <th width="5%">{{language.propagate_qty}}</th>
-                    <th width="7%">{{language.price_source}}</th>
-                    <th width="5%">{{language.mandatory}}</th>
-                    <th width="5%">{{language.unique_identifier}}</th>
-                    <th width="2%">
-                      <i class="fa fa-times"></i>
+                    <th width="3%">#</th>
+                    <th width="9%">{{language.Model_Type}}</th>
+                    <th width="12%">{{language.ModelBom_FeatureValue}}</th>
+                    <th width="9%">{{language.Bom_Displayname}}</th>
+                    <th width="5%">{{language.uom}}</th>
+                    <th width="6%">{{language.Bom_Qty}}</th>
+                    <th width="9%">{{language.min_selectable}}</th>
+                    <th width="9%">{{language.max_selectable}}</th>
+                    <th width="9%">{{language.propagate_qty}}</th>
+                    <th width="8%">{{language.price_source}}</th>
+                    <th width="7%">{{language.mandatory}}</th>
+                    <th width="10%">{{language.unique_identifier}}</th>
+                    <th width="4%">
+                      <i class="fa fa-trash"></i>
                     </th>
                     <!-- <th width="4%">{{language.remove}}</th> -->
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style="position: relative;" [perfectScrollbar]="">
                   <tr *ngFor="let row of modelbom_data">
-                    <td>
-                      <input [disabled]="true" type="text" class="form-control  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                    <td width="3%">
+                      <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
                     </td>
-                    <td>
+                    <td width="9%">
                       <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
                         <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
                       </select>
                     </td>
-                    <td>
+                    <td width="12%">
                       <div class="input-group">
                         <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                           value={{row.type_value}} #type_value />
@@ -138,32 +138,32 @@
                       </div>
 
                     </td>
-                    <td>
+                    <td width="9%">
                       <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)"
                         #display_name />
                     </td>
-                    <td>
+                    <td width="5%">
                       <input type="text" [disabled]="row.isUOMDisabled" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)"
                         #uom />
                     </td>
-                    <td>
+                    <td width="6%">
                       <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}}
                         (change)="on_quantity_change(quantity.value,row.rowindex)" #quantity />
                     </td>
-                    <td>
+                    <td width="9%">
                       <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="min_selected" value={{row.min_selected}}
                         (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
                     </td>
-                    <td>
+                    <td width="9%">
                       <input type="text" class="form-control  form-control-sm mt3 pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}}
                         (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
                     </td>
-                    <td>
+                    <td width="9%">
                       <input type="checkbox" class="form-control  form-control-sm mt15 pull-right" id="propagate_qty" value={{row.propagate_qty}}
                         (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty
                       />
                     </td>
-                    <td>
+                    <td width="8%">
                       <div class="input-group">
                         <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
                           #price_source [disabled]="row.isPriceDisabled" />
@@ -174,17 +174,17 @@
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td width="7%">
                       <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)"
                         #mandatory [(checked)]=row.mandatory/>
                     </td>
-                    <td>
+                    <td width="10%">
                       <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} [(checked)]=row.unique_identifer
                         (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" #unique_identifer />
                     </td>
-                    <td>
+                    <td width="4%">
                       <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
-                        <i class="fa fa-times"></i>
+                        <i class="fa fa-trash"></i>
                       </button>
                     </td>
                   </tr>
@@ -237,9 +237,9 @@
             <div class="row">
               <div class="col-md-8">
                 <div class="pull-left">
-                  <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-info  mr-10">
+                  <button type="button" (click)="onSave()" *ngIf="isSaveButtonVisible" class="btn btn-sm btn-primary  mr-10">
                     <i class="fa fa-save"></i> {{language.save}}</button>
-                  <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-info mr-10">
+                  <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-primary mr-10">
                     <i class="fa fa-save"></i> {{language.update}}</button>
                   <button type="button" (click)="onExplodeClick()" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
                     <i class="fa fa-window-maximize"></i> {{language.explode}}
