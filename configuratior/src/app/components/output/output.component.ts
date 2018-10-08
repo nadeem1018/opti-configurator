@@ -100,7 +100,7 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
-  public iLogID: any = '1';
+  public iLogID: any;
   public CheckedData: any = [];
   public selectallRows: boolean = false;
   public isMultiDelete: boolean = false;
@@ -1543,6 +1543,8 @@ export class OutputComponent implements OnInit {
       "OPTM_PRICELIST": "",
       "OPTM_UNITPRICE": "",
       "OPTM_TOTALPRICE": "",
+      "OPTM_FGCREATEDATE":"",
+      "OPTM_REFITEMCODE":"",
       "OPTM_DISCPERCENT": "",
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -1556,11 +1558,23 @@ export class OutputComponent implements OnInit {
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
-          this.step1_data.customer_name = data[0].Name;
+          if(data[0].Status == "True"){
+            this.iLogID = data[0].LogId;
+          }
+          else {
+            this.toastr.error('', this.language. DataNotSaved, this.commonData.toast_config);
+            return;
+          }
+         
         }
         else {
-          this.step1_data.customer_name = '';
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
         }
+      },
+      error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
       }
     )
 
@@ -1639,52 +1653,21 @@ export class OutputComponent implements OnInit {
         this.delete_row();
       }
       else {
-
-        for (let iCount = 0; this.final_array_checked_options.length; iCount++) {
-          console.log(this.final_array_checked_options);
-          // let row_index_value = this.final_array_checked_options[iCount].rowIndex
-
-          // for(let jCount=0;this.step3_data_final.length;jCount++){
-          //   if (row_index_value == this.step3_data_final[jCount].rowIndex){
-          //     let model_id = this.step3_data_final[jCount].model_id;
-
-          //     //removing accessory list data
-          //     for (let count = 0; count < this.feature_accessory_list.length; count++) {
-          //       if (model_id == this.feature_accessory_list[count].model_id) {
-          //         this.feature_accessory_list.splice(count, 1);
-          //         count = count - 1;
-          //       }
-          //     }
-
-          //     //Removing features data
-          //     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-          //       if (model_id == this.feature_itm_list_table[count].model_id) {
-          //         this.feature_itm_list_table.splice(count, 1);
-          //         count = count - 1;
-          //       }
-          //     }
-
-          //     //Final delete
-          //     this.step3_data_final.splice(jCount, 1);
-          //     jCount = jCount - 1;
-          //   }
-          // }
-        }
-
+        this.delete_all_row_data();
       }
-
     }
     this.show_dialog = false;
   }
 
   delete_row() {
-    this.cleanupAccessories();
-    this.cleanupFeatureItemList();
+    this.cleanupAccessories(this.final_row_data.model_id);
+    this.cleanupFeatureItemList(this.final_row_data.model_id);
+    this.cleanuptree();
+    this.cleanupFinalArray(this.final_row_data.model_id);
 
-    this.cleanupFinalArray();
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
-    this.cleanuptree()
+
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
@@ -1693,30 +1676,48 @@ export class OutputComponent implements OnInit {
     this.acc_grand_total = 0;
   }
 
-  cleanupAccessories() {
+  delete_all_row_data(){
+    for (let iCount = 0; iCount < this.final_array_checked_options.length; iCount++) {
+      //clean Accessory List Array
+      this.cleanupAccessories(this.final_array_checked_options[iCount].model_id);
+      //Clean Feature List Array
+      this.cleanupFeatureItemList(this.final_array_checked_options[iCount].model_id);
+      //Clean Final Array (step3_data_final_data)
+      this.cleanupFinalArray(this.final_array_checked_options[iCount].model_id);
+    }
+
+    //Clean Tree Data
+    this.cleanuptree();
+
+    //After the removal of all data of that model will recalculate the prices
+    this.feature_price_calculate();
+  }
+
+  cleanupAccessories(current_model_id) {
     //Get the modal id and clean the data of accessories here
     for (let count = 0; count < this.feature_accessory_list.length; count++) {
-      if (this.final_row_data.model_id == this.feature_accessory_list[count].model_id) {
+      if (current_model_id == this.feature_accessory_list[count].model_id) {
         this.feature_accessory_list.splice(count, 1);
         count = count - 1;
       }
     }
   }
 
-  cleanupFeatureItemList() {
+  cleanupFeatureItemList(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-      if (this.final_row_data.model_id == this.feature_itm_list_table[count].model_id) {
+      if (current_model_id == this.feature_itm_list_table[count].model_id) {
         this.feature_itm_list_table.splice(count, 1);
         count = count - 1;
       }
     }
+
   }
 
-  cleanupFinalArray() {
+  cleanupFinalArray(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.step3_data_final.length; count++) {
-      if (this.final_row_data.model_id == this.step3_data_final[count].model_id) {
+      if (current_model_id == this.step3_data_final[count].model_id) {
         this.step3_data_final.splice(count, 1);
         count = count - 1;
       }
@@ -1733,6 +1734,9 @@ export class OutputComponent implements OnInit {
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
+    console.log('this.feature_itm_list_table');
+    console.log(this.feature_itm_list_table);
+
     this.step3_data_final = [];
     this.step2_final_dataset_to_save=[];
     this.step3_data_final.push({

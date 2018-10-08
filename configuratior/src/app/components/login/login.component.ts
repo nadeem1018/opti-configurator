@@ -85,14 +85,12 @@ export class LoginComponent implements OnInit {
 
   enter_to_sublit(event){
     if(event.keyCode == 13){
-      console.log('in enter function ');
       this.onConnectBtnPress();
     }
   }
 
   //Events
   onConnectBtnPress(){
-      console.log(this.loginCredentials);
       if(this.loginCredentials.userName == undefined || this.loginCredentials.userName == null){
         this.toastr.warning('', this.language.UserNameRequired, this.commonData.toast_config);
         return;
