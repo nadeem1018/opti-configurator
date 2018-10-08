@@ -102,8 +102,8 @@ export class CommonData {
         { "value": ">" },
         { "value": "<=" },
         { "value": ">=" },
-        { "value": "Between" },
-        { "value": "In" },
+        { "value": "Between" }
+        /* , { "value": "In" }, */
     ];
 
     public document_type = [

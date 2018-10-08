@@ -3,8 +3,8 @@ import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { RulewbService } from '../../services/rulewb.service';
 import { ActivatedRoute, Router } from '@angular/router'
-import * as $ from 'jquery';
 import 'bootstrap';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-rulewb',
@@ -43,7 +43,7 @@ export class RulewbComponent implements OnInit {
   public selectall: boolean = true;
   public typevaluefromdatabase: string = "";
   public typevaluecodefromdatabase: string = "";
-  
+
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = [];
 
@@ -60,12 +60,12 @@ export class RulewbComponent implements OnInit {
   public seq_count = 0;
   public editing_row = 0;
   public outputrowcounter: number = 0;
-  
+
   public min;
- 
-  
+
+
   ngOnInit() {
-    let d = new Date(); 
+    let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
     this.commonData.checkSession();
     this.rule_wb_data.username = sessionStorage.getItem('loggedInUser');
@@ -159,18 +159,18 @@ export class RulewbComponent implements OnInit {
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }
-             
+
               if (forlineno == 0) {
                 forlineno = fetch_data.OPTM_SEQID
-                lineno=i + 1;
+                lineno = i + 1;
               }
-              else{
-                if(forlineno!=fetch_data.OPTM_SEQID){
+              else {
+                if (forlineno != fetch_data.OPTM_SEQID) {
                   lineno = 1;
-                  forlineno=fetch_data.OPTM_SEQID
+                  forlineno = fetch_data.OPTM_SEQID
                 }
-                else{
-                  lineno=lineno + 1;
+                else {
+                  lineno = lineno + 1;
                 }
               }
 
@@ -302,6 +302,7 @@ export class RulewbComponent implements OnInit {
       condition: '',
       operand_1: '',
       operand_2: '',
+      is_operand2_disable: true,
       row_expression: ''
     });
   }
@@ -425,7 +426,7 @@ export class RulewbComponent implements OnInit {
 
     )
   }
-
+ 
   genearate_expression() {
     let current_seq = this.seq_count;
     console.log(current_seq);
@@ -434,80 +435,129 @@ export class RulewbComponent implements OnInit {
       return obj['seq_count'] == current_seq;
     });
     let current_exp = '';
+
+    let braces_list = ["{", "(", "["];
+    let added_braces = [];
+    let braces_open = [];
+    let braces_closed = [];
+    let open_close_braces_list = { "{": "}", "(": ")", "[": "]" };
+    let brackes_category = { "open": ['{', '(', '['], "close": ['}', ')', ']'] };
     for (var index in seq_data) {
-      if (seq_data[index].type != "" && seq_data[index].type_value != "" && seq_data[index].condition && seq_data[index].operand_1) {
-        this.rule_sequence_data[index].row_expression = seq_data[index].operator + ' ' + seq_data[index].braces + ' ' + seq_data[index].type_value + ' ' + seq_data[index].condition + ' ' + seq_data[index].operand_1 + ' ' + seq_data[index].operand_2;
-        current_exp += " " + seq_data[index].row_expression;
-      } else {
-        let error_fields = '';
-        if (seq_data[index].type == "") {
-          if (error_fields != "") {
-            error_fields += ", ";
-          }
-          error_fields += " Type";
-        }
-        if (seq_data[index].type_value == "") {
-          if (error_fields != "") {
-            error_fields += ", ";
-          }
-          error_fields += " Model/Feature";
-        }
-        if (seq_data[index].condition == "") {
-          if (error_fields != "") {
-            error_fields += ", ";
-          }
-          error_fields += " Condition";
 
+      let operator = (seq_data[index].operator != "" && seq_data[index].operator !== undefined) ? seq_data[index].operator : "";
+      let braces = (seq_data[index].braces != "" && seq_data[index].braces !== undefined) ? seq_data[index].braces : "";
+      let type = (seq_data[index].type != "" && seq_data[index].type !== undefined) ? seq_data[index].type : "";
+      let type_value_code = (seq_data[index].type_value_code != "" && seq_data[index].type_value_code !== undefined) ? seq_data[index].type_value_code : "";
+      let condition = (seq_data[index].condition != "" && seq_data[index].condition !== undefined) ? seq_data[index].condition : "";
+      let operand_1 = (seq_data[index].operand_1 != "" && seq_data[index].operand_1 !== undefined) ? seq_data[index].operand_1 : "";
+      let operand_2 = (seq_data[index].operand_2 != "" && seq_data[index].operand_2 !== undefined) ? seq_data[index].operand_2 : "";
+      // validations 
+      if (braces!= ""){
+        added_braces.push(braces);
+        
+      }
+      
+      if (operator != "") {
+        if(index == "0"){
+          this.toastr.error('', this.language.operator_row_1_error, this.commonData.toast_config);
+          return false;
         }
-        if (seq_data[index].operand_1 == "") {
-          if (error_fields != "") {
-            error_fields += ", ";
+      
+
+        if (type == "" || type_value_code == "" || condition == "" || operand_1 == "") {
+
+          let error_fields = '';
+          if (type == "") {
+            if (error_fields != "") {
+              error_fields += ", ";
+            }
+            error_fields += " " + this.language.type;
           }
-          error_fields += " Operand 1";
+
+          if (type_value_code == "") {
+            if (error_fields != "") {
+              error_fields += ", ";
+            }
+            error_fields += " " + this.language.model_feature;
+          }
+
+          if (condition == "") {
+            if (error_fields != "") {
+              error_fields += ", ";
+            }
+            error_fields += " " + this.language.condition;
+          }
+
+          if (operand_1 == "") {
+            if (error_fields != "") {
+              error_fields += ", ";
+            }
+            error_fields += " " + this.language.operand_1;
+          }
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
+          return false;
         }
 
-        this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
-        return false;
+        if (condition == "Between" && operand_2 == "") {
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
+
+          return false;
+        }
+      }
+
+      let operand = operand_1;
+      if (operand_2 != "") {
+        operand = operand_1 + ' and ' + operand_2;
+      }
+      this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
+      current_exp += " " + seq_data[index].row_expression;
+    }
+  
+    if (current_exp.trim() != "") {
+
+      this.generated_expression_value = current_exp;
+      if (this.showUpdateSequenceBtn == false) {
+        this.showAddSequenceBtn = true;
       }
     }
-    this.generated_expression_value = current_exp;
-    if (this.showUpdateSequenceBtn == false) {
-      this.showAddSequenceBtn = true;
-    }
-
   }
 
-  on_input_change(rowindex, key, value) {
+  on_input_change(rowindex, key, value,actualvalue) {
     this.currentrowindex = rowindex;
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         this.rule_sequence_data[i][key] = value;
+        if (key == "condition") {
+          if (value == "Between") {
+            this.rule_sequence_data[i]['is_operand2_disable'] = false;
+          } else {
+            this.rule_sequence_data[i]['is_operand2_disable'] = true;
+          }
+        }
         if (key === 'type_value') {
           if (this.rule_sequence_data[i].type == 1) {
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
-
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                  this.rule_sequence_data[i].type_value = "";
+                  $(actualvalue).val("");
                   return;
                 }
-              })
+              });
           }
 
           else {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
-
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
-                  this.rule_sequence_data[i].type_value = "";
+                  $(actualvalue).val("");
                   return;
                 }
-              })
+              });
           }
         }
-
+        console.log(this.rule_sequence_data[i]);
       }
     }
   }
@@ -534,9 +584,9 @@ export class RulewbComponent implements OnInit {
     }
   }
 
-  on_typevalue_change(value, rowindex) {
+  on_typevalue_change(value, rowindex, actualvalue) {
     // apply validation 
-    this.on_input_change(rowindex, 'type_value', value);
+    this.on_input_change(rowindex, 'type_value', value,actualvalue);
   }
 
   add_rule_sequence() {
@@ -701,7 +751,7 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
         return false;
       }
-      if (this.rule_wb_data.discontinued == true){
+      if (this.rule_wb_data.discontinued == true) {
         if (this.rule_wb_data.effective_to == "" || this.rule_wb_data.effective_to == null) {
           this.toastr.error('', this.language.selectefftodate, this.commonData.toast_config);
           return false;

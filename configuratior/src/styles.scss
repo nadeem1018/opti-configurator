@@ -41,3 +41,11 @@ body .ps__rail-y{
 .sidebar .nav-item .nav-link:hover {
     color: $primaryColor;
 }
+
+table{
+    thead{
+        th{
+            font-weight: normal;
+        }
+    }
+}

@@ -175,6 +175,7 @@ export class OutputComponent implements OnInit {
       // { "sequence": "13", "component": "Item0002", "level": "1", "parentId": "F1", "element_type": "checkbox" },
       // { "sequence": "14", "component": "Item0011", "level": "0", "parentId": "", "element_type": "checkbox" }
     ];
+
     // initialize jquery 
     setTimeout(() => {
       this.tree_view_expand_collapse()
