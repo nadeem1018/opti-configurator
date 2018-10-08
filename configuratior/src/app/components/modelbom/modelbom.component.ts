@@ -1024,7 +1024,8 @@ export class ModelbomComponent implements OnInit {
           }
           else if (data == "True") {
             if (fromEvent == "lookup") {
-              this.getModelDetails(modelbom_type_value, "Header", 0);
+              this.lookupfor = 'ModelBom_Detail_lookup';
+              this.getModelDetails(enteredModelID, "Header", 0);
             }
             else if (fromEvent == "change") {
               this.getModelItemDetails(rowindex);
