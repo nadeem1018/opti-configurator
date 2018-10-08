@@ -375,12 +375,12 @@ ul.navbar-nav {
 }
 
 .f1-step.active .f1-step-icon {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     margin-top: 0;
     background: #007bff;
     font-size: 22px;
-    line-height: 48px;
+    line-height: 40px;
 }
 
 .f1-step p {
@@ -514,11 +514,11 @@ only screen and ( min-resolution: 2dppx) {
     padding: .1rem 0.5rem !important;
 }
 
-.new_tree_structure_area{
+.new_tree_structure_area {
     width: 400px;
     height: 400px;
     overflow: auto;
-    .tree.well{
+    .tree.well {
         background: none;
         border: none;
         width: 600px;
