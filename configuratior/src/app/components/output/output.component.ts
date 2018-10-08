@@ -1528,28 +1528,8 @@ export class OutputComponent implements OnInit {
       "OPTM_MODIFIEDBY": this.common_output_data.username
     })
 
-    //creating detail data
-    final_dataset_to_save.OPConfig_OUTPUTDTL.push({
-      "OPTM_OUTPUTID": "",
-      "OPTM_OUTPUTDTLID": "",
-      "OPTM_ITEMNUMBER": "",
-      "OPTM_ITEMCODE": "",
-      "OPTM_KEY": "",
-      "OPTM_PARENTKEY": "",
-      "OPTM_TEMPLATEID": "",
-      "OPTM_ITMCODEGENKEY": "",
-      "OPTM_ITEMTYPE": "",
-      "OPTM_WHSE": "",
-      "OPTM_QUANTITY": "",
-      "OPTM_PRICELIST": "",
-      "OPTM_UNITPRICE": "",
-      "OPTM_TOTALPRICE": "",
-      "OPTM_FGCREATEDATE":"",
-      "OPTM_REFITEMCODE":"",
-      "OPTM_DISCPERCENT": "",
-      "OPTM_CREATEDBY": this.common_output_data.username,
-      "OPTM_MODIFIEDBY": this.common_output_data.username,
-    })
+    //creating details table array
+    final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
 
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
@@ -1561,6 +1541,7 @@ export class OutputComponent implements OnInit {
         if (data != null || data != undefined && data.length > 0) {
           if(data[0].Status == "True"){
             this.iLogID = data[0].LogId;
+            this.toastr.success('', this.language.OperCompletedSuccess, this.commonData.toast_config);
           }
           else {
             this.toastr.error('', this.language. DataNotSaved, this.commonData.toast_config);
@@ -1778,6 +1759,8 @@ export class OutputComponent implements OnInit {
             "OPTM_DISCPERCENT":  this.feature_itm_list_table[i].pricextn,
             "OPTM_CREATEDBY": this.common_output_data.username,
             "OPTM_MODIFIEDBY": this.common_output_data.username,
+            "OPTM_FGCREATEDATE":"",
+            "OPTM_REFITEMCODE": "",
           })
         
         }

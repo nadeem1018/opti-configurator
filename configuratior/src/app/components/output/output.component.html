@@ -582,8 +582,8 @@
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
-              <!-- <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
-                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button> -->
+              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
               <button *ngIf="feature_accessory_list.length || feature_itm_list_table.length" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
@@ -968,34 +968,55 @@
                     </div>
                     <div class="item_discount_table">
                       <div class="col-md-4 pull-right">
-                        <table class="table table-bordered table-sm">
-                          <thead class="thead-dark">
-                            <tr>
-                              <th>{{this.language.total_before_discount}}</th>
-                              <th></th>
-                            </tr>
-                            <tr>
-                              <th *ngFor="let label of model_discount_table_head; let i= index">
-                                <span>
-                                  {{label}}
-                                </span>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr class="" *ngFor="let row of item_tax_total">
-                              <td *ngFor="let row_data of Object.keys(row); let i= index ">
-                                {{row[row_data]}}
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th>{{this.language.total}}</th>
-                              <th>$5000/-</th>
-                            </tr>
-                          </tfoot>
-                        </table>
+                        <table class="table table-bordered table-sm"><thead class="" style=" font-size: 14px; ">
+                          <tr>
+                            <th width="70%">{{language.product_discount}}</th>
+                            <th width="30%">
+                              {{this.feature_discount_percent}}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {{this.language.product_tax}}
+                            </td>
+                            <td>{{this.feature_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.product_total}}
+                            </td>
+                            <td>{{this.feature_item_total}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_discount}}
+                            </td>
+                            <td>
+                              {{this.accessory_discount_percent}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_tax}}
+                            </td>
+                            <td>{{this.acc_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_total}}
+                            </td>
+                            <td>{{this.accessory_item_total}}</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr style=" font-size: 14px; ">
+                            <th>{{this.language.grand_total}}</th>
+                            <td>{{this.acc_grand_total}}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
                       </div>
                     </div>
                   </div>
