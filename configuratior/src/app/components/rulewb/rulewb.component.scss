@@ -42,7 +42,7 @@
         float: left;
     }
     tbody tr td:last-child {
-        width: 94px !important;
+        width: 90px !important;
         border-right: none !important;
     }
 }
@@ -61,7 +61,7 @@
         max-height: 250px;
         overflow-y: auto;
         td{
-            height: 51px;
+            // height: 51px;
             overflow-y: auto;
             border-bottom: none !important;
         }
@@ -71,17 +71,17 @@
         }
     }
     tbody td, thead th {
-        width: 550px;
+        // width: 550px;
         float: left;
     }
     tbody td:first-child, 
     thead th:first-child,
     thead th:last-child{
-        width:100px;
+        // width:100px;
 
     }
     tbody tr td:last-child {
-        width: 80px !important;
+        // width: 80px !important;
         border-right: none !important;
     }
 }

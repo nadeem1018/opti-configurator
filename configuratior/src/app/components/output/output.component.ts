@@ -34,8 +34,8 @@ export class OutputComponent implements OnInit {
   public feature_discount_percent: number = 0;
   public accessory_discount_percent: number = 0;
   public step2_final_dataset_to_save = [];
-  public tree_accessory_json=[];
-  public warehouse:string="";
+  public tree_accessory_json = [];
+  public warehouse: string = "";
   //public step2_data_all_data={};
   public doctype: any = "";
   public lookupfor: string = '';
@@ -328,7 +328,7 @@ export class OutputComponent implements OnInit {
           this.getAccessory(data.FeaturesWithAccessoryYes)
         }
         if (data.DefaultWarehouse.length > 0) {
-         this.warehouse=data.DefaultWarehouse[0].DEFAULTWAREHOUSE
+          this.warehouse = data.DefaultWarehouse[0].DEFAULTWAREHOUSE
         }
         this.feature_price_calculate();
         if (this.selecteddataforelement != null || this.selecteddataforelement != undefined) {
@@ -508,7 +508,7 @@ export class OutputComponent implements OnInit {
                     FeatureId: ItemData[i].OPTM_FEATUREID,
                     featureName: ItemData[i].OPTM_DISPLAYNAME,
                     Item: ItemData[i].OPTM_ITEMKEY,
-                    ItemNumber: ItemData[i].ItemNumber,
+                    ItemNumber: ItemData[i].ITEMNUMBER,
                     Description: ItemData[i].OPTM_FEATUREDESC,
                     quantity: ItemData[i].OPTM_QUANTITY,
                     price: ItemData[i].Pricesource,
@@ -531,7 +531,7 @@ export class OutputComponent implements OnInit {
                   FeatureId: ItemData[i].OPTM_FEATUREID,
                   featureName: ItemData[i].OPTM_DISPLAYNAME,
                   Item: ItemData[i].OPTM_ITEMKEY,
-                  ItemNumber: ItemData[i].ItemNumber,
+                  ItemNumber: ItemData[i].ITEMNUMBER,
                   Description: ItemData[i].OPTM_FEATUREDESC,
                   quantity: ItemData[i].OPTM_QUANTITY,
                   price: ItemData[i].Pricesource,
@@ -567,7 +567,7 @@ export class OutputComponent implements OnInit {
                   FeatureId: ItemData[i].OPTM_FEATUREID,
                   featureName: ItemData[i].OPTM_DISPLAYNAME,
                   Item: ItemData[i].OPTM_ITEMKEY,
-                  ItemNumber: ItemData[i].ItemNumber,
+                  ItemNumber: ItemData[i].ITEMNUMBER,
                   Description: ItemData[i].OPTM_FEATUREDESC,
                   quantity: ItemData[i].OPTM_QUANTITY,
                   price: ItemData[i].Pricesource,
@@ -589,7 +589,7 @@ export class OutputComponent implements OnInit {
                 FeatureId: ItemData[i].OPTM_FEATUREID,
                 featureName: ItemData[i].OPTM_DISPLAYNAME,
                 Item: ItemData[i].OPTM_ITEMKEY,
-                ItemNumber: ItemData[i].ItemNumber,
+                ItemNumber: ItemData[i].ITEMNUMBER,
                 Description: ItemData[i].OPTM_FEATUREDESC,
                 quantity: ItemData[i].OPTM_QUANTITY,
                 price: ItemData[i].Pricesource,
@@ -808,7 +808,7 @@ export class OutputComponent implements OnInit {
                       FeatureId: data[i].OPTM_FEATUREID,
                       featureName: data[i].OPTM_DISPLAYNAME,
                       Item: data[i].OPTM_ITEMKEY,
-                      ItemNumber: data[i].ItemNumber,
+                      ItemNumber: data[i].ITEMNUMBER,
                       Description: data[i].OPTM_DISPLAYNAME,
                       quantity: data[i].OPTM_QUANTITY,
                       price: data[i].Pricesource,
@@ -828,7 +828,7 @@ export class OutputComponent implements OnInit {
                     FeatureId: data[i].OPTM_FEATUREID,
                     featureName: data[i].OPTM_DISPLAYNAME,
                     Item: data[i].OPTM_ITEMKEY,
-                    ItemNumber: data[i].ItemNumber,
+                    ItemNumber: data[i].ITEMNUMBER,
                     Description: data[i].OPTM_DISPLAYNAME,
                     quantity: data[i].OPTM_QUANTITY,
                     price: data[i].Pricesource,
@@ -998,6 +998,7 @@ export class OutputComponent implements OnInit {
                     featureName: "",
                     Item: data[i].OPTM_ITEMKEY,
                     Description: data[i].OPTM_DISPLAYNAME,
+                    ItemNumber: "",
                     quantity: data[i].OPTM_QUANTITY,
                     price: data[i].Pricesource,
                     Actualprice: data[i].Price,
@@ -1017,6 +1018,7 @@ export class OutputComponent implements OnInit {
                   Item: data[i].OPTM_ITEMKEY,
                   Description: data[i].OPTM_DISPLAYNAME,
                   quantity: data[i].OPTM_QUANTITY,
+                  ItemNumber: "",
                   price: data[i].Pricesource,
                   Actualprice: data[i].Price,
                   pricextn: 0,
@@ -1539,15 +1541,15 @@ export class OutputComponent implements OnInit {
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
-          if(data[0].Status == "True"){
+          if (data[0].Status == "True") {
             this.iLogID = data[0].LogId;
             this.toastr.success('', this.language.OperCompletedSuccess, this.commonData.toast_config);
           }
           else {
-            this.toastr.error('', this.language. DataNotSaved, this.commonData.toast_config);
+            this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
-         
+
         }
         else {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1658,7 +1660,7 @@ export class OutputComponent implements OnInit {
     this.acc_grand_total = 0;
   }
 
-  delete_all_row_data(){
+  delete_all_row_data() {
     for (let iCount = 0; iCount < this.final_array_checked_options.length; iCount++) {
       //clean Accessory List Array
       this.cleanupAccessories(this.final_array_checked_options[iCount].model_id);
@@ -1720,7 +1722,7 @@ export class OutputComponent implements OnInit {
     console.log(this.feature_itm_list_table);
 
     this.step3_data_final = [];
-    this.step2_final_dataset_to_save=[];
+    this.step2_final_dataset_to_save = [];
     this.step3_data_final.push({
       "rowIndex": "1",
       "sl_no": "1",
@@ -1732,6 +1734,10 @@ export class OutputComponent implements OnInit {
       "accesories": this.feature_accessory_list,
       "model_id": this.step2_data.model_id,
     })
+    this.step2_final_dataset_to_save = [];
+    if (this.step2_final_dataset_to_save.length == 0) {
+
+    }
 
     if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
       //Clear the array when user play with next prev button
@@ -1739,60 +1745,160 @@ export class OutputComponent implements OnInit {
     }
     for (let i = 0; i < this.feature_itm_list_table.length; i++) {
       for (let jtree = 0; jtree < this.tree_data_json.length; jtree++) {
-        if (this.feature_itm_list_table[i].featureName == this.tree_data_json[jtree].component && this.feature_itm_list_table[i].is_accessory=="N")  {
-          //creating detail data
+        if (this.step2_final_dataset_to_save.length == 0 && this.tree_data_json[jtree].ModelType == 0) {
           this.step2_final_dataset_to_save.push({
             "OPTM_OUTPUTID": "",
             "OPTM_OUTPUTDTLID": "",
-            "OPTM_ITEMNUMBER": "",
-            "OPTM_ITEMCODE": this.feature_itm_list_table[i].Item,
+            "OPTM_ITEMNUMBER": this.tree_data_json[jtree].ItemNumber,
+            "OPTM_ITEMCODE": this.tree_data_json[jtree].component,
             "OPTM_KEY": "",
             "OPTM_PARENTKEY": "",
             "OPTM_TEMPLATEID": this.tree_data_json[jtree].ModelTemplateItem,
             "OPTM_ITMCODEGENKEY": this.tree_data_json[jtree].ItemCodeGeneration,
             "OPTM_ITEMTYPE": this.tree_data_json[jtree].ModelType,
             "OPTM_WHSE": this.warehouse,
-            "OPTM_QUANTITY":  this.feature_itm_list_table[i].quantity,
-            "OPTM_PRICELIST":  this.feature_itm_list_table[i].price,
+            "OPTM_LEVEL": this.tree_data_json[jtree].level,
+            "OPTM_QUANTITY": this.step2_data.quantity,
+            "OPTM_PRICELIST": this.feature_itm_list_table[i].price,
             "OPTM_UNITPRICE": this.feature_itm_list_table[i].Actualprice,
-            "OPTM_TOTALPRICE":  this.feature_itm_list_table[i].Actualprice * this.feature_itm_list_table[i].quantity,
-            "OPTM_DISCPERCENT":  this.feature_itm_list_table[i].pricextn,
+            "OPTM_TOTALPRICE": this.feature_itm_list_table[i].Actualprice * this.feature_itm_list_table[i].quantity,
+            "OPTM_DISCPERCENT": this.feature_itm_list_table[i].pricextn,
             "OPTM_CREATEDBY": this.common_output_data.username,
             "OPTM_MODIFIEDBY": this.common_output_data.username,
+            "UNIQUEIDNT": this.tree_data_json[jtree].UniqueIdentifier,
+            "PARENTID": this.tree_data_json[jtree].parentId
             "OPTM_FGCREATEDATE":"",
             "OPTM_REFITEMCODE": "",
           })
-        
         }
-        else{
-          if(this.feature_itm_list_table[i].is_accessory=="Y"){
+        if (this.feature_itm_list_table[i].featureName == this.tree_data_json[jtree].component && this.feature_itm_list_table[i].is_accessory == "N") {
+          //creating detail data
+          let isExist = 0;
+          for (let iexist = 0; iexist < this.step2_final_dataset_to_save.length; iexist++) {
+            if (this.step2_final_dataset_to_save[iexist].OPTM_ITEMCODE == this.feature_itm_list_table[i].Item && this.step2_final_dataset_to_save[iexist].PARENTID == this.tree_data_json[jtree].parentId) {
+              isExist = 1;
+            }
+          }
+          if (isExist == 0) {
+            this.step2_final_dataset_to_save.push({
+              "OPTM_OUTPUTID": "",
+              "OPTM_OUTPUTDTLID": "",
+              "OPTM_ITEMNUMBER": this.tree_data_json[jtree].ItemNumber,
+              "OPTM_ITEMCODE": this.feature_itm_list_table[i].Item,
+              "OPTM_KEY": "",
+              "OPTM_PARENTKEY": "",
+              "OPTM_TEMPLATEID": this.tree_data_json[jtree].ModelTemplateItem,
+              "OPTM_ITMCODEGENKEY": this.tree_data_json[jtree].ItemCodeGeneration,
+              "OPTM_ITEMTYPE": this.tree_data_json[jtree].ModelType,
+              "OPTM_WHSE": this.warehouse,
+              "OPTM_LEVEL": this.tree_data_json[jtree].level,
+              "OPTM_QUANTITY": this.feature_itm_list_table[i].quantity,
+              "OPTM_PRICELIST": this.feature_itm_list_table[i].price,
+              "OPTM_UNITPRICE": this.feature_itm_list_table[i].Actualprice,
+              "OPTM_TOTALPRICE": this.feature_itm_list_table[i].Actualprice * this.feature_itm_list_table[i].quantity,
+              "OPTM_DISCPERCENT": this.feature_itm_list_table[i].pricextn,
+              "OPTM_CREATEDBY": this.common_output_data.username,
+              "OPTM_MODIFIEDBY": this.common_output_data.username,
+              "UNIQUEIDNT": this.tree_data_json[jtree].UniqueIdentifier,
+              "PARENTID": this.tree_data_json[jtree].parentId
+            })
+          }
+          isExist = 0;
+
+        }
+        else {
+          if (this.feature_itm_list_table[i].is_accessory == "Y") {
             for (let jacctree = 0; jacctree < this.tree_accessory_json.length; jacctree++) {
-            if(this.feature_itm_list_table[i].featureName == this.tree_accessory_json[jacctree].component){
-              this.step2_final_dataset_to_save.push({
-                "OPTM_OUTPUTID": "",
-                "OPTM_OUTPUTDTLID": "",
-                "OPTM_ITEMNUMBER":"",
-                "OPTM_ITEMCODE": this.feature_itm_list_table[i].Item,
-                "OPTM_KEY": "",
-                "OPTM_PARENTKEY": "",
-                "OPTM_TEMPLATEID": this.tree_accessory_json[jtree].ModelTemplateItem,
-                "OPTM_ITMCODEGENKEY": this.tree_accessory_json[jtree].ItemCodeGeneration,
-                "OPTM_ITEMTYPE": this.tree_accessory_json[jtree].ModelType,
-                "OPTM_WHSE": this.warehouse,
-                "OPTM_QUANTITY":  this.feature_itm_list_table[i].quantity,
-                "OPTM_PRICELIST":  this.feature_itm_list_table[i].price,
-                "OPTM_UNITPRICE": this.feature_itm_list_table[i].Actualprice,
-                "OPTM_TOTALPRICE":  this.feature_itm_list_table[i].Actualprice * this.feature_itm_list_table[i].quantity,
-                "OPTM_DISCPERCENT":  this.feature_itm_list_table[i].pricextn,
-                "OPTM_CREATEDBY": this.common_output_data.username,
-                "OPTM_MODIFIEDBY": this.common_output_data.username,
-              })
+              if (this.feature_itm_list_table[i].featureName == this.tree_accessory_json[jacctree].component) {
+                let isaccExist = 0;
+                for (let iexist = 0; iexist < this.step2_final_dataset_to_save.length; iexist++) {
+                  if (this.step2_final_dataset_to_save[iexist].OPTM_ITEMCODE == this.feature_itm_list_table[i].Item && this.step2_final_dataset_to_save[iexist].PARENTID == this.tree_accessory_json[jtree].parentId) {
+                    isaccExist = 1;
+                  }
+                }
+                if (isaccExist == 0) {
+                  this.step2_final_dataset_to_save.push({
+                    "OPTM_OUTPUTID": "",
+                    "OPTM_OUTPUTDTLID": "",
+                    "OPTM_ITEMNUMBER": this.tree_accessory_json[jtree].ItemNumber,
+                    "OPTM_ITEMCODE": this.feature_itm_list_table[i].Item,
+                    "OPTM_KEY": "",
+                    "OPTM_PARENTKEY": "",
+                    "OPTM_TEMPLATEID": this.tree_accessory_json[jtree].ModelTemplateItem,
+                    "OPTM_ITMCODEGENKEY": this.tree_accessory_json[jtree].ItemCodeGeneration,
+                    "OPTM_ITEMTYPE": this.tree_accessory_json[jtree].ModelType,
+                    "OPTM_WHSE": this.warehouse,
+                    "OPTM_LEVEL": this.tree_accessory_json[jtree].level,
+                    "OPTM_QUANTITY": this.feature_itm_list_table[i].quantity,
+                    "OPTM_PRICELIST": this.feature_itm_list_table[i].price,
+                    "OPTM_UNITPRICE": this.feature_itm_list_table[i].Actualprice,
+                    "OPTM_TOTALPRICE": this.feature_itm_list_table[i].Actualprice * this.feature_itm_list_table[i].quantity,
+                    "OPTM_DISCPERCENT": this.feature_itm_list_table[i].pricextn,
+                    "OPTM_CREATEDBY": this.common_output_data.username,
+                    "OPTM_MODIFIEDBY": this.common_output_data.username,
+                    "UNIQUEIDNT": this.tree_accessory_json[jtree].UniqueIdentifier,
+                    "PARENTID": this.tree_accessory_json[jtree].parentId
+                  })
+                }
+                isaccExist = 0;
+              }
             }
           }
         }
-        }
       }
     }
+    let modelindex;
+    let itemkeystring = "";
+    let itemcodeparent = ""
+    for (let isave = 0; isave < this.step2_final_dataset_to_save.length; isave++) {
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE == "0") {
+        modelindex = isave;
+        itemcodeparent = this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE;
+      }
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE == "2" || this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE == "3") {
+        if (this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
+          if (itemkeystring.length == 0) {
+            itemkeystring = this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
+          }
+          else {
+            itemkeystring = itemkeystring + "-" + this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
+
+          }
+
+        }
+      }
+      this.step2_final_dataset_to_save[modelindex].OPTM_KEY = itemkeystring
+    }
+    for (let isave = 0; isave < this.step2_final_dataset_to_save.length; isave++) {
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != "0") {
+        this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkeystring
+      }
+
+    }
+    itemkeystring = "";
+    itemcodeparent = ""
+    for (let isave = 0; isave < this.step2_final_dataset_to_save.length; isave++) {
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE == "1") {
+        modelindex = isave;
+        itemcodeparent = this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE;
+
+        if (itemcodeparent == this.step2_final_dataset_to_save[isave].PARENTID && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
+          if (itemkeystring.length == 0) {
+            itemkeystring = this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
+          }
+          else {
+            itemkeystring = itemkeystring + "-" + this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
+          }
+        }
+        this.step2_final_dataset_to_save[modelindex].OPTM_KEY = itemkeystring
+      }
+    }
+    for (let isave = 0; isave < this.step2_final_dataset_to_save.length; isave++) {
+      if (itemcodeparent == this.step2_final_dataset_to_save[isave].PARENTID) {
+        this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkeystring
+      }
+    }
+
 
 
   }
