@@ -29,7 +29,7 @@ export class ViewFeatureModelComponent implements OnInit {
     page_main_title = this.language.model_feature_master;
     table_title = this.page_main_title;
 
-    record_per_page: any = this.common_params.default_count;
+    record_per_page: any;
     search_string: any = "";
     current_page: any = 1;
     page_numbers: any = [];
@@ -55,7 +55,7 @@ export class ViewFeatureModelComponent implements OnInit {
     ngOnInit() {
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
-        //this._el.nativeElement.focus();
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
@@ -72,6 +72,14 @@ export class ViewFeatureModelComponent implements OnInit {
     }
 
     service_call(page_number, search) {
+        if(this.record_per_page!== undefined && sessionStorage.getItem('defaultRecords')){
+            if(this.record_per_page !== sessionStorage.getItem('defaultRecords')){
+                sessionStorage.setItem('defaultRecords', this.record_per_page);
+            }
+        } else {
+            this.record_per_page = this.commonData.default_count;
+            sessionStorage.setItem('defaultRecords', this.record_per_page);
+        }
         var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);

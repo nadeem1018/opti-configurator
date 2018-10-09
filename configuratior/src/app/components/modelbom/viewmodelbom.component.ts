@@ -20,7 +20,7 @@ export class ViewModelBomComponent implements OnInit {
     public username: string = "";
     add_route_link = '/modelbom/add';
     record_per_page_list: any = [10, 25, 50, 100]
-    record_per_page: any = 10;
+    record_per_page: any;
     search_string: any = "";
     current_page: any = 1;
     page_numbers: any = "";
@@ -47,6 +47,7 @@ export class ViewModelBomComponent implements OnInit {
     ngOnInit() {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
@@ -63,6 +64,14 @@ export class ViewModelBomComponent implements OnInit {
     }
 
     service_call(page_number, search) {
+        if(this.record_per_page!== undefined && sessionStorage.getItem('defaultRecords')){
+            if(this.record_per_page !== sessionStorage.getItem('defaultRecords')){
+                sessionStorage.setItem('defaultRecords', this.record_per_page);
+            }
+        } else {
+            this.record_per_page = this.commonData.default_count;
+            sessionStorage.setItem('defaultRecords', this.record_per_page);
+        }
         var dataset = this.service.getAllViewDataForModelBom(search, page_number, this.record_per_page).subscribe(
             data => {
                 dataset = JSON.parse(data);
