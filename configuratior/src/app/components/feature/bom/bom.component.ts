@@ -720,7 +720,7 @@ export class BomComponent implements OnInit {
             this.toastr.error('', this.language.SelectItem + currentrow, this.commonData.toast_config);
             return false;
           }
-          if (this.feature_bom_table[i].type == 3 && this.feature_bom_table[i].type_value == "") {
+          if (this.feature_bom_table[i].type == 3 && this.feature_bom_table[i].type_value_code == "") {
             this.toastr.error('', this.language.SelectValue + currentrow, this.commonData.toast_config);
             return false;
           }
