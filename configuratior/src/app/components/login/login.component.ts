@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
   public reset_button_text = "Reset";
   public onConnectSuccess:boolean = false;
   public page_title = this.commonData.project_name;
-
+  common_params = new CommonData();
+  record_per_page: any = this.common_params.default_count;
   constructor(   
     private auth: AuthenticationService, 
     private router: Router,
@@ -142,7 +143,7 @@ export class LoginComponent implements OnInit {
     } 
     sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
     sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
-    //sessionStorage.setItem('selectedWhse',this.warehouseName);
+    sessionStorage.setItem('defaultRecords', this.record_per_page);
     sessionStorage.setItem('isLoggedIn', "true");
     // this.router.navigateByUrl('/home');
       let home_page = this.commonData.application_path + '/index.html#home';

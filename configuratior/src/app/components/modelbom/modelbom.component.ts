@@ -43,8 +43,8 @@ export class ModelbomComponent implements OnInit {
   public live_tree_view_data = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
-
-
+  public isMinSelectedDisable = false;
+  public isMaxSelectedDisable = false;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
@@ -122,6 +122,8 @@ export class ModelbomComponent implements OnInit {
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isUOMDisabled = true
+                this.isMinSelectedDisable = false;
+                this.isMaxSelectedDisable = false;
               }
               else if (data.ModelDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
@@ -129,6 +131,8 @@ export class ModelbomComponent implements OnInit {
                 this.isPriceDisabled = false
                 this.pricehide = false
                 this.isUOMDisabled = false
+                this.isMinSelectedDisable = true;
+                this.isMaxSelectedDisable = true;
               }
               else {
                 this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
@@ -136,6 +140,8 @@ export class ModelbomComponent implements OnInit {
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isUOMDisabled = true
+                this.isMinSelectedDisable = false;
+                this.isMaxSelectedDisable = false;
               }
               if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
                 data.ModelDetail[i].OPTM_READYTOUSE = false
@@ -183,7 +189,9 @@ export class ModelbomComponent implements OnInit {
                 CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
                 isPriceDisabled: this.isPriceDisabled,
                 pricehide: this.pricehide,
-                isUOMDisabled: this.isUOMDisabled
+                isUOMDisabled: this.isUOMDisabled,
+                isMinSelectedDisable :this.isMinSelectedDisable,
+                isMaxSelectedDisable: this.isMaxSelectedDisable
               });
 
             }
@@ -242,7 +250,9 @@ export class ModelbomComponent implements OnInit {
       CreatedUser: this.username,
       isPriceDisabled: true,
       pricehide: true,
-      isUOMDisabled: true
+      isUOMDisabled: true,
+      isMinSelectedDisable : false,
+      isMaxSelectedDisable :false
 
     });
   };
@@ -319,6 +329,8 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].pricehide = true
           this.modelbom_data[i].isUOMDisabled = true
           this.modelbom_data[i].quantity = 1
+          this.modelbom_data[i].isMinSelectedDisable = false;
+          this.modelbom_data[i].isMaxSelectedDisable = false;
         }
         else {
           this.modelbom_data[i].isDisplayNameDisabled = false
@@ -331,6 +343,8 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isPriceDisabled = false
             this.modelbom_data[i].pricehide = false
             this.modelbom_data[i].isUOMDisabled = false
+            this.modelbom_data[i].isMinSelectedDisable = true;
+            this.modelbom_data[i].isMaxSelectedDisable = true;
           }
           else {
             this.modelbom_data[i].type = 1
@@ -338,6 +352,8 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isPriceDisabled = true
             this.modelbom_data[i].pricehide = true
             this.modelbom_data[i].isUOMDisabled = true
+            this.modelbom_data[i].isMinSelectedDisable = false;
+            this.modelbom_data[i].isMaxSelectedDisable = false;
           }
 
         }
