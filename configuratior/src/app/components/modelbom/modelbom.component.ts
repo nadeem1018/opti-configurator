@@ -57,6 +57,11 @@ export class ModelbomComponent implements OnInit {
   public show_dialog: boolean = false;
 
   ngOnInit() {
+
+    const element = document.getElementsByTagName('body')[0];
+    element.className = '';
+    element.classList.add('sidebar-toggled');
+
     this.commonData.checkSession();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');

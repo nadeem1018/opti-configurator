@@ -54,6 +54,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         element.className = "";
         element.classList.add("add_item-code-view-model");
         element.classList.add("opti_body-main-module");
+        element.classList.add('sidebar-toggled');
 
 
         this.commonData.checkSession();

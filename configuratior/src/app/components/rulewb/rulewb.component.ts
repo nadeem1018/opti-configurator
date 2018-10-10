@@ -65,6 +65,11 @@ export class RulewbComponent implements OnInit {
 
 
   ngOnInit() {
+
+    const element = document.getElementsByTagName('body')[0];
+    element.className = '';
+    element.classList.add('sidebar-toggled');
+
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
     this.commonData.checkSession();

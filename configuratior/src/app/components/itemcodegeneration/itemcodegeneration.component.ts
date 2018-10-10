@@ -59,6 +59,11 @@ export class ItemcodegenerationComponent implements OnInit {
   public show_dialog: boolean = false;
 
   ngOnInit() {
+
+    const element = document.getElementsByTagName('body')[0];
+    element.className = '';
+    element.classList.add('sidebar-toggled');
+
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');

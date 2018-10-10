@@ -61,6 +61,10 @@ export class BomComponent implements OnInit {
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 
   ngOnInit() {
+    const element = document.getElementsByTagName('body')[0];
+    element.className = '';
+    element.classList.add('sidebar-toggled');
+
     this.commonData.checkSession();
     this.detail_select_options = this.commonData.bom_type;
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
