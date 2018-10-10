@@ -2,8 +2,8 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ModelbomService } from '../../services/modelbom.service';
-import { ActivatedRoute, Router } from '@angular/router'
-
+import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-modelbom',
   templateUrl: './modelbom.component.html',
@@ -698,24 +698,39 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  on_min_selected_change(value, rowindex) {
+  on_min_selected_change(value, rowindex,actualvalue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].min_selected = value
-
+         if(this.modelbom_data[i].max_selected != "") {
+          if(parseInt(this.modelbom_data[i].max_selected) < parseInt(value)){
+            this.modelbom_data[i].min_selected = 1;
+            $(actualvalue).val(1);
+            this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
+            return;
+          }
+         }
 
       }
     }
 
   }
 
-  on_max_selected_change(value, rowindex) {
+  on_max_selected_change(value, rowindex,actualvalue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].max_selected = value
-
+        if(this.modelbom_data[i].min_selected != "") {
+          if(parseInt(this.modelbom_data[i].min_selected) > parseInt(value)){
+            this.modelbom_data[i].min_selected = 1;
+            this.modelbom_data[i].max_selected =1;
+            $(actualvalue).val(1);
+            this.toastr.error('', this.language.qty_validation , this.commonData.toast_config);
+            return;
+          }
+         }
 
       }
     }

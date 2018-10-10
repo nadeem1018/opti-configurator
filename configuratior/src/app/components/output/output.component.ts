@@ -113,6 +113,9 @@ export class OutputComponent implements OnInit {
   public final_order_status_class = "text-primary";
   public final_reference_number = "";
   public final_ref_doc_entry = "";
+  public ModelHeaderData = [];
+public ModelBOMDataForSecondLevel = [];
+public FeatureBOMDataForSecondLevel = [];
 
   ngOnInit() {
 
@@ -183,9 +186,9 @@ export class OutputComponent implements OnInit {
     ];
 
     // initialize jquery 
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.tree_view_expand_collapse()
-    }, 2000);
+    }, 2000); */
   }
 
   openFeatureLookUp() {
@@ -1102,7 +1105,11 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
         if (data != null || data != undefined) {
-          this.GetDataForSelectedFeatureModelItem(2,"",13,"");
+        //  this.GetDataForSelectedFeatureModelItem(2,"",13,"");
+        console.log(data);
+        this.ModelHeaderData = data.ModelHeaderData;
+        this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel;
+        this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel;
         }
         else {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1657,7 +1664,7 @@ export class OutputComponent implements OnInit {
 
   tree_view_expand_collapse() {
     let laguage = this.language;
-    $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
+    // $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
   }
 
   //This will recurse the tree
@@ -1985,4 +1992,21 @@ export class OutputComponent implements OnInit {
     this.dontShowFinalLoader = false;
     this.showFinalLoader = true;
   }
+
+  get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable){
+  var array = []; 
+    if(header_feature_table['OPTM_TYPE'] == "1"){
+
+      array = feature_child_datatable.filter(function(obj){
+        return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+      });
+    } else if(header_feature_table['OPTM_TYPE'] == "3"){
+      array =  model_child_datatable.filter(function(obj){
+        return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+      });
+    }
+    return array;
+     
+  }
+  
 }

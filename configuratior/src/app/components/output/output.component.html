@@ -300,9 +300,73 @@
                   </div>
                 </div> -->
                 <!-- <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
-                  
                 </div> -->
-                <div class="new_tree_structure_area">
+                <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
+                    <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true" >
+                        <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
+                          <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
+                            <h4 class="panel-title">
+                              <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
+                                {{header_data.OPTM_DISPLAYNAME}}
+                                <span class="text-right pull-right custom_panel_icon_section"><i class="fa fa-plus"></i></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                            <div class="panel-body">
+                              <table class="inner-table table table-bordered table-strip table-sm" >
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Code</th>
+                                    <th>Description</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
+                                  <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
+                                    <td>
+                                      <div class="custom-control custom-radio ">
+                                        <input type="radio" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" 
+                                          >
+                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
+                                      </div>
+                                      </td>
+                                    <td>{{feature_model_data.OPTM_FEATURECODE}}</td>
+                                    <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
+                                    <td>
+                                      <div class="image-preivew" *ngIf="feature_model_data.image!=''">
+                                        <img src="feature_model_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                                <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
+                                    <tr>
+                                      <td >
+                                          <div class="custom-control custom-checkbox ">
+                                              <input type="checkbox" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" class="custom-control-input" 
+                                                >
+                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
+                                            </div>
+                                      </td>
+                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                      <td>
+                                        <div class="image-preivew" *ngIf="header_data.image!=''">
+                                          <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tfoot>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                  
+               <!--  <div class="new_tree_structure_area">
                   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
                       <div class="panel-heading" role="tab" id="headingOne">
@@ -827,6 +891,7 @@
                     </table>
                   </div>
                 </div>
+              </div> -->
               </div>
               <div class="col-md-8 border-left-primary">
                 <div class="modal_heading_block" *ngIf="isModelVisible">
