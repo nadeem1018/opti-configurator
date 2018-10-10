@@ -1766,7 +1766,7 @@ export class OutputComponent implements OnInit {
             "OPTM_CREATEDBY": this.common_output_data.username,
             "OPTM_MODIFIEDBY": this.common_output_data.username,
             "UNIQUEIDNT": this.tree_data_json[jtree].UniqueIdentifier,
-            "PARENTID": this.tree_data_json[jtree].parentId
+            "PARENTID": this.tree_data_json[jtree].parentId,
             "OPTM_FGCREATEDATE":"",
             "OPTM_REFITEMCODE": "",
           })
