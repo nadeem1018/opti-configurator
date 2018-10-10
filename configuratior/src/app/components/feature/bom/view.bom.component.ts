@@ -55,6 +55,7 @@ export class ViewFeatureBOMComponent implements OnInit {
         element.className = "";
         element.classList.add("app_feature-bom-view-model");
         element.classList.add("opti_body-main-module");
+        element.classList.add('sidebar-toggled');
 
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');

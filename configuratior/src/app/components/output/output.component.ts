@@ -115,6 +115,12 @@ export class OutputComponent implements OnInit {
   public final_ref_doc_entry = "";
 
   ngOnInit() {
+
+    const element = document.getElementsByTagName('body')[0];
+    element.className = '';
+    element.classList.add('sidebar-toggled');
+
+
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
