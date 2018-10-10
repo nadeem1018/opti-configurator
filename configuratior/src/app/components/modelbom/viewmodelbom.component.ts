@@ -45,6 +45,12 @@ export class ViewModelBomComponent implements OnInit {
     constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
     ngOnInit() {
+
+        const element = document.getElementsByTagName("body")[0];
+        element.className = "";
+        element.classList.add("app_model-bom-view-model");
+        element.classList.add("opti_body-main-module");
+
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');

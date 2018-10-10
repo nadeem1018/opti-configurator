@@ -53,6 +53,11 @@ export class ViewFeatureModelComponent implements OnInit {
     public isMultiDelete: boolean = false;
     public showImportButton:boolean = true;
     ngOnInit() {
+        const element = document.getElementsByTagName("body")[0];
+        element.className = "";
+        element.classList.add("app_view-feature-model");
+        element.classList.add("opti_body-main-module");
+
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');

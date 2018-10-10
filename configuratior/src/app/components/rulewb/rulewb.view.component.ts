@@ -51,6 +51,12 @@ export class RuleWbViewComponent implements OnInit {
     constructor(private router: Router, private service: RulewbService, private toastr: ToastrService) { }
 
     ngOnInit() {
+
+        const element = document.getElementsByTagName("body")[0];
+        element.className = "";
+        element.classList.add("app_rule-wb-view-model");
+        element.classList.add("opti_body-main-module");
+
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
