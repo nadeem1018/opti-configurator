@@ -299,492 +299,29 @@
                     </div>
                   </div>
                 </div> -->
-                <!-- <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
-                  
-                </div> -->
-                <div class="new_tree_structure_area">
-                  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingOne">
-                        <h4 class="panel-title">
-                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Memory (RAM)
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  
-                                  <div class="custom-control custom-checkbox ">
-                                    <input type="checkbox" id="tree_checkbox_ram" name="tree_checkbox_ram" class="custom-control-input" 
-                                      >
-                                    <label class="custom-control-label" for="tree_checkbox_ram"></label>
-                                  </div>
-                                  </td>
-                                <td>4_GB_DDR4</td>
-                                <td>4 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="ram" id="ram_8gb"> </td>
-                                <td>8_GB_DDR4</td>
-                                <td>8 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="ram" id="ram_12gb"> </td>
-                                <td>12_GB_DDR4</td>
-                                <td>12 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="ram" id="ram_16gb"> </td>
-                                <td>16_GB_DDR4</td>
-                                <td>16 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                          <a class="collapsed default-white" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
-                            aria-controls="collapseTwo">
-                            HDD
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="hdd_500gb"> </td>
-                                <td>500_GB_SSD</td>
-                                <td>500 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="hdd_750gb"> </td>
-                                <td>750_GB_SSD</td>
-                                <td>750 GB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="hdd_1tb"> </td>
-                                <td>1_TB_SSD</td>
-                                <td>1 TB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="hdd_2tb"> </td>
-                                <td>2_TB_SSD</td>
-                                <td>2 TB</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingThree">
-                        <h4 class="panel-title">
-                          <a class="collapsed default-white" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
-                            aria-controls="collapseThree">
-                            Video Card
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1050"> </td>
-                                <td>nVidea_GTX_1050</td>
-                                <td>nVidea GTX 1050</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1060"> </td>
-                                <td>nVidea_GTX_1060</td>
-                                <td>nVidea GTX 1060</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1070"> </td>
-                                <td>nVidea_GTX_1070</td>
-                                <td>nVidea GTX 1070</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1080"> </td>
-                                <td>nVidea_GTX_1080</td>
-                                <td>nVidea GTX 1080</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1080_MAX_Q"> </td>
-                                <td>nVidea_GTX_1080_MAX_Q</td>
-                                <td>nVidea GTX 1080 MAX-Q</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="nVidea_GTX_1080_X"> </td>
-                                <td>nVidea_GTX_1080_X</td>
-                                <td>nVidea GTX 1080 Titan X</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingFour">
-                        <h4 class="panel-title">
-                          <a class="collapsed default-white" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false"
-                            aria-controls="collapseFour">
-                            Processor
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                             <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="Intel_i3_8000_2018"> </td>
-                                <td>Intel_i3_8000_2018</td>
-                                <td>Intel i3 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="Intel_i5_8000_2018"> </td>
-                                <td>Intel_i5_8000_2018</td>
-                                <td>Intel i5 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="Intel_i7_8000_2018"> </td>
-                                <td>Intel_i7_8000_2018</td>
-                                <td>Intel i7 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="Intel_i9_8000_2018"> </td>
-                                <td>Intel_i9_8000_2018</td>
-                                <td>Intel i9 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="AMD_8000_2018"> </td>
-                                <td>AMD_8000_2018</td>
-                                <td>AMD 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="hdd" id="Intel_Dual_Core_8000_2018"> </td>
-                                <td>Intel_Dual_Core_8000_2018</td>
-                                <td>Intel Dual Core 8th Gen 2018</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingSseven">
-                        <h4 class="panel-title">
-                          <a class="collapsed default-white" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFsix" aria-expanded="false"
-                            aria-controls="collapseFsix">
-                            Color
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseFsix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSseven">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="color" id="red"> </td>
-                                <td>red</td>
-                                <td>Red</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="color" id="green"> </td>
-                                <td>green</td>
-                                <td>Green</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="color" id="blue"> </td>
-                                <td>blue</td>
-                                <td>Blue</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="color" id="white"> </td>
-                                <td>white</td>
-                                <td>White</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="color" id="black"> </td>
-                                <td>black</td>
-                                <td>Black</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingfive">
-                        <h4 class="panel-title">
-                          <a class="collapsed default-white" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false"
-                            aria-controls="collapseFive">
-                            Red
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm ">
-                            <thead class="thead-dark">
-                             <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="red" id="Cherry_red"> </td>
-                                <td>Cherry_red</td>
-                                <td>Cherry Red</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="red" id="Light_red"> </td>
-                                <td>Light_red</td>
-                                <td>Light red</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="red" id="dark_red"> </td>
-                                <td>dark_red</td>
-                                <td>dark red</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="checkbox" name="red" id="tamato_red"> </td>
-                                <td>tamato_red</td>
-                                <td>Tamato red</td>
-                                <td>
-                                  <div class="image-preivew">
-                                    <img src="1.jpg" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
+                  <div class="tree well">
+                    <ul>
+                      <ng-container *ngFor="let element of tree_data_json; let i= index;">
+                        <li  class="tree_label_li" *ngIf="element.level == 0 && element.parentId==''">
+                          <div class="has_elements" *ngIf="check_component_exist(element.component, i).length > 0">
+                            <span class="parent_span"  >
+                              <i class=" btn btn-sm expand_cllapse_click fa " data-visible="0"></i>
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                              <formelementstreeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json"></formelementstreeview>
+                          </div>
+                          <div *ngIf="check_component_exist(element.component, i).length == 0">
+                            <span>
+                              <!-- <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" value="{{element.component}}"> -->
+                              <input type="{{element.element_type}}" name="tree_el_{{element.parentId}}" #treeinput (click)="on_element_input_change(element,treeinput.checked)"  [(checked)]="element.checked">
+                              <span class="tree_label">{{element.component}}</span>
+                            </span>
+                          </div>
+                          
+                        </li>
+                      </ng-container>
+                    </ul>
                   </div>
                 </div>
                 <hr>
@@ -1047,8 +584,7 @@
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-              <button *ngIf="feature_accessory_list.length || feature_itm_list_table.length" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
-                data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
+              <button *ngIf="feature_accessory_list.length || feature_itm_list_table.length" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
           </div>
@@ -1196,7 +732,7 @@
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
                           <th width="30%">
-                            {{this.feature_discount_percent}}
+                           {{this.feature_discount_percent}}
                           </th>
                         </tr>
                       </thead>
@@ -1251,8 +787,7 @@
             <hr>
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next"
-              data-next-block="fina_doc_create">
+            <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
               <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
           </div>
         </fieldset>
@@ -1290,9 +825,7 @@
                         <label class="col-sm-3 col-form-label">
                           <b>{{language.order_status}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label">
-                          <b class="final_order_status_class">{{final_order_status}}</b>
-                        </label>
+                        <label class="col-sm-5 col-form-label"><b class="final_order_status_class">{{final_order_status}}</b></label>
                       </div>
                       <div class="form-group row clearfix ">
                         <label class="col-sm-3 col-form-label ">
@@ -1319,7 +852,7 @@
                         </button>
                       </div>
                       <div class="clearfix"></div>
-
+                      
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.posting_date}}</b>
@@ -1435,56 +968,55 @@
                     </div>
                     <div class="item_discount_table">
                       <div class="col-md-4 pull-right">
-                        <table class="table table-bordered table-sm">
-                          <thead class="" style=" font-size: 14px; ">
-                            <tr>
-                              <th width="70%">{{language.product_discount}}</th>
-                              <th width="30%">
-                                {{this.feature_discount_percent}}
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                {{this.language.product_tax}}
-                              </td>
-                              <td>{{this.feature_item_tax}}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                {{this.language.product_total}}
-                              </td>
-                              <td>{{this.feature_item_total}}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                {{this.language.accessories_discount}}
-                              </td>
-                              <td>
-                                {{this.accessory_discount_percent}}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                {{this.language.accessories_tax}}
-                              </td>
-                              <td>{{this.acc_item_tax}}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                {{this.language.accessories_total}}
-                              </td>
-                              <td>{{this.accessory_item_total}}</td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr style=" font-size: 14px; ">
-                              <th>{{this.language.grand_total}}</th>
-                              <td>{{this.acc_grand_total}}</td>
-                            </tr>
-                          </tfoot>
-                        </table>
+                        <table class="table table-bordered table-sm"><thead class="" style=" font-size: 14px; ">
+                          <tr>
+                            <th width="70%">{{language.product_discount}}</th>
+                            <th width="30%">
+                              {{this.feature_discount_percent}}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {{this.language.product_tax}}
+                            </td>
+                            <td>{{this.feature_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.product_total}}
+                            </td>
+                            <td>{{this.feature_item_total}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_discount}}
+                            </td>
+                            <td>
+                              {{this.accessory_discount_percent}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_tax}}
+                            </td>
+                            <td>{{this.acc_item_tax}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_total}}
+                            </td>
+                            <td>{{this.accessory_item_total}}</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr style=" font-size: 14px; ">
+                            <th>{{this.language.grand_total}}</th>
+                            <td>{{this.acc_grand_total}}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
                       </div>
                     </div>
                   </div>
