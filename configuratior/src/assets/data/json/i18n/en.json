@@ -312,6 +312,7 @@
     "nofileattach":"No file attached",
     "download_template": "Download Template",
     "ruleValidated": "Rules are valid",
-    "norules": "No rules are found for this Model"
+    "norules": "No rules are found for this Model",
+    "qty_validation":"Min Selectable cannot be smaller than Max Selectable"
 
 }
