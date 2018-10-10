@@ -326,17 +326,21 @@
                                 <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
                                   <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
                                     <td>
-                                      <div class="custom-control custom-radio ">
-                                        <input type="radio" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" 
+                                      <div class="{{header_data.element_class}}">
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked)"
                                           >
                                         <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
                                       </div>
                                       </td>
-                                    <td>{{feature_model_data.OPTM_FEATURECODE}}</td>
+                                    <td>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
+                                    </td>
                                     <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                     <td>
-                                      <div class="image-preivew" *ngIf="feature_model_data.image!=''">
-                                        <img src="feature_model_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                      <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
+                                        <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
                                       </div>
                                     </td>
                                   </tr>
@@ -344,13 +348,18 @@
                                 <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
                                     <tr>
                                       <td >
-                                          <div class="custom-control custom-checkbox ">
-                                              <input type="checkbox" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" class="custom-control-input" 
-                                                >
+                                          <div class="{{header_data.element_class}}">
+                                              <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
+                                              (change)="onselectionchange(header_data,selectionchecked)" >
                                               <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
                                             </div>
                                       </td>
-                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                      <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
+                                      <td>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
+                                      </td>
                                       <td>{{header_data.OPTM_DISPLAYNAME}}</td>
                                       <td>
                                         <div class="image-preivew" *ngIf="header_data.image!=''">

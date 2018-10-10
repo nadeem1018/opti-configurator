@@ -1104,6 +1104,7 @@ public FeatureBOMDataForSecondLevel = [];
         this.ModelHeaderData = data.ModelHeaderData;
         this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel;
         this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel;
+
         }
         else {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1118,7 +1119,7 @@ public FeatureBOMDataForSecondLevel = [];
     );
   }
 
-  GetDataForSelectedFeatureModelItem(type,modelid,featureid,item) {
+  onselectionchange(type,modelid,featureid,item) {
     this.OutputService.GetDataForSelectedFeatureModelItem(type,modelid,featureid,item).subscribe(
       data => {
         if (data != null || data != undefined) {
@@ -1996,8 +1997,16 @@ public FeatureBOMDataForSecondLevel = [];
       });
     } else if(header_feature_table['OPTM_TYPE'] == "3"){
       array =  model_child_datatable.filter(function(obj){
-        return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+        return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'];
       });
+    }
+    if(header_feature_table['OPTM_MAXSELECTABLE']>1){
+       header_feature_table['element_type'] = "checkbox";
+       header_feature_table['element_class'] = "custom-control custom-checkbox";
+    }
+    else{
+      header_feature_table['element_type'] = "radio";
+      header_feature_table['element_class'] = "custom-control custom-radio";
     }
     return array;
      
