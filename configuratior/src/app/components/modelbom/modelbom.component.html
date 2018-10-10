@@ -152,11 +152,11 @@
                     </td>
                     <td width="9%">
                       <input type="text" [disabled]="row.isMinSelectedDisable" class="form-control  form-control-sm mt3" style="text-align:right" id="min_selected" value={{row.min_selected}}
-                        (change)="on_min_selected_change(min_selected.value,row.rowindex)" #min_selected />
+                        (change)="on_min_selected_change(min_selected.value,row.rowindex,min_selected)" #min_selected />
                     </td>
                     <td width="9%">
                       <input type="text" [disabled]="row.isMaxSelectedDisable" class="form-control  form-control-sm mt3 pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}}
-                        (change)="on_max_selected_change(max_selected.value,row.rowindex)" #max_selected />
+                        (change)="on_max_selected_change(max_selected.value,row.rowindex,max_selected)" #max_selected />
                     </td>
                     <td width="9%">
                       <input type="checkbox" class="form-control  form-control-sm mt15 pull-right" id="propagate_qty" value={{row.propagate_qty}}

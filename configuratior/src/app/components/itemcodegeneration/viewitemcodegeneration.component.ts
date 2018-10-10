@@ -49,6 +49,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
 
     ngOnInit() {
+
+        const element = document.getElementsByTagName("body")[0];
+        element.className = "";
+        element.classList.add("add_item-code-view-model");
+        element.classList.add("opti_body-main-module");
+
+
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
