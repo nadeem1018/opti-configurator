@@ -273,7 +273,8 @@ export class OutputComponent implements OnInit {
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
       this.isModelVisible = true
-      this.GetDataForModelBomOutput();
+      // this.GetDataForModelBomOutput();
+      this.GetAllDataForModelBomOutput();
     }
     else if (this.lookupfor == 'feature_lookup') {
       this.step2_data.feature_id = $event[0];
@@ -985,7 +986,7 @@ export class OutputComponent implements OnInit {
               //     price: 0,
               //     pricextn: 0
               //   });
-              // }
+              // } 
               if (this.feature_itm_list_table.length > 0) {
                 for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
                   if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
@@ -1090,6 +1091,46 @@ export class OutputComponent implements OnInit {
     this._el.nativeElement.focus();
 
   }
+
+  GetAllDataForModelBomOutput() {
+    this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+          this.GetDataForSelectedFeatureModelItem(2,"",13,"");
+        }
+        else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+
+      },
+      error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    );
+  }
+
+  GetDataForSelectedFeatureModelItem(type,modelid,featureid,item) {
+    this.OutputService.GetDataForSelectedFeatureModelItem(type,modelid,featureid,item).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+
+        }
+        else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+
+      },
+      error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    );
+  }
+
+
 
   GetDataForModelBomOutput() {
     this.lookupfor = 'tree_view__model_bom_Output_lookup"';
