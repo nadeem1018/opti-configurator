@@ -43,6 +43,7 @@ export class RulewbComponent implements OnInit {
   public selectall: boolean = true;
   public typevaluefromdatabase: string = "";
   public typevaluecodefromdatabase: string = "";
+  public operand_type:any ='';
 
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = [];
@@ -190,7 +191,9 @@ export class RulewbComponent implements OnInit {
                 type_value: this.typevaluefromdatabase,
                 condition: fetch_data.OPTM_CONDITION,
                 operand_1: fetch_data.OPTM_OPERAND1,
+                operand_1_code: fetch_data.OPTM_OP1CODE,
                 operand_2: fetch_data.OPTM_OPERAND2,
+                operand_2_code: fetch_data.OPTM_OP2CODE,
                 row_expression: expression,
               });
 
@@ -230,11 +233,6 @@ export class RulewbComponent implements OnInit {
 
             }
           }
-
-
-
-
-
         }
 
 
@@ -307,6 +305,8 @@ export class RulewbComponent implements OnInit {
       condition: '',
       operand_1: '',
       operand_2: '',
+      operand_1_code: "",
+      operand_2_code: "",
       is_operand2_disable: true,
       row_expression: ''
     });
@@ -355,10 +355,24 @@ export class RulewbComponent implements OnInit {
         if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
           this.rule_sequence_data[i].type_value = $event[0];
           this.rule_sequence_data[i].type_value_code = $event[1];
-
         }
       }
     }
+    if (this.lookupfor == 'operand_feature_lookup' || this.lookupfor == 'operand_model_lookup') {
+      for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+        if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
+          if (this.operand_type == 'operand_1'){
+            this.rule_sequence_data[i].operand_1 = $event[0];
+            this.rule_sequence_data[i].operand_1_code = $event[1];
+          } else if (this.operand_type == 'operand_2') {
+            this.rule_sequence_data[i].operand_2 = $event[0];
+            this.rule_sequence_data[i].operand_2_code = $event[1];
+          }
+        }
+      }
+      this.operand_type = "";
+    }
+   
   }
 
   getFeatureDetails(feature_code, press_location, index) {
@@ -431,7 +445,7 @@ export class RulewbComponent implements OnInit {
 
     )
   }
- 
+
   genearate_expression() {
     let current_seq = this.seq_count;
     console.log(current_seq);
@@ -456,20 +470,36 @@ export class RulewbComponent implements OnInit {
       let condition = (seq_data[index].condition != "" && seq_data[index].condition !== undefined) ? seq_data[index].condition : "";
       let operand_1 = (seq_data[index].operand_1 != "" && seq_data[index].operand_1 !== undefined) ? seq_data[index].operand_1 : "";
       let operand_2 = (seq_data[index].operand_2 != "" && seq_data[index].operand_2 !== undefined) ? seq_data[index].operand_2 : "";
+      let operand_1_code = (seq_data[index].operand_1_code != "" && seq_data[index].operand_1_code !== undefined) ? seq_data[index].operand_1_code : "";
+      let operand_2_code = (seq_data[index].operand_2_code != "" && seq_data[index].operand_2_code !== undefined) ? seq_data[index].operand_2_code : "";
       // validations 
-      if (braces!= ""){
+      if (braces != "") {
         added_braces.push(braces);
-        
+        if (brackes_category['open'].indexOf(braces) !== -1) {
+          braces_open.push(braces);
+        }
+        if (brackes_category['close'].indexOf(braces) !== -1) {
+          braces_closed.push(braces);
+        }
       }
-      
+
+      if (index != "0") {
+        if (type != "" && operator == "") {
+          this.generated_expression_value = "";
+          this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
+          return false;
+        }
+      }
+
       if (operator != "") {
-        if(index == "0"){
+        if (index == "0") {
+          this.generated_expression_value = "";
           this.toastr.error('', this.language.operator_row_1_error, this.commonData.toast_config);
           return false;
         }
-      
 
-        if (type == "" || type_value_code == "" || condition == "" || operand_1 == "") {
+
+        if (type == "" || type_value_code == "" || condition == "" || operand_1_code == "") {
 
           let error_fields = '';
           if (type == "") {
@@ -493,31 +523,47 @@ export class RulewbComponent implements OnInit {
             error_fields += " " + this.language.condition;
           }
 
-          if (operand_1 == "") {
+          if (operand_1_code == "") {
             if (error_fields != "") {
               error_fields += ", ";
             }
             error_fields += " " + this.language.operand_1;
           }
+          this.generated_expression_value = "";
           this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
           return false;
         }
 
         if (condition == "Between" && operand_2 == "") {
+          this.generated_expression_value = "";
           this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
-
           return false;
         }
       }
 
-      let operand = operand_1;
+      let operand = operand_1_code;
       if (operand_2 != "") {
-        operand = operand_1 + ' and ' + operand_2;
+        operand = operand_1_code + ' and ' + operand_2_code;
       }
       this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
       current_exp += " " + seq_data[index].row_expression;
     }
-  
+
+    let reverse_open_seq_braces = [];
+    for (var i = braces_open.length; i >= 0; i--) {
+      if (open_close_braces_list[braces_open[i]] !== undefined && open_close_braces_list[braces_open[i]] !== "") {
+        reverse_open_seq_braces.push(open_close_braces_list[braces_open[i]]);
+      }
+    }
+    console.log(reverse_open_seq_braces);
+    if (braces_open.length === braces_closed.length && reverse_open_seq_braces.every(function (value, index) { return value === braces_closed[index] })) {
+    } else {
+      this.generated_expression_value = "";
+      this.toastr.error('', this.language.bracket_missing_expression, this.commonData.toast_config);
+      return false;
+
+    }
+
     if (current_exp.trim() != "") {
 
       this.generated_expression_value = current_exp;
@@ -527,7 +573,7 @@ export class RulewbComponent implements OnInit {
     }
   }
 
-  on_input_change(rowindex, key, value,actualvalue) {
+  on_input_change(rowindex, key, value, actualvalue) {
     this.currentrowindex = rowindex;
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
@@ -579,6 +625,33 @@ export class RulewbComponent implements OnInit {
     )
   }
 
+  show_operand_lookup(type, type_value, rowindex, operand_value) {
+    this.service.get_model_feature_options(type_value, type).subscribe(
+      data => {
+        if (data.length > 0) {
+          console.log(data);
+          this.currentrowindex = rowindex;
+          if (type == 1){
+            this.lookupfor = "operand_feature_lookup";
+          } else if (type == 2){
+            this.lookupfor = "operand_model_lookup";
+          }
+          console.log(' operand_value - ');
+          console.log( operand_value);
+          this.operand_type = operand_value;
+          console.log('this.operand_type - ' + this.operand_type);
+          
+          this.serviceData = data;
+        } else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
+  }
+
   show_input_lookup(selected_type, rowindex) {
     this.currentrowindex = rowindex
     if (selected_type == 1) {
@@ -591,7 +664,7 @@ export class RulewbComponent implements OnInit {
 
   on_typevalue_change(value, rowindex, actualvalue) {
     // apply validation 
-    this.on_input_change(rowindex, 'type_value', value,actualvalue);
+    this.on_input_change(rowindex, 'type_value', value, actualvalue);
   }
 
   add_rule_sequence() {

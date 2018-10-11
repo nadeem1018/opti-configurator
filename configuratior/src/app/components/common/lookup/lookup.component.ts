@@ -137,6 +137,14 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "output_customer") {
         this.customer_lookup();
       }
+
+      if(this.lookupfor == "operand_feature_lookup"){
+        this.get_features_lookup();
+      }
+      
+      if (this.lookupfor == "operand_model_lookup") {
+        this.get_Model_lookup();
+      }
     }
   }
 

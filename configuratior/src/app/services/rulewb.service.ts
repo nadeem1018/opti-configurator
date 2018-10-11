@@ -83,6 +83,16 @@ export class RulewbService {
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
   }
 
-  
+  get_model_feature_options(id, type): Observable<any> {
+    let jObject:any = '';
+    if (type == "1"){
+      jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id, Type: type }]) };
+    } else if (type == "2") {
+      jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id, Type: type }]) };
+    }
+    
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllChildOfFeatureModel", jObject, this.common_params.httpOptions);
+  }
   
 }
