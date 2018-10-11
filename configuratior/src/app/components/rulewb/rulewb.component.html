@@ -203,11 +203,27 @@
                           </select>
                         </td>
                         <td>
-                          <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}"
-                            (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )" /> </td>
+                          <div class="input-group">
+                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}" (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )" />
+                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"  (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value )" /> 
+                              <div class="input-group-append">
+                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
+                                  <i class="fa fa-bars"></i>
+                                </span>
+                              </div>
+                          </div>
+                          </td>
                         <td>
-                          <input type="text" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}" [disabled]="row.is_operand2_disable" 
-                            (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )" /> </td>
+                          <div class="input-group">
+                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}" [disabled]="row.is_operand2_disable"  (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )" /> 
+                            <input type="text" class="form-control form-control-sm mt3" id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}" [disabled]="row.is_operand2_disable"  (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )" /> 
+                              <div class="input-group-append" [hidden]="row.is_operand2_disable">
+                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">
+                                  <i class="fa fa-bars"></i>
+                                </span>
+                              </div>
+                          </div>
+                          </td>
                         <td>
                           <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
                             <i class="fa fa-trash"></i>
