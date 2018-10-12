@@ -72,9 +72,9 @@ export class OutputService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
   }
-  GetDataForSelectedFeatureModelItem(type,modelid ,featureid,item): Observable<any> {
+  GetDataForSelectedFeatureModelItem(type,modelid ,featureid,item,parentfeatureid,parentmodelid): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, Type: type, ModelId: modelid ,FeatureId:featureid,Item:item}]) }
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, Type: type, ModelId: modelid ,FeatureId:featureid,Item:item,ParentFeatureId:parentfeatureid,ParentModelId:parentmodelid}]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataForSelectedFeatureModelItem", jObject, this.common_params.httpOptions);
   }
