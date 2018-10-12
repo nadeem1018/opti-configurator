@@ -21,6 +21,7 @@ export class RulewbComponent implements OnInit {
   public rule_wb_data: any = [];
   public rule_sequence_data = [];
   public rule_feature_data = [];
+  public global_rule_feature_data = [];
   public rule_expression_data: any = [];
   public image_data: any = [];
   public lookupfor: string = '';
@@ -233,6 +234,7 @@ export class RulewbComponent implements OnInit {
 
             }
           }
+         // this.global_rule_feature_data = this.rule_feature_data;
         }
 
 
@@ -270,6 +272,7 @@ export class RulewbComponent implements OnInit {
     this.rule_sequence_data = [];
     this.generated_expression_value = "";
     this.editing_row = 0;
+    // this.rule_feature_data = this.global_rule_feature_data;
   }
 
   hide_show_output() {
@@ -332,9 +335,6 @@ export class RulewbComponent implements OnInit {
       }
     )
   }
-
-
-
 
   getLookupValue($event) {
     if (this.lookupfor == 'feature_lookup') {
@@ -487,6 +487,8 @@ export class RulewbComponent implements OnInit {
         if (type != "" && operator == "") {
           this.generated_expression_value = "";
           this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
           return false;
         }
       }
@@ -495,6 +497,9 @@ export class RulewbComponent implements OnInit {
         if (index == "0") {
           this.generated_expression_value = "";
           this.toastr.error('', this.language.operator_row_1_error, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+          
           return false;
         }
 
@@ -531,12 +536,16 @@ export class RulewbComponent implements OnInit {
           }
           this.generated_expression_value = "";
           this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
           return false;
         }
 
         if (condition == "Between" && operand_2 == "") {
           this.generated_expression_value = "";
           this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
           return false;
         }
       }
@@ -560,6 +569,8 @@ export class RulewbComponent implements OnInit {
     } else {
       this.generated_expression_value = "";
       this.toastr.error('', this.language.bracket_missing_expression, this.commonData.toast_config);
+      this.showAddSequenceBtn = false;
+      this.showUpdateSequenceBtn == false;
       return false;
 
     }
@@ -679,16 +690,12 @@ export class RulewbComponent implements OnInit {
         rowindex: this.expression_counter,
         seq_count: this.rule_sequence_data[0].seq_count,
         expression: this.generated_expression_value,
-        row_data: this.rule_sequence_data
+        row_data: this.rule_sequence_data,
+        output_data: this.rule_feature_data
       });
       this.toastr.info('', this.language.expression_generated, this.commonData.toast_config);
       this.close_rule_sequence();
-
-      console.log(this.rule_sequence_data);
-      if (this.rule_sequence_data.length > 0) {
-
-        //  this.rule_expression_data
-      }
+     
     }
     else {
       this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
@@ -724,6 +731,7 @@ export class RulewbComponent implements OnInit {
       this.rule_expression_data[row_auto_index]['seq_count'] = this.rule_sequence_data[0].seq_count;
       this.rule_expression_data[row_auto_index]['expression'] = this.generated_expression_value;
       this.rule_expression_data[row_auto_index]['row_data'] = this.rule_sequence_data;
+      this.rule_expression_data[row_auto_index]['output_data'] = this.rule_feature_data;
       this.toastr.info('', this.language.expression_updated, this.commonData.toast_config);
       this.close_rule_sequence();
     } else {
@@ -739,6 +747,12 @@ export class RulewbComponent implements OnInit {
       for (var data in edit_expression_data) {
         this.rule_sequence_data.push(edit_expression_data[data]);
       }
+      this.rule_feature_data = [];
+      let feature_rule_data = row.output_data;
+      for (var data in edit_expression_data) {
+        this.rule_feature_data.push(feature_rule_data[data]);
+      }
+
       this.show_sequence = true;
       this.show_add_sequence_btn = false;
       this.showAddSequenceBtn = false;
