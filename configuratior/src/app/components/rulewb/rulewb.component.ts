@@ -17,13 +17,13 @@ export class RulewbComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/rulewb/view';
   public input_file: File = null;
+  public global_rule_feature_data = new Array();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  public rule_wb_data: any = [];
-  public rule_sequence_data = [];
-  public rule_feature_data = [];
-  public global_rule_feature_data = [];
-  public rule_expression_data: any = [];
-  public image_data: any = [];
+  public rule_wb_data: any  = new Array();
+  public rule_sequence_data  = new Array();
+  public rule_feature_data  = new Array();
+  public rule_expression_data: any  = new Array();
+  public image_data: any  = new Array();
   public lookupfor: string = '';
   public counter = 0;
   public expression_counter = 0;
@@ -47,7 +47,7 @@ export class RulewbComponent implements OnInit {
   public operand_type:any ='';
 
   //public rule_wb_data_header: any = [];
-  public ruleWorkBenchData = [];
+  public ruleWorkBenchData = new Array();
 
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
@@ -64,11 +64,11 @@ export class RulewbComponent implements OnInit {
   public outputrowcounter: number = 0;
 
   public min;
-
-
   ngOnInit() {
-
+    this.global_rule_feature_data = new Array();
+    this.rule_feature_data = new Array();
     const element = document.getElementsByTagName('body')[0];
+
     element.className = '';
     element.classList.add('sidebar-toggled');
 
@@ -252,16 +252,38 @@ export class RulewbComponent implements OnInit {
     }
   }
 
+  copy(o) {
+    var output, v, key;
+    output = Array.isArray(o) ? [] : {};
+    for (key in o) {
+      v = o[key];
+      output[key] = (typeof v === "object") ? this.copy(v) : v;
+    }
+    return output;
+  }
+
   addNewSequence() {
     if (this.validation("AddRow") == false)
       return;
     if (this.rule_expression_data.length > 0) {
       this.seq_count = this.rule_expression_data.length;
+    } else  {
+      this.seq_count = 0;
     }
     this.seq_count++;
     this.onAddRow();
     this.show_sequence = true;
     this.show_add_sequence_btn = false;
+    this.rule_feature_data = this.copy(this.global_rule_feature_data);
+    for (let index = 0; index < this.rule_feature_data.length; index++) {
+    //   let temp = this.rule_feature_data[index];
+      this.rule_feature_data[index]['seq_number'] = this.seq_count;
+      /// this.rule_feature_data.push(temp);
+    }
+
+    console.log(this.global_rule_feature_data);
+    console.log(this.rule_feature_data);
+      
   }
 
   close_rule_sequence() {
@@ -272,7 +294,7 @@ export class RulewbComponent implements OnInit {
     this.rule_sequence_data = [];
     this.generated_expression_value = "";
     this.editing_row = 0;
-    // this.rule_feature_data = this.global_rule_feature_data;
+    this.rule_feature_data = new Array();
   }
 
   hide_show_output() {
@@ -414,14 +436,14 @@ export class RulewbComponent implements OnInit {
   }
 
   getFeatureDetailsForOutput() {
-    this.rule_feature_data = [];
+    this.rule_feature_data = new Array();
     //this.outputrowcounter=0;
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
         if (data.length > 0) {
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
-            this.rule_feature_data.push({
+            this.global_rule_feature_data.push({
               rowindex: i,
               check_child: true,
               feature: data[i].Feature,
@@ -695,7 +717,7 @@ export class RulewbComponent implements OnInit {
       });
       this.toastr.info('', this.language.expression_generated, this.commonData.toast_config);
       this.close_rule_sequence();
-     
+      console.log(this.rule_expression_data);
     }
     else {
       this.toastr.error('', this.language.sequence_row_empty, this.commonData.toast_config);
@@ -747,9 +769,11 @@ export class RulewbComponent implements OnInit {
       for (var data in edit_expression_data) {
         this.rule_sequence_data.push(edit_expression_data[data]);
       }
-      this.rule_feature_data = [];
+      
+      // output section 
+      this.rule_feature_data = new Array();
       let feature_rule_data = row.output_data;
-      for (var data in edit_expression_data) {
+      for (var data in feature_rule_data) {
         this.rule_feature_data.push(feature_rule_data[data]);
       }
 
@@ -819,8 +843,10 @@ export class RulewbComponent implements OnInit {
           this.rule_feature_data[i].default = value
         }
       }
-
     }
+
+    console.log(this.rule_feature_data);
+    console.log(this.global_rule_feature_data);
   }
 
   check_all(value) {
