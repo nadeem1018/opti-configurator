@@ -664,6 +664,9 @@ export class RulewbComponent implements OnInit {
                   $(actualvalue).val("");
                   return;
                 }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
+                }
               });
           }
 
@@ -674,6 +677,9 @@ export class RulewbComponent implements OnInit {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
                   $(actualvalue).val("");
                   return;
+                }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
                 }
               });
           }
@@ -688,6 +694,9 @@ export class RulewbComponent implements OnInit {
                   $(actualvalue).val("");
                   return;
                 }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
+                }
               });
           }
 
@@ -698,6 +707,9 @@ export class RulewbComponent implements OnInit {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
                   $(actualvalue).val("");
                   return;
+                }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
                 }
               });
           }

@@ -204,8 +204,8 @@
                         </td>
                         <td>
                           <div class="input-group">
-                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}" (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )" />
-                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"  (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value )" /> 
+                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}" (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value,operand_1_code )" />
+                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"  (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value,operand_1_code )" /> 
                               <div class="input-group-append">
                                 <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
                                   <i class="fa fa-bars"></i>
