@@ -95,4 +95,20 @@ export class RulewbService {
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllChildOfFeatureModel", jObject, this.common_params.httpOptions);
   }
   
+
+  onChildFeatureIdChange(type,id,value): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company,type:type,id:id,value:value }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidChildofFeatureModel", jObject, this.common_params.httpOptions);
+  }
+
+  onChildModelIdChange(type,id,value): Observable<any> {
+
+   //JSON Obeject Prepared to be send as a param to API
+   let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company,type:type,id:id,value:value }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidChildofFeatureModel", jObject, this.common_params.httpOptions);
+  }
 }

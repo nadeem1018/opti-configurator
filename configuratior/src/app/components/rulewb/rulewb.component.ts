@@ -641,6 +641,30 @@ export class RulewbComponent implements OnInit {
               });
           }
         }
+
+        if (key === 'operand_1_code') {
+          if (this.rule_sequence_data[i].type == 1) {
+            this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type,this.rule_sequence_data[i].type_value,value).subscribe(
+              data => {
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                  $(actualvalue).val("");
+                  return;
+                }
+              });
+          }
+
+          else {
+            this.service.onChildModelIdChange(this.rule_sequence_data[i].type,this.rule_sequence_data[i].type_value,value).subscribe(
+              data => {
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+                  $(actualvalue).val("");
+                  return;
+                }
+              });
+          }
+        }
         console.log(this.rule_sequence_data[i]);
       }
     }
