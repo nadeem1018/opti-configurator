@@ -954,14 +954,20 @@ export class RulewbComponent implements OnInit {
         RuleId: this.rule_wb_data.RuleId
 
       })
-      single_data_set.single_data_set_output = this.rule_feature_data
+     //  single_data_set.single_data_set_output = this.rule_feature_data
       let extracted_sequences: any = [];
+      let extracted_output: any = [];
       for (var key in this.rule_expression_data) {
         for (var rowkey in this.rule_expression_data[key].row_data) {
           extracted_sequences.push(this.rule_expression_data[key].row_data[rowkey]);
         }
+
+        for (var rowkey in this.rule_expression_data[key].output_data) {
+          extracted_output.push(this.rule_expression_data[key].output_data[rowkey]);
+        }
       }
-      single_data_set.single_data_set_expression = extracted_sequences
+      single_data_set.single_data_set_expression = extracted_sequences;
+      single_data_set.single_data_set_output = extracted_output
       this.service.SaveData(single_data_set).subscribe(
         data => {
           if (data === "True") {
