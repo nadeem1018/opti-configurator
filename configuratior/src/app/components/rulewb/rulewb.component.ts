@@ -95,7 +95,7 @@ export class RulewbComponent implements OnInit {
       this.isDeleteButtonVisible = false;
       this.show_sequence = false;
       this.show_add_sequence_btn = true
-
+      var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
           if (data.RuleWorkBenchHeader.length > 0) {
@@ -124,9 +124,7 @@ export class RulewbComponent implements OnInit {
           }
 
           if (data.RuleWorkBenchInput.length > 0) {
-            /* this.show_sequence = true;
-            this.show_add_sequence_btn = false */
-
+          
             this.counter = 0;
             let managed_seq = [1];
             let sequence_gen = [];
@@ -165,6 +163,10 @@ export class RulewbComponent implements OnInit {
               this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
+              }
+
+              if (this.rule_expression_data[current_count].output_data == undefined) {
+                this.rule_expression_data[current_count].output_data = [];
               }
 
               if (forlineno == 0) {
@@ -214,8 +216,30 @@ export class RulewbComponent implements OnInit {
 
               }
 
+             var fetch_data = data.RuleWorkBenchOutput[i];   
+              this.seq_count = fetch_data.OPTM_SEQID;
+              let current_count = (this.seq_count - 1);
+               
+              let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
+              this.rule_expression_data[current_count].output_data.push({
+                rowindex: i,
+                check_child: checked_child,
+                seq_number: this.seq_count,
+                feature:fetch_data.OPTM_FEATUREID,
+                featureCode:fetch_data.OPTM_FEATURECODE,
+                item:fetch_data.OPTM_ITEMKEY,
+                value:fetch_data.OPTM_VALUE,
+                uom:fetch_data.OPTM_UOM,
+                quantity:fetch_data.OPTM_QUANTITY,
+                edit_quantity:fetch_data.OPTM_ISQTYEDIT,
+                price_source:fetch_data.OPTM_PRICESOURCE,
+                edit_price:fetch_data.OPTM_ISPRICEEDIT,
+                default:fetch_data.OPTM_DEFAULT,
+                type: typefromdatabase
 
-              this.rule_feature_data.push({
+              });
+
+             /*  this.rule_feature_data.push({
                 rowindex: i,
                 check_child: true,
                 feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
@@ -230,11 +254,15 @@ export class RulewbComponent implements OnInit {
                 default: data.RuleWorkBenchOutput[i].OPTM_DEFAULT,
                 type: typefromdatabase
 
-              });
+              }); */
 
             }
           }
          // this.global_rule_feature_data = this.rule_feature_data;
+          console.log(this.rule_expression_data);
+          setTimeout(function(){
+            obj.getFeatureDetailsForOutput();
+          }, 300)
         }
 
 
@@ -515,6 +543,14 @@ export class RulewbComponent implements OnInit {
         }
       }
 
+      if (type_value_code !== "" && operand_1_code !== "" && condition == "") {
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.condition, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
+          return false;
+        
+      }
+
       if (operator != "") {
         if (index == "0") {
           this.generated_expression_value = "";
@@ -570,6 +606,7 @@ export class RulewbComponent implements OnInit {
           this.showUpdateSequenceBtn == false;
           return false;
         }
+
       }
 
       let operand = operand_1_code;
