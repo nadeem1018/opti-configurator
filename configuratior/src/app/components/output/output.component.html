@@ -266,7 +266,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="quantity">{{language.quantity}}</label>
                   <div class="col-sm-9">
-                    <input type="number" ngValue="" pattern="\d+" class="form-control  form-control-sm mt3 pull-right" name="quantity" id="quantity"
+                    <input type="text" ngValue="" pattern="\d+" class="form-control  form-control-sm mt3 pull-right" name="quantity" id="quantity"
                       placeholder="{{language.quantity}}" [(ngModel)]="step2_data.quantity" #quantity (change)="on_input_change('quantity',quantity.value)"
                       style="text-align:right">
 
@@ -327,7 +327,7 @@
                                   <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
                                     <td>
                                       <div class="{{header_data.element_class}}">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked)"
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked)" [(checked)]="feature_model_data.checked"
                                           >
                                         <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
                                       </div>
@@ -350,7 +350,7 @@
                                       <td >
                                           <div class="{{header_data.element_class}}">
                                               <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
-                                              (change)="onselectionchange(header_data,selectionchecked)" >
+                                              (change)="onselectionchange(header_data,selectionchecked)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
                                               <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
                                             </div>
                                       </td>
@@ -859,7 +859,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>-->
                 <hr>
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
@@ -871,7 +871,7 @@
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox" class="custom-control-input" #accallcheckbox
-                                  (click)="selectall(accallcheckbox.checked)">
+                                  (click)="selectallAccessory(accallcheckbox.checked)">
                                 <label class="custom-control-label" for="acccessory_check{{label}}"></label>
                               </div>
                             </span>
@@ -886,7 +886,7 @@
                           <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox ">
-                                <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" [(checked)]=row.checked #checkedvalue (change)="onAccessoryChange(checkedvalue.checked,row)"
+                                <input type="checkbox" id="accesory_{{row[row_data]}}" name="child_checkbox" [(checked)]=row.checked #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,row)"
                                   class="custom-control-input">
                                 <label class="custom-control-label" for="accesory_{{row[row_data]}}"></label>
                               </div>
@@ -900,7 +900,7 @@
                     </table>
                   </div>
                 </div>
-              </div> -->
+              <!-- </div>  -->
               </div>
               <div class="col-md-8 border-left-primary">
                 <div class="modal_heading_block" *ngIf="isModelVisible">

@@ -35,6 +35,7 @@ export class OutputComponent implements OnInit {
   public accessory_discount_percent: number = 0;
   public step2_final_dataset_to_save = [];
   public tree_accessory_json = [];
+  public Accessoryarray = [];
   public warehouse: string = "";
   //public step2_data_all_data={};
   public doctype: any = "";
@@ -76,7 +77,7 @@ export class OutputComponent implements OnInit {
   /* public refresh_button_text = '<i class="fa fa-refresh fa-fw"></i> ' + this.language.refresh; */
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
-  public Accessory_table_hidden_elements = [false, false, false, true, true, true];
+  public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
   public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
@@ -138,7 +139,7 @@ export class OutputComponent implements OnInit {
       this.step1_data.document_name = this.language.SalesOrder;
     }
     this.feature_accessory_list = []
-    this.step2_data.quantity = 0;
+    this.step2_data.quantity = 1;
     this._el.nativeElement.focus();
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
@@ -353,13 +354,13 @@ export class OutputComponent implements OnInit {
     if (inputid == "quantity") {
       if (value < 0) {
         this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-        this.step2_data.quantity = 0;
+        this.step2_data.quantity = 1;
         return;
       }
       var rgexp = /^\d+$/;
       if (rgexp.test(value) == false) {
         this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-        this.step2_data.quantity = 0;
+        this.step2_data.quantity = 1;
         return;
       }
       else {
@@ -983,21 +984,6 @@ export class OutputComponent implements OnInit {
                 isPricehide = true
               }
 
-              // for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-              //   if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
-              //     isExist = 1;
-              //   }
-              // }
-              // if (isExist == 0) {
-              //   this.accessory_itm_list_table.push({
-              //     FeatureId: data[i].OPTM_FEATUREID,
-              //     Item: data[i].OPTM_ITEMKEY,
-              //     Description: data[i].OPTM_DISPLAYNAME,
-              //     quantity: data[i].OPTM_QUANTITY,
-              //     price: 0,
-              //     pricextn: 0
-              //   });
-              // } 
               if (this.feature_itm_list_table.length > 0) {
                 for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
                   if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
@@ -1062,9 +1048,6 @@ export class OutputComponent implements OnInit {
         this.feature_price_calculate();
       }
     }
-    //this.accesory_price_calculate();
-
-
   }
 
   on_calculation_change(inputid, value) {
@@ -1098,8 +1081,11 @@ export class OutputComponent implements OnInit {
     this.feature_tax_total[1].value = 0;
     this.feature_discount_percent = 0;
     this.accessory_discount_percent = 0;
-    this.step2_data.quantity = 0;
+    this.step2_data.quantity = 1;
     this._el.nativeElement.focus();
+    this.ModelHeaderData = [];
+    this.ModelBOMDataForSecondLevel = [];
+    this.FeatureBOMDataForSecondLevel = [];
 
   }
 
@@ -1107,11 +1093,29 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
         if (data != null || data != undefined) {
-          //  this.GetDataForSelectedFeatureModelItem(2,"",13,"");
           console.log(data);
-          this.ModelHeaderData = data.ModelHeaderData;
-          this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel;
-          this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel;
+          this.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
+            return obj['ACCESSORY'] != "Y"
+          })
+          // this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel
+          this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
+            return obj['ACCESSORY'] != "Y"
+          });;
+          this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
+            return obj['ACCESSORY'] != "Y"
+          });
+          this.Accessoryarray = [];
+          this.Accessoryarray = data.ModelHeaderData.filter(function (obj) {
+            return obj['ACCESSORY'] == "Y";
+          });
+          this.getAccessoryData(this.Accessoryarray)
+          var Access = [];
+          Access = data.ModelBOMDataForSecondLevel.filter(function (obj) {
+            return obj['ACCESSORY'] == "Y";
+          });
+          this.getAccessoryData(Access)
+
+          this.getDefaultItems();
 
         }
         else {
@@ -1127,7 +1131,7 @@ export class OutputComponent implements OnInit {
     );
   }
 
-  onselectionchange(feature_model_data, selectionchecked) {
+  onselectionchange(feature_model_data, value) {
     let type = feature_model_data.OPTM_TYPE
     let modelid;
     let featureid;
@@ -1165,35 +1169,34 @@ export class OutputComponent implements OnInit {
     else {
       parentmodelid = feature_model_data.OPTM_MODELID
     }
-    let value = selectionchecked.checked
     if (value == true) {
       this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid).subscribe(
         data => {
 
           if (data != null || data != undefined) {
             if (data.DataForSelectedFeatureModelItem.length > 0) {
-              let parentarray 
-              if(parentmodelid!=""){
-                if(parentmodelid==this.step2_data.model_id){
+              let parentarray
+              if (parentmodelid != "") {
+                if (parentmodelid == this.step2_data.model_id) {
                   parentarray = this.ModelHeaderData.filter(function (obj) {
-                    return obj['OPTM_MODELID'] == parentmodelid && obj['OPTM_ITEMKEY']==feature_model_data.OPTM_ITEMKEY
+                    return obj['OPTM_MODELID'] == parentmodelid && obj['OPTM_ITEMKEY'] == feature_model_data.OPTM_ITEMKEY
                   });
                 }
-                else{
+                else {
                   parentarray = this.ModelHeaderData.filter(function (obj) {
                     return obj['OPTM_CHILDMODELID'] == parentmodelid
                   });
                 }
-                
+
               }
-              else{
-                 parentarray = this.ModelHeaderData.filter(function (obj) {
+              else {
+                parentarray = this.ModelHeaderData.filter(function (obj) {
                   return obj['OPTM_FEATUREID'] == parentfeatureid
                 });
               }
-              
-                
-              
+
+
+
               if (type == 1) {
 
                 var isExist;
@@ -1370,6 +1373,15 @@ export class OutputComponent implements OnInit {
         }
       );//end subscribe
     } //end value
+    else {
+      for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+        if (this.feature_itm_list_table[i].FeatureId == feature_model_data.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == feature_model_data.OPTM_ITEMKEY) {
+          this.feature_itm_list_table.splice(i, 1);
+          i = i - 1;
+        }
+      }
+    }
+
   } //end selection
 
   setItemDataForFeature(ItemData, parentarray) {
@@ -1378,38 +1390,38 @@ export class OutputComponent implements OnInit {
     if (ItemData.length > 0) {
       if (parentarray[0].element_type == "radio") {
         for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-          if(parentarray[0].OPTM_TYPE==1){
+          if (parentarray[0].OPTM_TYPE == 1) {
             if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID) {
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
             }
           }
-          else if(parentarray[0].OPTM_TYPE==3){
+          else if (parentarray[0].OPTM_TYPE == 3) {
             if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
             }
           }
-         
+
         }
       }
       var isExist;
-      if(parentarray[0].OPTM_TYPE==1){
+      if (parentarray[0].OPTM_TYPE == 1) {
         isExist = this.feature_itm_list_table.filter(function (obj) {
           return obj['FeatureId'] == ItemData[0].OPTM_FEATUREID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
         });
       }
-      else if(parentarray[0].OPTM_TYPE==3){
+      else if (parentarray[0].OPTM_TYPE == 3) {
         isExist = this.feature_itm_list_table.filter(function (obj) {
           return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
         });
       }
-      else{
+      else {
         isExist = this.feature_itm_list_table.filter(function (obj) {
           return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
         });
       }
-     
+
 
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
@@ -1425,7 +1437,7 @@ export class OutputComponent implements OnInit {
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
-          ModelId:ItemData[0].OPTM_MODELID
+          ModelId: ItemData[0].OPTM_MODELID
         });
       }
     }
@@ -2283,12 +2295,21 @@ export class OutputComponent implements OnInit {
 
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
     var array = [];
-    if (header_feature_table['OPTM_TYPE'] == "1") {
+    for (let i = 0; i < feature_child_datatable.length; i++) {
+      if (feature_child_datatable[i].OPTM_DEFAULT == "Y") {
+        feature_child_datatable[i].checked=true
+        //this.onselectionchange(feature_child_datatable[i],true);
+      }
+      else {
+        feature_child_datatable[i].checked=false
+      }
+    }
+    if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
 
       array = feature_child_datatable.filter(function (obj) {
         return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
       });
-    } else if (header_feature_table['OPTM_TYPE'] == "3") {
+    } else if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['ACCESSORY'] != "Y") {
       array = model_child_datatable.filter(function (obj) {
         return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'];
       });
@@ -2301,8 +2322,161 @@ export class OutputComponent implements OnInit {
       header_feature_table['element_type'] = "radio";
       header_feature_table['element_class'] = "custom-control custom-radio";
     }
+
+
     return array;
 
+  }
+
+  getAccessoryData(Accarray) {
+    let checkedacc = false;
+    for (let iaccss = 0; iaccss < Accarray.length; iaccss++) {
+      this.feature_accessory_list.push({
+        id: Accarray[iaccss].OPTM_FEATUREID,
+        key: Accarray[iaccss].feature_code,
+        name: Accarray[iaccss].OPTM_DISPLAYNAME,
+        model_id: Accarray[iaccss].OPTM_MODELID,
+        checked: checkedacc,
+        parentfeatureid: Accarray[iaccss].OPTM_FEATUREID,
+        parentmodelid: Accarray[iaccss].OPTM_MODELID
+      });
+    }
+  }
+
+  onAccessorySelectionChange(value, rowData) {
+    if (value == true) {
+      let parentfeatureid = rowData.parentfeatureid
+      this.OutputService.GetDataForSelectedFeatureModelItem(1, "", rowData.id, "", rowData.parentfeatureid, "").subscribe(
+        data => {
+          let parentarray = this.Accessoryarray.filter(function (obj) {
+            return obj['OPTM_FEATUREID'] == parentfeatureid
+          });
+          if (data.DataForSelectedFeatureModelItem.length > 0)
+            this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+        },
+        error => {
+          this.stoprefreshloader();
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        });
+
+    }
+    else {
+      for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+        if (this.feature_itm_list_table[i].FeatureId == rowData.id) {
+          this.feature_itm_list_table.splice(i, 1);
+          i = i - 1;
+        }
+      }
+    }
+
+  }
+
+  setItemDataForFeatureAccessory(ItemData, parentarray) {
+    let isPriceDisabled: boolean = true;
+    let isPricehide: boolean = true;
+    if (ItemData.length > 0) {
+      for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+        if (parentarray[0].OPTM_TYPE == 1) {
+          if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID) {
+            this.feature_itm_list_table.splice(i, 1);
+            i = i - 1;
+          }
+        }
+        else if (parentarray[0].OPTM_TYPE == 3) {
+          if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
+            this.feature_itm_list_table.splice(i, 1);
+            i = i - 1;
+          }
+        }
+
+      }
+
+      var isExist;
+      for (let i = 0; i < ItemData.length; i++) {
+        if (parentarray[0].OPTM_TYPE == 1) {
+          isExist = this.feature_itm_list_table.filter(function (obj) {
+            return obj['FeatureId'] == ItemData[i].OPTM_FEATUREID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
+          });
+        }
+        else if (parentarray[0].OPTM_TYPE == 3) {
+          isExist = this.feature_itm_list_table.filter(function (obj) {
+            return obj['ModelId'] == ItemData[i].OPTM_MODELID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
+          });
+        }
+        else {
+          isExist = this.feature_itm_list_table.filter(function (obj) {
+            return obj['ModelId'] == ItemData[i].OPTM_MODELID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
+          });
+        }
+
+
+        if (isExist.length == 0) {
+          this.feature_itm_list_table.push({
+            FeatureId: ItemData[i].OPTM_FEATUREID,
+            featureName: parentarray[0].feature_code,
+            Item: ItemData[i].OPTM_ITEMKEY,
+            ItemNumber: ItemData[i].DocEntry,
+            Description: ItemData[i].OPTM_DISPLAYNAME,
+            quantity: ItemData[i].OPTM_QUANTITY,
+            price: ItemData[i].OPTM_PRICESOURCE,
+            Actualprice: ItemData[i].Price,
+            pricextn: 0,
+            is_accessory: "Y",
+            isPriceDisabled: isPriceDisabled,
+            pricehide: isPricehide,
+            ModelId: ItemData[i].OPTM_MODELID
+          });
+        }
+      }
+      this.feature_price_calculate();
+    }
+  }
+
+  selectallAccessory(value) {
+    for (let i = 0; i < this.feature_accessory_list.length; ++i) {
+      this.feature_accessory_list[i].checked = value;
+      if (value == true) {
+        this.OutputService.GetDataForSelectedFeatureModelItem(1, "", this.feature_accessory_list[i].id, "", this.feature_accessory_list[i].parentfeatureid, "").subscribe(
+          data => {
+            let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
+            let parentarray = this.ModelHeaderData.filter(function (obj) {
+              return obj['OPTM_FEATUREID'] == parentfeatureid
+            });
+            if (data.DataForSelectedFeatureModelItem.length > 0)
+              this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+          },
+          error => {
+            this.stoprefreshloader();
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
+          });
+      }
+      else {
+        if (this.feature_itm_list_table.length > 0) {
+          for (let iacc = 0; iacc < this.feature_itm_list_table.length; iacc++) {
+            if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+              this.feature_itm_list_table.splice(iacc, 1)
+              iacc = iacc - 1;
+            }
+
+          }
+        }
+      }
+    }
+    this.feature_price_calculate();
+  }
+
+  getDefaultItems() {
+    if (this.FeatureBOMDataForSecondLevel.length > 0) {
+      var DefaultArray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+        return obj['OPTM_DEFAULT'] == 'Y'
+      });
+      for (let i = 0; i < DefaultArray.length; i++) {
+        this.onselectionchange(DefaultArray[i], true);
+      }
+
+    }
   }
 
 }
