@@ -45,7 +45,8 @@ export class RulewbComponent implements OnInit {
   public typevaluefromdatabase: string = "";
   public typevaluecodefromdatabase: string = "";
   public operand_type:any ='';
-
+  public add_sequence_mode: boolean = false;
+  public update_sequence_mode: boolean = false;
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
 
@@ -291,6 +292,8 @@ export class RulewbComponent implements OnInit {
   }
 
   addNewSequence() {
+    this.add_sequence_mode = true;
+    this.update_sequence_mode = false;
     if (this.validation("AddRow") == false)
       return;
     if (this.rule_expression_data.length > 0) {
@@ -323,6 +326,8 @@ export class RulewbComponent implements OnInit {
     this.generated_expression_value = "";
     this.editing_row = 0;
     this.rule_feature_data = new Array();
+    this.add_sequence_mode = false;
+    this.update_sequence_mode = false;
   }
 
   hide_show_output() {
@@ -637,9 +642,13 @@ export class RulewbComponent implements OnInit {
     if (current_exp.trim() != "") {
 
       this.generated_expression_value = current_exp;
-      if (this.showUpdateSequenceBtn == false) {
+      if (this.add_sequence_mode == true){
         this.showAddSequenceBtn = true;
+      } else if (this.update_sequence_mode == true) {
+        this.showUpdateSequenceBtn = true;
       }
+      
+      
     }
   }
 
@@ -835,7 +844,8 @@ export class RulewbComponent implements OnInit {
   }
 
   edit_expression(row, rowindex) {
-    console.log(row);
+    this.add_sequence_mode = false;
+    this.update_sequence_mode = true;
     this.rule_sequence_data = [];
     if (row.row_data.length > 0) {
       let edit_expression_data = row.row_data;
