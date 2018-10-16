@@ -265,55 +265,55 @@ body {
 
 // left panel css
 
-li.nav-item:first-child{
-    margin-top: 8px;
-}
-
-li.nav-item.active {
-    background-color: white;
-    color: black;
-    a{
-        i, span{
-            color: #000;
-        }
+@media (min-width: 768px) {
+    li.nav-item:first-child{
+        margin-top: 8px;
     }
-}
 
-.sidebar .nav-item .nav-link:hover {
-    color: transparent;
-}
-
-li.nav-item:hover {
-    background-color: white;
-    color: black;
-    transition: 0.2s;
-    a{
-        i, span{
-            color: #000;
-        }
-    }
-}
-
-.sidebar{
-    .nav-item{
+    li.nav-item.active {
+        background-color: white;
+        color: black;
         a{
-            text-align: center;
-            span{
-                display: inline-block;
-                width: 100%;
-                font-size: 10px;
+            i, span{
+                color: #000;
             }
         }
     }
-}
 
-.sidebar.toggled{
-    //width: 70px !important;
-    li{
-        a {
-            //width: 70px;
-            span{
-                display: none;
+    .sidebar .nav-item .nav-link:hover {
+        color: transparent;
+    }
+
+    li.nav-item:hover {
+        background-color: white;
+        color: black;
+        transition: 0.2s;
+        a{
+            i, span{
+                color: #000;
+            }
+        }
+    }
+
+    .sidebar{
+        .nav-item{
+            a{
+                text-align: center;
+                span{
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+
+    .sidebar.toggled{
+        li{
+            a {
+                span{
+                    display: none;
+                }
             }
         }
     }
