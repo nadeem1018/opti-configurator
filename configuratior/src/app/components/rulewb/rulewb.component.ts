@@ -853,11 +853,10 @@ export class RulewbComponent implements OnInit {
       this.show_sequence = true;
       this.show_add_sequence_btn = false;
       this.showAddSequenceBtn = false;
-      this.showUpdateSequenceBtn = true;
+      this.showUpdateSequenceBtn = false;
       this.generated_expression_value = row.expression;
       this.editing_row = rowindex;
       this.seq_count = row.seq_count;
-
     }
   }
 
