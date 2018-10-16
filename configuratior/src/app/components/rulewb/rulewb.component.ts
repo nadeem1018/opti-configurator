@@ -45,7 +45,8 @@ export class RulewbComponent implements OnInit {
   public typevaluefromdatabase: string = "";
   public typevaluecodefromdatabase: string = "";
   public operand_type:any ='';
-
+  public add_sequence_mode: boolean = false;
+  public update_sequence_mode: boolean = false;
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
 
@@ -95,7 +96,7 @@ export class RulewbComponent implements OnInit {
       this.isDeleteButtonVisible = false;
       this.show_sequence = false;
       this.show_add_sequence_btn = true
-
+      var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
           if (data.RuleWorkBenchHeader.length > 0) {
@@ -124,9 +125,7 @@ export class RulewbComponent implements OnInit {
           }
 
           if (data.RuleWorkBenchInput.length > 0) {
-            /* this.show_sequence = true;
-            this.show_add_sequence_btn = false */
-
+          
             this.counter = 0;
             let managed_seq = [1];
             let sequence_gen = [];
@@ -165,6 +164,10 @@ export class RulewbComponent implements OnInit {
               this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
+              }
+
+              if (this.rule_expression_data[current_count].output_data == undefined) {
+                this.rule_expression_data[current_count].output_data = [];
               }
 
               if (forlineno == 0) {
@@ -214,8 +217,30 @@ export class RulewbComponent implements OnInit {
 
               }
 
+             var fetch_data = data.RuleWorkBenchOutput[i];   
+              this.seq_count = fetch_data.OPTM_SEQID;
+              let current_count = (this.seq_count - 1);
+               
+              let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
+              this.rule_expression_data[current_count].output_data.push({
+                rowindex: i,
+                check_child: checked_child,
+                seq_number: this.seq_count,
+                feature:fetch_data.OPTM_FEATUREID,
+                featureCode:fetch_data.OPTM_FEATURECODE,
+                item:fetch_data.OPTM_ITEMKEY,
+                value:fetch_data.OPTM_VALUE,
+                uom:fetch_data.OPTM_UOM,
+                quantity:fetch_data.OPTM_QUANTITY,
+                edit_quantity:fetch_data.OPTM_ISQTYEDIT,
+                price_source:fetch_data.OPTM_PRICESOURCE,
+                edit_price:fetch_data.OPTM_ISPRICEEDIT,
+                default:fetch_data.OPTM_DEFAULT,
+                type: typefromdatabase
 
-              this.rule_feature_data.push({
+              });
+
+             /*  this.rule_feature_data.push({
                 rowindex: i,
                 check_child: true,
                 feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
@@ -230,11 +255,15 @@ export class RulewbComponent implements OnInit {
                 default: data.RuleWorkBenchOutput[i].OPTM_DEFAULT,
                 type: typefromdatabase
 
-              });
+              }); */
 
             }
           }
          // this.global_rule_feature_data = this.rule_feature_data;
+          console.log(this.rule_expression_data);
+          setTimeout(function(){
+            obj.getFeatureDetailsForOutput();
+          }, 300)
         }
 
 
@@ -263,6 +292,8 @@ export class RulewbComponent implements OnInit {
   }
 
   addNewSequence() {
+    this.add_sequence_mode = true;
+    this.update_sequence_mode = false;
     if (this.validation("AddRow") == false)
       return;
     if (this.rule_expression_data.length > 0) {
@@ -295,6 +326,8 @@ export class RulewbComponent implements OnInit {
     this.generated_expression_value = "";
     this.editing_row = 0;
     this.rule_feature_data = new Array();
+    this.add_sequence_mode = false;
+    this.update_sequence_mode = false;
   }
 
   hide_show_output() {
@@ -515,6 +548,14 @@ export class RulewbComponent implements OnInit {
         }
       }
 
+      if (type_value_code !== "" && operand_1_code !== "" && condition == "") {
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.condition, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
+          return false;
+        
+      }
+
       if (operator != "") {
         if (index == "0") {
           this.generated_expression_value = "";
@@ -570,6 +611,7 @@ export class RulewbComponent implements OnInit {
           this.showUpdateSequenceBtn == false;
           return false;
         }
+
       }
 
       let operand = operand_1_code;
@@ -600,9 +642,13 @@ export class RulewbComponent implements OnInit {
     if (current_exp.trim() != "") {
 
       this.generated_expression_value = current_exp;
-      if (this.showUpdateSequenceBtn == false) {
+      if (this.add_sequence_mode == true){
         this.showAddSequenceBtn = true;
+      } else if (this.update_sequence_mode == true) {
+        this.showUpdateSequenceBtn = true;
       }
+      
+      
     }
   }
 
@@ -627,6 +673,9 @@ export class RulewbComponent implements OnInit {
                   $(actualvalue).val("");
                   return;
                 }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
+                }
               });
           }
 
@@ -637,6 +686,39 @@ export class RulewbComponent implements OnInit {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
                   $(actualvalue).val("");
                   return;
+                }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
+                }
+              });
+          }
+        }
+
+        if (key === 'operand_1_code') {
+          if (this.rule_sequence_data[i].type == 1) {
+            this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type,this.rule_sequence_data[i].type_value,value).subscribe(
+              data => {
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                  $(actualvalue).val("");
+                  return;
+                }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
+                }
+              });
+          }
+
+          else {
+            this.service.onChildModelIdChange(this.rule_sequence_data[i].type,this.rule_sequence_data[i].type_value,value).subscribe(
+              data => {
+                if (data === "False") {
+                  this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+                  $(actualvalue).val("");
+                  return;
+                }
+                else{
+                  this.rule_sequence_data[i].type_value = data;
                 }
               });
           }
@@ -762,7 +844,8 @@ export class RulewbComponent implements OnInit {
   }
 
   edit_expression(row, rowindex) {
-    console.log(row);
+    this.add_sequence_mode = false;
+    this.update_sequence_mode = true;
     this.rule_sequence_data = [];
     if (row.row_data.length > 0) {
       let edit_expression_data = row.row_data;
@@ -780,11 +863,10 @@ export class RulewbComponent implements OnInit {
       this.show_sequence = true;
       this.show_add_sequence_btn = false;
       this.showAddSequenceBtn = false;
-      this.showUpdateSequenceBtn = true;
+      this.showUpdateSequenceBtn = false;
       this.generated_expression_value = row.expression;
       this.editing_row = rowindex;
       this.seq_count = row.seq_count;
-
     }
   }
 
@@ -954,14 +1036,20 @@ export class RulewbComponent implements OnInit {
         RuleId: this.rule_wb_data.RuleId
 
       })
-      single_data_set.single_data_set_output = this.rule_feature_data
+     //  single_data_set.single_data_set_output = this.rule_feature_data
       let extracted_sequences: any = [];
+      let extracted_output: any = [];
       for (var key in this.rule_expression_data) {
         for (var rowkey in this.rule_expression_data[key].row_data) {
           extracted_sequences.push(this.rule_expression_data[key].row_data[rowkey]);
         }
+
+        for (var rowkey in this.rule_expression_data[key].output_data) {
+          extracted_output.push(this.rule_expression_data[key].output_data[rowkey]);
+        }
       }
-      single_data_set.single_data_set_expression = extracted_sequences
+      single_data_set.single_data_set_expression = extracted_sequences;
+      single_data_set.single_data_set_output = extracted_output
       this.service.SaveData(single_data_set).subscribe(
         data => {
           if (data === "True") {

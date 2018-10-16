@@ -30,8 +30,11 @@ export class SidebarComponent implements OnInit {
   }
 
   //On Menu Press
-  onMenuPress(pressedMenu){
+  selectedItem:number=0;
+  onMenuPress(pressedMenu, newValue){
+    console.log(newValue);
     sessionStorage.setItem('currentMenu',pressedMenu[0].menu_code);
+    this.selectedItem = newValue;
   }
 
   //Core Functions

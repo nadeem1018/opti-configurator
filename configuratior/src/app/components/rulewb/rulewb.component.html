@@ -1,5 +1,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-  <h4 class="h4"> <strong> {{page_main_title}} </strong> </h4>
+  <h4 class="h4">
+    <strong> {{page_main_title}} </strong>
+  </h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
   <!--  <li class="breadcrumb-item">
@@ -43,37 +45,37 @@
       </div>
 
       <div class="form-group row clearfic">
-       
-            <label class="opt_custome-label col-form-label" for="datetime_input">{{language.effective_from}}</label>
-            <div class="opt_custom-field">
-              <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-                name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_from}}"
-                [(ngModel)]="rule_wb_data.effective_from" style="max-width: 244px !important; width: 100%;">
-              <div class="input-group-append float-left" >
-                <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                  <i class="fa fa-calendar"></i>
-                </span>
-              </div>
-              <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
-            </div>
-          
-      
-            <label class="opt_custome-label col-form-label" for="datetime_input" >{{language.effective_to}}</label>
-            <div class="opt_custom-field">
-              <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-                name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}"
-                [(ngModel)]="rule_wb_data.effective_to" style="max-width: 244px !important; width: 100%;">
-              <div class="input-group-append float-left" >
-                <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
-                  <i class="fa fa-calendar"></i>
-                </span>
-              </div>
-              <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
-            </div>
-         
+
+        <label class="opt_custome-label col-form-label" for="datetime_input">{{language.effective_from}}</label>
+        <div class="opt_custom-field">
+          <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
+            name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from"
+            style="max-width: 244px !important; width: 100%;">
+          <div class="input-group-append float-left">
+            <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </div>
+          <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
+        </div>
+
+
+        <label class="opt_custome-label col-form-label" for="datetime_input">{{language.effective_to}}</label>
+        <div class="opt_custom-field">
+          <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
+            name='datepicker' type="text" value="" id="datetime_input" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to"
+            style="max-width: 244px !important; width: 100%;">
+          <div class="input-group-append float-left">
+            <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </div>
+          <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
+        </div>
+
       </div>
 
-      <div class="form-group row clearfix" >
+      <div class="form-group row clearfix">
         <label class="opt_custome-label col-form-label" for="featureDisplay">{{language.discontinued}}</label>
         <div class="opt_custom-field mt-3px">
           <div class="custom-control custom-checkbox custom-control-inline">
@@ -98,7 +100,7 @@
             </span>
           </div>
 
-         
+
         </div>
 
         <div class="col-sm-12" *ngIf="showOutputBtn">
@@ -125,26 +127,26 @@
       <hr>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-8 pl-0">
+          <div class="col-md-12 pl-0">
             <!-- top table start -->
             <div class="sequence_box" *ngIf="show_sequence">
-             
+
               <div class="col-sm-12 pl-0 pr-0">
-                <div class="form-group col-md-2 clearfix bg-primary text-white" style="padding-bottom:3px;">
+                <!-- <div class="form-group col-md-2 clearfix bg-primary text-white" style="padding-bottom:3px;">
                   <div class="">{{language.input}}</div>
-                </div>
+                </div> -->
                 <hr>
                 <div class="table-responsive table-responsive-sm">
-                  
+
                   <table class="table table-bordered top-table  table-sm" id="dataTable" cellspacing="0">
 
                     <!-- start head section -->
                     <thead class="thead-dark">
-                      <!-- <tr class="text-center">
-                            <th colspan="9" align="center">
-                              <span class="text-center">{{language.input}}</span>
-                            </th>
-                          </tr> -->
+                      <tr class="text-center">
+                        <th colspan="9" align="center" style="width:100%">
+                          <span class="text-center">{{language.input}}</span>
+                        </th>
+                      </tr>
                       <tr>
                         <th width="3%">{{language.seq_row_no}}</th>
                         <th width="5%">{{language.operator}}</th>
@@ -165,7 +167,8 @@
                     <tbody style="position: relative;" [perfectScrollbar]="">
                       <tr *ngFor="let row of rule_sequence_data">
                         <td>
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/> </td>
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                            value={{row.seq_count}}/> </td>
                         <td>
                           <select class="form-control  form-control-sm mt3" #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )">
                             <option *ngFor="let v of commonData.operator_type" [value]="v.value" [selected]="row.operator==v.value"> {{v.Name}}</option>
@@ -204,26 +207,33 @@
                         </td>
                         <td>
                           <div class="input-group">
-                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}" (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value )" />
-                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"  (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value )" /> 
-                              <div class="input-group-append">
-                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
-                                  <i class="fa fa-bars"></i>
-                                </span>
-                              </div>
+                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}"
+                              (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value,operand_1_code )" />
+                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"
+                              (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value,operand_1_code )"
+                            />
+                            <div class="input-group-append">
+                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
+                                <i class="fa fa-bars"></i>
+                              </span>
+                            </div>
                           </div>
-                          </td>
+                        </td>
                         <td>
                           <div class="input-group">
-                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}" [disabled]="row.is_operand2_disable"  (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )" /> 
-                            <input type="text" class="form-control form-control-sm mt3" id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}" [disabled]="row.is_operand2_disable"  (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )" /> 
-                              <div class="input-group-append" [hidden]="row.is_operand2_disable">
-                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">
-                                  <i class="fa fa-bars"></i>
-                                </span>
-                              </div>
+                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}"
+                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )"
+                            />
+                            <input type="text" class="form-control form-control-sm mt3" id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}"
+                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )"
+                            />
+                            <div class="input-group-append" [hidden]="row.is_operand2_disable">
+                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">
+                                <i class="fa fa-bars"></i>
+                              </span>
+                            </div>
                           </div>
-                          </td>
+                        </td>
                         <td>
                           <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
                             <i class="fa fa-trash"></i>
@@ -275,21 +285,140 @@
             </div>
             <!-- top table end -->
 
+            <div class="col-md-12 p-0">
+              <div class="output_window_box" *ngIf="rule_feature_data.length">
+                <div class="col-sm-12 pl-0 pr-0">
+                  <div class="form-group row col-md-12 clearfix">
+                    <!--   <div class="col-sm-4 bg-primary text-white">{{language.output}}</div> -->
+                    <label class="col-sm-1 text-right col-form-label" for="featureDisplay">{{language.Excluded}}</label>
+                    <div class="col-sm-2 text-right mt-3px">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="yess" name="Excluded" [(ngModel)]="rule_wb_data.Excluded" class="custom-control-input" value="1">
+                        <label class="custom-control-label" for="yess"></label>
+                      </div>
+                    </div>
+            
+                  </div>
+                  <!-- <div class="form-group row clearfix">
+                              
+                            </div> -->
+                  <hr>
+                  <div class="table-responsive table-responsive-sm">
+            
+                    <table class="table table-bordered output-table table-sm" id="dataTable" cellspacing="0">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th colspan="10" style="width:100%" class="text-center" align="center">
+                            <span class="text-center">
+                              <b>{{language.output}}</b>
+                            </span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th>
+                            <div class="custom-control custom-checkbox">
+                              <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
+                                              <label class="custom-control-label" for="check_all"></label> -->
+                              <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)" class="custom-control-input"
+                                [(checked)]=selectall value="1">
+                              <label class="custom-control-label" for="check_all"></label>
+                            </div>
+            
+                          </th>
+                          <th>{{language.feature}}</th>
+                          <th>{{language.item}}</th>
+                          <th>{{language.value}}</th>
+                          <th>{{language.uom}}</th>
+                          <th>{{language.quantity}}</th>
+                          <th>{{language.edit_quantity}}</th>
+                          <th>{{language.price_source}}</th>
+                          <th>{{language.edit_price}}</th>
+                          <th>{{language.default}}</th>
+            
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let row of rule_feature_data">
+            
+                          <td>
+                            <!-- <div class="custom-control custom-checkbox">
+                                              <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
+                                              <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
+                                            </div> -->
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)"
+                                value={{row.check_child}} [(checked)]=row.check_child>
+                              <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
+                            </div>
+                          </td>
+                          <td>
+                            <input type="hidden" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}}
+                              #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)" />
+            
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}}
+                              #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)" /> </td>
+                          <td>
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_item" name="feature_item" #featureitem
+                              value={{row.item}} (change)="output_change_event('feature_item',featureitem.value,row.rowindex)" />
+                          </td>
+                          <td>
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_value" name="feature_value" #featurevalue
+                              value={{row.value}} (change)="output_change_event('feature_value',featurevalue.value,row.rowindex)" />
+                          </td>
+                          <td>
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" #uom id="uom" name="uom" value={{row.uom}}
+                              (change)="output_change_event('uom',uom.value,row.rowindex)" />
+                          </td>
+                          <td>
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" id="quantity" name="quantity" value={{row.quantity}}
+                              #quantity (change)="output_change_event('quantity',quantity.value,row.rowindex)" />
+                          </td>
+                          <td>
+                            <select class="form-control  form-control-sm mt3" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
+                              <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_quantity==v.value"> {{v.Name}}</option>
+                            </select>
+                          </td>
+                          <td>
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" #price_source id="price_soure"
+                              name="price_soure" value={{row.price_source}} (change)="output_change_event('price_soure',price_source.value,row.rowindex)"
+                            />
+                          </td>
+                          <td>
+                            <select class="form-control  form-control-sm mt3" id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
+                              <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_price==v.value"> {{v.Name}}</option>
+                            </select>
+                          </td>
+                          <td>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" #default class="custom-control-input" id="is_default_{{row.rowindex}}" name="is_default" value={{row.is_default}}
+                                (change)="output_change_event('default',default.checked,row.rowindex)">
+                              <label class="custom-control-label" for="is_default_{{row.rowindex}}"></label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+
             <!-- bottom table start -->
             <div class="expression_box">
-            
+
               <div class="col-sm-12  pl-0 pr-0">
                 <div class="table-responsive table-responsive-sm">
-                  <div class="form-group col-md-4 clearfix bg-primary text-white">
+                 <!--  <div class="form-group col-md-4 clearfix bg-primary text-white">
                     <div class="">{{language.expression}}</div>
-                  </div>
+                  </div> -->
                   <table class="table table-bordered bottom-table table-sm" id="dataTable" cellspacing="0">
                     <thead class="thead-dark">
-                      <!-- <tr class="text-center">
-                          <th colspan="9" align="center">
-                            <span class="text-center">{{language.expression}}</span>
-                          </th>
-                        </tr> -->
+                      <tr class="text-center">
+                        <th colspan="9" align="center" style="width:100%">
+                          <span class="text-center">{{language.expression}}</span>
+                        </th>
+                      </tr>
                       <tr>
                         <th width="10%">{{language.seq_row_no}}</th>
                         <th width="75%">{{language.expression}}</th>
@@ -299,7 +428,8 @@
                     <tbody style="position: relative;" [perfectScrollbar]="">
                       <tr *ngFor="let row of rule_expression_data">
                         <td width="10%">
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.seq_count}}/>
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                            value={{row.seq_count}}/>
                         </td>
 
                         <td class="text-center" align="center" width="75%">
@@ -322,124 +452,7 @@
             <!-- bottom table end -->
           </div>
 
-          <div class="col-md-4 p-0">
-            <div class="output_window_box" *ngIf="rule_feature_data.length">
-              <div class="col-sm-12 pl-0 pr-0">
-                <div class="form-group row col-md-12 clearfix">
-                  <div class="col-sm-4 bg-primary text-white">{{language.output}}</div>
-                  <label class="col-sm-4 text-right col-form-label" for="featureDisplay">{{language.Excluded}}</label>
-                  <div class="col-sm-2 text-right mt-3px">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" id="yess" name="Excluded" [(ngModel)]="rule_wb_data.Excluded" class="custom-control-input" value="1">
-                      <label class="custom-control-label" for="yess"></label>
-                    </div>
-                  </div>
-
-                </div>
-                <!-- <div class="form-group row clearfix">
-                  
-                </div> -->
-                <hr>
-                <div class="table-responsive table-responsive-sm">
-
-                  <table class="table table-bordered output-table table-sm" id="dataTable" cellspacing="0">
-                    <thead class="thead-dark">
-                      <!-- <tr>
-                              <th colspan="10" class="text-center" align="center">
-                                <span class="text-center">{{language.output}}</span>
-                              </th>
-                            </tr> -->
-                      <tr>
-                        <th>
-                          <div class="custom-control custom-checkbox">
-                            <!-- <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" (click)="check_all()">
-                                  <label class="custom-control-label" for="check_all"></label> -->
-                            <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)" class="custom-control-input"
-                              [(checked)]=selectall value="1">
-                            <label class="custom-control-label" for="check_all"></label>
-                          </div>
-
-                        </th>
-                        <th>{{language.feature}}</th>
-                        <th>{{language.item}}</th>
-                        <th>{{language.value}}</th>
-                        <th>{{language.uom}}</th>
-                        <th>{{language.quantity}}</th>
-                        <th>{{language.edit_quantity}}</th>
-                        <th>{{language.price_source}}</th>
-                        <th>{{language.edit_price}}</th>
-                        <th>{{language.default}}</th>
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let row of rule_feature_data">
-
-                        <td>
-                          <!-- <div class="custom-control custom-checkbox">
-                                  <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)" value={{row.check_child}}>
-                                  <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
-                                </div> -->
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="child_check_{{row.rowindex}}" name="check_child" #checkboxvalue (change)="output_change_event('check_child',checkboxvalue.checked,row.rowindex)"
-                              value={{row.check_child}} [(checked)]=row.check_child>
-                            <label class="custom-control-label" for="child_check_{{row.rowindex}}"></label>
-                          </div>
-                        </td>
-                        <td>
-                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}}
-                            #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)" />
-
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}}
-                            #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)" /> </td>
-                        <td>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_item" name="feature_item" #featureitem
-                            value={{row.item}} (change)="output_change_event('feature_item',featureitem.value,row.rowindex)"
-                          />
-                        </td>
-                        <td>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_value" name="feature_value" #featurevalue
-                            value={{row.value}} (change)="output_change_event('feature_value',featurevalue.value,row.rowindex)"
-                          />
-                        </td>
-                        <td>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" #uom id="uom" name="uom" value={{row.uom}}
-                            (change)="output_change_event('uom',uom.value,row.rowindex)" />
-                        </td>
-                        <td>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" id="quantity" name="quantity" value={{row.quantity}}
-                            #quantity (change)="output_change_event('quantity',quantity.value,row.rowindex)" />
-                        </td>
-                        <td>
-                          <select class="form-control  form-control-sm mt3" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
-                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_quantity==v.value"> {{v.Name}}</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" #price_source id="price_soure"
-                            name="price_soure" value={{row.price_source}} (change)="output_change_event('price_soure',price_source.value,row.rowindex)"
-                          />
-                        </td>
-                        <td>
-                          <select class="form-control  form-control-sm mt3" id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
-                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_price==v.value"> {{v.Name}}</option>
-                          </select>
-                        </td>
-                        <td>
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" #default class="custom-control-input" id="is_default_{{row.rowindex}}" name="is_default" value={{row.is_default}}
-                              (change)="output_change_event('default',default.checked,row.rowindex)">
-                            <label class="custom-control-label" for="is_default_{{row.rowindex}}"></label>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          
         </div>
       </div>
     </div>
