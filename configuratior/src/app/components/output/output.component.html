@@ -8,9 +8,15 @@
         </h3>
         <div class="f1-steps">
           <div class="f1-progress">
-            <div class="f1-progress-line" data-now-value="25%" data-number-of-steps="4" style="width: 25%;"></div>
+            <div class="f1-progress-line" data-now-value="20%" data-number-of-steps="5" style="width: 20%;"></div>
           </div>
-          <div id="customer_details" class="f1-step active f1-step_middle">
+          <div id="choose_operation" class="f1-step active  f1-step_middle">
+            <div class="f1-step-icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>{{language.choose_one_action}}</p>
+          </div>
+          <div id="customer_details" class="f1-step  f1-step_middle">
             <div class="f1-step-icon">
               <i class="fa fa-user"></i>
             </div>
@@ -35,12 +41,67 @@
             <p>{{language.fianl_document_creat}}</p>
           </div>
         </div>
-        <fieldset class="one_step_block" data-block_id="customer_details" style="display:block">
+        <fieldset class="one_step_block" data-block_id="choose_operation" style="display:block">
+          <div class="wizard_heading_section">
+            <div class="row bg-primary pb-1 pt-1 wizard_font">
+              <div class="col-md-10 pull-left">
+                <i class="fa fa-user fa-fw"></i> {{language.choose_one_action}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_1_5}} </div>
+            </div>
+            <hr>
+          </div>
+          <div class="form_section">
+            <div class="row">
+              <div class="col-md-4 offset-md-4">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-5 col-form-label" for="customer_doc">{{language.operation_type}}</label>
+                  <div class="col-sm-5">
+                    <select class="form-control  form-control-sm mt3" name="main_operation_type" id="main_operation_type" [(ngModel)]="step1_data.main_operation_type"
+                      (change)="onOperationChange(main_operation_type.value)" #main_operation_type>
+                      <option value=""></option>
+                      <option value="1">{{language.new}}</option>
+                      <option value="2">{{language.modify_existing}}</option>
+                      <option value="3">{{language.duplicate}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="modify_duplicate_option_block" *ngIf="modify_duplicate_selected">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="modify_duplicate_lookup">{{language.select_configuration}}</label>
+                    <div class="col-sm-5 input-group">
+                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="on_configuration_id_change(modify_duplicate_lookup.value)"
+                        name="modify_duplicate_lookup" #modify_duplicate_lookup id="modify_duplicate_lookup" placeholder="{{language.select_configuration}}"
+                        [(ngModel)]="step1_data.selected_configuration_key" #selected_configuration_key>
+                      <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="open_config_lookup()">
+                          <i class="fa fa-bars"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="f1-buttons">
+            <hr>
+            <div class="pull-left">
+              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
+                <i class="fa fa-times fa-fw"></i>
+                <span>{{language.cancel}}</span>
+              </button>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="customer_details">
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+          </div>
+        </fieldset>
+        <fieldset class="one_step_block" data-block_id="customer_details" style="display:none">
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
                 <i class="fa fa-user fa-fw"></i> {{language.customer_doc_detail}} </div>
-              <div class="col-md-2 pull-right text-right"> {{language.step_1_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_2_5}} </div>
             </div>
             <hr>
           </div>
@@ -227,11 +288,11 @@
           <div class="f1-buttons">
             <hr>
             <div class="pull-left">
-              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                <i class="fa fa-times fa-fw"></i>
-                <span>{{language.cancel}}</span>
-              </button>
+              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="choose_operation">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             </div>
+            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+              <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>
@@ -242,7 +303,7 @@
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
                 <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}} </div>
-              <div class="col-md-2 pull-right text-right"> {{language.step_2_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_3_5}} </div>
             </div>
             <hr>
           </div>
@@ -302,80 +363,86 @@
                 <!-- <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
                 </div> -->
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                    <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true" >
-                        <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
-                          <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
-                            <h4 class="panel-title">
-                              <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
-                                {{header_data.OPTM_DISPLAYNAME}}
-                                <span class="text-right pull-right custom_panel_icon_section"><i class="fa fa-plus"></i></span>
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
-                            <div class="panel-body">
-                              <table class="inner-table table table-bordered table-strip table-sm" >
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th>#</th>
-                                    <th>Code</th>
-                                    <th>Description</th>
-                                    <th>Preview</th>
-                                  </tr>
-                                </thead>
-                                <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                                  <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
-                                    <td>
-                                      <div class="{{header_data.element_class}}">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked)" [(checked)]="feature_model_data.checked"
-                                          >
-                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
-                                      </div>
-                                      </td>
-                                    <td>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
-                                    </td>
-                                    <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
-                                    <td>
-                                      <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
-                                        <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                                <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
-                                    <tr>
-                                      <td >
-                                          <div class="{{header_data.element_class}}">
-                                              <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
-                                              (change)="onselectionchange(header_data,selectionchecked)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
-                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
-                                            </div>
-                                      </td>
-                                      <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
-                                      <td>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
-                                      </td>
-                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
-                                      <td>
-                                        <div class="image-preivew" *ngIf="header_data.image!=''">
-                                          <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  </tfoot>
-                              </table>
-                            </div>
-                          </div>
+                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
+                      <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
+                        <h4 class="panel-title">
+                          <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false"
+                            attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
+                            {{header_data.OPTM_DISPLAYNAME}}
+                            <span class="text-right pull-right custom_panel_icon_section">
+                              <i class="fa fa-plus"></i>
+                            </span>
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
+                        attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                        <div class="panel-body">
+                          <table class="inner-table table table-bordered table-strip table-sm">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Preview</th>
+                              </tr>
+                            </thead>
+                            <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
+                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;">
+                                <td>
+                                  <div class="{{header_data.element_class}}">
+                                    <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"
+                                      #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
+                                      (change)="onselectionchange(feature_model_data,selectionchecked.checked)" [(checked)]="feature_model_data.checked">
+                                    <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
+                                </td>
+                                <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
+                                <td>
+                                  <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
+                                    <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
+                              <tr>
+                                <td>
+                                  <div class="{{header_data.element_class}}">
+                                    <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}"
+                                      #selectionchecked class="custom-control-input" (change)="onselectionchange(header_data,selectionchecked)"
+                                      [(checked)]="FeatureBOMDataForSecondLevel.checked">
+                                    <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
+                                  </div>
+                                </td>
+                                <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
+                                <td>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
+                                </td>
+                                <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                <td>
+                                  <div class="image-preivew" *ngIf="header_data.image!=''">
+                                    <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                  </div>
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
                         </div>
                       </div>
+                    </div>
+                  </div>
                 </div>
-                  
-               <!--  <div class="new_tree_structure_area">
+
+                <!--  <div class="new_tree_structure_area">
                   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
                       <div class="panel-heading" role="tab" id="headingOne">
@@ -900,7 +967,7 @@
                     </table>
                   </div>
                 </div>
-              <!-- </div>  -->
+                <!-- </div>  -->
               </div>
               <div class="col-md-8 border-left-primary">
                 <div class="modal_heading_block" *ngIf="isModelVisible">
@@ -1121,6 +1188,8 @@
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+              <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+                <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
               <button *ngIf="feature_accessory_list.length || feature_itm_list_table.length" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
                 data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
@@ -1133,7 +1202,7 @@
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
                 <i class="fa fa-user fa-fw"></i> {{language.verify_select_final}} </div>
-              <div class="col-md-2 pull-right text-right"> {{language.step_3_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_4_5}} </div>
             </div>
             <hr>
           </div>
@@ -1325,6 +1394,8 @@
             <hr>
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+              <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
             <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next"
               data-next-block="fina_doc_create">
               <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
@@ -1336,7 +1407,7 @@
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
                 <i class="fa fa-user fa-fw"></i> {{language.sales_order_creation}} </div>
-              <div class="col-md-2 pull-right text-right"> {{language.step_4_4}} </div>
+              <div class="col-md-2 pull-right text-right"> {{language.step_5_5}} </div>
             </div>
             <hr>
           </div>
