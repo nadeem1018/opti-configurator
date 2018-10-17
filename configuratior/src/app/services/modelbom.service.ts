@@ -151,4 +151,11 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/VerifyOutput", jObject, this.common_params.httpOptions);
   }
 
+  CheckMaxSelectedValue(id): Observable<any> {
+
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,featureId:id}]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetMaxSelectableForFeature", jObject, this.common_params.httpOptions);
+  }
 }

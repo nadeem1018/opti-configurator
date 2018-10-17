@@ -722,6 +722,20 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].max_selected = value
+        if(this.modelbom_data[i].type == "1"){
+          this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
+            data => {
+            console.log(data);
+            if (data != null) {
+              if(value > data){
+                $(actualvalue).val(1);
+                this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
+                return; 
+              }
+            }
+            })
+        }
+
         if(this.modelbom_data[i].min_selected != "") {
           if(parseInt(this.modelbom_data[i].min_selected) > parseInt(value)){
             this.modelbom_data[i].min_selected = 1;
@@ -1015,6 +1029,7 @@ export class ModelbomComponent implements OnInit {
     this.serviceData = [];
     this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
       data => {
+        console.log(data);
         if (data.length > 0) {
           this.serviceData = data;
         }
