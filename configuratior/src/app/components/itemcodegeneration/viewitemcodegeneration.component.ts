@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
+import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
     selector: 'app-item-code-view-model',
@@ -46,15 +47,27 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
     public table_hidden_elements = [false, true, false, false, false];
+    isMobile:boolean=false;
+    isIpad:boolean=false;
+    isDesktop:boolean=true;
     constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
+
+    detectDevice(){
+        let getDevice = UIHelper.isDevice();
+        this.isMobile = getDevice[0];
+        this.isIpad = getDevice[1];
+        this.isDesktop = getDevice[2];
+    }
 
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
+        this.detectDevice();
         element.classList.add("add_item-code-view-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');
+        
 
 
         this.commonData.checkSession();

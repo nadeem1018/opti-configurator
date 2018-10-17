@@ -6,14 +6,15 @@
     </a>
   </li> -->
 
-  <div *ngFor="let menuRow of menu_obj">
-      <li class="nav-item">
-          <a class="nav-link" href='javascript:;' (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID))" routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
-              <i class="fa fa-fw fa-table"></i>
-              <span>{{(getMenuDetails(menuRow.OPTM_MENUID))[0].menu_title}}</span>
-            </a>
-          </li>        
-  </div>  
+  <ng-container *ngFor="let menuRow of menu_obj, let i = index">
+    <!-- {{i}} -->
+      <li class="nav-item" [ngClass]="{'active': selectedItem == i}" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i)" routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
+        <a class="nav-link" href='javascript:;'>
+            <i class="fa fa-fw fa-table"></i>
+            <span>{{(getMenuDetails(menuRow.OPTM_MENUID))[0].menu_title}}</span>
+          </a>
+      </li>        
+  </ng-container>  
   
  
 

@@ -5,6 +5,7 @@ import { ItemcodegenerationService } from '../../services/itemcodegeneration.ser
 import { CommonService } from 'src/app/services/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
+import { UIHelper } from '../../helpers/ui.helpers';
 
 
 
@@ -58,10 +59,23 @@ export class ItemcodegenerationComponent implements OnInit {
   public dialog_params: any = [];
   public show_dialog: boolean = false;
 
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  
+
+  detectDevice(){
+    let getDevice = UIHelper.isDevice();
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+  }
+
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.detectDevice();
     element.classList.add('sidebar-toggled');
 
     this.commonData.checkSession();

@@ -1,5 +1,5 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
-    <h4 class="h4"><strong> {{page_main_title}}</strong></h4>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+    <h4 class="h4">{{page_main_title}}</h4>
 </div>
 
 <!-- <ol class="breadcrumb breadcrumb_mini_margin">
@@ -69,7 +69,8 @@
                         </th>
                     </tr>
                 </tfoot>
-                <tbody style="position: relative;" [perfectScrollbar]="">
+                <tbody style="position: relative;" [perfectScrollbar]="config">
+                    <!-- <tbody> -->
                     <!-- (change)="on_checkbox_checked(checkedvalue,row_data)" -->
                     <tr *ngFor="let row of rows  | filter:search_string">
                         <td *ngFor="let row_data of row; let i = index" [hidden]="table_hidden_elements[i]">
