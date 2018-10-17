@@ -69,7 +69,8 @@
                         </th>
                     </tr>
                 </tfoot>
-                <tbody style="position: relative;" [perfectScrollbar]="">
+                <tbody style="position: relative;" [perfectScrollbar]="config">
+                    <!-- <tbody> -->
                     <!-- (change)="on_checkbox_checked(checkedvalue,row_data)" -->
                     <tr *ngFor="let row of rows  | filter:search_string">
                         <td *ngFor="let row_data of row; let i = index" [hidden]="table_hidden_elements[i]">
