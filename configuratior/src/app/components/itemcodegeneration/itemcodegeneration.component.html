@@ -56,7 +56,7 @@
                       </tr>
                       </thead>
                       <!-- [perfectScrollbar]="" -->
-                      <tbody style="position: relative;" [perfectScrollbar]="config">
+                      <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                         <tr *ngFor="let row of itemcodetable" class="d-flex">
                           <td style="width: 5%">
                             <input [disabled]="true"  type="text" class="form-control field-nobg-noborder  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
