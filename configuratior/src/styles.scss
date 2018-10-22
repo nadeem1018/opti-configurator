@@ -51,7 +51,7 @@ table{
 }
 
 body{
-    table.table{
+    table.table.opti_fixed-header{
         width: 100%;
         margin-bottom: 0;
         thead, tbody, tr, td, th { display: block; }
@@ -79,7 +79,6 @@ body{
         }
         
         tbody tr td:last-child {
-            // width: 70px !important;
             border-right: none !important;
         }
     }
