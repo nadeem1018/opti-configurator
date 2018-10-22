@@ -7,6 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
 import { jaLocale } from 'ngx-bootstrap';
 import * as $ from 'jquery';
+import { UIHelper } from '../../../helpers/ui.helpers';
 @Component({
   selector: 'app-bom',
   templateUrl: './bom.component.html',
@@ -60,9 +61,31 @@ export class BomComponent implements OnInit {
   public show_dialog: boolean = false;
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
 
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+  
+
+  detectDevice(){
+    let getDevice = UIHelper.isDevice(); 
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+    if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+    }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+    }else{
+      this.isPerfectSCrollBar = false;
+    }
+  }
+
   ngOnInit() {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.detectDevice();
+    element.classList.add('add-feature-bom');
     element.classList.add('sidebar-toggled');
 
     this.commonData.checkSession();

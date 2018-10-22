@@ -50,8 +50,8 @@ table{
     }
 }
 
-body.opti_body-main-module{
-    table.table{
+body{
+    table.table.opti_fixed-header{
         width: 100%;
         margin-bottom: 0;
         thead, tbody, tr, td, th { display: block; }
@@ -65,7 +65,6 @@ body.opti_body-main-module{
             max-height: 250px;
             overflow-y: auto;
             td{
-                // height: 35px;
                 border: none;
             }
             tr{
@@ -76,14 +75,10 @@ body.opti_body-main-module{
             }
         }
         tbody td, thead th {
-            // width: 90px;
             float: left;
         }
-        thead th{
-            // height: 50px;
-        }
+        
         tbody tr td:last-child {
-            // width: 70px !important;
             border-right: none !important;
         }
     }
