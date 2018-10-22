@@ -3,6 +3,7 @@ import { ModelbomService } from '../../services/modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
+import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
     selector: 'app-model-bom-view-model',
@@ -44,10 +45,31 @@ export class ViewModelBomComponent implements OnInit {
     public table_hidden_elements = [false, true, true, false, false, false, false];
     constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
+    isMobile:boolean=false;
+    isIpad:boolean=false;
+    isDesktop:boolean=true;
+    isPerfectSCrollBar:boolean = false;
+  
+
+    detectDevice(){
+        let getDevice = UIHelper.isDevice();
+        this.isMobile = getDevice[0];
+        this.isIpad = getDevice[1];
+        this.isDesktop = getDevice[2];
+        if(this.isMobile==true){
+        this.isPerfectSCrollBar = true;
+        }else if(this.isIpad==true){
+        this.isPerfectSCrollBar = false;
+        }else{
+        this.isPerfectSCrollBar = false;
+        }
+    }
+
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
+        this.detectDevice();
         element.classList.add("app_model-bom-view-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');

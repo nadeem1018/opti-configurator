@@ -3,40 +3,40 @@
 }
 
 .top-table{
-    width: 100%;
-    margin-bottom: 0;
-    thead, tbody, tr, td, th { display: block; }
-    tr:after {
-        content: ' ';
-        display: block;
-        visibility: hidden;
-        clear: both;
-    }
+    // width: 100%;
+    // margin-bottom: 0;
+    // thead, tbody, tr, td, th { display: block; }
+    // tr:after {
+    //     content: ' ';
+    //     display: block;
+    //     visibility: hidden;
+    //     clear: both;
+    // }
     tbody {
-        max-height: 250px;
-        overflow-y: auto;
+        // max-height: 250px;
+        // overflow-y: auto;
         td{
             // height: 35px;
             // border-bottom: none !important;
             // border-top: none;
-            border:none;
+            // border:none;
         }
         tr{
             // border-bottom: 1px solid #c7c7c7;
             // border-right: 1px solid #c7c7c7;
-            border: none;
+            // border: none;
         }
         tr:nth-child(odd) {
-            background-color: #efefef;
+            // background-color: #efefef;
         }
     }
-    tbody td, thead th {
+    tbody td, thead th { 
         // width: 111px;
-        float: left;
+        // float: left;
     }
     tbody tr td:last-child {
         // width: 94px !important;
-        border-right: none !important;
+        // border-right: none !important;
         button{
             margin-top: 5px;
         }
