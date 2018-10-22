@@ -1,11 +1,17 @@
-.opti_overflow-auto{
+.opti_overflow-auto {
     overflow: auto;
 }
 
-.top-table{
+.top-table {
     width: 100%;
     margin-bottom: 0;
-    thead, tbody, tr, td, th { display: block; }
+    thead,
+    tbody,
+    tr,
+    td,
+    th {
+        display: block;
+    }
     tr:after {
         content: ' ';
         display: block;
@@ -15,13 +21,13 @@
     tbody {
         max-height: 250px;
         overflow-y: auto;
-        td{
+        td {
             // height: 35px;
             // border-bottom: none !important;
             // border-top: none;
-            border:none;
+            border: none;
         }
-        tr{
+        tr {
             // border-bottom: 1px solid #c7c7c7;
             // border-right: 1px solid #c7c7c7;
             border: none;
@@ -30,15 +36,17 @@
             background-color: #efefef;
         }
     }
-    tbody td, thead th {
+    tbody td,
+    thead th {
         // width: 111px;
         float: left;
     }
     tbody tr td:last-child {
         // width: 94px !important;
         border-right: none !important;
-        button{
+        button {
             margin-top: 5px;
         }
     }
 }
+
