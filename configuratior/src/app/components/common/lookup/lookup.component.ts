@@ -169,7 +169,7 @@ export class LookupComponent implements OnInit {
   }
 
   configure_list_lookup(){
-    
+
   }
 
   model_template_lookup() {
@@ -367,6 +367,10 @@ export class LookupComponent implements OnInit {
         $("#rule_selection").modal('show');
       }
     }
+  }
+
+  get_rule_output(OPTM_RULEID, OPTM_SEQID){
+
   }
 
 

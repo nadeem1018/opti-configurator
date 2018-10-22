@@ -978,4 +978,18 @@ export class BomComponent implements OnInit {
     return data;
   }
 
+  toggleTree(e){
+    let element = document.getElementById('right-tree-section');
+    element.classList.toggle('d-none');
+    element.classList.toggle('d-block');
+  
+    if(element.classList.contains('d-block')) {
+      $('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
+    }else{
+      let leftSection = document.getElementById('left-table-section');
+      let classes = leftSection.classList;
+      $('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
+    }
+  }
+
 }
