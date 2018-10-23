@@ -317,6 +317,8 @@
     "bracket_missing_expression":"Brackets missing from the expression, please verify opening/closing brackets ",
     "bracket_doesnt_match": "Brackets arent closed in the correct order, please verfiy brackets",
     "operator_cannotbe_blank_with_type":"Operator cannot be blank with type selected on row ",
-    "max_selected_validation": "Max selected is greater than feature child"
+    "max_selected_validation": "Max selected is greater than feature child",
+    "select_max_selectable":"Cannot select greater than maximum selectable limit",
+    "MandatoryItems":"Mandatory items is not selected"
 
 }

@@ -327,7 +327,7 @@
                                   <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
                                     <td>
                                       <div class="{{header_data.element_class}}">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked)" [(checked)]="feature_model_data.checked"
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)" [(checked)]="feature_model_data.checked"
                                           >
                                         <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
                                       </div>
@@ -350,7 +350,7 @@
                                       <td >
                                           <div class="{{header_data.element_class}}">
                                               <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
-                                              (change)="onselectionchange(header_data,selectionchecked)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
+                                              (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
                                               <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
                                             </div>
                                       </td>
