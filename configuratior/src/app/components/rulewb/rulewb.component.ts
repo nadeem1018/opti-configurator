@@ -267,26 +267,11 @@ export class RulewbComponent implements OnInit {
 
               });
 
-             /*  this.rule_feature_data.push({
-                rowindex: i,
-                check_child: true,
-                feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
-                featureCode: data.RuleWorkBenchOutput[i].OPTM_FEATURECODE,
-                item: data.RuleWorkBenchOutput[i].OPTM_ITEMKEY,
-                value: data.RuleWorkBenchOutput[i].OPTM_VALUE,
-                uom: data.RuleWorkBenchOutput[i].OPTM_UOM,
-                quantity: data.RuleWorkBenchOutput[i].OPTM_QUANTITY,
-                edit_quantity: data.RuleWorkBenchOutput[i].OPTM_ISQTYEDIT,
-                price_source: data.RuleWorkBenchOutput[i].OPTM_PRICESOURCE,
-                edit_price: data.RuleWorkBenchOutput[i].OPTM_ISPRICEEDIT,
-                default: data.RuleWorkBenchOutput[i].OPTM_DEFAULT,
-                type: typefromdatabase
-
-              }); */
+      
 
             }
           }
-         // this.global_rule_feature_data = this.rule_feature_data;
+       
           console.log(this.rule_expression_data);
           setTimeout(function(){
             obj.getFeatureDetailsForOutput();
@@ -355,6 +340,7 @@ export class RulewbComponent implements OnInit {
     this.rule_feature_data = new Array();
     this.add_sequence_mode = false;
     this.update_sequence_mode = false;
+    this.outputTable = false;
   }
 
   hide_show_output() {
@@ -496,8 +482,10 @@ export class RulewbComponent implements OnInit {
   }
 
   getFeatureDetailsForOutput() {
+    this.close_rule_sequence();
     this.rule_feature_data = new Array();
     //this.outputrowcounter=0;
+    this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
         if (data.length > 0) {
@@ -953,9 +941,7 @@ export class RulewbComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.rule_feature_data);
-    console.log(this.global_rule_feature_data);
+   
   }
 
   check_all(value) {
