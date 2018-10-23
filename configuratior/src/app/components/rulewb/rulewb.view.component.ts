@@ -3,6 +3,7 @@ import { RulewbService } from '../../services/rulewb.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData } from "../../models/CommonData";
+import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
     selector: 'rule-wb-view-model',
@@ -16,7 +17,7 @@ export class RuleWbViewComponent implements OnInit {
     public commonData = new CommonData();
 
 
-    public companyName: string = "";
+    public companyName: string = ""; 
     public username: string = "";
     add_route_link = '/rulewb/add';
     record_per_page_list: any = [10, 25, 50, 100]
@@ -50,10 +51,33 @@ export class RuleWbViewComponent implements OnInit {
     table_title = this.page_main_title;
     constructor(private router: Router, private service: RulewbService, private toastr: ToastrService) { }
 
+
+    isMobile:boolean=false;
+    isIpad:boolean=false;
+    isDesktop:boolean=true;
+    isPerfectSCrollBar:boolean = false;
+    
+  
+    detectDevice(){
+      let getDevice = UIHelper.isDevice();
+      this.isMobile = getDevice[0];
+      this.isIpad = getDevice[1];
+      this.isDesktop = getDevice[2];
+      if(this.isMobile==true){
+        this.isPerfectSCrollBar = true;
+      }else if(this.isIpad==true){
+        this.isPerfectSCrollBar = false;
+      }else{
+        this.isPerfectSCrollBar = false;
+      }
+    }
+
+
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
+        this.detectDevice();
         element.classList.add("app_rule-wb-view-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');

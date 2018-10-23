@@ -5,6 +5,7 @@ import { RulewbService } from '../../services/rulewb.service';
 import { ActivatedRoute, Router } from '@angular/router'
 import 'bootstrap';
 import * as $ from 'jquery';
+import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
   selector: 'app-rulewb',
@@ -64,6 +65,28 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
 
+
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+  
+
+  detectDevice(){
+    let getDevice = UIHelper.isDevice();
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+    if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+    }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+    }else{
+      this.isPerfectSCrollBar = false;
+    }
+  }
+
+
   public min;
   ngOnInit() {
     this.global_rule_feature_data = new Array();
@@ -71,6 +94,8 @@ export class RulewbComponent implements OnInit {
     const element = document.getElementsByTagName('body')[0];
 
     element.className = '';
+    this.detectDevice();
+    element.classList.add('add-rule-web');
     element.classList.add('sidebar-toggled');
 
     let d = new Date();
