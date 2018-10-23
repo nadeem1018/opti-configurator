@@ -85,6 +85,9 @@ body{
 }
 
 body.add_item-code-view-model{
+    table.opti_fixed-header{
+        min-width: 1000px;
+    }
     th:nth-child(1),
     tr td:nth-child(1) {
         width: 4%;
@@ -107,6 +110,9 @@ body.add_item-code-view-model{
 }
 
 body.app_view-feature-model{
+    table.opti_fixed-header{
+        min-width: 1000px;
+    }
     th:nth-child(1),
     tr td:nth-child(1) {
         width: 7%;
@@ -189,6 +195,9 @@ body.app_model-bom-view-model{
 }
 
 body.app_rule-wb-view-model{
+    table.opti_fixed-header{
+        min-width: 1000px;
+    }
     th:nth-child(1),
     tr td:nth-child(1) {
         width: 7%;
