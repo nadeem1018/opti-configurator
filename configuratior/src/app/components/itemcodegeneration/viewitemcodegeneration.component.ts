@@ -47,16 +47,27 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
     public table_hidden_elements = [false, true, false, false, false];
+    
+    constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
+
     isMobile:boolean=false;
     isIpad:boolean=false;
     isDesktop:boolean=true;
-    constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
+    isPerfectSCrollBar:boolean = false;
+  
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();
         this.isMobile = getDevice[0];
         this.isIpad = getDevice[1];
         this.isDesktop = getDevice[2];
+        if(this.isMobile==true){
+        this.isPerfectSCrollBar = true;
+        }else if(this.isIpad==true){
+        this.isPerfectSCrollBar = false;
+        }else{
+        this.isPerfectSCrollBar = false;
+        }
     }
 
     ngOnInit() {

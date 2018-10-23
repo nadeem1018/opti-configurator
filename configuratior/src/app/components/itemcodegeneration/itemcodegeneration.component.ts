@@ -62,6 +62,7 @@ export class ItemcodegenerationComponent implements OnInit {
   isMobile:boolean=false;
   isIpad:boolean=false;
   isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
   
 
   detectDevice(){
@@ -69,6 +70,13 @@ export class ItemcodegenerationComponent implements OnInit {
     this.isMobile = getDevice[0];
     this.isIpad = getDevice[1];
     this.isDesktop = getDevice[2];
+    if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+    }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+    }else{
+      this.isPerfectSCrollBar = false;
+    }
   }
 
   ngOnInit() {

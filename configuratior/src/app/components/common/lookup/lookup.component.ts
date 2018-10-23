@@ -145,6 +145,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "operand_model_lookup") {
         this.get_Model_lookup();
       }
+
+      if (this.lookupfor == "configure_list_lookup"){
+        this.configure_list_lookup();
+      }
     }
   }
 
@@ -162,6 +166,10 @@ export class LookupComponent implements OnInit {
 
     this.lookupvalue.emit(lookup_key);
     $("#lookup_modal").modal('hide');
+  }
+
+  configure_list_lookup(){
+
   }
 
   model_template_lookup() {
@@ -359,6 +367,10 @@ export class LookupComponent implements OnInit {
         $("#rule_selection").modal('show');
       }
     }
+  }
+
+  get_rule_output(OPTM_RULEID, OPTM_SEQID){
+
   }
 
 

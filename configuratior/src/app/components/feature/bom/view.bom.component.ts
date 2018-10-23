@@ -3,6 +3,7 @@ import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { UIHelper } from '../../../helpers/ui.helpers';
 
 @Component({
     selector: 'app-feature-bom-view',
@@ -10,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./bom.component.scss']
 })
 
-
+ 
 export class ViewFeatureBOMComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
@@ -49,10 +50,32 @@ export class ViewFeatureBOMComponent implements OnInit {
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
 
+
+
+    isMobile:boolean=false;
+    isIpad:boolean=false;
+    isDesktop:boolean=true;
+    isPerfectSCrollBar:boolean = false;
+
+    detectDevice(){
+        let getDevice = UIHelper.isDevice();
+        this.isMobile = getDevice[0];
+        this.isIpad = getDevice[1];
+        this.isDesktop = getDevice[2];
+        if(this.isMobile==true){
+        this.isPerfectSCrollBar = true;
+        }else if(this.isIpad==true){
+        this.isPerfectSCrollBar = false;
+        }else{
+        this.isPerfectSCrollBar = false;
+        }
+    }
+
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
+        this.detectDevice()
         element.classList.add("app_feature-bom-view-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');

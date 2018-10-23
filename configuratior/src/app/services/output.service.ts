@@ -162,9 +162,16 @@ export class OutputService {
   getFinalBOMStatus(ilogID): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: "OPTICNF", LogID: ilogID }]) };
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, LogID: ilogID }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFinalStatus", jObject, this.common_params.httpOptions);
+  }
+
+  getConfigurationList(): Observable<any> {
+ //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetConfigurationList", jObject, this.common_params.httpOptions);
   }
 
 }

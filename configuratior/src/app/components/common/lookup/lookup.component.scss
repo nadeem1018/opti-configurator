@@ -1,0 +1,92 @@
+// for expand and collapse section 
+.panel-default>.panel-heading {
+    color: #333;
+    background-color: #fff;
+    border-color: #e4e5e7;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.panel-default>.panel-heading a {
+    display: block;
+    padding: 3px 10px;
+    color: black;
+    font-weight: 450;
+    font-size: 14px;
+}
+
+.panel-default>.panel-heading a:before {
+    content: "";
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.5;
+    font-size: 13.5px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    float: right;
+    transition: transform .25s linear;
+    -webkit-transition: -webkit-transform .25s linear;
+}
+
+.panel-default>.panel-heading {
+    background-color: #eee;
+}
+
+.panel-default>.panel-heading a[aria-expanded="true"]:before,
+.panel-default>.panel-heading a[aria-expanded="true"]:before {
+    content: "\2212";
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.panel-default>.panel-heading a[aria-expanded="false"]:before,
+.panel-default>.panel-heading a[aria-expanded="false"]:before {
+    content: "\002b";
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.accordion-option {
+    width: 100%;
+    float: left;
+    clear: both;
+    margin: 15px 0;
+}
+
+.accordion-option .title {
+    font-size: 20px;
+    font-weight: bold;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.accordion-option .toggle-accordion {
+    float: right;
+    font-size: 16px;
+    color: #6a6c6f;
+}
+
+.accordion-option .toggle-accordion:before {
+    content: "Expand All";
+}
+
+.accordion-option .toggle-accordion.active:before {
+    content: "Collapse All";
+}
+
+.inner-table tr td {
+    vertical-align: middle;
+    ;
+}
+
+.mt--3{
+    margin-top : -3px;
+}

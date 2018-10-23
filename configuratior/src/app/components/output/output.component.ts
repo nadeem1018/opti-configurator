@@ -19,6 +19,7 @@ export class OutputComponent implements OnInit {
   @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
+  public modify_duplicate_selected:boolean = false;
   public page_main_title = this.language.output_window;
   public common_output_data: any = [];
   public feature_accessory_list: any[];
@@ -118,6 +119,7 @@ export class OutputComponent implements OnInit {
   public ModelHeaderData = [];
   public ModelBOMDataForSecondLevel = [];
   public FeatureBOMDataForSecondLevel = [];
+  public globalConfigId:any = '';
 
   ngOnInit() {
 
@@ -191,6 +193,40 @@ export class OutputComponent implements OnInit {
     /* setTimeout(() => {
       this.tree_view_expand_collapse()
     }, 2000); */
+  }
+
+  onOperationChange(operation_type){
+    if (operation_type == 2 || operation_type == 3){
+      this.modify_duplicate_selected = true;
+    } else {
+      this.modify_duplicate_selected = false;
+    }
+  }
+
+  on_configuration_id_change(value){
+    this.globalConfigId = value;
+  }
+
+  onSavePress(){
+    
+  }
+
+  open_config_lookup(){
+    this.serviceData = []
+    this.lookupfor = 'configure_list_lookup';
+    this.OutputService.getConfigurationList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.serviceData = data;
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      }
+    )
   }
 
   openFeatureLookUp() {

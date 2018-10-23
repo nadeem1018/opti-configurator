@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ModelbomService } from '../../services/modelbom.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
+import { UIHelper } from '../../helpers/ui.helpers';
 @Component({
   selector: 'app-modelbom',
   templateUrl: './modelbom.component.html',
@@ -56,10 +57,32 @@ export class ModelbomComponent implements OnInit {
   public dialog_params: any = [];
   public show_dialog: boolean = false;
 
+    isMobile:boolean=false;
+    isIpad:boolean=false;
+    isDesktop:boolean=true;
+    isPerfectSCrollBar:boolean = false;
+  
+
+    detectDevice(){
+        let getDevice = UIHelper.isDevice();
+        this.isMobile = getDevice[0];
+        this.isIpad = getDevice[1];
+        this.isDesktop = getDevice[2];
+        if(this.isMobile==true){
+        this.isPerfectSCrollBar = true;
+        }else if(this.isIpad==true){
+        this.isPerfectSCrollBar = false;
+        }else{
+        this.isPerfectSCrollBar = false;
+        }
+    }
+
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.detectDevice();
+    element.classList.add('add_model-bom');
     element.classList.add('sidebar-toggled');
 
     this.commonData.checkSession();
@@ -1166,6 +1189,21 @@ export class ModelbomComponent implements OnInit {
     )
   
   }
+
+  toggleTree(e){
+    let element = document.getElementById('right-tree-section');
+    element.classList.toggle('d-none');
+    element.classList.toggle('d-block');
+  
+    if(element.classList.contains('d-block')) {
+      $('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
+    }else{
+      let leftSection = document.getElementById('left-table-section');
+      let classes = leftSection.classList;
+      $('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
+    }
+  }
+
 }
 
 

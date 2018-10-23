@@ -210,7 +210,7 @@
                     </div>
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
-                    <div class="table-responsive">
+                    <!-- <div class="table-responsive">
                         <table class="table table-bordered lookup_table table-sm" id="dataTable">
                             <thead class="thead-dark">
                                 <tr>
@@ -235,7 +235,65 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
+                    <div class="panel-group" id="rule_selection_panels" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default custom_panel_box" *ngFor="let rule_data of serviceData; let i = index;">
+                            <div class="panel-heading custom_panel_header" role="tab" id="rule_engine{{rule_data.OPTM_RULEID}}">
+                                <h6 class="panel-title row col-sm-12">
+                                    <div class="col-sm-1">
+                                        <div class="custom-control custom-checkbox mt--3">
+                                            <input type="checkbox" id="rule_check_{{rule_data.OPTM_RULEID}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,rule_data)"
+                                                [checked]="rule_data['Selected']" class="custom-control-input">
+                                            <label class="custom-control-label" for="rule_check_{{rule_data.OPTM_RULEID}}"></label>
+                                        </div>
+                                     </div>
+                                    <div role="button" attr.data-toggle="collapse" attr.data-parent="#rule_panel{{rule_data.OPTM_RULEID}}" attr.aria-expanded="false"
+                                        attr.aria-controls="{{rule_data.OPTM_RULEID}}" class="custom_panel_parent_section col-sm-11">
+                                        {{rule_data.OPTM_RULECODE}}
+                                        <span class="text-right pull-right custom_panel_icon_section">
+                                            <i class="fa fa-plus"></i>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+                            <div id="rule_panel{{rule_data.OPTM_RULEID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
+                                attr.aria-labelledby="rule_engine{{rule_data.OPTM_RULEID}}">
+                                <div class="panel-body">
+                                 <table class="inner-table table table-bordered table-strip table-sm">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th style="width:10%">{{language.seq_no}}</th>
+                                                <th>{{language.expression}}</th>
+                                                <th style="width:15%">{{language.action}}</th>
+                                            </tr>
+                                        </thead>
+                                        <!-- <tbody *ngIf="rule_data.expression.length > 0">
+                                            <tr *ngFor="let rule_sequence_data of rule_data.expression">
+                                                <td> {{rule_sequence_data.OPTM_SEQID}} </td>
+                                                <td> {{rule_sequence_data.expression}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm mr-10 btn-primary"  (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.OPTM_SEQID)"
+                                                        title="{{language.view_output}}">
+                                                        <i class="fa fa-eye"></i> {{language.view_output}}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>  -->
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>i = 0</td>
+                                                <td><button type="button" class="btn btn-sm mr-10 btn-primary" (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.OPTM_SEQID)"
+                                                    title="{{language.view_output}}">
+                                                    <i class="fa fa-eye"></i> {{language.view_output}}
+                                                </button></td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer">

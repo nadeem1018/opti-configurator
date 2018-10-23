@@ -31,11 +31,13 @@ export  class UIHelper{
             isIpad = true;
             isDesktop = false;
             document.getElementsByTagName("body")[0].classList.add('body_ipad'); 
+            console.log('Ipad');
         }else{
             isMobile = false; 
             isIpad = false;
             isDesktop = true;
             document.getElementsByTagName("body")[0].classList.add('body_desktop'); 
+            console.log('Desktop');
         }
         // return isMobile;
         // return isIpad;
