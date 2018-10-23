@@ -43,11 +43,30 @@
   width: 50% !important;
 }
 
-@media (min-width: 992px){
-
+@media (min-width: 992px) {
   .modal-mlg {
     max-width: 600px;
   }
+}
+
+.z-index_1065 {
+  z-index: 1065 !important;
+}
+
+.z-index_1050 {
+  z-index: 1050 !important;
+}
+
+div.modal_over_modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1065;
+  display: none;
+  overflow: hidden;
+  outline: 0;
 }
 
 .toast-success {
@@ -143,7 +162,6 @@ tbody.lookup_table_body {
   max-height: 470px;
   position: absolute;
   height: auto; */
-
   overflow-y: scroll;
   max-height: calc(100% - 70px);
   position: absolute;
