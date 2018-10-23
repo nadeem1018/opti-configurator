@@ -126,8 +126,10 @@ a.page-link.active {
 /* For table in lookup */
 
 table.lookup_table {
-  height: 500px;
-  display: -moz-groupbox;
+  max-height: 400px;
+  height: 100%;
+  min-height: 250px;
+  overflow-y: hidden;
 }
 
 tbody.lookup_table_body tr {
@@ -137,9 +139,15 @@ tbody.lookup_table_body tr {
 }
 
 tbody.lookup_table_body {
-  overflow-y: scroll;
-  height: 470px;
+  /* overflow-y: scroll;
+  max-height: 470px;
   position: absolute;
+  height: auto; */
+
+  overflow-y: scroll;
+  max-height: calc(100% - 70px);
+  position: absolute;
+  height: auto;
 }
 
 /* custom css for page width magin and padding - start */

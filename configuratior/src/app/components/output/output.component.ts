@@ -63,6 +63,8 @@ export class OutputComponent implements OnInit {
   public selectfeaturedata = [];
   public modelitemflag: number = 0;
   public final_array_checked_options = [];
+  public navigatenextbtn:boolean=false;
+  public validnextbtn:boolean=true;
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -2210,9 +2212,7 @@ export class OutputComponent implements OnInit {
     this.complete_dataset.length = 0;
   }
 
-  //For next press towards finsh screen
-  onModelBillNextPress() {
-    //Clear the array
+  onValidateNextPress(){
     var isMandatoryItems = this.ModelHeaderData.filter(function (obj) {
       return obj['OPTM_MANDATORY'] == "Y"
     })
@@ -2230,6 +2230,15 @@ export class OutputComponent implements OnInit {
       this.toastr.error('', this.language.MandatoryItems, this.commonData.toast_config);
       return;
     }
+    this.navigatenextbtn=true;
+    this.validnextbtn=false;
+    this.onModelBillNextPress();
+  }
+
+  //For next press towards finsh screen
+  onModelBillNextPress() {
+    //Clear the array
+    
     console.log('this.feature_itm_list_table');
     console.log(this.feature_itm_list_table);
 
