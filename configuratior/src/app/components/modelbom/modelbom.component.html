@@ -13,7 +13,9 @@
 <!-- new design -->
 
 <div class="row">
-  <div class="col-md-12"><div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)"><i class="fa fa-sitemap"></i></div></div>
+  <div class="col-md-12"><div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)"><div class="btn btn-sm btn-secondary">
+    <i class="fa fa-sitemap"></i>
+  </div></div></div>
 
   <div class="col-md-12" id="left-table-section">
     <div class="card mb-3">
@@ -87,7 +89,7 @@
           <hr>
           <div class="">
             <div class="col-md-12 p-0">
-              <button type="button" (click)="on_rule_click()" class="btn btn-sm btn-secondary  mr-10">
+              <button type="button" (click)="on_rule_click()" class="btn btn-sm btn-primary  mr-10">
                 <i class="fa fa-circle"></i> {{language.rule}}</button>
             </div>
           </div>
