@@ -144,7 +144,7 @@ tbody.lookup_table_body {
   position: absolute;
   height: auto; */
 
-  overflow-y: auto;
+  overflow-y: scroll;
   max-height: calc(100% - 70px);
   position: absolute;
   height: auto;
