@@ -43,6 +43,13 @@
   width: 50% !important;
 }
 
+@media (min-width: 992px){
+
+  .modal-mlg {
+    max-width: 600px;
+  }
+}
+
 .toast-success {
   color: #ffffff !important;
   background-color: #51A351 !important;
