@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2 border-bottom">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ">
   <h4 class="h4"><strong> {{page_main_title}}</strong> </h4>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
@@ -13,7 +13,7 @@
 <!-- new design -->
 
 <div class="row">
-  <div class="col-md-12"><div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)">+</div></div>
+  <div class="col-md-12"><div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)"><i class="fa fa-sitemap"></i></div></div>
 
   <div class="col-md-12" id="left-table-section">
     <div class="card mb-3">
@@ -81,7 +81,7 @@
           </div>
           <div class="col-sm-1 p-0">
             <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
-              <i class="fa fa-plus"></i>
+              <i class="fa fa-plus"></i> {{language.add_row}}
             </a>
           </div>
           <hr>
