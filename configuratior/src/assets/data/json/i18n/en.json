@@ -332,6 +332,9 @@
     "MandatoryItems":"Mandatory items is not selected",
     "seq_no":"Seq No.",
     "seq":"Seq.",
+    "rule_output":"Rule Output",
+    "rule_excluded":"Rule Excluded",
+    "show_hide_output":"Show/Hide Output",
     "view_output":"View Output"
     
 }

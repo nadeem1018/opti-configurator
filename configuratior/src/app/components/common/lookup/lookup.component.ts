@@ -395,21 +395,21 @@ export class LookupComponent implements OnInit {
       {"id":"4","key":"555","value":"test 3"},
     ];
 
-    /* 
+  let obj = this;
     this.mbom.getRuleOutput(rule_id, seq_id).subscribe(
         data => {
           console.log(data);
           if (data !== '' && data !== undefined && data !== null) {
-          this.toastr.warning('', data, this.commonData.toast_config);
+            obj.outputServiceData = data
           // this.close_lookup();
         } else {
           this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
           // this.close_lookup();
         }
-        $("#import_modal").modal('hide');
+        
         //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
        })
-    */
+    
     this.showruleOutputLoader = false;
     this.RuleOutputLookupDataLoaded = true;
 
