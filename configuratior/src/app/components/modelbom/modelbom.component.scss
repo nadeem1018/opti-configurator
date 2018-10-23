@@ -2,41 +2,18 @@
     overflow: auto;
 }
 
+.opti_fixed-header{
+    min-width: 1160px;
+}
+
 .top-table{
-    // width: 100%;
-    // margin-bottom: 0;
-    // thead, tbody, tr, td, th { display: block; }
-    // tr:after {
-    //     content: ' ';
-    //     display: block;
-    //     visibility: hidden;
-    //     clear: both;
-    // }
     tbody {
-        // max-height: 250px;
-        // overflow-y: auto;
-        td{
-            // height: 35px;
-            // border-bottom: none !important;
-            // border-top: none;
-            // border:none;
-        }
-        tr {
-            // border-bottom: 1px solid #c7c7c7;
-            // border-right: 1px solid #c7c7c7;
-            // border: none;
-        }
-        tr:nth-child(odd) {
-            // background-color: #efefef;
-        }
+        td{}
+        tr{}
+        tr:nth-child(odd) {}
     }
-    tbody td, thead th { 
-        // width: 111px;
-        // float: left;
-    }
+    tbody td, thead th { }
     tbody tr td:last-child {
-        // width: 94px !important;
-        // border-right: none !important;
         button{
             margin-top: 5px;
         }

@@ -363,79 +363,75 @@
                 <!-- <div class="new_tree_structure_area"  *ngIf="tree_data_json.length > 0">
                 </div> -->
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
-                      <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
-                        <h4 class="panel-title">
-                          <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false"
-                            attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
-                            {{header_data.OPTM_DISPLAYNAME}}
-                            <span class="text-right pull-right custom_panel_icon_section">
-                              <i class="fa fa-plus"></i>
-                            </span>
-                          </a>
-                        </h4>
-                      </div>
-                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
-                        attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
-                        <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Preview</th>
-                              </tr>
-                            </thead>
-                            <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;">
-                                <td>
-                                  <div class="{{header_data.element_class}}">
-                                    <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"
-                                      #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
-                                      (change)="onselectionchange(feature_model_data,selectionchecked.checked)" [(checked)]="feature_model_data.checked">
-                                    <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
-                                  </div>
-                                </td>
-                                <td>
-                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
-                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
-                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
-                                </td>
-                                <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
-                                <td>
-                                  <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
-                                    <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                            <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
-                              <tr>
-                                <td>
-                                  <div class="{{header_data.element_class}}">
-                                    <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}"
-                                      #selectionchecked class="custom-control-input" (change)="onselectionchange(header_data,selectionchecked)"
-                                      [(checked)]="FeatureBOMDataForSecondLevel.checked">
-                                    <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
-                                  </div>
-                                </td>
-                                <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
-                                <td>
-                                  <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
-                                  <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
-                                  <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
-                                </td>
-                                <td>{{header_data.OPTM_DISPLAYNAME}}</td>
-                                <td>
-                                  <div class="image-preivew" *ngIf="header_data.image!=''">
-                                    <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
-                                  </div>
-                                </td>
-                              </tr>
-                            </tfoot>
-                          </table>
+                    <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true" >
+                        <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
+                          <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
+                            <h4 class="panel-title">
+                              <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
+                                {{header_data.OPTM_DISPLAYNAME}}
+                                <span class="text-right pull-right custom_panel_icon_section"><i class="fa fa-plus"></i></span>
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                            <div class="panel-body">
+                              <table class="inner-table table table-bordered table-strip table-sm" >
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Code</th>
+                                    <th>Description</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
+                                  <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
+                                    <td>
+                                      <div class="{{header_data.element_class}}">
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)" [(checked)]="feature_model_data.checked"
+                                          >
+                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
+                                      </div>
+                                      </td>
+                                    <td>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
+                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
+                                    </td>
+                                    <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
+                                    <td>
+                                      <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
+                                        <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                                <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
+                                    <tr>
+                                      <td >
+                                          <div class="{{header_data.element_class}}">
+                                              <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
+                                              (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
+                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
+                                            </div>
+                                      </td>
+                                      <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
+                                      <td>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
+                                          <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
+                                      </td>
+                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                      <td>
+                                        <div class="image-preivew" *ngIf="header_data.image!=''">
+                                          <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tfoot>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
