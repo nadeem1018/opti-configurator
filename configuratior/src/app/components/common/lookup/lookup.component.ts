@@ -369,8 +369,11 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  get_rule_output(OPTM_RULEID, OPTM_SEQID){
-
+  get_rule_output( RULEID,  SEQID){
+    console.log("  RULEID " +  RULEID);
+    console.log("  SEQID " +  SEQID);
+    $("#simple_table_modal").modal('show');
+    
   }
 
 

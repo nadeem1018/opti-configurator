@@ -267,19 +267,19 @@
                                                 <th style="width:15%">{{language.action}}</th>
                                             </tr>
                                         </thead>
-                                        <!-- <tbody *ngIf="rule_data.expression.length > 0">
-                                            <tr *ngFor="let rule_sequence_data of rule_data.expression">
-                                                <td> {{rule_sequence_data.OPTM_SEQID}} </td>
-                                                <td> {{rule_sequence_data.expression}}</td>
+                                     <tbody *ngIf="rule_data.Expression != '' && rule_data.Expression.length > 0 ">
+                                            <tr *ngFor="let rule_sequence_data of (rule_data.Expression).split('**'); ">
+                                                <td> {{rule_sequence_data.split(',')[0].split(':')[1]}} </td>
+                                                <td> {{rule_sequence_data.split(',')[1].split(':')[1]}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm mr-10 btn-primary"  (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.OPTM_SEQID)"
+                                                    <button type="button" class="btn btn-sm mr-10 btn-primary"  (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.split(',')[0].split(':')[1])"
                                                         title="{{language.view_output}}">
-                                                        <i class="fa fa-eye"></i> {{language.view_output}}
+                                                        <i class="fa fa-eye"></i>
                                                     </button>
                                                 </td>
                                             </tr>
-                                        </tbody>  -->
-                                        <tbody>
+                                        </tbody> 
+                                       <!--  <tbody>
                                             <tr>
                                                 <td>1</td>
                                                 <td>i = 0</td>
@@ -289,7 +289,7 @@
                                                 </button></td>
                                             </tr>
                                             
-                                        </tbody>
+                                        </tbody> -->
                                     </table>
                                 </div>
                             </div>
