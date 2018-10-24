@@ -296,7 +296,7 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
-          this.lookupfor = 'ModelBom_lookup';
+          this.lookupfor = 'ModelBomForWizard_lookup';
           this.serviceData = data;
 
         }
@@ -317,11 +317,13 @@ export class OutputComponent implements OnInit {
 
 
   getLookupValue($event) {
-    if (this.lookupfor == 'ModelBom_lookup') {
+    if (this.lookupfor == 'ModelBomForWizard_lookup') {
       this.onclearselection();
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
+      this.step2_data.templateid=$event[3];
+      this.step2_data.itemcodegenkey=$event[4];
       this.isModelVisible = true
       this.navigatenextbtn=false;
       this.validnextbtn=true;
@@ -2308,8 +2310,8 @@ export class OutputComponent implements OnInit {
         "OPTM_ITEMCODE": this.step2_data.model_code,
         "OPTM_KEY": "",
         "OPTM_PARENTKEY": "",
-        "OPTM_TEMPLATEID": "",
-        "OPTM_ITMCODEGENKEY": "",
+        "OPTM_TEMPLATEID": this.step2_data.templateid,
+        "OPTM_ITMCODEGENKEY": this.step2_data.itemcodegenkey,
         "OPTM_ITEMTYPE": 0,
         "OPTM_WHSE": this.warehouse,
         "OPTM_LEVEL": 0,
@@ -2556,7 +2558,7 @@ export class OutputComponent implements OnInit {
         }
 
       }
-      else if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
+      else if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y" && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3 ) {
         if (itemkey.length == 0) {
           itemkey = this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
         } else {
@@ -2567,7 +2569,7 @@ export class OutputComponent implements OnInit {
     }
 
     for (var isave in this.step2_final_dataset_to_save) {
-      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "") {
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 &&  this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" ) {
         this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkey
       }
     }

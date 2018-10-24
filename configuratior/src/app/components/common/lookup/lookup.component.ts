@@ -159,6 +159,9 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "configure_list_lookup"){
         this.configure_list_lookup();
       }
+      if (this.lookupfor == "ModelBomForWizard_lookup") {
+        this.get_ModelWizard_lookup();
+      }
     }
   }
 
@@ -262,6 +265,28 @@ export class LookupComponent implements OnInit {
     this.lookup_key = 'OPTM_FEATUREID';
     this.table_head = ['Model Id', 'Code', 'Name'];
     this.table_head_hidden_elements = [true, false, false];
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
+    }
+
+  }
+
+  get_ModelWizard_lookup() {
+
+
+    this.popup_title = this.language.ModelBom;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'featureNameId';
+    this.lookup_key = 'OPTM_FEATUREID';
+    this.table_head = ['Model Id', 'Code', 'Name','TemplateId','ItemCodeGenkey'];
+    this.table_head_hidden_elements = [true, false, false,true,true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
     this.showLoader = false;
