@@ -10,6 +10,8 @@ import { CommonData } from "../../../models/CommonData";
 })
 export class SidebarComponent implements OnInit {
 
+  imgPath = 'assets/images';
+
   constructor(private commonService: CommonService,private toastr: ToastrService) { }
   public menu_obj:any;
   public menu_options: any = [

@@ -351,18 +351,18 @@
                                 <thead class="thead-dark">
                                   <tr>
                                     <th>#</th>
-                                    <th>Code</th>
-                                    <th>Description</th>
-                                    <th>Preview</th>
+                                    <th>{{language.code}}</th>
+                                    <th>{{language.description}}</th>
+                                    <th>{{language.image}}</th>
                                   </tr>
                                 </thead>
                                 <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
                                   <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
                                     <td>
                                       <div class="{{header_data.element_class}}">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)" [(checked)]="feature_model_data.checked"
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)" [(checked)]="feature_model_data.checked"
                                           >
-                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"></label>
+                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}"></label>
                                       </div>
                                       </td>
                                     <td>
@@ -384,7 +384,7 @@
                                           <div class="{{header_data.element_class}}">
                                               <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
                                               (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
-                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}"> </label>
+                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}_{{Math.floor((Math.random() * 100) + 1)}}"> </label>
                                             </div>
                                       </td>
                                       <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
@@ -419,9 +419,9 @@
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox ">
-                                <input type="checkbox" id="acccessory_check{{label}}" name="child_checkbox" class="custom-control-input" #accallcheckbox
+                                <input type="checkbox" id="acccessory_check{{label}}_{{i}}" name="child_checkbox" class="custom-control-input" #accallcheckbox
                                   (click)="selectallAccessory(accallcheckbox.checked)">
-                                <label class="custom-control-label" for="acccessory_check{{label}}"></label>
+                                <label class="custom-control-label" for="acccessory_check{{label}}_{{i}}"></label>
                               </div>
                             </span>
                             <span *ngIf="i!=0">
@@ -596,10 +596,11 @@
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
               <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
-              <button *ngIf="navigatenextbtn" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
+              <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
                 data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
-                 <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
+
+                 <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10"
                 (click)="onValidateNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>

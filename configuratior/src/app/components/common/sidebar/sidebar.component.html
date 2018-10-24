@@ -10,8 +10,13 @@
     <!-- {{i}} -->
       <li class="nav-item" [ngClass]="{'active': selectedItem == i}" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i)" routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
         <a class="nav-link" href='javascript:;'>
-            <i class="fa fa-fw fa-table"></i>
-            <span>{{(getMenuDetails(menuRow.OPTM_MENUID))[0].menu_title}}</span>
+            <img src="{{imgPath}}/leftpanel/code.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Item Code Generation"'>
+            <img src="{{imgPath}}/leftpanel/featuremodel.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Feature Model"'>
+            <img src="{{imgPath}}/leftpanel/featureBOM.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Feature BOM"'>
+            <img src="{{imgPath}}/leftpanel/modelBOM.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Model BOM"'>
+            <img src="{{imgPath}}/leftpanel/ruleworkbench.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Rule Work Bench"'>
+            <img src="{{imgPath}}/leftpanel/configure.svg" width="25px" height="25px;" *ngIf='getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title=="Configure"'>
+            <span>{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}</span>
           </a>
       </li>        
   </ng-container>  

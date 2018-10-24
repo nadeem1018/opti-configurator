@@ -1144,8 +1144,11 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null || data != undefined) {
           console.log(data);
-
-          this.warehouse = data.DeafultWarehouse[0].DEFAULTWAREHOUSE
+          if (data.DeafultWarehouse!== undefined && data.DeafultWarehouse[0] !== undefined){
+            if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined){
+              this.warehouse =   data.DeafultWarehouse[0].DEFAULTWAREHOUSE;
+            }
+          }
 
           data.ModelHeaderData= data.ModelHeaderData.filter(function (obj) {
              obj['OPTM_LEVEL'] = 0;
@@ -2273,7 +2276,8 @@ export class OutputComponent implements OnInit {
       return;
     }
     this.navigatenextbtn=true;
-    this.validnextbtn=false;
+    // this.validnextbtn=false;
+    $("#modelbom_next_click_id").trigger('click');
     this.onModelBillNextPress();
   }
 
