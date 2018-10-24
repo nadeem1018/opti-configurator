@@ -1161,7 +1161,7 @@ export class OutputComponent implements OnInit {
           })
 
           data.ModelBOMDataForSecondLevel= data.ModelBOMDataForSecondLevel.filter(function (obj) {
-             obj['OPTM_LEVEL'] = 1;
+             obj['OPTM_LEVEL'] = 2;
              return data.ModelBOMDataForSecondLevel
           })
 
@@ -2360,7 +2360,7 @@ export class OutputComponent implements OnInit {
           "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
           "OPTM_ITEMTYPE": 1,
           "OPTM_WHSE": this.warehouse,
-          "OPTM_LEVEL": 1,
+          "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
           "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].OPTM_QUANTITY),
           "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].OPTM_PRICESOURCE),
           "OPTM_UNITPRICE":Number( this.feature_itm_list_table[ifeature].Actualprice),
@@ -2412,7 +2412,7 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 1,
+              "OPTM_LEVEL":  featureitemlistfilterdata[0].OPTM_LEVEL,
               "OPTM_QUANTITY": Number(featureitemlistfilterdata[0].quantity),
               "OPTM_PRICELIST": Number(featureitemlistfilterdata[0].price),
               "OPTM_UNITPRICE": Number(featureitemlistfilterdata[0].Actualprice),
@@ -2484,7 +2484,7 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 1,
+              "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
               "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].quantity),
               "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].price),
               "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
@@ -2524,7 +2524,7 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 0,
+              "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
               "OPTM_QUANTITY":Number( this.feature_itm_list_table[ifeature].quantity),
               "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].price),
               "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
@@ -2890,7 +2890,7 @@ export class OutputComponent implements OnInit {
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
-            OPTM_LEVEL:1
+            OPTM_LEVEL:2
           });
 
           ItemPrice = ItemPrice + ModelItemsArray[imodelarray].Price
@@ -2934,7 +2934,7 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ModelItemsData[imodelarray].OPTM_MODELID,
-          OPTM_LEVEL:0
+          OPTM_LEVEL:1
         });
       }
     }
