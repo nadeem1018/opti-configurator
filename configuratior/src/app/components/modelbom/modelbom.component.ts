@@ -171,9 +171,9 @@ export class ModelbomComponent implements OnInit {
                 this.isMinSelectedDisable = false;
                 this.isMaxSelectedDisable = false;
               }
-              if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
-                data.ModelDetail[i].OPTM_READYTOUSE = false
-              }
+              // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
+              //   data.ModelDetail[i].OPTM_READYTOUSE = false
+              // }
               if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
                 data.ModelDetail[i].OPTM_PROPOGATEQTY = true
               }
@@ -197,7 +197,7 @@ export class ModelbomComponent implements OnInit {
                 rowindex: data.ModelDetail[i].OPTM_LINENO,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
                 description: this.modelbom_data.feature_name,
-                ReadyToUse: data.ModelDetail[i].OPTM_READYTOUSE,
+                ReadyToUse: this.modelbom_data.is_ready_to_use ,
                 type: data.ModelDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
                 type_value_code: this.typevaluecodefromdatabase,
