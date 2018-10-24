@@ -427,7 +427,7 @@
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
                               <div class="custom-control custom-checkbox ">
-                                <input type="checkbox" id="acccessory_check{{label}}_{{i}}" name="child_checkbox" class="custom-control-input" #accallcheckbox
+                                <input type="checkbox" id="acccessory_check{{label}}_{{i}}" name="child_checkbox" class="custom-control-input accesory_check_for_second_screen" #accallcheckbox
                                   (click)="selectallAccessory(accallcheckbox.checked)">
                                 <label class="custom-control-label" for="acccessory_check{{label}}_{{i}}"></label>
                               </div>

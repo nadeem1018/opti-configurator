@@ -2183,16 +2183,20 @@ export class OutputComponent implements OnInit {
     this.cleanupFeatureItemList(this.final_row_data.model_id);
     this.cleanuptree();
     this.cleanupFinalArray(this.final_row_data.model_id);
-
-    //After the removal of all data of that model will recalculate the prices
-    this.feature_price_calculate();
-
+    
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
     this.accessory_discount_percent = 0;
     this.accessory_item_total = 0;
     this.acc_grand_total = 0;
+    this.step2_data.modal_id = '';
+    this.step2_data.model_code = '';
+    this.feature_itm_list_table = [];
+    $(".accesory_check_for_second_screen").prop('checked', false);
+
+    //After the removal of all data of that model will recalculate the prices
+    this.feature_price_calculate();
   }
 
   delete_all_row_data() {
@@ -2225,7 +2229,7 @@ export class OutputComponent implements OnInit {
   cleanupFeatureItemList(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-      if (current_model_id == this.feature_itm_list_table[count].model_id) {
+      if (current_model_id == this.feature_itm_list_table[count].ModelId) {
         this.feature_itm_list_table.splice(count, 1);
         count = count - 1;
       }
@@ -2248,6 +2252,9 @@ export class OutputComponent implements OnInit {
     this.complete_dataset = [];
     this.tree_data_json.length = 0;
     this.complete_dataset.length = 0;
+    this.ModelHeaderData = [];
+    this.FeatureBOMDataForSecondLevel = [];
+    this.ModelBOMDataForSecondLevel = [];
   }
 
   onValidateNextPress(){
