@@ -335,79 +335,87 @@
                 </div>
                 <hr>
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                    <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true" >
-                        <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
-                          <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
-                            <h4 class="panel-title">
-                              <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
-                                {{header_data.OPTM_DISPLAYNAME}}
-                                <span class="text-right pull-right custom_panel_icon_section"><i class="fa fa-plus"></i></span>
-                              </a>
-                            </h4>
-                          </div>
-                          <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
-                            <div class="panel-body">
-                              <table class="inner-table table table-bordered table-strip table-sm" >
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th>#</th>
-                                    <th>{{language.code}}</th>
-                                    <th>{{language.description}}</th>
-                                    <th>{{language.image}}</th>
-                                  </tr>
-                                </thead>
-                                <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                                  <tr  *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"  >
-                                    <td>
-                                      <div class="{{header_data.element_class}}">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}" #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)" [(checked)]="feature_model_data.checked"
-                                          >
-                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}"></label>
-                                      </div>
-                                      </td>
-                                    <td>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
-                                      <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
-                                    </td>
-                                    <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
-                                    <td>
-                                      <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
-                                        <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                                <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
-                                    <tr>
-                                      <td >
-                                          <div class="{{header_data.element_class}}">
-                                              <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input" 
-                                              (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)" [(checked)]="FeatureBOMDataForSecondLevel.checked">
-                                              <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}_{{Math.floor((Math.random() * 100) + 1)}}"> </label>
-                                            </div>
-                                      </td>
-                                      <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
-                                      <td>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
-                                          <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
-                                      </td>
-                                      <td>{{header_data.OPTM_DISPLAYNAME}}</td>
-                                      <td>
-                                        <div class="image-preivew" *ngIf="header_data.image!=''">
-                                          <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  </tfoot>
-                              </table>
-                            </div>
-                          </div>
+                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
+                      <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
+                        <h4 class="panel-title">
+                          <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false"
+                            attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
+                            {{header_data.OPTM_DISPLAYNAME}}
+                            <span class="text-right pull-right custom_panel_icon_section">
+                              <i class="fa fa-plus"></i>
+                            </span>
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
+                        attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                        <div class="panel-body">
+                          <table class="inner-table table table-bordered table-strip table-sm">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th>#</th>
+                                <th>{{language.code}}</th>
+                                <th>{{language.description}}</th>
+                                <th>{{language.image}}</th>
+                              </tr>
+                            </thead>
+                            <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
+                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;">
+                                <td>
+                                  <div class="{{header_data.element_class}}">
+                                    <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
+                                      #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
+                                      (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"
+                                      [(checked)]="feature_model_data.checked">
+                                    <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
+                                </td>
+                                <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
+                                <td>
+                                  <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
+                                    <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <tfoot *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length == 0">
+                              <tr>
+                                <td>
+                                  <div class="{{header_data.element_class}}">
+                                    <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}"
+                                      #selectionchecked class="custom-control-input" (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)"
+                                      [(checked)]="FeatureBOMDataForSecondLevel.checked">
+                                    <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}">
+                                    </label>
+                                  </div>
+                                </td>
+                                <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
+                                <td>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
+                                  <span *ngIf="header_data['OPTM_TYPE']=='3'">{{header_data.child_code}}</span>
+                                </td>
+                                <td>{{header_data.OPTM_DISPLAYNAME}}</td>
+                                <td>
+                                  <div class="image-preivew" *ngIf="header_data.image!=''">
+                                    <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                  </div>
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
                         </div>
                       </div>
                     </div>
-                  
+                  </div>
+                </div>
+
 
                 <hr>
                 <div class="form-group row clearfix">
@@ -449,141 +457,141 @@
                     </table>
                   </div>
                 </div>
-                 </div>
-                 <div class="col-md-8 border-left-primary">
-                  <div class="modal_heading_block" *ngIf="isModelVisible">
-                    <div class="form-group col-md-4 clearfix">
-                      <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
-                      <span class="col-sm-6 bg-light border border-primary">{{step2_data.model_code}}</span>
-                      <hr>
-                    </div>
+              </div>
+              <div class="col-md-8 border-left-primary">
+                <div class="modal_heading_block" *ngIf="isModelVisible">
+                  <div class="form-group col-md-4 clearfix">
+                    <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
+                    <span class="col-sm-6 bg-light border border-primary">{{step2_data.model_code}}</span>
+                    <hr>
                   </div>
-                  <div class="feature_block">
-                    <div class="form-group col-md-4 clearfix bg-primary text-white ">
-                      <label class="col-sm-12 col-form-label">{{language.features}}</label>
-                    </div>
-                    <div class="feature_table">
+                </div>
+                <div class="feature_block">
+                  <div class="form-group col-md-4 clearfix bg-primary text-white ">
+                    <label class="col-sm-12 col-form-label">{{language.features}}</label>
+                  </div>
+                  <div class="feature_table">
+                    <table class="table table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th *ngFor="let label of feature_itm_list_table_head; let i= index">
+                            <span>
+                              {{label}}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="" *ngFor="let featurerow of feature_itm_list_table">
+                          <td>
+                            <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/>
+                            <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label>
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
+                          </td>
+                          <td>
+                            <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
+                              (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
+                              #quantity />
+                          </td>
+                          <td>
+                            <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
+                        (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
+                            <div class=" input-group">
+                              <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
+                                id="priceId">
+                              <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
+                                (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
+                                value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
+                              <div class="input-group-append" [hidden]=featurerow.pricehide>
+                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
+                                  <i class="fa fa-bars"></i>
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
+                              (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
+                              #pricextn />
+                          </td>
+                          <td>
+                            <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
+                            <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                  <div class="feature_discount_table">
+                    <div class="col-md-4 pull-right">
                       <table class="table table-bordered table-sm">
-                        <thead class="thead-dark">
+                        <thead class="" style=" font-size: 14px; ">
                           <tr>
-                            <th *ngFor="let label of feature_itm_list_table_head; let i= index">
-                              <span>
-                                {{label}}
-                              </span>
+                            <th width="70%">{{language.product_discount}}</th>
+                            <th width="30%">
+                              <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
+    text-align: right;" id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
+                                [(ngModel)]="this.feature_discount_percent" />
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class="" *ngFor="let featurerow of feature_itm_list_table">
-                            <td>
-                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/>
-                              <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label>
-                            </td>
-                            <td>
-                              <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
-                            </td>
-                            <td>
-                              <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
-                            </td>
-                            <td>
-                              <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
-                                (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
-                                #quantity />
-                            </td>
-                            <td>
-                              <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
-                        (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
-                              <div class=" input-group">
-                                <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
-                                  id="priceId">
-                                <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
-                                  (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
-                                  value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
-                                <div class="input-group-append" [hidden]=featurerow.pricehide>
-                                  <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
-                                    <i class="fa fa-bars"></i>
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
-                                (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
-                                #pricextn />
-                            </td>
-                            <td>
-                              <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
-                              <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <br>
-                    <div class="feature_discount_table">
-                      <div class="col-md-4 pull-right">
-                        <table class="table table-bordered table-sm">
-                          <thead class="" style=" font-size: 14px; ">
-                            <tr>
-                              <th width="70%">{{language.product_discount}}</th>
-                              <th width="30%">
-                                <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="product_discount"
-                                  name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
-                                  [(ngModel)]="this.feature_discount_percent" />
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <!-- <tr>
+                          <!-- <tr>
                               <td>
                                 {{this.language.product_tax}}
                               </td>
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
-                            <tr>
-                              <td>
-                                {{this.language.product_total}}
-                              </td>
-                              <td>{{this.feature_item_total}}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                {{this.language.accessories_discount}}
-                              </td>
-                              <td>
-                                <input type="number" class="form-control  form-control-sm mt3" style="text-align:right; height: 25px;" id="accessory_item_discount"
-                                  name="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)"
-                                  [(ngModel)]="this.accessory_discount_percent" />
-                              </td>
-                            </tr>
-                            <!-- <tr>
+                          <tr>
+                            <td>
+                              {{this.language.product_total}}
+                            </td>
+                            <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_discount}}
+                            </td>
+                            <td class="text-right mr-3">
+                              <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
+    text-align: right;" id="accessory_item_discount" name="accessory_item_discount" #accessory_item_discount (change)="on_calculation_change('accesory_discount',product_discount.value)"
+                                [(ngModel)]="this.accessory_discount_percent" />
+                            </td>
+                          </tr>
+                          <!-- <tr>
                               <td>
                                 {{this.language.accessories_tax}}
                               </td>
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
-                            <tr>
-                              <td>
-                                {{this.language.accessories_total}}
-                              </td>
-                              <td>{{this.accessory_item_total}}</td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr style=" font-size: 14px; ">
-                              <th>{{this.language.grand_total}}</th>
-                              <td>{{this.acc_grand_total}}</td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
+                          <tr>
+                            <td>
+                              {{this.language.accessories_total}}
+                            </td>
+                            <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr style=" font-size: 14px; ">
+                            <th>{{this.language.grand_total}}</th>
+                            <td class="text-right mr-3">{{this.acc_grand_total}}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
-                  <div class="clearfix"></div>
-                </div> 
+                </div>
+                <div class="clearfix"></div>
               </div>
             </div>
-       
+          </div>
+
           <div class="row">
             <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
               <button type="button" class="btn btn-sm btn-secondary  mr-10" (click)="onclearselection()">
@@ -596,12 +604,11 @@
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
               <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
                 <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
-              <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
-                data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
+              <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so"
+                (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
-                 <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10"
-                (click)="onValidateNextPress()">
+              <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onValidateNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
           </div>
@@ -748,7 +755,7 @@
                       <thead class="" style=" font-size: 14px; ">
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
-                          <th width="30%">
+                          <th width="30%" class="text-right mr-3">
                             {{this.feature_discount_percent}}
                           </th>
                         </tr>
@@ -764,13 +771,13 @@
                           <td>
                             {{this.language.product_total}}
                           </td>
-                          <td>{{this.feature_item_total}}</td>
+                          <td class="text-right mr-3">{{this.feature_item_total}}</td>
                         </tr>
                         <tr>
                           <td>
                             {{this.language.accessories_discount}}
                           </td>
-                          <td>
+                          <td class="text-right mr-3">
                             {{this.accessory_discount_percent}}
                           </td>
                         </tr>
@@ -784,13 +791,13 @@
                           <td>
                             {{this.language.accessories_total}}
                           </td>
-                          <td>{{this.accessory_item_total}}</td>
+                          <td class="text-right mr-3">{{this.accessory_item_total}}</td>
                         </tr>
                       </tbody>
                       <tfoot>
                         <tr style=" font-size: 14px; ">
                           <th>{{this.language.grand_total}}</th>
-                          <td>{{this.acc_grand_total}}</td>
+                          <td class="text-right mr-3">{{this.acc_grand_total}}</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -1010,13 +1017,13 @@
                               <td>
                                 {{this.language.product_total}}
                               </td>
-                              <td >{{this.feature_item_total}}</td>
+                              <td class="text-right mr-3">{{this.feature_item_total}}</td>
                             </tr>
                             <tr>
                               <td>
                                 {{this.language.accessories_discount}}
                               </td>
-                              <td>
+                              <td class="text-right mr-3">
                                 {{this.accessory_discount_percent}}
                               </td>
                             </tr>
@@ -1030,13 +1037,13 @@
                               <td>
                                 {{this.language.accessories_total}}
                               </td>
-                              <td>{{this.accessory_item_total}}</td>
+                              <td class="text-right mr-3">{{this.accessory_item_total}}</td>
                             </tr>
                           </tbody>
                           <tfoot>
                             <tr style=" font-size: 14px; ">
                               <th>{{this.language.grand_total}}</th>
-                              <td>{{this.acc_grand_total}}</td>
+                              <td class="text-right mr-3">{{this.acc_grand_total}}</td>
                             </tr>
                           </tfoot>
                         </table>
