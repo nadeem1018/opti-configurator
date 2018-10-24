@@ -113,6 +113,11 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetAllRules", jObject, this.common_params.httpOptions);
   }
 
+  getRuleOutput(rule_id, seq_id): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBId: this.logged_in_company, RuleId: rule_id, SeqId: seq_id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetOutputDataForRule", jObject, this.common_params.httpOptions);
+  }
+
   onModelIdChange(code): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API

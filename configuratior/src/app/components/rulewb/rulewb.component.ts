@@ -5,6 +5,7 @@ import { RulewbService } from '../../services/rulewb.service';
 import { ActivatedRoute, Router } from '@angular/router'
 import 'bootstrap';
 import * as $ from 'jquery';
+import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
   selector: 'app-rulewb',
@@ -64,6 +65,30 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
 
+  public outputTable:boolean = false;
+
+
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+  
+
+  detectDevice(){
+    let getDevice = UIHelper.isDevice();
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+    if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+    }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+    }else{
+      this.isPerfectSCrollBar = false;
+    }
+  }
+
+
   public min;
   ngOnInit() {
     this.global_rule_feature_data = new Array();
@@ -71,6 +96,8 @@ export class RulewbComponent implements OnInit {
     const element = document.getElementsByTagName('body')[0];
 
     element.className = '';
+    this.detectDevice();
+    element.classList.add('add-rule-web');
     element.classList.add('sidebar-toggled');
 
     let d = new Date();
@@ -240,26 +267,11 @@ export class RulewbComponent implements OnInit {
 
               });
 
-             /*  this.rule_feature_data.push({
-                rowindex: i,
-                check_child: true,
-                feature: data.RuleWorkBenchOutput[i].OPTM_FEATUREID,
-                featureCode: data.RuleWorkBenchOutput[i].OPTM_FEATURECODE,
-                item: data.RuleWorkBenchOutput[i].OPTM_ITEMKEY,
-                value: data.RuleWorkBenchOutput[i].OPTM_VALUE,
-                uom: data.RuleWorkBenchOutput[i].OPTM_UOM,
-                quantity: data.RuleWorkBenchOutput[i].OPTM_QUANTITY,
-                edit_quantity: data.RuleWorkBenchOutput[i].OPTM_ISQTYEDIT,
-                price_source: data.RuleWorkBenchOutput[i].OPTM_PRICESOURCE,
-                edit_price: data.RuleWorkBenchOutput[i].OPTM_ISPRICEEDIT,
-                default: data.RuleWorkBenchOutput[i].OPTM_DEFAULT,
-                type: typefromdatabase
-
-              }); */
+      
 
             }
           }
-         // this.global_rule_feature_data = this.rule_feature_data;
+       
           console.log(this.rule_expression_data);
           setTimeout(function(){
             obj.getFeatureDetailsForOutput();
@@ -328,6 +340,7 @@ export class RulewbComponent implements OnInit {
     this.rule_feature_data = new Array();
     this.add_sequence_mode = false;
     this.update_sequence_mode = false;
+    this.outputTable = false;
   }
 
   hide_show_output() {
@@ -469,8 +482,10 @@ export class RulewbComponent implements OnInit {
   }
 
   getFeatureDetailsForOutput() {
+    this.close_rule_sequence();
     this.rule_feature_data = new Array();
     //this.outputrowcounter=0;
+    this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
         if (data.length > 0) {
@@ -926,9 +941,7 @@ export class RulewbComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.rule_feature_data);
-    console.log(this.global_rule_feature_data);
+   
   }
 
   check_all(value) {

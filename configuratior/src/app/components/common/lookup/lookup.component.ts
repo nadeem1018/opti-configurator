@@ -2,6 +2,7 @@ import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter, E
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
+import { ModelbomService } from '../../../services/modelbom.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -30,7 +31,7 @@ export class LookupComponent implements OnInit {
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   popup_title = this.language.title;
-  constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router) { }
+  constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router, private mbom: ModelbomService,) { }
   public table_head_hidden_elements = [];
 
 
@@ -39,7 +40,10 @@ export class LookupComponent implements OnInit {
   public columns: any = [];
   public checked_rules = [];
   public showLoader: boolean = false;
+  public showruleOutputLoader: boolean = false;
+  
   public LookupDataLoaded: boolean = false;
+  public RuleOutputLookupDataLoaded: boolean = false;
   public click_operation;
   public service_Data;
   // look up columns - thats needs to be shown 
@@ -47,10 +51,13 @@ export class LookupComponent implements OnInit {
   public item_code_columns;
   public model_template_item_columns;
   public table_head = [];
+  public rule_output_table_head=[];
+  public rule_output_table_head_hidden_elements=[];
   public lookup_key = "";
   public width_value = '100%';
   public selectedFile: any = "";
   public xls_dataset;
+  public outputServiceData:any = [];
   companyName: string;
   // intital Javascript object class 
   Object = Object;
@@ -70,12 +77,15 @@ export class LookupComponent implements OnInit {
 
     this.showLoader = true;
     this.LookupDataLoaded = false;
+    this.showruleOutputLoader = true;
+    this.RuleOutputLookupDataLoaded = false;
     this.lookup_key = '';
     this.item_code_columns = [];
     this.model_template_item_columns = [];
     this.fill_input_id = '';
     this.preview_image = '';
     this.dataBind = [];
+    this.outputServiceData = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
 
@@ -369,11 +379,45 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  get_rule_output( RULEID,  SEQID){
-    console.log("  RULEID " +  RULEID);
-    console.log("  SEQID " +  SEQID);
-    $("#simple_table_modal").modal('show');
+  get_rule_output( rule_id,  seq_id){
+    console.log("  rule_id " +  rule_id);
+    console.log("  seq_id " +  seq_id);
+    this.showruleOutputLoader = true;
+    this.RuleOutputLookupDataLoaded = false;
+    this.rule_output_table_head = ['#', 'feature', 'Description'];
+    this.rule_output_table_head_hidden_elements = [false, false, false];
+    $("#rule_output_table_lookup").modal('show');
+    // $("#rule_selection").css("opacity", "0");
+     $(".modal-backdrop:first").addClass("z-index_1050");
+    this.outputServiceData = [
+      {"id":"2","key":"123","value":"test 1"},
+      {"id":"2","key":"431","value":"test 2"},
+      {"id":"4","key":"555","value":"test 3"},
+    ];
+
+  let obj = this;
+    this.mbom.getRuleOutput(rule_id, seq_id).subscribe(
+        data => {
+          console.log(data);
+          if (data !== '' && data !== undefined && data !== null) {
+            obj.outputServiceData = data
+          // this.close_lookup();
+        } else {
+          this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+          // this.close_lookup();
+        }
+        
+        //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
+       })
     
+    this.showruleOutputLoader = false;
+    this.RuleOutputLookupDataLoaded = true;
+
+  }
+  close_rule_model(id){
+    $("#rule_output_table_lookup").modal('hide');
+    $(".modal-backdrop:first").removeClass("z-index_1050");
+   // $("#rule_selection").css("opacity", "1");
   }
 
 
