@@ -331,6 +331,7 @@
     "select_max_selectable":"Cannot select greater than maximum selectable limit",
     "MandatoryItems":"Mandatory items is not selected",
     "seq_no":"Seq No.",
-    "view_output":"View Output"
+    "view_output":"View Output",
+    "no_item_selected":"No items selected"
     
 }
