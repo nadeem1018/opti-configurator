@@ -3,11 +3,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 pl-0 pr-0">
-                <h4 class="h4"><strong> {{language.Bom_title}} </strong> </h4>
+                <div class="opti_module-title"> {{language.Bom_title}} </div>
             </div>
             <div class="col-md-6 pl-0 pr-0">
                 <div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)">
-                    <div class="btn btn-sm btn-secondary">
+                    <div class="btn btn-sm btn-secondary" style="margin-top: 8px;">
                         <i class="fa fa-sitemap"></i>
                     </div>
                 </div>
@@ -90,12 +90,12 @@
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
                                     value="Y">
-                                <label class="custom-control-label" for="yes">Yes</label>
+                                <label class="custom-control-label" for="yes">&nbsp;Yes</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline ml-2">
                                 <input type="radio" [disabled]="true" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
                                     value="N">
-                                <label class="custom-control-label" for="no">No</label>
+                                <label class="custom-control-label" for="no">&nbsp;No</label>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -105,11 +105,7 @@
                         </div>
                     </div>
 
-                    <hr>
-
-
-
-                    <hr>
+                    
                     <div class="col-sm-12 p-0">
                         <div class="table-responsive table-responsive-sm">
                             <table class="table opti_fixed-header top-table table-bordered  table-sm" id="dataTable" cellspacing="0" >
@@ -149,7 +145,7 @@
                                                 <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                                                     value={{row.type_value}} #type_value />
                                                 <div class="input-group-append" [hidden]=row.hide>
-                                                    <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
+                                                    <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
                                                         <i class="fa fa-bars"></i>
                                                     </span>
                                                 </div>
@@ -187,7 +183,7 @@
                                               <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
                                                 #price_source [disabled]="row.isPriceDisabled" />
                                               <div class="input-group-append" [hidden]=row.pricehide>
-                                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
+                                                <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
                                                   <i class="fa fa-bars"></i>
                                                 </span>
                                               </div>
@@ -222,7 +218,7 @@
                         </div>
                     </div>
 
-                    <hr>
+                    <!-- <hr> -->
 
                 </div>
                 <div class="card-footer small text-muted">
@@ -283,7 +279,7 @@
     </div>
 </div>
 
-<hr>
+<!-- <hr> -->
 
 
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
