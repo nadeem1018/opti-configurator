@@ -200,6 +200,7 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
+    this.step1_data.selected_configuration_key= "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
     if (operation_type == 2 || operation_type == 3) {
@@ -226,7 +227,6 @@ export class OutputComponent implements OnInit {
   open_config_lookup() {
     this.serviceData = []
     this.lookupfor = 'configure_list_lookup';
-    console.log(this.step1_data.main_operation_type);
     this.OutputService.getConfigurationList(this.step1_data.main_operation_type).subscribe(
       data => {
         if (data.length > 0) {
@@ -378,6 +378,9 @@ export class OutputComponent implements OnInit {
       else {
         this.isNextButtonVisible = false;
       }
+    }
+    else if (this.lookupfor == 'configure_list_lookup') {
+      this.step1_data.selected_configuration_key =$event[1];
     }
     // this.getItemDetails($event[0]);
   }
