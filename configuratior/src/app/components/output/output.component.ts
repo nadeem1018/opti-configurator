@@ -19,7 +19,7 @@ export class OutputComponent implements OnInit {
   @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  public modify_duplicate_selected:boolean = false;
+  public modify_duplicate_selected: boolean = false;
   public page_main_title = this.language.output_window;
   public common_output_data: any = [];
   public feature_accessory_list: any[];
@@ -63,9 +63,9 @@ export class OutputComponent implements OnInit {
   public selectfeaturedata = [];
   public modelitemflag: number = 0;
   public final_array_checked_options = [];
-  public navigatenextbtn:boolean=false;
-  public validnextbtn:boolean=true;
-  public previousquantity=1;
+  public navigatenextbtn: boolean = false;
+  public validnextbtn: boolean = true;
+  public previousquantity = 1;
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -122,7 +122,7 @@ export class OutputComponent implements OnInit {
   public ModelHeaderData = [];
   public ModelBOMDataForSecondLevel = [];
   public FeatureBOMDataForSecondLevel = [];
-  public globalConfigId:any = '';
+  public globalConfigId: any = '';
 
   ngOnInit() {
 
@@ -198,23 +198,23 @@ export class OutputComponent implements OnInit {
     }, 2000); */
   }
 
-  onOperationChange(operation_type){
-    if (operation_type == 2 || operation_type == 3){
+  onOperationChange(operation_type) {
+    if (operation_type == 2 || operation_type == 3) {
       this.modify_duplicate_selected = true;
     } else {
       this.modify_duplicate_selected = false;
     }
   }
 
-  on_configuration_id_change(value){
+  on_configuration_id_change(value) {
     this.globalConfigId = value;
   }
 
-  onSavePress(){
-    
+  onSavePress() {
+
   }
 
-  open_config_lookup(){
+  open_config_lookup() {
     this.serviceData = []
     this.lookupfor = 'configure_list_lookup';
     this.OutputService.getConfigurationList().subscribe(
@@ -296,7 +296,7 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
-          this.lookupfor = 'ModelBom_lookup';
+          this.lookupfor = 'ModelBomForWizard_lookup';
           this.serviceData = data;
 
         }
@@ -317,14 +317,16 @@ export class OutputComponent implements OnInit {
 
 
   getLookupValue($event) {
-    if (this.lookupfor == 'ModelBom_lookup') {
+    if (this.lookupfor == 'ModelBomForWizard_lookup') {
       this.onclearselection();
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
+      this.step2_data.templateid = $event[3];
+      this.step2_data.itemcodegenkey = $event[4];
       this.isModelVisible = true
-      this.navigatenextbtn=false;
-      this.validnextbtn=true;
+      this.navigatenextbtn = false;
+      this.validnextbtn = true;
       // this.GetDataForModelBomOutput();
       this.GetAllDataForModelBomOutput();
     }
@@ -408,13 +410,13 @@ export class OutputComponent implements OnInit {
       else {
         //this.step2_data.quantity = value
         for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
-          this.feature_itm_list_table[i].quantity =  (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+          this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
         }
 
         this.feature_price_calculate();
       }
 
-      this.previousquantity=value;
+      this.previousquantity = value;
     }
   }
 
@@ -1142,30 +1144,30 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null || data != undefined) {
           console.log(data);
-          if (data.DeafultWarehouse!== undefined && data.DeafultWarehouse[0] !== undefined){
-            if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined){
-              this.warehouse =   data.DeafultWarehouse[0].DEFAULTWAREHOUSE;
+          if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
+            if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined) {
+              this.warehouse = data.DeafultWarehouse[0].DEFAULTWAREHOUSE;
             }
           }
 
-          data.ModelHeaderData= data.ModelHeaderData.filter(function (obj) {
-             obj['OPTM_LEVEL'] = 0;
-             return data.ModelHeaderData
+          data.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
+            obj['OPTM_LEVEL'] = 0;
+            return data.ModelHeaderData
           })
 
-          data.FeatureBOMDataForSecondLevel= data.FeatureBOMDataForSecondLevel.filter(function (obj) {
-             obj['OPTM_LEVEL'] = 1;
+          data.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
+            obj['OPTM_LEVEL'] = 1;
             return data.FeatureBOMDataForSecondLevel
           })
 
-          data.ModelBOMDataForSecondLevel= data.ModelBOMDataForSecondLevel.filter(function (obj) {
-             obj['OPTM_LEVEL'] = 1;
-             return data.ModelBOMDataForSecondLevel
+          data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
+            obj['OPTM_LEVEL'] = 2;
+            return data.ModelBOMDataForSecondLevel
           })
 
-          data.ObjFeatureItemDataWithDfaultY= data.ObjFeatureItemDataWithDfaultY.filter(function (obj) {
-             obj['OPTM_LEVEL'] = 1;
-             return data.ObjFeatureItemDataWithDfaultY
+          data.ObjFeatureItemDataWithDfaultY = data.ObjFeatureItemDataWithDfaultY.filter(function (obj) {
+            obj['OPTM_LEVEL'] = 1;
+            return data.ObjFeatureItemDataWithDfaultY
           })
 
           this.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
@@ -1314,6 +1316,12 @@ export class OutputComponent implements OnInit {
                           ifeatureitemsgrid = ifeatureitemsgrid - 1;
                         }
                       }
+                      for (let ifeaturedataforsecond = 0; ifeaturedataforsecond < this.FeatureBOMDataForSecondLevel.length; ifeaturedataforsecond++) {
+                        if (this.FeatureBOMDataForSecondLevel[ifeaturedataforsecond].OPTM_FEATUREID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
+                          this.FeatureBOMDataForSecondLevel.splice(ifeaturedataforsecond, 1);
+                          ifeaturedataforsecond = ifeaturedataforsecond - 1;
+                        }
+                      }
                       this.ModelHeaderData.splice(imodelheader, 1);
                       imodelheader = imodelheader - 1;
                     }
@@ -1326,6 +1334,12 @@ export class OutputComponent implements OnInit {
                             this.feature_itm_list_table.splice(ifeatureitemsgrid, 1);
                             ifeatureitemsgrid = ifeatureitemsgrid - 1;
                           }
+                        }
+                      }
+                      for (let imodeldataforsecond = 0; imodeldataforsecond < this.ModelBOMDataForSecondLevel.length; imodeldataforsecond++) {
+                        if (this.ModelBOMDataForSecondLevel[imodeldataforsecond].OPTM_FEATUREID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
+                          this.ModelBOMDataForSecondLevel.splice(imodeldataforsecond, 1);
+                          imodeldataforsecond = imodeldataforsecond - 1;
                         }
                       }
                       this.ModelHeaderData.splice(imodelheader, 1);
@@ -1373,7 +1387,7 @@ export class OutputComponent implements OnInit {
                       feature_code: feature_model_data.feature_code,
                       parentfeatureid: parentfeatureid,
                       parentmodelid: parentmodelid,
-                      OPTM_LEVEL:feature_model_data.OPTM_LEVEL
+                      OPTM_LEVEL: feature_model_data.OPTM_LEVEL
 
                     });
 
@@ -1382,7 +1396,7 @@ export class OutputComponent implements OnInit {
                       propagateqty = parentarray[0].OPTM_QUANTITY
                     }
                   }
-                  for (let i = 0; i < data.DataForSelectedFeatureModelItem.length; i++) {
+                  for (var i = 0; i < data.DataForSelectedFeatureModelItem.length; ++i) {
                     var isExist;
                     if (data.DataForSelectedFeatureModelItem.length > 0) {
                       if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
@@ -1423,17 +1437,19 @@ export class OutputComponent implements OnInit {
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           checked: checkeddefault,
-                          OPTM_LEVEL:feature_model_data.OPTM_LEVEL + 1
+                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1
                         });
 
                         if (checkeddefault == true) {
+                          var itemData = [];
                           parentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
                             if (obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) {
                               obj['feature_code'] = obj['parent_code']
                             }
-                            return obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID
+                            return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID
                           });
-                          this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty);
+                          itemData.push(data.DataForSelectedFeatureModelItem[i])
+                          this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
                         }
                       }
                     }
@@ -1476,7 +1492,7 @@ export class OutputComponent implements OnInit {
                     feature_code: feature_model_data.feature_code,
                     parentfeatureid: parentfeatureid,
                     parentmodelid: parentmodelid,
-                    OPTM_LEVEL:feature_model_data.OPTM_LEVEL
+                    OPTM_LEVEL: feature_model_data.OPTM_LEVEL
 
                   });
                   for (let i = 0; i < data.DataForSelectedFeatureModelItem.length; i++) {
@@ -1520,7 +1536,7 @@ export class OutputComponent implements OnInit {
                           OPTM_VALUE: data.DataForSelectedFeatureModelItem[i].OPTM_VALUE,
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
-                          OPTM_LEVEL:feature_model_data.OPTM_LEVEL + 1
+                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1
                         });
                       }
                     }
@@ -1616,7 +1632,7 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ItemData[0].OPTM_MODELID,
-          OPTM_LEVEL:parentarray[0].OPTM_LEVEL
+          OPTM_LEVEL: parentarray[0].OPTM_LEVEL
         });
       }
     }
@@ -2181,16 +2197,20 @@ export class OutputComponent implements OnInit {
     this.cleanupFeatureItemList(this.final_row_data.model_id);
     this.cleanuptree();
     this.cleanupFinalArray(this.final_row_data.model_id);
-
-    //After the removal of all data of that model will recalculate the prices
-    this.feature_price_calculate();
-
+    
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
     this.accessory_discount_percent = 0;
     this.accessory_item_total = 0;
     this.acc_grand_total = 0;
+    this.step2_data.modal_id = '';
+    this.step2_data.model_code = '';
+    this.feature_itm_list_table = [];
+    $(".accesory_check_for_second_screen").prop('checked', false);
+
+    //After the removal of all data of that model will recalculate the prices
+    this.feature_price_calculate();
   }
 
   delete_all_row_data() {
@@ -2223,7 +2243,7 @@ export class OutputComponent implements OnInit {
   cleanupFeatureItemList(current_model_id) {
     //Get the modal id and clean the data of Features List here
     for (let count = 0; count < this.feature_itm_list_table.length; count++) {
-      if (current_model_id == this.feature_itm_list_table[count].model_id) {
+      if (current_model_id == this.feature_itm_list_table[count].ModelId) {
         this.feature_itm_list_table.splice(count, 1);
         count = count - 1;
       }
@@ -2246,12 +2266,15 @@ export class OutputComponent implements OnInit {
     this.complete_dataset = [];
     this.tree_data_json.length = 0;
     this.complete_dataset.length = 0;
+    this.ModelHeaderData = [];
+    this.FeatureBOMDataForSecondLevel = [];
+    this.ModelBOMDataForSecondLevel = [];
   }
 
-  onValidateNextPress(){
-    this.navigatenextbtn=false;
-    this.validnextbtn=true;
-    if (this.feature_itm_list_table.length==0) {
+  onValidateNextPress() {
+    this.navigatenextbtn = false;
+    this.validnextbtn = true;
+    if (this.feature_itm_list_table.length == 0) {
       this.toastr.error('', this.language.no_item_selected, this.commonData.toast_config);
       return;
     }
@@ -2259,7 +2282,7 @@ export class OutputComponent implements OnInit {
     var isMandatoryItems = this.ModelHeaderData.filter(function (obj) {
       return obj['OPTM_MANDATORY'] == "Y"
     })
-    let isMandatoryCount = 0;             
+    let isMandatoryCount = 0;
     if (isMandatoryItems.length > 0) {
       for (let imandtory = 0; imandtory < isMandatoryItems.length; imandtory++) {
         for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
@@ -2273,7 +2296,7 @@ export class OutputComponent implements OnInit {
       this.toastr.error('', this.language.MandatoryItems, this.commonData.toast_config);
       return;
     }
-    this.navigatenextbtn=true;
+    this.navigatenextbtn = true;
     // this.validnextbtn=false;
     $("#modelbom_next_click_id").trigger('click');
     this.onModelBillNextPress();
@@ -2282,7 +2305,7 @@ export class OutputComponent implements OnInit {
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
-    
+
     console.log('this.feature_itm_list_table');
     console.log(this.feature_itm_list_table);
 
@@ -2308,8 +2331,8 @@ export class OutputComponent implements OnInit {
         "OPTM_ITEMCODE": this.step2_data.model_code,
         "OPTM_KEY": "",
         "OPTM_PARENTKEY": "",
-        "OPTM_TEMPLATEID": "",
-        "OPTM_ITMCODEGENKEY": "",
+        "OPTM_TEMPLATEID": this.step2_data.templateid,
+        "OPTM_ITMCODEGENKEY": this.step2_data.itemcodegenkey,
         "OPTM_ITEMTYPE": 0,
         "OPTM_WHSE": this.warehouse,
         "OPTM_LEVEL": 0,
@@ -2345,7 +2368,7 @@ export class OutputComponent implements OnInit {
           return obj['OPTM_MODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 2
         })
 
-        
+
 
         this.step2_final_dataset_to_save.push({
           "OPTM_OUTPUTID": "",
@@ -2358,11 +2381,11 @@ export class OutputComponent implements OnInit {
           "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
           "OPTM_ITEMTYPE": 1,
           "OPTM_WHSE": this.warehouse,
-          "OPTM_LEVEL": 1,
+          "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
           "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].OPTM_QUANTITY),
-          "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].OPTM_PRICESOURCE),
-          "OPTM_UNITPRICE":Number( this.feature_itm_list_table[ifeature].Actualprice),
-          "OPTM_TOTALPRICE":Number( this.feature_itm_list_table[ifeature].OPTM_QUANTITY * this.feature_itm_list_table[ifeature].Actualprice),
+          "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].OPTM_PRICESOURCE),
+          "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
+          "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].OPTM_QUANTITY * this.feature_itm_list_table[ifeature].Actualprice),
           "OPTM_DISCPERCENT": this.feature_itm_list_table[ifeature].pricextn,
           "OPTM_CREATEDBY": this.common_output_data.username,
           "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -2410,7 +2433,7 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 1,
+              "OPTM_LEVEL": featureitemlistfilterdata[0].OPTM_LEVEL,
               "OPTM_QUANTITY": Number(featureitemlistfilterdata[0].quantity),
               "OPTM_PRICELIST": Number(featureitemlistfilterdata[0].price),
               "OPTM_UNITPRICE": Number(featureitemlistfilterdata[0].Actualprice),
@@ -2482,11 +2505,11 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 1,
+              "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
               "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].quantity),
-              "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].price),
+              "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
               "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
-              "OPTM_TOTALPRICE":Number( this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
+              "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
               "OPTM_DISCPERCENT": this.feature_itm_list_table[ifeature].pricextn,
               "OPTM_CREATEDBY": this.common_output_data.username,
               "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -2522,9 +2545,9 @@ export class OutputComponent implements OnInit {
               "OPTM_ITMCODEGENKEY": "",
               "OPTM_ITEMTYPE": itemtype,
               "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": 0,
-              "OPTM_QUANTITY":Number( this.feature_itm_list_table[ifeature].quantity),
-              "OPTM_PRICELIST":Number(this.feature_itm_list_table[ifeature].price),
+              "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
+              "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].quantity),
+              "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
               "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
               "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
               "OPTM_DISCPERCENT": Number(this.feature_itm_list_table[ifeature].pricextn),
@@ -2556,7 +2579,7 @@ export class OutputComponent implements OnInit {
         }
 
       }
-      else if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
+      else if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y" && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3) {
         if (itemkey.length == 0) {
           itemkey = this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER
         } else {
@@ -2567,7 +2590,7 @@ export class OutputComponent implements OnInit {
     }
 
     for (var isave in this.step2_final_dataset_to_save) {
-      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "") {
+      if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "") {
         this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkey
       }
     }
@@ -2642,7 +2665,7 @@ export class OutputComponent implements OnInit {
       header_feature_table['element_type'] = "radio";
       header_feature_table['element_class'] = "custom-control custom-radio";
     }
-    
+
 
     return array;
 
@@ -2746,7 +2769,7 @@ export class OutputComponent implements OnInit {
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             ModelId: ItemData[i].OPTM_MODELID,
-            OPTM_LEVEL:parentarray[0].OPTM_LEVEL + 1
+            OPTM_LEVEL: parentarray[0].OPTM_LEVEL + 1
           });
         }
       }
@@ -2823,7 +2846,7 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: this.step2_data.model_id,
-          OPTM_LEVEL:1
+          OPTM_LEVEL: 1
         });
       }
     }
@@ -2857,7 +2880,7 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ModelData[imodelarray].OPTM_MODELID,
-          OPTM_LEVEL:1
+          OPTM_LEVEL: 1
         });
       }
 
@@ -2888,7 +2911,7 @@ export class OutputComponent implements OnInit {
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
-            OPTM_LEVEL:1
+            OPTM_LEVEL: 2
           });
 
           ItemPrice = ItemPrice + ModelItemsArray[imodelarray].Price
@@ -2932,7 +2955,7 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ModelItemsData[imodelarray].OPTM_MODELID,
-          OPTM_LEVEL:0
+          OPTM_LEVEL: 1
         });
       }
     }
