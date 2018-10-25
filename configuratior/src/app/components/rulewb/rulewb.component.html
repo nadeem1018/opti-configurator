@@ -167,33 +167,33 @@
                     <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                       <tr *ngFor="let row of rule_sequence_data">
                         <td width="5%">
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
                             value={{row.seq_count}}/> </td>
 
                         <td width="10%">
-                          <select class="form-control  form-control-sm mt3" #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )">
+                          <select class="form-control  form-control-sm " #selectedOperator (change)="on_input_change(row.rowindex, 'operator', selectedOperator.value )">
                             <option *ngFor="let v of commonData.operator_type" [value]="v.value" [selected]="row.operator==v.value"> {{v.Name}}</option>
                           </select>
                         </td>
 
                         <td width="10%">
-                          <select class="form-control  form-control-sm mt3" #selected_type (change)="on_input_change(row.rowindex, 'type', selected_type.value )">
+                          <select class="form-control  form-control-sm " #selected_type (change)="on_input_change(row.rowindex, 'type', selected_type.value )">
                             <option *ngFor="let v of commonData.rule_seq_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
                           </select>
                         </td>
 
                         <td width="14%">
-                          <select class="form-control  form-control-sm mt3" #selected_bracket (change)="on_input_change(row.rowindex, 'braces', selected_bracket.value )">
+                          <select class="form-control  form-control-sm " #selected_bracket (change)="on_input_change(row.rowindex, 'braces', selected_bracket.value )">
                             <option *ngFor="let v of commonData.bracket_list " [value]="v.value" [selected]="row.braces==v.value"> {{v.value}}</option>
                           </select>
                         </td>
 
                         <td width="14%">
                           <div class="input-group">
-                            <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value_code.value,row.rowindex,type_value_code)"
+                            <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm " id="type_value_code" (change)="on_typevalue_change(type_value_code.value,row.rowindex,type_value_code)"
                               value="{{row.type_value_code}}" #type_value_code>
 
-                            <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value_code.value,row.rowindex)"
+                            <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value_code.value,row.rowindex)"
                               value="{{row.type_value}}" #type_value />
                             <div class="input-group-append">
                               <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
@@ -204,7 +204,7 @@
                         </td>
 
                         <td width="14%">
-                          <select class="form-control  form-control-sm mt3" #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
+                          <select class="form-control  form-control-sm " #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
                             <option value=""></option>
                             <option *ngFor="let v of commonData.express_conditions " [value]="v.value" [selected]="row.condition==v.value"> {{v.value}}</option>
                           </select>
@@ -212,9 +212,9 @@
 
                         <td width="14%">
                           <div class="input-group">
-                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}"
+                            <input type="hidden" class="form-control form-control-sm " id="opeand_1" #operand_1 name="operand_1" value="{{row.operand_1}}"
                               (change)="on_input_change(row.rowindex, 'operand_1', operand_1.value,operand_1_code )" />
-                            <input type="text" class="form-control form-control-sm mt3" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"
+                            <input type="text" class="form-control form-control-sm" id="opeand_1" #operand_1_code name="operand_1_code" value="{{row.operand_1_code}}"
                               (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value,operand_1_code )"
                             />
                             <div class="input-group-append">
@@ -227,10 +227,10 @@
 
                         <td width="14%">
                           <div class="input-group">
-                            <input type="hidden" class="form-control form-control-sm mt3" id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}"
+                            <input type="hidden" class="form-control form-control-sm " id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}"
                               [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )"
                             />
-                            <input type="text" class="form-control form-control-sm mt3" id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}"
+                            <input type="text" class="form-control form-control-sm " id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}"
                               [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )"
                             />
                             <div class="input-group-append" [hidden]="row.is_operand2_disable">
@@ -353,43 +353,43 @@
                           </td>
 
                           <td width="11%">
-                            <input type="hidden" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_name" name="feature_name" value={{row.feature}}
+                            <input type="hidden" [disabled]="true" class="form-control  form-control-sm " id="feature_name" name="feature_name" value={{row.feature}}
                               #feature (change)="output_change_event('feature_name',feature.value,row.rowindex)" />
             
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="featureCode" name="featureCode" value={{row.featureCode}}
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm " id="featureCode" name="featureCode" value={{row.featureCode}}
                               #featureCode (change)="output_change_event('featureCode',featureCode.value,row.rowindex)" /> </td>
 
                           <td width="11%">
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_item" name="feature_item" #featureitem
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm " id="feature_item" name="feature_item" #featureitem
                               value={{row.item}} (change)="output_change_event('feature_item',featureitem.value,row.rowindex)" />
                           </td>
 
                           <td width="11%">
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" id="feature_value" name="feature_value" #featurevalue
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm" id="feature_value" name="feature_value" #featurevalue
                               value={{row.value}} (change)="output_change_event('feature_value',featurevalue.value,row.rowindex)" />
                           </td>
 
                           <td width="11%">
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" #uom id="uom" name="uom" value={{row.uom}}
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm" #uom id="uom" name="uom" value={{row.uom}}
                               (change)="output_change_event('uom',uom.value,row.rowindex)" />
                           </td>
 
                           <td width="11%">
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" id="quantity" name="quantity" value={{row.quantity}}
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm pull-right" id="quantity" name="quantity" value={{row.quantity}}
                               #quantity (change)="output_change_event('quantity',quantity.value,row.rowindex)" />
                           </td>
                           <td width="10%">
-                            <select class="form-control  form-control-sm mt3" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
+                            <select class="form-control  form-control-sm" id="edit_quanity" #is_quanity_editable (change)="output_change_event('edit_quanity',is_quanity_editable.value,row.rowindex)">
                               <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_quantity==v.value"> {{v.Name}}</option>
                             </select>
                           </td>
                           <td width="10%">
-                            <input type="text" [disabled]="true" class="form-control  form-control-sm mt3 pull-right" #price_source id="price_soure"
+                            <input type="text" [disabled]="true" class="form-control  form-control-sm pull-right" #price_source id="price_soure"
                               name="price_soure" value={{row.price_source}} (change)="output_change_event('price_soure',price_source.value,row.rowindex)"
                             />
                           </td>
                           <td width="10%">
-                            <select class="form-control  form-control-sm mt3" id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
+                            <select class="form-control  form-control-sm " id="edit_price" #is_price_editable (change)="output_change_event('edit_price',is_price_editable.value,row.rowindex)">
                               <option *ngFor="let v of commonData.yes_no_option " [value]="v.value" [selected]="row.edit_price==v.value"> {{v.Name}}</option>
                             </select>
                           </td>
@@ -454,7 +454,7 @@
                     <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                       <tr *ngFor="let row of rule_expression_data">
                         <td width="10%">
-                          <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
                             value={{row.seq_count}}/>
                         </td>
 

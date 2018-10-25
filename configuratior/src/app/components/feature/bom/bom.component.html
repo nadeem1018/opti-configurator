@@ -135,18 +135,18 @@
                                 <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                                     <tr *ngFor="let row of feature_bom_table">
                                         <td width=4%;>
-                                            <input [disabled]="true" type="text" class="form-control field-nobg-noborder form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                                            <input [disabled]="true" type="text" class="form-control field-nobg-noborder form-control-sm" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
                                         </td>
                                         <td width=8%;>
-                                            <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
+                                            <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
                                                 <option *ngFor="let v of detail_select_options " [value]="v.value" [selected]="row.type==v.value" > {{v.Name}}</option>
                                             </select>
                                         </td>
                                         <td width=12%;>
                                             <div class="input-group">
-                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value,type_value_code)"
+                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value,type_value_code)"
                                                     value={{row.type_value_code}} #type_value_code />
-                                                <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                                                <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                                                     value={{row.type_value}} #type_value />
                                                 <div class="input-group-append" [hidden]=row.hide>
                                                     <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
@@ -158,33 +158,33 @@
 
                                         </td>
                                         <td width=9%;>
-                                            <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm mt3" id="display_name" (change)="on_displayname_change(display_name.value,row.rowindex)"
+                                            <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm" id="display_name" (change)="on_displayname_change(display_name.value,row.rowindex)"
                                                 value={{row.display_name}} #display_name />
 
 
                                         </td>
                                         <td width=6%;> 
-                                            <input type="text" [disabled]="row.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm mt3"
+                                            <input type="text" [disabled]="row.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm"
                                                 id="quantity" (change)="on_quantity_change(quantity.value,row.rowindex)" value={{row.quantity}}
                                                 #quantity />
                                         </td>
                                         <td width=6%;>
-                                            <input type="checkbox" value="1" class="form-control  form-control-sm mt3" style="margin-top:10px" id="default" (change)="on_defualt_change(default,row.rowindex)"
+                                            <input type="checkbox" value="1" class="form-control  form-control-sm"  id="default" (change)="on_defualt_change(default,row.rowindex)"
                                                 value={{row.default}} #default [(checked)]=row.default />
                                         </td>
                                         <td width=6%;>
-                                            <input type="text" class="form-control  form-control-sm mt3" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"
+                                            <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"
                                                 value={{row.remark}} #remark />
 
                                         </td>
                                         <td width=10%;>
-                                            <input type="checkbox" class="form-control  form-control-sm mt15 pull-right" id="propagate_qty" value={{row.propagate_qty}}
+                                            <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}}
                                               (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty
                                             />
                                           </td>
                                           <td width=12%;>
                                             <div class="input-group">
-                                              <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
+                                              <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
                                                 #price_source [disabled]="row.isPriceDisabled" />
                                               <div class="input-group-append" [hidden]=row.pricehide>
                                                 <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
@@ -194,8 +194,8 @@
                                             </div>
                                           </td>
                                         <td width=12%;>
-                                            <div class="btn btn-outline-secondary btn-file btn-sm mt-1"> {{language.choose_image}}
-                                                <input type="file" class="form-control  form-control-sm mt3" id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"
+                                            <div class="btn btn-outline-secondary btn-file btn-sm "> {{language.choose_image}}
+                                                <input type="file" class="form-control  form-control-sm " id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"
                                                 />
                                             </div>
                                         </td>

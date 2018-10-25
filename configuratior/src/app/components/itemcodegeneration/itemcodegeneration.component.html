@@ -59,15 +59,15 @@
                       <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                         <tr *ngFor="let row of itemcodetable" class="d-flex">
                           <td style="width: 5%">
-                            <input [disabled]="true"  type="text" class="form-control field-nobg-noborder  form-control-sm mt3" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                            <input [disabled]="true"  type="text" class="form-control field-nobg-noborder  form-control-sm" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
                           </td>
                           <td style="width: 15%">
-                            <select class="form-control  form-control-sm mt3" #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
+                            <select class="form-control  form-control-sm" #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
                               <option *ngFor="let v of stringtypevalue " [value]="v.value"  [selected]="row.stringtype==v.value"> {{v.Name}}</option>
                             </select>
                           </td>
                             <td style="width: 60%">
-                              <input type="text" class="form-control  form-control-sm mt3" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
+                              <input type="text" class="form-control  form-control-sm" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
                               />
                             </td>
                           <td style="width: 15%">

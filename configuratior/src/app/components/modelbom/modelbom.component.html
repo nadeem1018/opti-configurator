@@ -134,19 +134,19 @@
                 <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                   <tr *ngFor="let row of modelbom_data">
                     <td width="3%">
-                      <input [disabled]="true" type="text" class="form-control  form-control-sm mt3 field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                      <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
                     </td>
                     <td width="9%">
-                      <select class="form-control  form-control-sm mt3" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
+                      <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
                         <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
                       </select>
                     </td>
                     <td width="12%">
                       <div class="input-group">
-                        <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm mt3" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                        <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                           value={{row.type_value}} #type_value />
 
-                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm mt3" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
+                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
                           value={{row.type_value_code}} #type_value_code />
                         <div class="input-group-append" [hidden]=row.hide>
                           <span class="input-group-text cursor_icon" id="basic-addon2" (click)="on_type_click(selectedvalue.value, row.rowindex)">
@@ -157,33 +157,33 @@
 
                     </td>
                     <td width="9%">
-                      <input type="text" class="form-control  form-control-sm mt3" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)"
+                      <input type="text" class="form-control  form-control-sm" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)"
                         #display_name />
                     </td>
                     <td width="5%">
-                      <input type="text" [disabled]="row.isUOMDisabled" class="form-control  form-control-sm mt3" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)"
+                      <input type="text" [disabled]="row.isUOMDisabled" class="form-control  form-control-sm" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)"
                         #uom />
                     </td>
                     <td width="6%">
-                      <input type="text" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{row.quantity}}
+                      <input type="text" class="form-control  form-control-sm" style="text-align:right" id="quantity" value={{row.quantity}}
                         (change)="on_quantity_change(quantity.value,row.rowindex)" #quantity />
                     </td>
                     <td width="9%">
-                      <input type="text" [disabled]="row.isMinSelectedDisable" class="form-control  form-control-sm mt3" style="text-align:right" id="min_selected" value={{row.min_selected}}
+                      <input type="text" [disabled]="row.isMinSelectedDisable" class="form-control  form-control-sm" style="text-align:right" id="min_selected" value={{row.min_selected}}
                         (change)="on_min_selected_change(min_selected.value,row.rowindex,min_selected)" #min_selected />
                     </td>
                     <td width="9%">
-                      <input type="text" [disabled]="row.isMaxSelectedDisable" class="form-control  form-control-sm mt3 pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}}
+                      <input type="text" [disabled]="row.isMaxSelectedDisable" class="form-control  form-control-sm pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}}
                         (change)="on_max_selected_change(max_selected.value,row.rowindex,max_selected)" #max_selected />
                     </td>
                     <td width="9%">
-                      <input type="checkbox" class="form-control  form-control-sm mt15 pull-right" id="propagate_qty" value={{row.propagate_qty}}
+                      <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}}
                         (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty
                       />
                     </td>
                     <td width="8%">
                       <div class="input-group">
-                        <input type="text" class="form-control  form-control-sm mt3" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
+                        <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
                           #price_source [disabled]="row.isPriceDisabled" />
                         <div class="input-group-append" [hidden]=row.pricehide>
                           <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
@@ -193,11 +193,11 @@
                       </div>
                     </td>
                     <td width="7%">
-                      <input type="checkbox" class="form-control  form-control-sm mt15" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)"
+                      <input type="checkbox" class="form-control  form-control-sm" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)"
                         #mandatory [(checked)]=row.mandatory/>
                     </td>
                     <td width="10%">
-                      <input type="checkbox" class="form-control  form-control-sm mt15" id="unique_identifer" value={{row.unique_identifer}} [(checked)]=row.unique_identifer
+                      <input type="checkbox" class="form-control  form-control-sm" id="unique_identifer" value={{row.unique_identifer}} [(checked)]=row.unique_identifer
                         (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" #unique_identifer />
                     </td>
                     <td width="4%">
