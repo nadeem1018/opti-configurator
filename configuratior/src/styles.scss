@@ -21,6 +21,7 @@
 $primaryColor:#007bff;
 $errorColor:red;
 $whiteColor:#fff;
+$borderColor:#c7c7c7;
 
 .field-nobg-noborder{
     background: transparent !important;
@@ -280,3 +281,64 @@ body.app_rule-wb-view-model{
         }
     }
 }
+
+// Some Global css start
+    body{
+        .opti_module-title {
+            padding: 5px 0;
+        }
+        .form-control:focus {
+            border-color: $borderColor;
+            box-shadow: none;
+        }
+
+        // search form section
+        .opti_search{
+            border: 1px solid $borderColor;
+            border-radius: 5px;
+            height: 25px;
+            input{
+                float: left;
+                border: none;
+                padding-top: 1px !important;
+                padding-bottom: 1px !important;
+                height: 100%;
+            }
+            button{
+                cursor: pointer;
+                border: none;
+                background: none;
+                float: left;
+                height: 23px;
+                padding-top: 0;
+                padding-bottom: 0;
+                i{
+                    height: 23px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .fa-search:before{
+                    position: relative;
+                    top: -1px;
+                }
+            }
+        }
+
+        .opti_global-table-view{
+            .opti_search{
+                max-width: 170px;
+                width: 100%;
+                input{
+                    width: calc(100% - 30px);
+                    max-width: 140px;
+                    height: 100%;
+                }
+                button{
+                    float: right;
+                    width: 30px;
+                }
+            }   
+        }
+    }    
+// Some global css end

@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
-    <h4 class="h4">{{page_main_title}}</h4>
+    <div class="opti_module-title">{{page_main_title}}</div>
 </div>
 
 <!-- <ol class="breadcrumb breadcrumb_mini_margin">
@@ -7,42 +7,45 @@
     <li class="breadcrumb-item ">{{page_main_title}}</li>
     <li class="breadcrumb-item active">{{language.view}}</li>
 </ol> -->
-<div class="card mb-3">
+<div class="card mb-3 opti_global-table-view">
     <!-- <div class="card-header">
         <i class="fa fa-table"></i>
        {{table_title}}
     </div> -->
     <div class="card-body">
 
-        <div class="">
-            <div class="row col-sm-3 pull-left">
-                <div class="btn-toolbar mb-2 mb-md-0 mt-1">
-                    <div class="btn-group mr-2">
-                        <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
-                            <i class="fa fa-plus fa-fw"></i> {{language.add}}
-                        </button>
-                        <button type="button" class="mr-10 btn btn-sm btn-outline-danger" (click)="delete()">
-                            <i class="fa fa-trash fa-fw"></i> {{language.delete}}
-                        </button>
-                        <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal" *ngIf="showImportButton">
-                            <i class="fa fa-plus fa-fw"></i> {{language.import}}
-                        </button>
+        <div class="container-fluid"> 
+            <div class="row" style="margin-bottom:6px;">
+                <div class="col-sm-6 p-0" style="margin-top: 2px;">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                            <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
+                                <i class="fa fa-plus fa-fw"></i> {{language.add}}
+                            </button>
+                            <button type="button" class="mr-10 btn btn-sm btn-outline-danger" (click)="delete()">
+                                <i class="fa fa-trash fa-fw"></i> {{language.delete}}
+                            </button>
+                            <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal" *ngIf="showImportButton">
+                                <i class="fa fa-plus fa-fw"></i> {{language.import}}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-
-            <div class="col-sm-2 mr-0 p-0 pull-right">
-                <div class="float-right" style="margin-right: 2px;">
-                    <div class="form-group row clearfix" style="position: relative;">
-                        <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}"
-                            [(ngModel)]="search_string" #searchinput>
-                        <button class="btn btn-outline-dark btn-xs" (click)="search_results()">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>    
-            </div>
+                <div class="col-sm-6 p-0">
+                    <div class="float-right">
+                        <div class="form-group" style="position: relative;">
+                            <div class="opti_search float-left">
+                                <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}"
+                                    [(ngModel)]="search_string" #searchinput>
+                                <button class="" (click)="search_results()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>    
+                        </div>
+                    </div>    
+                </div>
+            </div>    
         </div>
 
         <div class="table-responsive table-bordered">
