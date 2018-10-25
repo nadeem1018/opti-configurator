@@ -124,7 +124,7 @@ export class OutputComponent implements OnInit {
   public ModelBOMDataForSecondLevel = [];
   public FeatureBOMDataForSecondLevel = [];
   public globalConfigId: any = '';
-
+  public description : any;
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
@@ -2086,7 +2086,8 @@ export class OutputComponent implements OnInit {
       "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
-      "OPTM_MODIFIEDBY": this.common_output_data.username
+      "OPTM_MODIFIEDBY": this.common_output_data.username,
+      "OPTM_DESC": this.step1_data.description
     })
 
     //creating details table array
