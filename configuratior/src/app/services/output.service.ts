@@ -167,11 +167,11 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFinalStatus", jObject, this.common_params.httpOptions);
   }
 
-  getConfigurationList(): Observable<any> {
+  getConfigurationList(OperationType): Observable<any> {
  //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,OperationType:OperationType }]) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetConfigurationList", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData", jObject, this.common_params.httpOptions);
   }
 
 }

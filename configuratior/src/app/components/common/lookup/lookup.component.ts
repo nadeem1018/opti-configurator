@@ -190,9 +190,9 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['Code', 'Name'];
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
+    this.table_head = ['LogID','Description' ,'Customer','Contact Person','FGItem','Quantity'];
+    //this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'Description';
 
     this.width_value = ((100 / this.table_head.length) + '%');
 

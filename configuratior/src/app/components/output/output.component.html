@@ -79,19 +79,30 @@
                         </span>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
+
+                <div class="form-group row clearfix new_output_config" *ngIf="new_output_config">
+                  <label class="col-sm-5 col-form-label" for="customer_doc">{{language.description}}</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control  form-control-sm mt3" id="output_description"  value="" placeholder="{{language.description}}" (change)="description"
+                      #description />
+                  </div>
+                </div>
+
+                
               </div>
             </div>
           </div>
           <div class="f1-buttons">
             <hr>
-            <div class="pull-left">
+            <!-- <div class="pull-left">
               <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
                 <i class="fa fa-times fa-fw"></i>
                 <span>{{language.cancel}}</span>
               </button>
-            </div>
+            </div> -->
             <button type="button" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="customer_details">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>

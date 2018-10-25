@@ -91,6 +91,7 @@ export class OutputComponent implements OnInit {
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
   serviceData: any;
+  public new_output_config:boolean = false;
   public contact_persons: any;
   public sales_employee: any = [];
   public ship_to: any;
@@ -199,9 +200,17 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
+    this.new_output_config = false;
+    this.modify_duplicate_selected = false;
     if (operation_type == 2 || operation_type == 3) {
       this.modify_duplicate_selected = true;
+      this.new_output_config = false;
     } else {
+      if(operation_type == ""){
+        this.new_output_config = false;
+      } else {
+        this.new_output_config = true;
+      }
       this.modify_duplicate_selected = false;
     }
   }
@@ -217,7 +226,8 @@ export class OutputComponent implements OnInit {
   open_config_lookup() {
     this.serviceData = []
     this.lookupfor = 'configure_list_lookup';
-    this.OutputService.getConfigurationList().subscribe(
+    console.log(this.step1_data.main_operation_type);
+    this.OutputService.getConfigurationList(this.step1_data.main_operation_type).subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
