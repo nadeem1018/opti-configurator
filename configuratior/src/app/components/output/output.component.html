@@ -3,9 +3,9 @@
   <div class="">
     <div class="form-box">
       <form role="form" action="" method="post" class="f1">
-        <h3 class="app_title_heading">
-          <b>{{language.config_wizard}}</b>
-        </h3>
+          <div class="opti_module-title">
+            {{language.config_wizard}}
+          </div>
         <div class="f1-steps">
           <div class="f1-progress">
             <div class="f1-progress-line" data-now-value="20%" data-number-of-steps="5" style="width: 20%;"></div>
@@ -124,11 +124,11 @@
             <hr>
           </div>
 
-          <!-- second step section start -->
+          <!-- Customer and Document Details start -->
           <div class="form_section" id="opti_configur-wizard-second-step">
             <!-- document and date section start -->
             <div class="row">
-              <div class="col-md-12 p-0">
+              <div class="col-md-12">
                 <div class="col-md-4 pl-0 float-left">
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.document}}</label>
@@ -178,7 +178,7 @@
             
             <!-- Address and customer detail start -->
             <div class="row">
-              <div class="col-md-12 p-0">
+              <div class="col-md-12">
 
                 <!-- customer info start -->
                 <div class="col-md-4 pl-0 float-left">
@@ -293,7 +293,7 @@
             <hr>
             <!-- employee section , owner and remark section end -->
             <div class="row">
-              <div class="col-md-12 p-0">
+              <div class="col-md-12">
                 <div class="col-md-4 pl-0">  
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
@@ -340,7 +340,7 @@
             </div>
             <!-- employee section , owner and remark section end -->
           </div>
-          <!-- second step section end -->
+          <!-- Customer and Document Details end -->
 
           <div class="f1-buttons">
             <hr>
@@ -366,9 +366,12 @@
             </div>
             <hr>
           </div>
-          <div class="form_section">
+          
+          <!-- Model BOM To Configure Product start -->
+          <div class="form_section" id="opti_configur-wizard-third-step">
             <div class="row">
-              <div class="col-md-4">
+              <!-- left section start -->
+              <div class="col-md-5" id="opti_configur-wizard-third-step-leftside">
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="model">{{language.model}}</label>
                   <div class="col-sm-9 input-group">
@@ -479,8 +482,8 @@
                 <hr>
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
-                  <div class="col-sm-9 ">
-                    <table class="table table-bordered table-sm">
+                  <div class="col-sm-12 ">
+                    <table class="table table-bordered table-sm Model_Accessory-table">
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
@@ -517,20 +520,24 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-8 border-left-primary">
+              <!-- left section end -->
+              
+              <!-- right section start -->
+              <div class="col-md-7 border-left-primary" id="opti_configur-wizard-third-step-rightside">
                 <div class="modal_heading_block" *ngIf="isModelVisible">
-                  <div class="form-group col-md-4 clearfix">
+                  <div class="form-group col-md-12 clearfix pl-0 pr-0">
                     <span class="col-sm-6 bg-light border border-primary">{{language.model}}</span>
                     <span class="col-sm-6 bg-light border border-primary">{{step2_data.model_code}}</span>
                     <hr>
                   </div>
                 </div>
                 <div class="feature_block">
-                  <div class="form-group col-md-4 clearfix bg-primary text-white ">
+                  <!-- <div class="form-group col-md-4 clearfix bg-primary text-white ">
                     <label class="col-sm-12 col-form-label">{{language.features}}</label>
-                  </div>
+                  </div> -->
                   <div class="feature_table">
-                    <table class="table table-bordered table-sm">
+                    <div class="table-responsive table-responsive-sm">
+                    <table class="table opti_fixed-header table-sm">
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of feature_itm_list_table_head; let i= index">
@@ -540,17 +547,17 @@
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                         <tr class="" *ngFor="let featurerow of feature_itm_list_table">
                           <td>
                             <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/>
-                            <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label>
+                            {{featurerow.featureName}}<!-- <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label> -->
                           </td>
                           <td>
-                            <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label>
+                              {{featurerow.Item}}<!-- <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label> -->
                           </td>
                           <td>
-                            <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label>
+                              {{featurerow.Description}}<!-- <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label> -->
                           </td>
                           <td>
                             <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
@@ -579,16 +586,17 @@
                               #pricextn />
                           </td>
                           <td>
-                            <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label>
+                              {{featurerow.is_accessory}}<!-- <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label> -->
                             <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                   <br>
                   <div class="feature_discount_table">
-                    <div class="col-md-4 pull-right">
+                    <div class="col-md-6 pull-right pr-0 ">
                       <table class="table table-bordered table-sm">
                         <thead class="" style=" font-size: 14px; ">
                           <tr>
@@ -648,17 +656,20 @@
                 </div>
                 <div class="clearfix"></div>
               </div>
+              <!-- right section end -->
+
             </div>
           </div>
+          <!-- Model BOM To Configure Product end -->
 
           <div class="row">
             <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
-              <button type="button" class="btn btn-sm btn-secondary  mr-10" (click)="onclearselection()">
+              <button type="button" class="btn btn-sm btn-secondary  mr-10 float-left" (click)="onclearselection()">
                 <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
               <!-- <button type="button" class="btn btn-sm btn-info  mr-10 ">
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
-            <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
+            <div class="f1-buttons col-sm-8 pull-right f1_button_top_border_padding">
               
               <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
                   <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
@@ -685,68 +696,70 @@
             </div>
             <hr>
           </div>
-          <div class="form_section">
+
+          <!-- Verify the Selection and Accept -->
+          <div class="form_section" id="opti_configur-wizard-four-step">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-5" id="opti_configur-wizard-four-step-left">
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.order_type}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.document_name}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.document_name}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.posting_date}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.posting_date | date: 'MM/dd/yyyy' }}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.posting_date | date: 'MM/dd/yyyy' }}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.delivery_date}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.customer}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.customer}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.customer}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.Name}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.customer_name}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.customer_name}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.contact_person}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.person_name}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.person_name}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.ship_to}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.ship_to}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.address}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.ship_to_address}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.ship_to_address}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.bill_to}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.bill_to}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.address}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.bill_to_address}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.bill_to_address}}</label>
                 </div>
                 <!-- <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label">
@@ -761,58 +774,61 @@
                   <label class="col-sm-6 col-form-label">{{step1_data.payment_method}}</label>
                 </div> -->
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.sales_employee}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.sales_employee}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.sales_employee}}</label>
                 </div>
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label">
+                  <label class="col-sm-4 col-form-label">
                     <b>{{language.remark}}</b>
                   </label>
-                  <label class="col-sm-6 col-form-label">{{step1_data.remark}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.remark}}</label>
                 </div>
               </div>
-              <div class="col-md-9 border-left-primary">
+              <div class="col-md-7 border-left-primary" id="opti_configur-wizard-four-step-right">
                 <div class="pull-right">
                   <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()">
                     <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                   </button>
                 </div>
-                <div class="step_3_selection_table">
-                  <table class="table table-bordered table-sm">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th *ngFor="let label of final_selection_header; let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-                          <span>
-                            {{label}}
-                          </span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="" *ngFor="let row of step3_data_final">
-                        <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-                          <span *ngIf="(Object.keys(row).length-1) != i">
-                            <span *ngIf="i==0">
-                              <input type="checkbox" name="modal_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue, row)">
+                <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
+                  <div class="table-responsive table-responsive-sm table-bordered">
+                    <table class="table opti_fixed-header table-bordered table-sm">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th *ngFor="let label of final_selection_header; let i= index" [hidden]="step3_data_final_hidden_elements[i]">
+                            <span>
+                              {{label}}
                             </span>
-                            <span *ngIf="i!=0">
-                              {{row[row_data]}}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
+                        <tr class="" *ngFor="let row of step3_data_final">
+                          <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
+                            <span *ngIf="(Object.keys(row).length-1) != i">
+                              <span *ngIf="i==0">
+                                <input type="checkbox" name="modal_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue, row)">
+                              </span>
+                              <span *ngIf="i!=0">
+                                {{row[row_data]}}
+                              </span>
                             </span>
-                          </span>
-                          <span *ngIf="(Object.keys(row).length-1) == i">
-                            <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
-                              <i class="fa fa-times fa-fw"></i>
-                            </button>
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                            <span *ngIf="(Object.keys(row).length-1) == i">
+                              <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
+                                <i class="fa fa-trash fa-fw"></i>
+                              </button>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
                 </div>
                 <div class="final_item_discount_table">
-                  <div class="col-md-3 pull-right">
+                  <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
                       <thead class="" style=" font-size: 14px; ">
                         <tr>
@@ -867,8 +883,9 @@
                 </div>
               </div>
             </div>
-
           </div>
+          <!-- Verify the Selection and Accept -->
+
           <div class="f1-buttons">
             <hr>
 
