@@ -161,3 +161,21 @@
 .output-table{
     min-width: 1000px;
 }
+
+#datetime_input, #featuer_code {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.input-group-text.featuer_code_lookup{
+    margin-top: 3px;
+}
+.basic-addon2-table{
+    margin-top: 0;
+}
+#type_value_code,
+#opeand_1,
+#opeand_2_code{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}

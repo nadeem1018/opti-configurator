@@ -65,7 +65,8 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
 
-  public outputTable: boolean = false;
+  
+  public isOutputTable: boolean = true;
 
 
   isMobile: boolean = false;

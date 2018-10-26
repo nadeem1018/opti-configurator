@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
-  <h4 class="h4">
-    <strong> {{page_main_title}} </strong>
-  </h4>
+    <div class="opti_module-title">
+     {{page_main_title}} 
+    </div>
 </div>
 <ol class="breadcrumb breadcrumb_mini_margin">
   <!--  <li class="breadcrumb-item">
@@ -95,7 +95,7 @@
           <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code"
             placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange()" style="max-width: 244px !important; width: 100%;">
           <div class="input-group-append">
-            <span class="input-group-text cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
+            <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
               <i class="fa fa-bars"></i>
             </span>
           </div>
@@ -136,9 +136,9 @@
                   <div class="">{{language.input}}</div>
                 </div> -->
                 <hr>
-                <div class="table-responsive table-responsive-sm">
+                <div class="table-responsive table-responsive-sm table-bordered">
 
-                  <table class="table opti_fixed-header table-bordered top-table  table-sm" id="dataTable" cellspacing="0">
+                  <table class="table opti_fixed-header  top-table  table-sm" id="dataTable" cellspacing="0">
 
                     <!-- start head section -->
                     <thead class="thead-dark">
@@ -196,7 +196,7 @@
                             <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value_code.value,row.rowindex)"
                               value="{{row.type_value}}" #type_value />
                             <div class="input-group-append">
-                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
+                              <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
                                 <i class="fa fa-bars"></i>
                               </span>
                             </div>
@@ -218,7 +218,7 @@
                               (change)="on_input_change(row.rowindex, 'operand_1_code', operand_1_code.value,operand_1_code )"
                             />
                             <div class="input-group-append">
-                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
+                              <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_1')">
                                 <i class="fa fa-bars"></i>
                               </span>
                             </div>
@@ -234,7 +234,7 @@
                               [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )"
                             />
                             <div class="input-group-append" [hidden]="row.is_operand2_disable">
-                              <span class="input-group-text cursor_icon" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">
+                              <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">
                                 <i class="fa fa-bars"></i>
                               </span>
                             </div>
@@ -255,7 +255,7 @@
                       <tr class='text-center'>
                         <th colspan="9" align="center">
                           {{language.expression}} &nbsp; &nbsp;
-                          <a href="javascript:;" (click)="genearate_expression()">
+                          <a href="javascript:;" (click)="genearate_expression()" style="color:white;">
                             <i class="fa fa-arrow-down"></i>
                           </a>
                         </th>
@@ -293,7 +293,7 @@
                     <label class="text-left col-form-label pl-2" for="outputTable">{{language.show_hide_output}}</label>
                     <div class="text-left mt-3px pl-1">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="outputTable" name="outputTable" [(ngModel)]="outputTable" class="custom-control-input" value="1">
+                        <input type="checkbox" id="outputTable" name="outputTable" [(ngModel)]="isOutputTable" class="custom-control-input" value="1">
                         <label class="custom-control-label" for="outputTable"></label>
                       </div>
                     </div>
@@ -303,9 +303,9 @@
                               
                             </div> -->
                   <!-- <hr> -->
-                  <div class="table-responsive table-responsive-sm" *ngIf="outputTable">
+                  <div class="table-responsive table-responsive-sm table-bordered" *ngIf="isOutputTable">
             
-                    <table class="table opti_fixed-header table-bordered output-table table-sm" id="dataTable" cellspacing="0">
+                    <table class="table opti_fixed-header  output-table table-sm" id="dataTable" cellspacing="0">
                       <thead class="thead-dark">
                         <tr>
                           <th colspan="10" style="width:100%" class="text-center" align="center">
@@ -434,11 +434,11 @@
             <div class="expression_box">
 
               <div class="col-sm-12  pl-0 pr-0">
-                <div class="table-responsive table-responsive-sm">
+                <div class="table-responsive table-responsive-sm table-bordered">
                  <!--  <div class="form-group col-md-4 clearfix bg-primary text-white">
                     <div class="">{{language.expression}}</div>
                   </div> -->
-                  <table class="table opti_fixed-header table-bordered bottom-table table-sm" id="dataTable" cellspacing="0">
+                  <table class="table opti_fixed-header  bottom-table table-sm" id="dataTable" cellspacing="0">
                     <thead class="thead-dark">
                       <tr class="text-center">
                         <th colspan="9" align="center" style="width:100%">

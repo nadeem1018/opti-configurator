@@ -182,7 +182,24 @@ export class LookupComponent implements OnInit {
   }
 
   configure_list_lookup(){
+    this.popup_title = this.language.model_template;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'modify_duplicate_lookup';
+    this.table_head = ['LogID','Description' ,'Customer','Contact Person','FGItem','Quantity'];
+    //this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'OPTM_DESC';
 
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
+    }
   }
 
   model_template_lookup() {
@@ -190,9 +207,9 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['LogID','Description' ,'Customer','Contact Person','FGItem','Quantity'];
-    //this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Description';
+    this.table_head = ['Code', 'Name'];
+    this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'Name';
 
     this.width_value = ((100 / this.table_head.length) + '%');
 

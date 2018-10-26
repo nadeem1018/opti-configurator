@@ -21,6 +21,7 @@
 $primaryColor:#007bff;
 $errorColor:red;
 $whiteColor:#fff;
+$borderColor:#c7c7c7;
 
 .field-nobg-noborder{
     background: transparent !important;
@@ -36,7 +37,7 @@ table th .fa-trash{
     margin-left: 5px;
 }
 body .ps__rail-y{
-    opacity: 1;
+    // opacity: 1;
 }
 .sidebar .nav-item .nav-link:hover {
     color: $primaryColor;
@@ -51,6 +52,7 @@ table{
 }
 
 body{
+    
     table.table.opti_fixed-header{
         width: 100%;
         margin-bottom: 0;
@@ -65,13 +67,14 @@ body{
             max-height: 250px;
             overflow-y: auto;
             td{
-                border: none;
+                //border: none;
             }
             tr{
-                border: none;
+                // border: none;
+                //border-bottom: 1px solid $borderColor
             }
             tr:nth-child(odd) {
-                background-color: #efefef;
+                //background-color: #efefef;
             }
             tr td {
                 display: flex !important;
@@ -87,6 +90,11 @@ body{
             border-right: none !important;
         }
     }
+
+    // table, th, td {
+    //     border: 1px solid black;
+    //     border-collapse: collapse;
+    // }
 }
 
 body.add_item-code-view-model{
@@ -280,3 +288,64 @@ body.app_rule-wb-view-model{
         }
     }
 }
+
+// Some Global css start
+    body{
+        .opti_module-title {
+            padding: 5px 0;
+        }
+        .form-control:focus {
+            border-color: $borderColor;
+            box-shadow: none;
+        }
+
+        // search form section
+        .opti_search{
+            border: 1px solid $borderColor;
+            border-radius: 5px;
+            height: 25px;
+            input{
+                float: left;
+                border: none;
+                padding-top: 1px !important;
+                padding-bottom: 1px !important;
+                height: 100%;
+            }
+            button{
+                cursor: pointer;
+                border: none;
+                background: none;
+                float: left;
+                height: 23px;
+                padding-top: 0;
+                padding-bottom: 0;
+                i{
+                    height: 23px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .fa-search:before{
+                    position: relative;
+                    top: -1px;
+                }
+            }
+        }
+
+        .opti_global-table-view{
+            .opti_search{
+                max-width: 170px;
+                width: 100%;
+                input{
+                    width: calc(100% - 30px);
+                    max-width: 140px;
+                    height: 100%;
+                }
+                button{
+                    float: right;
+                    width: 30px;
+                }
+            }   
+        }
+    }    
+// Some global css end
