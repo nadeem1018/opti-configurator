@@ -490,7 +490,7 @@ export class BomComponent implements OnInit {
       
     }
 
-    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+    for (var i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         this.feature_bom_table[i].type_value = value;
         this.feature_bom_table[i].type_value_code = code;
@@ -530,6 +530,10 @@ export class BomComponent implements OnInit {
                 this.getItemDetails(this.feature_bom_table[i].type_value);
               }
             })
+        }
+        else{
+          this.feature_bom_table[i].type_value = code;
+          this.feature_bom_table[i].type_value_code = code;
         }
       }
     }

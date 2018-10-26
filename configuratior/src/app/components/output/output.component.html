@@ -378,14 +378,14 @@
                                     <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                       #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
                                       (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"
-                                      [(checked)]="feature_model_data.checked">
+                                      [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable" >
                                     <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
                                   </div>
                                 </td>
                                 <td>
                                   <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
                                   <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
-                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.child_code}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.OPTM_VALUE}}</span>
                                 </td>
                                 <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
@@ -401,7 +401,7 @@
                                   <div class="{{header_data.element_class}}">
                                     <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}" name="checkbox_{{header_data.OPTM_FEATUREID}}"
                                       #selectionchecked class="custom-control-input" (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)"
-                                      [(checked)]="FeatureBOMDataForSecondLevel.checked">
+                                      [(checked)]="FeatureBOMDataForSecondLevel.checked" [disabled]="FeatureBOMDataForSecondLevel.disable">
                                     <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}">
                                     </label>
                                   </div>
