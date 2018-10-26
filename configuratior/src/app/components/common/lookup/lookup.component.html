@@ -261,6 +261,7 @@
                             <table class="table table-bordered lookup_table  table-sm" id="dataTable">
                                 <thead class="thead-dark">
                                     <tr>
+                                    <th width="11%">{{language.included}}</th>
                                     <th width="11%">{{language.feature}}</th>
                                     <th width="11%">{{language.item}}</th>
                                     <th width="11%">{{language.value}}</th>
@@ -275,6 +276,7 @@
                                 </thead>
                                 <tbody class="lookup_table_body">
                                     <tr *ngFor="let row of outputServiceData; let i=index">
+                                        <td width="11%">{{row.OPTM_ISINCLUDED}}</td>
                                         <td width="11%">{{row.OPTM_FEATURECODE}}</td>
                                         <td width="11%">{{row.OPTM_ITEMKEY}}</td>
                                         <td width="11%">{{row.OPTM_VALUE}}</td>
