@@ -620,3 +620,22 @@ only screen and ( min-resolution: 2dppx) {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
+
+
+
+
+// css for second step
+#opti_configur-wizard-second-step{
+    select{
+        padding-left: 6px !important;
+    }
+    textarea{
+        padding-left: 3px !important;
+        min-height: 80px;
+    }
+    #remark{
+        padding-left: 8px !important;
+    }
+}
+
+// end css for second step

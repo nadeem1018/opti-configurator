@@ -123,9 +123,12 @@
             </div>
             <hr>
           </div>
-          <div class="form_section">
+
+          <!-- second step section start -->
+          <div class="form_section" id="opti_configur-wizard-second-step">
+            <!-- document and date section start -->
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-12 p-0">
                 <div class="col-md-4 pl-0 float-left">
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.document}}</label>
@@ -140,7 +143,7 @@
 
                 <div class="col-md-4 float-left">
                   <div class="form-group row clearfix">
-                    <label class="col-sm-5 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
+                    <label class="col-sm-5 col-form-label" for="posting_date">{{language.posting_date}}</label>
                     <div class="col-sm-7 input-group">
                       <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
                         type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}"
@@ -154,7 +157,7 @@
                     </div>
                   </div>
                   <div class="form-group row clearfix">
-                    <label class="col-sm-5 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{document_date}}</label>
+                    <label class="col-sm-5 col-form-label" for="delivery_until" >{{document_date}}</label>
                     <div class="col-sm-7 input-group">
                       <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
                         type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
@@ -170,11 +173,12 @@
                 </div>
               </div>  
             </div>
+            <!-- document and date section end -->
             <hr>
             
             <!-- Address and customer detail start -->
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-12 p-0">
 
                 <!-- customer info start -->
                 <div class="col-md-4 pl-0 float-left">
@@ -289,7 +293,7 @@
             <hr>
             <!-- employee section , owner and remark section end -->
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-12 p-0">
                 <div class="col-md-4 pl-0">  
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
@@ -335,16 +339,19 @@
               </div> -->
             </div>
             <!-- employee section , owner and remark section end -->
-
           </div>
+          <!-- second step section end -->
+
           <div class="f1-buttons">
             <hr>
-            <div class="pull-left">
-              <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="choose_operation">
-                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            </div>
+            
             <button (click)="onSavePress()" *ngIf="isNextButtonVisible" type="button" class="btn btn-sm btn-success  mr-10">
-              <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+                    <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+            
+
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="choose_operation">
+                <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
+            
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>
@@ -652,10 +659,13 @@
                 <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
             </div>
             <div class="f1-buttons col-sm-8 pull-right border-left-primary f1_button_top_border_padding">
+              
+              <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+                  <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+              
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-              <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
-                <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+              
               <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so"
                 (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
@@ -861,10 +871,13 @@
           </div>
           <div class="f1-buttons">
             <hr>
+
+            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+                <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
-              <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
+            
             <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next"
               data-next-block="fina_doc_create">
               <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
