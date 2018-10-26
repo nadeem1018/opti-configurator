@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animations';
 import * as $ from 'jquery';
 import { JitSummaryResolver } from '../../../../node_modules/@angular/compiler';
+import { UIHelper } from '../../helpers/ui.helpers';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -126,10 +127,32 @@ export class OutputComponent implements OnInit {
   public globalConfigId: any = '';
   public description: any;
   public step0_isNextButtonVisible: boolean = false;
+
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+
+
+  detectDevice(){
+      let getDevice = UIHelper.isDevice();
+      this.isMobile = getDevice[0];
+      this.isIpad = getDevice[1];
+      this.isDesktop = getDevice[2];
+      if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+      }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+      }else{
+      this.isPerfectSCrollBar = false;
+      }
+  }
+
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.detectDevice();
     element.classList.add('sidebar-toggled');
 
 
