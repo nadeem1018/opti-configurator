@@ -125,6 +125,7 @@ export class OutputComponent implements OnInit {
   public FeatureBOMDataForSecondLevel = [];
   public globalConfigId: any = '';
   public description : any;
+  public step0_isNextButtonVisible: boolean = false;
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
@@ -201,16 +202,20 @@ export class OutputComponent implements OnInit {
 
   onOperationChange(operation_type) {
     this.step1_data.selected_configuration_key= "";
+    this.step1_data.description = "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
-    if (operation_type == 2 || operation_type == 3) {
+    if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
-      this.new_output_config = false;
+      this.new_output_config = true;
+      this.step0_isNextButtonVisible = true;
     } else {
       if(operation_type == ""){
         this.new_output_config = false;
+        this.step0_isNextButtonVisible = false;
       } else {
         this.new_output_config = true;
+        this.step0_isNextButtonVisible = true;
       }
       this.modify_duplicate_selected = false;
     }
@@ -220,6 +225,27 @@ export class OutputComponent implements OnInit {
     this.globalConfigId = value;
   }
 
+  onStep0NextPress(){
+    console.log(this.step1_data.main_operation_type);
+    if (this.step1_data.main_operation_type == 1) {
+      console.log(this.step1_data.description);
+      if(this.step1_data.description == "" || this.step1_data.description == undefined){
+        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
+        return;
+      }
+    }
+    if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
+      if(this.step1_data.description == "" || this.step1_data.description == undefined){
+        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
+        return;
+      }
+    if(this.step1_data.selected_configuration_key == ""){
+      this.toastr.error('', this.language.select_configuration, this.commonData.toast_config);
+      return;
+    }
+  }
+  $("#step0_next_click_id").trigger('click');
+  }
   onSavePress() {
 
   }
@@ -380,7 +406,8 @@ export class OutputComponent implements OnInit {
       }
     }
     else if (this.lookupfor == 'configure_list_lookup') {
-      this.step1_data.selected_configuration_key =$event[1];
+      this.step1_data.selected_configuration_key =$event[0];
+      this.step1_data.description =$event[1];
     }
     // this.getItemDetails($event[0]);
   }

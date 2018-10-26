@@ -186,7 +186,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'modify_duplicate_lookup';
-    this.table_head = ['LogID','Description' ,'Customer','Contact Person','FGItem','Quantity'];
+    this.table_head = ['LogID','Description' ,'Customer','Contact Person','Model','Quantity'];
     //this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'OPTM_DESC';
 
