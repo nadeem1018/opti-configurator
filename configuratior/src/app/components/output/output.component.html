@@ -125,47 +125,50 @@
           </div>
           <div class="form_section">
             <div class="row">
-              <div class="col-md-7">
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="customer_doc">{{language.document}}</label>
-                  <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" (change)="onDocumentChange(document.value)"
-                      #document>
-                      <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value"> {{v.Name}}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
-                  <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
-                      type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}"
-                      [(ngModel)]="step1_data.posting_date">
-                    <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
-                        <i class="fa fa-calendar"></i>
-                      </span>
+              <div class="col-md-12">
+                <div class="col-md-4 pl-0 float-left">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="customer_doc">{{language.document}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" (change)="onDocumentChange(document.value)"
+                        #document>
+                        <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value"> {{v.Name}}</option>
+                      </select>
                     </div>
-                    <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                   </div>
                 </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-4 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{document_date}}</label>
-                  <div class="col-sm-8 input-group">
-                    <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
-                      type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
-                      [(ngModel)]="step1_data.delivery_until">
-                    <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
-                        <i class="fa fa-calendar"></i>
-                      </span>
+
+                <div class="col-md-4 float-left">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="posting_date" class="col-sm-4 col-form-label">{{language.posting_date}}</label>
+                    <div class="col-sm-7 input-group">
+                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
+                        type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}"
+                        [(ngModel)]="step1_data.posting_date">
+                      <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
+                      <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                     </div>
-                    <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
+                  </div>
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="delivery_until" class="col-sm-4 col-form-label">{{document_date}}</label>
+                    <div class="col-sm-7 input-group">
+                      <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
+                        type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
+                        [(ngModel)]="step1_data.delivery_until">
+                      <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
+                      <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </div>  
             </div>
             <hr>
             
@@ -284,32 +287,35 @@
             <!-- Address and customer detail end -->
 
             <hr>
+            <!-- employee section , owner and remark section end -->
             <div class="row">
-              <div class="col-md-7">
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
-                  <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee" (change)="onSalesPersonChange(salesemployee.value)">
-                      <option [selected]="salesemployee == v" *ngFor="let v of sales_employee" [value]="v.SlpName"> {{v.SlpName}}</option>
-                    </select>
+              <div class="col-md-12">
+                <div class="col-md-4 pl-0">  
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee" (change)="onSalesPersonChange(salesemployee.value)">
+                        <option [selected]="salesemployee == v" *ngFor="let v of sales_employee" [value]="v.SlpName"> {{v.SlpName}}</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="owner_list">{{language.owner}}</label>
-                  <div class="col-sm-4">
-                    <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
-                      [(ngModel)]="step1_data.owner" #owner> -->
-                    <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
-                      <option *ngFor="let v of owner_list" [value]="v.value"> {{v.lastName}}</option>
-                    </select>
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="owner_list">{{language.owner}}</label>
+                    <div class="col-sm-7">
+                      <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
+                        [(ngModel)]="step1_data.owner" #owner> -->
+                      <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
+                        <option *ngFor="let v of owner_list" [value]="v.value"> {{v.lastName}}</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="remark">{{language.remark}}</label>
-                  <div class="col-sm-4">
-                    <textarea type="text" rows="4" ngValue="" class="form-control  form-control-sm mt3" name="remark" id="remark" placeholder="{{language.remark}}"
-                      [(ngModel)]="step1_data.remark" #remark> </textarea>
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="remark">{{language.remark}}</label>
+                    <div class="col-sm-7">
+                      <textarea type="text" rows="4" ngValue="" class="form-control  form-control-sm mt3" name="remark" id="remark" placeholder="{{language.remark}}"
+                        [(ngModel)]="step1_data.remark" #remark> </textarea>
 
+                    </div>
                   </div>
                 </div>
               </div>
@@ -328,6 +334,8 @@
                 </div>
               </div> -->
             </div>
+            <!-- employee section , owner and remark section end -->
+
           </div>
           <div class="f1-buttons">
             <hr>
