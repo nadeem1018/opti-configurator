@@ -55,6 +55,7 @@ export class BomComponent implements OnInit {
   public detail_select_options = '';
   public isPriceDisabled:boolean=false
   public  pricehide:boolean=false;
+  public  isPropagateQtyDisable:boolean=false;
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -122,6 +123,7 @@ export class BomComponent implements OnInit {
                 this.isQuanityDisabled = false
                 this.isPriceDisabled=true
                 this.pricehide=true
+                this.isPropagateQtyDisable=false
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
@@ -133,6 +135,7 @@ export class BomComponent implements OnInit {
                 this.pricehide=false
                 this.isQuanityDisabled = false
                 this.isPriceDisabled=false
+                this.isPropagateQtyDisable=false
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
               }
               else {
@@ -142,6 +145,7 @@ export class BomComponent implements OnInit {
                 this.isDisplayNameDisabled = false
                 //  this.isTypeDisabled = false
                 this.isTypeDisabled = false
+                this.isPropagateQtyDisable=true
                 this.ishide = true
                 this.pricehide=true
                 this.isQuanityDisabled = true
@@ -182,6 +186,7 @@ export class BomComponent implements OnInit {
                 isQuanityDisabled: this.isQuanityDisabled,
                 hide: this.ishide,
                 pricehide: this.pricehide,
+                isPropagateQtyDisable:this.isPropagateQtyDisable,
                 isPriceDisabled: this.isPriceDisabled,
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
@@ -259,6 +264,7 @@ export class BomComponent implements OnInit {
       hide: false,
       isQuanityDisabled: false,
       isPriceDisabled: this.isPriceDisabled,
+      isPropagateQtyDisable:this.isPropagateQtyDisable,
       pricehide: this.pricehide,
       CompanyDBId: this.companyName,
       CreatedUser: this.username
@@ -401,14 +407,13 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isQuanityDisabled = true
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
-
-
-
+          this.feature_bom_table[i].isPropagateQtyDisable=true
         }
         else {
           this.feature_bom_table[i].isDisplayNameDisabled = false
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = false
+          this.feature_bom_table[i].isPropagateQtyDisable=false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
             this.feature_bom_table[i].quantity = 1;
@@ -569,12 +574,34 @@ export class BomComponent implements OnInit {
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.lookupfor = 'Item_Detail_lookup';
-
+      for (let j = 0; j < this.feature_bom_table.length; j++) {
+        var psTypeCode = this.feature_bom_table[j].type_value_code;
+        if (psTypeCode != undefined && psTypeCode != "") {
+            if (psTypeCode.toUpperCase() == $event[0].toUpperCase()) {
+              this.toastr.error('',this.language.DuplicateId, this.commonData.toast_config);
+              $($event[0]).val("");
+              return;
+            }
+        }
+        
+      }
       this.getItemDetails($event[0]);
 
     }
     else if (this.lookupfor == 'feature_Detail_lookup') {
       //call the method cyclic chk
+      for (let j = 0; j < this.feature_bom_table.length; j++) {
+        var psTypeCode = this.feature_bom_table[j].type_value_code;
+        if (psTypeCode != undefined && psTypeCode != "") {
+            if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
+              this.toastr.error('',this.language.DuplicateId, this.commonData.toast_config);
+              $($event[1]).val("");
+              return;
+            }
+        }
+        
+      }
+      
       this.checkFeaturesAlreadyAddedinParent($event[0], "", this.currentrowindex - 1, "lookup");
     }
     else if (this.lookupfor == 'Price_lookup') {
