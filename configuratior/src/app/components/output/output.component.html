@@ -343,7 +343,7 @@
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="choose_operation">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             </div>
-            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+            <button (click)="onSavePress()" *ngIf="isNextButtonVisible" type="button" class="btn btn-sm btn-success  mr-10">
               <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" data-next-block="model_bom_config">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>

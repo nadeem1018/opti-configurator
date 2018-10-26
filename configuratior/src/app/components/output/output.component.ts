@@ -268,6 +268,14 @@ export class OutputComponent implements OnInit {
     )
   }
 
+  getAllDetails(operationType,logid,description) {
+    this.OutputService.GetAllOutputData(operationType,logid,description).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
+  }
+
   openFeatureLookUp() {
     this.serviceData = []
     this.lookupfor = 'feature_lookup';
@@ -408,6 +416,7 @@ export class OutputComponent implements OnInit {
     else if (this.lookupfor == 'configure_list_lookup') {
       this.step1_data.selected_configuration_key =$event[0];
       this.step1_data.description =$event[1];
+      this.getAllDetails(this.step1_data.main_operation_type,this.step1_data.selected_configuration_key,this.step1_data.description);
     }
     // this.getItemDetails($event[0]);
   }

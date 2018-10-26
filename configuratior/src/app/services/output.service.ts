@@ -174,4 +174,10 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData", jObject, this.common_params.httpOptions);
   }
 
+  GetAllOutputData(OperationType,LogID,Description): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+       let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,OperationType:OperationType,LogID:LogID,Description:Description }]) };
+       //Return the response form the API  
+       return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData", jObject, this.common_params.httpOptions);
+     }
 }
