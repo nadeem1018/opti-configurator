@@ -208,7 +208,7 @@
                     <label class="col-sm-5 col-form-label" for="contact_persons">{{language.contact_person}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons" (change)="onContactPersonChange(person.value)">
-                        <option [selected]="person == v" *ngFor="let v of contact_persons" [value]="v.Name"> {{v.Name}}</option>
+                        <option [selected]="person.value == v.Name" *ngFor="let v of contact_persons" [value]="v.Name"> {{v.Name}}</option>
                       </select>
                     </div>
                   </div>
@@ -222,7 +222,7 @@
                     <label class="col-sm-5 col-form-label" for="ship_to">{{language.ship_to}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
-                        <option [selected]="customerShipTo == v" *ngFor="let v of ship_to" [value]="v.ShipToDef"> {{v.ShipToDef}}</option>
+                        <option [selected]="customerShipTo.value == v.ShipToDef" *ngFor="let v of ship_to" [value]="v.ShipToDef"> {{v.ShipToDef}}</option>
                       </select>
                     </div>
                   </div>
@@ -244,7 +244,7 @@
                     <label class="col-sm-5 col-form-label" for="bill_to">{{language.bill_to}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to" (change)="onBillToChange(customerBillTo.value)">
-                        <option [selected]="customerBillTo == v" *ngFor="let v of bill_to" [value]="v.BillToDef"> {{v.BillToDef}}</option>
+                        <option [selected]="customerBillTo.value == v.BillToDef" *ngFor="let v of bill_to" [value]="v.BillToDef"> {{v.BillToDef}}</option>
                       </select>
                     </div>
                   </div>

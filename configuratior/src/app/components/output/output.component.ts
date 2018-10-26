@@ -92,11 +92,11 @@ export class OutputComponent implements OnInit {
   console = console;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
   serviceData: any;
-  public new_output_config:boolean = false;
-  public contact_persons: any;
+  public new_output_config: boolean = false;
+  public contact_persons: any = [];
   public sales_employee: any = [];
-  public ship_to: any;
-  public bill_to: any;
+  public ship_to: any = [];
+  public bill_to: any = [];
   public ship_data: any = [];
   public bill_data: any = [];
   public owner_list: any = [];
@@ -125,7 +125,7 @@ export class OutputComponent implements OnInit {
   public ModelBOMDataForSecondLevel = [];
   public FeatureBOMDataForSecondLevel = [];
   public globalConfigId: any = '';
-  public description : any;
+  public description: any;
   public step0_isNextButtonVisible: boolean = false;
 
   isMobile:boolean=false;
@@ -224,7 +224,7 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
-    this.step1_data.selected_configuration_key= "";
+    this.step1_data.selected_configuration_key = "";
     this.step1_data.description = "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
@@ -233,7 +233,7 @@ export class OutputComponent implements OnInit {
       this.new_output_config = true;
       this.step0_isNextButtonVisible = true;
     } else {
-      if(operation_type == ""){
+      if (operation_type == "") {
         this.new_output_config = false;
         this.step0_isNextButtonVisible = false;
       } else {
@@ -248,29 +248,29 @@ export class OutputComponent implements OnInit {
     this.globalConfigId = value;
   }
 
-  onStep0NextPress(){
+  onStep0NextPress() {
     console.log(this.step1_data.main_operation_type);
     if (this.step1_data.main_operation_type == 1) {
       console.log(this.step1_data.description);
-      if(this.step1_data.description == "" || this.step1_data.description == undefined){
+      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
         this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
         return;
       }
     }
     if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
-      if(this.step1_data.description == "" || this.step1_data.description == undefined){
+      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
         this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
         return;
       }
-    if(this.step1_data.selected_configuration_key == ""){
-      this.toastr.error('', this.language.select_configuration, this.commonData.toast_config);
-      return;
+      if (this.step1_data.selected_configuration_key == "") {
+        this.toastr.error('', this.language.select_configuration, this.commonData.toast_config);
+        return;
+      }
     }
-  }
-  $("#step0_next_click_id").trigger('click');
+    $("#step0_next_click_id").trigger('click');
   }
   onSavePress() {
-
+    this.onFinishPress("step1_data", "savePress");
   }
 
   open_config_lookup() {
@@ -291,10 +291,22 @@ export class OutputComponent implements OnInit {
     )
   }
 
-  getAllDetails(operationType,logid,description) {
-    this.OutputService.GetAllOutputData(operationType,logid,description).subscribe(
+  getAllDetails(operationType, logid, description) {
+    this.OutputService.GetAllOutputData(operationType, logid, description).subscribe(
       data => {
         console.log(data);
+        if (data.CustomerOutput.length > 0) {
+          this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+            this.contact_persons.push({
+              Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
+            });
+          this.bill_to.push({
+            BillToDef: data.CustomerOutput[0].OPTM_BILLTO,
+          });
+          this.ship_to.push({
+            ShipToDef: data.CustomerOutput[0].OPTM_SHIPTO,
+          });
+        }
       }
     )
   }
@@ -437,9 +449,9 @@ export class OutputComponent implements OnInit {
       }
     }
     else if (this.lookupfor == 'configure_list_lookup') {
-      this.step1_data.selected_configuration_key =$event[0];
-      this.step1_data.description =$event[1];
-      this.getAllDetails(this.step1_data.main_operation_type,this.step1_data.selected_configuration_key,this.step1_data.description);
+      this.step1_data.selected_configuration_key = $event[0];
+      this.step1_data.description = $event[1];
+      this.getAllDetails(this.step1_data.main_operation_type, this.step1_data.selected_configuration_key, this.step1_data.description);
     }
     // this.getItemDetails($event[0]);
   }
@@ -2127,7 +2139,7 @@ export class OutputComponent implements OnInit {
     }
   }
 
-  onFinishPress() {
+  onFinishPress(screen_name, button_press) {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
@@ -2157,7 +2169,10 @@ export class OutputComponent implements OnInit {
 
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
-      CompanyDBID: this.common_output_data.companyName
+      CompanyDBID: this.common_output_data.companyName,
+      ScreenData: screen_name,
+      OperationType: this.step1_data.main_operation_type,
+      Button: button_press
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
@@ -2270,7 +2285,7 @@ export class OutputComponent implements OnInit {
     this.cleanupFeatureItemList(this.final_row_data.model_id);
     this.cleanuptree();
     this.cleanupFinalArray(this.final_row_data.model_id);
-    
+
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
