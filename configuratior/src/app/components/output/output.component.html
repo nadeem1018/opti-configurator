@@ -168,67 +168,91 @@
               </div>
             </div>
             <hr>
+            
+            <!-- Address and customer detail start -->
             <div class="row">
-              <div class="col-md-7">
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="customer_doc">{{language.customer}}</label>
-                  <div class="col-sm-4 input-group">
-                    <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()" name="customer" id="customer"
-                      placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer" #customer>
-                    <div class="input-group-append">
-                      <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
-                        <i class="fa fa-bars"></i>
-                      </span>
+              <div class="col-md-12">
+
+                <!-- customer info start -->
+                <div class="col-md-4 pl-0 float-left">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="customer_doc">{{language.customer}}</label>
+                    <div class="col-sm-7 input-group">
+                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()" name="customer" id="customer"
+                        placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer" #customer>
+                      <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
+                          <i class="fa fa-bars"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="customer_doc">{{language.Name}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name" id="customer_name"
+                        placeholder="{{language.name}}" [(ngModel)]="step1_data.customer_name" #customername>
+
+                    </div>
+                  </div>
+
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="contact_persons">{{language.contact_person}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons" (change)="onContactPersonChange(person.value)">
+                        <option [selected]="person == v" *ngFor="let v of contact_persons" [value]="v.Name"> {{v.Name}}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="customer_doc">{{language.Name}}</label>
-                  <div class="col-sm-4">
-                    <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name" id="customer_name"
-                      placeholder="{{language.name}}" [(ngModel)]="step1_data.customer_name" #customername>
-
-                  </div>
-                </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="contact_persons">{{language.contact_person}}</label>
-                  <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons" (change)="onContactPersonChange(person.value)">
-                      <option [selected]="person == v" *ngFor="let v of contact_persons" [value]="v.Name"> {{v.Name}}</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="ship_to">{{language.ship_to}}</label>
-                  <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
-                      <option [selected]="customerShipTo == v" *ngFor="let v of ship_to" [value]="v.ShipToDef"> {{v.ShipToDef}}</option>
-                    </select>
-                  </div>
+                <!-- customer info end -->
 
 
-
-                  <label class="col-sm-2 col-form-label" for="ship_to_address">{{language.address}}</label>
-                  <div class="col-sm-3">
-                    <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address"
-                      placeholder="{{language.ship_to_address}}" [(ngModel)]="step1_data.ship_to_address" #shipto></textarea>
+                <!-- shipment code start -->
+                <div class="col-md-4 float-left">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="ship_to">{{language.ship_to}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
+                        <option [selected]="customerShipTo == v" *ngFor="let v of ship_to" [value]="v.ShipToDef"> {{v.ShipToDef}}</option>
+                      </select>
+                    </div>
                   </div>
 
-                </div>
-                <div class="form-group row clearfix">
-                  <label class="col-sm-3 col-form-label" for="bill_to">{{language.bill_to}}</label>
-                  <div class="col-sm-4">
-                    <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to" (change)="onBillToChange(customerBillTo.value)">
-                      <option [selected]="customerBillTo == v" *ngFor="let v of bill_to" [value]="v.BillToDef"> {{v.BillToDef}}</option>
-                    </select>
+                  <div class="form-group row clearfix">
+                      <label class="col-sm-5 col-form-label" for="ship_to_address">{{language.address}}</label>
+                      <div class="col-sm-7">
+                        <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address"
+                          placeholder="{{language.ship_to_address}}" [(ngModel)]="step1_data.ship_to_address" #shipto></textarea>
+                      </div>
                   </div>
 
-                  <label class="col-sm-2 col-form-label" for="bill_to_address">{{language.address}}</label>
-                  <div class="col-sm-3">
-                    <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
-                      placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address" #shipto></textarea>
+                </div>  
+                <!-- shipment code end -->
+
+                <!-- bill code start -->
+                <div class="col-md-4 float-left">
+                  <div class="form-group row clearfix">
+                    <label class="col-sm-5 col-form-label" for="bill_to">{{language.bill_to}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to" (change)="onBillToChange(customerBillTo.value)">
+                        <option [selected]="customerBillTo == v" *ngFor="let v of bill_to" [value]="v.BillToDef"> {{v.BillToDef}}</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
+
+                  <div class="form-group row clearfix">
+                      <label class="col-sm-5 col-form-label" for="bill_to_address">{{language.address}}</label>
+                      <div class="col-sm-7">
+                        <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
+                          placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address" #shipto></textarea>
+                      </div>
+                  </div>
+
+                </div>  
+                <!-- bill code end -->
+
               </div>
               <!-- <div class="col-md-5">
                 <div class="form-group row clearfix">
@@ -257,6 +281,8 @@
                 </div>
               </div> -->
             </div>
+            <!-- Address and customer detail end -->
+
             <hr>
             <div class="row">
               <div class="col-md-7">
