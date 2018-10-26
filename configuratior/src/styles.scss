@@ -52,6 +52,7 @@ table{
 }
 
 body{
+    
     table.table.opti_fixed-header{
         width: 100%;
         margin-bottom: 0;
@@ -66,13 +67,14 @@ body{
             max-height: 250px;
             overflow-y: auto;
             td{
-                border: none;
+                //border: none;
             }
             tr{
-                border: none;
+                // border: none;
+                //border-bottom: 1px solid $borderColor
             }
             tr:nth-child(odd) {
-                background-color: #efefef;
+                //background-color: #efefef;
             }
             tr td {
                 display: flex !important;
@@ -88,6 +90,11 @@ body{
             border-right: none !important;
         }
     }
+
+    // table, th, td {
+    //     border: 1px solid black;
+    //     border-collapse: collapse;
+    // }
 }
 
 body.add_item-code-view-model{
