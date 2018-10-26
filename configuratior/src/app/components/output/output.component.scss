@@ -515,8 +515,8 @@ only screen and ( min-resolution: 2dppx) {
 }
 
 .new_tree_structure_area {
-    width: 400px;
-    height: 400px;
+    // width: 400px;
+    max-height: 400px;
     overflow: auto;
     .tree.well {
         background: none;
@@ -619,4 +619,163 @@ only screen and ( min-resolution: 2dppx) {
 #customer{
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+}
+
+
+
+
+// css for second step
+#opti_configur-wizard-second-step{
+    select{
+        padding-left: 6px !important;
+    }
+    textarea{
+        padding-left: 3px !important;
+        min-height: 80px;
+    }
+    #remark{
+        padding-left: 8px !important;
+    }
+}
+
+// end css for second step
+
+// start css for third step
+#opti_configur-wizard-third-step{
+    #opti_configur-wizard-third-step-leftside{
+        table tr td{
+            .custom-control{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 24px !important;
+            }
+        }
+        .Model_Accessory-table tr th:first-child{
+            .custom-control{
+                position: relative;
+                top: -2px;
+            }
+        }
+    }
+
+    #opti_configur-wizard-third-step-rightside{
+        tr td label {
+            font-weight: normal !important;
+            // padding: 0 0 0 3px;
+        }
+        table.opti_fixed-header{
+            min-width: 1000px;
+            th{
+                min-height: 28px;
+            }
+            th:nth-child(1),
+            tr td:nth-child(1) {
+                width: 18%;
+            }
+            th:nth-child(2),
+            tr td:nth-child(2) {
+                width: 18%;
+            }
+            th:nth-child(3),
+            tr td:nth-child(3) {
+                width: 24%;
+            }
+            th:nth-child(4),
+            tr td:nth-child(4) {
+                width: 10%;
+            }
+            th:nth-child(5),
+            tr td:nth-child(5) {
+                width: 10%;
+            }
+            th:nth-child(6),
+            tr td:nth-child(6) {
+                width: 10%;
+            }
+            th:nth-child(7),
+            tr td:nth-child(7) {
+                width: 10%;
+            }
+        }
+    }
+
+}
+
+// end css for third step
+
+// start css for fourth step
+#opti_configur-wizard-four-step{
+    #opti_configur-wizard-four-step-left{
+        .font-weight-light{
+            font-weight: normal;
+        }
+    }
+    #opti_configur-wizard-four-step-right{
+        #opti_configur-wizard-four-step-selectiontable{
+            table.opti_fixed-header{
+                min-width: 1000px;
+                th{
+                    min-height: 28px;
+                }
+                th:nth-child(1),
+                tr td:nth-child(1) {
+                    width: 5%;
+                }
+                th:nth-child(2),
+                tr td:nth-child(2) {
+                    width: 5%;
+                }
+                th:nth-child(3),
+                tr td:nth-child(3) {
+                    width: 54%;
+                }
+                th:nth-child(4),
+                tr td:nth-child(4) {
+                    width: 10%;
+                }
+                tr td:nth-child(4) {
+                    span{
+                        width: 100%;
+                        span{
+                            span{
+                                float:right;
+                            }
+                        }
+                    }
+                }
+                th:nth-child(5),
+                tr td:nth-child(5) {
+                    width: 10%;
+                }
+                th:nth-child(6),
+                tr td:nth-child(6) {
+                    width: 10%;
+                }
+                th:nth-child(7),
+                tr td:nth-child(7) {
+                    display: none !important;
+                }
+                th:nth-child(8),
+                tr td:nth-child(8) {
+                    display: none !important;
+                }
+                th:nth-child(9),
+                tr td:nth-child(9) {
+                    width: 6%;
+                }
+                td{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 30px;
+                }
+            }
+        }
+    }
+}
+// end css for fourth step
+
+.font-weight-light{
+    font-weight: normal;
 }

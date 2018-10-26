@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animations';
 import * as $ from 'jquery';
 import { JitSummaryResolver } from '../../../../node_modules/@angular/compiler';
+import { UIHelper } from '../../helpers/ui.helpers';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -92,10 +93,10 @@ export class OutputComponent implements OnInit {
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
   serviceData: any;
   public new_output_config: boolean = false;
-  public contact_persons: any;
+  public contact_persons: any = [];
   public sales_employee: any = [];
-  public ship_to: any;
-  public bill_to: any;
+  public ship_to: any = [];
+  public bill_to: any = [];
   public ship_data: any = [];
   public bill_data: any = [];
   public owner_list: any = [];
@@ -125,10 +126,33 @@ export class OutputComponent implements OnInit {
   public FeatureBOMDataForSecondLevel = [];
   public globalConfigId: any = '';
   public description: any;
+  public step0_isNextButtonVisible: boolean = false;
+
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+
+
+  detectDevice(){
+      let getDevice = UIHelper.isDevice();
+      this.isMobile = getDevice[0];
+      this.isIpad = getDevice[1];
+      this.isDesktop = getDevice[2];
+      if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+      }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+      }else{
+      this.isPerfectSCrollBar = false;
+      }
+  }
+
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.detectDevice();
     element.classList.add('sidebar-toggled');
 
 
@@ -201,16 +225,20 @@ export class OutputComponent implements OnInit {
 
   onOperationChange(operation_type) {
     this.step1_data.selected_configuration_key = "";
+    this.step1_data.description = "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
-    if (operation_type == 2 || operation_type == 3) {
+    if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
-      this.new_output_config = false;
+      this.new_output_config = true;
+      this.step0_isNextButtonVisible = true;
     } else {
       if (operation_type == "") {
         this.new_output_config = false;
+        this.step0_isNextButtonVisible = false;
       } else {
         this.new_output_config = true;
+        this.step0_isNextButtonVisible = true;
       }
       this.modify_duplicate_selected = false;
     }
@@ -220,8 +248,29 @@ export class OutputComponent implements OnInit {
     this.globalConfigId = value;
   }
 
+  onStep0NextPress() {
+    console.log(this.step1_data.main_operation_type);
+    if (this.step1_data.main_operation_type == 1) {
+      console.log(this.step1_data.description);
+      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
+        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
+        return;
+      }
+    }
+    if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
+      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
+        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
+        return;
+      }
+      if (this.step1_data.selected_configuration_key == "") {
+        this.toastr.error('', this.language.select_configuration, this.commonData.toast_config);
+        return;
+      }
+    }
+    $("#step0_next_click_id").trigger('click');
+  }
   onSavePress() {
-
+    this.onFinishPress("step1_data", "savePress");
   }
 
   open_config_lookup() {
@@ -237,6 +286,26 @@ export class OutputComponent implements OnInit {
           this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
+        }
+      }
+    )
+  }
+
+  getAllDetails(operationType, logid, description) {
+    this.OutputService.GetAllOutputData(operationType, logid, description).subscribe(
+      data => {
+        console.log(data);
+        if (data.CustomerOutput.length > 0) {
+          this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+            this.contact_persons.push({
+              Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
+            });
+          this.bill_to.push({
+            BillToDef: data.CustomerOutput[0].OPTM_BILLTO,
+          });
+          this.ship_to.push({
+            ShipToDef: data.CustomerOutput[0].OPTM_SHIPTO,
+          });
         }
       }
     )
@@ -380,7 +449,9 @@ export class OutputComponent implements OnInit {
       }
     }
     else if (this.lookupfor == 'configure_list_lookup') {
-      this.step1_data.selected_configuration_key = $event[1];
+      this.step1_data.selected_configuration_key = $event[0];
+      this.step1_data.description = $event[1];
+      this.getAllDetails(this.step1_data.main_operation_type, this.step1_data.selected_configuration_key, this.step1_data.description);
     }
     // this.getItemDetails($event[0]);
   }
@@ -2083,7 +2154,7 @@ export class OutputComponent implements OnInit {
     }
   }
 
-  onFinishPress() {
+  onFinishPress(screen_name, button_press) {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
@@ -2113,7 +2184,10 @@ export class OutputComponent implements OnInit {
 
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
-      CompanyDBID: this.common_output_data.companyName
+      CompanyDBID: this.common_output_data.companyName,
+      ScreenData: screen_name,
+      OperationType: this.step1_data.main_operation_type,
+      Button: button_press
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
