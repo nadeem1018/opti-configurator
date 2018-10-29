@@ -346,7 +346,7 @@ export class RulewbComponent implements OnInit {
     this.rule_feature_data = new Array();
     this.add_sequence_mode = false;
     this.update_sequence_mode = false;
-    this.outputTable = false;
+    this.isOutputTable = false;
   }
 
   hide_show_output() {

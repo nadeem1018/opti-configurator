@@ -338,6 +338,8 @@
     "seq":"Seq.",
     "rule_output":"Rule Output",
     "rule_excluded":"Rule Excluded",
-    "show_hide_output":"Show/Hide Output"
+    "show_hide_output":"Show/Hide Output",
+    "configuration": "Configuration",
+    "description_blank": "Description can't be blank"
     
 }

@@ -175,7 +175,7 @@
                                         </td>
                                         <td width=10%;>
                                             <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}}
-                                              (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty
+                                              (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty [disabled]="row.isPropagateQtyDisable" #propagate_qty
                                             />
                                           </td>
                                           <td width=12%;>
