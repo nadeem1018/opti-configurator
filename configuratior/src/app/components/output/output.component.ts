@@ -928,8 +928,16 @@ export class OutputComponent implements OnInit {
       this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
       return;
     }
+    this.serviceData = [];
+    this.serviceData.ref_doc_details = [];
+    this.serviceData.customer_and_doc_details = this.step1_data;
+    this.serviceData.ref_doc_details.push({
+      "ref_doc_no": this.final_reference_number,
+      "ref_doc_entry": this.final_ref_doc_entry,
+    });
+    this.serviceData.payment_details = undefined;
     this.lookupfor = 'output_invoice_print';
-   
+
   }
 
   onAccessoryChange(value, row) {

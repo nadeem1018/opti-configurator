@@ -23,12 +23,12 @@
 
                             <div class="form-group clearfix lookup_search" style="position: relative;">
                                 <div class="opti_search float-right">
-                                    <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}"
-                                        [(ngModel)]="search_string" #lookupsearch>
+                                    <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string"
+                                        #lookupsearch>
                                     <button class="btn btn-outline-dark btn-xs mt-0" (click)="search_results()">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                </div>    
+                                </div>
                             </div>
 
                         </div>
@@ -255,262 +255,291 @@
                 </button>
             </div>
             <div class="modal-body">
-            <section class="card">
-                <div id="invoice-template" class="card-body">
-                    <!-- Invoice Company Details -->
-                    <div id="invoice-company-details" class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="text-center">Quotation</h3>
-                        </div>
-                        <hr>
-                        <div class="col-md-6 col-sm-12 text-center text-md-left">
-                            <div class="media">
-                                <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
-                                    class="" style=" width: 130px; " />
-                                <div class="media-body">
-                                    <ul class="ml-2 px-0 list-unstyled">
-                                        <li class="text-bold-800">Optipro Product Configurator</li>
-                                        <li>255 Street,</li>
-                                        <li>Washington DC,</li>
-                                        <li>Code 32940,</li>
-                                        <li>USA</li>
-                                    </ul>
+                <section class="card">
+                    <div id="invoice-template" class="card-body">
+                        <!-- Invoice Company Details -->
+                        <div id="invoice-company-details" class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 class="text-center">{{language.quatation}}</h3>
+                            </div>
+                            <hr>
+                            <div class="col-md-6 col-sm-12 text-center text-md-left">
+                                <div class="media">
+                                    <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
+                                        class="" style=" width: 130px; " />
+                                    <div class="media-body">
+                                        <ul class="ml-2 px-0 list-unstyled">
+                                            <li class="text-bold-800">Optipro Product Configurator</li>
+                                            <li>255 Street,</li>
+                                            <li>Washington DC,</li>
+                                            <li>Code 32940,</li>
+                                            <li>USA</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                                <span *ngIf="showCustDetailsSec">
+                                    <!-- <h2>DOC NO</h2> -->
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.order_type}} :</b>
+                                        </span> {{customer_details.order_type}}
+                                    </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.ref_doc_no}}:</b>
+                                        </span> {{refrence_doc_details.ref_doc_no}}
+                                    </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.ref_doc_entry}}:</b>
+                                        </span> {{refrence_doc_details.ref_doc_entry}}
+                                    </p>
+
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-sm-12 text-center text-md-right">
-                            <!-- <h2>DOC NO</h2> -->
-                            <p>
-                                <span class="text-muted">
-                                    <b>Order Type :</b>
-                                </span> Sales Quote
-                            </p>
-                            <p>
-                                <span class="text-muted">
-                                    <b>Ref. Doc. No :</b>
-                                </span> Doc-0011
-                            </p>
-                            <p>
-                                <span class="text-muted">
-                                    <b>Ref. Doc. Entry :</b>
-                                </span> 09327654-4322
-                            </p>
-                
-                        </div>
-                    </div>
-                    <!--/ Invoice Company Details -->
-                    <!-- Invoice Customer Details -->
-                    <div id="invoice-customer-details" class="row pt-2">
-                        <!-- <div class="col-sm-12 text-center text-md-left">
+                        <!--/ Invoice Company Details -->
+                        <!-- Invoice Customer Details -->
+                        <div id="invoice-customer-details" class="row pt-2">
+                            <!-- <div class="col-sm-12 text-center text-md-left">
                                     <p class="text-muted">
                                        
                                     </p>
                                 </div> -->
-                        <div class="col-md-6 col-sm-3 text-center text-md-left">
+                            <div class="col-md-6 col-sm-3 text-center text-md-left">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>{{language.customer}}:</b>
+                                            </span> {{customer_details.customer_name}}
+                                        </p>
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>{{language.contact_person}}:</b>
+                                            </span> {{customer_details.person_name}}
+                                        </p>
+                                    </div>
+                                    <div class="row col-sm-12 col-md-12">
+                                        <div class="col-sm-3 col-md-3">
+                                            <p>
+                                                <span class="text-muted">
+                                                    <b>{{language.ship_to}}:</b>
+                                                </span> {{customer_details.ship_to}}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <span class="text-muted">
+                                                <b>{{language.address}} :</b>
+                                            </span> {{customer_details.ship_to_address}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-sm-12 col-md-12 row">
+                                        <div class="col-sm-3 col-md-3">
+                                            <p>
+                                                <span class="text-muted">
+                                                    <b>{{language.bill_to}}:</b>
+                                                </span> {{customer_details.bill_to}}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <p>
+                                                <span class="text-muted">
+                                                    <b>{{language.address}} :</b>
+                                                </span>{{customer_details.bill_to_address}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                                <span *ngIf="showPaymentDetails">
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.pay_terms}} :</b>
+                                        </span> Payment in 4 terms</p>
+                                    <p>
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>{{language.payment_method}} :</b>
+                                            </span> By Card
+                                        </p>
+                                </span>
+
+
+                                <span *ngIf="showGeneralDetails">
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{customer_details.doc_type_date_label}}:</b>
+                                        </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy'}}
+                                    </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.posting_date}} :</b>
+                                        </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
+                                    </p>
+                                    <!-- <p>
+                                        <span class="text-muted">
+                                            <b>{{language.valid_date}} :</b>
+                                        </span>{{customer_details.posting_date}}
+                                    </p> -->
+                                </span>
+
+                            </div>
+                        </div>
+                        <!-- Invoice Customer Details -->
+                        <!-- Invoice Items Details -->
+
+                        <div id="invoice-items-details" class="pt-2">
                             <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>Customer :</b>
-                                        </span> IT Software Pvt Ltd.
-                                    </p>
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>Contact Person :</b>
-                                        </span> Mr. Pulkit Dubey
-                                    </p>
-                                </div>
-                                <div class="row col-sm-12 col-md-12">
-                                    <div class="col-sm-3 col-md-3">
-                                        <p>
-                                            <span class="text-muted">
-                                                <b>Ship to :</b>
-                                            </span>India
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-3 col-md-3">
-                                        <span class="text-muted">
-                                            <b>Address :</b>
-                                        </span>India
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="col-sm-12 col-md-12 row">
-                                    <div class="col-sm-3 col-md-3">
-                                        <p>
-                                            <span class="text-muted">
-                                                <b>Bill to :</b>
-                                            </span> Indore, India
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-3 col-md-3">
-                                        <p>
-                                            <span class="text-muted">
-                                                <b>Address :</b>
-                                            </span>India
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                
-                        </div>
-                        <div class="col-md-6 col-sm-12 text-center text-md-right">
-                            <p>
-                                <span class="text-muted">
-                                    <b>Posting Date :</b>
-                                </span> 06/05/2016</p>
-                            <p>
-                                <span class="text-muted">
-                                    <b>Pay Terms :</b>
-                                </span> Payment in 4 terms</p>
-                            <p>
-                                <p>
-                                    <span class="text-muted">
-                                        <b>Payment Mehod :</b>
-                                    </span> By Card</p>
-                                <p>
-                                    <span class="text-muted">
-                                        <b>Delivery Date :</b>
-                                    </span> 10/05/2016
-                                </p>
-                                <p>
-                                    <span class="text-muted">
-                                        <b>Valid Until :</b>
-                                    </span> 10/05/2016
-                                </p>
-                        </div>
-                    </div>
-                    <!--/ Invoice Customer Details -->
-                    <!-- Invoice Items Details -->
-                    <div id="invoice-items-details" class="pt-2">
-                        <div class="row">
-                            <div class="table-responsive col-sm-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Item</th>
-                                            <th>Description</th>
-                                            <th class="text-right">Quantity</th>
-                                            <th class="text-right">Price</th>
-                                            <th class="text-right">Price Ext.</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>
-                                                <p>G_Series_Laptop</p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                </p>
-                                            </td>
-                                            <td class="text-right">2</td>
-                                            <td class="text-right">80,000</td>
-                                            <td class="text-right">10%</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>
-                                                <p>G_Series_Laptop</p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                </p>
-                                            </td>
-                                            <td class="text-right">2</td>
-                                            <td class="text-right">80,000</td>
-                                            <td class="text-right">10%</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>
-                                                <p>G_Series_Laptop</p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                </p>
-                                            </td>
-                                            <td class="text-right">2</td>
-                                            <td class="text-right">80,000</td>
-                                            <td class="text-right">10%</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>
-                                                <p>G_Series_Laptop</p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                </p>
-                                            </td>
-                                            <td class="text-right">2</td>
-                                            <td class="text-right">80,000</td>
-                                            <td class="text-right">10%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
-                            <div class="col-md-5 col-sm-12">
-                                <p class="lead">Total</p>
-                                <div class="table-responsive">
+                                <div class="table-responsive col-sm-12">
                                     <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item</th>
+                                                <th>Description</th>
+                                                <th class="text-right">Quantity</th>
+                                                <th class="text-right">Price</th>
+                                                <th class="text-right">Price Ext.</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             <tr>
-                                                <td  class="text-bold-800"><b class="text-muted">Product Discount</b></td>
-                                                <td class="text-right">$ 14,900.00</td>
+                                                <th scope="row">1</th>
+                                                <td>
+                                                    <p>G_Series_Laptop</p>
+                                                </td>
+                                                <td>
+                                                    <p>
+                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                    </p>
+                                                </td>
+                                                <td class="text-right">2</td>
+                                                <td class="text-right">80,000</td>
+                                                <td class="text-right">10%</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-bold-800" ><b class="text-muted">Product Total</b></td>
-                                                <td class="text-right">$ 1,788.00</td>
+                                                <th scope="row">1</th>
+                                                <td>
+                                                    <p>G_Series_Laptop</p>
+                                                </td>
+                                                <td>
+                                                    <p>
+                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                    </p>
+                                                </td>
+                                                <td class="text-right">2</td>
+                                                <td class="text-right">80,000</td>
+                                                <td class="text-right">10%</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-bold-800"><b class="text-muted">Accessories Discount</b></td>
-                                                <td class="text-bold-800 text-right"> $ 16,688.00</td>
+                                                <th scope="row">1</th>
+                                                <td>
+                                                    <p>G_Series_Laptop</p>
+                                                </td>
+                                                <td>
+                                                    <p>
+                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                    </p>
+                                                </td>
+                                                <td class="text-right">2</td>
+                                                <td class="text-right">80,000</td>
+                                                <td class="text-right">10%</td>
                                             </tr>
                                             <tr>
-                                                <td  class="text-bold-800"><b class="text-muted">Accessories total</b></td>
-                                                <td class="pink text-right">(-) $ 4,688.00</td>
-                                            </tr>
-                                            <tr class="bg-grey bg-lighten-4">
-                                                <td class="text-bold-800"><b class="text-muted">Grand Total</b></td>
-                                                <td class="text-bold-800 text-right">$ 12,000.00</td>
+                                                <th scope="row">1</th>
+                                                <td>
+                                                    <p>G_Series_Laptop</p>
+                                                </td>
+                                                <td>
+                                                    <p>
+                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                    </p>
+                                                </td>
+                                                <td class="text-right">2</td>
+                                                <td class="text-right">80,000</td>
+                                                <td class="text-right">10%</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
+                                <div class="col-md-5 col-sm-12">
+                                    <p class="lead">Total</p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-bold-800">
+                                                        <b class="text-muted">Product Discount</b>
+                                                    </td>
+                                                    <td class="text-right">$ 14,900.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-bold-800">
+                                                        <b class="text-muted">Product Total</b>
+                                                    </td>
+                                                    <td class="text-right">$ 1,788.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-bold-800">
+                                                        <b class="text-muted">Accessories Discount</b>
+                                                    </td>
+                                                    <td class="text-bold-800 text-right"> $ 16,688.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-bold-800">
+                                                        <b class="text-muted">Accessories total</b>
+                                                    </td>
+                                                    <td class="pink text-right">(-) $ 4,688.00</td>
+                                                </tr>
+                                                <tr class="bg-grey bg-lighten-4">
+                                                    <td class="text-bold-800">
+                                                        <b class="text-muted">Grand Total</b>
+                                                    </td>
+                                                    <td class="text-bold-800 text-right">$ 12,000.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Invoice Footer -->
-                    <div id="invoice-footer">
-                        <div class="row">
-                            <div class="col-md-7 col-sm-12">
-                                <!-- <h6>Terms & Condition</h6>
+
+
+                        <!-- Invoice Footer -->
+                        <div id="invoice-footer">
+                            <div class="row">
+                                <div class="col-md-7 col-sm-12">
+                                    <!-- <h6>Terms & Condition</h6>
                                         <p>You know, being a test pilot isn't always the healthiest business in the world. We predict too much
                                             for the next year and yet far too little for the next 10.</p>
                                     </div> -->
-                
+
+                                </div>
                             </div>
+                            <!--/ Invoice Footer -->
                         </div>
-                        <!--/ Invoice Footer -->
                     </div>
-                </div>
                 </section>
 
-            </div>  <!-- Model-boddy close -->
-        </div> <!-- Model Content close-->
-    </div>  <!-- Modal -dialog -->
-</div> <!-- modal invoice_modal-->
+            </div>
+            <!-- Model-boddy close -->
+        </div>
+        <!-- Model Content close-->
+    </div>
+    <!-- Modal -dialog -->
+</div>
+<!-- modal invoice_modal-->
 
 
 <!-- rule output modal over modal -->
