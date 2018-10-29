@@ -19,14 +19,18 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="">
-                        <div class="col-sm-3  pull-right">
-                            <div class="form-group row clearfix">
-                                <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}"
-                                    [(ngModel)]="search_string" #lookupsearch>
-                                <button class="btn btn-outline-dark btn-xs" (click)="search_results()">
-                                    <i class="fa fa-search"></i>
-                                </button>
+                        <div class="col-sm-6  pull-right pr-0">
+
+                            <div class="form-group clearfix lookup_search" style="position: relative;">
+                                <div class="opti_search float-right">
+                                    <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}"
+                                        [(ngModel)]="search_string" #lookupsearch>
+                                    <button class="btn btn-outline-dark btn-xs mt-0" (click)="search_results()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>    
                             </div>
+
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -49,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer  pt-2 pb-2">
                 <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(lookup_modal)">
                     <i class="fa fa-close"></i> {{this.language.close}}</button>
             </div>
@@ -396,70 +400,26 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Item</th>
-                                                <th>Description</th>
-                                                <th class="text-right">Quantity</th>
-                                                <th class="text-right">Price</th>
-                                                <th class="text-right">Price Ext.</th>
+                                                <td  class="text-bold-800"><b class="text-muted">Product Discount</b></td>
+                                                <td class="text-right">$ 14,900.00</td>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                                <td class="text-bold-800" ><b class="text-muted">Product Total</b></td>
+                                                <td class="text-right">$ 1,788.00</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                                <td class="text-bold-800"><b class="text-muted">Accessories Discount</b></td>
+                                                <td class="text-bold-800 text-right"> $ 16,688.00</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                                <td  class="text-bold-800"><b class="text-muted">Accessories total</b></td>
+                                                <td class="pink text-right">(-) $ 4,688.00</td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                            <tr class="bg-grey bg-lighten-4">
+                                                <td class="text-bold-800"><b class="text-muted">Grand Total</b></td>
+                                                <td class="text-bold-800 text-right">$ 12,000.00</td>
                                             </tr>
                                         </tbody>
                                     </table>

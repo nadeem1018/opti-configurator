@@ -48,7 +48,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "X"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
@@ -66,6 +66,7 @@ export class OutputComponent implements OnInit {
   public final_array_checked_options = [];
   public navigatenextbtn: boolean = false;
   public validnextbtn: boolean = true;
+  public showPrintOptions: boolean = false;
   public previousquantity = 1;
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
@@ -132,7 +133,6 @@ export class OutputComponent implements OnInit {
   isIpad:boolean=false;
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
-
 
   detectDevice(){
       let getDevice = UIHelper.isDevice();
@@ -268,6 +268,7 @@ export class OutputComponent implements OnInit {
       }
     }
     $("#step0_next_click_id").trigger('click');
+    this.showPrintOptions = true;
   }
   onSavePress() {
     this.onFinishPress("step1_data", "savePress");
@@ -922,7 +923,11 @@ export class OutputComponent implements OnInit {
   //   //  }
   // }
 
-  output_invvoice_print_lookup() {
+  output_invvoice_print_lookup(operation_type) {
+    if (operation_type == ""){
+      this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
+      return;
+    }
     this.serviceData = [];
     this.serviceData.ref_doc_details = [];
     this.serviceData.customer_and_doc_details = this.step1_data;
@@ -933,7 +938,6 @@ export class OutputComponent implements OnInit {
     this.serviceData.payment_details = undefined;
     this.lookupfor = 'output_invoice_print';
 
-   
   }
 
   onAccessoryChange(value, row) {
