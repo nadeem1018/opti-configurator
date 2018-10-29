@@ -923,7 +923,16 @@ export class OutputComponent implements OnInit {
   // }
 
   output_invvoice_print_lookup() {
+    this.serviceData = [];
+    this.serviceData.ref_doc_details = [];
+    this.serviceData.customer_and_doc_details = this.step1_data;
+    this.serviceData.ref_doc_details.push({
+      "ref_doc_no": this.final_reference_number,
+      "ref_doc_entry": this.final_ref_doc_entry,
+    });
+    this.serviceData.payment_details = undefined;
     this.lookupfor = 'output_invoice_print';
+
    
   }
 
@@ -3086,11 +3095,6 @@ export class OutputComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-  //print details
-  printData() {
-
-=======
   RuleIntegration(RuleOutputData,value) {
     if (RuleOutputData.length > 0) {
       for (var iItemFeatureTable in this.FeatureBOMDataForSecondLevel) {
@@ -3143,6 +3147,5 @@ export class OutputComponent implements OnInit {
         }
       }
     }
->>>>>>> a694120bd2f71f8f6c0f39bc1aa1a69682b301a9
   }
 }
