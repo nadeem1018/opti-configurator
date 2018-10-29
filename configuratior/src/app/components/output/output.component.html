@@ -299,7 +299,7 @@
                     <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee" (change)="onSalesPersonChange(salesemployee.value)">
-                        <option [selected]="salesemployee == v" *ngFor="let v of sales_employee" [value]="v.SlpName"> {{v.SlpName}}</option>
+                        <option [selected]="salesemployee.value == v.SlpName" *ngFor="let v of sales_employee" [value]="v.SlpName"> {{v.SlpName}}</option>
                       </select>
                     </div>
                   </div>
@@ -309,7 +309,7 @@
                       <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
                         [(ngModel)]="step1_data.owner" #owner> -->
                       <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
-                        <option *ngFor="let v of owner_list" [value]="v.value"> {{v.lastName}}</option>
+                        <option *ngFor="let v of owner_list" [selected]="owner.value == v.lastName" [value]="v.value"> {{v.lastName}}</option>
                       </select>
                     </div>
                   </div>
