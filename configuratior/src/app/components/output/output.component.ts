@@ -66,6 +66,7 @@ export class OutputComponent implements OnInit {
   public final_array_checked_options = [];
   public navigatenextbtn: boolean = false;
   public validnextbtn: boolean = true;
+  public showPrintOptions: boolean = false;
   public previousquantity = 1;
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
@@ -132,7 +133,6 @@ export class OutputComponent implements OnInit {
   isIpad:boolean=false;
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
-
 
   detectDevice(){
       let getDevice = UIHelper.isDevice();
@@ -268,6 +268,7 @@ export class OutputComponent implements OnInit {
       }
     }
     $("#step0_next_click_id").trigger('click');
+    this.showPrintOptions = true;
   }
   onSavePress() {
     this.onFinishPress("step1_data", "savePress");
@@ -922,7 +923,11 @@ export class OutputComponent implements OnInit {
   //   //  }
   // }
 
-  output_invvoice_print_lookup() {
+  output_invvoice_print_lookup(operation_type) {
+    if (operation_type == ""){
+      this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
+      return;
+    }
     this.lookupfor = 'output_invoice_print';
    
   }
