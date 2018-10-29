@@ -19,14 +19,18 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="">
-                        <div class="col-sm-3  pull-right">
-                            <div class="form-group row clearfix">
-                                <input type="text" class="col-sm-9 mr-10 form-control form-control-sm mt3" id="search" placeholder="{{language.search}}"
-                                    [(ngModel)]="search_string" #lookupsearch>
-                                <button class="btn btn-outline-dark btn-xs" (click)="search_results()">
-                                    <i class="fa fa-search"></i>
-                                </button>
+                        <div class="col-sm-6  pull-right pr-0">
+
+                            <div class="form-group clearfix lookup_search" style="position: relative;">
+                                <div class="opti_search float-right">
+                                    <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}"
+                                        [(ngModel)]="search_string" #lookupsearch>
+                                    <button class="btn btn-outline-dark btn-xs mt-0" (click)="search_results()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>    
                             </div>
+
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -49,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer  pt-2 pb-2">
                 <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(lookup_modal)">
                     <i class="fa fa-close"></i> {{this.language.close}}</button>
             </div>
