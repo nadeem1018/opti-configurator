@@ -910,9 +910,10 @@
             </div>
             <hr>
           </div>
-          <div class="form_section">
+          <!-- start final document creation -->
+          <div class="form_section" id="opti_configur-wizard-last-step">
             <div class="row">
-              <div class="col-sm-3">
+              <div class="col-sm-3" id="opti_configur-wizard-last-step-leftside">
                 <div class="new item section">
                   <h6>{{language.lsit_of_new_item_created}}</h6>
                   <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list">
@@ -920,38 +921,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-9 border-left-primary">
+              <div class="col-sm-9 border-left-primary" id="opti_configur-wizard-last-step-rightside">
                 <div class="customer_detail_section">
                   <div class="row">
-                    <div class="col-md-8">
-                      <div class="form-group row clearfix">
-                        <label class="col-sm-3 col-form-label">
-                          <b>{{language.order_type}}</b>
-                        </label>
-                        <label class="col-sm-5 col-form-label font-weight-light">{{language.SalesOrder}}</label>
-                      </div>
-                      <div class="form-group row clearfix">
-                        <label class="col-sm-3 col-form-label">
-                          <b>{{language.order_status}}</b>
-                        </label>
-                        <label class="col-sm-5 col-form-label">
-                          <b class="final_order_status_class font-weight-light">{{final_order_status}}</b>
-                        </label>
-                      </div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-3 col-form-label ">
-                          <b>{{language.ref_doc_no}}</b>
-                        </label>
-                        <label class="col-sm-3 col-form-label font-weight-light">{{final_document_number}}</label>
-                      </div>
-                      <div class="form-group row clearfix">
-                        <label class="col-sm-3 col-form-label">
-                          <b>{{language.ref_doc_entry}}</b>
-                        </label>
-                        <label class="col-sm-3 col-form-label font-weight-light">{{final_ref_doc_entry}}</label>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-12 pr-0">
                       <div class="pull-right">
                         <button type="button" (click)="refresh_bom_status()" class="mr-10 btn btn-sm btn-outline-primary refresh_btn">
                           <span class="showLoader" [hidden]="showFinalLoader">
@@ -962,88 +935,139 @@
                           </span>
                         </button>
                       </div>
-                      <div class="clearfix"></div>
+                    </div>  
+                    
+                    <div class="col-md-6">
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.order_type}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{language.SalesOrder}}</label>
+                      </div>
+
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.order_status}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label">
+                          <b class="final_order_status_class font-weight-light">{{final_order_status}}</b>
+                        </label>
+                      </div>
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label ">
+                          <b>{{language.ref_doc_no}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{final_document_number}}</label>
+                      </div>
+
+                      <div class="form-group row clearfix">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.ref_doc_entry}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{final_ref_doc_entry}}</label>
+                      </div>
+
+                    </div>
+                    <div class="col-md-6">
+                      
 
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.posting_date}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label text-right font-weight-light">{{step1_data.posting_date | date: 'MM/dd/yyyy'}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.posting_date | date: 'MM/dd/yyyy'}}</label>
                       </div>
+
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.delivery_date}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label text-right font-weight-light">{{step1_data.delivery_date}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_date}}</label>
                       </div>
+
                     </div>
                   </div>
                 </div>
                 <hr>
                 <div class="order_detail_section">
                   <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                       <div class="form-group row clearfix">
-                        <label class="col-sm-3 col-form-label">
+                        <label class="col-sm-5 col-form-label">
                           <b>{{language.customer}}</b>
                         </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.customer}}</label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.customer}}</label>
                       </div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-2 col-form-label">
-                          <b>{{language.name}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.name}}</label>
-                      </div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-3 col-form-label">
-                          <b>{{language.contact_person}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.contact_person}}</label>
-                      </div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-2 col-form-label">
-                          <b>{{language.ship_to}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.ship_to}}</label>
-                        <label class="col-sm-2 col-form-label">
-                          <b>{{language.address}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.ship_to_address}}</label>
-                      </div>
-                      <div class="form-group row clearfix ">
-                        <label class="col-sm-2 col-form-label">
-                          <b>{{language.bill_to}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.bill_to}}</label>
-                        <label class="col-sm-2 col-form-label">
-                          <b>{{language.address}}</b>
-                        </label>
-                        <label class="col-sm-4 col-form-label font-weight-light">{{step1_data.bill_to_address}}</label>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
 
                       <div class="form-group row clearfix ">
-                        <label class="col-sm-6 col-form-label text-left">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.name}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.name}}</label>
+                      </div>
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.contact_person}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.contact_person}}</label>
+                      </div>
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.ship_to}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.ship_to}}</label>
+                      </div>
+
+                      <div class="form-group row clearfix ">
+                          <label class="col-sm-5 col-form-label">
+                            <b>{{language.address}}</b>
+                          </label>
+                          <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.ship_to_address}}</label>
+                        </div>
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label">
+                          <b>{{language.bill_to}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.bill_to}}</label>
+                        
+                      </div>
+
+                      <div class="form-group row clearfix ">
+                          <label class="col-sm-5 col-form-label">
+                            <b>{{language.address}}</b>
+                          </label>
+                          <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.bill_to_address}}</label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.payment_terms}}</b>
                         </label>
-                        <label class="col-sm-4 col-form-label text-right font-weight-light">{{step1_data.payment_terms}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.payment_terms}}</label>
                       </div>
+
                       <div class="form-group row clearfix ">
-                        <label class="col-sm-6 col-form-label text-left">
+                        <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.payment_method}}</b>
                         </label>
-                        <label class="col-sm-4 col-form-label text-right font-weight-light">{{step1_data.payment_method}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.payment_method}}</label>
                       </div>
+
                     </div>
                   </div>
                 </div>
                 <hr>
                 <div class="pricing_detail_section">
                   <div class="row">
-                    <div class="col-md-3"> </div>
-                    <div class="col-md-9">
+                    <!-- <div class="col-md-3"> </div> -->
+                    <div class="col-md-12">
                       <div class="accessories_table">
                         <table class="table table-bordered table-sm">
                           <thead class="thead-dark">
@@ -1063,18 +1087,18 @@
                     </div>
                   </div>
                   <div class="">
-                    <div class="col-md-4 pull-left">
+                    <div class="col-md-6 pull-left">
                       <div class="form-group row clearfix">
-                        <label class="col-sm-7 col-form-label">
+                        <label class="col-sm-5 col-form-label">
                           <b>{{language.sales_employee}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label font-weight-light">{{step1_data.sales_employee}}</label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.sales_employee}}</label>
                       </div>
                       <div class="form-group row clearfix">
-                        <label class="col-sm-7 col-form-label">
+                        <label class="col-sm-5 col-form-label">
                           <b>{{language.remark}}</b>
                         </label>
-                        <label class="col-sm-5 col-form-label font-weight-light">{{step1_data.remark}}</label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.remark}}</label>
                       </div>
                     </div>
                     <div class="item_discount_table">
@@ -1136,6 +1160,8 @@
               </div>
             </div>
           </div>
+          <!-- end final document creation -->
+
           <div class="f1-buttons">
             <hr>
             <!-- <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
