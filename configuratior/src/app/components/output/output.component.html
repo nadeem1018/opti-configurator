@@ -800,8 +800,11 @@
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of final_selection_header; let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-                            <span>
-                              {{label}}
+                            <span *ngIf="final_selection_header.length-1 == i">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </span>
+                            <span *ngIf="final_selection_header.length-1 != i">
+                                {{label}}
                             </span>
                           </th>
                         </tr>
