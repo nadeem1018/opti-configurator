@@ -346,9 +346,6 @@
     "configuration": "Configuration",
     "description_blank": "Description can't be blank",
     "quatation":"Quotation",
-    "order_type":"Order Type ",
-    "ref_doc_no": "Ref. Doc. No ",
-    "ref_doc_entry": "Ref. Doc. Entry ",
     "pay_terms": "Pay Terms"
     
 }
