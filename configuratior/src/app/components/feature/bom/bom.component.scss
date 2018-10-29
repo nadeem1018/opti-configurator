@@ -8,14 +8,25 @@
 
 .top-table{
     tbody {
-        td{}
+        td{height: 40px;}
         tr{}
         tr:nth-child(odd) {}
     }
     tbody td, thead th {}
     tbody tr td:last-child {
         button{
-            margin-top: 5px;
+            // margin-top: 5px;
         }
     }
+}
+
+#featureNameCode,
+
+#type_value_code{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.basic-addon2-table {
+    margin-top: 0;
 }

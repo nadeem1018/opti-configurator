@@ -162,6 +162,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "ModelBomForWizard_lookup") {
         this.get_ModelWizard_lookup();
       }
+
+       if (this.lookupfor == "output_invoice_print") {
+         this.output_invoice_print();
+      }
     }
   }
 
@@ -182,7 +186,24 @@ export class LookupComponent implements OnInit {
   }
 
   configure_list_lookup(){
+    this.popup_title = this.language.model_template;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'modify_duplicate_lookup';
+    this.table_head = ['LogID','Description' ,'Customer','Contact Person','Model','Quantity'];
+    //this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'OPTM_DESC';
 
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        $("#lookup_modal").modal('show');
+      }
+    }
   }
 
   model_template_lookup() {
@@ -545,6 +566,12 @@ showImage() {
   this.showLoader = false;
   this.LookupDataLoaded = true;
 }
+
+  output_invoice_print(){
+    this.popup_title = 'Print Quote';
+    $("#invoice_modal").modal('show');
+   
+  }
 
   public tree_data_json: any = '';
 @Input() component;

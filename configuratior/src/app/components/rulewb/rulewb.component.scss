@@ -32,6 +32,7 @@
             // height: 35px;
             // border-bottom: none !important;
             // border-block-end: none;
+            height: 40px;
         }
         tr{
             // border-bottom: 1px solid #c7c7c7;
@@ -70,6 +71,7 @@
             // overflow-y: auto;
             // border-bottom: none !important;
            // border: none;
+           height: 40px;
         }
         tr{
             // border-bottom: 1px solid #c7c7c7;
@@ -114,6 +116,7 @@
             // height: 35px;
             // border-bottom: none !important;
             //border: none;
+            height: 40px;
         }
         tr{
             // border-bottom: 1px solid #c7c7c7;
@@ -157,4 +160,22 @@
 }
 .output-table{
     min-width: 1000px;
+}
+
+#datetime_input, #featuer_code {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.input-group-text.featuer_code_lookup{
+    margin-top: 3px;
+}
+.basic-addon2-table{
+    margin-top: 0;
+}
+#type_value_code,
+#opeand_1,
+#opeand_2_code{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }

@@ -65,7 +65,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
-               
+
                 <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(import_modal)" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
@@ -87,7 +87,7 @@
                                 <!-- <option value="csv">{{language.csv}}</option> -->
                             </select>
                         </div>
-                         
+
                     </div>
                     <hr>
                     <div class="form-group row clearfix">
@@ -99,9 +99,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{template_path}}" class="btn btn-sm btn btn-success mr-10" download title="{{this.language.download_template}}"><i class="fa fa-download"></i> {{this.language.download_template}} </a>
+                <a href="{{template_path}}" class="btn btn-sm btn btn-success mr-10" download title="{{this.language.download_template}}">
+                    <i class="fa fa-download"></i> {{this.language.download_template}} </a>
                 <button class="btn btn-sm btn-info mr-10" type="button" (click)="importclick()">
-                    <i class="fa fa-check"></i> {{this.language.import}}</button></div>
+                    <i class="fa fa-check"></i> {{this.language.import}}</button>
+            </div>
         </div>
     </div>
     <script src="Scripts/angular.min.js"></script>
@@ -235,8 +237,279 @@
     </div>
 </div>
 
+<!-- Configuration screen full width invoice over modal -->
+<div class="modal fade" id="invoice_modal" tabindex="-1" role="dialog" aria-labelledby="invoice_modal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-xlg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoice_modal_title">{{popup_title}}</h5>
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(invoice_modal)" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fa fa-window-close"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <section class="card">
+                <div id="invoice-template" class="card-body">
+                    <!-- Invoice Company Details -->
+                    <div id="invoice-company-details" class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <h3 class="text-center">Quotation</h3>
+                        </div>
+                        <hr>
+                        <div class="col-md-6 col-sm-12 text-center text-md-left">
+                            <div class="media">
+                                <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
+                                    class="" style=" width: 130px; " />
+                                <div class="media-body">
+                                    <ul class="ml-2 px-0 list-unstyled">
+                                        <li class="text-bold-800">Optipro Product Configurator</li>
+                                        <li>255 Street,</li>
+                                        <li>Washington DC,</li>
+                                        <li>Code 32940,</li>
+                                        <li>USA</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-center text-md-right">
+                            <!-- <h2>DOC NO</h2> -->
+                            <p>
+                                <span class="text-muted">
+                                    <b>Order Type :</b>
+                                </span> Sales Quote
+                            </p>
+                            <p>
+                                <span class="text-muted">
+                                    <b>Ref. Doc. No :</b>
+                                </span> Doc-0011
+                            </p>
+                            <p>
+                                <span class="text-muted">
+                                    <b>Ref. Doc. Entry :</b>
+                                </span> 09327654-4322
+                            </p>
+                
+                        </div>
+                    </div>
+                    <!--/ Invoice Company Details -->
+                    <!-- Invoice Customer Details -->
+                    <div id="invoice-customer-details" class="row pt-2">
+                        <!-- <div class="col-sm-12 text-center text-md-left">
+                                    <p class="text-muted">
+                                       
+                                    </p>
+                                </div> -->
+                        <div class="col-md-6 col-sm-3 text-center text-md-left">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>Customer :</b>
+                                        </span> IT Software Pvt Ltd.
+                                    </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>Contact Person :</b>
+                                        </span> Mr. Pulkit Dubey
+                                    </p>
+                                </div>
+                                <div class="row col-sm-12 col-md-12">
+                                    <div class="col-sm-3 col-md-3">
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>Ship to :</b>
+                                            </span>India
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3">
+                                        <span class="text-muted">
+                                            <b>Address :</b>
+                                        </span>India
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-12 col-md-12 row">
+                                    <div class="col-sm-3 col-md-3">
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>Bill to :</b>
+                                            </span> Indore, India
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3">
+                                        <p>
+                                            <span class="text-muted">
+                                                <b>Address :</b>
+                                            </span>India
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </div>
+                        <div class="col-md-6 col-sm-12 text-center text-md-right">
+                            <p>
+                                <span class="text-muted">
+                                    <b>Posting Date :</b>
+                                </span> 06/05/2016</p>
+                            <p>
+                                <span class="text-muted">
+                                    <b>Pay Terms :</b>
+                                </span> Payment in 4 terms</p>
+                            <p>
+                                <p>
+                                    <span class="text-muted">
+                                        <b>Payment Mehod :</b>
+                                    </span> By Card</p>
+                                <p>
+                                    <span class="text-muted">
+                                        <b>Delivery Date :</b>
+                                    </span> 10/05/2016
+                                </p>
+                                <p>
+                                    <span class="text-muted">
+                                        <b>Valid Until :</b>
+                                    </span> 10/05/2016
+                                </p>
+                        </div>
+                    </div>
+                    <!--/ Invoice Customer Details -->
+                    <!-- Invoice Items Details -->
+                    <div id="invoice-items-details" class="pt-2">
+                        <div class="row">
+                            <div class="table-responsive col-sm-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Item</th>
+                                            <th>Description</th>
+                                            <th class="text-right">Quantity</th>
+                                            <th class="text-right">Price</th>
+                                            <th class="text-right">Price Ext.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>
+                                                <p>G_Series_Laptop</p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                </p>
+                                            </td>
+                                            <td class="text-right">2</td>
+                                            <td class="text-right">80,000</td>
+                                            <td class="text-right">10%</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>
+                                                <p>G_Series_Laptop</p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                </p>
+                                            </td>
+                                            <td class="text-right">2</td>
+                                            <td class="text-right">80,000</td>
+                                            <td class="text-right">10%</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>
+                                                <p>G_Series_Laptop</p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                </p>
+                                            </td>
+                                            <td class="text-right">2</td>
+                                            <td class="text-right">80,000</td>
+                                            <td class="text-right">10%</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>
+                                                <p>G_Series_Laptop</p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    Dell Gaming Series G5000 2018 Q2 15R Laptop
+                                                </p>
+                                            </td>
+                                            <td class="text-right">2</td>
+                                            <td class="text-right">80,000</td>
+                                            <td class="text-right">10%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
+                            <div class="col-md-5 col-sm-12">
+                                <p class="lead">Total</p>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Sub Total</td>
+                                                <td class="text-right">$ 14,900.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>TAX (12%)</td>
+                                                <td class="text-right">$ 1,788.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-bold-800">Total</td>
+                                                <td class="text-bold-800 text-right"> $ 16,688.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Made</td>
+                                                <td class="pink text-right">(-) $ 4,688.00</td>
+                                            </tr>
+                                            <tr class="bg-grey bg-lighten-4">
+                                                <td class="text-bold-800">Balance Due</td>
+                                                <td class="text-bold-800 text-right">$ 12,000.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Invoice Footer -->
+                    <div id="invoice-footer">
+                        <div class="row">
+                            <div class="col-md-7 col-sm-12">
+                                <!-- <h6>Terms & Condition</h6>
+                                        <p>You know, being a test pilot isn't always the healthiest business in the world. We predict too much
+                                            for the next year and yet far too little for the next 10.</p>
+                                    </div> -->
+                
+                            </div>
+                        </div>
+                        <!--/ Invoice Footer -->
+                    </div>
+                </div>
+                </section>
 
-<!-- tree view modal -->
+            </div>  <!-- Model-boddy close -->
+        </div> <!-- Model Content close-->
+    </div>  <!-- Modal -dialog -->
+</div> <!-- modal invoice_modal-->
+
+
+<!-- rule output modal over modal -->
 <div class="modal_over_modal fade" id="rule_output_table_lookup" tabindex="-1" role="dialog" aria-labelledby="rule_output_table_lookup"
     aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
@@ -261,20 +534,22 @@
                             <table class="table table-bordered lookup_table  table-sm" id="dataTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                    <th width="11%">{{language.feature}}</th>
-                                    <th width="11%">{{language.item}}</th>
-                                    <th width="11%">{{language.value}}</th>
-                                    <th width="11%">{{language.uom}}</th>
-                                    <th width="11%">{{language.quantity}}</th>
-                                    <th width="10%">{{language.edit_quantity}}</th>
-                                    <th width="10%">{{language.price_source}}</th>
-                                    <th width="10%">{{language.edit_price}}</th>
-                                    <th width="10%">{{language.default}}</th>
-                                    <th width="10%">{{language.rule_excluded}}</th>
+                                        <th width="11%">{{language.included}}</th>
+                                        <th width="11%">{{language.feature}}</th>
+                                        <th width="11%">{{language.item}}</th>
+                                        <th width="11%">{{language.value}}</th>
+                                        <th width="11%">{{language.uom}}</th>
+                                        <th width="11%">{{language.quantity}}</th>
+                                        <th width="10%">{{language.edit_quantity}}</th>
+                                        <th width="10%">{{language.price_source}}</th>
+                                        <th width="10%">{{language.edit_price}}</th>
+                                        <th width="10%">{{language.default}}</th>
+                                        <th width="10%">{{language.rule_excluded}}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="lookup_table_body">
                                     <tr *ngFor="let row of outputServiceData; let i=index">
+                                        <td width="11%">{{row.OPTM_ISINCLUDED}}</td>
                                         <td width="11%">{{row.OPTM_FEATURECODE}}</td>
                                         <td width="11%">{{row.OPTM_ITEMKEY}}</td>
                                         <td width="11%">{{row.OPTM_VALUE}}</td>
@@ -284,7 +559,7 @@
                                         <td width="10%">{{row.OPTM_PRICESOURCE}}</td>
                                         <td width="10%">{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
                                         <td width="10%">{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
-                                        
+
                                         <td width="10%">{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
                                     </tr>
                                 </tbody>
@@ -299,7 +574,7 @@
 
 <div class="modal fade" id="rule_selection" tabindex="-1" role="dialog" aria-labelledby="rule_selection" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
-<div class="modal-dialog  modal-mlg" role="document">
+    <div class="modal-dialog  modal-mlg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rule_selection_title">{{popup_title}}</h5>
@@ -316,7 +591,7 @@
                     </div>
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
-                  
+
                     <div class="panel-group" id="rule_selection_panels" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default custom_panel_box" *ngFor="let rule_data of serviceData; let i = index;">
                             <div class="panel-heading custom_panel_header" role="tab" id="rule_engine{{rule_data.OPTM_RULEID}}">
@@ -327,7 +602,7 @@
                                                 [checked]="rule_data['Selected']" class="custom-control-input">
                                             <label class="custom-control-label" for="rule_check_{{rule_data.OPTM_RULEID}}"></label>
                                         </div>
-                                     </div>
+                                    </div>
                                     <div role="button" attr.data-toggle="collapse" attr.data-parent="#rule_panel{{rule_data.OPTM_RULEID}}" attr.aria-expanded="false"
                                         attr.aria-controls="{{rule_data.OPTM_RULEID}}" class="custom_panel_parent_section col-sm-11">
                                         {{rule_data.OPTM_RULECODE}}
@@ -337,9 +612,10 @@
                                     </div>
                                 </h6>
                             </div>
-                            <div id="rule_panel{{rule_data.OPTM_RULEID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"  attr.aria-labelledby="rule_engine{{rule_data.OPTM_RULEID}}">
+                            <div id="rule_panel{{rule_data.OPTM_RULEID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
+                                attr.aria-labelledby="rule_engine{{rule_data.OPTM_RULEID}}">
                                 <div class="panel-body">
-                                 <table class="inner-table table table-bordered table-strip table-sm">
+                                    <table class="inner-table table table-bordered table-strip table-sm">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th style="width:10%">{{language.seq}}</th>
@@ -347,40 +623,31 @@
                                                 <th style="width:15%">{{language.action}}</th>
                                             </tr>
                                         </thead>
-                                     <tbody *ngIf="rule_data.Expression !== undefined && rule_data.Expression !== '' && rule_data.Expression.length > 0 ">
+                                        <tbody *ngIf="rule_data.Expression !== undefined && rule_data.Expression !== '' && rule_data.Expression.length > 0 ">
                                             <tr *ngFor="let rule_sequence_data of (rule_data.Expression).split('**'); ">
                                                 <td> {{rule_sequence_data.split(',')[0].split(':')[1]}} </td>
                                                 <td> {{rule_sequence_data.split(',')[1].split(':')[1]}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm mr-10 btn-primary"  (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.split(',')[0].split(':')[1])"
+                                                    <button type="button" class="btn btn-sm mr-10 btn-primary" (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.split(',')[0].split(':')[1])"
                                                         title="{{language.view_output}}">
                                                         <i class="fa fa-eye"></i>
                                                     </button>
                                                 </td>
                                             </tr>
-                                        </tbody> 
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-info mr-10" type="button" (click)="rule_select_ok()">
+                        <i class="fa fa-check"></i> {{this.language.ok}}</button>
+                    <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(rule_selection)">
+                        <i class="fa fa-close"></i> {{this.language.close}}</button>
                 </div>
-         
-        <div class="modal-footer">
-            <button class="btn btn-sm btn-info mr-10" type="button" (click)="rule_select_ok()">
-                <i class="fa fa-check"></i> {{this.language.ok}}</button>
-            <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(rule_selection)">
-                <i class="fa fa-close"></i> {{this.language.close}}</button>
+            </div>
         </div>
     </div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-

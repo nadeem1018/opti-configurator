@@ -47,6 +47,11 @@
   .modal-mlg {
     max-width: 600px;
   }
+  
+}
+
+.modal-xlg {
+  max-width: 95% !important;
 }
 
 .z-index_1065 {

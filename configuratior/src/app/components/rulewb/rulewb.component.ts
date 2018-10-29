@@ -65,7 +65,8 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
 
-  public outputTable: boolean = false;
+  
+  public isOutputTable: boolean = true;
 
 
   isMobile: boolean = false;
@@ -345,7 +346,7 @@ export class RulewbComponent implements OnInit {
     this.rule_feature_data = new Array();
     this.add_sequence_mode = false;
     this.update_sequence_mode = false;
-    this.outputTable = false;
+    this.isOutputTable = false;
   }
 
   hide_show_output() {
