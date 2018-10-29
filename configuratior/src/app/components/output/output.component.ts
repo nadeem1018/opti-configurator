@@ -839,6 +839,11 @@ export class OutputComponent implements OnInit {
   //   //  }
   // }
 
+  output_invvoice_print_lookup() {
+    this.lookupfor = 'output_invoice_print';
+   
+  }
+
   onAccessoryChange(value, row) {
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
       if (this.feature_accessory_list[i].id == row.id) {
