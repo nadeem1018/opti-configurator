@@ -90,3 +90,20 @@
 .mt--3{
     margin-top : -3px;
 }
+
+.lookup_search{
+    margin-top: 5px;
+    .opti_search{
+        width: 170px;
+    }
+
+    #search{
+        width: 100%;
+        max-width: 137px;
+    }
+
+    button{
+        float: right;
+        width: 30px;
+    }
+}

@@ -34,76 +34,89 @@
 
     <div class="col-md-12" id="left-table-section">
         <div class="card mb-3">
-            <form name="bom_feature_form">
+
+
+            <form name="bom_feature_form" class="form-horizontal">
                 <!--  <div class="card-header">
                     <i class="fa fa-file"></i> {{language.Model_Add}}</div> -->
                 <div class="card-body">
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
-                        <div class="col-sm-4 input-group">
-                            <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
-                                name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
-                                #featureinputbox>
-                            <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
-                                name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
-                                #featureinputbox>
-                            <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
-                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
-                                    <i class="fa fa-bars"></i>
-                                </span>
+                    <div class="row">
+                        <div class="col-md-6">
+
+
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
+                                <div class="col-sm-5 input-group">
+                                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
+                                        name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                        #featureinputbox>
+                                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
+                                        name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                        #featureinputbox>
+                                    <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
+                                        <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
+                                            <i class="fa fa-bars"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
-                                readonly [(ngModel)]="feature_bom_data.feature_name">
-                        </div>
-                    </div>
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
+                                        readonly [(ngModel)]="feature_bom_data.feature_name">
+                                </div>
+                            </div>
 
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc" placeholder="{{language.Bom_FeatureDesc}}"
-                                readonly [(ngModel)]="feature_bom_data.feature_desc">
-                        </div>
-                    </div>
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc" placeholder="{{language.Bom_FeatureDesc}}"
+                                        readonly [(ngModel)]="feature_bom_data.feature_desc">
+                                </div>
+                            </div>
 
-                    <div class="form-group row clearfix" *ngIf="showImageBlock">
-                        <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
-                        <div class="col-sm-4">
-                            <div class="row image_data">
-                                <div class=" col-md-4 col-sm-4">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
-                                        <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                            <div class="form-group row clearfix" *ngIf="showImageBlock">
+                                <label class="col-sm-4 col-form-label" for="image">{{language.image}}</label>
+                                <div class="col-sm-5">
+                                    <div class="row image_data">
+                                        <div class=" col-md-4 col-sm-4">
+                                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
+                                                <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
+                                <div class="col-sm-5 mt-3px">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
+                                            value="Y">
+                                        <label class="custom-control-label" for="yes">&nbsp;Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline ml-2">
+                                        <input type="radio" [disabled]="true" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
+                                            value="N">
+                                        <label class="custom-control-label" for="no">&nbsp;No</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
+                                        <i class="fa fa-plus"></i> {{language.add_row}}
                                     </a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-2 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
-                        <div class="col-sm-4 mt-3px">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
-                                    value="Y">
-                                <label class="custom-control-label" for="yes">&nbsp;Yes</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline ml-2">
-                                <input type="radio" [disabled]="true" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
-                                    value="N">
-                                <label class="custom-control-label" for="no">&nbsp;No</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
-                                <i class="fa fa-plus"></i> {{language.add_row}}
-                            </a>
-                        </div>
-                    </div>
+
+
 
                     
                     <div class="col-sm-12 p-0">
