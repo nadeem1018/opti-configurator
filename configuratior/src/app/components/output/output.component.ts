@@ -300,13 +300,25 @@ export class OutputComponent implements OnInit {
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
+            this.step1_data.person_name = data.CustomerOutput[0].OPTM_CONTACTPERSON,
           this.bill_to.push({
             BillToDef: data.CustomerOutput[0].OPTM_BILLTO,
           });
+          this.step1_data.bill_to = data.CustomerOutput[0].OPTM_BILLTO,
           this.ship_to.push({
             ShipToDef: data.CustomerOutput[0].OPTM_SHIPTO,
           });
+          this.step1_data.ship_to = data.CustomerOutput[0].OPTM_SHIPTO,
+          this.sales_employee.push({
+            SlpName: data.CustomerOutput[0].OPTM_SALESEMP,
+          });
+          this.step1_data.sales_employee = data.CustomerOutput[0].OPTM_SALESEMP,
+          this.owner_list.push({
+            lastName: data.CustomerOutput[0].OPTM_OWNER,
+          });
+          this.step1_data.owner = data.CustomerOutput[0].OPTM_OWNER
         }
+        this.isNextButtonVisible = true;
       }
     )
   }
@@ -909,6 +921,11 @@ export class OutputComponent implements OnInit {
 
   //   //  }
   // }
+
+  output_invvoice_print_lookup() {
+    this.lookupfor = 'output_invoice_print';
+   
+  }
 
   onAccessoryChange(value, row) {
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
@@ -2048,7 +2065,9 @@ export class OutputComponent implements OnInit {
       data => {
 
         if (data != null || data != undefined && data.length > 0) {
+          console.log(data);
           this.owner_list = data;
+          this.step1_data.owner = data[0].lastName;
         }
         else {
           this.owner_list = [];
@@ -2162,6 +2181,7 @@ export class OutputComponent implements OnInit {
 
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
+      "OPTM_LOGID": this.step1_data.selected_configuration_key,
       "OPTM_OUTPUTID": "",
       "OPTM_DOCTYPE": this.step1_data.document,
       "OPTM_BPCODE": this.step1_data.customer,
@@ -2176,7 +2196,9 @@ export class OutputComponent implements OnInit {
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
-      "OPTM_DESC": this.step1_data.description
+      "OPTM_DESC": this.step1_data.description,
+      "OPTM_SALESEMP": this.step1_data.sales_employee,
+      "OPTM_OWNER": this.step1_data.owner
     })
 
     //creating details table array

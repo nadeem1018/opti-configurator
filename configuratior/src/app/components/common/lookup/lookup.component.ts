@@ -162,6 +162,10 @@ export class LookupComponent implements OnInit {
       if (this.lookupfor == "ModelBomForWizard_lookup") {
         this.get_ModelWizard_lookup();
       }
+
+       if (this.lookupfor == "output_invoice_print") {
+         this.output_invoice_print();
+      }
     }
   }
 
@@ -562,6 +566,12 @@ showImage() {
   this.showLoader = false;
   this.LookupDataLoaded = true;
 }
+
+  output_invoice_print(){
+    this.popup_title = 'Print Quote';
+    $("#invoice_modal").modal('show');
+   
+  }
 
   public tree_data_json: any = '';
 @Input() component;
