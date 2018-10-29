@@ -2197,7 +2197,7 @@ export class OutputComponent implements OnInit {
     this.cleanupFeatureItemList(this.final_row_data.model_id);
     this.cleanuptree();
     this.cleanupFinalArray(this.final_row_data.model_id);
-    
+
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
     this.acc_item_tax = 0;
@@ -2959,5 +2959,10 @@ export class OutputComponent implements OnInit {
         });
       }
     }
+  }
+
+  //print details
+  printData() {
+
   }
 }
