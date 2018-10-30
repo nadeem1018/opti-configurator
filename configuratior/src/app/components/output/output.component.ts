@@ -2294,7 +2294,9 @@ export class OutputComponent implements OnInit {
 
     //creating details table array
     final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
-
+    if(button_press == undefined){
+      button_press = "finishPress"
+    }
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
       CompanyDBID: this.common_output_data.companyName,
