@@ -585,7 +585,7 @@
                             <td>
                               <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
                                 (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
-                                #quantity />
+                                #quantity [disabled]="featurerow.isQuantityDisabled" />
                             </td>
                             <td>
                               <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
