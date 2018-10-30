@@ -225,6 +225,12 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
+    this.step1_data =[];
+    this.contact_persons = [];
+    this.ship_to = [];
+    this.bill_to = [];
+    this.sales_employee= [];
+    this.owner_list = [];
     this.step1_data.selected_configuration_key = "";
     this.step1_data.description = "";
     this.new_output_config = false;
@@ -241,8 +247,10 @@ export class OutputComponent implements OnInit {
         this.new_output_config = true;
         this.step0_isNextButtonVisible = true;
       }
+      
       this.modify_duplicate_selected = false;
     }
+    this.step1_data.main_operation_type = operation_type;
   }
 
   on_configuration_id_change(value) {
@@ -298,7 +306,14 @@ export class OutputComponent implements OnInit {
       data => {
         console.log(data);
         if (data.CustomerOutput.length > 0) {
+          if(data.CustomerOutput[0].OPTM_DOCTYPE = "23"){
+            this.step1_data.document = "sales_quote"
+          }else{
+            this.step1_data.document = "sales_order"
+          }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+          this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
+          this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
@@ -935,12 +950,31 @@ export class OutputComponent implements OnInit {
     }
     this.serviceData = [];
     this.serviceData.ref_doc_details = [];
+    this.serviceData.product_grand_details = [];
+    this.serviceData.print_types = [];
+    //pushing print types
+    this.serviceData.print_types.push({
+      "selected_print_type": operation_type
+    });
+    //pushing all customer data
     this.serviceData.customer_and_doc_details = this.step1_data;
     this.serviceData.ref_doc_details.push({
       "ref_doc_no": this.final_reference_number,
       "ref_doc_entry": this.final_ref_doc_entry,
     });
+    //pushing all price details
+    this.serviceData.product_grand_details.push({
+      "product_total": this.feature_item_total,
+      "product_discount":this.feature_discount_percent,
+      "accessories_discount":this.accessory_discount_percent,
+      "accessories_total":this.accessory_item_total,
+      "grand_total":this.acc_grand_total
+    });
+    //pushing all final data sel details
+    this.serviceData.verify_final_data_sel_details = this.step3_data_final;
+    //pushing all payement data details
     this.serviceData.payment_details = undefined;
+
     this.lookupfor = 'output_invoice_print';
 
   }
@@ -1471,10 +1505,6 @@ export class OutputComponent implements OnInit {
       CompanyDBID: this.common_output_data.companyName,
       SuperModelId: this.step2_data.model_id
     });
-
-    GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-      return obj['checked'] == true
-    })
 
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
       return obj['checked'] == true
@@ -2266,7 +2296,7 @@ export class OutputComponent implements OnInit {
       "OPTM_BILLTO": this.step1_data.bill_to,
       "OPTM_CONTACTPERSON": this.step1_data.person_name,
       "OPTM_TAX": this.acc_item_tax,
-      "OPTM_PAYMENTTERM": "",
+      "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
       "OPTM_KEY": "DEMO-KEY",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
@@ -2276,18 +2306,23 @@ export class OutputComponent implements OnInit {
       "OPTM_DESC": this.step1_data.description,
       "OPTM_SALESEMP": this.step1_data.sales_employee,
       "OPTM_OWNER": this.step1_data.owner,
-      "OPTM_REMARKS": this.step1_data.remark
+      "OPTM_REMARKS":this.step1_data.remark,
+      "OPTM_BILLADD": this.step1_data.bill_to_address,
+      "OPTM_SHIPADD": this.step1_data.ship_to_address
     })
 
     //creating details table array
     final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
-
+    if(button_press == undefined){
+      button_press = "finishPress"
+    }
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
       CompanyDBID: this.common_output_data.companyName,
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
-      Button: button_press
+      Button: button_press,
+      ConfigType: this.step1_data.main_operation_type
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
