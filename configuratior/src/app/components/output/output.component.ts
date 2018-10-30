@@ -311,6 +311,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.document = "sales_order"
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+          this.step1_data.customer_name = data.CustomerOutput[0].NAME,
           this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
           this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
             this.contact_persons.push({
