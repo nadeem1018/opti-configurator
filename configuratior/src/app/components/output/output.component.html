@@ -10,9 +10,10 @@
             <div class="" *ngIf="showPrintOptions">
               <div class="form-group row clearfix">
                 <div class="col-sm-8 padding_right_0">
-                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type" style=" height: calc(1.35rem + 1px) !important; " #print_operation_type>
+                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type" style=" height: calc(1.35rem + 1px) !important; "
+                    #print_operation_type>
                     <option value="">{{language.print_option}}</option>
-                    <option value="1" >{{language.summary}}</option>
+                    <option value="1">{{language.summary}}</option>
                     <option value="2">{{language.detail}}</option>
                   </select>
                 </div>
@@ -1108,8 +1109,24 @@
                               </th>
                             </tr>
                           </thead>
-                          <tbody>
+
+
+                          <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
+                            <tr class="" *ngFor="let row of step3_data_final">
+                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
+                                <span *ngIf="(Object.keys(row).length-1) != i">
+
+                                  {{row[row_data]}}
+                                </span>
+
+                              </td>
+                            </tr>
                           </tbody>
+
+
+
+
+
                         </table>
                       </div>
                       <br>
