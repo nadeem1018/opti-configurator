@@ -2247,7 +2247,8 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    let final_dataset_to_save: any = {};
+    return;
+    let final_dataset_to_save:any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.ConnectionDetails = [];

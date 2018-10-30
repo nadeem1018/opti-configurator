@@ -66,7 +66,7 @@ export class LookupComponent implements OnInit {
   username: string;
   public fileType = "";
   public template_path = "";
-
+  public print_item_list_array:any = [];
   //Print Data variables
   public showCustDetailsSec: boolean = false;
   public showPaymentDetails: boolean = false;
@@ -447,11 +447,11 @@ export class LookupComponent implements OnInit {
     $("#rule_output_table_lookup").modal('show');
     // $("#rule_selection").css("opacity", "0");
     $(".modal-backdrop:first").addClass("z-index_1050");
-    this.outputServiceData = [
-      { "id": "2", "key": "123", "value": "test 1" },
-      { "id": "2", "key": "431", "value": "test 2" },
-      { "id": "4", "key": "555", "value": "test 3" },
-    ];
+    // this.outputServiceData = [
+    //   { "id": "2", "key": "123", "value": "test 1" },
+    //   { "id": "2", "key": "431", "value": "test 2" },
+    //   { "id": "4", "key": "555", "value": "test 3" },
+    // ];
 
     let obj = this;
     this.mbom.getRuleOutput(rule_id, seq_id).subscribe(
@@ -609,19 +609,19 @@ export class LookupComponent implements OnInit {
       this.showCustDetailsSec = false;
       this.showGeneralDetails = false;
     }
-
+    //payment details
     if (this.serviceData.payment_details != undefined) {
       this.showPaymentDetails = true;
     }
     else {
       this.showPaymentDetails = false;
     }
-
+    //ref doc details
     if (this.serviceData.ref_doc_details != undefined) {
       this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details.ref_doc_no;
       this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details.ref_doc_entry;
     }
-
+    //item details
     if (this.serviceData.verify_final_data_sel_details != undefined) {
       this.showProdDetailsTable = true;
       this.verify_final_data_sel_details = this.serviceData.verify_final_data_sel_details;
@@ -630,7 +630,33 @@ export class LookupComponent implements OnInit {
       this.showProdDetailsTable = false;
     }
 
+    //demo creating comman array
+    
+    let row_count  = 0;
+    for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
+      var row = this.serviceData.verify_final_data_sel_details[mcount];
+      row_count++;
+      //pushing item data
+      this.prepareFinalItemArray(row_count, row.item, '', row.quantity, row.price, row.price_ext);
 
+      // getFeaturesOfCurItem();
+
+      for (let fcount = 0; fcount < row['feature'].length; fcount++) {
+        let featureRow = row['feature'][fcount];
+        row_count++;
+        this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+      }
+
+      for (let acount = 0; acount < row['accesories'].length; acount++) {
+        let featureRow = row['accesories'][acount];
+        row_count++;
+        this.prepareFinalItemArray(row_count, featureRow.key, featureRow.name, row.quantity, row.price, row.price_ext);
+      }
+      
+    }
+
+
+    //product grand details
     if (this.serviceData.product_grand_details != undefined) {
       this.showProdGrandDetails = true;
       this.product_grand_details.product_total = this.serviceData.product_grand_details[0].product_total;
@@ -644,31 +670,38 @@ export class LookupComponent implements OnInit {
     }
 
     $("#invoice_modal").modal('show');
-    console.log(this.serviceData);
+    setTimeout(function(){
+     // @ts-ignore: Unreachable code error
+      let doc = new jsPDF();
+      let specialElementHandlers = {
+          '#editor': function (element, renderer) {
+              return true;
+          }
+      };
+      doc.fromHTML($('#invoice-template').html(), 15, 15, {
+        'width': 170,
+            'elementHandlers': specialElementHandlers
+    });
+    doc.save('report.pdf');
+
+    }, 1500);
   }
 
   public tree_data_json: any = '';
   @Input() component;
+  
+  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext) {
+      
+    this.print_item_list_array.push({
+      "sl_no":index,
+      "item": itemCode,
+      "item_desc": itemDesc,
+      "quantity": quantity,
+      "price": price,
+      "price_ext": price_ext,
+    });
+  }
 
-  // showTreeView(){
-  //   this.popup_title = this.language.explode;
-  //   this.showLoader = true;
-  //   this.LookupDataLoaded = false;
-  //   //this.tree_data_json = this.dummy_json();
-  //   this.showLoader = false;
-  //   this.LookupDataLoaded = true;
-  //   if(this.serviceData !== undefined){
-  //     if (this.serviceData.length > 0) {
-  //       //this.tree_data_json =  this.dummy_json();
-  //       this.tree_data_json =this.serviceData;
-  //         $("#tree_view").modal('show');
-  //     }
-  //   }
-
-  // }
-
-
-  //To show all associated BOM
   showAssociatedBOMs() {
 
     this.popup_title = this.language.associated_BOM;
@@ -736,10 +769,10 @@ export class LookupComponent implements OnInit {
     this.myInputVariable.nativeElement.value = "";
   }
 
-  filtered_feature_list(verify_final_data_sel_details){
+  filtered_feature_list(verify_final_data_sel_details) {
     console.log(verify_final_data_sel_details);
     verify_final_data_sel_details = verify_final_data_sel_details.filter(function (obj) {
-      
+
       obj['OPTM_LEVEL'] = 0;
       return verify_final_data_sel_details.feature;
     })
