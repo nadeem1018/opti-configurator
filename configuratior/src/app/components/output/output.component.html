@@ -1111,13 +1111,11 @@
                           </thead>
                           <tbody class="lookup_table_body" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                             <tr class="" *ngFor="let row of step3_data_final">
-                                <span *ngIf="(Object.keys(row).length-1) != i">
+                              <span *ngIf="(Object.keys(row).length-1) != i">
                               <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-
                                   {{row[row_data]}}
+                                </td>
                                 </span>
-
-                              </td>
                             </tr>
                           </tbody>
 
