@@ -2198,7 +2198,8 @@ export class OutputComponent implements OnInit {
       "OPTM_MODIFIEDBY": this.common_output_data.username,
       "OPTM_DESC": this.step1_data.description,
       "OPTM_SALESEMP": this.step1_data.sales_employee,
-      "OPTM_OWNER": this.step1_data.owner
+      "OPTM_OWNER": this.step1_data.owner,
+      "OPTM_REMARKS":this.step1_data.remark
     })
 
     //creating details table array
