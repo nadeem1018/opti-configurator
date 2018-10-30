@@ -538,36 +538,35 @@
                 <div class="lookup_data" *ngIf="RuleOutputLookupDataLoaded">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-bordered lookup_table  table-sm" id="dataTable">
+                            <table class="table opti_fixed-header  table-sm" id="dataTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th width="11%">{{language.included}}</th>
-                                        <th width="11%">{{language.feature}}</th>
-                                        <th width="11%">{{language.item}}</th>
-                                        <th width="11%">{{language.value}}</th>
-                                        <th width="11%">{{language.uom}}</th>
-                                        <th width="11%">{{language.quantity}}</th>
-                                        <th width="10%">{{language.edit_quantity}}</th>
-                                        <th width="10%">{{language.price_source}}</th>
-                                        <th width="10%">{{language.edit_price}}</th>
-                                        <th width="10%">{{language.default}}</th>
-                                        <th width="10%">{{language.rule_excluded}}</th>
+                                        <th>{{language.included}}</th>
+                                        <th>{{language.feature}}</th>
+                                        <th>{{language.item}}</th>
+                                        <th>{{language.value}}</th>
+                                        <th>{{language.uom}}</th>
+                                        <th>{{language.quantity}}</th>
+                                        <th>{{language.edit_quantity}}</th>
+                                        <th>{{language.price_source}}</th>
+                                        <th>{{language.edit_price}}</th>
+                                        <th>{{language.default}}</th>
+                                        <th>{{language.rule_excluded}}</th>
                                     </tr>
                                 </thead>
-                                <tbody class="lookup_table_body">
+                                <tbody class="" style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                                     <tr *ngFor="let row of outputServiceData; let i=index">
-                                        <td width="11%">{{row.OPTM_ISINCLUDED}}</td>
-                                        <td width="11%">{{row.OPTM_FEATURECODE}}</td>
-                                        <td width="11%">{{row.OPTM_ITEMKEY}}</td>
-                                        <td width="11%">{{row.OPTM_VALUE}}</td>
-                                        <td width="11%">{{row.OPTM_UOM}}</td>
-                                        <td width="11%">{{row.OPTM_QUANTITY}}</td>
-                                        <td width="10%">{{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td width="10%">{{row.OPTM_PRICESOURCE}}</td>
-                                        <td width="10%">{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td width="10%">{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
-
-                                        <td width="10%">{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
+                                        <td>{{row.OPTM_ISINCLUDED}}</td>
+                                        <td>{{row.OPTM_FEATURECODE}}</td>
+                                        <td>{{row.OPTM_ITEMKEY}}</td>
+                                        <td>{{row.OPTM_VALUE}}</td>
+                                        <td>{{row.OPTM_UOM}}</td>
+                                        <td>{{row.OPTM_QUANTITY}}</td>
+                                        <td>{{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}</td>
+                                        <td>{{row.OPTM_PRICESOURCE}}</td>
+                                        <td>{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
+                                        <td>{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
+                                        <td>{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
                                     </tr>
                                 </tbody>
                             </table>

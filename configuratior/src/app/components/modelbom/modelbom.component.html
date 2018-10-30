@@ -303,7 +303,7 @@
         <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
           <div *ngFor="let element of tree_data_json; let i= index;">
             <li *ngIf="element.level == 0 && element.parentId==''">
-              <span>
+              <span class="first_level">
                 <!-- <i class="fa fa-circle"></i>  -->
                 {{element.component}}
               </span>

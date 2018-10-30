@@ -7,6 +7,7 @@ import { AnimationStyleMetadata } from '../../../../node_modules/@angular/animat
 import * as $ from 'jquery';
 import { JitSummaryResolver } from '../../../../node_modules/@angular/compiler';
 import { UIHelper } from '../../helpers/ui.helpers';
+import { isNumber } from 'util';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -85,7 +86,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -224,6 +225,12 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
+    this.step1_data =[];
+    this.contact_persons = [];
+    this.ship_to = [];
+    this.bill_to = [];
+    this.sales_employee= [];
+    this.owner_list = [];
     this.step1_data.selected_configuration_key = "";
     this.step1_data.description = "";
     this.new_output_config = false;
@@ -240,8 +247,10 @@ export class OutputComponent implements OnInit {
         this.new_output_config = true;
         this.step0_isNextButtonVisible = true;
       }
+      
       this.modify_duplicate_selected = false;
     }
+    this.step1_data.main_operation_type = operation_type;
   }
 
   on_configuration_id_change(value) {
@@ -297,7 +306,15 @@ export class OutputComponent implements OnInit {
       data => {
         console.log(data);
         if (data.CustomerOutput.length > 0) {
+          if(data.CustomerOutput[0].OPTM_DOCTYPE = "23"){
+            this.step1_data.document = "sales_quote"
+          }else{
+            this.step1_data.document = "sales_order"
+          }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+          this.step1_data.customer_name = data.CustomerOutput[0].NAME,
+          this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
+          this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
@@ -677,7 +694,8 @@ export class OutputComponent implements OnInit {
                     isPriceDisabled: isPriceDisabled,
                     pricehide: isPricehide,
                     parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id
+                    model_id: this.step2_data.model_id,
+                    isQuantityDisabled: true
 
                   });
                 }
@@ -700,7 +718,8 @@ export class OutputComponent implements OnInit {
                   isPriceDisabled: isPriceDisabled,
                   pricehide: isPricehide,
                   parentId: this.step2_data.model_id,
-                  model_id: this.step2_data.model_id
+                  model_id: this.step2_data.model_id,
+                  isQuantityDisabled: true
 
                 });
               }
@@ -736,7 +755,8 @@ export class OutputComponent implements OnInit {
                   isPriceDisabled: isPriceDisabled,
                   pricehide: isPricehide,
                   parentId: this.selectfeaturedata[0].parentId,
-                  model_id: this.step2_data.model_id
+                  model_id: this.step2_data.model_id,
+                  isQuantityDisabled: true
                 });
               }
             }
@@ -758,7 +778,8 @@ export class OutputComponent implements OnInit {
                 isPriceDisabled: isPriceDisabled,
                 pricehide: isPricehide,
                 parentId: this.step2_data.model_id,
-                model_id: this.step2_data.model_id
+                model_id: this.step2_data.model_id,
+                isQuantityDisabled: true
 
               });
             }
@@ -1014,7 +1035,8 @@ export class OutputComponent implements OnInit {
                       isPriceDisabled: true,
                       pricehide: true,
                       parentId: this.selectfeaturedata[0].parentId,
-                      model_id: this.step2_data.model_id
+                      model_id: this.step2_data.model_id,
+                      isQuantityDisabled: true
 
                     });
                   }
@@ -1034,7 +1056,8 @@ export class OutputComponent implements OnInit {
                     isPriceDisabled: isPriceDisabled,
                     pricehide: isPricehide,
                     parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id
+                    model_id: this.step2_data.model_id,
+                    isQuantityDisabled: true
                   });
                 }
 
@@ -1188,7 +1211,8 @@ export class OutputComponent implements OnInit {
                     isPriceDisabled: true,
                     pricehide: true,
                     parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id
+                    model_id: this.step2_data.model_id,
+                    isQuantityDisabled: true
                   });
                 }
               }
@@ -1207,7 +1231,8 @@ export class OutputComponent implements OnInit {
                   isPriceDisabled: true,
                   pricehide: true,
                   parentId: this.selectfeaturedata[0].parentId,
-                  model_id: this.step2_data.model_id
+                  model_id: this.step2_data.model_id,
+                  isQuantityDisabled: true
                 });
               }
             }
@@ -1235,8 +1260,17 @@ export class OutputComponent implements OnInit {
 
   on_calculation_change(inputid, value) {
     if (value < 0) {
+      this.feature_discount_percent=0;
       this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-      return;
+      value=0;
+    }
+    else if(value>100){
+      this.toastr.error('', this.language.percentvalidation, this.commonData.toast_config);
+      value=0;
+    }
+    else if(parseFloat(value) === NaN){
+      this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+      value=0;
     }
     if (inputid == "product_discount") {
       this.feature_discount_percent = value;
@@ -1303,12 +1337,12 @@ export class OutputComponent implements OnInit {
             return data.ObjFeatureItemDataWithDfaultY
           })
 
-          for(var i in data.FeatureBOMDataForSecondLevel){
-            if( data.FeatureBOMDataForSecondLevel[i].checked=="True"){
-              data.FeatureBOMDataForSecondLevel[i].checked=true
+          for (var i in data.FeatureBOMDataForSecondLevel) {
+            if (data.FeatureBOMDataForSecondLevel[i].checked == "True") {
+              data.FeatureBOMDataForSecondLevel[i].checked = true
             }
-            else{
-              data.FeatureBOMDataForSecondLevel[i].checked=false
+            else {
+              data.FeatureBOMDataForSecondLevel[i].checked = false
             }
           }
 
@@ -1453,9 +1487,9 @@ export class OutputComponent implements OnInit {
       }
     }
 
-    this.checkedFunction(feature_model_data,parentarray,value);
+    this.checkedFunction(feature_model_data, parentarray, value);
 
-   
+
 
     let GetDataForSelectedFeatureModelItemData: any = {};
     GetDataForSelectedFeatureModelItemData.selecteddata = [];
@@ -1473,6 +1507,10 @@ export class OutputComponent implements OnInit {
       SuperModelId: this.step2_data.model_id
     });
 
+    GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+      return obj['checked'] == true
+    })
+
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
       return obj['checked'] == true
     })
@@ -1483,7 +1521,7 @@ export class OutputComponent implements OnInit {
 
         if (data != null || data != undefined) {
           if (value == true) {
-           
+
             if (data.DataForSelectedFeatureModelItem.length > 0) {
               if (parentarray[0].element_type == "radio") {
                 for (let imodelheader = 0; imodelheader < this.ModelHeaderData.length; imodelheader++) {
@@ -1638,7 +1676,7 @@ export class OutputComponent implements OnInit {
 
                 }
               }
-              else if (type == 3) {
+              else if (type == 3 && feature_model_data.OPTM_VALUE==null) {
                 // let parentarray = this.ModelHeaderData.filter(function (obj) {
                 //   return obj['OPTM_MODELID'] == parentmodelid
                 // });
@@ -1724,7 +1762,7 @@ export class OutputComponent implements OnInit {
                   }
                 }
               }
-              else {
+              else if(type==2){
                 if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                   propagateqtychecked = "Y"
                   propagateqty = parentarray[0].OPTM_QUANTITY
@@ -1735,7 +1773,7 @@ export class OutputComponent implements OnInit {
             }//end data length
 
             this.RuleIntegration(data.RuleOutputData, value);
-            this.checkedFunction(feature_model_data,parentarray,value);
+            this.checkedFunction(feature_model_data, parentarray, value);
           } //end value
           else {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -1819,7 +1857,8 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ItemData[0].OPTM_MODELID,
-          OPTM_LEVEL: parentarray[0].OPTM_LEVEL
+          OPTM_LEVEL: parentarray[0].OPTM_LEVEL,
+          isQuantityDisabled: true
         });
       }
     }
@@ -2263,7 +2302,7 @@ export class OutputComponent implements OnInit {
       "OPTM_BILLTO": this.step1_data.bill_to,
       "OPTM_CONTACTPERSON": this.step1_data.person_name,
       "OPTM_TAX": this.acc_item_tax,
-      "OPTM_PAYMENTTERM": "",
+      "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
       "OPTM_KEY": "DEMO-KEY",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
@@ -2273,18 +2312,23 @@ export class OutputComponent implements OnInit {
       "OPTM_DESC": this.step1_data.description,
       "OPTM_SALESEMP": this.step1_data.sales_employee,
       "OPTM_OWNER": this.step1_data.owner,
-      "OPTM_REMARKS":this.step1_data.remark
+      "OPTM_REMARKS":this.step1_data.remark,
+      "OPTM_BILLADD": this.step1_data.bill_to_address,
+      "OPTM_SHIPADD": this.step1_data.ship_to_address
     })
 
     //creating details table array
     final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
-
+    if(button_press == undefined){
+      button_press = "finishPress"
+    }
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
       CompanyDBID: this.common_output_data.companyName,
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
       Button: button_press
+      //ConfigType: this.step1_data.main_operation_type
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
@@ -2506,10 +2550,9 @@ export class OutputComponent implements OnInit {
   onModelBillNextPress() {
     //Clear the array
 
-    console.log('this.feature_itm_list_table');
-    console.log(this.feature_itm_list_table);
-
     this.step3_data_final = [];
+    this.new_item_list = [];
+
     this.step2_final_dataset_to_save = [];
     this.step3_data_final.push({
       "rowIndex": "1",
@@ -2522,6 +2565,15 @@ export class OutputComponent implements OnInit {
       "accesories": this.feature_accessory_list,
       "model_id": this.step2_data.model_id,
     })
+
+    for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
+      let row_data = this.step3_data_final[itemCount];
+      this.new_item_list.push(
+        row_data.item
+      )
+    }
+
+
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
       this.step2_final_dataset_to_save.push({
@@ -2835,10 +2887,10 @@ export class OutputComponent implements OnInit {
 
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
     var array = [];
-    header_feature_table['OPTM_LEVEL'] = 0;
-    model_child_datatable['OPTM_LEVEL'] = 1;
-    for (let i = 0; i < feature_child_datatable.length; i++) {
-      feature_child_datatable['OPTM_LEVEL'] = 1;
+   // header_feature_table['OPTM_LEVEL'] = 0;
+   // model_child_datatable['OPTM_LEVEL'] = 1;
+   // for (let i = 0; i < feature_child_datatable.length; i++) {
+  //    feature_child_datatable['OPTM_LEVEL'] = 1;
       // if(feature_child_datatable[i].checked==""||feature_child_datatable[i].checked==undefined||feature_child_datatable[i].checked==null){
       //   if (feature_child_datatable[i].OPTM_DEFAULT == "Y") {
       //     feature_child_datatable[i].checked = true
@@ -2847,7 +2899,7 @@ export class OutputComponent implements OnInit {
       //     feature_child_datatable[i].checked = false
       //   }
       // }
-    }
+  //  }
     if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
 
       array = feature_child_datatable.filter(function (obj) {
@@ -2993,7 +3045,8 @@ export class OutputComponent implements OnInit {
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             ModelId: ItemData[i].OPTM_MODELID,
-            OPTM_LEVEL: parentarray[0].OPTM_LEVEL + 1
+            OPTM_LEVEL: parentarray[0].OPTM_LEVEL + 1,
+            isQuantityDisabled: true
           });
         }
       }
@@ -3020,6 +3073,15 @@ export class OutputComponent implements OnInit {
           CompanyDBID: this.common_output_data.companyName,
           SuperModelId: this.step2_data.model_id
         });
+
+        GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+  
+        GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+
         this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
           data => {
             let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
@@ -3085,7 +3147,8 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: this.step2_data.model_id,
-          OPTM_LEVEL: 1
+          OPTM_LEVEL: 1,
+          isQuantityDisabled: true
         });
       }
     }
@@ -3119,7 +3182,8 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ModelData[imodelarray].OPTM_MODELID,
-          OPTM_LEVEL: 1
+          OPTM_LEVEL: 1,
+          isQuantityDisabled: true
         });
       }
 
@@ -3150,7 +3214,8 @@ export class OutputComponent implements OnInit {
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
-            OPTM_LEVEL: 2
+            OPTM_LEVEL: 2,
+            isQuantityDisabled: true
           });
 
           ItemPrice = ItemPrice + ModelItemsArray[imodelarray].Price
@@ -3194,7 +3259,8 @@ export class OutputComponent implements OnInit {
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
           ModelId: ModelItemsData[imodelarray].OPTM_MODELID,
-          OPTM_LEVEL: 1
+          OPTM_LEVEL: 1,
+          isQuantityDisabled: true
         });
       }
     }
@@ -3218,6 +3284,7 @@ export class OutputComponent implements OnInit {
               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
             }
           }
+
         }
       }
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
@@ -3246,20 +3313,45 @@ export class OutputComponent implements OnInit {
               this.feature_itm_list_table.splice(iFeatureItemaddedTable, 1)
               iFeatureItemaddedTable = iFeatureItemaddedTable - 1
             }
+            else if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "True  ") {
+              if (RuleOutputData[iItemRule].OPTM_ISQTYEDIT == "y") {
+                this.feature_itm_list_table[iFeatureItemaddedTable].isQuantityDisabled = false
+              }
+              else {
+                this.feature_itm_list_table[iFeatureItemaddedTable].isQuantityDisabled = true
+              }
+              this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseInt(RuleOutputData[iItemRule].OPTM_QUANTITY)
+              if (RuleOutputData[iItemRule].OPTM_ISPRICEEDIT == "y") {
+                this.feature_itm_list_table[iFeatureItemaddedTable].isPriceDisabled = false
+                this.feature_itm_list_table[iFeatureItemaddedTable].pricehide = false
+              }
+              else {
+                this.feature_itm_list_table[iFeatureItemaddedTable].isPriceDisabled = true
+                this.feature_itm_list_table[iFeatureItemaddedTable].pricehide = true
+              }
+
+            }
           }
         }
       }
     }
-    else{
+    else {
+      for (var iItemFeatureTable in this.feature_itm_list_table) {
+        this.feature_itm_list_table[iItemFeatureTable].isPriceDisabled = true
+        this.feature_itm_list_table[iItemFeatureTable].pricehide = true
+        this.feature_itm_list_table[iItemFeatureTable].isQuantityDisabled = true
+      }
       for (var iItemFeatureTable in this.FeatureBOMDataForSecondLevel) {
         this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
       }
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
         this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
       }
+     
     }
   }
-  checkedFunction(feature_model_data,parentarray,value){
+
+  checkedFunction(feature_model_data, parentarray, value) {
 
     for (var ifeaturechecked in this.FeatureBOMDataForSecondLevel) {
       if (feature_model_data.OPTM_TYPE == 2) {
@@ -3279,10 +3371,10 @@ export class OutputComponent implements OnInit {
         }
       }
       else {
-        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_MODELID == feature_model_data.OPTM_MODELID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDMODELID == feature_model_data.OPTM_CHILDMODELID) {
+        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_VALUE == feature_model_data.OPTM_VALUE) {
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = value
         }
-        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_MODELID == feature_model_data.OPTM_MODELID && parentarray[0].element_type == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDMODELID != feature_model_data.OPTM_CHILDMODELID) {
+        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && parentarray[0].element_type == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_VALUE != feature_model_data.OPTM_VALUE) {
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
         }
       }

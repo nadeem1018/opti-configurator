@@ -120,3 +120,56 @@ p {
         width: 30px;
     }
 }
+
+#rule_output_table_lookup{
+    table{
+        min-width: 1250px;
+        min-width: 1250px;
+        word-break: break-word;
+        th:nth-child(1),
+        tr td:nth-child(1) {
+            width: 6%;
+        }
+        th:nth-child(2),
+        tr td:nth-child(2) {
+            width: 13%;
+        }
+        th:nth-child(3),
+        tr td:nth-child(3) {
+            width: 20%;
+            word-break: break-word;
+        }
+        th:nth-child(4),
+        tr td:nth-child(4) {
+            width: 14%;
+        }
+        th:nth-child(5),
+        tr td:nth-child(5) {
+            width: 7%;
+        }
+        th:nth-child(6),
+        tr td:nth-child(6) {
+            width: 6%;
+        }
+        th:nth-child(7),
+        tr td:nth-child(7) {
+            width: 8%;
+        }
+        th:nth-child(8),
+        tr td:nth-child(8) {
+            width: 7%;
+        }
+        th:nth-child(9),
+        tr td:nth-child(9) {
+            width: 6%;
+        }
+        th:nth-child(10),
+        tr td:nth-child(10) {
+            width: 5%;
+        }
+        th:nth-child(11),
+        tr td:nth-child(11) {
+            width: 8%;
+        }
+    }
+}

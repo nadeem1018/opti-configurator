@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import 'bootstrap';
+import { UIHelper } from '../../../helpers/ui.helpers';
 // import { Http, ResponseContentType } from '@angular/http';
 
 @Component({
@@ -78,7 +79,28 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
 
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
+  
+
+  detectDevice(){
+    let getDevice = UIHelper.isDevice(); 
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+    if(this.isMobile==true){
+      this.isPerfectSCrollBar = true;
+    }else if(this.isIpad==true){
+      this.isPerfectSCrollBar = false;
+    }else{
+      this.isPerfectSCrollBar = false;
+    }
+  }
+
   ngOnInit() {
+    this.detectDevice();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
     this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
