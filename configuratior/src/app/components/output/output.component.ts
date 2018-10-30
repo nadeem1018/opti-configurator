@@ -48,7 +48,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "X"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
@@ -66,6 +66,7 @@ export class OutputComponent implements OnInit {
   public final_array_checked_options = [];
   public navigatenextbtn: boolean = false;
   public validnextbtn: boolean = true;
+  public showPrintOptions: boolean = false;
   public previousquantity = 1;
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
@@ -128,18 +129,17 @@ export class OutputComponent implements OnInit {
   public description: any;
   public step0_isNextButtonVisible: boolean = false;
 
-  isMobile: boolean = false;
-  isIpad: boolean = false;
-  isDesktop: boolean = true;
-  isPerfectSCrollBar: boolean = false;
+  isMobile:boolean=false;
+  isIpad:boolean=false;
+  isDesktop:boolean=true;
+  isPerfectSCrollBar:boolean = false;
 
-
-  detectDevice() {
-    let getDevice = UIHelper.isDevice();
-    this.isMobile = getDevice[0];
-    this.isIpad = getDevice[1];
-    this.isDesktop = getDevice[2];
-    if (this.isMobile == true) {
+  detectDevice(){
+      let getDevice = UIHelper.isDevice();
+      this.isMobile = getDevice[0];
+      this.isIpad = getDevice[1];
+      this.isDesktop = getDevice[2];
+      if(this.isMobile==true){
       this.isPerfectSCrollBar = true;
     } else if (this.isIpad == true) {
       this.isPerfectSCrollBar = false;
@@ -268,6 +268,7 @@ export class OutputComponent implements OnInit {
       }
     }
     $("#step0_next_click_id").trigger('click');
+    this.showPrintOptions = true;
   }
   onSavePress() {
     this.onFinishPress("step1_data", "savePress");
@@ -300,13 +301,25 @@ export class OutputComponent implements OnInit {
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
+            this.step1_data.person_name = data.CustomerOutput[0].OPTM_CONTACTPERSON,
           this.bill_to.push({
             BillToDef: data.CustomerOutput[0].OPTM_BILLTO,
           });
+          this.step1_data.bill_to = data.CustomerOutput[0].OPTM_BILLTO,
           this.ship_to.push({
             ShipToDef: data.CustomerOutput[0].OPTM_SHIPTO,
           });
+          this.step1_data.ship_to = data.CustomerOutput[0].OPTM_SHIPTO,
+          this.sales_employee.push({
+            SlpName: data.CustomerOutput[0].OPTM_SALESEMP,
+          });
+          this.step1_data.sales_employee = data.CustomerOutput[0].OPTM_SALESEMP,
+          this.owner_list.push({
+            lastName: data.CustomerOutput[0].OPTM_OWNER,
+          });
+          this.step1_data.owner = data.CustomerOutput[0].OPTM_OWNER
         }
+        this.isNextButtonVisible = true;
       }
     )
   }
@@ -909,6 +922,23 @@ export class OutputComponent implements OnInit {
 
   //   //  }
   // }
+
+  output_invvoice_print_lookup(operation_type) {
+    if (operation_type == ""){
+      this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
+      return;
+    }
+    this.serviceData = [];
+    this.serviceData.ref_doc_details = [];
+    this.serviceData.customer_and_doc_details = this.step1_data;
+    this.serviceData.ref_doc_details.push({
+      "ref_doc_no": this.final_reference_number,
+      "ref_doc_entry": this.final_ref_doc_entry,
+    });
+    this.serviceData.payment_details = undefined;
+    this.lookupfor = 'output_invoice_print';
+
+  }
 
   onAccessoryChange(value, row) {
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
@@ -2093,7 +2123,9 @@ export class OutputComponent implements OnInit {
       data => {
 
         if (data != null || data != undefined && data.length > 0) {
+          console.log(data);
           this.owner_list = data;
+          this.step1_data.owner = data[0].lastName;
         }
         else {
           this.owner_list = [];
@@ -2207,6 +2239,7 @@ export class OutputComponent implements OnInit {
 
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
+      "OPTM_LOGID": this.step1_data.selected_configuration_key,
       "OPTM_OUTPUTID": "",
       "OPTM_DOCTYPE": this.step1_data.document,
       "OPTM_BPCODE": this.step1_data.customer,
@@ -2221,7 +2254,10 @@ export class OutputComponent implements OnInit {
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
-      "OPTM_DESC": this.step1_data.description
+      "OPTM_DESC": this.step1_data.description,
+      "OPTM_SALESEMP": this.step1_data.sales_employee,
+      "OPTM_OWNER": this.step1_data.owner,
+      "OPTM_REMARKS":this.step1_data.remark
     })
 
     //creating details table array

@@ -33,11 +33,15 @@
 
   <div class="col-md-12" id="left-table-section">
     <div class="card mb-3">
-      <form>
+      <form class="form-horizontal">
         <div class="card-body">
+
+            <div class="row">
+            <div class="col-md-6">
+
           <div class="form-group row clearfix">
-            <label class="col-sm-2 col-form-label" for="featureItemCode">{{language.model}}</label>
-            <div class="col-sm-4 input-group">
+            <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.model}}</label>
+            <div class="col-sm-5 input-group">
               <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id" name="featureName"  [disabled]="isModelIdEnable" id="featureNameId" placeholder="{{language.model}}" #Modelinputbox (change)="onModelIdChange()">
               <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_code" name="featureCode" [disabled]="isModelIdEnable" id="featureCodeId" placeholder="{{language.model}}" #Modelinputboxcode (change)="onModelIdChange()">
               <div class="input-group-append" [hidden]=ModelLookupBtnhide>
@@ -49,8 +53,8 @@
           </div>
 
           <div class="form-group row clearfix">
-            <label class="col-sm-2 col-form-label" for="featureDisplay">{{language.Name}}</label>
-            <div class="col-sm-4">
+            <label class="col-sm-3 col-form-label" for="featureDisplay">{{language.Name}}</label>
+            <div class="col-sm-5">
               <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Name}}"
                 readonly [(ngModel)]="modelbom_data.feature_name">
             </div>
@@ -70,8 +74,8 @@
 
 
           <div class="form-group row clearfix">
-            <label class="col-sm-2 col-form-label" for="featureDesc">{{language.description}}</label>
-            <div class="col-sm-4">
+            <label class="col-sm-3 col-form-label" for="featureDesc">{{language.description}}</label>
+            <div class="col-sm-5">
               <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{language.description}}"
                 readonly [(ngModel)]="modelbom_data.feature_desc">
             </div>
@@ -84,8 +88,8 @@
         </div> -->
 
           <div class="form-group row clearfix" *ngIf="showImageBlock">
-            <label class="col-sm-2 col-form-label" for="image">{{language.image}}</label>
-            <div class="col-sm-4">
+            <label class="col-sm-3 col-form-label" for="image">{{language.image}}</label>
+            <div class="col-sm-5">
               <div class="row image_data">
                 <div class=" col-md-4 col-sm-4">
                   <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
@@ -95,6 +99,10 @@
               </div>
             </div>
           </div>
+
+          </div>
+          </div>
+
           <div class="col-sm-1 p-0">
             <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
               <i class="fa fa-plus"></i> {{language.add_row}}
@@ -296,7 +304,8 @@
           <div *ngFor="let element of tree_data_json; let i= index;">
             <li *ngIf="element.level == 0 && element.parentId==''">
               <span>
-                <i class="fa fa-circle"></i> {{element.component}}
+                <!-- <i class="fa fa-circle"></i>  -->
+                {{element.component}}
               </span>
               <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
             </li>
