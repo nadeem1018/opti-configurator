@@ -348,6 +348,7 @@
     "description_blank": "Description can't be blank",
     "quatation":"Quotation",
     "pay_terms": "Pay Terms",
+    "percentvalidation":"percent cannot be greater than 100",
     "print_quote": "Print Quote"
     
 }
