@@ -383,6 +383,11 @@
                                             <b>{{language.posting_date}} :</b>
                                         </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
                                     </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.Bom_Remarks}} :</b>
+                                        </span>{{customer_details.remark}}
+                                    </p>
                                     <!-- <p>
                                         <span class="text-muted">
                                             <b>{{language.valid_date}} :</b>
@@ -395,23 +400,44 @@
                         <!-- Invoice Customer Details -->
                         <!-- Invoice Items Details -->
 
-                        <div id="invoice-items-details" class="pt-2">
+                        <div *ngIf="showProdDetailsTable" id="invoice-items-details" class="pt-2">
                             <div class="row">
                                 <div class="table-responsive col-sm-12">
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Item</th>
-                                                <th>Description</th>
-                                                <th class="text-right">Quantity</th>
-                                                <th class="text-right">Price</th>
-                                                <th class="text-right">Price Ext.</th>
+                                                <th>{{language.ItemLookupTitle}}</th>
+                                                <th>{{language.description}}</th>
+                                                <th class="text-right">{{language.quantity}}</th>
+                                                <th class="text-right">{{language.price}}</th>
+                                                <th class="text-right">{{language.price_extn}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
+
+                                            <tr *ngFor="let row of verify_final_data_sel_details">
+                                                <td>
+                                                    {{row['sl_no']}}
+                                                </td>
+                                                <td>
+                                                    {{row['item']}}
+                                                </td>
+                                                <td>
+                                                    {{row['item']}}
+                                                </td>
+
+                                                <td class="text-right">
+                                                    {{row['qunatity']}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{row['price']}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{row['price_ext']}}
+                                                </td>
+
+                                                <!-- <th scope="row">1</th> 
                                                 <td>
                                                     <p>G_Series_Laptop</p>
                                                 </td>
@@ -422,90 +448,60 @@
                                                 </td>
                                                 <td class="text-right">2</td>
                                                 <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                                <td class="text-right">10%</td> -->
                                             </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
+                                            <!-- <span *ngIf="report_selected_type == 'detail'">
+                                               <tr *ngFor="let feature_row of filtered_feature_list(verify_final_data_sel_details)">
+                                                <td> 
+                                                     {{feature_row['price']}}
                                                 </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                               </tr>
+                                           </span> -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div *ngIf="showProdGrandDetails" class="row">
                                 <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
                                 <div class="col-md-5 col-sm-12">
-                                    <p class="lead">Total</p>
+                                    <p class="lead">{{language.total}}</p>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tbody>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Product Discount</b>
+                                                        <b class="text-muted">{{language.product_discount}}</b>
                                                     </td>
-                                                    <td class="text-right">$ 14,900.00</td>
+                                                    <td class="text-right">{{product_grand_details.product_discount}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Product Total</b>
+                                                        <b class="text-muted">{{language.product_total}}</b>
                                                     </td>
-                                                    <td class="text-right">$ 1,788.00</td>
+                                                    <td class="text-right">{{product_grand_details.product_total}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Accessories Discount</b>
+                                                        <b class="text-muted">{{language.accessories_discount}}</b>
                                                     </td>
-                                                    <td class="text-bold-800 text-right"> $ 16,688.00</td>
+                                                    <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Accessories total</b>
+                                                        <b class="text-muted">{{language.accessories_total}}</b>
                                                     </td>
-                                                    <td class="pink text-right">(-) $ 4,688.00</td>
+                                                    <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
                                                 </tr>
                                                 <tr class="bg-grey bg-lighten-4">
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Grand Total</b>
+                                                        <b class="text-muted">{{language.grand_total}}</b>
                                                     </td>
-                                                    <td class="text-bold-800 text-right">$ 12,000.00</td>
+                                                    <td class="text-bold-800 text-right">{{product_grand_details.grand_total}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -564,36 +560,35 @@
                 <div class="lookup_data" *ngIf="RuleOutputLookupDataLoaded">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-bordered lookup_table  table-sm" id="dataTable">
+                            <table class="table opti_fixed-header  table-sm" id="dataTable">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th width="11%">{{language.included}}</th>
-                                        <th width="11%">{{language.feature}}</th>
-                                        <th width="11%">{{language.item}}</th>
-                                        <th width="11%">{{language.value}}</th>
-                                        <th width="11%">{{language.uom}}</th>
-                                        <th width="11%">{{language.quantity}}</th>
-                                        <th width="10%">{{language.edit_quantity}}</th>
-                                        <th width="10%">{{language.price_source}}</th>
-                                        <th width="10%">{{language.edit_price}}</th>
-                                        <th width="10%">{{language.default}}</th>
-                                        <th width="10%">{{language.rule_excluded}}</th>
+                                        <th>{{language.included}}</th>
+                                        <th>{{language.feature}}</th>
+                                        <th>{{language.item}}</th>
+                                        <th>{{language.value}}</th>
+                                        <th>{{language.uom}}</th>
+                                        <th>{{language.quantity}}</th>
+                                        <th>{{language.edit_quantity}}</th>
+                                        <th>{{language.price_source}}</th>
+                                        <th>{{language.edit_price}}</th>
+                                        <th>{{language.default}}</th>
+                                        <th>{{language.rule_excluded}}</th>
                                     </tr>
                                 </thead>
-                                <tbody class="lookup_table_body">
+                                <tbody class="" style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                                     <tr *ngFor="let row of outputServiceData; let i=index">
-                                        <td width="11%">{{row.OPTM_ISINCLUDED}}</td>
-                                        <td width="11%">{{row.OPTM_FEATURECODE}}</td>
-                                        <td width="11%">{{row.OPTM_ITEMKEY}}</td>
-                                        <td width="11%">{{row.OPTM_VALUE}}</td>
-                                        <td width="11%">{{row.OPTM_UOM}}</td>
-                                        <td width="11%">{{row.OPTM_QUANTITY}}</td>
-                                        <td width="10%">{{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td width="10%">{{row.OPTM_PRICESOURCE}}</td>
-                                        <td width="10%">{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td width="10%">{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
-
-                                        <td width="10%">{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
+                                        <td>{{row.OPTM_ISINCLUDED}}</td>
+                                        <td>{{row.OPTM_FEATURECODE}}</td>
+                                        <td>{{row.OPTM_ITEMKEY}}</td>
+                                        <td>{{row.OPTM_VALUE}}</td>
+                                        <td>{{row.OPTM_UOM}}</td>
+                                        <td>{{row.OPTM_QUANTITY}}</td>
+                                        <td>{{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}</td>
+                                        <td>{{row.OPTM_PRICESOURCE}}</td>
+                                        <td>{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
+                                        <td>{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
+                                        <td>{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
                                     </tr>
                                 </tbody>
                             </table>

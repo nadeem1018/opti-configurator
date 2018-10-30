@@ -779,3 +779,50 @@ only screen and ( min-resolution: 2dppx) {
 .font-weight-light{
     font-weight: normal;
 }
+
+.accessories_table{
+    th:nth-child(1),
+    tr td:nth-child(1) {
+        width: 5%;
+    }
+    th:nth-child(2),
+    tr td:nth-child(2) {
+        width: 35%;
+    }
+    th:nth-child(3),
+    tr td:nth-child(3) {
+        width: 20%;
+    }
+    th:nth-child(4),
+    tr td:nth-child(4) {
+        width: 20%;
+    }
+    th:nth-child(5),
+    tr td:nth-child(5) {
+        width: 20%;
+    }
+}
+
+.Model_Accessory-table{
+    th:nth-child(1),
+    tr td:nth-child(1) {
+        width: 10%;
+    }
+    th:nth-child(2),
+    tr td:nth-child(2) {
+        width: 50%;
+    }
+    th:nth-child(3),
+    tr td:nth-child(3) {
+        width: 40%;
+    }
+}
+
+
+#opti_configur-wizard-four-step-selectiontable table.table.opti_fixed-header tbody {
+    max-height: 250px;
+}
+
+.feature_table tbody{
+    height:250px;
+}

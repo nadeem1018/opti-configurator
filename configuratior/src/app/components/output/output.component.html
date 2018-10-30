@@ -502,10 +502,10 @@
 
 
                 <hr>
-                <div class="form-group row clearfix">
+                <div class="form-group row clearfix" style="padding-right: 15px;">
                   <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
-                  <div class="col-sm-12 ">
-                    <table class="table table-bordered table-sm Model_Accessory-table">
+                  <div class="col-sm-12 pr-0">
+                    <table class="table  table-sm lookup_table Model_Accessory-table">
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
@@ -522,7 +522,7 @@
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="lookup_table_body" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                         <tr class="" *ngFor="let row of feature_accessory_list">
                           <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="Accessory_table_hidden_elements[i]">
                             <span *ngIf="i==0">
@@ -586,7 +586,7 @@
                             <td>
                               <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
                                 (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
-                                #quantity />
+                                #quantity [disabled]="featurerow.isQuantityDisabled" />
                             </td>
                             <td>
                               <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
@@ -1097,9 +1097,9 @@
                 <div class="pricing_detail_section">
                   <div class="row">
                     <!-- <div class="col-md-3"> </div> -->
-                    <div class="col-md-12">
-                      <div class="accessories_table">
-                        <table class="table table-bordered table-sm">
+                    <div class="col-md-12 pr-0">
+                      <div class="accessories_table table-responsive">
+                        <table class="table table-bordered table-sm lookup_table">
                           <thead class="thead-dark">
                             <tr>
                               <th *ngFor="let label of order_creation_table_head; let i= index">
@@ -1109,12 +1109,10 @@
                               </th>
                             </tr>
                           </thead>
-
-
-                          <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
+                          <tbody class="lookup_table_body" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                             <tr class="" *ngFor="let row of step3_data_final">
-                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
                                 <span *ngIf="(Object.keys(row).length-1) != i">
+                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
 
                                   {{row[row_data]}}
                                 </span>
