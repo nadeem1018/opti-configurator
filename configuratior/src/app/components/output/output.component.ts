@@ -86,7 +86,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -312,6 +312,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.document = "sales_order"
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
+          this.step1_data.customer_name = data.CustomerOutput[0].NAME,
           this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
           this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
             this.contact_persons.push({
@@ -2548,10 +2549,9 @@ export class OutputComponent implements OnInit {
   onModelBillNextPress() {
     //Clear the array
 
-    console.log('this.feature_itm_list_table');
-    console.log(this.feature_itm_list_table);
-
     this.step3_data_final = [];
+    this.new_item_list = [];
+
     this.step2_final_dataset_to_save = [];
     this.step3_data_final.push({
       "rowIndex": "1",
@@ -2564,6 +2564,15 @@ export class OutputComponent implements OnInit {
       "accesories": this.feature_accessory_list,
       "model_id": this.step2_data.model_id,
     })
+
+    for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
+      let row_data = this.step3_data_final[itemCount];
+      this.new_item_list.push(
+        row_data.item
+      )
+    }
+
+
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
       this.step2_final_dataset_to_save.push({

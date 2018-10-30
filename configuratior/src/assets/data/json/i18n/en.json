@@ -283,6 +283,7 @@
     "Number": "Number",
     "NoOperation": "No Operation",
     "operation": "Operation",
+    "lsit_of_new_item_created":"List of New Items Created as per the selected configuration",
     "Increase": "Increase",
     "Decrease": "Decrease",
     "OR": "OR",
