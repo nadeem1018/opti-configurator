@@ -368,7 +368,8 @@ li.breadcrumb-item a, li.breadcrumb-item {
   padding: 19px;
   margin-bottom: 20px;
   background-color: #fbfbfb;
-  border: 1px solid #999;
+  /* border: 1px solid #999; */
+  border: none;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
