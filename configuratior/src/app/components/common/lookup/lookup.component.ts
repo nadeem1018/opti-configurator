@@ -71,9 +71,13 @@ export class LookupComponent implements OnInit {
   public showCustDetailsSec: boolean = false;
   public showPaymentDetails: boolean = false;
   public showGeneralDetails: boolean = false;
+  public showProdDetailsTable: boolean = false;
+  public showProdGrandDetails: boolean = false;
   public customer_details: any = [];
   public refrence_doc_details: any = [];
-  
+  public verify_final_data_sel_details: any = [];
+  public product_grand_details: any = [];
+
   ngOnInit() {
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
@@ -281,7 +285,7 @@ export class LookupComponent implements OnInit {
   close_lookup(lookup_id) {
     this.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
-    this.lookupfor ='';
+    this.lookupfor = '';
   }
 
   get_Model_lookup() {
@@ -576,7 +580,7 @@ export class LookupComponent implements OnInit {
   }
 
   output_invoice_print() {
-    this.popup_title = 'Print Quote';
+    this.popup_title = this.language.print_quote;
     //customer details
     if (this.serviceData.customer_and_doc_details != undefined) {
       this.showCustDetailsSec = true;
@@ -588,10 +592,12 @@ export class LookupComponent implements OnInit {
       this.customer_details.ship_to_address = this.serviceData.customer_and_doc_details.ship_to_address;
       this.customer_details.bill_to = this.serviceData.customer_and_doc_details.bill_to;
       this.customer_details.bill_to_address = this.serviceData.customer_and_doc_details.bill_to_address;
+      this.customer_details.contact_person = this.serviceData.customer_and_doc_details.remark;
+      this.customer_details.remark = this.serviceData.customer_and_doc_details.remark;
 
       this.customer_details.posting_date = this.serviceData.customer_and_doc_details.posting_date;
       this.customer_details.delivery_until = this.serviceData.customer_and_doc_details.delivery_until;
-     
+
       if (this.serviceData.customer_and_doc_details.document == "sales_quote") {
         this.customer_details.doc_type_date_label = this.language.valid_date;
       } else {
@@ -616,8 +622,26 @@ export class LookupComponent implements OnInit {
       this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details.ref_doc_entry;
     }
 
+    if (this.serviceData.verify_final_data_sel_details != undefined) {
+      this.showProdDetailsTable = true;
+      this.verify_final_data_sel_details = this.serviceData.verify_final_data_sel_details;
+    }
+    else {
+      this.showProdDetailsTable = false;
+    }
 
 
+    if (this.serviceData.product_grand_details != undefined) {
+      this.showProdGrandDetails = true;
+      this.product_grand_details.product_total = this.serviceData.product_grand_details[0].product_total;
+      this.product_grand_details.product_discount = this.serviceData.product_grand_details[0].product_discount;
+      this.product_grand_details.accessories_discount = this.serviceData.product_grand_details[0].accessories_discount;
+      this.product_grand_details.accessories_total = this.serviceData.product_grand_details[0].accessories_total;
+      this.product_grand_details.grand_total = this.serviceData.product_grand_details[0].grand_total;
+    }
+    else {
+      this.showProdGrandDetails = false;
+    }
 
     $("#invoice_modal").modal('show');
     console.log(this.serviceData);
@@ -711,6 +735,16 @@ export class LookupComponent implements OnInit {
   reset() {
     this.myInputVariable.nativeElement.value = "";
   }
+
+  filtered_feature_list(verify_final_data_sel_details){
+    console.log(verify_final_data_sel_details);
+    verify_final_data_sel_details = verify_final_data_sel_details.filter(function (obj) {
+      
+      obj['OPTM_LEVEL'] = 0;
+      return verify_final_data_sel_details.feature;
+    })
+  }
+
 
   /*downloadFile() {
     return this.http
