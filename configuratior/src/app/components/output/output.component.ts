@@ -1506,6 +1506,10 @@ export class OutputComponent implements OnInit {
       SuperModelId: this.step2_data.model_id
     });
 
+    GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+      return obj['checked'] == true
+    })
+
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
       return obj['checked'] == true
     })
@@ -2321,8 +2325,8 @@ export class OutputComponent implements OnInit {
       CompanyDBID: this.common_output_data.companyName,
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
-      Button: button_press,
-      ConfigType: this.step1_data.main_operation_type
+      Button: button_press
+      //ConfigType: this.step1_data.main_operation_type
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
@@ -3059,6 +3063,15 @@ export class OutputComponent implements OnInit {
           CompanyDBID: this.common_output_data.companyName,
           SuperModelId: this.step2_data.model_id
         });
+
+        GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+  
+        GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+
         this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
           data => {
             let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
