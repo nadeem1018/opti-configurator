@@ -694,7 +694,7 @@ export class LookupComponent implements OnInit {
     $("#invoice_modal").modal('show');
     setTimeout(function(){
      // @ts-ignore: Unreachable code error
-      let doc = new jsPDF();
+    /*  let doc = new jsPDF();
       let specialElementHandlers = {
           '#editor': function (element, renderer) {
               return true;
@@ -704,9 +704,10 @@ export class LookupComponent implements OnInit {
         'width': 170,
             'elementHandlers': specialElementHandlers
     });
-    doc.save('report.pdf');
+     doc.save('report.pdf');*/
+     window.print();
 
-    }, 1500);
+    }, 2000);
   }
 
   public tree_data_json: any = '';
