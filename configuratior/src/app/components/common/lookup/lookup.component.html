@@ -383,6 +383,11 @@
                                             <b>{{language.posting_date}} :</b>
                                         </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
                                     </p>
+                                    <p>
+                                        <span class="text-muted">
+                                            <b>{{language.Bom_Remarks}} :</b>
+                                        </span>{{customer_details.remark}}
+                                    </p>
                                     <!-- <p>
                                         <span class="text-muted">
                                             <b>{{language.valid_date}} :</b>
@@ -395,23 +400,44 @@
                         <!-- Invoice Customer Details -->
                         <!-- Invoice Items Details -->
 
-                        <div id="invoice-items-details" class="pt-2">
+                        <div *ngIf="showProdDetailsTable" id="invoice-items-details" class="pt-2">
                             <div class="row">
                                 <div class="table-responsive col-sm-12">
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Item</th>
-                                                <th>Description</th>
-                                                <th class="text-right">Quantity</th>
-                                                <th class="text-right">Price</th>
-                                                <th class="text-right">Price Ext.</th>
+                                                <th>{{language.ItemLookupTitle}}</th>
+                                                <th>{{language.description}}</th>
+                                                <th class="text-right">{{language.quantity}}</th>
+                                                <th class="text-right">{{language.price}}</th>
+                                                <th class="text-right">{{language.price_extn}}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
+
+                                            <tr *ngFor="let row of verify_final_data_sel_details">
+                                                <td>
+                                                    {{row['sl_no']}}
+                                                </td>
+                                                <td>
+                                                    {{row['item']}}
+                                                </td>
+                                                <td>
+                                                    {{row['item']}}
+                                                </td>
+
+                                                <td class="text-right">
+                                                    {{row['qunatity']}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{row['price']}}
+                                                </td>
+                                                <td class="text-right">
+                                                    {{row['price_ext']}}
+                                                </td>
+
+                                                <!-- <th scope="row">1</th> 
                                                 <td>
                                                     <p>G_Series_Laptop</p>
                                                 </td>
@@ -422,90 +448,60 @@
                                                 </td>
                                                 <td class="text-right">2</td>
                                                 <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
+                                                <td class="text-right">10%</td> -->
                                             </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
+                                            <!-- <span *ngIf="report_selected_type == 'detail'">
+                                               <tr *ngFor="let feature_row of filtered_feature_list(verify_final_data_sel_details)">
+                                                <td> 
+                                                     {{feature_row['price']}}
                                                 </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td>
-                                            </tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                               </tr>
+                                           </span> -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div *ngIf="showProdGrandDetails" class="row">
                                 <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
                                 <div class="col-md-5 col-sm-12">
-                                    <p class="lead">Total</p>
+                                    <p class="lead">{{language.total}}</p>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tbody>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Product Discount</b>
+                                                        <b class="text-muted">{{language.product_discount}}</b>
                                                     </td>
-                                                    <td class="text-right">$ 14,900.00</td>
+                                                    <td class="text-right">{{product_grand_details.product_discount}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Product Total</b>
+                                                        <b class="text-muted">{{language.product_total}}</b>
                                                     </td>
-                                                    <td class="text-right">$ 1,788.00</td>
+                                                    <td class="text-right">{{product_grand_details.product_total}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Accessories Discount</b>
+                                                        <b class="text-muted">{{language.accessories_discount}}</b>
                                                     </td>
-                                                    <td class="text-bold-800 text-right"> $ 16,688.00</td>
+                                                    <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Accessories total</b>
+                                                        <b class="text-muted">{{language.accessories_total}}</b>
                                                     </td>
-                                                    <td class="pink text-right">(-) $ 4,688.00</td>
+                                                    <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
                                                 </tr>
                                                 <tr class="bg-grey bg-lighten-4">
                                                     <td class="text-bold-800">
-                                                        <b class="text-muted">Grand Total</b>
+                                                        <b class="text-muted">{{language.grand_total}}</b>
                                                     </td>
-                                                    <td class="text-bold-800 text-right">$ 12,000.00</td>
+                                                    <td class="text-bold-800 text-right">{{product_grand_details.grand_total}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

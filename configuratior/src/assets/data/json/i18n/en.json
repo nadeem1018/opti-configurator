@@ -346,6 +346,7 @@
     "configuration": "Configuration",
     "description_blank": "Description can't be blank",
     "quatation":"Quotation",
-    "pay_terms": "Pay Terms"
+    "pay_terms": "Pay Terms",
+    "print_quote": "Print Quote"
     
 }
