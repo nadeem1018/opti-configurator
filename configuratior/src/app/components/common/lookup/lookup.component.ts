@@ -307,7 +307,7 @@ export class LookupComponent implements OnInit {
   close_lookup(lookup_id) {
     this.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
-    this.lookupfor = '';
+    //this.lookupfor = '';
   }
 
   get_Model_lookup() {

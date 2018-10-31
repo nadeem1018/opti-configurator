@@ -349,6 +349,7 @@
     "quatation":"Quotation",
     "pay_terms": "Pay Terms",
     "percentvalidation":"percent cannot be greater than 100",
-    "print_quote": "Print Quote"
+    "print_quote": "Print Quote",
+    "InvalidOperationId": "Invalid Operation Id"
     
 }

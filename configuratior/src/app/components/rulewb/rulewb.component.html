@@ -288,10 +288,10 @@
                         <td width="14%">
                           <div class="input-group">
                             <input type="hidden" class="form-control form-control-sm " id="opeand_2" #operand_2 name="operand_2" value="{{row.operand_2}}"
-                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value )"
+                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2', operand_2.value,operand_2_code )"
                             />
                             <input type="text" class="form-control form-control-sm " id="opeand_2_code" #operand_2_code name="operand_2_code" value="{{row.operand_2_code}}"
-                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value )"
+                              [disabled]="row.is_operand2_disable" (change)="on_input_change(row.rowindex, 'operand_2_code', operand_2_code.value,operand_2_code )"
                             />
                             <div class="input-group-append" [hidden]="row.is_operand2_disable">
                               <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, row.rowindex,'operand_2')">

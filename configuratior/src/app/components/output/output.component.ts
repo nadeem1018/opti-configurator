@@ -2322,8 +2322,8 @@ export class OutputComponent implements OnInit {
       CompanyDBID: this.common_output_data.companyName,
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
-      Button: button_press,
-      ConfigType: this.step1_data.main_operation_type
+      Button: button_press
+      //ConfigType: this.step1_data.main_operation_type
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
