@@ -67,7 +67,7 @@ export class LookupComponent implements OnInit {
   username: string;
   public fileType = "";
   public template_path = "";
-  public print_item_list_array:any = [];
+  public print_item_list_array: any = [];
   //Print Data variables
   public showCustDetailsSec: boolean = false;
   public showPaymentDetails: boolean = false;
@@ -79,22 +79,22 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
 
-  isMobile:boolean=false;
-  isIpad:boolean=false;
-  isDesktop:boolean=true;
-  isPerfectSCrollBar:boolean = false;
-  
+  isMobile: boolean = false;
+  isIpad: boolean = false;
+  isDesktop: boolean = true;
+  isPerfectSCrollBar: boolean = false;
 
-  detectDevice(){
-    let getDevice = UIHelper.isDevice(); 
+
+  detectDevice() {
+    let getDevice = UIHelper.isDevice();
     this.isMobile = getDevice[0];
     this.isIpad = getDevice[1];
     this.isDesktop = getDevice[2];
-    if(this.isMobile==true){
+    if (this.isMobile == true) {
       this.isPerfectSCrollBar = true;
-    }else if(this.isIpad==true){
+    } else if (this.isIpad == true) {
       this.isPerfectSCrollBar = false;
-    }else{
+    } else {
       this.isPerfectSCrollBar = false;
     }
   }
@@ -278,8 +278,6 @@ export class LookupComponent implements OnInit {
         $("#lookup_modal").modal('show');
       }
     }
-
-
   }
 
   get_features_lookup() {
@@ -290,7 +288,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Id', 'Code', 'Name'];
+    this.table_head = [this.language.Id, this.language.code, this.language.Name];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -318,7 +316,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Model Id', 'Code', 'Name'];
+    this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -340,7 +338,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Model Id', 'Code', 'Name', 'TemplateId', 'ItemCodeGenkey'];
+    this.table_head = [this.language.ModelId, this.language.code,this.language.Name, 'TemplateId', 'ItemCodeGenkey'];
     this.table_head_hidden_elements = [true, false, false, true, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -393,7 +391,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'price_source';
     this.lookup_key = 'PriceListID';
-    this.table_head = ['Price Source'];
+    this.table_head = [this.language.price_source];
     this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -414,7 +412,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Id', 'Code', 'Name', 'Accesory'];
+    this.table_head = ['Id', this.language.code, this.language.Name, 'Accesory'];
     this.table_head_hidden_elements = [true, false, false, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -603,6 +601,17 @@ export class LookupComponent implements OnInit {
 
   output_invoice_print() {
     this.popup_title = this.language.print_quote;
+    let report_type;
+
+    //Print Criteria
+    //Summary --> Customer + COM + Qty + Acces.
+    //Details --> BOM + Feat. + Item + Acces.
+
+    if (this.serviceData.print_types != undefined) {
+      report_type = this.serviceData.print_types[0].selected_print_type;
+      //1 for summary and 2 for detail
+    }
+
     //customer details
     if (this.serviceData.customer_and_doc_details != undefined) {
       this.showCustDetailsSec = true;
@@ -639,12 +648,12 @@ export class LookupComponent implements OnInit {
       this.showPaymentDetails = false;
     }
     //ref doc details
-    if (this.serviceData.ref_doc_details != undefined) {
+    if (this.serviceData.ref_doc_details != undefined && this.serviceData.ref_doc_details.length > 0) {
       this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details.ref_doc_no;
       this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details.ref_doc_entry;
     }
     //item details
-    if (this.serviceData.verify_final_data_sel_details != undefined) {
+    if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
       this.showProdDetailsTable = true;
       this.verify_final_data_sel_details = this.serviceData.verify_final_data_sel_details;
     }
@@ -653,33 +662,47 @@ export class LookupComponent implements OnInit {
     }
 
     //demo creating comman array
-    
-    let row_count  = 0;
+
+    let row_count = 0;
     for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
       var row = this.serviceData.verify_final_data_sel_details[mcount];
       row_count++;
       //pushing item data
       this.prepareFinalItemArray(row_count, row.item, '', row.quantity, row.price, row.price_ext);
 
-      // getFeaturesOfCurItem();
+      //If report type is details then only we will show features
 
       for (let fcount = 0; fcount < row['feature'].length; fcount++) {
         let featureRow = row['feature'][fcount];
         row_count++;
-        this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+       
+        if (report_type == "2") {
+      
+          this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+        }
+        else {
+          if (featureRow.ItemNumber == "" && featureRow.Item == null) {
+         
+            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+          }
+          else{
+            row_count--;
+          }
+        }
       }
+
 
       for (let acount = 0; acount < row['accesories'].length; acount++) {
         let featureRow = row['accesories'][acount];
         row_count++;
         this.prepareFinalItemArray(row_count, featureRow.key, featureRow.name, row.quantity, row.price, row.price_ext);
       }
-      
+
     }
 
 
     //product grand details
-    if (this.serviceData.product_grand_details != undefined) {
+    if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
       this.showProdGrandDetails = true;
       this.product_grand_details.product_total = this.serviceData.product_grand_details[0].product_total;
       this.product_grand_details.product_discount = this.serviceData.product_grand_details[0].product_discount;
@@ -692,31 +715,31 @@ export class LookupComponent implements OnInit {
     }
 
     $("#invoice_modal").modal('show');
-    setTimeout(function(){
-     // @ts-ignore: Unreachable code error
-    /*  let doc = new jsPDF();
-      let specialElementHandlers = {
-          '#editor': function (element, renderer) {
-              return true;
-          }
-      };
-      doc.fromHTML($('#invoice-template').html(), 15, 15, {
-        'width': 170,
-            'elementHandlers': specialElementHandlers
-    });
-     doc.save('report.pdf');*/
-     window.print();
+    setTimeout(function () {
+      // @ts-ignore: Unreachable code error
+      /*  let doc = new jsPDF();
+        let specialElementHandlers = {
+            '#editor': function (element, renderer) {
+                return true;
+            }
+        };
+        doc.fromHTML($('#invoice-template').html(), 15, 15, {
+          'width': 170,
+              'elementHandlers': specialElementHandlers
+      });
+       doc.save('report.pdf');*/
+      window.print();
 
     }, 2000);
   }
 
   public tree_data_json: any = '';
   @Input() component;
-  
+
   prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext) {
-      
+
     this.print_item_list_array.push({
-      "sl_no":index,
+      "sl_no": index,
       "item": itemCode,
       "item_desc": itemDesc,
       "quantity": quantity,
