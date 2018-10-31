@@ -136,7 +136,6 @@
     "on_associated_bom": "On Associated BOMs",
     "associated_modal_bom": "Associated Modal BOMs",
     "no_assocaited_bom": "No BOMs are associated to this feature id",
-    "description": "Description",
     "Name": "Name",
     "feature_image": "Feature Image",
     "Model_FeatureName": "Feature Name",
@@ -283,6 +282,8 @@
     "Number": "Number",
     "NoOperation": "No Operation",
     "operation": "Operation",
+    "list_configuration":"List of Configurations",
+    "lsit_of_new_item_created":"List of New Items Created as per the selected configuration",
     "Increase": "Increase",
     "Decrease": "Decrease",
     "OR": "OR",
@@ -346,10 +347,13 @@
     "show_hide_output":"Show/Hide Output",
     "configuration": "Configuration",
     "description_blank": "Description can't be blank",
+    "description":"Description",
+    "log_id":"LogID",
     "quatation":"Quotation",
     "pay_terms": "Pay Terms",
     "percentvalidation":"percent cannot be greater than 100",
     "print_quote": "Print Quote",
-    "InvalidOperationId": "Invalid Operation Id"
+    "InvalidOperationId": "Invalid Operation Id",
+    "customer_code": "Customer Code"
     
 }

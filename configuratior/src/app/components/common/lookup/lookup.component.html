@@ -401,10 +401,10 @@
                         <!-- Invoice Items Details -->
 
                         <div *ngIf="showProdDetailsTable" id="invoice-items-details" class="pt-2">
-                            <div class="row">
+                            <div  class="row">
                                 <div class="table-responsive col-sm-12">
-                                    <table class="table">
-                                        <thead>
+                                    <table class="table table-invoice">
+                                        <thead class="">
                                             <tr>
                                                 <th>#</th>
                                                 <th>{{language.ItemLookupTitle}}</th>
@@ -416,7 +416,7 @@
                                         </thead>
                                         <tbody>
 
-                                            <tr *ngFor="let row of verify_final_data_sel_details">
+                                            <tr *ngFor="let row of print_item_list_array">
                                                 <td>
                                                     {{row['sl_no']}}
                                                 </td>
@@ -424,7 +424,7 @@
                                                     {{row['item']}}
                                                 </td>
                                                 <td>
-                                                    {{row['item']}}
+                                                    {{row['item_desc']}}
                                                 </td>
 
                                                 <td class="text-right">
@@ -437,31 +437,9 @@
                                                     {{row['price_ext']}}
                                                 </td>
 
-                                                <!-- <th scope="row">1</th> 
-                                                <td>
-                                                    <p>G_Series_Laptop</p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        Dell Gaming Series G5000 2018 Q2 15R Laptop
-                                                    </p>
-                                                </td>
-                                                <td class="text-right">2</td>
-                                                <td class="text-right">80,000</td>
-                                                <td class="text-right">10%</td> -->
+                                               
                                             </tr>
-                                            <!-- <span *ngIf="report_selected_type == 'detail'">
-                                               <tr *ngFor="let feature_row of filtered_feature_list(verify_final_data_sel_details)">
-                                                <td> 
-                                                     {{feature_row['price']}}
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-right"></td>
-                                                <td class="text-right"></td>
-                                                <td class="text-right"></td>
-                                               </tr>
-                                           </span> -->
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -471,7 +449,7 @@
                                 <div class="col-md-5 col-sm-12">
                                     <p class="lead">{{language.total}}</p>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-invoice">
                                             <tbody>
                                                 <tr>
                                                     <td class="text-bold-800">
@@ -679,3 +657,5 @@
             </div>
         </div>
     </div>
+
+    

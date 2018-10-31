@@ -86,7 +86,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -945,6 +945,7 @@ export class OutputComponent implements OnInit {
   // }
 
   output_invvoice_print_lookup(operation_type) {
+    this.lookupfor = 'output_invoice_print';
     if (operation_type == "") {
       this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
       return;
@@ -976,7 +977,8 @@ export class OutputComponent implements OnInit {
     //pushing all payement data details
     this.serviceData.payment_details = undefined;
 
-    this.lookupfor = 'output_invoice_print';
+   
+   
 
   }
 
@@ -1506,6 +1508,10 @@ export class OutputComponent implements OnInit {
       CompanyDBID: this.common_output_data.companyName,
       SuperModelId: this.step2_data.model_id
     });
+
+    GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+      return obj['checked'] == true
+    })
 
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
       return obj['checked'] == true
@@ -2282,7 +2288,7 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    let final_dataset_to_save: any = {};
+    let final_dataset_to_save:any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.ConnectionDetails = [];
@@ -2545,10 +2551,9 @@ export class OutputComponent implements OnInit {
   onModelBillNextPress() {
     //Clear the array
 
-    console.log('this.feature_itm_list_table');
-    console.log(this.feature_itm_list_table);
-
     this.step3_data_final = [];
+    this.new_item_list = [];
+
     this.step2_final_dataset_to_save = [];
     this.step3_data_final.push({
       "rowIndex": "1",
@@ -2561,6 +2566,15 @@ export class OutputComponent implements OnInit {
       "accesories": this.feature_accessory_list,
       "model_id": this.step2_data.model_id,
     })
+
+    for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
+      let row_data = this.step3_data_final[itemCount];
+      this.new_item_list.push(
+        row_data.item
+      )
+    }
+
+
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
       this.step2_final_dataset_to_save.push({
@@ -3060,6 +3074,15 @@ export class OutputComponent implements OnInit {
           CompanyDBID: this.common_output_data.companyName,
           SuperModelId: this.step2_data.model_id
         });
+
+        GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+  
+        GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+          return obj['checked'] == true
+        })
+
         this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
           data => {
             let parentfeatureid = this.feature_accessory_list[i].parentfeatureid

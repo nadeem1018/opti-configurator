@@ -68,6 +68,8 @@ export class RulewbComponent implements OnInit {
   
   public isOutputTable: boolean = true;
 
+  imgPath = 'assets/images';
+
 
   isMobile: boolean = false;
   isIpad: boolean = false;
