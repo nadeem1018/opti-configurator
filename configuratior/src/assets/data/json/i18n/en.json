@@ -136,7 +136,6 @@
     "on_associated_bom": "On Associated BOMs",
     "associated_modal_bom": "Associated Modal BOMs",
     "no_assocaited_bom": "No BOMs are associated to this feature id",
-    "description": "Description",
     "Name": "Name",
     "feature_image": "Feature Image",
     "Model_FeatureName": "Feature Name",
@@ -353,6 +352,7 @@
     "quatation":"Quotation",
     "pay_terms": "Pay Terms",
     "percentvalidation":"percent cannot be greater than 100",
-    "print_quote": "Print Quote"
+    "print_quote": "Print Quote",
+    "customer_code": "Customer Code"
     
 }

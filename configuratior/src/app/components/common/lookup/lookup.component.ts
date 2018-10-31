@@ -755,7 +755,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
 
 
-    this.table_head = ['Model Id', 'Model Name', 'Model Description'];
+    this.table_head = ['Model Id', this.language.Model_ModelName, this.language.Model_ModelDesc];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -794,7 +794,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['Customer Code', 'Name'];
+    this.table_head = [this.language.customer_code, this.language.Name];
     this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
