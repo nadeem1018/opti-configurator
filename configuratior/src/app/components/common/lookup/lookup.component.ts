@@ -219,11 +219,11 @@ export class LookupComponent implements OnInit {
   }
 
   configure_list_lookup() {
-    this.popup_title = this.language.model_template;
+    this.popup_title = this.language.list_configuration;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'modify_duplicate_lookup';
-    this.table_head = ['LogID', 'Description', 'Customer', 'Contact Person', 'Model', 'Quantity'];
+    this.table_head = [this.language.log_id, this.language.description, this.language.customer, this.language.contact_person, this.language.model, this.language.quantity];
     //this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'OPTM_DESC';
 
