@@ -78,6 +78,7 @@ export class LookupComponent implements OnInit {
   public refrence_doc_details: any = [];
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
+  public downLoadfileName = this.language.quatation + '.pdf';
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -715,22 +716,22 @@ export class LookupComponent implements OnInit {
     }
 
     $("#invoice_modal").modal('show');
-    setTimeout(function () {
-      // @ts-ignore: Unreachable code error
-      /*  let doc = new jsPDF();
-        let specialElementHandlers = {
-            '#editor': function (element, renderer) {
-                return true;
-            }
-        };
-        doc.fromHTML($('#invoice-template').html(), 15, 15, {
-          'width': 170,
-              'elementHandlers': specialElementHandlers
-      });
-       doc.save('report.pdf');*/
-      window.print();
+    // setTimeout(function () {
+    //   // @ts-ignore: Unreachable code error
+    //   /*  let doc = new jsPDF();
+    //     let specialElementHandlers = {
+    //         '#editor': function (element, renderer) {
+    //             return true;
+    //         }
+    //     };
+    //     doc.fromHTML($('#invoice-template').html(), 15, 15, {
+    //       'width': 170,
+    //           'elementHandlers': specialElementHandlers
+    //   });
+    //    doc.save('report.pdf');*/
+    //   window.print();
 
-    }, 2000);
+    // }, 2000);
   }
 
   public tree_data_json: any = '';

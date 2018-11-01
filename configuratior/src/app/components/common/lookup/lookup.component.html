@@ -242,277 +242,323 @@
 </div>
 
 <!-- Configuration screen full width invoice over modal -->
+
+
+
 <div class="modal fade" id="invoice_modal" tabindex="-1" role="dialog" aria-labelledby="invoice_modal" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
+
     <div class="modal-dialog  modal-xlg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="invoice_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(invoice_modal)" aria-label="Close">
-                    <span aria-hidden="true">
-                        <i class="fa fa-window-close"></i>
-                    </span>
-                </button>
+                <div class="col-sm-12 row">
+                    <div class="col-sm-6">
+                            <h5 class="modal-title" id="invoice_modal_title">{{popup_title}}</h5>
+                    </div>
+                    <div class="col-sm-6">
+                            <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup(invoice_modal)" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        <i class="fa fa-window-close"></i>
+                                    </span>
+                                </button>
+                                <button class="text-right pull-right btn btn-sm btn-success mt-1" type="button" (click)="pdf.saveAs(downLoadfileName)" title="Test Invoice">
+                                        <i class="fa fa-download  fa-fw"></i>
+                                </button>
+                    </div>
+                </div>
+
+
             </div>
             <div class="modal-body">
-                <section class="card">
-                    <div id="invoice-template" class="card-body">
-                        <!-- Invoice Company Details -->
-                        <div id="invoice-company-details" class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <h3 class="text-center">{{language.quatation}}</h3>
-                            </div>
-                            <hr>
-                            <div class="col-md-6 col-sm-12 text-center text-md-left">
-                                <div class="media">
-                                    <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
-                                        class="" style=" width: 130px; " />
-                                    <div class="media-body">
-                                        <ul class="ml-2 px-0 list-unstyled">
-                                            <li class="text-bold-800">Optipro Product Configurator</li>
-                                            <li>255 Street,</li>
-                                            <li>Washington DC,</li>
-                                            <li>Code 32940,</li>
-                                            <li>USA</li>
-                                        </ul>
+                <kendo-pdf-export #pdf margin="0.5cm">
+                    <section class="card">
+                        <div id="invoice-template" class="card-body">
+                            <!-- Invoice Company Details -->
+                            <div id="invoice-company-details" class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <h3 class="text-center">{{language.quatation}}</h3>
+                                </div>
+                                <hr>
+                                <div class="col-md-6 col-sm-12 text-center text-md-left">
+                                    <div class="media">
+                                        <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
+                                            class="" style=" width: 130px; " />
+                                        <div class="media-body">
+                                            <ul class="ml-2 px-0 list-unstyled">
+                                                <li class="text-bold-800">Optipro Product Configurator</li>
+                                                <li>255 Street,</li>
+                                                <li>Washington DC,</li>
+                                                <li>Code 32940,</li>
+                                                <li>USA</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12 text-center text-md-right">
-                                <span *ngIf="showCustDetailsSec">
-                                    <!-- <h2>DOC NO</h2> -->
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.order_type}} :</b>
-                                        </span> {{customer_details.order_type}}
-                                    </p>
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.ref_doc_no}}:</b>
-                                        </span> {{refrence_doc_details.ref_doc_no}}
-                                    </p>
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.ref_doc_entry}}:</b>
-                                        </span> {{refrence_doc_details.ref_doc_entry}}
-                                    </p>
+                                <div class="col-md-6 col-sm-12 text-center text-md-right">
+                                    <span *ngIf="showCustDetailsSec">
+                                        <!-- <h2>DOC NO</h2> -->
+                                        <p>
+                                            <span class="">
+                                                <b>{{language.order_type}} :</b>
+                                            </span> {{customer_details.order_type}}
+                                        </p>
+                                        <p>
+                                            <span class="">
+                                                <b>{{language.ref_doc_no}}:</b>
+                                            </span> {{refrence_doc_details.ref_doc_no}}
+                                        </p>
+                                        <p>
+                                            <span class="">
+                                                <b>{{language.ref_doc_entry}}:</b>
+                                            </span> {{refrence_doc_details.ref_doc_entry}}
+                                        </p>
 
-                                </span>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <!--/ Invoice Company Details -->
-                        <!-- Invoice Customer Details -->
-                        <div id="invoice-customer-details" class="row pt-2">
-                            <!-- <div class="col-sm-12 text-center text-md-left">
-                                    <p class="text-muted">
-                                       
-                                    </p>
-                                </div> -->
-                            <div class="col-md-6 col-sm-3 text-center text-md-left">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <p>
-                                            <span class="text-muted">
-                                                <b>{{language.customer}}:</b>
-                                            </span> {{customer_details.customer_name}}
-                                        </p>
-                                        <p>
-                                            <span class="text-muted">
-                                                <b>{{language.contact_person}}:</b>
-                                            </span> {{customer_details.person_name}}
-                                        </p>
-                                    </div>
-                                    <div class="row col-sm-12 col-md-12">
-                                        <div class="col-sm-3 col-md-3">
+                            <!--/ Invoice Company Details -->
+                            <!-- Invoice Customer Details -->
+                            <div id="invoice-customer-details" class="row pt-2">
+                                <!-- <div class="col-sm-12 text-center text-md-left">
+                                                        <p class="">
+                                                           
+                                                        </p>
+                                                    </div> -->
+                                <div class="col-md-6 col-sm-3 text-center text-md-left">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12">
                                             <p>
-                                                <span class="text-muted">
-                                                    <b>{{language.ship_to}}:</b>
-                                                </span> {{customer_details.ship_to}}
+                                                <span class="">
+                                                    <b>{{language.customer}}:</b>
+                                                </span> {{customer_details.customer_name}}
+                                            </p>
+                                            <p>
+                                                <span class="">
+                                                    <b>{{language.contact_person}}:</b>
+                                                </span> {{customer_details.person_name}}
                                             </p>
                                         </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <span class="text-muted">
-                                                <b>{{language.address}} :</b>
-                                            </span> {{customer_details.ship_to_address}}
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-sm-12 col-md-12 row">
-                                        <div class="col-sm-3 col-md-3">
-                                            <p>
-                                                <span class="text-muted">
-                                                    <b>{{language.bill_to}}:</b>
-                                                </span> {{customer_details.bill_to}}
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <p>
-                                                <span class="text-muted">
+                                        <div class="row col-sm-12 col-md-12">
+                                            <div class="col-sm-6 col-md-6">
+                                                <p>
+                                                    <span class="">
+                                                        <b>{{language.ship_to}}:</b>
+                                                    </span> {{customer_details.ship_to}}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <span class="">
                                                     <b>{{language.address}} :</b>
-                                                </span>{{customer_details.bill_to_address}}
-                                            </p>
+                                                </span> {{customer_details.ship_to_address}}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-sm-12 col-md-12 row">
+                                            <div class="col-sm-6 col-md-6">
+                                                <p>
+                                                    <span class="">
+                                                        <b>{{language.bill_to}}:</b>
+                                                    </span> {{customer_details.bill_to}}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <p>
+                                                    <span class="">
+                                                        <b>{{language.address}} :</b>
+                                                    </span>{{customer_details.bill_to_address}}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
 
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 text-center text-md-right">
-                                <span *ngIf="showPaymentDetails">
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.pay_terms}} :</b>
-                                        </span> Payment in 4 terms</p>
-                                    <p>
+                                <div class="col-md-6 col-sm-12 text-center text-md-right">
+                                    <span *ngIf="showPaymentDetails">
                                         <p>
-                                            <span class="text-muted">
-                                                <b>{{language.payment_method}} :</b>
-                                            </span> By Card
+                                            <span class="">
+                                                <b>{{language.pay_terms}} :</b>
+                                            </span> Payment in 4 terms</p>
+                                        <p>
+                                            <p>
+                                                <span class="">
+                                                    <b>{{language.payment_method}} :</b>
+                                                </span> By Card
+                                            </p>
+                                    </span>
+
+
+                                    <span *ngIf="showGeneralDetails">
+                                        <p>
+                                            <span class="">
+                                                <b>{{customer_details.doc_type_date_label}}:</b>
+                                            </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy'}}
                                         </p>
-                                </span>
+                                        <p>
+                                            <span class="">
+                                                <b>{{language.posting_date}} :</b>
+                                            </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
+                                        </p>
+                                        <p>
+                                            <span class="">
+                                                <b>{{language.Bom_Remarks}} :</b>
+                                            </span>{{customer_details.remark}}
+                                        </p>
+                                        <!-- <p>
+                                                            <span class="">
+                                                                <b>{{language.valid_date}} :</b>
+                                                            </span>{{customer_details.posting_date}}
+                                                        </p> -->
+                                    </span>
 
-
-                                <span *ngIf="showGeneralDetails">
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{customer_details.doc_type_date_label}}:</b>
-                                        </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy'}}
-                                    </p>
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.posting_date}} :</b>
-                                        </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
-                                    </p>
-                                    <p>
-                                        <span class="text-muted">
-                                            <b>{{language.Bom_Remarks}} :</b>
-                                        </span>{{customer_details.remark}}
-                                    </p>
-                                    <!-- <p>
-                                        <span class="text-muted">
-                                            <b>{{language.valid_date}} :</b>
-                                        </span>{{customer_details.posting_date}}
-                                    </p> -->
-                                </span>
-
-                            </div>
-                        </div>
-                        <!-- Invoice Customer Details -->
-                        <!-- Invoice Items Details -->
-
-                        <div *ngIf="showProdDetailsTable" id="invoice-items-details" class="pt-2">
-                            <div  class="row">
-                                <div class="table-responsive col-sm-12">
-                                    <table class="table table-invoice">
-                                        <thead class="">
-                                            <tr>
-                                                <th>#</th>
-                                                <th>{{language.ItemLookupTitle}}</th>
-                                                <th>{{language.description}}</th>
-                                                <th class="text-right">{{language.quantity}}</th>
-                                                <th class="text-right">{{language.price}}</th>
-                                                <th class="text-right">{{language.price_extn}}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <tr *ngFor="let row of print_item_list_array">
-                                                <td>
-                                                    {{row['sl_no']}}
-                                                </td>
-                                                <td>
-                                                    {{row['item']}}
-                                                </td>
-                                                <td>
-                                                    {{row['item_desc']}}
-                                                </td>
-
-                                                <td class="text-right">
-                                                    {{row['qunatity']}}
-                                                </td>
-                                                <td class="text-right">
-                                                    {{row['price']}}
-                                                </td>
-                                                <td class="text-right">
-                                                    {{row['price_ext']}}
-                                                </td>
-
-                                               
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
-                            <div *ngIf="showProdGrandDetails" class="row">
-                                <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
-                                <div class="col-md-5 col-sm-12">
-                                    <p class="lead">{{language.total}}</p>
-                                    <div class="table-responsive">
+                            <!-- Invoice Customer Details -->
+                            <!-- Invoice Items Details -->
+
+                            <div *ngIf="showProdDetailsTable" id="invoice-items-details" class="pt-2">
+                                <div class="row">
+                                    <div class="table-responsive col-sm-12">
                                         <table class="table table-invoice">
+                                            <thead class="">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>{{language.ItemLookupTitle}}</th>
+                                                    <th>{{language.description}}</th>
+                                                    <th class="text-right">{{language.quantity}}</th>
+                                                    <th class="text-right">{{language.price}}</th>
+                                                    <th class="text-right">{{language.price_extn}}</th>
+                                                </tr>
+                                            </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="text-bold-800">
-                                                        <b class="text-muted">{{language.product_discount}}</b>
+
+                                                <tr *ngFor="let row of print_item_list_array">
+                                                    <td>
+                                                        {{row['sl_no']}}
                                                     </td>
-                                                    <td class="text-right">{{product_grand_details.product_discount}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-bold-800">
-                                                        <b class="text-muted">{{language.product_total}}</b>
+                                                    <td>
+                                                        {{row['item']}}
                                                     </td>
-                                                    <td class="text-right">{{product_grand_details.product_total}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-bold-800">
-                                                        <b class="text-muted">{{language.accessories_discount}}</b>
+                                                    <td>
+                                                        {{row['item_desc']}}
                                                     </td>
-                                                    <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-bold-800">
-                                                        <b class="text-muted">{{language.accessories_total}}</b>
+
+                                                    <td class="text-right">
+                                                        {{row['qunatity']}}
                                                     </td>
-                                                    <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
-                                                </tr>
-                                                <tr class="bg-grey bg-lighten-4">
-                                                    <td class="text-bold-800">
-                                                        <b class="text-muted">{{language.grand_total}}</b>
+                                                    <td class="text-right">
+                                                        {{row['price']}}
                                                     </td>
-                                                    <td class="text-bold-800 text-right">{{product_grand_details.grand_total}}</td>
+                                                    <td class="text-right">
+                                                        {{row['price_ext']}}
+                                                    </td>
+
+
                                                 </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div *ngIf="showProdGrandDetails" class="row">
+                                    <div class="col-md-7 col-sm-12 text-center text-md-left"></div>
+                                    <div class="col-md-5 col-sm-12">
+                                        <p class="lead">{{language.total}}</p>
+                                        <div class="table-responsive">
+                                            <table class="table table-invoice">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{language.product_discount}}</b>
+                                                        </td>
+                                                        <td class="text-right">{{product_grand_details.product_discount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{language.product_total}}</b>
+                                                        </td>
+                                                        <td class="text-right">{{product_grand_details.product_total}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{language.accessories_discount}}</b>
+                                                        </td>
+                                                        <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{language.accessories_total}}</b>
+                                                        </td>
+                                                        <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
+                                                    </tr>
+                                                    <tr class="bg-grey bg-lighten-4">
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{language.grand_total}}</b>
+                                                        </td>
+                                                        <td class="text-bold-800 text-right">{{product_grand_details.grand_total}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                        <!-- Invoice Footer -->
-                        <div id="invoice-footer">
-                            <div class="row">
-                                <div class="col-md-7 col-sm-12">
-                                    <!-- <h6>Terms & Condition</h6>
-                                        <p>You know, being a test pilot isn't always the healthiest business in the world. We predict too much
-                                            for the next year and yet far too little for the next 10.</p>
-                                    </div> -->
+                            <!-- Invoice Footer -->
+                            <div id="invoice-footer">
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-12">
+                                        <!-- <h6>Terms & Condition</h6>
+                                                            <p>You know, being a test pilot isn't always the healthiest business in the world. We predict too much
+                                                                for the next year and yet far too little for the next 10.</p>
+                                                        </div> -->
 
+                                    </div>
                                 </div>
+                                <!--/ Invoice Footer -->
                             </div>
-                            <!--/ Invoice Footer -->
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </kendo-pdf-export>
+
+
 
             </div>
-            <!-- Model-boddy close -->
         </div>
-        <!-- Model Content close-->
     </div>
-    <!-- Modal -dialog -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
+
+
+
+
 <!-- modal invoice_modal-->
 
 
@@ -657,5 +703,3 @@
             </div>
         </div>
     </div>
-
-    
