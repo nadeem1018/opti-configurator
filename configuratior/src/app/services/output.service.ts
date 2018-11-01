@@ -187,4 +187,11 @@ export class OutputService {
       //Return the response form the API  
       return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
     }
+
+     GetModelIdbyModelCode(modelcode): Observable<any> {
+      //JSON Obeject Prepared to be send as a param to API
+         let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelCode:modelcode}]) };
+         //Return the response form the API  
+         return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
+       }
 }
