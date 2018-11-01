@@ -462,7 +462,7 @@
                                 <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
                                   <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
-                                    <img src="feature_model_data.IMAGEPATH" style="width:40px" alt="" class="img-thumbnail">
+                                    <img src="{{feature_model_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
                                   </div>
                                 </td>
                               </tr>
@@ -487,8 +487,8 @@
                                 </td>
                                 <td>{{header_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
-                                  <div class="image-preivew" *ngIf="header_data.image!=''">
-                                    <img src="header_data.image" style="width:40px" alt="" class="img-thumbnail">
+                                  <div class="image-preivew" *ngIf="header_data.IMAGEPATH!=''">
+                                    <img src="{{header_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
                                   </div>
                                 </td>
                               </tr>

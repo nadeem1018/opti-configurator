@@ -129,6 +129,7 @@ export class OutputComponent implements OnInit {
   public globalConfigId: any = '';
   public description: any;
   public step0_isNextButtonVisible: boolean = false;
+  public setModelDataFlag: boolean = false;
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -225,11 +226,11 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
-    this.step1_data =[];
+    this.step1_data = [];
     this.contact_persons = [];
     this.ship_to = [];
     this.bill_to = [];
-    this.sales_employee= [];
+    this.sales_employee = [];
     this.owner_list = [];
     this.step1_data.selected_configuration_key = "";
     this.step1_data.description = "";
@@ -247,7 +248,7 @@ export class OutputComponent implements OnInit {
         this.new_output_config = true;
         this.step0_isNextButtonVisible = true;
       }
-      
+
       this.modify_duplicate_selected = false;
     }
     this.step1_data.main_operation_type = operation_type;
@@ -306,15 +307,15 @@ export class OutputComponent implements OnInit {
       data => {
         console.log(data);
         if (data.CustomerOutput.length > 0) {
-          if(data.CustomerOutput[0].OPTM_DOCTYPE = "23"){
+          if (data.CustomerOutput[0].OPTM_DOCTYPE = "23") {
             this.step1_data.document = "sales_quote"
-          }else{
+          } else {
             this.step1_data.document = "sales_order"
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
-          this.step1_data.customer_name = data.CustomerOutput[0].NAME,
-          this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
-          this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
+            this.step1_data.customer_name = data.CustomerOutput[0].NAME,
+            this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
+            this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
@@ -335,10 +336,31 @@ export class OutputComponent implements OnInit {
               lastName: data.CustomerOutput[0].OPTM_OWNER,
             });
           this.step1_data.owner = data.CustomerOutput[0].OPTM_OWNER
+
+          this.getModelDatabyModelCodeAndId(data.ModelBOMData);
         }
         this.isNextButtonVisible = true;
       }
     )
+  }
+
+  getModelDatabyModelCodeAndId(ModelBOMData) {
+    if (ModelBOMData.length > 0) {
+      this.OutputService.GetModelIdbyModelCode(ModelBOMData[0].OPTM_ITEMCODE).subscribe(
+        data => {
+          if (data.length > 0) {
+            this.step2_data.quantity = ModelBOMData[0].OPTM_QUANTITY
+            this.step2_data.model_id = data[0].OPTM_FEATUREID
+            this.step2_data.model_code = ModelBOMData[0].OPTM_ITEMCODE
+            this.step2_data.model_name = data[0].OPTM_DISPLAYNAME
+            this.step2_data.templateid = data[0].OPTM_TEMPLATEID;
+            this.step2_data.itemcodegenkey = data[0].OPTM_ITMCODEGENKEY;
+            this.setModelDataFlag = true;
+            this.GetAllDataForModelBomOutput(ModelBOMData);
+          }
+        })
+    }
+
   }
 
   openFeatureLookUp() {
@@ -402,6 +424,7 @@ export class OutputComponent implements OnInit {
 
   openModalList() {
     this.serviceData = []
+    this.setModelDataFlag = false;
     this.OutputService.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
@@ -431,13 +454,13 @@ export class OutputComponent implements OnInit {
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
-      this.step2_data.templateid = $event[3];
-      this.step2_data.itemcodegenkey = $event[4];
+      this.step2_data.templateid = $event[4];
+      this.step2_data.itemcodegenkey = $event[3];
       this.isModelVisible = true
       this.navigatenextbtn = false;
       this.validnextbtn = true;
       // this.GetDataForModelBomOutput();
-      this.GetAllDataForModelBomOutput();
+      this.GetAllDataForModelBomOutput("");
     }
     else if (this.lookupfor == 'feature_lookup') {
       this.step2_data.feature_id = $event[0];
@@ -966,10 +989,10 @@ export class OutputComponent implements OnInit {
     //pushing all price details
     this.serviceData.product_grand_details.push({
       "product_total": this.feature_item_total,
-      "product_discount":this.feature_discount_percent,
-      "accessories_discount":this.accessory_discount_percent,
-      "accessories_total":this.accessory_item_total,
-      "grand_total":this.acc_grand_total
+      "product_discount": this.feature_discount_percent,
+      "accessories_discount": this.accessory_discount_percent,
+      "accessories_total": this.accessory_item_total,
+      "grand_total": this.acc_grand_total
     });
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
@@ -1260,17 +1283,17 @@ export class OutputComponent implements OnInit {
 
   on_calculation_change(inputid, value) {
     if (value < 0) {
-      this.feature_discount_percent=0;
+      this.feature_discount_percent = 0;
       this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-      value=0;
+      value = 0;
     }
-    else if(value>100){
+    else if (value > 100) {
       this.toastr.error('', this.language.percentvalidation, this.commonData.toast_config);
-      value=0;
+      value = 0;
     }
-    else if(parseFloat(value) === NaN){
+    else if (parseFloat(value) === NaN) {
       this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-      value=0;
+      value = 0;
     }
     if (inputid == "product_discount") {
       this.feature_discount_percent = value;
@@ -1306,7 +1329,7 @@ export class OutputComponent implements OnInit {
 
   }
 
-  GetAllDataForModelBomOutput() {
+  GetAllDataForModelBomOutput(getmodelsavedata) {
     this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
         if (data != null || data != undefined) {
@@ -1343,6 +1366,15 @@ export class OutputComponent implements OnInit {
             }
             else {
               data.FeatureBOMDataForSecondLevel[i].checked = false
+            }
+            if (data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != "" && data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != null && data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != undefined) {
+              data.FeatureBOMDataForSecondLevel[i].IMAGEPATH = this.commonData.get_current_url() + data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT
+            }
+          }
+
+          for (var i in data.ModelBOMDataForSecondLevel) {
+            if (data.ModelBOMDataForSecondLevel[i].IMAGEPATH != "" && data.ModelBOMDataForSecondLevel[i].IMAGEPATH != null && data.ModelBOMDataForSecondLevel[i].IMAGEPATH != undefined) {
+              data.ModelBOMDataForSecondLevel[i].IMAGEPATH = this.commonData.get_current_url() + data.ModelBOMDataForSecondLevel[i].IMAGEPATH
             }
           }
 
@@ -1383,6 +1415,10 @@ export class OutputComponent implements OnInit {
           this.getDefaultItems(data.ObjFeatureItemDataWithDfaultY);
 
           this.RuleIntegration(data.RuleOutputData, true)
+
+          if (this.setModelDataFlag == true) {
+            this.setModelDataInOutputBom(getmodelsavedata);
+          }
 
         }
         else {
@@ -1676,7 +1712,7 @@ export class OutputComponent implements OnInit {
 
                 }
               }
-              else if (type == 3 && feature_model_data.OPTM_VALUE==null) {
+              else if (type == 3 && feature_model_data.OPTM_VALUE == null) {
                 // let parentarray = this.ModelHeaderData.filter(function (obj) {
                 //   return obj['OPTM_MODELID'] == parentmodelid
                 // });
@@ -1762,7 +1798,7 @@ export class OutputComponent implements OnInit {
                   }
                 }
               }
-              else if(type==2){
+              else if (type == 2) {
                 if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                   propagateqtychecked = "Y"
                   propagateqty = parentarray[0].OPTM_QUANTITY
@@ -2286,7 +2322,7 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    let final_dataset_to_save:any = {};
+    let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.ConnectionDetails = [];
@@ -2311,14 +2347,14 @@ export class OutputComponent implements OnInit {
       "OPTM_DESC": this.step1_data.description,
       "OPTM_SALESEMP": this.step1_data.sales_employee,
       "OPTM_OWNER": this.step1_data.owner,
-      "OPTM_REMARKS":this.step1_data.remark,
+      "OPTM_REMARKS": this.step1_data.remark,
       "OPTM_BILLADD": this.step1_data.bill_to_address,
       "OPTM_SHIPADD": this.step1_data.ship_to_address
     })
 
     //creating details table array
     final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
-    if(button_press == undefined){
+    if (button_press == undefined) {
       button_press = "finishPress"
     }
     //creating connection detials
@@ -2886,19 +2922,19 @@ export class OutputComponent implements OnInit {
 
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
     var array = [];
-   // header_feature_table['OPTM_LEVEL'] = 0;
-   // model_child_datatable['OPTM_LEVEL'] = 1;
-   // for (let i = 0; i < feature_child_datatable.length; i++) {
-  //    feature_child_datatable['OPTM_LEVEL'] = 1;
-      // if(feature_child_datatable[i].checked==""||feature_child_datatable[i].checked==undefined||feature_child_datatable[i].checked==null){
-      //   if (feature_child_datatable[i].OPTM_DEFAULT == "Y") {
-      //     feature_child_datatable[i].checked = true
-      //   }
-      //   else {
-      //     feature_child_datatable[i].checked = false
-      //   }
-      // }
-  //  }
+    // header_feature_table['OPTM_LEVEL'] = 0;
+    // model_child_datatable['OPTM_LEVEL'] = 1;
+    // for (let i = 0; i < feature_child_datatable.length; i++) {
+    //    feature_child_datatable['OPTM_LEVEL'] = 1;
+    // if(feature_child_datatable[i].checked==""||feature_child_datatable[i].checked==undefined||feature_child_datatable[i].checked==null){
+    //   if (feature_child_datatable[i].OPTM_DEFAULT == "Y") {
+    //     feature_child_datatable[i].checked = true
+    //   }
+    //   else {
+    //     feature_child_datatable[i].checked = false
+    //   }
+    // }
+    //  }
     if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
 
       array = feature_child_datatable.filter(function (obj) {
@@ -3076,7 +3112,7 @@ export class OutputComponent implements OnInit {
         GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['checked'] == true
         })
-  
+
         GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
           return obj['checked'] == true
         })
@@ -3346,7 +3382,7 @@ export class OutputComponent implements OnInit {
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
         this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
       }
-     
+
     }
   }
 
@@ -3410,4 +3446,78 @@ export class OutputComponent implements OnInit {
     }
 
   }
+  setModelDataInOutputBom(getmodelsavedata) {
+    this.feature_itm_list_table = [];
+    let isPriceDisabled: boolean = true;
+    let isPricehide: boolean = true;
+    let ItemPrice = 0;
+    var imodelsavedata = "1";
+    for (imodelsavedata in getmodelsavedata) {
+      if (getmodelsavedata[imodelsavedata].OPTM_TYPE == 1) {
+        let filtemodeldataheader = [];
+        filtemodeldataheader = this.ModelHeaderData.filter(function (obj) {
+          return obj['child_code'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE
+        })
+
+        if(filtemodeldataheader.length>0)
+        this.feature_itm_list_table.push({
+          FeatureId: filtemodeldataheader[0].OPTM_CHILDMODELID,
+          featureName: filtemodeldataheader[0].child_code,
+          Item: filtemodeldataheader[0].OPTM_ITEMKEY,
+          ItemNumber: "",
+          Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
+          quantity: getmodelsavedata[imodelsavedata].OPTM_QUANTITY,
+          price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
+          Actualprice: getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE,
+          pricextn: 0,
+          is_accessory: "N",
+          isPriceDisabled: isPriceDisabled,
+          pricehide: isPricehide,
+          ModelId: filtemodeldataheader[0].OPTM_MODELID,
+          OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+          isQuantityDisabled: true
+        });
+
+      }
+      else if (getmodelsavedata[imodelsavedata].OPTM_TYPE == 2) {
+        if (getmodelsavedata[imodelsavedata].OPTM_LEVEL == 2) {
+          var ModelItemsArray = [];
+          ModelItemsArray = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+            return obj['OPTM_ITEMKEY'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE && obj['OPTM_TYPE'] == 2;
+          });
+
+          if (ModelItemsArray.length > 0) {
+            this.feature_itm_list_table.push({
+              FeatureId: ModelItemsArray[0].OPTM_FEATUREID,
+              featureName: ModelItemsArray[0].feature_code,
+              Item: ModelItemsArray[0].OPTM_ITEMKEY,
+              ItemNumber: ModelItemsArray[0].DocEntry,
+              Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
+              quantity: getmodelsavedata[imodelsavedata].OPTM_QUANTITY,
+              price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
+              Actualprice: getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE,
+              pricextn: 0,
+              is_accessory: "N",
+              isPriceDisabled: isPriceDisabled,
+              pricehide: isPricehide,
+              ModelId: ModelItemsArray[0].OPTM_MODELID,
+              OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+              isQuantityDisabled: true
+            });
+
+            ItemPrice = ItemPrice + ModelItemsArray[0].Price
+          }
+
+          for (var ifeatureitem in this.feature_itm_list_table) {
+            if (this.feature_itm_list_table[ifeatureitem].FeatureId == ModelItemsArray[0].OPTM_FEATUREID && this.feature_itm_list_table[ifeatureitem].Item == ModelItemsArray[0].OPTM_ITEMKEY) {
+              this.feature_itm_list_table[ifeatureitem].Actualprice = ItemPrice
+            }
+          }
+        }
+        else{
+          
+        }
+      }
+    }
+  }//end function
 }
