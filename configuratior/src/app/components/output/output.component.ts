@@ -235,6 +235,7 @@ export class OutputComponent implements OnInit {
     this.step1_data.description = "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
+    this.onclearselection();
     if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
       this.new_output_config = true;
@@ -3411,5 +3412,22 @@ export class OutputComponent implements OnInit {
 
     }
 
+  }
+
+  onModelCodeChange(){
+    this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
+      data => {
+        if (data === "False") {
+          this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+          this.step2_data.modal_id = "";
+          this.step2_data.model_code = "";
+          this.onclearselection();
+          return;
+        }
+        else{
+          this.step2_data.model_id = data;
+          this.GetAllDataForModelBomOutput();
+        }
+      })
   }
 }

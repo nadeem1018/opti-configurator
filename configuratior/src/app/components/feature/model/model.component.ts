@@ -429,7 +429,7 @@ export class ModelComponent implements OnInit {
     this.fms.onItemCodeChange(this.companyName, this.featureBom.ItemName).subscribe(
       data => {
         if (data === "False") {
-          this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+          this.toastr.error('', this.language.invalid_itemcode, this.commonData.toast_config);
           this.featureBom.ItemName = "";
           return;
         }
