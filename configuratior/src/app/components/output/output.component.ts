@@ -968,6 +968,7 @@ export class OutputComponent implements OnInit {
   // }
 
   output_invvoice_print_lookup(operation_type) {
+    this.lookupfor = 'output_invoice_print';
     if (operation_type == "") {
       this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
       return;
@@ -999,7 +1000,8 @@ export class OutputComponent implements OnInit {
     //pushing all payement data details
     this.serviceData.payment_details = undefined;
 
-    this.lookupfor = 'output_invoice_print';
+   
+   
 
   }
 

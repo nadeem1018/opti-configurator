@@ -717,12 +717,12 @@ export class RulewbComponent implements OnInit {
           }
         }
 
-        if (key === 'operand_1_code') {
+        if (key === 'operand_1_code' || key === 'operand_2_code') {
           if (this.rule_sequence_data[i].type == 1) {
             this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
                 if (data === "False") {
-                  this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+                  this.toastr.error('', this.language.InvalidOperationId, this.commonData.toast_config);
                   $(actualvalue).val("");
                   return;
                 }
