@@ -81,7 +81,8 @@ export class OutputComponent implements OnInit {
     { "key": this.language.accessories_total, "value": this.acc_total },
     { "key": this.language.grand_total, "value": this.acc_grand_total }
   ];
-  public new_item_list = ["item 1", "item 2", "item 3", "item 4", "item 5"];
+  //
+  public new_item_list = [];
   /* public refresh_button_text = '<i class="fa fa-refresh fa-fw"></i> ' + this.language.refresh; */
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
@@ -987,6 +988,8 @@ export class OutputComponent implements OnInit {
     this.serviceData.ref_doc_details.push({
       "ref_doc_no": this.final_reference_number,
       "ref_doc_entry": this.final_ref_doc_entry,
+      "conf_id": this.iLogID,
+      "conf_desc": this.step1_data.description
     });
     //pushing all price details
     this.serviceData.product_grand_details.push({
@@ -1000,10 +1003,6 @@ export class OutputComponent implements OnInit {
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
     //pushing all payement data details
     this.serviceData.payment_details = undefined;
-
-   
-   
-
   }
 
   onAccessoryChange(value, row) {
@@ -2589,7 +2588,6 @@ export class OutputComponent implements OnInit {
     //Clear the array
 
     this.step3_data_final = [];
-    this.new_item_list = [];
 
     this.step2_final_dataset_to_save = [];
     this.step3_data_final.push({
@@ -2604,12 +2602,12 @@ export class OutputComponent implements OnInit {
       "model_id": this.step2_data.model_id,
     })
 
-    for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
-      let row_data = this.step3_data_final[itemCount];
-      this.new_item_list.push(
-        row_data.item
-      )
-    }
+    // for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
+    //   let row_data = this.step3_data_final[itemCount];
+    //   this.new_item_list.push(
+    //     row_data.item
+    //   )
+    // }
 
 
     this.step2_final_dataset_to_save = [];
@@ -2891,17 +2889,23 @@ export class OutputComponent implements OnInit {
   getFinalBOMStatus() {
     this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
       data => {
-        if (data != null && data.length > 0) {
-          if (data[0].Status == "P") {
+        if (data != null) {
+          if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;
-            this.final_ref_doc_entry = data[0].RefDocEntry;
-            this.final_document_number = data[0].RefDocNo;
+            this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
+            this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
             this.stoprefreshloader();
           }
           else {
             this.final_order_status = this.language.pending_status;
             this.stoprefreshloader();
           }
+
+          if (data.GeneratedNewItemList != undefined) {
+            console.log(data.GeneratedNewItemList)
+            this.new_item_list = data.GeneratedNewItemList;
+          }
+
         }
         else {
           this.stoprefreshloader();
@@ -3450,7 +3454,7 @@ export class OutputComponent implements OnInit {
 
   }
 
-  onModelCodeChange(){
+  onModelCodeChange() {
     this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
       data => {
         if (data === "False") {
@@ -3460,7 +3464,7 @@ export class OutputComponent implements OnInit {
           this.onclearselection();
           return;
         }
-        else{
+        else {
           this.step2_data.model_id = data;
           this.GetAllDataForModelBomOutput("");
         }
@@ -3479,24 +3483,24 @@ export class OutputComponent implements OnInit {
           return obj['child_code'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE
         })
 
-        if(filtemodeldataheader.length>0)
-        this.feature_itm_list_table.push({
-          FeatureId: filtemodeldataheader[0].OPTM_CHILDMODELID,
-          featureName: filtemodeldataheader[0].child_code,
-          Item: filtemodeldataheader[0].OPTM_ITEMKEY,
-          ItemNumber: "",
-          Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
-          quantity: getmodelsavedata[imodelsavedata].OPTM_QUANTITY,
-          price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
-          Actualprice: getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE,
-          pricextn: 0,
-          is_accessory: "N",
-          isPriceDisabled: isPriceDisabled,
-          pricehide: isPricehide,
-          ModelId: filtemodeldataheader[0].OPTM_MODELID,
-          OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
-          isQuantityDisabled: true
-        });
+        if (filtemodeldataheader.length > 0)
+          this.feature_itm_list_table.push({
+            FeatureId: filtemodeldataheader[0].OPTM_CHILDMODELID,
+            featureName: filtemodeldataheader[0].child_code,
+            Item: filtemodeldataheader[0].OPTM_ITEMKEY,
+            ItemNumber: "",
+            Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
+            quantity: getmodelsavedata[imodelsavedata].OPTM_QUANTITY,
+            price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
+            Actualprice: getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE,
+            pricextn: 0,
+            is_accessory: "N",
+            isPriceDisabled: isPriceDisabled,
+            pricehide: isPricehide,
+            ModelId: filtemodeldataheader[0].OPTM_MODELID,
+            OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+            isQuantityDisabled: true
+          });
 
       }
       else if (getmodelsavedata[imodelsavedata].OPTM_TYPE == 2) {
@@ -3534,8 +3538,8 @@ export class OutputComponent implements OnInit {
             }
           }
         }
-        else{
-          
+        else {
+
         }
       }
     }

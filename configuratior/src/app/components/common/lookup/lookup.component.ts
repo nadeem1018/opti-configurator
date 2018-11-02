@@ -306,7 +306,12 @@ export class LookupComponent implements OnInit {
   close_lookup(lookup_id) {
     this.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
-    //this.lookupfor = '';
+
+    //clear arrays after close button clicked on print model 
+    if (this.lookupfor == 'output_invoice_print') {
+      this.cleanup_print_arrays();
+    }
+
   }
 
   get_Model_lookup() {
@@ -339,7 +344,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.ModelId, this.language.code,this.language.Name, 'TemplateId', 'ItemCodeGenkey'];
+    this.table_head = [this.language.ModelId, this.language.code, this.language.Name, 'TemplateId', 'ItemCodeGenkey'];
     this.table_head_hidden_elements = [true, false, false, true, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -650,8 +655,10 @@ export class LookupComponent implements OnInit {
     }
     //ref doc details
     if (this.serviceData.ref_doc_details != undefined && this.serviceData.ref_doc_details.length > 0) {
-      this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details.ref_doc_no;
-      this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details.ref_doc_entry;
+      this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details[0].ref_doc_no;
+      this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details[0].ref_doc_entry;
+      this.refrence_doc_details.conf_id = this.serviceData.ref_doc_details[0].conf_id;
+      this.refrence_doc_details.conf_desc = this.serviceData.ref_doc_details[0].conf_desc;
     }
     //item details
     if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
@@ -676,17 +683,17 @@ export class LookupComponent implements OnInit {
       for (let fcount = 0; fcount < row['feature'].length; fcount++) {
         let featureRow = row['feature'][fcount];
         row_count++;
-       
+
         if (report_type == "2") {
-      
+
           this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
         }
         else {
           if (featureRow.ItemNumber == "" && featureRow.Item == null) {
-         
+
             this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
           }
-          else{
+          else {
             row_count--;
           }
         }
@@ -823,6 +830,11 @@ export class LookupComponent implements OnInit {
       obj['OPTM_LEVEL'] = 0;
       return verify_final_data_sel_details.feature;
     })
+  }
+
+  cleanup_print_arrays() {
+    this.product_grand_details.length = 0;
+    this.print_item_list_array.length = 0;
   }
 
 

@@ -946,9 +946,20 @@
               <div class="col-sm-3" id="opti_configur-wizard-last-step-leftside">
                 <div class="new item section">
                   <h6>{{language.lsit_of_new_item_created}}</h6>
-                  <div id="new_item_list" class="list-group" *ngFor="let new_item of new_item_list">
-                    <span class="list-group-item list-group-item-action text-primary" href="javascript:;">{{new_item}}</span>
-                  </div>
+                  <table *ngIf="new_item_list.length" class="table table-sm table-bordered table-strip">
+                    <thead class="thead-dark">
+                   <tr>
+                     <th>{{this.language.model}}</th>
+                    <th>{{this.language.item_code}}</th>
+                   </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let new_item of new_item_list">
+                          <td>{{new_item.OPTM_FGITEM}} </td>
+                          <td>{{new_item.OPTM_REFITEMCODE}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
               <div class="col-sm-9 border-left-primary" id="opti_configur-wizard-last-step-rightside">
@@ -1015,6 +1026,20 @@
                         </label>
                         <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_date}}</label>
                       </div>
+
+                      <div class="form-group row clearfix ">
+                          <label class="col-sm-5 col-form-label text-left">
+                            <b>{{language.configuration_id}}</b>
+                          </label>
+                          <label class="col-sm-7 col-form-label text-right font-weight-light">{{iLogID}}</label>
+                        </div>
+
+                        <div class="form-group row clearfix ">
+                            <label class="col-sm-5 col-form-label text-left">
+                              <b>{{language.description}}</b>
+                            </label>
+                            <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.description}}</label>
+                          </div>
 
                     </div>
                   </div>
