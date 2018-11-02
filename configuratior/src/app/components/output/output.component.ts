@@ -3675,9 +3675,6 @@ export class OutputComponent implements OnInit {
           }
 
         }
-<<<<<<< HEAD
-        else {
-=======
         for (var imodelBomData in this.ModelBOMDataForSecondLevel) {
           if (this.feature_itm_list_table[ifeatureitemlist].Item == this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY) {
             this.ModelBOMDataForSecondLevel[imodelBomData].checked = true
@@ -3699,7 +3696,6 @@ export class OutputComponent implements OnInit {
             }
            
           }
->>>>>>> 45849762d95105e9d9fc202cbcae7ae0cb14974c
 
         }
 
