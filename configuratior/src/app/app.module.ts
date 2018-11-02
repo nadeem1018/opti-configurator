@@ -57,6 +57,8 @@ import { RulewbComponent } from './components/rulewb/rulewb.component';
 import { RuleWbViewComponent } from './components/rulewb/rulewb.view.component';
 import { OutputComponent } from './components/output/output.component';
 import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+
 
 
 
@@ -145,7 +147,8 @@ const routes: Routes = [
     BsDropdownModule.forRoot(),
     DateInputsModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    PDFExportModule
   ],
   providers: [
     {

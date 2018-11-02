@@ -76,7 +76,7 @@
     "Model_Add": "Add Feature/ Model",
     "Model_Accessory": "Accessory",
     "Model_Active": "Active",
-    "Model_InActive": "InActive",
+    "Model_InActive": "Inactive",
     "order_status": "Order Status",
     "ref_no": "Ref. No.",
     "new": "New",
@@ -354,6 +354,7 @@
     "percentvalidation":"percent cannot be greater than 100",
     "print_quote": "Print Quote",
     "InvalidOperationId": "Invalid Operation Id",
-    "customer_code": "Customer Code"
+    "customer_code": "Customer Code",
+    "invalid_itemcode": "Invalid value in 'Model Template Item' field"
     
 }
