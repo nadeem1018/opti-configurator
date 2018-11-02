@@ -33,6 +33,11 @@ export class LoginComponent implements OnInit {
   public isPasswordBlank = "Enter Password";
   public login_btn = "Login";
   public reset_button_text = "Reset";
+  public UserNotActive = 'User is not active';
+  public InvalidCredentials = 'Username or password not valid';
+  public CompanyRequired = 'Select Company';
+  public UserNameRequired = 'Username required';
+  public PasswordRequired = 'Password required';
   public onConnectSuccess:boolean = false;
   public page_title = this.commonData.project_name;
   common_params = new CommonData();
@@ -80,6 +85,11 @@ export class LoginComponent implements OnInit {
         this.isPasswordBlank = this.language.isPasswordBlank;
         this.login_btn = this.language.login;
         this.reset_button_text = this.language.reset;
+        this.UserNotActive = this.language.UserNotActive;
+        this.InvalidCredentials = this.language.InvalidCredentials;
+        this.CompanyRequired = this.language.CompanyRequired;
+        this.UserNameRequired = this.language.UserNameRequired;
+        this.PasswordRequired = this.language.PasswordRequired;
       }
     }, 2000);
   }
@@ -93,11 +103,11 @@ export class LoginComponent implements OnInit {
   //Events
   onConnectBtnPress(){
       if(this.loginCredentials.userName == undefined || this.loginCredentials.userName == null){
-        this.toastr.warning('', this.language.UserNameRequired, this.commonData.toast_config);
+        this.toastr.warning('', this.UserNameRequired, this.commonData.toast_config);
         return;
       }
       if(this.loginCredentials.password == undefined || this.loginCredentials.password == null){
-        this.toastr.warning('', this.language.PasswordRequired, this.commonData.toast_config);
+        this.toastr.warning('', this.PasswordRequired, this.commonData.toast_config);
         return;
       }
       if(this.loginCredentials.userName != undefined && this.loginCredentials.password !=undefined){
@@ -114,16 +124,16 @@ export class LoginComponent implements OnInit {
             }
             else{
               //If user is not active
-              this.toastr.warning('', this.language.UserNotActive, this.commonData.toast_config);
+              this.toastr.warning('', this.UserNotActive, this.commonData.toast_config);
             }
           }
           else{
             //If no table found
-            this.toastr.error('', this.language.InvalidCredentials, this.commonData.toast_config);
+            this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
           }
         }else{
             //If no username & pass matches
-            this.toastr.error('', this.language.InvalidCredentials, this.commonData.toast_config);
+            this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
         }
           })
       }
@@ -133,12 +143,12 @@ export class LoginComponent implements OnInit {
   onLoginBtnPress(){
    
     if (this.selecetedComp == undefined && this.selecetedComp == "" ){
-      this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
+      this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
     }
     else{
     if(this.selecetedComp.OPTM_COMPID == undefined){
-      this.toastr.warning('', this.language.CompanyRequired, this.commonData.toast_config);
+      this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
     } 
     sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
@@ -167,7 +177,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-         // this.psURL = "http://localhost:9500";
+          this.psURL = "http://localhost:9500";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
 
           sessionStorage.setItem('psURL', this.psURL);
@@ -211,6 +221,7 @@ export class LoginComponent implements OnInit {
     this.showCompDropDown = false;
     this.loginCredentials = [];
     this.loginCredentials.length = 0;
+    this.connectBtnText = this.language.connect;
   }
 
   
