@@ -300,27 +300,27 @@
                                         <p>
                                             <span class="">
                                                 <b>{{language.order_type}} :</b>
-                                            </span> {{customer_details.order_type}}
+                                            </span> {{customer_details.order_type | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.ref_doc_no}}:</b>
-                                            </span> {{refrence_doc_details.ref_doc_no}}
+                                            </span> {{refrence_doc_details.ref_doc_no | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.ref_doc_entry}}:</b>
-                                            </span> {{refrence_doc_details.ref_doc_entry}}
+                                            </span> {{refrence_doc_details.ref_doc_entry | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.configuration_id}}:</b>
-                                            </span> {{refrence_doc_details.conf_id}}
+                                            </span> {{refrence_doc_details.conf_id | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.description}}:</b>
-                                            </span> {{refrence_doc_details.conf_desc}}
+                                            </span> {{refrence_doc_details.conf_desc | blankhandler}}
                                         </p>
 
                                     </span>
@@ -340,12 +340,12 @@
                                             <p>
                                                 <span class="">
                                                     <b>{{language.customer}}:</b>
-                                                </span> {{customer_details.customer_name}}
+                                                </span> {{customer_details.customer_name | blankhandler}}
                                             </p>
                                             <p>
                                                 <span class="">
                                                     <b>{{language.contact_person}}:</b>
-                                                </span> {{customer_details.person_name}}
+                                                </span> {{customer_details.person_name | blankhandler}}
                                             </p>
                                         </div>
                                         <div class="row col-sm-12 col-md-12">
@@ -353,13 +353,13 @@
                                                 <p>
                                                     <span class="">
                                                         <b>{{language.ship_to}}:</b>
-                                                    </span> {{customer_details.ship_to}}
+                                                    </span> {{customer_details.ship_to | blankhandler}}
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-6">
                                                 <span class="">
                                                     <b>{{language.address}} :</b>
-                                                </span> {{customer_details.ship_to_address}}
+                                                </span> {{customer_details.ship_to_address | blankhandler}}
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
@@ -368,14 +368,14 @@
                                                 <p>
                                                     <span class="">
                                                         <b>{{language.bill_to}}:</b>
-                                                    </span> {{customer_details.bill_to}}
+                                                    </span> {{customer_details.bill_to | blankhandler}}
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-6">
                                                 <p>
                                                     <span class="">
                                                         <b>{{language.address}} :</b>
-                                                    </span>{{customer_details.bill_to_address}}
+                                                    </span>{{customer_details.bill_to_address | blankhandler}}
                                                 </p>
                                             </div>
                                         </div>
@@ -402,17 +402,17 @@
                                         <p>
                                             <span class="">
                                                 <b>{{customer_details.doc_type_date_label}}:</b>
-                                            </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy'}}
+                                            </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy' | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.posting_date}} :</b>
-                                            </span>{{customer_details.posting_date | date: 'MM/dd/yyyy'}}
+                                            </span>{{customer_details.posting_date | date: 'MM/dd/yyyy' | blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.Bom_Remarks}} :</b>
-                                            </span>{{customer_details.remark}}
+                                            </span>{{customer_details.remark | blankhandler}}
                                         </p>
                                     </span>
 

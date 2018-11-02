@@ -58,6 +58,7 @@ import { RuleWbViewComponent } from './components/rulewb/rulewb.view.component';
 import { OutputComponent } from './components/output/output.component';
 import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { BlankhandlerPipe } from './components/common/custom-pipes/blankhandler.pipe';
 
 
 
@@ -125,7 +126,8 @@ const routes: Routes = [
     LookupFilterPipe,
     RulewbComponent,
     RuleWbViewComponent,
-    OutputComponent
+    OutputComponent,
+    BlankhandlerPipe
   ],
   imports: [
     BrowserModule,
