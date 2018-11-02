@@ -89,6 +89,7 @@ const routes: Routes = [
 
   { path: 'output/view', component: OutputComponent },
   { path: 'output/view/:id', component: OutputComponent },
+  { path: 'output/view/new', component: OutputComponent },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }

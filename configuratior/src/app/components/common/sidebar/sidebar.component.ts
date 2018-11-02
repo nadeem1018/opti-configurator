@@ -15,12 +15,12 @@ export class SidebarComponent implements OnInit {
   constructor(private commonService: CommonService,private toastr: ToastrService) { }
   public menu_obj:any;
   public menu_options: any = [
-    { "menu_code": 200, "menu_title": "Item Code Generation" , "router_link": "item-code-generation/view"},
-    { "menu_code": 201, "menu_title": "Feature Model" , "router_link": "feature/model/view"},
-    { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "feature/bom/view"},
-    { "menu_code": 203, "menu_title": "Model BOM", "router_link": "modelbom/view" },
-    { "menu_code": 204, "menu_title": "Rule Work Bench", "router_link": "rulewb/view" },
-    { "menu_code": 205, "menu_title": "Configure", "router_link": "output/view" }
+    { "menu_code": 200, "menu_title": "Item Code Generation", "router_link": "item-code-generation/view", "icon_path": this.imgPath +"/leftpanel/code.svg "},
+    { "menu_code": 201, "menu_title": "Feature Model" , "router_link": "feature/model/view", "icon_path":this.imgPath + "/leftpanel/featuremodel.svg" },
+    { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "feature/bom/view", "icon_path":this.imgPath + "/leftpanel/featureBOM.svg"},
+    { "menu_code": 203, "menu_title": "Model BOM", "router_link": "modelbom/view" , "icon_path":this.imgPath + "/leftpanel/modelBOM.svg"},
+    { "menu_code": 204, "menu_title": "Rule Work Bench", "router_link": "rulewb/view" , "icon_path":this.imgPath + "/leftpanel/ruleworkbench.svg"},
+    { "menu_code": 205, "menu_title": "Configure", "router_link": "output/view", "icon_path":this.imgPath + "/leftpanel/configure.svg" }
   ];
 
   showSidebar: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
