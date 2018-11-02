@@ -168,30 +168,30 @@ export class OutputService {
   }
 
   getConfigurationList(OperationType): Observable<any> {
- //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,OperationType:OperationType }]) };
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationType: OperationType }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData", jObject, this.common_params.httpOptions);
   }
 
-  GetAllOutputData(OperationType,LogID,Description): Observable<any> {
+  GetAllOutputData(OperationType, LogID, Description): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-       let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,OperationType:OperationType,LogID:LogID,Description:Description }]) };
-       //Return the response form the API  
-       return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData", jObject, this.common_params.httpOptions);
-     }
-     onModelIdChange(code): Observable<any> {
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData", jObject, this.common_params.httpOptions);
+  }
+  onModelIdChange(code): Observable<any> {
 
-      //JSON Obeject Prepared to be send as a param to API
-      let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelCode:code}]) };
-      //Return the response form the API  
-      return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
-    }
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: code }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
+  }
 
-     GetModelIdbyModelCode(modelcode): Observable<any> {
-      //JSON Obeject Prepared to be send as a param to API
-         let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelCode:modelcode}]) };
-         //Return the response form the API  
-         return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
-       }
+  GetModelIdbyModelCode(modelcode): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: modelcode }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
+  }
 }
