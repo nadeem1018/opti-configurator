@@ -24,7 +24,7 @@
             <label style="padding-left:15px;" class="control-label col-sm-2 float-left" for="feature">{{language.code}}</label>
             <div class="col-sm-5 float-left">
               <input type="text" [disabled]="!isCodeDisabled" class="form-control form-control-sm" placeholder="{{language.code}}"
-                id="usrID" name="code" (change)= "CheckDuplicateCode()" [(ngModel)]="codekey" #inputBox>
+                id="usrID" name="code" (change)= "CheckDuplicateCode()" [(ngModel)]="codekey" #inputBox title="{{codekey}}">
             </div>
           </div>
         </div>  
@@ -64,7 +64,7 @@
                       <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                         <tr *ngFor="let row of itemcodetable" class="d-flex">
                           <td style="width: 5%">
-                            <input [disabled]="true"  type="text" class="form-control field-nobg-noborder  form-control-sm" id="rowNOID" name="rowNONamr" value={{row.rowindex}}/>
+                            <input [disabled]="true"  type="text" class="form-control field-nobg-noborder  form-control-sm" id="rowNOID" name="rowNONamr" value={{row.rowindex}} title="{{row.rowindex}}"/>
                           </td>
                           <td style="width: 15%">
                             <select class="form-control  form-control-sm" #selectedvalue  (change)="onStringTypeSelectChange(selectedvalue.value,row.rowindex)">
@@ -72,7 +72,7 @@
                             </select>
                           </td>
                             <td style="width: 60%">
-                              <input type="text" class="form-control  form-control-sm" id="stringtxt" value={{row.string}} #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
+                              <input type="text" class="form-control  form-control-sm" id="stringtxt" value={{row.string}} title="{{row.string}}" #stringtxtvalue (blur)="onStrBlur(stringtxtvalue.value,row.rowindex)"
                               />
                             </td>
                           <td style="width: 15%">

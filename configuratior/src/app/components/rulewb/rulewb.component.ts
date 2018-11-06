@@ -134,6 +134,7 @@ export class RulewbComponent implements OnInit {
       var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
+          console.log(data.RuleWorkBenchHeader);
           if (data.RuleWorkBenchHeader.length > 0) {
             if (data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False") {
               this.rule_wb_data.discontinued = false
@@ -149,8 +150,38 @@ export class RulewbComponent implements OnInit {
             }
             this.rule_wb_data.rule_code = data.RuleWorkBenchHeader[0].OPTM_RULECODE
             this.rule_wb_data.description = data.RuleWorkBenchHeader[0].OPTM_DESCRIPTION;
-            this.rule_wb_data.effective_from = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM;
-            this.rule_wb_data.effective_to = data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO;
+           /*  let effectiveFrom: any = (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM !== undefined ) ? new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM) : "";
+            let effectiveTo: any = (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO !== undefined ) ? new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO) : "";
+            if (effectiveFrom!=""){
+              effectiveFrom =  ((effectiveFrom.getMonth() + 1) + '/' + effectiveFrom.getDate() + '/' + effectiveFrom.getFullYear());
+            }
+
+            if (effectiveTo !="" ){
+              effectiveTo = ((effectiveTo.getMonth() + 1) + '/' + effectiveTo.getDate() + '/' + effectiveTo.getFullYear());
+            }
+            this.rule_wb_data.effective_from = effectiveFrom;
+            this.rule_wb_data.effective_to =effectiveTo; */
+            var effectiveFrom;
+            var effectiveTo;
+            if (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM !== undefined && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != null ){
+              var temp = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM);
+              effectiveFrom = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+            }
+
+            if (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO !== undefined && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO != null) {
+              var temp2 = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO);
+              effectiveTo = new Date((temp2.getMonth() + 1) + '/' + temp2.getDate() + '/' + temp2.getFullYear());
+            }
+
+            this.rule_wb_data.effective_from = effectiveFrom;
+            this.rule_wb_data.effective_to = effectiveTo;
+
+            /* this.rule_wb_data.effective_from = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM);
+            this.rule_wb_data.effective_to  = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO); */
+            console.log(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO);
+            console.log( "effective_from - " + this.rule_wb_data.effective_from);
+            console.log( "effective_to - " + this.rule_wb_data.effective_to);
+
             //  this.rule_wb_data.discontinued = data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE;
             // this.rule_wb_data.Excluded=data.RuleWorkBenchHeader[0].OPTM_EXCLUDED; 
             this.rule_wb_data.applicable_for_feature_code = data.RuleWorkBenchHeader[0].OPTM_APPLICABLEFOR;
@@ -680,11 +711,29 @@ export class RulewbComponent implements OnInit {
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         this.rule_sequence_data[i][key] = value;
+        this.generated_expression_value = '';
+        if (this.add_sequence_mode == true) {
+          this.showAddSequenceBtn = false;
+        } else if (this.update_sequence_mode == true) {
+          this.showUpdateSequenceBtn = false;
+        }
+        if (key == 'type') {
+          this.rule_sequence_data[i]['operand_1'] = '';
+          this.rule_sequence_data[i]['operand_1_code'] = '';
+          this.rule_sequence_data[i]['operand_2'] = '';
+          this.rule_sequence_data[i]['operand_2_code'] = '';
+           this.rule_sequence_data[i]['condition'] = '';
+          this.rule_sequence_data[i]['type_value'] = '';
+          this.rule_sequence_data[i]['type_value_code'] = '';
+           this.rule_sequence_data[i]['is_operand2_disable'] = true;
+        }
         if (key == "condition") {
           if (value == "Between") {
             this.rule_sequence_data[i]['is_operand2_disable'] = false;
           } else {
             this.rule_sequence_data[i]['is_operand2_disable'] = true;
+            this.rule_sequence_data[i]['operand_2'] = '';
+            this.rule_sequence_data[i]['operand_2_code'] = '';
           }
         }
         if (key === 'type_value') {
@@ -774,10 +823,8 @@ export class RulewbComponent implements OnInit {
           } else if (type == 2) {
             this.lookupfor = "operand_model_lookup";
           }
-          console.log(' operand_value - ');
-          console.log(operand_value);
+      
           this.operand_type = operand_value;
-          console.log('this.operand_type - ' + this.operand_type);
 
           this.serviceData = data;
         } else {

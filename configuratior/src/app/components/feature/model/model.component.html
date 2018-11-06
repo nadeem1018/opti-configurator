@@ -33,7 +33,7 @@
                     {{model_code_label}}</label>
                 <div class="col-sm-5">
                     <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
-                        [(ngModel)]="featureBom.Code" #inputBox>
+                        [(ngModel)]="featureBom.Code" title="{{featureBom.Code}}" #inputBox>
                 </div>
             </div>
             <div class="form-group row clearfix">
@@ -50,22 +50,22 @@
                 <label class="col-sm-4 col-form-label" for="featurename">{{model_name_label}}</label>
                 <div class="col-sm-5">
                     <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
-                        [(ngModel)]="featureBom.Name">
+                        [(ngModel)]="featureBom.Name" title="{{featureBom.Name}}">
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureDesc">{{model_desc_label}}</label>
                 <div class="col-sm-5">
                     <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
-                        [(ngModel)]="featureBom.Desc">
+                        [(ngModel)]="featureBom.Desc" title="{{featureBom.Desc}}">
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
                 <div class="col-sm-5 input-group">
-                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName">
-                    <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode">
+                    <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName" title="{{featureBom.ItemName}}">
+                    <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode" title="{{featureBom.ItemCode}}">
                     <div class="input-group-append" [hidden] ="isItemlookupDisabled">
                         <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
                             <i class="fa fa-bars"></i>
@@ -78,7 +78,7 @@
 
                 <div class="col-sm-5 input-group">
                     <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
-                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" [disabled]="isRefCodeDisabled">
+                        placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" title="{{featureBom.Ref}}" [disabled]="isRefCodeDisabled">
                     <div class="input-group-append" [hidden] ="isReflookupDisabled">
                         <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
                             <i class="fa fa-bars"></i>
@@ -133,12 +133,12 @@
                 <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                 <div class="col-sm-5 mt-3px">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory">
-                        <label class="custom-control-label" for="yes">Yes</label>
+                        <input type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory" title="{{this.language.YES}}">
+                        <label class="custom-control-label" for="yes">{{this.language.YES}}</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline ml-2">
-                        <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory">
-                        <label class="custom-control-label" for="no">No</label>
+                        <input type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory" title="{{this.language.NO}}">
+                        <label class="custom-control-label" for="no">{{this.language.NO}}</label>
                     </div>
                 </div>
             </div>

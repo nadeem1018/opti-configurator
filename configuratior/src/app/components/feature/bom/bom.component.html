@@ -49,10 +49,10 @@
                                 <div class="col-sm-5 input-group">
                                     <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
                                         name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
-                                        #featureinputbox>
+                                        #featureinputbox title="{{feature_bom_data.feature_code}}">
                                     <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
                                         name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
-                                        #featureinputbox>
+                                        #featureinputbox title="{{feature_bom_data.feature_id}}">
                                     <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
                                         <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
                                             <i class="fa fa-bars"></i>
@@ -66,7 +66,7 @@
                                 <label class="col-sm-4 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
                                 <div class="col-sm-5">
                                     <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
-                                        readonly [(ngModel)]="feature_bom_data.feature_name">
+                                        readonly [(ngModel)]="feature_bom_data.feature_name" title="{{feature_bom_data.feature_name}}">
                                 </div>
                             </div>
 
@@ -74,7 +74,7 @@
                                 <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc" placeholder="{{language.Bom_FeatureDesc}}"
-                                        readonly [(ngModel)]="feature_bom_data.feature_desc">
+                                        readonly [(ngModel)]="feature_bom_data.feature_desc" title="{{feature_bom_data.feature_desc}}">
                                 </div>
                             </div>
 
@@ -96,13 +96,13 @@
                                 <div class="col-sm-5 mt-3px">
                                     <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
-                                            value="Y">
-                                        <label class="custom-control-label" for="yes">&nbsp;Yes</label>
+                                            value="Y" title="{{this.language.YES}}">
+                                        <label class="custom-control-label" for="yes">&nbsp; {{this.language.YES}}</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline ml-2">
                                         <input type="radio" [disabled]="true" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
-                                            value="N">
-                                        <label class="custom-control-label" for="no">&nbsp;No</label>
+                                            value="N" title="{{this.language.NO}}">
+                                        <label class="custom-control-label" for="no">&nbsp; {{this.language.NO}}</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -154,9 +154,9 @@
                                         <td width=12%;>
                                             <div class="input-group">
                                                 <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value,type_value_code)"
-                                                    value={{row.type_value_code}} #type_value_code />
+                                                    value={{row.type_value_code}} #type_value_code title="{{row.type_value_code}}"  />
                                                 <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
-                                                    value={{row.type_value}} #type_value />
+                                                    value={{row.type_value}} #type_value  title="{{row.type_value}}" />
                                                 <div class="input-group-append" [hidden]=row.hide>
                                                     <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
                                                         <i class="fa fa-bars"></i>
@@ -168,33 +168,33 @@
                                         </td>
                                         <td width=9%;>
                                             <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm" id="display_name" (change)="on_displayname_change(display_name.value,row.rowindex)"
-                                                value={{row.display_name}} #display_name />
+                                                value={{row.display_name}} #display_name title="{{row.display_name}}"  />
 
 
                                         </td>
                                         <td width=6%;> 
                                             <input type="text" [disabled]="row.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm"
                                                 id="quantity" (change)="on_quantity_change(quantity.value,row.rowindex)" value={{row.quantity}}
-                                                #quantity />
+                                                #quantity title="{{row.quantity}}" />
                                         </td>
                                         <td width=6%;>
                                             <input type="checkbox" value="1" class="form-control  form-control-sm"  id="default" (change)="on_defualt_change(default,row.rowindex)"
-                                                value={{row.default}} #default [(checked)]=row.default />
+                                                value={{row.default}} #default [(checked)]=row.default title="{{row.default}}" />
                                         </td>
                                         <td width=6%;>
                                             <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"
-                                                value={{row.remark}} #remark />
+                                                value={{row.remark}} #remark title="{{row.remark}}" />
 
                                         </td>
                                         <td width=10%;>
                                             <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}}
                                               (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty [disabled]="row.isPropagateQtyDisable" #propagate_qty
-                                            />
+                                             title="{{row.propagate_qty}}" />
                                           </td>
                                           <td width=12%;>
                                             <div class="input-group">
                                               <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
-                                                #price_source [disabled]="row.isPriceDisabled" />
+                                                #price_source [disabled]="row.isPriceDisabled" title="{{row.price_source}}" />
                                               <div class="input-group-append" [hidden]=row.pricehide>
                                                 <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
                                                   <i class="fa fa-bars"></i>
@@ -221,7 +221,7 @@
                                             <div class="clearfix"></div>
                                         </td>
                                         <td width=5%;>
-                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)" title="{{this.language.delete}}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </td>
