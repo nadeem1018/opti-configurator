@@ -1105,6 +1105,7 @@ export class RulewbComponent implements OnInit {
       single_data_set.single_data_set_output = [];
       single_data_set.single_data_set_expression = [];
       single_data_set.single_data_set_header.push({
+        id : this.update_id,
         ModelId: this.rule_wb_data.rule_code,
         description: this.rule_wb_data.description,
         effective_from: this.rule_wb_data.effective_from,
@@ -1136,6 +1137,10 @@ export class RulewbComponent implements OnInit {
           if (data === "True") {
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.route.navigateByUrl('rulewb/view');
+            return;
+          }
+          else if (data === "AlreadyExist") {
+            this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
             return;
           }
           else {

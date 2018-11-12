@@ -1139,6 +1139,7 @@ export class ModelbomComponent implements OnInit {
   }
   save_data(){
     if (this.modelbom_data.length > 0) {
+      this.modelbom_data[0].id = this.update_id;
       for (let i = 0; i < this.modelbom_data.length; ++i) {
         if (this.modelbom_data[i].unique_identifer == false) {
           this.modelbom_data[i].unique_identifer = "N"
@@ -1179,6 +1180,10 @@ export class ModelbomComponent implements OnInit {
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('modelbom/view');
+          return;
+        }
+        else if (data === "AlreadyExist") {
+          this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           return;
         }
         else {
