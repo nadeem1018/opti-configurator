@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { JitSummaryResolver } from '../../../../node_modules/@angular/compiler';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { isNumber } from 'util';
+import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 //import { LookupComponent } from '../common/lookup/lookup.component';
 
 @Component({
@@ -3653,48 +3654,74 @@ export class OutputComponent implements OnInit {
     if (this.feature_itm_list_table.length > 0) {
       for (var ifeatureitemlist in this.feature_itm_list_table) {
         for (var ifeatureBomData in this.FeatureBOMDataForSecondLevel) {
-          if (this.feature_itm_list_table[ifeatureitemlist].Item == this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY) {
+          if (this.feature_itm_list_table[ifeatureitemlist].Item == this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY && this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY!=null) {
             this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = true
             this.FeatureBOMDataForSecondLevel[ifeatureBomData].disable = false
           }
           if (this.feature_itm_list_table[ifeatureitemlist].Item != this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY && this.feature_itm_list_table[ifeatureitemlist].FeatureId == this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_FEATUREID) {
-            var featureid=this.feature_itm_list_table[ifeatureitemlist].FeatureId
+            var featureid = this.feature_itm_list_table[ifeatureitemlist].FeatureId
             var parentarray = this.ModelHeaderData.filter(function (obj) {
               return obj['OPTM_FEATUREID'] == featureid
             })
-            if(parentarray.length>0){
-              if(parentarray[0].OPTM_MAXSELECTABLE==1){
+            if (parentarray.length > 0) {
+              if (parentarray[0].OPTM_MAXSELECTABLE == 1) {
                 this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = false
               }
-              else{
+              else {
+                if (this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_FEATUREID == parentarray[0].OPTM_FEATUREID) {
+                  var modeldataitemfilter = getmodelsavedata.filter(function (obj) {
+                    return  obj['OPTM_PARENTID'] == parentarray[0].OPTM_FEATUREID
+                  })
 
+                  for (var imodeldataitemfilter in modeldataitemfilter) {
+                    if (modeldataitemfilter[imodeldataitemfilter].OPTM_ITEMCODE == this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY) {
+                      this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked=true
+                    }
+                    else{
+                      this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked=false
+                    }
+                  }
+                }
               }
-              
+
             }
-           
+
           }
 
         }
         for (var imodelBomData in this.ModelBOMDataForSecondLevel) {
-          if (this.feature_itm_list_table[ifeatureitemlist].Item == this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY) {
+          if (this.feature_itm_list_table[ifeatureitemlist].Item == this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY && this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY!=null) {
             this.ModelBOMDataForSecondLevel[imodelBomData].checked = true
             this.ModelBOMDataForSecondLevel[imodelBomData].disable = false
           }
           if (this.feature_itm_list_table[ifeatureitemlist].Item != this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY && this.feature_itm_list_table[ifeatureitemlist].FeatureId == this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_MODELID) {
-            var modelid=this.feature_itm_list_table[ifeatureitemlist].FeatureId
+            var modelid = this.feature_itm_list_table[ifeatureitemlist].FeatureId
             var parentarray = this.ModelHeaderData.filter(function (obj) {
               return obj['OPTM_MODELID'] == modelid
             })
-            if(parentarray.length>0){
-              if(parentarray[0].OPTM_MAXSELECTABLE==1){
+            if (parentarray.length > 0) {
+              if (parentarray[0].OPTM_MAXSELECTABLE == 1) {
                 this.ModelBOMDataForSecondLevel[imodelBomData].checked = false
               }
-              else{
-                
+              else {
+                if (this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_FEATUREID == parentarray[0].OPTM_FEATUREID) {
+                  var modeldataitemfilter = getmodelsavedata.filter(function (obj) {
+                   return obj['OPTM_PARENTID'] == parentarray[0].OPTM_FEATUREID
+                  })
+
+                  for (var imodeldataitemfilter in modeldataitemfilter) {
+                    if (modeldataitemfilter[imodeldataitemfilter].OPTM_ITEMCODE == this.ModelBOMDataForSecondLevel[imodelBomData].OPTM_ITEMKEY) {
+                      this.ModelBOMDataForSecondLevel[imodelBomData].checked=true
+                    }
+                    else{
+                      this.ModelBOMDataForSecondLevel[imodelBomData].checked=false
+                    }
+                  }
+                }
               }
-             
+
             }
-           
+
           }
 
         }
