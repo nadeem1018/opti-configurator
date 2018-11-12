@@ -166,7 +166,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="posting_date">{{language.posting_date}}</label>
                     <div class="col-sm-7 input-group">
-                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" class="form-control  form-control-sm mt3" name='posting_date'
+                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3" name='posting_date'
                         type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}"
                         [(ngModel)]="step1_data.posting_date">
                       <div class="input-group-append">
@@ -180,7 +180,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="delivery_until">{{document_date}}</label>
                     <div class="col-sm-7 input-group">
-                      <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" class="form-control  form-control-sm mt3" name='delivery_until'
+                      <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3" name='delivery_until'
                         type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
                         [(ngModel)]="step1_data.delivery_until">
                       <div class="input-group-append">

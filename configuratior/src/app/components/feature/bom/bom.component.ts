@@ -355,6 +355,7 @@ export class BomComponent implements OnInit {
       return;
     }
     if (this.feature_bom_table.length > 0) {
+      this.feature_bom_table[0].id = this.update_id;
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].default === false) {
           this.feature_bom_table[i].default = "N"
@@ -381,6 +382,10 @@ export class BomComponent implements OnInit {
         }
         else if (data === "Cyclic Reference") {
           this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
+          return;
+        }
+        else if (data === "AlreadyExist") {
+          this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           return;
         }
         else {
