@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,18 @@ import { CommonData } from "../../models/CommonData";
 export class HomeComponent implements OnInit {
 
   private baseClassObj = new CommonData();
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
   public commonData = new CommonData();
   ngOnInit() {
     this.commonData.checkSession();
+
+    this.router.navigateByUrl('/item-code-generation/view');
+  }
+  
+  ngAfterViewInit() {
+    this.router.navigateByUrl('/item-code-generation/view');
   }
 
 }
