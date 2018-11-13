@@ -2359,7 +2359,9 @@ export class OutputComponent implements OnInit {
       "OPTM_OWNER": this.step1_data.owner,
       "OPTM_REMARKS": this.step1_data.remark,
       "OPTM_BILLADD": this.step1_data.bill_to_address,
-      "OPTM_SHIPADD": this.step1_data.ship_to_address
+      "OPTM_SHIPADD": this.step1_data.ship_to_address,
+      "OPTM_POSTINGDATE": this.step1_data.posting_date,
+      "OPTM_GRANDTOTAL": Number(this.acc_grand_total)
     })
 
     //creating details table array
