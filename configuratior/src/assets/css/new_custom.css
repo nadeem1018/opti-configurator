@@ -553,3 +553,7 @@ hr {
   line-height: 0 !important;
   height: calc(1.35rem + 1px) !important;
 }
+
+.border_none{
+  border:none !important; 
+}

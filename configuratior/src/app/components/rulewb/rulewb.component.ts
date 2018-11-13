@@ -227,7 +227,7 @@ export class RulewbComponent implements OnInit {
               }
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
-              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
+              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OP1CODE + ' ' + fetch_data.OPTM_OP2CODE;
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }
@@ -555,155 +555,220 @@ export class RulewbComponent implements OnInit {
     )
   }
 
-  genearate_expression() {
-    let current_seq = this.seq_count;
-    console.log(current_seq);
-
-    let seq_data = this.rule_sequence_data.filter(function (obj) {
-      return obj['seq_count'] == current_seq;
-    });
-    let current_exp = '';
-
-    let braces_list = ["{", "(", "["];
-    let added_braces = [];
-    let braces_open = [];
-    let braces_closed = [];
-    let open_close_braces_list = { "{": "}", "(": ")", "[": "]" };
-    let brackes_category = { "open": ['{', '(', '['], "close": ['}', ')', ']'] };
-    for (var index in seq_data) {
-
-      let operator = (seq_data[index].operator != "" && seq_data[index].operator !== undefined) ? seq_data[index].operator : "";
-      let braces = (seq_data[index].braces != "" && seq_data[index].braces !== undefined) ? seq_data[index].braces : "";
-      let type = (seq_data[index].type != "" && seq_data[index].type !== undefined) ? seq_data[index].type : "";
-      let type_value_code = (seq_data[index].type_value_code != "" && seq_data[index].type_value_code !== undefined) ? seq_data[index].type_value_code : "";
-      let condition = (seq_data[index].condition != "" && seq_data[index].condition !== undefined) ? seq_data[index].condition : "";
-      let operand_1 = (seq_data[index].operand_1 != "" && seq_data[index].operand_1 !== undefined) ? seq_data[index].operand_1 : "";
-      let operand_2 = (seq_data[index].operand_2 != "" && seq_data[index].operand_2 !== undefined) ? seq_data[index].operand_2 : "";
-      let operand_1_code = (seq_data[index].operand_1_code != "" && seq_data[index].operand_1_code !== undefined) ? seq_data[index].operand_1_code : "";
-      let operand_2_code = (seq_data[index].operand_2_code != "" && seq_data[index].operand_2_code !== undefined) ? seq_data[index].operand_2_code : "";
-      // validations 
-      if (braces != "") {
-        added_braces.push(braces);
-        if (brackes_category['open'].indexOf(braces) !== -1) {
-          braces_open.push(braces);
-        }
-        if (brackes_category['close'].indexOf(braces) !== -1) {
-          braces_closed.push(braces);
+  validate_brackets(sequence) {
+    let string_holder = []
+    let open_braces = ['(', '{', '[']
+    let closed_braces = [')', '}', ']']
+    for (let letter of sequence) { 
+      if (open_braces.includes(letter)) { 
+        string_holder.push(letter);
+      } else if (closed_braces.includes(letter)) { 
+        let openPair = open_braces[closed_braces.indexOf(letter)]; 
+        if (string_holder[string_holder.length - 1] === openPair) { 
+          string_holder.splice(-1, 1);
+        } else { 
+          string_holder.push(letter)
+          break; 
         }
       }
+    }
+    return (string_holder.length === 0) // return true if length is 0, otherwise false
+  }
 
-      if (index != "0") {
-        if (type != "" && operator == "") {
-          this.generated_expression_value = "";
-          this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async  genearate_expression() {
+  
+      await this.sleep(700);
+      let current_seq = this.seq_count;
+      console.log(current_seq);
+
+      let seq_data = this.rule_sequence_data.filter(function (obj) {
+        return obj['seq_count'] == current_seq;
+      });
+      let current_exp = '';
+
+      /*  let braces_list = ["{", "(", "["];
+       let added_braces = [];
+       let braces_open = [];
+       let braces_closed = [];
+       let open_close_braces_list = { "{": "}", "(": ")", "[": "]" };
+       */
+      let brackes_category = { "open": ['{', '(', '['], "close": ['}', ')', ']'] };
+      for (var index in seq_data) {
+
+        let operator = (seq_data[index].operator != "" && seq_data[index].operator !== undefined) ? seq_data[index].operator : "";
+        let braces = (seq_data[index].braces != "" && seq_data[index].braces !== undefined) ? seq_data[index].braces : "";
+        let type = (seq_data[index].type != "" && seq_data[index].type !== undefined) ? seq_data[index].type : "";
+        let type_value_code = (seq_data[index].type_value_code != "" && seq_data[index].type_value_code !== undefined) ? seq_data[index].type_value_code : "";
+        let condition = (seq_data[index].condition != "" && seq_data[index].condition !== undefined) ? seq_data[index].condition : "";
+        let operand_1 = (seq_data[index].operand_1 != "" && seq_data[index].operand_1 !== undefined) ? seq_data[index].operand_1 : "";
+        let operand_2 = (seq_data[index].operand_2 != "" && seq_data[index].operand_2 !== undefined) ? seq_data[index].operand_2 : "";
+        let operand_1_code = (seq_data[index].operand_1_code != "" && seq_data[index].operand_1_code !== undefined) ? seq_data[index].operand_1_code : "";
+        let operand_2_code = (seq_data[index].operand_2_code != "" && seq_data[index].operand_2_code !== undefined) ? seq_data[index].operand_2_code : "";
+        // validations 
+        /*   if (braces != "") {
+            added_braces.push(braces);
+            if (brackes_category['open'].indexOf(braces) !== -1) {
+              braces_open.push(braces);
+            }
+            if (brackes_category['close'].indexOf(braces) !== -1) {
+              braces_closed.push(braces);
+            }
+          } */
+
+        if (index != "0") {
+          if (type != "" && operator == "") {
+            this.generated_expression_value = "";
+            this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+            return false;
+          }
+        }
+
+        if (type_value_code != "") {
+          if (condition == "") {
+            this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.condition, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+            return false;
+          }
+
+          if (operand_1_code == "") {
+            this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_1, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+            return false;
+          }
+
+
+        }
+
+       /*  if (type_value_code !== "" && operand_1_code !== "" && condition == "") {
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.condition, this.commonData.toast_config);
           this.showAddSequenceBtn = false;
           this.showUpdateSequenceBtn == false;
           return false;
         }
+
+        if (type_value_code != "" && condition != "" && operand_1_code == "") {
+        
+          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_1, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
+          return false;
+        } */
+
+        if (operator != "") {
+          if (index == "0") {
+            this.generated_expression_value = "";
+            this.toastr.error('', this.language.operator_row_1_error, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+
+            return false;
+          }
+
+
+          if (type == "" || type_value_code == "" || condition == "" || operand_1_code == "") {
+
+            let error_fields = '';
+            if (type == "") {
+              if (error_fields != "") {
+                error_fields += ", ";
+              }
+              error_fields += " " + this.language.type;
+            }
+
+            if (type_value_code == "") {
+              if (error_fields != "") {
+                error_fields += ", ";
+              }
+              error_fields += " " + this.language.model_feature;
+            }
+
+            if (condition == "") {
+              if (error_fields != "") {
+                error_fields += ", ";
+              }
+              error_fields += " " + this.language.condition;
+            }
+
+            if (operand_1_code == "") {
+              if (error_fields != "") {
+                error_fields += ", ";
+              }
+              error_fields += " " + this.language.operand_1;
+            }
+            this.generated_expression_value = "";
+            this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+            return false;
+          }
+
+          if (condition == "Between" && operand_2 == "") {
+            this.generated_expression_value = "";
+            this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
+            this.showAddSequenceBtn = false;
+            this.showUpdateSequenceBtn == false;
+            return false;
+          }
+
+        }
+
+        let operand = operand_1_code;
+        if (operand_2 != "") {
+          operand = operand_1_code + ' and ' + operand_2_code;
+        }
+
+        if (operator !== "" && brackes_category['close'].indexOf(braces) !== -1) {
+          this.generated_expression_value = "";
+          this.toastr.error('', this.language.illogical_expression_error, this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
+          return false;
+        }
+
+        this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
+        current_exp += " " + seq_data[index].row_expression;
       }
 
-      if (type_value_code !== "" && operand_1_code !== "" && condition == "") {
-        this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.condition, this.commonData.toast_config);
+      /*  let reverse_open_seq_braces = [];
+       for (var i = braces_open.length; i >= 0; i--) {
+         if (open_close_braces_list[braces_open[i]] !== undefined && open_close_braces_list[braces_open[i]] !== "") {
+           reverse_open_seq_braces.push(open_close_braces_list[braces_open[i]]);
+         }
+       }
+       console.log("braces_open - " + braces_open);
+       console.log("braces_closed - " + braces_closed);
+       console.log(reverse_open_seq_braces); */
+      // if (braces_open.length === braces_closed.length && reverse_open_seq_braces.every(function (value, index) { return value === braces_closed[index] })) {
+      if (this.validate_brackets(current_exp)) {
+      } else {
+        this.generated_expression_value = "";
+        this.toastr.error('', this.language.invalid_expression_bracket_error, this.commonData.toast_config);
         this.showAddSequenceBtn = false;
         this.showUpdateSequenceBtn == false;
         return false;
 
       }
 
-      if (operator != "") {
-        if (index == "0") {
-          this.generated_expression_value = "";
-          this.toastr.error('', this.language.operator_row_1_error, this.commonData.toast_config);
-          this.showAddSequenceBtn = false;
-          this.showUpdateSequenceBtn == false;
+      if (current_exp.trim() != "") {
 
-          return false;
+        this.generated_expression_value = current_exp;
+        if (this.add_sequence_mode == true) {
+          this.showAddSequenceBtn = true;
+        } else if (this.update_sequence_mode == true) {
+          this.showUpdateSequenceBtn = true;
         }
 
 
-        if (type == "" || type_value_code == "" || condition == "" || operand_1_code == "") {
-
-          let error_fields = '';
-          if (type == "") {
-            if (error_fields != "") {
-              error_fields += ", ";
-            }
-            error_fields += " " + this.language.type;
-          }
-
-          if (type_value_code == "") {
-            if (error_fields != "") {
-              error_fields += ", ";
-            }
-            error_fields += " " + this.language.model_feature;
-          }
-
-          if (condition == "") {
-            if (error_fields != "") {
-              error_fields += ", ";
-            }
-            error_fields += " " + this.language.condition;
-          }
-
-          if (operand_1_code == "") {
-            if (error_fields != "") {
-              error_fields += ", ";
-            }
-            error_fields += " " + this.language.operand_1;
-          }
-          this.generated_expression_value = "";
-          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + error_fields, this.commonData.toast_config);
-          this.showAddSequenceBtn = false;
-          this.showUpdateSequenceBtn == false;
-          return false;
-        }
-
-        if (condition == "Between" && operand_2 == "") {
-          this.generated_expression_value = "";
-          this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
-          this.showAddSequenceBtn = false;
-          this.showUpdateSequenceBtn == false;
-          return false;
-        }
-
       }
 
-      let operand = operand_1_code;
-      if (operand_2 != "") {
-        operand = operand_1_code + ' and ' + operand_2_code;
-      }
-      this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
-      current_exp += " " + seq_data[index].row_expression;
-    }
-
-    let reverse_open_seq_braces = [];
-    for (var i = braces_open.length; i >= 0; i--) {
-      if (open_close_braces_list[braces_open[i]] !== undefined && open_close_braces_list[braces_open[i]] !== "") {
-        reverse_open_seq_braces.push(open_close_braces_list[braces_open[i]]);
-      }
-    }
-    console.log(reverse_open_seq_braces);
-    if (braces_open.length === braces_closed.length && reverse_open_seq_braces.every(function (value, index) { return value === braces_closed[index] })) {
-    } else {
-      this.generated_expression_value = "";
-      this.toastr.error('', this.language.bracket_missing_expression, this.commonData.toast_config);
-      this.showAddSequenceBtn = false;
-      this.showUpdateSequenceBtn == false;
-      return false;
-
-    }
-
-    if (current_exp.trim() != "") {
-
-      this.generated_expression_value = current_exp;
-      if (this.add_sequence_mode == true) {
-        this.showAddSequenceBtn = true;
-      } else if (this.update_sequence_mode == true) {
-        this.showUpdateSequenceBtn = true;
-      }
-
-
-    }
   }
 
   on_input_change(rowindex, key, value, actualvalue) {
@@ -772,6 +837,15 @@ export class RulewbComponent implements OnInit {
               data => {
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidOperationId, this.commonData.toast_config);
+                  if(key == "operand_1_code"){
+                    this.rule_sequence_data[i]['operand_1'] = '';
+                    this.rule_sequence_data[i]['operand_1_code'] = '';
+                  } 
+                  if(key == "operand_2_code"){
+                    this.rule_sequence_data[i]['operand_2'] = '';
+                    this.rule_sequence_data[i]['operand_2_code'] = '';
+                  }
+
                   $(actualvalue).val("");
                   return;
                 }

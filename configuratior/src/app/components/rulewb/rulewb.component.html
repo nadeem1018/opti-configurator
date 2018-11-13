@@ -37,7 +37,7 @@
         <label class="col-sm-3 col-form-label" for="rule_code">{{language.rule_code}}</label>
         <div class="col-sm-5">
           <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
-            [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}">
+            [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}" tabindex="1">
         </div>
 
         <!-- <label class="opt_custome-label col-form-label" for="rule_description">{{language.description}}</label>
@@ -54,7 +54,7 @@
         <div class="col-sm-5">
           <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
             name='effective_from' type="text" value="{{rule_wb_data.effective_from}}" id="effective_from" readonly placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from" title="{{rule_wb_data.effective_from}}"
-            style="max-width: calc(100% - 26px) !important; width: 100%;">
+            style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="3" >
           <div class="input-group-append float-left">
             <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
               <i class="fa fa-calendar"></i>
@@ -71,7 +71,7 @@
         <div class="col-sm-5 mt-3px">
           <div class="custom-control custom-checkbox custom-control-inline">
             <input type="checkbox" id="yes" name="discontinued" [(ngModel)]="rule_wb_data.discontinued" class="custom-control-input"
-              value="1" style="position: relative;margin-top: 5px;" title="{{rule_wb_data.discontinued}}">
+              value="1" style="position: relative;margin-top: 5px;" title="{{rule_wb_data.discontinued}}" tabindex="5">
             <label class="custom-control-label" for="yes"></label>
           </div>
         </div>
@@ -84,7 +84,7 @@
           <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="feature_id" (change)="onFeatureIdChange()"
             placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id" title="{{rule_wb_data.applicable_for_feature_id}}">
           <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code" title="{{rule_wb_data.applicable_for_feature_code}}"
-            placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange()" style="max-width: calc(100% - 24px) !important; width: 100%;">
+            placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange()" style="max-width: calc(100% - 23px) !important; width: 100%;" tabindex="6">
           <div class="input-group-append">
             <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
               <i class="fa fa-bars"></i>
@@ -129,7 +129,7 @@
               <label class="col-sm-3 col-form-label" for="rule_description">{{language.description}}</label>
               <div class="col-sm-5">
                 <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
-                  [(ngModel)]="rule_wb_data.description" title="{{rule_wb_data.description}}">
+                  [(ngModel)]="rule_wb_data.description" title="{{rule_wb_data.description}}" tabindex="2">
               </div>
       
             </div>
@@ -139,7 +139,7 @@
               <div class="col-sm-5">
                 <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
                   name='effective_to' type="text" value="{{rule_wb_data.effective_to}}" id="effective_to" readonly placeholder="{{language.effective_to}}" [(ngModel)]="rule_wb_data.effective_to" title="{{rule_wb_data.effective_to}}"
-                  style="max-width: calc(100% - 26px) !important; width: 100%;">
+                  style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="4">
                 <div class="input-group-append float-left">
                   <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="date_time_icon">
                     <i class="fa fa-calendar"></i>

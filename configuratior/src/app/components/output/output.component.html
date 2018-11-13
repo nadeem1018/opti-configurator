@@ -434,7 +434,7 @@
                       <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
                         attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
                         <div class="panel-body">
-                          <table class="inner-table table table-bordered table-strip table-sm">
+                          <table class="parent_table inner-table table table-bordered table-strip table-sm">
                             <thead class="thead-dark">
                               <tr>
                                 <th>#</th>
@@ -447,11 +447,19 @@
                               <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;">
                                 <td>
                                   <div class="{{header_data.element_class}}">
-                                    <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
-                                      #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
-                                      (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"
-                                      [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
-                                    <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                    <span *ngIf="header_data.is_second_level == 1">
+                                        <input type="{{header_data.element_type}}" id="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
+                                        #selectionchecked name="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" class="custom-control-input"
+                                        (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"  [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                        <label class="custom-control-label" for="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                    </span>
+                                    <span *ngIf="header_data.is_second_level== undefined">
+                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
+                                        #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
+                                        (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"  [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                    </span>
+                                    
                                   </div>
                                 </td>
                                 <td>
@@ -626,12 +634,12 @@
                         <thead class="" style=" font-size: 14px; ">
                           <tr>
                             <th width="70%">{{language.product_discount}}</th>
-                            <th width="30%">
+                            <td width="30%">
                               <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
     text-align: right;     padding-right: 1.5px !important;" id="product_discount" name="product_discount" #product_discount
                                 (change)="on_calculation_change('product_discount',product_discount.value)" [(ngModel)]="this.feature_discount_percent"
                               />
-                            </th>
+                            </td>
                           </tr>
                         </thead>
                         <tbody>
@@ -863,9 +871,9 @@
                       <thead class="" style=" font-size: 14px; ">
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
-                          <th width="30%" class="text-right mr-3">
+                          <td width="30%" class="text-right mr-3">
                             {{this.feature_discount_percent}}
-                          </th>
+                          </td>
                         </tr>
                       </thead>
                       <tbody>
@@ -1024,7 +1032,7 @@
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.delivery_date}}</b>
                         </label>
-                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_date}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
                       </div>
 
                       <div class="form-group row clearfix ">
@@ -1066,7 +1074,7 @@
                         <label class="col-sm-5 col-form-label">
                           <b>{{language.contact_person}}</b>
                         </label>
-                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.contact_person}}</label>
+                        <label class="col-sm-7 col-form-label font-weight-light">{{step1_data.person_name}}</label>
                       </div>
 
                       <div class="form-group row clearfix ">
@@ -1101,7 +1109,7 @@
                     </div>
                     <div class="col-md-6">
 
-                      <div class="form-group row clearfix ">
+                    <!--   <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.payment_terms}}</b>
                         </label>
@@ -1113,7 +1121,7 @@
                           <b>{{language.payment_method}}</b>
                         </label>
                         <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.payment_method}}</label>
-                      </div>
+                      </div> -->
 
                     </div>
                   </div>
@@ -1137,7 +1145,7 @@
                           <tbody class="lookup_table_body" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                             <tr class="" *ngFor="let row of step3_data_final">
                               <span *ngIf="(Object.keys(row).length-1) != i">
-                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
+                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step4_data_final_hidden_elements[i]">
                                   {{row[row_data]}}
                                 </td>
                                 </span>
@@ -1174,9 +1182,9 @@
                           <thead class="" style=" font-size: 14px; ">
                             <tr>
                               <th width="70%">{{language.product_discount}}</th>
-                              <th width="30%" class="pull-right text-right">
+                              <td width="30%" class="pull-right text-right border_none">
                                 {{this.feature_discount_percent}}
-                              </th>
+                              </td>
                             </tr>
                           </thead>
                           <tbody>

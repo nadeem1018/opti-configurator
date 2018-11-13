@@ -296,19 +296,22 @@ export class ModelbomComponent implements OnInit {
               return (obj['component'] == display_name);
             });
             if (remove_tree_data.length > 0) {
-              let tree_element_child = this.tree_data_json.filter(function (obj) {
+              /* let tree_element_child = this.tree_data_json.filter(function (obj) {
                 return obj['parentId'] == remove_tree_data[0]['component'];
               });
-              if (tree_element_child.length > 0) {
+              console.log(remove_tree_data);
+              console.log(tree_element_child);
+              console.log(this.tree_data_json); */
+             /*  if (tree_element_child.length > 0) {
                 this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
                 return false;
-              } else {
+              } else { */
                 for (let j = 0; j < this.tree_data_json.length; ++j) {
                   if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
                     this.tree_data_json.splice(j, 1);
                   }
                 }
-              }
+             /*  } */
             }
           }
           this.modelbom_data.splice(i, 1);
@@ -1178,6 +1181,8 @@ export class ModelbomComponent implements OnInit {
         else {
           this.modelbom_data[i].ReadyToUse = "Y"
         }
+
+        this.modelbom_data[i].type_value= this.modelbom_data[i].type_value.toString();
 
 
       }
