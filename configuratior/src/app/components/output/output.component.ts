@@ -52,6 +52,7 @@ export class OutputComponent implements OnInit {
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
+  public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
   public acc_item_tax: number = 0
@@ -546,7 +547,7 @@ export class OutputComponent implements OnInit {
       }
       var rgexp = /^\d+$/;
       if (rgexp.test(value) == false) {
-        this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
+        this.toastr.error('', this.language.quantity_numeric_only, this.commonData.toast_config);
         this.step2_data.quantity = this.previousquantity;
         return;
       }
