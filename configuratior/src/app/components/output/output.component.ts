@@ -1630,7 +1630,7 @@ export class OutputComponent implements OnInit {
                       OPTM_FEATUREID: feature_model_data.OPTM_CHILDFEATUREID,
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: feature_model_data.OPTM_LINENO,
-                      OPTM_MANDATORY: parentarray[0].OPTM_MANDATORY,
+                      OPTM_MANDATORY: "N",
                       OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
                       OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -1648,7 +1648,8 @@ export class OutputComponent implements OnInit {
                       feature_code: feature_model_data.feature_code,
                       parentfeatureid: parentfeatureid,
                       parentmodelid: parentmodelid,
-                      OPTM_LEVEL: feature_model_data.OPTM_LEVEL
+                      OPTM_LEVEL: feature_model_data.OPTM_LEVEL,
+                      is_second_level : 1
 
                     });
 
@@ -1698,7 +1699,8 @@ export class OutputComponent implements OnInit {
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           checked: checkeddefault,
-                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1
+                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
+                          is_second_level : 1
                         });
 
                         if (checkeddefault == true) {
@@ -1735,7 +1737,7 @@ export class OutputComponent implements OnInit {
                     OPTM_FEATUREID: feature_model_data.OPTM_FEATUREID,
                     OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                     OPTM_LINENO: feature_model_data.OPTM_LINENO,
-                    OPTM_MANDATORY: parentarray[0].OPTM_MANDATORY,
+                    OPTM_MANDATORY: "N",
                     OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
                     OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -1753,7 +1755,8 @@ export class OutputComponent implements OnInit {
                     feature_code: feature_model_data.feature_code,
                     parentfeatureid: parentfeatureid,
                     parentmodelid: parentmodelid,
-                    OPTM_LEVEL: feature_model_data.OPTM_LEVEL
+                    OPTM_LEVEL: feature_model_data.OPTM_LEVEL,
+                    is_second_level : 1
 
                   });
                   for (let i = 0; i < data.DataForSelectedFeatureModelItem.length; i++) {
@@ -1797,7 +1800,8 @@ export class OutputComponent implements OnInit {
                           OPTM_VALUE: data.DataForSelectedFeatureModelItem[i].OPTM_VALUE,
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
-                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1
+                          OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
+                          is_second_level : 1
                         });
                       }
                     }
