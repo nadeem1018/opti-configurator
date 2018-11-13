@@ -1166,6 +1166,8 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].ReadyToUse = "Y"
         }
 
+        this.modelbom_data[i].type_value= this.modelbom_data[i].type_value.toString();
+
 
       }
     }
