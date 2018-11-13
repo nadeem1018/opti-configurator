@@ -207,7 +207,8 @@ export class ModelbomComponent implements OnInit {
                 min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
                 max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
                 propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
-                price_source: data.ModelDetail[i].OPTM_PRICESOURCE,
+                price_source: data.ModelDetail[i].ListName,
+                price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
                 mandatory: data.ModelDetail[i].OPTM_MANDATORY,
                 unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
                 isDisplayNameDisabled: false,
@@ -536,7 +537,7 @@ export class ModelbomComponent implements OnInit {
 
     }
     else if (this.lookupfor == 'Price_lookup') {
-      this.getPriceDetails($event[0],  this.currentrowindex);
+      this.getPriceDetails($event[1],$event[0],  this.currentrowindex);
     }
     else if (this.lookupfor == 'rule_section_lookup') {
       this.rule_data = $event;
@@ -550,10 +551,11 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  getPriceDetails(price, index) {
+  getPriceDetails(price_list_name,price, index) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === index) {
-        this.modelbom_data[i].price_source = price.toString()
+        this.modelbom_data[i].price_source = price_list_name.toString()
+        this.modelbom_data[i].price_source_id = price.toString()
       }
     }
   }
@@ -792,13 +794,24 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  on_price_source_change(value, rowindex) {
+  on_price_source_change(id,value, rowindex,actualValue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-        this.modelbom_data[i].price_source = value
-
-
+        this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value,value).subscribe(
+          data => {
+            if (data === "False") {
+              $(actualValue).val("");
+              this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
+              return;
+            }
+            else if (data != null) {
+              this.modelbom_data[i].price_source_id = data
+              this.modelbom_data[i].price_source = value
+              this.lookupfor = ""
+            }
+            
+          })
       }
     }
 

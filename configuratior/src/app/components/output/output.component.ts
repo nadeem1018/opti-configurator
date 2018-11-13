@@ -47,10 +47,10 @@ export class OutputComponent implements OnInit {
   public lookupfor: string = '';
   public view_route_link: any = "/home";
   public accessory_table_head = ["#", this.language.code, this.language.Name];
-  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn, this.language.accessories];
-  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price, this.language.price_extn];
+  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn, this.language.accessories];
+  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price_source, this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public feature_item_tax: number = 0
   public feature_item_total: number = 0
@@ -1636,7 +1636,7 @@ export class OutputComponent implements OnInit {
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
                       OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                       OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME,
-                      OPTM_PRICESOURCE: feature_model_data.OPTM_PRICESOURCE,
+                      OPTM_PRICESOURCE: feature_model_data.ListName,
                       OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                       OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
                       OPTM_TYPE: feature_model_data.OPTM_TYPE,
@@ -1690,7 +1690,7 @@ export class OutputComponent implements OnInit {
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                           OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME,
-                          OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].OPTM_PRICESOURCE,
+                          OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
@@ -1741,7 +1741,7 @@ export class OutputComponent implements OnInit {
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
                     OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                     OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME,
-                    OPTM_PRICESOURCE: feature_model_data.OPTM_PRICESOURCE,
+                    OPTM_PRICESOURCE: feature_model_data.ListName,
                     OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                     OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
                     OPTM_TYPE: feature_model_data.OPTM_TYPE,
@@ -1790,7 +1790,7 @@ export class OutputComponent implements OnInit {
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                           OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME,
-                          OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].OPTM_PRICESOURCE,
+                          OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
@@ -1892,7 +1892,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
           quantity: ItemData[0].OPTM_QUANTITY * this.step2_data.quantity,
-          price: ItemData[0].OPTM_PRICESOURCE,
+          price: ItemData[0].ListName,
           Actualprice: ItemData[0].Price,
           pricextn: 0,
           is_accessory: "N",
@@ -2677,7 +2677,7 @@ export class OutputComponent implements OnInit {
           "OPTM_WHSE": this.warehouse,
           "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
           "OPTM_QUANTITY": Number(this.feature_itm_list_table[ifeature].OPTM_QUANTITY),
-          "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].OPTM_PRICESOURCE),
+          "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].ListName),
           "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
           "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].OPTM_QUANTITY * this.feature_itm_list_table[ifeature].Actualprice),
           "OPTM_DISCPERCENT": this.feature_itm_list_table[ifeature].pricextn,
@@ -3094,7 +3094,7 @@ export class OutputComponent implements OnInit {
             ItemNumber: ItemData[i].DocEntry,
             Description: ItemData[i].OPTM_DISPLAYNAME,
             quantity: ItemData[i].OPTM_QUANTITY * this.step2_data.quantity,
-            price: ItemData[i].OPTM_PRICESOURCE,
+            price: ItemData[i].ListName,
             Actualprice: ItemData[i].Price,
             pricextn: 0,
             is_accessory: "Y",
@@ -3196,7 +3196,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
           quantity: DefaultData[idefault].OPTM_QUANTITY * this.step2_data.quantity,
-          price: DefaultData[idefault].OPTM_PRICESOURCE,
+          price: DefaultData[idefault].ListName,
           Actualprice: DefaultData[idefault].Price,
           pricextn: 0,
           is_accessory: "N",
@@ -3231,7 +3231,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: "",
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
           quantity: ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity,
-          price: ModelData[imodelarray].OPTM_PRICESOURCE,
+          price: ModelData[imodelarray].ListName,
           Actualprice: 0,
           pricextn: 0,
           is_accessory: "N",
@@ -3263,7 +3263,7 @@ export class OutputComponent implements OnInit {
             ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
             Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
             quantity: ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity,
-            price: ModelItemsArray[imodelItemsarray].OPTM_PRICESOURCE,
+            price: ModelItemsArray[imodelItemsarray].ListName,
             Actualprice: ModelItemsArray[imodelItemsarray].Price,
             pricextn: 0,
             is_accessory: "N",
@@ -3308,7 +3308,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: ModelItemsData[imodelarray].DocEntry,
           Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
           quantity: ModelItemsData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity,
-          price: ModelItemsData[imodelarray].OPTM_PRICESOURCE,
+          price: ModelItemsData[imodelarray].ListName,
           Actualprice: ModelItemsData[imodelarray].Price,
           pricextn: 0,
           is_accessory: "N",
