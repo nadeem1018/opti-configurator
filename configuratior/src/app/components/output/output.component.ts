@@ -137,7 +137,7 @@ export class OutputComponent implements OnInit {
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
-
+  public min;
   detectDevice() {
     let getDevice = UIHelper.isDevice();
     this.isMobile = getDevice[0];
@@ -151,15 +151,15 @@ export class OutputComponent implements OnInit {
       this.isPerfectSCrollBar = false;
     }
   }
-
+  
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.detectDevice();
     element.classList.add('sidebar-toggled');
-
-
+    let d = new Date();
+    this.min = new Date(d.setDate(d.getDate() - 1));
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
