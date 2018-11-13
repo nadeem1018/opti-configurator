@@ -227,7 +227,7 @@ export class RulewbComponent implements OnInit {
               }
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
-              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OPERAND1 + ' ' + fetch_data.OPTM_OPERAND2;
+              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OP1CODE + ' ' + fetch_data.OPTM_OP2CODE;
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }

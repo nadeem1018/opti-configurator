@@ -156,7 +156,8 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('defaultRecords', this.record_per_page);
     sessionStorage.setItem('isLoggedIn', "true");
     // this.router.navigateByUrl('/home');
-      let home_page = this.commonData.application_path + '/index.html#home';
+      // let home_page = this.commonData.application_path + '/index.html#home';
+      let home_page = this.commonData.application_path + '/index.html#item-code-generation/view';
       
       window.location.href = home_page;
     }
