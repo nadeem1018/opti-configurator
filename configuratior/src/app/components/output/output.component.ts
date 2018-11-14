@@ -2374,32 +2374,32 @@ export class OutputComponent implements OnInit {
       final_dataset_to_save.OPConfig_OUTPUTDTL = [];
       final_dataset_to_save.ConnectionDetails = [];
 
-      //creating header data
-      final_dataset_to_save.OPConfig_OUTPUTHDR.push({
-        "OPTM_LOGID": this.step1_data.selected_configuration_key,
-        "OPTM_OUTPUTID": "",
-        "OPTM_DOCTYPE": this.step1_data.document,
-        "OPTM_BPCODE": this.step1_data.customer,
-        "OPTM_SHIPTO": this.step1_data.ship_to,
-        "OPTM_BILLTO": this.step1_data.bill_to,
-        "OPTM_CONTACTPERSON": this.step1_data.person_name,
-        "OPTM_TAX": this.acc_item_tax,
-        "OPTM_PAYMENTTERM": 0,
-        "OPTM_FGITEM": this.step2_data.model_code,
-        "OPTM_KEY": "DEMO-KEY",
-        "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
-        "OPTM_QUANTITY": this.step2_data.quantity,
-        "OPTM_CREATEDBY": this.common_output_data.username,
-        "OPTM_MODIFIEDBY": this.common_output_data.username,
-        "OPTM_DESC": this.step1_data.description,
-        "OPTM_SALESEMP": this.step1_data.sales_employee,
-        "OPTM_OWNER": this.step1_data.owner,
-        "OPTM_REMARKS": this.step1_data.remark,
-        "OPTM_BILLADD": this.step1_data.bill_to_address,
-        "OPTM_SHIPADD": this.step1_data.ship_to_address,
-        "OPTM_POSTINGDATE": this.step1_data.posting_date,
-        "OPTM_GRANDTOTAL": Number(this.acc_grand_total)
-      })
+    //creating header data
+    final_dataset_to_save.OPConfig_OUTPUTHDR.push({
+      "OPTM_LOGID": this.step1_data.selected_configuration_key,
+      "OPTM_OUTPUTID": "",
+      "OPTM_DOCTYPE": this.step1_data.document,
+      "OPTM_BPCODE": this.step1_data.customer,
+      "OPTM_SHIPTO": this.step1_data.ship_to,
+      "OPTM_BILLTO": this.step1_data.bill_to,
+      "OPTM_CONTACTPERSON": this.step1_data.person_name,
+      "OPTM_TAX": this.acc_item_tax,
+      "OPTM_PAYMENTTERM": 0,
+      "OPTM_FGITEM": this.step2_data.model_code,
+      "OPTM_KEY": "DEMO-KEY",
+      "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
+      "OPTM_QUANTITY": this.step2_data.quantity,
+      "OPTM_CREATEDBY": this.common_output_data.username,
+      "OPTM_MODIFIEDBY": this.common_output_data.username,
+      "OPTM_DESC": this.step1_data.description,
+      "OPTM_SALESEMP": this.step1_data.sales_employee,
+      "OPTM_OWNER": this.step1_data.owner,
+      "OPTM_REMARKS": this.step1_data.remark,
+      "OPTM_BILLADD": this.step1_data.bill_to_address,
+      "OPTM_SHIPADD": this.step1_data.ship_to_address,
+      "OPTM_POSTINGDATE": this.step1_data.posting_date,
+      "OPTM_GRANDTOTAL": Number(this.acc_grand_total)
+    })
 
       //creating details table array
       final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
