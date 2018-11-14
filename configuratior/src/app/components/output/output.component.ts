@@ -2339,6 +2339,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.ConnectionDetails = [];
 
     //creating header data
+    let formated_delivery_date = new Date(this.step1_data.delivery_until);
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.step1_data.selected_configuration_key,
       "OPTM_OUTPUTID": "",
@@ -2351,7 +2352,7 @@ export class OutputComponent implements OnInit {
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
       "OPTM_KEY": "DEMO-KEY",
-      "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
+      "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
