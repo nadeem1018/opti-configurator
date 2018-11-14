@@ -258,7 +258,7 @@ export class RulewbComponent implements OnInit {
                 operator: fetch_data.OPTM_OPERATOR,
                 type: fetch_data.OPTM_TYPE,
                 braces: fetch_data.OPTM_BRACES,
-                type_value: this.typevaluefromdatabase,
+                type_value: this.typevaluefromdatabase.toString(),
                 condition: fetch_data.OPTM_CONDITION,
                 operand_1: fetch_data.OPTM_OPERAND1,
                 operand_1_code: fetch_data.OPTM_OP1CODE,
@@ -292,7 +292,7 @@ export class RulewbComponent implements OnInit {
                 rowindex: i,
                 check_child: checked_child,
                 seq_number: this.seq_count,
-                feature: fetch_data.OPTM_FEATUREID,
+                feature: fetch_data.OPTM_FEATUREID.toString(),
                 featureCode: fetch_data.OPTM_FEATURECODE,
                 item: fetch_data.OPTM_ITEMKEY,
                 value: fetch_data.OPTM_VALUE,
@@ -452,16 +452,17 @@ export class RulewbComponent implements OnInit {
     if (this.lookupfor == 'feature_Detail_lookup') {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
         if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-          this.rule_sequence_data[i].type_value = $event[0];
-          this.rule_sequence_data[i].type_value_code = $event[1];
+          this.rule_sequence_data[i].type_value = $event[0].toString();
+          this.rule_sequence_data[i].type_value_code = $event[1].toString();
         }
       }
     }
     if (this.lookupfor == 'ModelBom_lookup') {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+        //Bug no. 18355,18333...13-Nov-18...Ashish 
         if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-          this.rule_sequence_data[i].type_value = $event[0];
-          this.rule_sequence_data[i].type_value_code = $event[1];
+          this.rule_sequence_data[i].type_value = $event[0].toString();
+          this.rule_sequence_data[i].type_value_code = $event[1].toString();
         }
       }
     }
@@ -533,7 +534,7 @@ export class RulewbComponent implements OnInit {
             this.global_rule_feature_data.push({
               rowindex: i,
               check_child: true,
-              feature: data[i].Feature,
+              feature: data[i].Feature.toString(),
               featureCode: data[i].featureCode,
               item: data[i].Item,
               value: data[i].Value,
