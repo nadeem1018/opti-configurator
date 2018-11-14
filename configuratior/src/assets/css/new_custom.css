@@ -395,7 +395,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
 }
 
 .tree li::before {
-  border-left: 1px solid #999;
+  border-left: 1.2px solid #999;
   bottom: 50px;
   height: 100%;
   top: 0;
