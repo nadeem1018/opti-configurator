@@ -163,4 +163,8 @@ export class ModelbomService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetMaxSelectableForFeature", jObject, this.common_params.httpOptions);
   }
+  CheckValidPriceListEntered(ItemKey,priceListName): Observable<any> {
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey, PriceListName:priceListName }]) }
+    return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckPriceList", jObject, this.common_params.httpOptions);
+  }
 }

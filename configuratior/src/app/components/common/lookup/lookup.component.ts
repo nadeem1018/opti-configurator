@@ -397,7 +397,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'price_source';
     this.lookup_key = 'PriceListID';
-    this.table_head = [this.language.price_source];
+    this.table_head = [this.language.price_source, this.language.price_list_name];
     this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
 

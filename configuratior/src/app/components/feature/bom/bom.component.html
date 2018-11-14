@@ -193,8 +193,11 @@
                                           </td>
                                           <td width=12%;>
                                             <div class="input-group">
-                                              <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source.value,row.rowindex)"
-                                                #price_source [disabled]="row.isPriceDisabled" title="{{row.price_source}}" />
+                                                    <input [disabled]="row.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
+                                                    value={{row.price_source_id}} #price_source_id />   
+      
+                                                    <input type="text" class="form-control  form-control-sm" id="price_source" name="price_source" value={{row.price_source}} (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
+                                                      #price_source [disabled]="row.isPriceDisabled" />
                                               <div class="input-group-append" [hidden]=row.pricehide>
                                                 <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
                                                   <i class="fa fa-bars"></i>

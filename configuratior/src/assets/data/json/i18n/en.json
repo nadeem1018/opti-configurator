@@ -225,7 +225,7 @@
     "step_2_5": "Step 2 of 5",
     "step_3_5": "Step 3 of 5",
     "step_4_5": "Step 4 of 5",
-    "step_5_5": "Step 4 of 5",
+    "step_5_5": "Step 5 of 5",
     "start_new_configuration":"Start New Configuration",
     "go_to_first_screen":"Goto the Configuration first Screen",
     "choose_one_action": "Choose One Action",
@@ -308,6 +308,7 @@
     "pricevalidextn": "Price extension cannot be negative",
     "negativequantityvalid": "Quantity cannot be negative",
     "decimalquantityvalid": "Quantity cannot be decimal",
+    "quantity_numeric_only":"Only Number Value allowed in Quantity",
     "child_exist_cannot_remove": "Child exist in th following component, First Remove the child of this component. ",
     "valid_date": "Valid Until",
     "invalidcustomer": "Enter valid customer",
@@ -361,6 +362,8 @@
     "print_quote": "Print Quote",
     "InvalidOperationId": "Invalid Operation Id",
     "customer_code": "Customer Code",
-    "invalid_itemcode": "Invalid value in 'Model Template Item' field"
+    "invalid_itemcode": "Invalid value in 'Model Template Item' field",
+    "price_list_name": "Price List Name",
+    "InvalidPriceId": "Invalid value in Price Source field"
     
 }

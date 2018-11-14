@@ -180,7 +180,8 @@ export class BomComponent implements OnInit {
                 attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
                 preview: this.row_image_data,
                 propagate_qty: data.FeatureDetail[i].OPTM_PROPOGATEQTY,
-                price_source: data.FeatureDetail[i].OPTM_PRICESOURCE,
+                price_source_id: data.FeatureDetail[i].OPTM_PRICESOURCE,
+                price_source: data.FeatureDetail[i].ListName,
                 isDisplayNameDisabled: this.isDisplayNameDisabled,
                 isTypeDisabled: this.isTypeDisabled,
                 isQuanityDisabled: this.isQuanityDisabled,
@@ -610,15 +611,16 @@ export class BomComponent implements OnInit {
       this.checkFeaturesAlreadyAddedinParent($event[0], "", this.currentrowindex - 1, "lookup");
     }
     else if (this.lookupfor == 'Price_lookup') {
-      this.getPriceDetails($event[0], this.currentrowindex);
+      this.getPriceDetails($event[1],$event[0], this.currentrowindex);
     }
 
   }
 
-  getPriceDetails(price, index) {
+  getPriceDetails(price_list_name,price, index) {
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === index) {
-        this.feature_bom_table[i].price_source = price.toString()
+        this.feature_bom_table[i].price_source = price_list_name.toString()
+        this.feature_bom_table[i].price_source_id = price.toString()
       }
     }
   }
@@ -814,17 +816,30 @@ export class BomComponent implements OnInit {
 
   }
 
-  on_price_source_change(value, rowindex) {
+  on_price_source_change(id,value, rowindex, actualValue) {
     this.currentrowindex = rowindex
-    for (let i = 0; i < this.feature_bom_data.length; ++i) {
-      if (this.feature_bom_data[i].rowindex === this.currentrowindex) {
-        this.feature_bom_data[i].price_source = value
+    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+      if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        
+        this.fbom.CheckValidPriceListEntered(this.feature_bom_table[i].type_value,value).subscribe(
+          data => {
+            if (data === "False") {
+              $(actualValue).val("");
+              this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
+              return;
+            }
+            else if (data != null) {
+              this.feature_bom_table[i].price_source_id = data
+              this.feature_bom_table[i].price_source = value
+              this.lookupfor = ""
+            }
+            
+          })
+
+        
       }
     }
-
   }
-
-
 
   onDeleteClick() {
     //var result = confirm(this.language.DeleteConfimation);
