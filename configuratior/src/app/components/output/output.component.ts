@@ -290,7 +290,7 @@ export class OutputComponent implements OnInit {
         required_fields += this.document_date;
       }
       if(required_fields != ""){
-        this.toastr.error('', this.language.required_fields + " - " + required_fields, this.commonData.toast_config);
+        this.toastr.error('', this.language.required_fields_direct + " - " + required_fields, this.commonData.toast_config);
         return false;
       } else {
         $(".step_2_redirect").trigger('click');

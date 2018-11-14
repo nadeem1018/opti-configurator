@@ -84,7 +84,7 @@ export class LookupComponent implements OnInit {
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
-
+  public search_string = "";
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -123,7 +123,7 @@ export class LookupComponent implements OnInit {
     this.outputServiceData = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
-
+    this.search_string = "";
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
