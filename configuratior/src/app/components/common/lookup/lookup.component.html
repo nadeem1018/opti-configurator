@@ -93,6 +93,16 @@
                         </div>
 
                     </div>
+                    <div class="form-group row clearfix">
+                            <label class="col-sm-4 col-form-label" for="Status">{{language.template_type}}</label>
+                            <div class="col-sm-6">
+                                <select class="form-control  form-control-sm mt3" (change)="on_template_type_change()" [(ngModel)]="template_type" name="template_type" id="templateTypeID">
+                                    <option value="model">{{language.model}}</option>
+                                    <option value="feature">{{language.feature}}</option>
+                                </select>
+                            </div>
+    
+                        </div>
                     <hr>
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>

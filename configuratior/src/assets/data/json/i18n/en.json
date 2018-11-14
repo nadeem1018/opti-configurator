@@ -127,7 +127,7 @@
     "propagate_qty": "Propagate Qty",
     "price_source": "Price Source",
     "mandatory": "Mandatory",
-    "unique_identifier": "unique identifier",
+    "unique_identifier": "Unique Identifier",
     "FeatureLookupTitle": "Feature Master",
     "ItemLookupTitle": "Item",
     "DuplicateCode": "Code already exists",
@@ -193,6 +193,7 @@
     "sequence_row_empty": "Sequence Row Empty, please add atleast 1 row",
     "EnterString": "String field cannot be blank",
     "required_fields": "Required Fields in Row:",
+    "required_fields_direct": "Required Fields ",
     "update_rule": "Update Rule",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
@@ -365,6 +366,10 @@
     "invalid_itemcode": "Invalid value in 'Model Template Item' field",
     "price_list_name": "Price List Name",
     "InvalidPriceId": "Invalid value in Price Source field",
-    "item_feature_model": "Item/Feature/Model"
+    "template_type": "Template Type",
+    "itemkey": "ItemKey",
+    "templateid" :"Template Id",
+    "ItemCodeGenkey" :"ItemCodeGenkey"
+
     
 }

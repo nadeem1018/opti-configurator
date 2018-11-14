@@ -79,12 +79,12 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
   public downLoadfileName = this.language.quatation + '.pdf';
-
+  public template_type = "";
   isMobile: boolean = false;
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
-
+  public search_string = "";
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -104,7 +104,8 @@ export class LookupComponent implements OnInit {
     this.detectDevice();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
-    this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+    this.template_type = "model";
+    this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
   }
 
   ngOnChanges(): void {
@@ -122,7 +123,7 @@ export class LookupComponent implements OnInit {
     this.outputServiceData = [];
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
-
+    this.search_string = "";
 
     if (this.lookupfor != "") {
       if (this.lookupfor == "model_template") {
@@ -211,6 +212,14 @@ export class LookupComponent implements OnInit {
     console.log(val);
   }
 
+  on_template_type_change(){
+    if(this.template_type === "model"){
+      this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+    }
+    else if(this.template_type === "feature"){
+      this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+    }
+  }
   on_item_select(lookup_key) {
     console.log("lookup_key - " + lookup_key);
     console.log(lookup_key);
@@ -245,7 +254,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = ['Code', 'Name'];
+    this.table_head = [this.language.code, this.language.Name];
     this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
@@ -267,7 +276,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemCode';
-    this.table_head = ['Code'];
+    this.table_head = [this.language.code];
     this.table_head_hidden_elements = [false];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -344,7 +353,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.ModelId, this.language.code, this.language.Name, 'TemplateId', 'ItemCodeGenkey'];
+    this.table_head = [this.language.ModelId, this.language.code, this.language.Name, this.language.templateid, this.language.ItemCodeGenkey];
     this.table_head_hidden_elements = [true, false, false, true, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -366,7 +375,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
-    this.table_head = ['ItemKey', 'Name'];
+    this.table_head = [this.language.itemkey, this.language.Name];
     this.table_head_hidden_elements = [false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -418,7 +427,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = ['Id', this.language.code, this.language.Name, 'Accesory'];
+    this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
     this.table_head_hidden_elements = [true, false, false, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -437,7 +446,7 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.lookup_key = 'code';
-    this.table_head = ['Select', 'Rule', 'Description'];
+    this.table_head = [this.language.select, this.language.rule, this.language.description];
     this.table_head_hidden_elements = [false, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -468,7 +477,7 @@ export class LookupComponent implements OnInit {
     console.log("  seq_id " + seq_id);
     this.showruleOutputLoader = true;
     this.RuleOutputLookupDataLoaded = false;
-    this.rule_output_table_head = ['#', 'feature', 'Description'];
+    this.rule_output_table_head = ['#', this.language.feature, this.language.description];
     this.rule_output_table_head_hidden_elements = [false, false, false];
     $("#rule_output_table_lookup").modal('show');
     // $("#rule_selection").css("opacity", "0");
@@ -772,7 +781,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
 
 
-    this.table_head = ['Model Id', this.language.Model_ModelName, this.language.Model_ModelDesc];
+    this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
