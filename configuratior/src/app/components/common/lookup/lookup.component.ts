@@ -79,7 +79,7 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
   public downLoadfileName = this.language.quatation + '.pdf';
-
+  public template_type = "";
   isMobile: boolean = false;
   isIpad: boolean = false;
   isDesktop: boolean = true;
@@ -104,7 +104,8 @@ export class LookupComponent implements OnInit {
     this.detectDevice();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
-    this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+    this.template_type = "model";
+    this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
   }
 
   ngOnChanges(): void {
@@ -211,6 +212,14 @@ export class LookupComponent implements OnInit {
     console.log(val);
   }
 
+  on_template_type_change(){
+    if(this.template_type === "model"){
+      this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+    }
+    else if(this.template_type === "feature"){
+      this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+    }
+  }
   on_item_select(lookup_key) {
     console.log("lookup_key - " + lookup_key);
     console.log(lookup_key);
