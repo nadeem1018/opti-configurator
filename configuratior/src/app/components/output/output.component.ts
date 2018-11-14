@@ -2339,7 +2339,6 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.ConnectionDetails = [];
 
     //creating header data
-    let formated_delivery_date = new Date(this.step1_data.delivery_until);
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.step1_data.selected_configuration_key,
       "OPTM_OUTPUTID": "",
