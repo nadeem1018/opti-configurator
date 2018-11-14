@@ -2605,7 +2605,7 @@ export class OutputComponent implements OnInit {
       "rowIndex": "1",
       "sl_no": "1",
       "item": this.step2_data.model_code,
-      "qunatity": this.step2_data.quantity,
+      "quantity": this.step2_data.quantity,
       "price": this.acc_grand_total,
       "price_ext": 0,
       "feature": this.feature_itm_list_table,
