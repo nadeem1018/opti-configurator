@@ -43,7 +43,7 @@ common_params = new CommonData();
     return this.httpclient.post(this.config_params.service_url + "/Base/GetPSURL", jObject, this.common_params.httpOptions);
   }
 
-};
+}
 
 
 
