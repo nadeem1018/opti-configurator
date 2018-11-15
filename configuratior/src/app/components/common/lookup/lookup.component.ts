@@ -686,7 +686,7 @@ export class LookupComponent implements OnInit {
       var row = this.serviceData.verify_final_data_sel_details[mcount];
       row_count++;
       //pushing item data
-      this.prepareFinalItemArray(row_count, row.item, '', row.quantity, row.price, row.price_ext);
+      this.prepareFinalItemArray(row_count, row.item,'', row.quantity,'', row.price_ext);
 
       //If report type is details then only we will show features
 
@@ -695,8 +695,17 @@ export class LookupComponent implements OnInit {
         row_count++;
 
         if (report_type == "2") {
+          let itemFeatureName = featureRow.featureName;
+          if(featureRow.featureName == "" || featureRow.featureName == null)
+          {
+            itemFeatureName = featureRow.Item;
+          }
 
-          this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+          if(featureRow.Item == "" || featureRow.Item == null){
+            itemFeatureName = featureRow.featureName;
+          }
+
+          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
         }
         else {
           if (featureRow.ItemNumber == "" && featureRow.Item == null) {

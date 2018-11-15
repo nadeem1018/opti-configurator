@@ -178,8 +178,12 @@
                                                 #quantity title="{{row.quantity}}" />
                                         </td>
                                         <td width=6%;>
-                                            <input type="checkbox" value="1" class="form-control  form-control-sm"  id="default" (change)="on_defualt_change(default,row.rowindex)"
-                                                value={{row.default}} #default [(checked)]=row.default title="{{row.default}}" />
+                                            <!-- <input type="checkbox" value="1" class="form-control  form-control-sm"  id="default" (change)="on_defualt_change(default,row.rowindex)"
+                                                value={{row.default}} #default [(checked)]=row.default title="{{row.default}}" /> -->
+
+                                            <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm"  id="row.rowindex" (change)="on_defualt_change(default,row.rowindex)"
+                                            value={{row.default}} #default [(checked)]=row.default title="{{row.default}}" />
+
                                         </td>
                                         <td width=6%;>
                                             <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"

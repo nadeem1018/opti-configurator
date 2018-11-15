@@ -2579,6 +2579,26 @@ export class OutputComponent implements OnInit {
 
     }
 
+<<<<<<< HEAD
+  //For next press towards finsh screen
+  onModelBillNextPress() {
+    //Clear the array
+
+    this.step3_data_final = [];
+
+    this.step2_final_dataset_to_save = [];
+    this.step3_data_final.push({
+      "rowIndex": "1",
+      "sl_no": "1",
+      "item": this.step2_data.model_code,
+      "quantity": this.step2_data.quantity,
+      "price": this.acc_grand_total,
+      "price_ext": 0,
+      "feature": this.feature_itm_list_table,
+      "accesories": this.feature_accessory_list,
+      "model_id": this.step2_data.model_id,
+    })
+=======
     cleanupFinalArray(current_model_id) {
       //Get the modal id and clean the data of Features List here
       for (let count = 0; count < this.step3_data_final.length; count++) {
@@ -2588,6 +2608,7 @@ export class OutputComponent implements OnInit {
         }
       }
     }
+>>>>>>> 91556b2b640bafe6b2e490b00510f0d5e8657d33
 
     cleanuptree() {
       this.tree_data_json = [];
