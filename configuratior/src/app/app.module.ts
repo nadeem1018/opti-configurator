@@ -78,6 +78,7 @@ const routes: Routes = [
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent },
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
+  { path: 'item-code-generation', component: ViewItemCodeGenerationComponent },
 
   { path: 'modelbom/add', component: ModelbomComponent },
   { path: 'modelbom/edit/:id', component: ModelbomComponent },

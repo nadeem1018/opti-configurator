@@ -227,7 +227,12 @@ export class RulewbComponent implements OnInit {
               }
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
-              this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OP1CODE + ' ' + fetch_data.OPTM_OP2CODE;
+              if (data.RuleWorkBenchInput[i].OPTM_TYPE == 2) {
+                this.rule_expression_data[current_count].expression += fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + 'model' + ' ' + fetch_data.OPTM_CONDITION + ' ' + this.typevaluecodefromdatabase;  
+              } else {
+                this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OP1CODE + ' ' + fetch_data.OPTM_OP2CODE;
+              }
+            
               if (this.rule_expression_data[current_count].row_data == undefined) {
                 this.rule_expression_data[current_count].row_data = [];
               }
@@ -250,6 +255,18 @@ export class RulewbComponent implements OnInit {
                 }
               }
 
+              let operand2_disabled = true; 
+              if (fetch_data.OPTM_CONDITION == 'Between'){
+                operand2_disabled = false;
+              }
+
+              let  operand1_disabled = false;
+              if (data.RuleWorkBenchInput[i].OPTM_TYPE == 2) {
+                 operand1_disabled = true;
+              }
+
+
+
               this.rule_expression_data[current_count].row_data.push({
                 lineno: lineno,
                 rowindex: fetch_data.OPTM_ROWID,
@@ -264,6 +281,8 @@ export class RulewbComponent implements OnInit {
                 operand_1_code: fetch_data.OPTM_OP1CODE,
                 operand_2: fetch_data.OPTM_OPERAND2,
                 operand_2_code: fetch_data.OPTM_OP2CODE,
+                is_operand1_disable: operand1_disabled,
+                is_operand2_disable: operand2_disabled,
                 row_expression: expression,
               });
 
@@ -417,6 +436,7 @@ export class RulewbComponent implements OnInit {
       operand_2: '',
       operand_1_code: "",
       operand_2_code: "",
+      is_operand1_disable: false,
       is_operand2_disable: true,
       row_expression: ''
     });
@@ -638,7 +658,7 @@ export class RulewbComponent implements OnInit {
             return false;
           }
 
-          if (operand_1_code == "") {
+          if (operand_1_code == "" && type == 1) {
             this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_1, this.commonData.toast_config);
             this.showAddSequenceBtn = false;
             this.showUpdateSequenceBtn == false;
@@ -674,7 +694,7 @@ export class RulewbComponent implements OnInit {
           }
 
 
-          if (type == "" || type_value_code == "" || condition == "" || operand_1_code == "") {
+          if (type == "" || type_value_code == "" || condition == "" || (operand_1_code == "" && type == 1)) {
 
             let error_fields = '';
             if (type == "") {
@@ -698,7 +718,7 @@ export class RulewbComponent implements OnInit {
               error_fields += " " + this.language.condition;
             }
 
-            if (operand_1_code == "") {
+            if (operand_1_code == "" && type == 1) {
               if (error_fields != "") {
                 error_fields += ", ";
               }
@@ -711,7 +731,7 @@ export class RulewbComponent implements OnInit {
             return false;
           }
 
-          if (condition == "Between" && operand_2 == "") {
+          if (condition == "Between" && operand_2 == "" && type == 1) {
             this.generated_expression_value = "";
             this.toastr.error('', this.language.required_fields + (parseInt(index) + 1) + " - " + this.language.operand_2, this.commonData.toast_config);
             this.showAddSequenceBtn = false;
@@ -733,8 +753,14 @@ export class RulewbComponent implements OnInit {
           this.showUpdateSequenceBtn == false;
           return false;
         }
+        if(type == 2){
+          this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + 'model' + ' ' + condition + ' ' + type_value_code;  
+          
+        } else{
+          this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
+        }
 
-        this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
+
         current_exp += " " + seq_data[index].row_expression;
       }
 
@@ -748,6 +774,7 @@ export class RulewbComponent implements OnInit {
        console.log("braces_closed - " + braces_closed);
        console.log(reverse_open_seq_braces); */
       // if (braces_open.length === braces_closed.length && reverse_open_seq_braces.every(function (value, index) { return value === braces_closed[index] })) {
+    console.log(current_exp);
       if (this.validate_brackets(current_exp)) {
       } else {
         this.generated_expression_value = "";
@@ -804,6 +831,7 @@ export class RulewbComponent implements OnInit {
         }
         if (key === 'type_value') {
           if (this.rule_sequence_data[i].type == 1) {
+            this.rule_sequence_data[i]['is_operand1_disable'] = false;
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
                 if (data === "False") {
@@ -815,7 +843,9 @@ export class RulewbComponent implements OnInit {
                   this.rule_sequence_data[i].type_value = data;
                 }
               });
-          }
+          } if (this.rule_sequence_data[i].type == 2) {
+            this.rule_sequence_data[i]['is_operand1_disable'] = true;
+          } 
 
           else {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(

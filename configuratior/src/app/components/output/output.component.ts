@@ -1673,7 +1673,7 @@ export class OutputComponent implements OnInit {
                       OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
                       OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
-                      OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME,
+                      OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME.toString(),
                       OPTM_PRICESOURCE: feature_model_data.ListName,
                       OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                       OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
@@ -2632,6 +2632,8 @@ export class OutputComponent implements OnInit {
     $("#modelbom_next_click_id").trigger('click');
     this.onModelBillNextPress();
   }
+
+  
 
   //For next press towards finsh screen
   onModelBillNextPress() {

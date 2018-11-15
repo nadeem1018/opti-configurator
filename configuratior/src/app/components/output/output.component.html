@@ -367,7 +367,7 @@
           <div class="f1-buttons">
             <hr>
 
-            <button (click)="onSavePress()" *ngIf="isNextButtonVisible" type="button" class="btn btn-sm btn-success  mr-10">
+            <button (click)="onSavePress()" *ngIf="isNextButtonVisible" type="button" class="btn btn-sm btn-success output_final_screen_save_button  mr-10">
               <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
 
 
@@ -707,7 +707,7 @@
             </div>
             <div class="f1-buttons col-sm-8 pull-right f1_button_top_border_padding">
 
-              <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+              <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10 output_final_screen_save_button">
                 <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
 
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
@@ -928,13 +928,13 @@
           <div class="f1-buttons">
             <hr>
 
-            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10">
+            <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success output_final_screen_save_button  mr-10">
               <i class="fa fa-check fa-fw"></i> {{language.save}}</button>
 
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="model_bom_config">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
 
-            <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0" type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit  btn-next"
+            <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'" type="submit" class="btn btn-sm btn-primary output_final_screen_save_button  mr-10 btn-submit  btn-next"
               data-next-block="fina_doc_create">
               <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
           </div>

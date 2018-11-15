@@ -14,6 +14,7 @@ export class CommonData {
         }
         let sanitized = temp.replace(/^http\:\/\//, '').replace(/\/+/g, '/').replace(/\/+$/, '');
         temp = (window.location.protocol + '//' + sanitized);
+        
         return temp;
     }
 

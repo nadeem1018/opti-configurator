@@ -157,7 +157,7 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('isLoggedIn', "true");
     // this.router.navigateByUrl('/home');
       // let home_page = this.commonData.application_path + '/index.html#home';
-      let home_page = this.commonData.application_path + '/index.html#item-code-generation/view';
+      let home_page = this.commonData.application_path + '/index.html#item-code-generation';
       
       window.location.href = home_page;
     }
@@ -179,9 +179,9 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-          this.psURL = "http://localhost:9500/";
+           this.psURL = "http://localhost:9500/";
           // this.psURL = "http://172.16.6.140/OptiAdmin";
-
+        //  this.psURL = 'http://172.16.6.122/OptiProAdmin/';
           sessionStorage.setItem('psURL', this.psURL);
         }
       }
