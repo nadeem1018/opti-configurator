@@ -154,7 +154,10 @@ function calculate_progress(progress_block) {
 
   $(document).on('click', '#main_operation_type', function (e) {
     var obj = $(this);
-    if (obj.val() == 4){
+    console.log("main = " + obj.val());
+    console.log('lenth ' + $(document).find(".output_final_screen_save_button").length);
+    
+    if (obj.val() == "4" || obj.val() == 4){
       $(document).find(".output_final_screen_save_button").addClass('display_none');
     } else {
       $(document).find(".output_final_screen_save_button").removeClass('display_none');
