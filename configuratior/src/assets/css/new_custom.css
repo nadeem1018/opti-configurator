@@ -59,6 +59,10 @@
   width: 50% !important;
 }
 
+.display_none{
+  display:none !important;
+}
+
 @media (min-width: 992px) {
   .modal-mlg {
     max-width: 600px;
