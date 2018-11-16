@@ -50,7 +50,7 @@ export class RulewbComponent implements OnInit {
   public update_sequence_mode: boolean = false;
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
-
+  public defaultCurrency = sessionStorage.defaultCurrency;
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
@@ -1130,7 +1130,7 @@ export class RulewbComponent implements OnInit {
         return false;
       }
       if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
-        this.toastr.error('', this.language.selectdescription, this.commonData.toast_config);
+        this.toastr.error('', this.language.description_field_not_blank, this.commonData.toast_config);
         return false;
       }
       if (this.rule_wb_data.effective_from == "" || this.rule_wb_data.effective_from == null) {
@@ -1144,7 +1144,7 @@ export class RulewbComponent implements OnInit {
         }
       }
       if (this.rule_wb_data.applicable_for_feature_id == "" || this.rule_wb_data.applicable_for_feature_id == null) {
-        this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+        this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
         return false;
       }
       if (new Date(this.rule_wb_data.effective_to) < new Date(this.rule_wb_data.effective_from)) {

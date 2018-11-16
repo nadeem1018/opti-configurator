@@ -765,7 +765,7 @@ export class BomComponent implements OnInit {
 
   validation(btnpress) {
     if (this.feature_bom_data.feature_id == "" || this.feature_bom_data.feature_id == null) {
-      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
       return false;
     }
 
@@ -901,7 +901,7 @@ export class BomComponent implements OnInit {
       )
     }
     else {
-      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
       return;
     }
   }
@@ -945,7 +945,7 @@ export class BomComponent implements OnInit {
       }
     }
     else {
-      this.toastr.error('', this.language.FeatureIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
       return;
     }
 

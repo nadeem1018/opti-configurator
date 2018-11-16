@@ -155,6 +155,7 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
     sessionStorage.setItem('defaultRecords', this.record_per_page);
     sessionStorage.setItem('isLoggedIn', "true");
+    sessionStorage.setItem('defaultCurrency', "$");
     // this.router.navigateByUrl('/home');
       // let home_page = this.commonData.application_path + '/index.html#home';
       let home_page = this.commonData.application_path + '/index.html#item-code-generation';
@@ -179,7 +180,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-          //this.psURL = "http://localhost:9500";
+          this.psURL = "http://localhost:9500";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
 
           sessionStorage.setItem('psURL', this.psURL);

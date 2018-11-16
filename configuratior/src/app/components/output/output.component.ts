@@ -43,6 +43,7 @@ export class OutputComponent implements OnInit {
   public ModelHeaderItemsArray = [];
   public warehouse: string = "";
   //public step2_data_all_data={};
+  public defaultCurrency = sessionStorage.defaultCurrency;
   public doctype: any = "";
   public lookupfor: string = '';
   public view_route_link: any = "/home";
@@ -89,7 +90,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency +')', this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
