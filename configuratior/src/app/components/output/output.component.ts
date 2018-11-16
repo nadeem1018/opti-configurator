@@ -1725,8 +1725,11 @@ export class OutputComponent implements OnInit {
                             if (parentarray[0].OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID && data.DataForSelectedFeatureModelItem[i].OPTM_TYPE==2) {
                               parentarray[0].feature_code = parentarray[0].parent_code
                             }
-                            itemData.push(data.DataForSelectedFeatureModelItem[i])
-                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                            if( data.DataForSelectedFeatureModelItem[i].OPTM_TYPE==2){
+                              itemData.push(data.DataForSelectedFeatureModelItem[i])
+                              this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                            }
+                           
                           }
                        
                         }

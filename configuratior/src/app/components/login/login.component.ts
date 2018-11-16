@@ -157,7 +157,7 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem('isLoggedIn', "true");
     // this.router.navigateByUrl('/home');
       // let home_page = this.commonData.application_path + '/index.html#home';
-      let home_page = this.commonData.application_path + '/index.html#item-code-generation/view';
+      let home_page = this.commonData.application_path + '/index.html#item-code-generation';
       
       window.location.href = home_page;
     }
@@ -172,6 +172,7 @@ export class LoginComponent implements OnInit {
   //Core Functions 
   //To get url from DB
   getPSURL(){
+   
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {

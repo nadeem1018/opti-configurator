@@ -562,9 +562,9 @@ export class BomComponent implements OnInit {
         else {
           this.feature_bom_table[i].default = false
         }
-
-
-
+      }
+      else{
+        this.feature_bom_table[i].default = false
       }
     }
 

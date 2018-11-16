@@ -93,6 +93,16 @@
                         </div>
 
                     </div>
+                    <div class="form-group row clearfix">
+                            <label class="col-sm-4 col-form-label" for="Status">{{language.template_type}}</label>
+                            <div class="col-sm-6">
+                                <select class="form-control  form-control-sm mt3" (change)="on_template_type_change()" [(ngModel)]="template_type" name="template_type" id="templateTypeID">
+                                    <option value="model">{{language.model}}</option>
+                                    <option value="feature">{{language.feature}}</option>
+                                </select>
+                            </div>
+    
+                        </div>
                     <hr>
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>
@@ -281,7 +291,7 @@
                                 <hr>
                                 <div class="col-md-6 col-sm-12 text-center text-md-left">
                                     <div class="media">
-                                        <img src="http://localhost:9090/opti-configurator/opti-configurator/configuratior\src\assets\images\config.png" alt="configurator logo"
+                                        <img src="{{logo_path}}" alt="configurator logo"
                                             class="" style=" width: 130px; " />
                                         <div class="media-body">
                                             <ul class="ml-2 px-0 list-unstyled">
@@ -428,7 +438,7 @@
                                             <thead class="">
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>{{language.ItemLookupTitle}}</th>
+                                                    <th>{{language.ModelBom_FeatureValue}}</th>
                                                     <th>{{language.description}}</th>
                                                     <th class="text-right">{{language.quantity}}</th>
                                                     <th class="text-right">{{language.price}}</th>
@@ -449,7 +459,7 @@
                                                     </td>
 
                                                     <td class="text-right">
-                                                        {{row['qunatity']}}
+                                                        {{row['quantity']}}
                                                     </td>
                                                     <td class="text-right">
                                                         {{row['price']}}

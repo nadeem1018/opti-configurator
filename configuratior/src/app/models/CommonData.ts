@@ -14,6 +14,7 @@ export class CommonData {
         }
         let sanitized = temp.replace(/^http\:\/\//, '').replace(/\/+/g, '/').replace(/\/+$/, '');
         temp = (window.location.protocol + '//' + sanitized);
+        
         return temp;
     }
 
@@ -108,8 +109,9 @@ export class CommonData {
 
     public document_type = [
         //{ "value": '', "Name": "" },
-        { "value": 'sales_quote', "Name": "Sales Quote" },
-        { "value": 'sales_order', "Name": "Sales Order" }
+        { "value": 'draft', "Name": "Draft", "selected":"1" },
+        { "value": 'sales_quote', "Name": "Sales Quote", "selected":"0" },
+        { "value": 'sales_order', "Name": "Sales Order", "selected":"0" }
     ];
 
 
