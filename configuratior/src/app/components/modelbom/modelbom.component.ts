@@ -342,7 +342,7 @@ export class ModelbomComponent implements OnInit {
 
   on_bom_type_change(selectedvalue, rowindex) {
     if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-      this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return false;
     }
     this.serviceData = []
@@ -397,7 +397,7 @@ export class ModelbomComponent implements OnInit {
 
   on_type_click(selectedvalue, rowindex) {
     if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-      this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return false;
     }
     this.currentrowindex = rowindex
@@ -887,7 +887,7 @@ export class ModelbomComponent implements OnInit {
 
   validation(btnpress) {
     if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-      this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return false;
     }
 
@@ -999,7 +999,7 @@ export class ModelbomComponent implements OnInit {
         }
       }
     } else {
-      this.toastr.error('', this.language.ModelIDBlank, this.commonData.toast_config);
+      this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return;
     }
   }

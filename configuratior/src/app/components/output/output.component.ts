@@ -43,6 +43,7 @@ export class OutputComponent implements OnInit {
   public ModelHeaderItemsArray = [];
   public warehouse: string = "";
   //public step2_data_all_data={};
+  public defaultCurrency = sessionStorage.defaultCurrency;
   public doctype: any = "";
   public lookupfor: string = '';
   public view_route_link: any = "/home";
@@ -89,7 +90,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price, this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency +')', this.language.price_extn];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -1675,7 +1676,7 @@ export class OutputComponent implements OnInit {
                       OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
                       OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
-                      OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME,
+                      OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME.toString(),
                       OPTM_PRICESOURCE: feature_model_data.ListName,
                       OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                       OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
@@ -1730,7 +1731,7 @@ export class OutputComponent implements OnInit {
                           OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
-                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME,
+                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME.toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
@@ -1898,7 +1899,7 @@ export class OutputComponent implements OnInit {
                     OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
                     OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
-                    OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME,
+                    OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME.toString(),
                     OPTM_PRICESOURCE: feature_model_data.ListName,
                     OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                     OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
@@ -1948,7 +1949,7 @@ export class OutputComponent implements OnInit {
                           OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
-                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME,
+                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME.toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
