@@ -1525,7 +1525,7 @@ export class OutputComponent implements OnInit {
 
       if (isExistForMax.length == parentarray[0].OPTM_MAXSELECTABLE) {
         this.toastr.error('', this.language.select_max_selectable, this.commonData.toast_config);
-        $("#" + id).prop("checked", false)
+        // $("#" + id).prop("checked", false)
         return;
       }
     }
@@ -1598,7 +1598,7 @@ export class OutputComponent implements OnInit {
                         }
                       }
                       for (let imodeldataforsecond = 0; imodeldataforsecond < this.ModelBOMDataForSecondLevel.length; imodeldataforsecond++) {
-                        if (this.ModelBOMDataForSecondLevel[imodeldataforsecond].OPTM_FEATUREID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
+                        if (this.ModelBOMDataForSecondLevel[imodeldataforsecond].OPTM_MODELID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
                           //  this.ModelBOMDataForSecondLevel[imodeldataforsecond].checked=value
                           this.ModelBOMDataForSecondLevel.splice(imodeldataforsecond, 1);
                           imodeldataforsecond = imodeldataforsecond - 1;
@@ -1701,19 +1701,34 @@ export class OutputComponent implements OnInit {
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           checked: checkeddefault,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
-                          is_second_level : 1
+                          is_second_level : 1,
+                          element_class: parentarray[0].element_class,
+                          element_type: parentarray[0].element_type,
+                          parentfeatureid: parentfeatureid,
+                          parentmodelid: parentmodelid,
                         });
 
                         if (checkeddefault == true) {
                           var itemData = [];
                           parentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                            if (obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) {
-                              obj['feature_code'] = obj['parent_code']
-                            }
+                            // if (obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID && data.DataForSelectedFeatureModelItem[i].OPTM_TYPE==2) {
+                            //   obj['feature_code'] = obj['parent_code']
+                            // }
                             return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID
                           });
-                          itemData.push(data.DataForSelectedFeatureModelItem[i])
-                          this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                          if(parentarray.length==0){
+                            parentarray = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                              return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID
+                            });
+                          }
+                          if(parentarray.length>0){
+                            if (parentarray[0].OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID && data.DataForSelectedFeatureModelItem[i].OPTM_TYPE==2) {
+                              parentarray[0].feature_code = parentarray[0].parent_code
+                            }
+                            itemData.push(data.DataForSelectedFeatureModelItem[i])
+                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                          }
+                       
                         }
                       }
                     }
@@ -1802,7 +1817,11 @@ export class OutputComponent implements OnInit {
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
-                          is_second_level : 1
+                          is_second_level : 1,
+                          element_class: parentarray[0].element_class,
+                          element_type: parentarray[0].element_type,
+                          parentfeatureid: parentfeatureid,
+                          parentmodelid: parentmodelid,
                         });
                       }
                     }
@@ -3458,7 +3477,10 @@ export class OutputComponent implements OnInit {
         if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID == feature_model_data.OPTM_CHILDFEATUREID) {
           this.ModelBOMDataForSecondLevel[imodelchecked].checked = value
         }
-        if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && parentarray[0].element_type == "radio" && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
+        // if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && parentarray[0].element_type == "radio" && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
+        //   this.ModelBOMDataForSecondLevel[imodelchecked].checked = false
+        // }
+        if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_MODELID == feature_model_data.OPTM_MODELID && parentarray[0].element_type == "radio" && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
           this.ModelBOMDataForSecondLevel[imodelchecked].checked = false
         }
       }
