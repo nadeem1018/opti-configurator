@@ -92,10 +92,9 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetDataByModelID", jObject, this.common_params.httpOptions);
   }
 
-  DeleteData(id): Observable<any> {
-    
+  DeleteData(clicked_model_id): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { DeleteModel: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id}]) };
+    let jObject = { DeleteModel: JSON.stringify(clicked_model_id) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/DeleteModelBOMFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
