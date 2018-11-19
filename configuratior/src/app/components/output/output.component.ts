@@ -252,6 +252,8 @@ export class OutputComponent implements OnInit {
       } else {
         this.new_output_config = true;
         this.step0_isNextButtonVisible = true;
+        this.step1_data.document = 'draft';
+        this.isNextButtonVisible = true;
       }
 
       this.modify_duplicate_selected = false;

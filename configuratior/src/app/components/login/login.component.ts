@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  imgPath = "assets/images";
   public loginCredentials:any =[];
   public psURL: string = '';
   public showCompDropDown:boolean = false;
