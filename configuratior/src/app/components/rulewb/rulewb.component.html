@@ -53,14 +53,14 @@
         <label class="col-sm-3 col-form-label" for="effective_from">{{language.effective_from}}</label>
         <div class="col-sm-5">
           <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-            name='effective_from' type="text" value="{{rule_wb_data.effective_from}}" id="effective_from" readonly placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from" title="{{rule_wb_data.effective_from}}"
+            name='effective_from' type="text" value="{{rule_wb_data.effective_from}}"  id="effective_from" readonly  placeholder="{{language.effective_from}}" [(ngModel)]="rule_wb_data.effective_from" title="{{rule_wb_data.effective_from}}"
             style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="3" >
           <div class="input-group-append float-left">
             <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
               <i class="fa fa-calendar"></i>
             </span>
           </div>
-          <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
+          <owl-date-time #dt12 [pickerType]="'calendar'" (afterPickerClosed)="effective_from(rule_wb_data.effective_from)" ></owl-date-time>
         </div>
 
 
@@ -145,7 +145,7 @@
                     <i class="fa fa-calendar"></i>
                   </span>
                 </div>
-                <owl-date-time #dt13 [pickerType]="'calendar'"></owl-date-time>
+                <owl-date-time #dt13 [pickerType]="'calendar'" (afterPickerClosed)="effective_to(rule_wb_data.effective_to)"></owl-date-time>
               </div>
       
             </div>

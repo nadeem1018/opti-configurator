@@ -150,17 +150,7 @@ export class RulewbComponent implements OnInit {
             }
             this.rule_wb_data.rule_code = data.RuleWorkBenchHeader[0].OPTM_RULECODE
             this.rule_wb_data.description = data.RuleWorkBenchHeader[0].OPTM_DESCRIPTION;
-           /*  let effectiveFrom: any = (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM !== undefined ) ? new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM) : "";
-            let effectiveTo: any = (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO !== undefined ) ? new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO) : "";
-            if (effectiveFrom!=""){
-              effectiveFrom =  ((effectiveFrom.getMonth() + 1) + '/' + effectiveFrom.getDate() + '/' + effectiveFrom.getFullYear());
-            }
-
-            if (effectiveTo !="" ){
-              effectiveTo = ((effectiveTo.getMonth() + 1) + '/' + effectiveTo.getDate() + '/' + effectiveTo.getFullYear());
-            }
-            this.rule_wb_data.effective_from = effectiveFrom;
-            this.rule_wb_data.effective_to =effectiveTo; */
+         
             var effectiveFrom;
             var effectiveTo;
             if (data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM !== undefined && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != "" && data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM != null ){
@@ -349,6 +339,20 @@ export class RulewbComponent implements OnInit {
     else {
       this._ele.nativeElement.focus();
     }
+  }
+
+  effective_from(effective_from_date){
+    var temp = new Date(effective_from_date);
+    let effectiveFrom = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    this.rule_wb_data.effective_from = effectiveFrom;
+
+  }
+
+  effective_to(effective_to_date) {
+    var temp = new Date(effective_to_date);
+    let effectiveto = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    this.rule_wb_data.effective_to = effectiveto;
+
   }
 
   copy(o) {
@@ -819,6 +823,11 @@ export class RulewbComponent implements OnInit {
           this.rule_sequence_data[i]['type_value'] = '';
           this.rule_sequence_data[i]['type_value_code'] = '';
            this.rule_sequence_data[i]['is_operand2_disable'] = true;
+           if(value == 2){
+             this.rule_sequence_data[i]['is_operand1_disable'] = true;
+           } else{
+             this.rule_sequence_data[i]['is_operand1_disable'] = false;
+           }
         }
         if (key == "condition") {
           if (value == "Between") {

@@ -270,6 +270,7 @@ export class ModelbomComponent implements OnInit {
       max_selected: 1,
       propagate_qty: false,
       price_source: '',
+      price_source_id: '',
       mandatory: false,
       unique_identifer: false,
       isDisplayNameDisabled: false,
@@ -336,6 +337,7 @@ export class ModelbomComponent implements OnInit {
     this.modelbom_data[rowindex].max_selected = 1;
     this.modelbom_data[rowindex].propagate_qty = 'N';
     this.modelbom_data[rowindex].price_source = '';
+    this.modelbom_data[rowindex].price_source_id = '';
     this.modelbom_data[rowindex].mandatory = 'N';
     this.modelbom_data[rowindex].unique_identifer = 'N';
   }
@@ -625,6 +627,7 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data[i].display_name = data[0].Description
               this.modelbom_data[i].uom = data[0].InvUOM
               this.modelbom_data[i].price_source = "";
+              this.modelbom_data[i].price_source_id = "";
               this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
             }
           }

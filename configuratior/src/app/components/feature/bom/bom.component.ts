@@ -260,6 +260,7 @@ export class BomComponent implements OnInit {
       preview: "",
       propagate_qty: false,
       price_source: "",
+      price_source_id: "",
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
