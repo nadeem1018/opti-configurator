@@ -162,6 +162,7 @@ export class OutputComponent implements OnInit {
     element.classList.add('sidebar-toggled');
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
+    
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
@@ -180,9 +181,9 @@ export class OutputComponent implements OnInit {
     this._el.nativeElement.focus();
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
-    let formated_posting_date = new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate());
-    //let formated_posting_date =(todaysDate.getMonth()+1)+"/"+todaysDate.getDate()+"/"+todaysDate.getFullYear();
-    this.step1_data.posting_date = formated_posting_date;
+    let cDate = new Date();
+    this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
+
     this.isNextButtonVisible = false;
 
     //dummy data for 3rd screen 
@@ -3107,8 +3108,10 @@ export class OutputComponent implements OnInit {
   }
 
   stoprefreshloader() {
-    this.dontShowFinalLoader = false;
-    this.showFinalLoader = true;
+    setTimeout(function(){
+      this.dontShowFinalLoader = false;
+      this.showFinalLoader = true;
+    }, 1000);
   }
 
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
