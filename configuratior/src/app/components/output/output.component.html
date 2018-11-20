@@ -592,7 +592,7 @@
                         <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                           <tr class="" *ngFor="let featurerow of feature_itm_list_table">
                             <td>
-                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}/> {{featurerow.featureName}}
+                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}} title="{{featurerow.FeatureId}}"/> {{featurerow.featureName}}
                               <!-- <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label> -->
                             </td>
                             <td>
@@ -604,17 +604,15 @@
                               <!-- <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label> -->
                             </td>
                             <td>
-                              <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.quantity}}
-                                (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
-                                #quantity [disabled]="featurerow.isQuantityDisabled" />
+                              <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value="{{featurerow.quantity}}" title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)" #quantity [disabled]="featurerow.isQuantityDisabled" />
                             </td>
                             <td>
                               <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
                         (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
                               <div class=" input-group">
-                                <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
+                                <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
                                   id="priceId">
-                                <input type="text" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
+                                <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
                                   (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
                                   value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
                                 <div class="input-group-append" [hidden]=featurerow.pricehide>
@@ -625,7 +623,7 @@
                               </div>
                             </td>
                             <td>
-                              <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
+                              <input type="number" title="{{featurerow.priceext}}" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
                                 (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
                                 #pricextn />
                             </td>

@@ -155,7 +155,8 @@ export class OutputComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    let cDate = new Date();
+    this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.detectDevice();
@@ -181,8 +182,7 @@ export class OutputComponent implements OnInit {
     this._el.nativeElement.focus();
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
-    let cDate = new Date();
-    this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
+   
 
     this.isNextButtonVisible = false;
 
@@ -232,6 +232,8 @@ export class OutputComponent implements OnInit {
 
   onOperationChange(operation_type) {
     this.step1_data = [];
+    let cDate = new Date();
+    this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     this.contact_persons = [];
     this.ship_to = [];
     this.bill_to = [];
