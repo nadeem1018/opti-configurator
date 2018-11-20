@@ -218,7 +218,7 @@ export class RulewbComponent implements OnInit {
               this.rule_expression_data[current_count].rowindex = this.counter
               this.rule_expression_data[current_count].seq_count = this.seq_count;
               if (data.RuleWorkBenchInput[i].OPTM_TYPE == 2) {
-                this.rule_expression_data[current_count].expression += fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + 'model' + ' ' + fetch_data.OPTM_CONDITION + ' ' + this.typevaluecodefromdatabase;  
+                this.rule_expression_data[current_count].expression += fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + 'Model' + ' ' + fetch_data.OPTM_CONDITION + ' ' + this.typevaluecodefromdatabase;  
               } else {
                 this.rule_expression_data[current_count].expression += " " + fetch_data.OPTM_OPERATOR + ' ' + fetch_data.OPTM_BRACES + ' ' + this.typevaluecodefromdatabase + ' ' + fetch_data.OPTM_CONDITION + ' ' + fetch_data.OPTM_OP1CODE + ' ' + fetch_data.OPTM_OP2CODE;
               }
@@ -758,7 +758,7 @@ export class RulewbComponent implements OnInit {
           return false;
         }
         if(type == 2){
-          this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + 'model' + ' ' + condition + ' ' + type_value_code;  
+          this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + 'Model' + ' ' + condition + ' ' + type_value_code;  
           
         } else{
           this.rule_sequence_data[index].row_expression = operator + ' ' + braces + ' ' + type_value_code + ' ' + condition + ' ' + operand;
