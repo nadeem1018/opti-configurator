@@ -1661,6 +1661,7 @@ export class OutputComponent implements OnInit {
                   isExist = this.ModelHeaderData.filter(function (obj) {
                     return obj['OPTM_FEATUREID'] == feature_model_data.OPTM_CHILDFEATUREID;
                   });
+                  
                   if (isExist.length == 0) {
                     this.ModelHeaderData.push({
                       ACCESSORY: feature_model_data.ACCESSORY,
@@ -1677,8 +1678,8 @@ export class OutputComponent implements OnInit {
                       OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
                       OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
-                      OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
-                      OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME.toString(),
+                      OPTM_MODIFIEDBY:feature_model_data.OPTM_MODIFIEDBY ,
+                      OPTM_MODIFIEDDATETIME: String(feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
                       OPTM_PRICESOURCE: feature_model_data.ListName,
                       OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                       OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
@@ -1733,7 +1734,7 @@ export class OutputComponent implements OnInit {
                           OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
-                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME.toString(),
+                          OPTM_MODIFIEDDATETIME:String( data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
@@ -1792,7 +1793,7 @@ export class OutputComponent implements OnInit {
                                   OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                                   OPTM_MODELID: parentarray[0].OPTM_MODELID,
                                   OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
-                                  OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME.toString(),
+                                  OPTM_MODIFIEDDATETIME:String( data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                                   OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                                   OPTM_PROPOGATEQTY: data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY,
                                   OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
@@ -1841,7 +1842,7 @@ export class OutputComponent implements OnInit {
                                         OPTM_ITEMKEY: data.dtFeatureDataWithDefault[idtfeature].OPTM_ITEMKEY,
                                         OPTM_LINENO: data.dtFeatureDataWithDefault[idtfeature].OPTM_LINENO,
                                         OPTM_MODIFIEDBY: data.dtFeatureDataWithDefault[idtfeature].OPTM_MODIFIEDBY,
-                                        OPTM_MODIFIEDDATETIME: data.dtFeatureDataWithDefault[idtfeature].OPTM_MODIFIEDDATETIME.toString(),
+                                        OPTM_MODIFIEDDATETIME:String( data.dtFeatureDataWithDefault[idtfeature].OPTM_MODIFIEDDATETIME).toString(),
                                         OPTM_PRICESOURCE: data.dtFeatureDataWithDefault[idtfeature].ListName,
                                         OPTM_QUANTITY: data.dtFeatureDataWithDefault[idtfeature].OPTM_QUANTITY,
                                         OPTM_REMARKS: data.dtFeatureDataWithDefault[idtfeature].OPTM_REMARKS,
@@ -1901,7 +1902,7 @@ export class OutputComponent implements OnInit {
                     OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
                     OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
-                    OPTM_MODIFIEDDATETIME: feature_model_data.OPTM_MODIFIEDDATETIME.toString(),
+                    OPTM_MODIFIEDDATETIME:String( feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
                     OPTM_PRICESOURCE: feature_model_data.ListName,
                     OPTM_PROPOGATEQTY: parentarray[0].OPTM_PROPOGATEQTY,
                     OPTM_QUANTITY: feature_model_data.OPTM_QUANTITY,
@@ -1951,7 +1952,7 @@ export class OutputComponent implements OnInit {
                           OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
-                          OPTM_MODIFIEDDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME.toString(),
+                          OPTM_MODIFIEDDATETIME:String( data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY,
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
