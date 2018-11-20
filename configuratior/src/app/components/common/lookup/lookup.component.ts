@@ -85,7 +85,7 @@ export class LookupComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
   public search_string = "";
-  public logo_path = this.commonData.get_current_url() + "/assets/images/config.png";
+  public logo_path = this.commonData.get_current_url() + "/assets/images/logo_configurator/icon/128_icon.png";
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();

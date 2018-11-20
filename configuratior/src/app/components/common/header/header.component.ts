@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   project_name:any = 'OptiPro Product Configurator';
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) {}
   showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
+  imgPath = 'assets/images';
   
   ngOnInit() {
      this.CommonService.get_config();
