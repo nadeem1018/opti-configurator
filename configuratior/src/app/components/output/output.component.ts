@@ -1297,6 +1297,17 @@ export class OutputComponent implements OnInit {
 
   step2_next_click_validation() {
     if (this.step1_data.document == "draft") {
+      this.step1_data.customer="";
+      this.step1_data.ship_to="";
+      this.step1_data.bill_to="";
+      this.step1_data.person_name="";
+      this.step1_data.delivery_date="";
+      this.step1_data.sales_employee="";
+      this.step1_data.owner="";
+      this.step1_data.remark="",
+     this.step1_data.bill_to_address="",
+      this.step1_data.ship_to_address="",
+     // this.step1_data.posting_date="",
       $(".step_2_redirect").trigger('click');
     } else {
       let required_fields = '';
@@ -2743,11 +2754,30 @@ export class OutputComponent implements OnInit {
     let isMandatoryCount = 0;
     if (isMandatoryItems.length > 0) {
       for (let imandtory = 0; imandtory < isMandatoryItems.length; imandtory++) {
-        for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
-          if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitems].FeatureId) {
-            isMandatoryCount++;
+        if(isMandatoryItems[imandtory].OPTM_TYPE=="2"){
+          for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
+            if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitems].FeatureId) {
+              isMandatoryCount++;
+            }
           }
         }
+        else if(isMandatoryItems[imandtory].OPTM_TYPE=="1"){
+          for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
+            if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code==this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked==true) {
+              isMandatoryCount++;
+            }
+          }
+        }
+        else{
+          for (let imodelBOMitems = 0; imodelBOMitems < this.ModelBOMDataForSecondLevel.length; imodelBOMitems++) {
+            if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code==this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked==true) {
+              isMandatoryCount++;
+            }
+          }
+        }
+        
+         
+
       }
     }
     if (isMandatoryCount != isMandatoryItems.length) {
