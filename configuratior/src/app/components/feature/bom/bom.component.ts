@@ -166,9 +166,13 @@ export class BomComponent implements OnInit {
               }
 
               this.row_image_data = this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
-
+              this.counter = 0;
+              if (this.feature_bom_table.length > 0) {
+                this.counter = this.feature_bom_table.length
+              }
+              this.counter++;
               this.feature_bom_table.push({
-                rowindex: data.FeatureDetail[i].OPTM_LINENO,
+                rowindex: this.counter,
                 FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
                 type: data.FeatureDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
@@ -245,6 +249,10 @@ export class BomComponent implements OnInit {
       this.counter = this.feature_bom_table.length
     }
     this.counter++;
+    let first_default = false;
+    if(this.feature_bom_table.length == 0){
+      first_default = true;
+    }
 
     this.feature_bom_table.push({
       rowindex: this.counter,
@@ -254,7 +262,7 @@ export class BomComponent implements OnInit {
       type_value_code: "",
       display_name: "",
       quantity: 1,
-      default: false,
+      default: first_default,
       remark: "",
       attachment: "",
       preview: "",

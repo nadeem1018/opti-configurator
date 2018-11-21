@@ -546,6 +546,11 @@ export class OutputComponent implements OnInit {
 
   on_input_change(inputid, value) {
     if (inputid == "quantity") {
+      if (value == 0 || value == '' || value == null || value == undefined){
+        this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
+        this.step2_data.quantity = this.previousquantity;
+        return;
+      }
       if (value < 0) {
         this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
         this.step2_data.quantity = this.previousquantity;
@@ -2517,7 +2522,7 @@ export class OutputComponent implements OnInit {
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
       "OPTM_KEY": "DEMO-KEY",
-      "OPTM_DELIVERYDATE": this.step1_data.delivery_date,
+      "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3076,23 +3081,27 @@ export class OutputComponent implements OnInit {
   getFinalBOMStatus() {
     this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
       data => {
-        if (data != null) {
+        console.log('data');
+        console.log(data);
+        if (data.length > 0 && data != null) {
+          console.log('in if data');
           if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
-            this.stoprefreshloader();
           }
           else {
+            console.log('in else data');
             this.final_order_status = this.language.pending_status;
-            this.stoprefreshloader();
           }
 
-          if (data.GeneratedNewItemList != undefined) {
+          if (data.GeneratedNewItemList.length > 0 && data.GeneratedNewItemList!== undefined) {
+            console.log('in GeneratedNewItemList');
             console.log(data.GeneratedNewItemList)
             this.new_item_list = data.GeneratedNewItemList;
-          }
-
+            data.GeneratedNewItemList
+          } 
+          this.stoprefreshloader();
         }
         else {
           this.stoprefreshloader();
@@ -3106,14 +3115,16 @@ export class OutputComponent implements OnInit {
         return;
       }
     )
-
+   
   }
 
   stoprefreshloader() {
+    var obj = this;
     setTimeout(function(){
-      this.dontShowFinalLoader = false;
-      this.showFinalLoader = true;
-    }, 1000);
+      obj.dontShowFinalLoader = false;
+      obj.showFinalLoader = true;
+    }, 500);
+     
   }
 
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {

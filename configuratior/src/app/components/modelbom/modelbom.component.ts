@@ -192,9 +192,13 @@ export class ModelbomComponent implements OnInit {
               else {
                 data.ModelDetail[i].OPTM_MANDATORY = false
               }
-
+              this.counter = 0;
+              if (this.modelbom_data.length > 0) {
+                this.counter = this.modelbom_data.length
+              }
+              this.counter++;
               this.modelbom_data.push({
-                rowindex: data.ModelDetail[i].OPTM_LINENO,
+                rowindex: this.counter,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
                 description: this.modelbom_data.feature_name,
                 ReadyToUse: this.modelbom_data.is_ready_to_use ,
@@ -935,7 +939,14 @@ export class ModelbomComponent implements OnInit {
 
   //delete record will be execute from here
   delete_record() {
-    this.service.DeleteData(this.modelbom_data.modal_id).subscribe(
+    console.log('this.modelbom_data.modal_id');
+    console.log(this.modelbom_data.modal_id);
+    let GetItemData = []
+    GetItemData.push({
+      CompanyDBId: this.companyName,
+      ModelId: this.modelbom_data.modal_id
+    });
+    this.service.DeleteData(GetItemData).subscribe(
       data => {
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);

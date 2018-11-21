@@ -223,7 +223,7 @@
                             <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value_code.value,row.rowindex)"
                               value="{{row.type_value}}" title="{{row.type_value}}" #type_value />
                             <div class="input-group-append">
-                              <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
+                              <span [hidden]="row.isTypeDisabled" class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_input_lookup(selected_type.value, row.rowindex)">
                                 <i class="fa fa-bars"></i>
                               </span>
                             </div>
@@ -231,7 +231,7 @@
                         </td>
 
                         <td width="14%">
-                          <select class="form-control  form-control-sm " #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
+                          <select  [disabled]="row.isTypeDisabled" class="form-control  form-control-sm " #selected_condition (change)="on_input_change(row.rowindex, 'condition', selected_condition.value )">
                             <option value=""></option>
                             <option *ngFor="let v of commonData.express_conditions " [value]="v.value" [selected]="row.condition==v.value"> {{v.value}}</option>
                           </select>
