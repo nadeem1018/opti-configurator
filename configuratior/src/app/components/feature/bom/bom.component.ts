@@ -196,9 +196,6 @@ export class BomComponent implements OnInit {
                 CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
-
-
-
             }
           }
           if (data.FeatureHeader.length > 0) {
@@ -373,6 +370,7 @@ export class BomComponent implements OnInit {
         else {
           this.feature_bom_table[i].default = "Y"
         }
+        console.log("qty - " + this.feature_bom_table[i].propagate_qty);
         if (this.feature_bom_table[i].propagate_qty === false) {
           this.feature_bom_table[i].propagate_qty = "N"
         }
@@ -811,14 +809,16 @@ export class BomComponent implements OnInit {
   }
 
   on_propagate_qty_change(value, rowindex) {
+    
     this.currentrowindex = rowindex
-    for (let i = 0; i < this.feature_bom_data.length; ++i) {
-      if (this.feature_bom_data[i].rowindex === this.currentrowindex) {
+    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+      if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        console.log('qty value ' + value );
         if (value.checked == true) {
-          this.feature_bom_data[i].propagate_qty = true
+          this.feature_bom_table[i].propagate_qty = true
         }
         else {
-          this.feature_bom_data[i].propagate_qty = false
+          this.feature_bom_table[i].propagate_qty = false
         }
       }
     }

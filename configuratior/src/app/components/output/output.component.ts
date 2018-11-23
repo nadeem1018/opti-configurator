@@ -3113,7 +3113,7 @@ export class OutputComponent implements OnInit {
       data => {
         console.log('data');
         console.log(data);
-        if (data.length > 0 && data != null) {
+        if (data != null) {
           console.log('in if data');
           if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;

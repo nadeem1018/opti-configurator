@@ -589,7 +589,8 @@ export class LookupComponent implements OnInit {
       CompanyDBId: this.companyName,
       CreatedUser: this.username
     });
-
+    console.log('objData');
+    console.log(objData);
     this.fms.importData(objData).subscribe(
       data => {
         console.log(data);

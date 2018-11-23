@@ -846,12 +846,18 @@ export class RulewbComponent implements OnInit {
           }
         }
         if (key === 'type_value') {
-         
-          console.log("type - " + this.rule_sequence_data[i].type );
+          this.rule_sequence_data[i]['operand_1'] = '';
+          this.rule_sequence_data[i]['operand_1_code'] = '';
+          this.rule_sequence_data[i]['operand_2'] = '';
+          this.rule_sequence_data[i]['operand_2_code'] = '';
+          this.rule_sequence_data[i]['condition'] = '';
+          this.rule_sequence_data[i]['is_operand2_disable'] = true;
+          console.log("type - " + this.rule_sequence_data[i].type);
           if (this.rule_sequence_data[i].type == 1) {
             this.rule_sequence_data[i]['is_operand1_disable'] = false;
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
+
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                   $(actualvalue).val("");
@@ -865,6 +871,7 @@ export class RulewbComponent implements OnInit {
             this.rule_sequence_data[i]['is_operand1_disable'] = true;
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
+
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
                   $(actualvalue).val("");
@@ -882,12 +889,13 @@ export class RulewbComponent implements OnInit {
             this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
                 if (data === "False") {
-                  this.toastr.error('', this.language.InvalidOperationId, this.commonData.toast_config);
                   if (key == "operand_1_code") {
+                    this.toastr.error('', this.language.InvalidOperand1, this.commonData.toast_config);
                     this.rule_sequence_data[i]['operand_1'] = '';
                     this.rule_sequence_data[i]['operand_1_code'] = '';
                   }
                   if (key == "operand_2_code") {
+                    this.toastr.error('', this.language.InvalidOperand2, this.commonData.toast_config);
                     this.rule_sequence_data[i]['operand_2'] = '';
                     this.rule_sequence_data[i]['operand_2_code'] = '';
                   }
@@ -959,6 +967,23 @@ export class RulewbComponent implements OnInit {
 
   show_input_lookup(selected_type, rowindex) {
     this.currentrowindex = rowindex
+    for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+      if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
+        if (selected_type == 1) {
+        this.rule_sequence_data[i]['operand_1'] = '';
+        this.rule_sequence_data[i]['operand_1_code'] = '';
+        this.rule_sequence_data[i]['operand_2'] = '';
+        this.rule_sequence_data[i]['operand_2_code'] = '';
+        this.rule_sequence_data[i]['condition'] = '';
+          this.rule_sequence_data[i]['is_operand2_disable'] = true;
+        } else {
+          this.rule_sequence_data[i]['condition'] = '';
+          this.rule_sequence_data[i]['is_operand2_disable'] = true;
+          
+        }
+      }
+    }
+   
     if (selected_type == 1) {
       this.getFeatureDetails(this.rule_wb_data.applicable_for_feature_id, "Detail", selected_type);
     }
