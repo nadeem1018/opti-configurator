@@ -51,7 +51,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price_source, this.language.price_extn, "", "", "delete"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
@@ -295,6 +295,7 @@ export class OutputComponent implements OnInit {
     this.showPrintOptions = true;
   }
   onSavePress() {
+    this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
   }
 
@@ -327,9 +328,10 @@ export class OutputComponent implements OnInit {
             this.step1_data.document = "sales_order"
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
-            this.step1_data.customer_name = data.CustomerOutput[0].NAME,
+            this.step1_data.customer_name = data.CustomerOutput[0].Name,
             this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
             this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
+            this.step1_data.delivery_until =  data.CustomerOutput[0].OPTM_DELIVERYDATE;
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
@@ -2802,6 +2804,8 @@ export class OutputComponent implements OnInit {
     $("#modelbom_next_click_id").trigger('click');
     this.onModelBillNextPress();
   }
+
+ 
 
   //For next press towards finsh screen
   onModelBillNextPress() {
