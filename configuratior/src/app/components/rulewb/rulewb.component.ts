@@ -244,7 +244,12 @@ export class RulewbComponent implements OnInit {
 
               let operand2_disabled = true;
               if (fetch_data.OPTM_CONDITION == 'Between') {
-                operand2_disabled = false;
+                if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
+                  operand2_disabled = false;
+                } else {
+                  operand2_disabled = true;
+                }
+              
               }
 
               let operand1_disabled = false;
@@ -838,7 +843,11 @@ export class RulewbComponent implements OnInit {
         }
         if (key == "condition") {
           if (value == "Between") {
+            if (this.rule_sequence_data[i].type == 1) {
             this.rule_sequence_data[i]['is_operand2_disable'] = false;
+            } else {
+              this.rule_sequence_data[i]['is_operand2_disable'] = true;
+            }
           } else {
             this.rule_sequence_data[i]['is_operand2_disable'] = true;
             this.rule_sequence_data[i]['operand_2'] = '';

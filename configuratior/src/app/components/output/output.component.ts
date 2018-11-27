@@ -2522,7 +2522,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.ConnectionDetails = [];
-
+    let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.step1_data.selected_configuration_key,
@@ -2553,6 +2553,7 @@ export class OutputComponent implements OnInit {
       "OPTM_PRODDISCOUNT": Number(this.feature_discount_percent),
       "OPTM_ACCESSORYDIS": Number(this.accessory_discount_percent),
       "OPTM_ACCESSORYTOTAL": Number(this.accessory_item_total),
+      "OPTM_TOTALDISCOUNT": Number(total_discount),
     })
 
     //creating details table array
