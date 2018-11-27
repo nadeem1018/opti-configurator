@@ -376,7 +376,8 @@
     "template_type": "Template Type",
     "itemkey": "ItemKey",
     "templateid" :"Template Id",
-    "ItemCodeGenkey" :"ItemCodeGenkey"
+    "ItemCodeGenkey" :"ItemCodeGenkey",
+    "InvalidFeatureCode": "Invalid Feature Code"
 
     
 }

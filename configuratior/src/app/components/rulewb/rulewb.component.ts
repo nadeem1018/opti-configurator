@@ -1030,17 +1030,19 @@ export class RulewbComponent implements OnInit {
     }
   }
 
-  onFeatureIdChange() {
-    this.service.onFeatureIdChange(this.rule_wb_data.applicable_for_feature_id).subscribe(
+  onFeatureIdChange(feature_id_code) {
+    this.service.onFeatureIdChange(feature_id_code).subscribe(
       data => {
 
         if (data === "False") {
-          this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+          this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
           this.rule_wb_data.applicable_for_feature_id = "";
+          this.rule_wb_data.applicable_for_feature_code = "";
           return;
         }
         else {
           this.lookupfor = 'feature_lookup';
+          this.rule_wb_data.applicable_for_feature_id = data;
           this.getFeatureDetailsForOutput();
         }
       })
