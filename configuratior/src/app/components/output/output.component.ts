@@ -3137,13 +3137,13 @@ export class OutputComponent implements OnInit {
         // imodelData = this.ModelHeaderData.filter(function (obj) {
         //   return obj['OPTM_MODELID'] == this.step2_final_dataset_to_save[isave].PARENTID && obj['featureName'] == this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE
         // })
-        // if (this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
-        //   if (itemkey.length == 0) {
-        //     itemkey = this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE
-        //   } else {
-        //     itemkey = itemkey + "-" + this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE
-        //   }
-        // }
+        if (this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y") {
+          if (itemkey.length == 0) {
+            itemkey = this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE
+          } else {
+            itemkey = itemkey + "-" + this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE
+          }
+        }
 
       }
       else if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "" && this.step2_final_dataset_to_save[isave].UNIQUEIDNT == "Y" && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3) {
