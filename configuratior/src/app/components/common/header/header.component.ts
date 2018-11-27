@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
       this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
     }
     
-    
   }
 
   ngOnChanges() {

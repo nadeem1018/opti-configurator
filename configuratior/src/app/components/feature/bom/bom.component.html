@@ -200,10 +200,10 @@
                                         </td>
                                         <td width=12%;>
                                             <div class="input-group">
-                                                <input [disabled]="row.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
+                                                <input [disabled]="row.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)" title="{{row.price_source_id}}"
                                                     value={{row.price_source_id}} #price_source_id />
 
-                                                <input type="text" class="form-control  form-control-sm" id="price_source" name="price_source" value={{row.price_source}}
+                                                <input type="text" class="form-control  form-control-sm" id="price_source"  title="{{row.price_source}}"  name="price_source" value={{row.price_source}}
                                                     (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
                                                     #price_source [disabled]="row.isPriceDisabled" />
                                                 <div class="input-group-append" [hidden]=row.pricehide>

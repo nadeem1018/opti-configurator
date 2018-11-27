@@ -43,6 +43,9 @@ export class OutputComponent implements OnInit {
   public ModelHeaderItemsArray = [];
   public warehouse: string = "";
   //public step2_data_all_data={};
+  
+  // public router_link_new_config = "";
+  
   public defaultCurrency = sessionStorage.defaultCurrency;
   public doctype: any = "";
   public lookupfor: string = '';
@@ -51,7 +54,7 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn, this.language.accessories];
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price, this.language.price_extn, "", "", "delete"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')' , this.language.price_extn, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
@@ -157,6 +160,7 @@ export class OutputComponent implements OnInit {
 
   ngOnInit() {
     let cDate = new Date();
+   //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
     this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
@@ -229,6 +233,11 @@ export class OutputComponent implements OnInit {
     /* setTimeout(() => {
       this.tree_view_expand_collapse()
     }, 2000); */
+  }
+
+  start_new_configuration_click(){
+  //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
+    this.route.navigateByUrl("/output/view/" + Math.round(Math.random() * 10000));
   }
 
   onOperationChange(operation_type) {
@@ -2524,7 +2533,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.ConnectionDetails = [];
-
+    let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.step1_data.selected_configuration_key,
@@ -2555,7 +2564,7 @@ export class OutputComponent implements OnInit {
       "OPTM_PRODDISCOUNT": Number(this.feature_discount_percent),
       "OPTM_ACCESSORYDIS": Number(this.accessory_discount_percent),
       "OPTM_ACCESSORYTOTAL": Number(this.accessory_item_total),
-      "OPTM_TOTALDISCOUNT":0
+      "OPTM_TOTALDISCOUNT": Number(total_discount),
     })
 
     //creating details table array
@@ -3206,7 +3215,7 @@ export class OutputComponent implements OnInit {
       data => {
         console.log('data');
         console.log(data);
-        if (data.length > 0 && data != null) {
+        if (data != null) {
           console.log('in if data');
           if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;

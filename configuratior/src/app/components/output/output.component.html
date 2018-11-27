@@ -644,7 +644,7 @@
                         <thead class="" style=" font-size: 14px; ">
                             <tr>
                                 <td>
-                                  {{this.language.total_before_discount}}
+                                  {{this.language.total_before_discount}} ({{defaultCurrency}})
                                 </td>
                                 <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
                               </tr>
@@ -890,7 +890,7 @@
                       <thead class="" style=" font-size: 14px; ">
                           <tr>
                               <td>
-                                {{this.language.total_before_discount}}
+                                {{this.language.total_before_discount}} ({{defaultCurrency}})
                               </td>
                               <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
                             </tr>
@@ -1210,8 +1210,14 @@
                         <table class="table table-bordered table-sm">
                           <thead class="" style=" font-size: 14px; ">
                             <tr>
-                              <th width="70%">{{language.product_discount}}</th>
-                              <td width="30%" class="pull-right text-right border_none">
+                              <td>
+                                {{this.language.total_before_discount}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                            </tr>
+                            <tr>
+                              <th >{{language.product_discount}}</th>
+                              <td class="pull-right text-right border_none">
                                 {{this.feature_discount_percent}}
                               </td>
                             </tr>
@@ -1270,7 +1276,7 @@
             <hr>
             <!-- <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button> -->
-            <a href="javascript:;" type="button" class="btn btn-sm btn-primary  mr-10 text-white" routerLink="/output/view/new">
+            <a href="javascript:;" type="button" class="btn btn-sm btn-primary  mr-10 text-white" (click)="start_new_configuration_click()">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.start_new_configuration}}
             </a>
             <!--   <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit">Submit</button> -->

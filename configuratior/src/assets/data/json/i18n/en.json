@@ -49,7 +49,7 @@
     "connect": "Connect",
     "connected": "Connected",
     "close": "Close",
-    "total_before_discount": "Total Before Discount %",
+    "total_before_discount": "Total Before Discount",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Failed to save data",
     "DataDeleteSuccesfully": "Data deleted successfully",
@@ -143,7 +143,7 @@
     "Model_ModelName": "Model Name",
     "Model_FeatureDesc": "Feature Desc",
     "Model_ModelDesc": "Model Desc",
-    "Model_RefValidate": "Invalid ItemCode",
+    "Model_RefValidate": "Invalid value in 'Item Code Generation Ref'",
     "FeatureIDBlank": "Feature id cannot be blank",
     "FeatureCodeBlank": "Feature Code cannot be blank",
     "SelectFeature": "Select feature at row index: ",
@@ -312,7 +312,7 @@
     "pricevalidextn": "Price extension cannot be negative",
     "negativequantityvalid": "Quantity cannot be negative",
     "decimalquantityvalid": "Quantity cannot be decimal",
-    "quantity_numeric_only":"Only Numberic Value allowed in Quantity",
+    "quantity_numeric_only":"Only Numeric Value allowed in Quantity",
     "blank_or_zero_not_allowed":"Blank or zero quantity not allowed",
     "child_exist_cannot_remove": "Child exist in th following component, First Remove the child of this component. ",
     "valid_date": "Valid Until",
@@ -325,6 +325,7 @@
     "accessories_tax": "Accessories Tax",
     "accessories_total": "Accessories Total",
     "operator_row_1_error": "Operator at 1st row not allowed.",
+    "invalid_value_model_template_item":"Invalid value in 'Model Template Item' field. ",
     "grand_total": "Grand Total",
     "remove_this_modal": "Remove this modal",
     "confirm_remove_modal": "Are you sure, you want to remove this modal?",
@@ -344,7 +345,7 @@
     "qty_validation": "Min Selectable cannot be smaller than Max Selectable",
     "bracket_missing_expression": "Brackets missing from the expression, please verify opening/closing brackets ",
     "invalid_expression_bracket_error": "Invalid Expression, please verify expression for brackets.",
-    "illogical_expression_error": "Illogicial Expression, please verify your expression",
+    "illogical_expression_error": "Illogical Expression, please verify your expression",
     "bracket_doesnt_match": "Brackets arent closed in the correct order, please verfiy brackets",
     "operator_cannotbe_blank_with_type":"Operator cannot be blank with type selected on row ",
     "max_selected_validation": "Max selected is greater than feature child",
@@ -366,6 +367,8 @@
     "percentvalidation":"percent cannot be greater than 100",
     "print_quote": "Print Quote",
     "InvalidOperationId": "Invalid Operation Id",
+    "InvalidOperand1": "Invalid value in Operand 1",
+    "InvalidOperand2": "Invalid value in Operand 2",
     "customer_code": "Customer Code",
     "invalid_itemcode": "Invalid value in 'Model Template Item' field",
     "price_list_name": "Price List Name",
@@ -373,7 +376,8 @@
     "template_type": "Template Type",
     "itemkey": "ItemKey",
     "templateid" :"Template Id",
-    "ItemCodeGenkey" :"ItemCodeGenkey"
+    "ItemCodeGenkey" :"ItemCodeGenkey",
+    "InvalidFeatureCode": "Invalid Feature Code"
 
     
 }

@@ -34,7 +34,7 @@ export class LookupComponent implements OnInit {
   popup_title = this.language.title;
   constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router, private mbom: ModelbomService, ) { }
   public table_head_hidden_elements = [];
-
+  public defaultCurrency = sessionStorage.defaultCurrency;
 
   // mandatory variables
   public dataBind: any = [];
@@ -42,7 +42,6 @@ export class LookupComponent implements OnInit {
   public checked_rules = [];
   public showLoader: boolean = false;
   public showruleOutputLoader: boolean = false;
-
   public LookupDataLoaded: boolean = false;
   public RuleOutputLookupDataLoaded: boolean = false;
   public click_operation;
@@ -589,7 +588,8 @@ export class LookupComponent implements OnInit {
       CompanyDBId: this.companyName,
       CreatedUser: this.username
     });
-
+    console.log('objData');
+    console.log(objData);
     this.fms.importData(objData).subscribe(
       data => {
         console.log(data);
