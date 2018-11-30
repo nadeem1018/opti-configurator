@@ -377,6 +377,7 @@
     "itemkey": "ItemKey",
     "templateid" :"Template Id",
     "ItemCodeGenkey" :"ItemCodeGenkey",
+    "enable_filter": "Enable Filter",
     "InvalidFeatureCode": "Invalid Feature Code"
 
     

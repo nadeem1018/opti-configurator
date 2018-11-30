@@ -335,7 +335,7 @@
                           <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value_code.value,dataItem.rowindex)"
                             value="{{dataItem.type_value}}" title="{{dataItem.type_value}}" #type_value />
                           <div class="input-group-append">
-                            <span [hidden]="dataItem.isTypeDisabled" class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_input_lookup(selected_type.value, dataItem.rowindex)">
+                            <span [hidden]="dataItem.isTypeDisabled" class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="show_input_lookup(dataItem.type, dataItem.rowindex)">
                               <i class="fa fa-bars"></i>
                             </span>
                           </div>
@@ -360,7 +360,7 @@
                             name="operand_1_code" value="{{dataItem.operand_1_code}}" title="{{dataItem.operand_1_code}}" (change)="on_input_change(dataItem.rowindex, 'operand_1_code', operand_1_code.value,operand_1_code )"
                           />
                           <div class="input-group-append">
-                            <span class="input-group-text cursor_icon basic-addon2-table" [hidden]="dataItem.is_operand1_disable" id="basic-addon2" (click)="show_operand_lookup(selected_type.value, type_value.value, dataItem.rowindex,'operand_1')">
+                            <span class="input-group-text cursor_icon basic-addon2-table" [hidden]="dataItem.is_operand1_disable" id="basic-addon2" (click)="show_operand_lookup(dataItem.type, dataItem.type_value, dataItem.rowindex,'operand_1')">
                               <i class="fa fa-bars"></i>
                             </span>
                           </div>
