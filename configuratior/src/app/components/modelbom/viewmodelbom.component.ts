@@ -210,11 +210,11 @@ export class ViewModelBomComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].ModelId == row_data.OPTM_MODELID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            ModelId: row_data,
+                            ModelId: row_data.OPTM_MODELID,
                             CompanyDBId: this.companyName
                         })
                     }
@@ -225,14 +225,14 @@ export class ViewModelBomComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    ModelId: row_data,
+                    ModelId: row_data.OPTM_MODELID,
                     CompanyDBId: this.companyName
                 })
             }
         }
         else {
             this.CheckedData.push({
-                ModelId: row_data,
+                ModelId: row_data.OPTM_MODELID,
                 CompanyDBId: this.companyName
             })
         }
@@ -246,12 +246,12 @@ export class ViewModelBomComponent implements OnInit {
         this.selectall = false
 
         if (checkedvalue == true) {
-            if (this.rows.length > 0) {
+            if (this.dataArray.length > 0) {
                 this.selectall = true
-                for (let i = 0; i < this.rows.length; ++i) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        ModelId: this.rows[i][2],
+                        ModelId: this.dataArray[i].OPTM_MODELID,
                         CompanyDBId: this.companyName
                     })
                 }

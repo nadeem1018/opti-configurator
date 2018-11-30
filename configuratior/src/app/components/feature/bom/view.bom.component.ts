@@ -215,11 +215,11 @@ export class ViewFeatureBOMComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].FeatureId == row_data.OPTM_FEATUREID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            FeatureId: row_data,
+                            FeatureId: row_data.OPTM_FEATUREID,
                             CompanyDBId: this.companyName
                         })
                     }
@@ -230,14 +230,14 @@ export class ViewFeatureBOMComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    FeatureId: row_data,
+                    FeatureId: row_data.OPTM_FEATUREID,
                     CompanyDBId: this.companyName
                 })
             }
         }
         else {
             this.CheckedData.push({
-                FeatureId: row_data,
+                FeatureId: row_data.OPTM_FEATUREID,
                 CompanyDBId: this.companyName
             })
         }
@@ -253,11 +253,11 @@ export class ViewFeatureBOMComponent implements OnInit {
 
         if (checkedvalue == true) {
             this.selectall = true
-            if (this.rows.length > 0) {
-                for (let i = 0; i < this.rows.length; ++i) {
+            if (this.dataArray.length > 0) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        FeatureId: this.rows[i][1],
+                        FeatureId: this.dataArray[i].OPTM_FEATUREID,
                         CompanyDBId: this.companyName
                     })
                 }
