@@ -248,11 +248,11 @@ export class ViewFeatureModelComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i].FEATUREID == row_data) {
+                if (this.CheckedData[i].FEATUREID == row_data.OPTM_FEATUREID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            FEATUREID: row_data,
+                            FEATUREID: row_data.OPTM_FEATUREID,
                             CompanyDBId: this.CompanyDBId
                         })
                     }
@@ -263,14 +263,14 @@ export class ViewFeatureModelComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    FEATUREID: row_data,
+                    FEATUREID: row_data.OPTM_FEATUREID,
                     CompanyDBId: this.CompanyDBId
                 })
             }
         }
         else {
             this.CheckedData.push({
-                FEATUREID: row_data,
+                FEATUREID: row_data.OPTM_FEATUREID,
                 CompanyDBId: this.CompanyDBId
             })
         }
@@ -283,11 +283,11 @@ export class ViewFeatureModelComponent implements OnInit {
 
         if (checkedvalue == true) {
             this.selectall = true
-            if (this.rows.length > 0) {
-                for (let i = 0; i < this.rows.length; ++i) {
+            if (this.dataArray.length > 0) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        FEATUREID: this.rows[i][1],
+                        FEATUREID: this.dataArray[i].OPTM_FEATUREID,
                         CompanyDBId: this.CompanyDBId
                     })
                 }
