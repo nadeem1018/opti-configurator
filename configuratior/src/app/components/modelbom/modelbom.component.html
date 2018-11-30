@@ -223,7 +223,7 @@
           </div> -->
           <!-- <hr> -->
           <div class="col-sm-12 p-0">
-            <div class="table-responsive table-responsive-sm table-bordered">
+            <div class="">
               <kendo-grid [kendoGridBinding]="modelbom_data" [height]="400" [resizable]="true" [sortable]="false" [groupable]="false"
                 [filterable]="false">
               
@@ -322,7 +322,7 @@
                       (change)="on_unique_identifer_change(unique_identifer,dataItem.rowindex)" title="{{dataItem.unique_identifer}}" #unique_identifer />
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="delete" title="" template="" [width]="30" [minResizableWidth]="30">
+                <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="30">
               
                   <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                     <i class="fa fa-trash"></i>
