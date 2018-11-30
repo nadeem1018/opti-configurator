@@ -621,7 +621,7 @@
                 </div>
                 <div class="feature_block">
                   <div class="feature_table">
-                    <div class="table-responsive table-responsive-sm">
+                    <div class="">
                       <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
                         <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120" [minResizableWidth]="60">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
@@ -964,7 +964,7 @@
                   </button>
                 </div>
                 <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
-                  <div class="table-responsive table-responsive-sm table-bordered">
+                  <div class="">
                     <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
                       <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
@@ -1000,7 +1000,7 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          {{this.language.price}} {{this.defaultCurrency}}
+                          {{this.language.price}} ({{this.defaultCurrency}})
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
                           {{row.price}}
@@ -1337,8 +1337,58 @@
                   <div class="row">
                     <!-- <div class="col-md-3"> </div> -->
                     <div class="col-md-12 pr-0">
-                      <div class="accessories_table table-responsive">
-                        <table class="table table-bordered table-sm lookup_table">
+                      <div class="accessories_table">
+                        <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.hash}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.rowIndex}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                               SI#
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.sl_no}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.item}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.item}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.quantity}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.qunatity}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.price}} ({{this.defaultCurrency}})
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.price}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.price_extn}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.price_ext}}
+                            </ng-template>
+                          </kendo-grid-column>
+                        </kendo-grid>
+                        <!-- <table class="table table-bordered table-sm lookup_table">
                           <thead class="thead-dark">
                             <tr>
                               <th *ngFor="let label of order_creation_table_head; let i= index">
@@ -1357,12 +1407,7 @@
                               </span>
                             </tr>
                           </tbody>
-
-
-
-
-
-                        </table>
+                        </table> -->
                       </div>
                       <br>
                     </div>

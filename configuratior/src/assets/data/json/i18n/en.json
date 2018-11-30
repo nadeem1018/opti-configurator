@@ -211,7 +211,7 @@
     "selectoperand1": "Select operand 1 at row index: ",
     "selectoperand2": "Select operand 2 at row index: ",
     "config_wizard": "Configuration Wizard",
-    "configuration_id": "Configuration Id",
+    "configuration_id": "Configuration ID",
     "select_customer": "Select Customer and related document Details ",
     "select_customer_document": "Customer and Document Details ",
     "select_model_bom_config": "Select Model Bill of material to configure the desired Product",
