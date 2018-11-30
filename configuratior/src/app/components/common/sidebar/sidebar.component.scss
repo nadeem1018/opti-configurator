@@ -1,3 +1,9 @@
+
+
+#opti_sidebar{
+    background: linear-gradient(177deg, #1BA0F1 44%, #25DDF5 91%, #45D790 130%);
+}
+
 body {
     font-size: .875rem;
 }
@@ -304,7 +310,10 @@ body {
                 span{
                     display: inline-block;
                     width: 100%;
-                    font-size: 10px;
+                    font-size: 11px;
+                    font-weight: bold;
+                    color: white;
+
                 }
             }
         }
