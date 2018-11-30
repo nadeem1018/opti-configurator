@@ -15,8 +15,7 @@ import { UIHelper } from '../../helpers/ui.helpers';
 export class ViewModelBomComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
-    page_main_title = 'Model Bom';
-    table_title = this.page_main_title;
+   
     public companyName: string = "";
     public username: string = "";
     add_route_link = '/modelbom/add';
@@ -41,6 +40,8 @@ export class ViewModelBomComponent implements OnInit {
     public showImportButton: boolean = false;
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
+    page_main_title = this.language.Model_Bom;
+    table_title = this.page_main_title;
     table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.model_ModelCode, this.language.Name, this.language.description, this.language.action];
     public table_hidden_elements = [false, true, true, false, false, false, false];
     constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService) { }

@@ -23,6 +23,9 @@ $errorColor:red;
 $whiteColor:#fff;
 $borderColor:#c7c7c7;
 
+
+
+
 .field-nobg-noborder{
     background: transparent !important;
     border: none !important;
@@ -293,6 +296,8 @@ body.app_rule-wb-view-model{
     body{
         .opti_module-title {
             padding: 5px 0;
+            font-weight: bold;
+            font-size: 20px;
         }
         .form-control:focus {
             border-color: $borderColor;

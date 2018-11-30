@@ -304,6 +304,7 @@ export class OutputComponent implements OnInit {
     this.showPrintOptions = true;
   }
   onSavePress() {
+    this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
   }
 
@@ -336,9 +337,10 @@ export class OutputComponent implements OnInit {
             this.step1_data.document = "sales_order"
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
-            this.step1_data.customer_name = data.CustomerOutput[0].NAME,
+            this.step1_data.customer_name = data.CustomerOutput[0].Name,
             this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
             this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
+            this.step1_data.delivery_until =  data.CustomerOutput[0].OPTM_DELIVERYDATE;
             this.contact_persons.push({
               Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
             });
@@ -2544,7 +2546,7 @@ export class OutputComponent implements OnInit {
       "OPTM_TAX": this.acc_item_tax,
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
-      "OPTM_KEY": "DEMO-KEY",
+      "OPTM_KEY":"",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
@@ -2813,6 +2815,8 @@ export class OutputComponent implements OnInit {
     this.onModelBillNextPress();
   }
 
+ 
+
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
@@ -2980,7 +2984,7 @@ export class OutputComponent implements OnInit {
 
           for (var isave in this.step2_final_dataset_to_save) {
             if (this.step2_final_dataset_to_save[isave].PARENTID == imodelData[0].OPTM_MODELID && this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE == imodelData[0].child_code) {
-              this.step2_final_dataset_to_save[isave].OPTM_KEY = itemkeyforparentmodel
+              this.step2_final_dataset_to_save[isave].OPTM_KEY = itemkeyforparentmodel.toString()
             }
             for (var isavemodelchild in imodelfilteritems) {
               if (this.step2_final_dataset_to_save[isave].PARENTID == imodelfilteritems[isavemodelchild].OPTM_MODELID && this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE == imodelfilteritems[isavemodelchild].OPTM_ITEMKEY) {
@@ -3013,7 +3017,7 @@ export class OutputComponent implements OnInit {
           }
           for (var isavedataset in this.step2_final_dataset_to_save) {
             if (this.step2_final_dataset_to_save[isavedataset].OPTM_ITEMTYPE == "1") {
-              this.step2_final_dataset_to_save[isavedataset].OPTM_KEY = modelfeatureitemkey
+              this.step2_final_dataset_to_save[isavedataset].OPTM_KEY = modelfeatureitemkey.toString()
             }
           }
         
@@ -3172,7 +3176,7 @@ export class OutputComponent implements OnInit {
         }
 
       }
-      this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey
+      this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey.toString()
     }
 
     for (var isave in this.step2_final_dataset_to_save) {
@@ -3191,7 +3195,7 @@ export class OutputComponent implements OnInit {
           if (itemnumbersplitnumber.length > 0) {
             for (var i in itemnumbersplitnumber) {
               if (itemnumbersplitnumber[i] == this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER) {
-                this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = modelitemtype[imodelitemtypesave].OPTM_KEY
+                this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = modelitemtype[imodelitemtypesave].OPTM_KEY.toString()
               }
             }
           }
@@ -3640,40 +3644,112 @@ export class OutputComponent implements OnInit {
     if (RuleOutputData.length > 0) {
       for (var iItemFeatureTable in this.FeatureBOMDataForSecondLevel) {
         for (var iItemRule in RuleOutputData) {
-          if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
-            if (value == true) {
-              if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
-                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
-                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+          if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE==1 ){
+            if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_CHILDFEATUREID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
+                else {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
               }
             }
-            else {
-              this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+          }
+          else if(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE==2 ){
+            if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
+                else {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                }
+              }
+              else {
+                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+              }
             }
           }
+          else{
+            if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_VALUE== RuleOutputData[iItemRule].OPTM_VALUE) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
+                else {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                }
+              }
+              else {
+                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+              }
+            }
+          }
+         
 
         }
       }
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
         for (var iItemRule in RuleOutputData) {
-          if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
-            if (value == true) {
-              if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
-                this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
-                this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+          if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE==1){
+            if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
+                else {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
               }
+  
             }
-            else {
-              this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-            }
-
           }
+          else if(this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE==2){
+            if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
+                else {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                }
+              }
+              else {
+                this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+              }
+  
+            }
+          }
+          else{
+            if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_CHILDMODELID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
+              if (value == true) {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
+                else {
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                }
+              }
+              else {
+                this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+              }
+  
+            }
+          }
+         
         }
       }
       for (var iFeatureItemaddedTable = 0; iFeatureItemaddedTable < this.feature_itm_list_table.length; iFeatureItemaddedTable++) {
