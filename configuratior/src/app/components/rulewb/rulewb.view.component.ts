@@ -47,37 +47,37 @@ export class RuleWbViewComponent implements OnInit {
     dataArray:any = [];
     public columns: ColumnSetting[] = [
         {
-            field: 'OPTM_FEATURECODE',
+            field: 'OPTM_RULECODE',
             title: this.language.rule_code,
             type: 'text',
             width: '200'
         },
         {
-            field: 'OPTM_DISPLAYNAME',
+            field: 'OPTM_DESCRIPTION',
             title: this.language.description,
             type: 'text',
             width: '200'
         },
         {
-            field: 'OPTM_DISPLAYNAME',
+            field: 'OPTM_APPLICABLEFOR',
             title: this.language.applicable_for,
             type: 'text',
             width: '200'
         },
         {
-            field: 'OPTM_DISPLAYNAME',
+            field: 'OPTM_EFFECTIVEFROM',
             title: this.language.Fromdate,
             type: 'text',
             width: '200'
         },
         {
-            field: 'OPTM_DISPLAYNAME',
+            field: 'OPTM_EFFECTIVETO',
             title: this.language.Todate,
             type: 'text',
             width: '200'
         },
         {
-            field: 'OPTM_DISPLAYNAME',
+            field: 'OPTM_DISCONTINUE',
             title: this.language.discontinued,
             type: 'text',
             width: '200'
@@ -182,15 +182,15 @@ export class RuleWbViewComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
 
-        this.router.navigateByUrl('rulewb/edit/' + id);
+        this.router.navigateByUrl('rulewb/edit/' + data.OPTM_RULEID);
         // button click function in here
     }
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_RULEID;
         // var result = confirm(this.language.DeleteConfimation);
     }
 
