@@ -356,11 +356,23 @@ body.app_rule-wb-view-model{
     }    
 // Some global css end
 
-table {
+.k-grid-header-wrap table {
     thead{
         tr{
             background: #1BA0F1;
             color: white;
         }
     }
+}
+
+.k-grid td, .k-grid th{
+    padding: 4px 12px !important;
+}
+
+.k-pager-numbers .k-link, .k-pager-numbers .k-link:link{
+    color: #1BA0F1 !important; 
+}
+.k-pager-wrap .k-link.k-state-selected{
+    background-color: #1BA0F1 !important;
+    color: white !important;
 }
