@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
-import { CommonData } from "src/app/models/CommonData";
+import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
@@ -20,10 +20,45 @@ export class ViewFeatureModelComponent implements OnInit {
     public commonData = new CommonData();
     // generate table default constants
     table_pages: any;
+    dataArray: any = [];
     search_key: any;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
+
+    public columns: ColumnSetting[] = [
+        {
+          field: 'OPTM_FEATURECODE',
+          title: this.language.code,
+          type: 'text',
+          width: '200'
+        }, 
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Bom_Displayname,
+            type: 'text',
+            width: '200'
+          },
+          {
+            field: 'OPTM_EFFECTIVEDATE',
+            title: this.language.Model_Date,
+            type: 'text',
+            width: '100'
+          },
+        {
+          field: 'OPTM_TYPE',
+          title: this.language.Type,
+          type: 'text',
+          width: '100'      
+        },    
+        {
+            field: 'OPTM_STATUS',
+            title: this.language.Model_Status,
+            type: 'text',
+            width: '200'
+          },    
+      ];
+
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false];
     record_per_page_list: any = this.common_params.default_limits;
     add_route_link = '/feature/model/add';
@@ -111,20 +146,23 @@ export class ViewFeatureModelComponent implements OnInit {
         }
         var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 

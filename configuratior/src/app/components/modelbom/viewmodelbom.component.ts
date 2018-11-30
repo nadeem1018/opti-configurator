@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ModelbomService } from '../../services/modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CommonData } from "../../models/CommonData";
+import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
@@ -27,6 +27,7 @@ export class ViewModelBomComponent implements OnInit {
     rows: any = "";
     public ViewData: any = [];
     show_table_footer: boolean = false;
+    dataArray: any = [];
 
     //custom dialoag params
     public dialog_params: any = [];
@@ -51,6 +52,26 @@ export class ViewModelBomComponent implements OnInit {
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
   
+    public columns: ColumnSetting[] = [
+        {
+          field: 'OPTM_FEATURECODE',
+          title: this.language.model_ModelCode,
+          type: 'text',
+          width: '200'
+        }, 
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Name,
+            type: 'text',
+            width: '200'
+          },
+          {
+            field: 'OPTM_FEATUREDESC',
+            title: this.language.description,
+            type: 'text',
+            width: '100'
+          },
+      ];
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();
@@ -104,20 +125,23 @@ export class ViewModelBomComponent implements OnInit {
         }
         var dataset = this.service.getAllViewDataForModelBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 

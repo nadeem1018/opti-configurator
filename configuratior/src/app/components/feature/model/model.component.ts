@@ -65,6 +65,7 @@ export class ModelComponent implements OnInit {
   public IsAccessoryVisible = true;
   public minimum_date = new Date();
 
+
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
