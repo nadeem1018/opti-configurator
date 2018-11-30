@@ -2,8 +2,11 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 import { ItemcodegenerationService } from '../../services/itemcodegeneration.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CommonData } from "../../models/CommonData";
+import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
+
+
+
 
 @Component({
     selector: 'app-item-code-view-model',
@@ -25,7 +28,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     search_string: any = "";
     current_page: any = 1;
     page_numbers: any = "";
-    rows: any = "";
+    public isColumnFilter: boolean = false;
+    // rows: any = "";
     public ViewData: any = [];
     public toDelete: any = {
     };
@@ -43,6 +47,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public isMultiDelete: boolean = false;
     public showImportButton: boolean = false;
 
+    public dataArray: any[];
+
     //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
@@ -55,6 +61,20 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
   
+
+    public columns: ColumnSetting[] = [
+        {
+          field: this.language.code,
+          title: this.language.code,
+          type: 'text',
+          width: '500'
+        }, {
+          field: 'FinalString',
+          title: this.language.finalstring,
+          type: 'text',
+          width: '500'      
+        },        
+      ];
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();
@@ -91,7 +111,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+      //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -118,21 +138,24 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         }
         var dataset = this.itemgen.viewItemGenerationData(this.companyName, search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                console.log(dataset)
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                this.dataArray = data;
+
+                // dataset = JSON.parse(data);
+                // console.log(dataset)
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
+
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
@@ -149,16 +172,16 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
 
-        this.router.navigateByUrl('item-code-genration/edit/' + id);
+        this.router.navigateByUrl('item-code-genration/edit/' + data.Code);
         // button click function in here
     }
-    button_click2(id) {
+    button_click2(data) {
         this.isMultiDelete = false;
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.Code;
 
         // var result = confirm(this.language.DeleteConfimation);
 
@@ -216,11 +239,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].ItemCode == row_data.Code) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            ItemCode: row_data,
+                            ItemCode: row_data.Code,
                             CompanyDBId: this.companyName
                         })
                     }
@@ -231,14 +254,14 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    ItemCode: row_data,
+                    ItemCode: row_data.Code,
                     CompanyDBId: this.companyName
                 })
             }
         }
         else {
             this.CheckedData.push({
-                ItemCode: row_data,
+                ItemCode: row_data.Code,
                 CompanyDBId: this.companyName
             })
         }
@@ -250,14 +273,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         var isExist = 0;
         this.CheckedData = []
         this.selectall = false
-
         if (checkedvalue == true) {
-            if (this.rows.length > 0) {
+            if (this.dataArray.length > 0) {
                 this.selectall = true
-                for (let i = 0; i < this.rows.length; ++i) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        ItemCode: this.rows[i][2],
+                        ItemCode: this.dataArray[i].Code,
                         CompanyDBId: this.companyName
                     })
                 }

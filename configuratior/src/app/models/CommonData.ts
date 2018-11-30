@@ -1,5 +1,14 @@
 import { HttpHeaders } from '@angular/common/http';
 
+
+export interface ColumnSetting {
+    field: string;
+    title: string;
+    format?: string;
+    type: 'text' | 'numeric' | 'boolean' | 'date';
+    width?: string;
+  }
+
 // Example of Data as model, can be used for non updating data (exaple - names, task type and etc)
 export class CommonData {
     public project_name: string = "Optipro Configurator";

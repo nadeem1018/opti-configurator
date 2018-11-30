@@ -562,7 +562,7 @@ export class RulewbComponent implements OnInit {
     this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
-        if (data.length > 0) {
+        if (data != null || data != "" || data != undefined) {
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
             this.global_rule_feature_data.push({

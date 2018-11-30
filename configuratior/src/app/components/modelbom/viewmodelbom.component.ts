@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ModelbomService } from '../../services/modelbom.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CommonData } from "../../models/CommonData";
+import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
@@ -15,8 +15,7 @@ import { UIHelper } from '../../helpers/ui.helpers';
 export class ViewModelBomComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
-    page_main_title = 'Model Bom';
-    table_title = this.page_main_title;
+   
     public companyName: string = "";
     public username: string = "";
     add_route_link = '/modelbom/add';
@@ -28,6 +27,7 @@ export class ViewModelBomComponent implements OnInit {
     rows: any = "";
     public ViewData: any = [];
     show_table_footer: boolean = false;
+    dataArray: any = [];
 
     //custom dialoag params
     public dialog_params: any = [];
@@ -38,9 +38,12 @@ export class ViewModelBomComponent implements OnInit {
     public selectall: boolean = false;
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
+    public isColumnFilter: boolean = false;
     public showImportButton: boolean = false;
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
+    page_main_title = this.language.Model_Bom;
+    table_title = this.page_main_title;
     table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.model_ModelCode, this.language.Name, this.language.description, this.language.action];
     public table_hidden_elements = [false, true, true, false, false, false, false];
     constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService) { }
@@ -50,6 +53,26 @@ export class ViewModelBomComponent implements OnInit {
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
   
+    public columns: ColumnSetting[] = [
+        {
+          field: 'OPTM_FEATURECODE',
+          title: this.language.model_ModelCode,
+          type: 'text',
+          width: '200'
+        }, 
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Name,
+            type: 'text',
+            width: '200'
+          },
+          {
+            field: 'OPTM_FEATUREDESC',
+            title: this.language.description,
+            type: 'text',
+            width: '100'
+          },
+      ];
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();
@@ -80,7 +103,7 @@ export class ViewModelBomComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+       // this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -103,20 +126,23 @@ export class ViewModelBomComponent implements OnInit {
         }
         var dataset = this.service.getAllViewDataForModelBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
@@ -133,15 +159,15 @@ export class ViewModelBomComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
 
-        this.router.navigateByUrl('modelbom/edit/' + id);
+        this.router.navigateByUrl('modelbom/edit/' + data.OPTM_MODELID);
         // button click function in here
     }
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_MODELID;
         // var result = confirm(this.language.DeleteConfimation);
     }
 
@@ -185,11 +211,11 @@ export class ViewModelBomComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].ModelId == row_data.OPTM_MODELID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            ModelId: row_data,
+                            ModelId: row_data.OPTM_MODELID,
                             CompanyDBId: this.companyName
                         })
                     }
@@ -200,14 +226,14 @@ export class ViewModelBomComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    ModelId: row_data,
+                    ModelId: row_data.OPTM_MODELID,
                     CompanyDBId: this.companyName
                 })
             }
         }
         else {
             this.CheckedData.push({
-                ModelId: row_data,
+                ModelId: row_data.OPTM_MODELID,
                 CompanyDBId: this.companyName
             })
         }
@@ -221,12 +247,12 @@ export class ViewModelBomComponent implements OnInit {
         this.selectall = false
 
         if (checkedvalue == true) {
-            if (this.rows.length > 0) {
+            if (this.dataArray.length > 0) {
                 this.selectall = true
-                for (let i = 0; i < this.rows.length; ++i) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        ModelId: this.rows[i][2],
+                        ModelId: this.dataArray[i].OPTM_MODELID,
                         CompanyDBId: this.companyName
                     })
                 }

@@ -157,7 +157,7 @@
                       <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" (change)="onDocumentChange(document.value)"
                         #document>
                         <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value"> {{v.Name}}</option>
-                      <!--   <option *ngFor="let v of doctype" [value]="v.value" [selected]="v.value == '1'"> {{v.Name}}</option> -->
+                        <!--   <option *ngFor="let v of doctype" [value]="v.value" [selected]="v.value == '1'"> {{v.Name}}</option> -->
                       </select>
                     </div>
                   </div>
@@ -178,7 +178,8 @@
                       <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                     </div> -->
                     <div class="col-sm-7">
-                      <input class="form-control  form-control-sm mt3" name='posting_date' type="text" value="" id="posting_date" name="posting_date" readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
+                      <input class="form-control  form-control-sm mt3" name='posting_date' type="text" value="" id="posting_date" name="posting_date"
+                        readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
                       <!-- <div class="input-group-append">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
                           <i class="fa fa-calendar"></i>
@@ -190,8 +191,8 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="delivery_until">{{document_date}}</label>
                     <div class="col-sm-7 input-group">
-                      <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3" name='delivery_until'
-                        type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
+                      <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3"
+                        name='delivery_until' type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
                         [(ngModel)]="step1_data.delivery_until">
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
@@ -384,9 +385,12 @@
 
             <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="this.showPrintOptions = false;" data-previous-block="choose_operation">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
-              <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-sm " (click)="step2_next_click_validation()" > <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+            <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-sm " (click)="step2_next_click_validation()">
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
-            <button type="button" style="display:none" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm step_2_redirect" data-next-block="model_bom_config"><i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
+            <button type="button" style="display:none" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm step_2_redirect"
+              data-next-block="model_bom_config">
+              <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
           </div>
         </fieldset>
 
@@ -460,18 +464,20 @@
                                 <td>
                                   <div class="{{header_data.element_class}}">
                                     <span *ngIf="header_data.is_second_level == 1">
-                                        <input type="{{header_data.element_type}}" id="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
-                                        #selectionchecked name="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}" class="custom-control-input"
-                                        (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"  [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
-                                        <label class="custom-control-label" for="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                      <input type="{{header_data.element_type}}" id="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
+                                        #selectionchecked name="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}"
+                                        class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"
+                                        [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                      <label class="custom-control-label" for="checkbox_child_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
                                     </span>
                                     <span *ngIf="header_data.is_second_level== undefined">
-                                        <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
+                                      <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                         #selectionchecked name="checkbox_{{feature_model_data.OPTM_FEATUREID}}" class="custom-control-input"
-                                        (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"  [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
-                                        <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
+                                        (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id)"
+                                        [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                      <label class="custom-control-label" for="checkbox_{{feature_model_data.OPTM_FEATUREID}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
                                     </span>
-                                    
+
                                   </div>
                                 </td>
                                 <td>
@@ -525,7 +531,47 @@
                 <div class="form-group row clearfix" style="padding-right: 15px;">
                   <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
                   <div class="col-sm-12 pr-0">
-                    <table class="table  table-sm lookup_table Model_Accessory-table">
+                    <kendo-grid [kendoGridBinding]="feature_accessory_list" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                      <kendo-grid-column field="step_2_accesories_checkbox" title="" template="" [width]="30" [minResizableWidth]="30">
+
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" let-dataItem>
+
+                          <div class="custom-control custom-checkbox ">
+                            <input type="checkbox" id="acccessory_check{{dataItem.id}}_{{dataItem.id}}" name="child_checkbox" class="custom-control-input accesory_check_for_second_screen"
+                              #accallcheckbox (click)="selectallAccessory(accallcheckbox.checked)">
+                            <label class="custom-control-label" for="acccessory_check{{dataItem.id}}_{{dataItem.id}}"></label>
+                          </div>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <div class="custom-control custom-checkbox ">
+                            <input type="checkbox" id="accesory_{{dataItem.id}}" name="child_checkbox" [(checked)]=dataItem.checked #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
+                              class="custom-control-input">
+                            <label class="custom-control-label" for="accesory_{{dataItem.id}}"></label>
+                          </div>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150" [minResizableWidth]="30">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.code}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <span>
+                            {{dataItem.name}}
+                          </span>
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150" [minResizableWidth]="30">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.Name}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                          <span>
+                            {{dataItem.key}}
+                          </span>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </kendo-grid>
+                    <!-- <table class="table  table-sm lookup_table Model_Accessory-table">
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of accessory_table_head; let i= index" [hidden]="Accessory_table_hidden_elements[i]">
@@ -558,7 +604,7 @@
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> -->
                   </div>
                 </div>
               </div>
@@ -574,12 +620,85 @@
                   </div>
                 </div>
                 <div class="feature_block">
-                  <!-- <div class="form-group col-md-4 clearfix bg-primary text-white ">
-                    <label class="col-sm-12 col-form-label">{{language.features}}</label>
-                  </div> -->
                   <div class="feature_table">
-                    <div class="table-responsive table-responsive-sm">
-                      <table class="table opti_fixed-header table-sm">
+                    <div class="">
+                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                        <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.Model_FeatureName}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                            <span>
+                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}
+                                title="{{featurerow.FeatureId}}" /> {{featurerow.featureName}}
+                            </span>
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.item}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                             {{featurerow.Item}}
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.description}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                             {{featurerow.Description}}
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.quantity}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                             <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value="{{featurerow.quantity}}"
+                                title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
+                                #quantity [disabled]="featurerow.isQuantityDisabled" />
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.price_source}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                              <div class=" input-group">
+                                <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id"
+                                  name="priceId" id="priceId">
+                                <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3"
+                                  name="price_code" id="price_code" (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
+                                  value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
+                                <div class="input-group-append" [hidden]=featurerow.pricehide>
+                                  <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
+                                    <i class="fa fa-bars"></i>
+                                  </span>
+                                </div>
+                              </div>
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_price_extn" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.price_extn}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                             <input type="number" title="{{featurerow.priceext}}" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity"
+                                value={{featurerow.pricextn}} (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
+                                #pricextn />
+                          </ng-template>
+                        </kendo-grid-column>
+                        <kendo-grid-column field="step_2_right_grid_accessories" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.accessories}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                             {{featurerow.is_accessory}}
+                          </ng-template>
+                        </kendo-grid-column>
+                      </kendo-grid>
+                      <!-- <table class="table opti_fixed-header table-sm">
                         <thead class="thead-dark">
                           <tr>
                             <th *ngFor="let label of feature_itm_list_table_head; let i= index">
@@ -592,28 +711,27 @@
                         <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                           <tr class="" *ngFor="let featurerow of feature_itm_list_table">
                             <td>
-                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}} title="{{featurerow.FeatureId}}"/> {{featurerow.featureName}}
-                              <!-- <label class="col-sm-12 col-form-label">{{featurerow.featureName}}</label> -->
+                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}
+                                title="{{featurerow.FeatureId}}" /> {{featurerow.featureName}}
                             </td>
                             <td>
                               {{featurerow.Item}}
-                              <!-- <label class="col-sm-12 col-form-label">{{featurerow.Item}}</label> -->
                             </td>
                             <td>
                               {{featurerow.Description}}
-                              <!-- <label class="col-sm-12 col-form-label">{{featurerow.Description}}</label> -->
                             </td>
                             <td>
-                              <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value="{{featurerow.quantity}}" title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)" #quantity [disabled]="featurerow.isQuantityDisabled" />
+                              <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value="{{featurerow.quantity}}"
+                                title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
+                                #quantity [disabled]="featurerow.isQuantityDisabled" />
                             </td>
                             <td>
-                              <!-- <input type="number" class="form-control  form-control-sm mt3" style="text-align:right" id="price" value={{featurerow.price}}
-                        (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)" #price /> -->
+                            
                               <div class=" input-group">
-                                <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id" name="priceId"
-                                  id="priceId">
-                                <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3" name="price_code" id="price_code"
-                                  (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
+                                <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id"
+                                  name="priceId" id="priceId">
+                                <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3"
+                                  name="price_code" id="price_code" (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
                                   value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
                                 <div class="input-group-append" [hidden]=featurerow.pricehide>
                                   <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
@@ -623,18 +741,17 @@
                               </div>
                             </td>
                             <td>
-                              <input type="number" title="{{featurerow.priceext}}" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.pricextn}}
-                                (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
+                              <input type="number" title="{{featurerow.priceext}}" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity"
+                                value={{featurerow.pricextn}} (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
                                 #pricextn />
                             </td>
                             <td>
                               {{featurerow.is_accessory}}
-                              <!-- <label class="col-sm-12 col-form-label">{{featurerow.is_accessory}}</label> -->
-                              <!-- <input type="text" [disabled]="true" class="form-control  form-control-sm mt3" style="text-align:right" id="is_accessory" value={{featurerow.is_accessory}}  #is_accessory  /> -->
+                       
                             </td>
                           </tr>
                         </tbody>
-                      </table>
+                      </table> -->
                     </div>
                   </div>
                   <br>
@@ -642,14 +759,14 @@
                     <div class="col-md-6 pull-right pr-0 ">
                       <table class="table table-bordered table-sm">
                         <thead class="" style=" font-size: 14px; ">
-                            <tr>
-                                <td>
-                                  {{this.language.total_before_discount}} ({{defaultCurrency}})
-                                </td>
-                                <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
-                              </tr>
                           <tr>
-                            <th width="70%">{{language.product_discount}}</th>
+                            <td>
+                              {{this.language.total_before_discount}} ({{defaultCurrency}})
+                            </td>
+                            <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                          </tr>
+                          <tr>
+                            <td width="70%">{{language.product_discount}}</td>
                             <td width="30%">
                               <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
     text-align: right;     padding-right: 1.5px !important;" id="product_discount" name="product_discount" #product_discount
@@ -841,14 +958,74 @@
                 </div>
               </div>
               <div class="col-md-7 border-left-primary" id="opti_configur-wizard-four-step-right">
-                <div class="pull-right">
+                <div class="col-md-12 pl-0">
                   <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()">
                     <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                   </button>
                 </div>
                 <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
-                  <div class="table-responsive table-responsive-sm table-bordered">
-                    <table class="table opti_fixed-header table-bordered table-sm">
+                  <div class="">
+                    <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                         #
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.rowIndex}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_serial" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.serial}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.sl_no}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.item}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.item}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.quantity}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.qunatity}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.price}} ({{this.defaultCurrency}})
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.price}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          {{this.language.price_extn}}
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          {{row.price_ext}}
+                        </ng-template>
+                      </kendo-grid-column>
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                          <i class="fa fa-trash fa-fw"></i>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-row>
+                          <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
+                            <i class="fa fa-trash fa-fw"></i>
+                          </button>
+                        </ng-template>
+                      </kendo-grid-column>
+                    </kendo-grid>
+                    <!-- <table class="table opti_fixed-header table-bordered table-sm">
                       <thead class="thead-dark">
                         <tr>
                           <th *ngFor="let label of final_selection_header; let i= index" [hidden]="step3_data_final_hidden_elements[i]">
@@ -880,7 +1057,7 @@
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> -->
                   </div>
 
                 </div>
@@ -985,16 +1162,16 @@
                   <h6>{{language.lsit_of_new_item_created}}</h6>
                   <table *ngIf="new_item_list.length" class="table table-sm table-bordered table-strip">
                     <thead class="thead-dark">
-                   <tr>
-                     <th>{{this.language.model}}</th>
-                    <th>{{this.language.item_code}}</th>
-                   </tr>
+                      <tr>
+                        <th>{{this.language.model}}</th>
+                        <th>{{this.language.item_code}}</th>
+                      </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let new_item of new_item_list">
-                          <td>{{new_item.OPTM_FGITEM}} </td>
-                          <td>{{new_item.OPTM_REFITEMCODE}}</td>
-                        </tr>
+                      <tr *ngFor="let new_item of new_item_list">
+                        <td>{{new_item.OPTM_FGITEM}} </td>
+                        <td>{{new_item.OPTM_REFITEMCODE}}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1009,7 +1186,7 @@
                             <i class="fa fa-spinner fa-spin fa-fw"></i> {{this.language.refreshing}}
                           </span>
                           <span class="dontShowLoader" [hidden]="dontShowFinalLoader">
-                            <i class="fa fa-refresh fa-fw"></i> {{this.language.refresh}} 
+                            <i class="fa fa-refresh fa-fw"></i> {{this.language.refresh}}
                           </span>
                         </button>
                       </div>
@@ -1065,18 +1242,18 @@
                       </div>
 
                       <div class="form-group row clearfix ">
-                          <label class="col-sm-5 col-form-label text-left">
-                            <b>{{language.configuration_id}}</b>
-                          </label>
-                          <label class="col-sm-7 col-form-label text-right font-weight-light">{{iLogID}}</label>
-                        </div>
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.configuration_id}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{iLogID}}</label>
+                      </div>
 
-                        <div class="form-group row clearfix ">
-                            <label class="col-sm-5 col-form-label text-left">
-                              <b>{{language.description}}</b>
-                            </label>
-                            <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.description}}</label>
-                          </div>
+                      <div class="form-group row clearfix ">
+                        <label class="col-sm-5 col-form-label text-left">
+                          <b>{{language.description}}</b>
+                        </label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.description}}</label>
+                      </div>
 
                     </div>
                   </div>
@@ -1138,7 +1315,7 @@
                     </div>
                     <div class="col-md-6">
 
-                    <!--   <div class="form-group row clearfix ">
+                      <!--   <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.payment_terms}}</b>
                         </label>
@@ -1160,8 +1337,58 @@
                   <div class="row">
                     <!-- <div class="col-md-3"> </div> -->
                     <div class="col-md-12 pr-0">
-                      <div class="accessories_table table-responsive">
-                        <table class="table table-bordered table-sm lookup_table">
+                      <div class="accessories_table">
+                        <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.hash}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.rowIndex}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                               SI#
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.sl_no}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.item}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.item}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.quantity}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.qunatity}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.price}} ({{this.defaultCurrency}})
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.price}}
+                            </ng-template>
+                          </kendo-grid-column>
+                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                              {{this.language.price_extn}}
+                            </ng-template>
+                            <ng-template kendoGridCellTemplate let-row>
+                              {{row.price_ext}}
+                            </ng-template>
+                          </kendo-grid-column>
+                        </kendo-grid>
+                        <!-- <table class="table table-bordered table-sm lookup_table">
                           <thead class="thead-dark">
                             <tr>
                               <th *ngFor="let label of order_creation_table_head; let i= index">
@@ -1174,18 +1401,13 @@
                           <tbody class="lookup_table_body" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
                             <tr class="" *ngFor="let row of step3_data_final">
                               <span *ngIf="(Object.keys(row).length-1) != i">
-                              <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step4_data_final_hidden_elements[i]">
+                                <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step4_data_final_hidden_elements[i]">
                                   {{row[row_data]}}
                                 </td>
-                                </span>
+                              </span>
                             </tr>
                           </tbody>
-
-
-
-
-
-                        </table>
+                        </table> -->
                       </div>
                       <br>
                     </div>
@@ -1216,7 +1438,7 @@
                               <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
                             </tr>
                             <tr>
-                              <th >{{language.product_discount}}</th>
+                              <th>{{language.product_discount}}</th>
                               <td class="pull-right text-right border_none">
                                 {{this.feature_discount_percent}}
                               </td>

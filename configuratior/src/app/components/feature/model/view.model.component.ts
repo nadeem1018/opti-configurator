@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
-import { CommonData } from "src/app/models/CommonData";
+import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
@@ -18,12 +18,48 @@ export class ViewFeatureModelComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     public commonData = new CommonData();
+    public isColumnFilter: boolean = false;
     // generate table default constants
     table_pages: any;
+    dataArray: any = [];
     search_key: any;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
+
+    public columns: ColumnSetting[] = [
+        {
+          field: 'OPTM_FEATURECODE',
+          title: this.language.code,
+          type: 'text',
+          width: '200'
+        }, 
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Bom_Displayname,
+            type: 'text',
+            width: '200'
+          },
+          {
+            field: 'OPTM_EFFECTIVEDATE',
+            title: this.language.Model_Date,
+            type: 'text',
+            width: '100'
+          },
+        {
+          field: 'OPTM_TYPE',
+          title: this.language.Type,
+          type: 'text',
+          width: '100'      
+        },    
+        {
+            field: 'OPTM_STATUS',
+            title: this.language.Model_Status,
+            type: 'text',
+            width: '200'
+          },    
+      ];
+
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false];
     record_per_page_list: any = this.common_params.default_limits;
     add_route_link = '/feature/model/add';
@@ -88,7 +124,7 @@ export class ViewFeatureModelComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+       //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -111,20 +147,23 @@ export class ViewFeatureModelComponent implements OnInit {
         }
         var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
@@ -141,15 +180,15 @@ export class ViewFeatureModelComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
         //alert(id)
-        this.router.navigateByUrl('feature/model/edit/' + id);
+        this.router.navigateByUrl('feature/model/edit/' + data.OPTM_FEATUREID);
     }
 
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_FEATUREID;
         //var result = confirm(this.language.DeleteConfimation);
 
     }
@@ -210,11 +249,11 @@ export class ViewFeatureModelComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i].FEATUREID == row_data) {
+                if (this.CheckedData[i].FEATUREID == row_data.OPTM_FEATUREID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            FEATUREID: row_data,
+                            FEATUREID: row_data.OPTM_FEATUREID,
                             CompanyDBId: this.CompanyDBId
                         })
                     }
@@ -225,14 +264,14 @@ export class ViewFeatureModelComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    FEATUREID: row_data,
+                    FEATUREID: row_data.OPTM_FEATUREID,
                     CompanyDBId: this.CompanyDBId
                 })
             }
         }
         else {
             this.CheckedData.push({
-                FEATUREID: row_data,
+                FEATUREID: row_data.OPTM_FEATUREID,
                 CompanyDBId: this.CompanyDBId
             })
         }
@@ -245,11 +284,11 @@ export class ViewFeatureModelComponent implements OnInit {
 
         if (checkedvalue == true) {
             this.selectall = true
-            if (this.rows.length > 0) {
-                for (let i = 0; i < this.rows.length; ++i) {
+            if (this.dataArray.length > 0) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        FEATUREID: this.rows[i][1],
+                        FEATUREID: this.dataArray[i].OPTM_FEATUREID,
                         CompanyDBId: this.CompanyDBId
                     })
                 }

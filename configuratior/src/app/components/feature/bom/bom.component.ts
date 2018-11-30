@@ -173,6 +173,7 @@ export class BomComponent implements OnInit {
                 this.counter = this.feature_bom_table.length
               }
               this.counter++;
+              
               this.feature_bom_table.push({
                 rowindex: this.counter,
                 FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
@@ -207,13 +208,13 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
-            console.log('accesory - ' + this.feature_bom_data.is_accessory);
+            
             if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
               this.detail_select_options = this.commonData.less_bom_type;
-              console.log('in if  ');
+              
             } else {
               this.detail_select_options = this.commonData.bom_type;
-              console.log('in else ');
+              
             }
 
             if (this.feature_bom_data.image_path != "") {
@@ -224,7 +225,7 @@ export class BomComponent implements OnInit {
             }
             this.onExplodeClick();
           }
-
+          console.log(this.feature_bom_table);
         }
       )
     }
@@ -276,7 +277,7 @@ export class BomComponent implements OnInit {
       isPropagateQtyDisable:this.isPropagateQtyDisable,
       pricehide: this.pricehide,
       CompanyDBId: this.companyName,
-      CreatedUser: this.username
+      CreatedUser: this.username,
     });
   };
 
@@ -407,6 +408,8 @@ export class BomComponent implements OnInit {
   }
 
   on_bom_type_change(selectedvalue, rowindex) {
+    console.log('on bom type change');
+    console.log(selectedvalue);
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -452,6 +455,8 @@ export class BomComponent implements OnInit {
   }
 
   on_type_change(selectedvalue, rowindex) {
+    console.log('on type change ');
+    console.log(selectedvalue);
     this.currentrowindex = rowindex
     this.getFeatureDetails(this.feature_bom_data.feature_id, "Detail", selectedvalue);
 
