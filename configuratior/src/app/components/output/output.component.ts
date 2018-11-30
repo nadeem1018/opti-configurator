@@ -2546,7 +2546,7 @@ export class OutputComponent implements OnInit {
       "OPTM_TAX": this.acc_item_tax,
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
-      "OPTM_KEY": "DEMO-KEY",
+      "OPTM_KEY":"",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
       "OPTM_QUANTITY": this.step2_data.quantity,
       "OPTM_CREATEDBY": this.common_output_data.username,
@@ -2984,7 +2984,7 @@ export class OutputComponent implements OnInit {
 
           for (var isave in this.step2_final_dataset_to_save) {
             if (this.step2_final_dataset_to_save[isave].PARENTID == imodelData[0].OPTM_MODELID && this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE == imodelData[0].child_code) {
-              this.step2_final_dataset_to_save[isave].OPTM_KEY = itemkeyforparentmodel
+              this.step2_final_dataset_to_save[isave].OPTM_KEY = itemkeyforparentmodel.toString()
             }
             for (var isavemodelchild in imodelfilteritems) {
               if (this.step2_final_dataset_to_save[isave].PARENTID == imodelfilteritems[isavemodelchild].OPTM_MODELID && this.step2_final_dataset_to_save[isave].OPTM_ITEMCODE == imodelfilteritems[isavemodelchild].OPTM_ITEMKEY) {
@@ -3017,7 +3017,7 @@ export class OutputComponent implements OnInit {
           }
           for (var isavedataset in this.step2_final_dataset_to_save) {
             if (this.step2_final_dataset_to_save[isavedataset].OPTM_ITEMTYPE == "1") {
-              this.step2_final_dataset_to_save[isavedataset].OPTM_KEY = modelfeatureitemkey
+              this.step2_final_dataset_to_save[isavedataset].OPTM_KEY = modelfeatureitemkey.toString()
             }
           }
         
@@ -3176,7 +3176,7 @@ export class OutputComponent implements OnInit {
         }
 
       }
-      this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey
+      this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey.toString()
     }
 
     for (var isave in this.step2_final_dataset_to_save) {
@@ -3195,7 +3195,7 @@ export class OutputComponent implements OnInit {
           if (itemnumbersplitnumber.length > 0) {
             for (var i in itemnumbersplitnumber) {
               if (itemnumbersplitnumber[i] == this.step2_final_dataset_to_save[isave].OPTM_ITEMNUMBER) {
-                this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = modelitemtype[imodelitemtypesave].OPTM_KEY
+                this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = modelitemtype[imodelitemtypesave].OPTM_KEY.toString()
               }
             }
           }

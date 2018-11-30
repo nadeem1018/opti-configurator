@@ -181,7 +181,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-         //  this.psURL = "http://localhost:6127";
+          this.psURL = "http://localhost:1234";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
          //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
