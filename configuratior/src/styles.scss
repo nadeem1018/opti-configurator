@@ -298,6 +298,7 @@ body.app_rule-wb-view-model{
             padding: 5px 0;
             font-weight: bold;
             font-size: 20px;
+            
         }
         .form-control:focus {
             border-color: $borderColor;
@@ -354,3 +355,12 @@ body.app_rule-wb-view-model{
         }
     }    
 // Some global css end
+
+table {
+    thead{
+        tr{
+            background: #1BA0F1;
+            color: white;
+        }
+    }
+}
