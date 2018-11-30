@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top navbar-custom-sm" *ngIf="showHeader">
+<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top navbar-custom-sm" *ngIf="showHeader" id="opti_topbar">
   <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="javascript:;" style="display:block;">
     <i class="fa fa-bars"></i>
   </button>
@@ -54,7 +54,7 @@
     </li> -->
     <li class="nav-item dropdown no-arrow li_with_dd">
       <a class="nav-link custom_menu_click" href="javascript:;" id="userDropdown">
-        <i class="fa fa-user-circle fa-fw"></i>
+        <i class="fa fa-user-circle fa-fw" style="color: white;"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right custom_menu_click_option" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="javascript:;"><i class="fa fa-user fa-fw"></i> {{this.language.user_profile}}</a>

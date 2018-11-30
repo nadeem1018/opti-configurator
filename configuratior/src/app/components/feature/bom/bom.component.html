@@ -238,9 +238,9 @@
 
                     <!-- <hr> -->
                     <div class="col-sm-12 p-0">
-                        <div class="table-responsive table-responsive-sm table-bordered">
+                        <div class="">
                         <kendo-grid [kendoGridBinding]="feature_bom_table"  [resizable]="true" [sortable]="false" [groupable]="false"
-                            [filterable]="false"> <!-- [height]="400" -->
+                            [filterable]="false" > <!-- [height]="400" -->
 
                             <kendo-grid-column field="rowindex" title="#" width="35" [minResizableWidth]="20" filter="numeric">
                             </kendo-grid-column>
@@ -331,7 +331,7 @@
                                     </a>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="delete" title="" template="" [width]="30" [minResizableWidth]="30" >
+                            <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="30" >
 
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     <i class="fa fa-trash"></i>
