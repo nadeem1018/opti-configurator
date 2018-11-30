@@ -66,9 +66,15 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataForModelBomOutput", jObject, this.common_params.httpOptions);
   }
 
-  GetDataByModelIDForFirstLevel(modelID, modalDesc): Observable<any> {
+  // GetDataByModelIDForFirstLevel(modelID, modalDesc): Observable<any> {
+  //   //JSON Obeject Prepared to be send as a param to API
+  //   let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+  //   //Return the response form the API  
+  //   return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
+  // }
+  GetDataByModelIDForFirstLevel(AllDataForModelBomOutput): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+    let jObject = { GetData: JSON.stringify(AllDataForModelBomOutput) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
   }

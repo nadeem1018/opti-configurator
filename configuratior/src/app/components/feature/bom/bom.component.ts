@@ -124,7 +124,8 @@ export class BomComponent implements OnInit {
                 this.isPriceDisabled=true
                 this.pricehide=true
                 this.isPropagateQtyDisable=false
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
+                data.FeatureDetail[i].OPTM_QUANTITY= parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                this.isQuanity =  data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
@@ -136,7 +137,8 @@ export class BomComponent implements OnInit {
                 this.isQuanityDisabled = false
                 this.isPriceDisabled=false
                 this.isPropagateQtyDisable=false
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
+                data.FeatureDetail[i].OPTM_QUANTITY= parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                this.isQuanity =  data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
@@ -258,7 +260,7 @@ export class BomComponent implements OnInit {
       type_value: "",
       type_value_code: "",
       display_name: "",
-      quantity: 1,
+      quantity: parseFloat("1").toFixed(3),
       default: first_default,
       remark: "",
       attachment: "",
@@ -416,7 +418,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = true
           this.feature_bom_table[i].type = 3
-          this.feature_bom_table[i].quantity = 0;
+          this.feature_bom_table[i].quantity = parseFloat("0").toFixed(3);
           this.feature_bom_table[i].isQuanityDisabled = true
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
@@ -429,14 +431,14 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isPropagateQtyDisable=false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
-            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = false
           this.feature_bom_table[i].pricehide = false
           }
           else {
             this.feature_bom_table[i].type = 1
-            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = true
             this.feature_bom_table[i].pricehide = true
@@ -465,7 +467,7 @@ export class BomComponent implements OnInit {
             this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
           }
           else {
-            this.feature_bom_table[i].quantity = value
+            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3)
           }
         }
       }

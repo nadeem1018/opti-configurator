@@ -49,7 +49,7 @@
     "connect": "Connect",
     "connected": "Connected",
     "close": "Close",
-    "total_before_discount": "Total Before Discount",
+    "total_before_discount": "Total Before Discount %",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Failed to save data",
     "DataDeleteSuccesfully": "Data deleted successfully",

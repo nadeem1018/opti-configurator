@@ -196,6 +196,8 @@ export class ModelbomComponent implements OnInit {
               if (this.modelbom_data.length > 0) {
                 this.counter = this.modelbom_data.length
               }
+              data.ModelDetail[i].OPTM_QUANTITY=parseFloat(data.ModelDetail[i].OPTM_QUANTITY).toFixed(3)
+
               this.counter++;
               this.modelbom_data.push({
                 rowindex: this.counter,
@@ -269,7 +271,7 @@ export class ModelbomComponent implements OnInit {
       type_value_code: "",
       display_name: "",
       uom: '',
-      quantity: 1,
+      quantity: parseFloat("1").toFixed(3),
       min_selected: 1,
       max_selected: 1,
       propagate_qty: false,
@@ -336,7 +338,7 @@ export class ModelbomComponent implements OnInit {
     //this.modelbom_data[rowindex].type_value="";
     this.modelbom_data[rowindex].uom = "";
     this.modelbom_data[rowindex].display_name = "";
-    this.modelbom_data[rowindex].quantity = 0;
+    this.modelbom_data[rowindex].quantity =parseFloat("0").toFixed(3);
     this.modelbom_data[rowindex].min_selected = 1;
     this.modelbom_data[rowindex].max_selected = 1;
     this.modelbom_data[rowindex].propagate_qty = 'N';
@@ -366,7 +368,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isPriceDisabled = true
           this.modelbom_data[i].pricehide = true
           this.modelbom_data[i].isUOMDisabled = true
-          this.modelbom_data[i].quantity = 1
+          this.modelbom_data[i].quantity = parseFloat("1").toFixed(3);
           this.modelbom_data[i].isMinSelectedDisable = false;
           this.modelbom_data[i].isMaxSelectedDisable = false;
         }
@@ -374,7 +376,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
-          this.modelbom_data[i].quantity = 1
+          this.modelbom_data[i].quantity =  parseFloat("1").toFixed(3);
           if (selectedvalue == 2) {
             this.lookupfor = 'Item_Detail_lookup';
             this.modelbom_data[i].type = 2
@@ -711,7 +713,7 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
         }
         else {
-          this.modelbom_data[i].quantity = value
+          this.modelbom_data[i].quantity =  parseFloat(value).toFixed(3);
         }
 
 
