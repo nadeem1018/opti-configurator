@@ -100,7 +100,7 @@
             </table> -->
 
 
-            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="false" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true"
+            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="true" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true"
                 (selectionChange)="gridUserSelectionChange(gridUser, $event)">
 
                 <kendo-grid-column field="" title="" filter="numeric" [width]="60" [minResizableWidth]="30">
