@@ -50,7 +50,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     public GetItemData: any = [];
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
-
+    public isColumnFilter: boolean = false;
 
 
     isMobile: boolean = false;
@@ -103,7 +103,7 @@ export class ViewFeatureBOMComponent implements OnInit {
 
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+      //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;

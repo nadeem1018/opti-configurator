@@ -18,6 +18,7 @@ export class RuleWbViewComponent implements OnInit {
 
 
     public companyName: string = ""; 
+    public isColumnFilter: boolean = false;
     public username: string = "";
     add_route_link = '/rulewb/add';
     record_per_page_list: any = [10, 25, 50, 100]
@@ -126,7 +127,7 @@ export class RuleWbViewComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+       //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;

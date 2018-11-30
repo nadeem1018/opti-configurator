@@ -28,6 +28,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     search_string: any = "";
     current_page: any = 1;
     page_numbers: any = "";
+    public isColumnFilter: boolean = false;
     // rows: any = "";
     public ViewData: any = [];
     public toDelete: any = {
@@ -110,7 +111,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+      //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;

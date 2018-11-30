@@ -18,6 +18,7 @@ export class ViewFeatureModelComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     public commonData = new CommonData();
+    public isColumnFilter: boolean = false;
     // generate table default constants
     table_pages: any;
     dataArray: any = [];
@@ -123,7 +124,7 @@ export class ViewFeatureModelComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+       //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;

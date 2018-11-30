@@ -38,6 +38,7 @@ export class ViewModelBomComponent implements OnInit {
     public selectall: boolean = false;
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
+    public isColumnFilter: boolean = false;
     public showImportButton: boolean = false;
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
@@ -102,7 +103,7 @@ export class ViewModelBomComponent implements OnInit {
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+       // this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
