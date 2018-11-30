@@ -179,15 +179,15 @@ export class ViewFeatureModelComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
         //alert(id)
-        this.router.navigateByUrl('feature/model/edit/' + id);
+        this.router.navigateByUrl('feature/model/edit/' + data.OPTM_FEATUREID);
     }
 
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_FEATUREID;
         //var result = confirm(this.language.DeleteConfimation);
 
     }

@@ -158,15 +158,15 @@ export class ViewModelBomComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
 
-        this.router.navigateByUrl('modelbom/edit/' + id);
+        this.router.navigateByUrl('modelbom/edit/' + data.OPTM_MODELID);
         // button click function in here
     }
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_MODELID;
         // var result = confirm(this.language.DeleteConfimation);
     }
 

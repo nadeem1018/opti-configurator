@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { RulewbService } from '../../services/rulewb.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CommonData } from "../../models/CommonData";
+import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
 
 @Component({
@@ -39,13 +39,51 @@ export class RuleWbViewComponent implements OnInit {
     public GetItemData: any = [];
     public isMultiDelete: boolean = false;
     public showImportButton: boolean = false;
-
-
-
+   
 
     // table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     table_head_foot = [this.language.select, this.language.hash, this.language.rule_id, this.language.rule_code, this.language.description, this.language.applicable_for, this.language.Fromdate, this.language.Todate, this.language.discontinued, this.language.action];
+    dataArray:any = [];
+    public columns: ColumnSetting[] = [
+        {
+            field: 'OPTM_FEATURECODE',
+            title: this.language.rule_code,
+            type: 'text',
+            width: '200'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.description,
+            type: 'text',
+            width: '200'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.applicable_for,
+            type: 'text',
+            width: '200'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Fromdate,
+            type: 'text',
+            width: '200'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Todate,
+            type: 'text',
+            width: '200'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.discontinued,
+            type: 'text',
+            width: '200'
+        },
+    ];
+
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false, false, false];
     page_main_title = this.language.rule_workbench;
     table_title = this.page_main_title;
@@ -111,20 +149,23 @@ export class RuleWbViewComponent implements OnInit {
         }
         var dataset = this.service.GetRuleList(search, page_number, this.record_per_page).subscribe(
             data => {
-                dataset = JSON.parse(data);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
