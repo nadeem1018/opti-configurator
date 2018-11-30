@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
-import { CommonData } from "src/app/models/CommonData";
+import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
@@ -11,7 +11,7 @@ import { UIHelper } from '../../../helpers/ui.helpers';
     styleUrls: ['./bom.component.scss']
 })
 
- 
+
 export class ViewFeatureBOMComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
@@ -43,6 +43,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     public show_dialog: boolean = false;
     public dialog_box_value: any;
     public row_id: any;
+    public dataArray: any = [];
     public CheckedData: any = [];
     public companyName: string = "";
     public username: string = "";
@@ -52,22 +53,37 @@ export class ViewFeatureBOMComponent implements OnInit {
 
 
 
-    isMobile:boolean=false;
-    isIpad:boolean=false;
-    isDesktop:boolean=true;
-    isPerfectSCrollBar:boolean = false;
+    isMobile: boolean = false;
+    isIpad: boolean = false;
+    isDesktop: boolean = true;
+    isPerfectSCrollBar: boolean = false;
 
-    detectDevice(){
+    public columns: ColumnSetting[] = [
+        {
+            field: 'OPTM_FEATURECODE',
+            title: this.language.Feature_Code,
+            type: 'text',
+            width: '500'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Bom_Displayname,
+            type: 'text',
+            width: '500'
+        },
+    ];
+
+    detectDevice() {
         let getDevice = UIHelper.isDevice();
         this.isMobile = getDevice[0];
         this.isIpad = getDevice[1];
         this.isDesktop = getDevice[2];
-        if(this.isMobile==true){
-        this.isPerfectSCrollBar = true;
-        }else if(this.isIpad==true){
-        this.isPerfectSCrollBar = false;
-        }else{
-        this.isPerfectSCrollBar = false;
+        if (this.isMobile == true) {
+            this.isPerfectSCrollBar = true;
+        } else if (this.isIpad == true) {
+            this.isPerfectSCrollBar = false;
+        } else {
+            this.isPerfectSCrollBar = false;
         }
     }
 
@@ -100,8 +116,8 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        if(this.record_per_page!== undefined && sessionStorage.getItem('defaultRecords')){
-            if(this.record_per_page !== sessionStorage.getItem('defaultRecords')){
+        if (this.record_per_page !== undefined && sessionStorage.getItem('defaultRecords')) {
+            if (this.record_per_page !== sessionStorage.getItem('defaultRecords')) {
                 sessionStorage.setItem('defaultRecords', this.record_per_page);
             }
         } else {
@@ -110,23 +126,25 @@ export class ViewFeatureBOMComponent implements OnInit {
         }
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
+                debugger
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // console.log(dataset);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // console.log(this.page_numbers);
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                dataset = JSON.parse(data);
-                console.log(dataset);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                console.log(this.page_numbers);
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
-
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
