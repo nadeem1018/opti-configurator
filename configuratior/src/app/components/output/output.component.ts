@@ -42,6 +42,8 @@ export class OutputComponent implements OnInit {
   public Accessoryarray = [];
   public ModelHeaderItemsArray = [];
   public warehouse: string = "";
+  public currentDate = new Date();
+  public submit_date;
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -168,7 +170,7 @@ export class OutputComponent implements OnInit {
     element.classList.add('sidebar-toggled');
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
-
+    this.submit_date = (this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate()
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
@@ -1410,11 +1412,12 @@ export class OutputComponent implements OnInit {
     let AllDataForModelBomOutput: any = {};
     AllDataForModelBomOutput.modelinputdatalookup = [];
     AllDataForModelBomOutput.getmodelsavedata = [];
+    
     AllDataForModelBomOutput.modelinputdatalookup.push({
       CompanyDBID: this.common_output_data.companyName,
       ModelID: this.step2_data.model_id,
       ModelDisplayName: this.step2_data.model_name,
-      currentDate: this.step1_data.posting_date
+      currentDate: this.submit_date
 
     });
     AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata
@@ -2411,7 +2414,7 @@ export class OutputComponent implements OnInit {
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
               BillTo: this.customerBillTo,
-              currentDate: this.step1_data.posting_date
+              currentDate: this.submit_date
 
             });
             this.OutputService.fillBillAddress(this.bill_data).subscribe(
@@ -2457,7 +2460,7 @@ export class OutputComponent implements OnInit {
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
       ShipTo: SelectedShipTo,
-      currentDate: this.step1_data.posting_date
+      currentDate: this.submit_date
     });
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
@@ -2477,7 +2480,7 @@ export class OutputComponent implements OnInit {
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
       ShipTo: SelectedBillTo,
-      currentDate: this.step1_data.posting_date
+      currentDate: this.submit_date
     });
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
@@ -2596,7 +2599,7 @@ export class OutputComponent implements OnInit {
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
       Button: button_press,
-      currentDate: this.step1_data.posting_date
+      currentDate: this.submit_date
       //ConfigType: this.step1_data.main_operation_type
     })
 
@@ -3349,7 +3352,7 @@ export class OutputComponent implements OnInit {
         selectedvalue: "",
         CompanyDBID: this.common_output_data.companyName,
         SuperModelId: this.step2_data.model_id,
-        currentDate: this.step1_data.posting_date
+        currentDate: this.submit_date
       });
 
       GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -3469,7 +3472,7 @@ export class OutputComponent implements OnInit {
           selectedvalue: "",
           CompanyDBID: this.common_output_data.companyName,
           SuperModelId: this.step2_data.model_id,
-          currentDate: this.step1_data.posting_date
+          currentDate: this.submit_date
         });
 
         GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -4028,7 +4031,7 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
           selectedvalue: "",
           CompanyDBID: this.common_output_data.companyName,
           SuperModelId: this.step2_data.model_id,
-          currentDate: this.step1_data.posting_date
+          currentDate: this.submit_date
         });
 
         GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
