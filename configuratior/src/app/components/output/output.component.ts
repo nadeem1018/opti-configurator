@@ -3647,7 +3647,7 @@ export class OutputComponent implements OnInit {
           if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE==1 ){
             if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_CHILDFEATUREID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
@@ -3663,7 +3663,7 @@ export class OutputComponent implements OnInit {
           else if(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE==2 ){
             if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
@@ -3679,7 +3679,7 @@ export class OutputComponent implements OnInit {
           else{
             if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_VALUE== RuleOutputData[iItemRule].OPTM_VALUE) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
@@ -3701,7 +3701,7 @@ export class OutputComponent implements OnInit {
           if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE==1){
             if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
@@ -3718,7 +3718,7 @@ export class OutputComponent implements OnInit {
           else if(this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE==2){
             if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
@@ -3735,7 +3735,7 @@ export class OutputComponent implements OnInit {
           else{
             if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_CHILDMODELID == RuleOutputData[iItemRule].OPTM_FEATUREID) {
               if (value == true) {
-                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
@@ -3755,11 +3755,11 @@ export class OutputComponent implements OnInit {
       for (var iFeatureItemaddedTable = 0; iFeatureItemaddedTable < this.feature_itm_list_table.length; iFeatureItemaddedTable++) {
         for (var iItemRule in RuleOutputData) {
           if (this.feature_itm_list_table[iFeatureItemaddedTable].Item == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
-            if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "False ") {
+            if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
               this.feature_itm_list_table.splice(iFeatureItemaddedTable, 1)
               iFeatureItemaddedTable = iFeatureItemaddedTable - 1
             }
-            else if (RuleOutputData[iItemRule].OPTM_ISINCLUDED == "True  ") {
+            else if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "True") {
               if (RuleOutputData[iItemRule].OPTM_ISQTYEDIT == "y") {
                 this.feature_itm_list_table[iFeatureItemaddedTable].isQuantityDisabled = false
               }
