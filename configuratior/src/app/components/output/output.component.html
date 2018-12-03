@@ -992,7 +992,7 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          {{this.language.quantity}}
+                          <span class="text-right">{{this.language.quantity}}</span>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
                           {{row.qunatity}}
@@ -1365,7 +1365,7 @@
                           </kendo-grid-column>
                           <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                              {{this.language.quantity}}
+                              <span class="text-right">{{this.language.quantity}}</span>
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
                               {{row.qunatity}}
