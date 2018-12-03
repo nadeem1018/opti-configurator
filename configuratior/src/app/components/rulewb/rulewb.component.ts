@@ -125,6 +125,8 @@ export class RulewbComponent implements OnInit {
       this.show_sequence = false;
       this.show_add_sequence_btn = true
       this._el.nativeElement.focus();
+      var current_date = new Date();
+      this.rule_wb_data.effective_from = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
     } else {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
@@ -827,8 +829,8 @@ export class RulewbComponent implements OnInit {
           this.rule_sequence_data[i]['condition'] = '';
           this.rule_sequence_data[i]['type_value'] = '';
           this.rule_sequence_data[i]['type_value_code'] = '';
-          $("#type_value_code").val("");
-          $("#type_value").val("");
+        //  $("#type_value_code").val("");
+        //  $("#type_value").val("");
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
           if (value == 2) {
             this.rule_sequence_data[i]['is_operand1_disable'] = true;
@@ -1180,10 +1182,10 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.selectrulecode, this.commonData.toast_config);
         return false;
       }
-      if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
+     /*  if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
         this.toastr.error('', this.language.description_field_not_blank, this.commonData.toast_config);
         return false;
-      }
+      } */
       if (this.rule_wb_data.effective_from == "" || this.rule_wb_data.effective_from == null) {
         this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
         return false;
