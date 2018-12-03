@@ -349,10 +349,16 @@ body {
 .k-grid-header-wrap table {
     thead {
         tr {
-            background: #1BA0F1;
+            background: #1BA0F1 !important;
             color: white;
         }
     }
+}
+
+.table .thead-dark th {
+    background: #1BA0F1 !important;
+    color: white;
+    border-color: #1BA0F1 !important;
 }
 
 .k-grid td,
