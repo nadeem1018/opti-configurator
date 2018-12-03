@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginBtnPress(){
-   
+   debugger
     if (this.selecetedComp == undefined && this.selecetedComp == "" ){
       this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
@@ -178,10 +178,11 @@ export class LoginComponent implements OnInit {
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {
+        debugger
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-          this.psURL = "http://localhost:1234";
+         // this.psURL = "http://localhost:1234";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
          //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
