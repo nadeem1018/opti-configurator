@@ -705,12 +705,12 @@ export class LookupComponent implements OnInit {
             itemFeatureName = featureRow.featureName;
           }
 
-          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn));
         }
         else {
           if (featureRow.ItemNumber == "" && featureRow.Item == null) {
 
-            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, featureRow.quantity, featureRow.Actualprice, featureRow.pricextn);
+            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description,  Number(featureRow.quantity),  Number(featureRow.Actualprice),  Number(featureRow.pricextn));
           }
           else {
             row_count--;
@@ -718,12 +718,14 @@ export class LookupComponent implements OnInit {
         }
       }
 
-
-      for (let acount = 0; acount < row['accesories'].length; acount++) {
-        let featureRow = row['accesories'][acount];
-        row_count++;
-        this.prepareFinalItemArray(row_count, featureRow.key, featureRow.name, row.quantity, row.price, row.price_ext);
-      }
+      //preparing data for accessories
+      // for (let acount = 0; acount < row['accesories'].length; acount++) {
+      //   let featureRow = row['accesories'][acount];
+      //   row_count++;
+      //   if(featureRow.checked == true){
+      //     this.prepareFinalItemArray(row_count, featureRow.key, featureRow.name, row.quantity, row.price, row.price_ext);
+      //   }
+      // }
 
     }
 

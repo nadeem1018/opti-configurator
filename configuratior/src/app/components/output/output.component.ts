@@ -77,7 +77,7 @@ export class OutputComponent implements OnInit {
   public navigatenextbtn: boolean = false;
   public validnextbtn: boolean = true;
   public showPrintOptions: boolean = false;
-  public previousquantity:any = parseFloat("1").toFixed(3);
+  public previousquantity: any = parseFloat("1").toFixed(3);
   public feature_tax_total = [
     { "key": this.language.tax, "value": this.feature_item_tax },
     { "key": this.language.total, "value": this.feature_item_total },
@@ -1192,7 +1192,7 @@ export class OutputComponent implements OnInit {
         if (inputid == "quantity") {
           if (value < 0) {
             this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-            this.feature_itm_list_table[i].quantity =parseFloat("0").toFixed(3);
+            this.feature_itm_list_table[i].quantity = parseFloat("0").toFixed(3);
             return;
           }
           var rgexp = /^\d+$/;
@@ -1399,7 +1399,7 @@ export class OutputComponent implements OnInit {
     this.feature_tax_total[1].value = 0;
     this.feature_discount_percent = 0;
     this.accessory_discount_percent = 0;
-    this.step2_data.quantity =parseFloat("1").toFixed(3);
+    this.step2_data.quantity = parseFloat("1").toFixed(3);
     this._el.nativeElement.focus();
     this.ModelHeaderData = [];
     this.ModelBOMDataForSecondLevel = [];
@@ -1748,7 +1748,7 @@ export class OutputComponent implements OnInit {
 
                     if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                       propagateqtychecked = "Y"
-                      parentarray[0].OPTM_QUANTITY=parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
+                      parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                       propagateqty = parentarray[0].OPTM_QUANTITY
                     }
                   }
@@ -1863,8 +1863,8 @@ export class OutputComponent implements OnInit {
 
                                 if (data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY == "Y") {
                                   propagateqtychecked = "Y"
-                                  data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY=parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3)
-                                  propagateqty =data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY
+                                  data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY = parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3)
+                                  propagateqty = data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY
                                 }
 
                                 if (data.dtFeatureDataWithDefault.length > 0) {
@@ -2005,7 +2005,7 @@ export class OutputComponent implements OnInit {
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                           OPTM_MODIFIEDDATETIME: String(data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
-                          OPTM_QUANTITY:parseFloat( data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3),
+                          OPTM_QUANTITY: parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3),
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
                           OPTM_VALUE: data.DataForSelectedFeatureModelItem[i].OPTM_VALUE,
@@ -2026,7 +2026,7 @@ export class OutputComponent implements OnInit {
               else if (type == 2) {
                 if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                   propagateqtychecked = "Y"
-                  parentarray[0].OPTM_QUANTITY=parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
+                  parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                   propagateqty = parentarray[0].OPTM_QUANTITY
                 }
                 this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty);
@@ -2100,7 +2100,7 @@ export class OutputComponent implements OnInit {
       }
 
       if (propagateqtychecked == "Y") {
-        propagateqty=parseFloat(propagateqty).toFixed(3)
+        propagateqty = parseFloat(propagateqty).toFixed(3)
         ItemData[0].OPTM_QUANTITY = propagateqty
       }
 
@@ -2112,7 +2112,7 @@ export class OutputComponent implements OnInit {
           Item: ItemData[0].OPTM_ITEMKEY,
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
-          quantity:ItemData[0].OPTM_QUANTITY * this.step2_data.quantity,
+          quantity: ItemData[0].OPTM_QUANTITY * this.step2_data.quantity,
           price: ItemData[0].ListName,
           Actualprice: ItemData[0].Price,
           pricextn: 0,
@@ -2567,7 +2567,7 @@ export class OutputComponent implements OnInit {
       "OPTM_TAX": this.acc_item_tax,
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step2_data.model_code,
-      "OPTM_KEY":"",
+      "OPTM_KEY": "",
       "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
       "OPTM_QUANTITY": parseFloat(this.step2_data.quantity).toFixed(3),
       "OPTM_CREATEDBY": this.common_output_data.username,
@@ -3376,6 +3376,7 @@ export class OutputComponent implements OnInit {
           return;
         });
 
+
     }
     else {
       for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -3386,6 +3387,7 @@ export class OutputComponent implements OnInit {
       }
     }
     this.feature_price_calculate();
+    this.updateCheckedStatus(value, rowData);
   }
 
   setItemDataForFeatureAccessory(ItemData, parentarray) {
@@ -3426,9 +3428,9 @@ export class OutputComponent implements OnInit {
           });
         }
 
-        ItemData[i].OPTM_QUANTITY=parseFloat(ItemData[i].OPTM_QUANTITY).toFixed(3)
-        var formatequantity:any=ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
-         ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
+        ItemData[i].OPTM_QUANTITY = parseFloat(ItemData[i].OPTM_QUANTITY).toFixed(3)
+        var formatequantity: any = ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
+        ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
 
         if (isExist.length == 0) {
           this.feature_itm_list_table.push({
@@ -3532,8 +3534,8 @@ export class OutputComponent implements OnInit {
         return obj['FeatureId'] == DefaultData[idefault].OPTM_FEATUREID && obj['Item'] == DefaultData[idefault].OPTM_ITEMKEY;
       });
 
-      DefaultData[idefault].OPTM_QUANTITY= parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3)
-var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.quantity
+      DefaultData[idefault].OPTM_QUANTITY = parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3)
+      var formatequantity: any = DefaultData[idefault].OPTM_QUANTITY * this.step2_data.quantity
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: DefaultData[idefault].OPTM_FEATUREID,
@@ -3541,7 +3543,7 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
           Item: DefaultData[idefault].OPTM_ITEMKEY,
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
-          quantity:parseFloat(formatequantity).toFixed(3),
+          quantity: parseFloat(formatequantity).toFixed(3),
           price: DefaultData[idefault].ListName,
           Actualprice: DefaultData[idefault].Price,
           pricextn: 0,
@@ -3568,8 +3570,8 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
         return obj['FeatureId'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['Description'] == ModelData[imodelarray].OPTM_DISPLAYNAME;
       });
 
-      ModelData[imodelarray].OPTM_QUANTITY= parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3)
-      var formatequantity:any= ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
+      ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3)
+      var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
@@ -3601,8 +3603,8 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
           return obj['FeatureId'] == ModelItemsArray[imodelItemsarray].OPTM_MODELID && obj['Item'] == ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY;
         });
 
-        ModelItemsArray[imodelItemsarray].OPTM_QUANTITY =parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY ).toFixed(3)
-        var formatequantity:any=  ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity
+        ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
+        var formatequantity: any = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity
         if (isExist.length == 0) {
           this.feature_itm_list_table.push({
             FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
@@ -3647,8 +3649,8 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
         return obj['FeatureId'] == ModelItemsData[imodelarray].OPTM_MODELID && obj['Item'] == ModelItemsData[imodelarray].OPTM_ITEMKEY;
       });
 
-      ModelItemsData[imodelarray].OPTM_QUANTITY= parseFloat(ModelItemsData[imodelarray].OPTM_QUANTITY).toFixed(3)
-      var formatequantity:any=ModelItemsData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
+      ModelItemsData[imodelarray].OPTM_QUANTITY = parseFloat(ModelItemsData[imodelarray].OPTM_QUANTITY).toFixed(3)
+      var formatequantity: any = ModelItemsData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelItemsData[imodelarray].OPTM_MODELID,
@@ -3656,7 +3658,7 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
           Item: ModelItemsData[imodelarray].OPTM_ITEMKEY,
           ItemNumber: ModelItemsData[imodelarray].DocEntry,
           Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
-          quantity:parseFloat(formatequantity),
+          quantity: parseFloat(formatequantity),
           price: ModelItemsData[imodelarray].ListName,
           Actualprice: ModelItemsData[imodelarray].Price,
           pricextn: 0,
@@ -4179,6 +4181,19 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
 
         this.ModelHeaderData.splice(iremove, 1);
         this.removemodelheaderdatatable(removemodelheaderidchild)
+      }
+    }
+  }
+
+  //THis will maintain the array and label checked to checked one's
+  updateCheckedStatus(value, row) {
+    let id = row.id;
+    for (let count = 0; count < this.feature_accessory_list.length; count++) {
+      if (this.feature_accessory_list[count].id == id) {
+        this.feature_accessory_list[count].checked = true;
+      }
+      else {
+        this.feature_accessory_list[count].checked = false;
       }
     }
   }
