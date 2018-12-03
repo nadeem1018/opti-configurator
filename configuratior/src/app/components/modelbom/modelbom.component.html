@@ -116,7 +116,7 @@
             </div>
           </div>
           
-          <div class="col-sm-12 p-0">
+          <!-- <div class="col-sm-12 p-0">
             <div class="table-responsive table-responsive-sm table-bordered">
               <table class="table opti_fixed-header top-table   table-sm" id="dataTable" cellspacing="0" >
                 <thead class="thead-dark">
@@ -136,7 +136,6 @@
                     <th width="4%">
                       <i class="fa fa-trash"></i>
                     </th>
-                    <!-- <th width="4%">{{language.remove}}</th> -->
                   </tr>
                 </thead>
                 <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
@@ -220,6 +219,122 @@
                 </tbody>
               </table>
 
+            </div>
+          </div> -->
+          <!-- <hr> -->
+          <div class="col-sm-12 p-0">
+            <div class="">
+              <kendo-grid [kendoGridBinding]="modelbom_data" [height]="400" [resizable]="true" [sortable]="false" [groupable]="false"
+                [filterable]="false">
+              
+                <kendo-grid-column field="rowindex" title="#" width="42" [minResizableWidth]="20" filter="numeric">
+                </kendo-grid-column>
+                <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="50">
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
+                    <select class="form-control form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
+                      <option *ngFor="let v of commonData.model_bom_type" [value]="v.value" [selected]="dataItem.type==v.value"> {{v.Name}}</option>
+                    </select>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="ModelBom_FeatureValue" title="{{language.ModelBom_FeatureValue}}" filter="text" [width]="155" [minResizableWidth]="50">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="input-group">
+                      <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value)"
+                        value={{dataItem.type_value}} #type_value title={{dataItem.type_value}}/>
+                    
+                      <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value)"
+                        value={{dataItem.type_value_code}} #type_value_code title={{dataItem.type_value_code}}/>
+                      <div class="input-group-append" [hidden]=dataItem.hide>
+                        <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_click(dataItem.type, dataItem.rowindex)">
+                          <i class="fa fa-bars"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+              
+                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text" [width]="140" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                      <input type="text" class="form-control  form-control-sm" id="display_name" value={{dataItem.display_name}} (change)="on_display_name_change(display_name.value,dataItem.rowindex)"
+                        #display_name title={{dataItem.display_name}} />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="uom" title="{{language.uom}}" filter="text" [width]="70" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="text" [disabled]="dataItem.isUOMDisabled" class="form-control  form-control-sm" id="uom" value={{dataItem.uom}} (change)="on_uom_change(uom.value,dataItem.rowindex)"
+                      #uom title={{dataItem.uom}} />
+                    </ng-template>
+                    </kendo-grid-column>
+                <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="80" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                  <input type="text" class="form-control  form-control-sm" style="text-align:right" id="quantity" value={{dataItem.quantity}} (change)="on_quantity_change(quantity.value,dataItem.rowindex)"
+                    title={{dataItem.quantity}} #quantity />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="min_selectable" title="{{language.min_selectable}}" filter="text" [width]="118" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                  <input type="text" [disabled]="dataItem.isMinSelectedDisable" class="form-control  form-control-sm" style="text-align:right"
+                    id="min_selected" value={{dataItem.min_selected}} (change)="on_min_selected_change(min_selected.value,dataItem.rowindex,min_selected)"
+                    #min_selected title="{{dataItem.min_selected}}" />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="min_selectable" title="{{language.max_selectable}}" filter="text" [width]="118" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="text" [disabled]="dataItem.isMaxSelectedDisable" class="form-control  form-control-sm pull-right" style="text-align:right"
+                      id="max_selected" value={{dataItem.max_selected}} (change)="on_max_selected_change(max_selected.value,dataItem.rowindex,max_selected)"
+                      #max_selected title="{{dataItem.max_selected}}" />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="115" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{dataItem.propagate_qty}}
+                      (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)" [(checked)]=dataItem.propagate_qty #propagate_qty title="{{dataItem.propagate_qty}}"
+                    />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text" [width]="110" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="input-group">
+                      <input [disabled]="dataItem.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" title="{{dataItem.price_source_id}}"
+                        (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)" value={{dataItem.price_source_id}}
+                        #price_source_id />
+                    
+                      <input type="text" class="form-control  form-control-sm" id="price_source" value={{dataItem.price_source}} name="price_source"
+                        (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)" #price_source [disabled]="dataItem.isPriceDisabled"
+                        title="{{dataItem.price_source}}" />
+                      <div class="input-group-append" [hidden]=dataItem.pricehide>
+                        <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(dataItem.type_value,dataItem.rowindex)">
+                          <i class="fa fa-bars"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="mandatory" title="{{language.mandatory}}" [width]="100" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="checkbox" class="form-control  form-control-sm" id="mandatory" value={{dataItem.mandatory}} (change)="on_mandatory_change(mandatory,dataItem.rowindex)"
+                      #mandatory [(checked)]=dataItem.mandatory title="{{dataItem.mandatory}}" />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="unique_identifier" title="{{language.unique_identifier}}" [width]="135" [minResizableWidth]="30">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="checkbox" class="form-control  form-control-sm" id="unique_identifer" value={{dataItem.unique_identifer}} [(checked)]=dataItem.unique_identifer
+                      (change)="on_unique_identifer_change(unique_identifer,dataItem.rowindex)" title="{{dataItem.unique_identifer}}" #unique_identifer />
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="30">
+              
+                  <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                    <i class="fa fa-trash"></i>
+                  </ng-template>
+              
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(dataItem.rowindex)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </ng-template>
+                </kendo-grid-column>
+              </kendo-grid>
             </div>
           </div>
         </div>

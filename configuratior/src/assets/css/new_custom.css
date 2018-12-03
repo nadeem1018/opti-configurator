@@ -59,8 +59,8 @@
   width: 50% !important;
 }
 
-.display_none{
-  display:none !important;
+.display_none {
+  display: none !important;
 }
 
 @media (min-width: 992px) {
@@ -558,6 +558,15 @@ hr {
   height: calc(1.35rem + 1px) !important;
 }
 
-.border_none{
-  border:none !important; 
+.border_none {
+  border: none !important;
+}
+
+.k-grid-toolbar {
+  width: 100% !important;
+}
+
+.center_border {
+  border: 1px solid #ccc;
+  text-align: center;
 }

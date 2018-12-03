@@ -315,7 +315,7 @@ export class RulewbComponent implements OnInit {
                 item: fetch_data.OPTM_ITEMKEY,
                 value: fetch_data.OPTM_VALUE,
                 uom: fetch_data.OPTM_UOM,
-                quantity: fetch_data.OPTM_QUANTITY,
+                quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                 edit_quantity: fetch_data.OPTM_ISQTYEDIT,
                 price_source: fetch_data.OPTM_PRICESOURCE,
                 edit_price: fetch_data.OPTM_ISPRICEEDIT,
@@ -562,7 +562,7 @@ export class RulewbComponent implements OnInit {
     this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
-        if (data.length > 0) {
+        if (data != null || data != "" || data != undefined) {
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
             this.global_rule_feature_data.push({
@@ -573,7 +573,7 @@ export class RulewbComponent implements OnInit {
               item: data[i].Item,
               value: data[i].Value,
               uom: data[i].UOM,
-              quantity: data[i].Quantity,
+              quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
               price_source: data[i].PriceSource,
               edit_price: "n",
@@ -1149,7 +1149,7 @@ export class RulewbComponent implements OnInit {
           this.rule_feature_data[i].uom = value
         }
         else if (name == "quantity") {
-          this.rule_feature_data[i].quantity = value
+          this.rule_feature_data[i].quantity =parseFloat(value).toFixed(3)
         }
         else if (name == "edit_quanity") {
           this.rule_feature_data[i].edit_quantity = value
