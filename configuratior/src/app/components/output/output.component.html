@@ -992,10 +992,10 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          {{this.language.quantity}}
+                          <span class="text-right">{{this.language.quantity}}</span>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
-                          {{row.qunatity}}
+                          <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                         </ng-template>
                       </kendo-grid-column>
                       <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
@@ -1065,12 +1065,12 @@
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
                       <thead class="" style=" font-size: 14px; ">
-                        <tr>
-                          <td>
-                            {{this.language.total_before_discount}} ({{defaultCurrency}})
-                          </td>
-                          <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
-                        </tr>
+                          <tr>
+                              <td>
+                                {{this.language.total_before_discount}}
+                              </td>
+                              <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                            </tr>
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
                           <td width="30%" class="text-right mr-3">
@@ -1365,10 +1365,10 @@
                           </kendo-grid-column>
                           <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                              {{this.language.quantity}}
+                              <span class="text-right">{{this.language.quantity}}</span>
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
-                              {{row.qunatity}}
+                              <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                             </ng-template>
                           </kendo-grid-column>
                           <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="60">

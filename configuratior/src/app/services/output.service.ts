@@ -12,9 +12,11 @@ export class OutputService {
   config_params: any;
   common_params = new CommonData();
   logged_in_company = sessionStorage.selectedComp;
-
+  public current_date = new Date();
+  public formatted_date;
   constructor(private httpclient: HttpClient) {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    this.formatted_date = (this.current_date.getFullYear()) + '/' + (this.current_date.getMonth() + 1) + '/' + this.current_date.getDate();
   }
 
 
@@ -27,33 +29,33 @@ export class OutputService {
   }
 
   GetModelList(): Observable<any> {
-    let jObject = { GetModel: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    let jObject = { GetModel: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
   getFeatureList(modelid): Observable<any> {
-    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: modelid }]) }
+    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
   getFeatureDetails(feature_id, modelid): Observable<any> {
-    let jObject = { GetFeature: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
+    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureListForSelectedFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
   GetAccessory(): Observable<any> {
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAccessorry", jObject, this.common_params.httpOptions);
   }
 
   GetItemDataForSelectedAccessorry(feature_id, modelid): Observable<any> {
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetItemDataForSelectedAccessorry", jObject, this.common_params.httpOptions);
   }
 
   getCustomerLookupData(CompanyDBID: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerList", jObject, this.common_params.httpOptions);
@@ -61,14 +63,20 @@ export class OutputService {
 
   GetDataForModelBomOutput(modelID, modalDesc): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataForModelBomOutput", jObject, this.common_params.httpOptions);
   }
 
-  GetDataByModelIDForFirstLevel(modelID, modalDesc): Observable<any> {
+  // GetDataByModelIDForFirstLevel(modelID, modalDesc): Observable<any> {
+  //   //JSON Obeject Prepared to be send as a param to API
+  //   let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+  //   //Return the response form the API  
+  //   return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
+  // }
+  GetDataByModelIDForFirstLevel(AllDataForModelBomOutput): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+    let jObject = { GetData: JSON.stringify(AllDataForModelBomOutput) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
   }
@@ -82,7 +90,7 @@ export class OutputService {
 
   fillContactPerson(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ContactPerson: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { ContactPerson: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/FillContactPerson", jObject, this.common_params.httpOptions);
@@ -91,7 +99,7 @@ export class OutputService {
 
   fillShipTo(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { AddressList: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { AddressList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/FillShipAddress", jObject, this.common_params.httpOptions);
@@ -99,7 +107,7 @@ export class OutputService {
 
   fillBillTo(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { AddressList: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { AddressList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/FillBillAddress", jObject, this.common_params.httpOptions);
@@ -123,7 +131,7 @@ export class OutputService {
 
   fillAllOwners(CompanyDBID: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { OwnerList: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
+    let jObject = { OwnerList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOwners", jObject, this.common_params.httpOptions);
@@ -131,7 +139,7 @@ export class OutputService {
 
   validateInputCustomer(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID, Customer: Customer }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/ValidateCustomer", jObject, this.common_params.httpOptions);
@@ -139,7 +147,7 @@ export class OutputService {
 
   GetCustomername(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerName", jObject, this.common_params.httpOptions);
@@ -154,7 +162,7 @@ export class OutputService {
   GetDataByModelId(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id }]) };
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: id }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelID", jObject, this.common_params.httpOptions);
   }
@@ -162,35 +170,35 @@ export class OutputService {
   getFinalBOMStatus(ilogID): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, LogID: ilogID }]) };
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, LogID: ilogID }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFinalStatus", jObject, this.common_params.httpOptions);
   }
 
   getConfigurationList(OperationType): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationType: OperationType }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData", jObject, this.common_params.httpOptions);
   }
 
   GetAllOutputData(OperationType, LogID, Description): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData", jObject, this.common_params.httpOptions);
   }
   onModelIdChange(code): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: code }]) };
+    let jObject = { ModelList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: code }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
   }
 
   GetModelIdbyModelCode(modelcode): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: modelcode }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: modelcode }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
   }

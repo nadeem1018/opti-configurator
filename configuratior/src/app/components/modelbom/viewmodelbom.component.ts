@@ -126,7 +126,7 @@ export class ViewModelBomComponent implements OnInit {
         }
         var dataset = this.service.getAllViewDataForModelBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                debugger
+                
                 console.log(data);
                 this.dataArray = data;
                 // dataset = JSON.parse(data);

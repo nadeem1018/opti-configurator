@@ -147,7 +147,7 @@ export class ViewFeatureModelComponent implements OnInit {
         }
         var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
-                debugger
+                
                 console.log(data);
                 this.dataArray = data;
                 // dataset = JSON.parse(data);

@@ -126,7 +126,6 @@ export class ViewFeatureBOMComponent implements OnInit {
         }
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                debugger
                 console.log(data);
                 this.dataArray = data;
                 // dataset = JSON.parse(data);
