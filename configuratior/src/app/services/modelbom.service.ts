@@ -108,7 +108,6 @@ export class ModelbomService {
 
   getRuleLookupList(id): Observable<any>{
     let current_date = new Date();
-    // let formatted_date: any = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
     let formatted_date: any = (current_date.getFullYear()) + '/' + (current_date.getMonth() + 1) + '/' + current_date.getDate();
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id, currentDate: formatted_date }]) };
     //Return the response form the API  

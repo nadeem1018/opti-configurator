@@ -1413,7 +1413,9 @@ export class OutputComponent implements OnInit {
     AllDataForModelBomOutput.modelinputdatalookup.push({
       CompanyDBID: this.common_output_data.companyName,
       ModelID: this.step2_data.model_id,
-      ModelDisplayName: this.step2_data.model_name
+      ModelDisplayName: this.step2_data.model_name,
+      currentDate: this.step1_data.posting_date
+
     });
     AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata
     this.OutputService.GetDataByModelIDForFirstLevel(AllDataForModelBomOutput).subscribe(
@@ -1627,7 +1629,8 @@ export class OutputComponent implements OnInit {
       parentmodelid: parentmodelid,
       selectedvalue: selectedvalue,
       CompanyDBID: this.common_output_data.companyName,
-      SuperModelId: this.step2_data.model_id
+      SuperModelId: this.step2_data.model_id,
+      currentDate : this.step1_data.posting_date
     });
 
     GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -2373,8 +2376,8 @@ export class OutputComponent implements OnInit {
             this.ship_data.push({
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
-              ShipTo: this.customerShipTo
-
+              ShipTo: this.customerShipTo,
+              currentDate : this.step1_data.posting_date
             });
             this.OutputService.fillShipAddress(this.ship_data).subscribe(
               data => {
@@ -2407,7 +2410,8 @@ export class OutputComponent implements OnInit {
             this.bill_data.push({
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
-              BillTo: this.customerBillTo
+              BillTo: this.customerBillTo,
+              currentDate: this.step1_data.posting_date
 
             });
             this.OutputService.fillBillAddress(this.bill_data).subscribe(
@@ -2452,8 +2456,8 @@ export class OutputComponent implements OnInit {
     this.ship_data.push({
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
-      ShipTo: SelectedShipTo
-
+      ShipTo: SelectedShipTo,
+      currentDate: this.step1_data.posting_date
     });
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
@@ -2472,8 +2476,8 @@ export class OutputComponent implements OnInit {
     this.bill_data.push({
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
-      ShipTo: SelectedBillTo
-
+      ShipTo: SelectedBillTo,
+      currentDate: this.step1_data.posting_date
     });
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
@@ -2591,7 +2595,8 @@ export class OutputComponent implements OnInit {
       CompanyDBID: this.common_output_data.companyName,
       ScreenData: screen_name,
       OperationType: this.step1_data.main_operation_type,
-      Button: button_press
+      Button: button_press,
+      currentDate: this.step1_data.posting_date
       //ConfigType: this.step1_data.main_operation_type
     })
 
@@ -3343,7 +3348,8 @@ export class OutputComponent implements OnInit {
         parentmodelid: "",
         selectedvalue: "",
         CompanyDBID: this.common_output_data.companyName,
-        SuperModelId: this.step2_data.model_id
+        SuperModelId: this.step2_data.model_id,
+        currentDate: this.step1_data.posting_date
       });
 
       GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -3462,7 +3468,8 @@ export class OutputComponent implements OnInit {
           parentmodelid: "",
           selectedvalue: "",
           CompanyDBID: this.common_output_data.companyName,
-          SuperModelId: this.step2_data.model_id
+          SuperModelId: this.step2_data.model_id,
+          currentDate: this.step1_data.posting_date
         });
 
         GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -4020,7 +4027,8 @@ var formatequantity:any= DefaultData[idefault].OPTM_QUANTITY * this.step2_data.q
           parentmodelid: parentmodelid,
           selectedvalue: "",
           CompanyDBID: this.common_output_data.companyName,
-          SuperModelId: this.step2_data.model_id
+          SuperModelId: this.step2_data.model_id,
+          currentDate: this.step1_data.posting_date
         });
 
         GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
