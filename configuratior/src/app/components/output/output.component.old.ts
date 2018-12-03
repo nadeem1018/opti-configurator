@@ -113,9 +113,11 @@ export class OutputComponent implements OnInit {
   public final_order_status_class = "text-primary";
   public final_reference_number = "";
   public final_ref_doc_entry = "";
-
+  public current_date = new Date();
+  public submit_date = '';
   ngOnInit() {
     this.commonData.checkSession();
+    this.submit_date = (this.current_date.getFullYear()) + '/' + (this.current_date.getMonth() + 1) + '/' + this.current_date.getDate();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
@@ -1339,7 +1341,8 @@ export class OutputComponent implements OnInit {
             this.ship_data.push({
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
-              ShipTo: this.customerShipTo
+              ShipTo: this.customerShipTo,
+              currentDate: this.submit_date
 
             });
             this.OutputService.fillShipAddress(this.ship_data).subscribe(
@@ -1373,7 +1376,8 @@ export class OutputComponent implements OnInit {
             this.bill_data.push({
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
-              BillTo: this.customerBillTo
+              BillTo: this.customerBillTo,
+              currentDate: this.submit_date
 
             });
             this.OutputService.fillBillAddress(this.bill_data).subscribe(
@@ -1416,7 +1420,8 @@ export class OutputComponent implements OnInit {
     this.ship_data.push({
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
-      ShipTo: SelectedShipTo
+      ShipTo: SelectedShipTo,
+      currentDate: this.submit_date
 
     });
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
@@ -1436,7 +1441,8 @@ export class OutputComponent implements OnInit {
     this.bill_data.push({
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
-      ShipTo: SelectedBillTo
+      ShipTo: SelectedBillTo,
+      currentDate: this.submit_date
 
     });
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
@@ -1535,7 +1541,8 @@ export class OutputComponent implements OnInit {
 
     //creating connection detials
     final_dataset_to_save.ConnectionDetails.push({
-      CompanyDBID: this.common_output_data.companyName
+      CompanyDBID: this.common_output_data.companyName,
+      currentDate: this.submit_date
     })
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
