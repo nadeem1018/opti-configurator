@@ -986,13 +986,13 @@ console.log(this.serviceData);
     this.table_head = [
     
       {
-        field: 'OPTM_LOGID',
+        field: 'OPTM_DISPLAYNAME',
         title: this.language.Model_ModelName,
         type: 'text',
         width: '100'
       },
       {
-        field: 'OPTM_DESC',
+        field: 'OPTM_FEATUREDESC',
         title: this.language.Model_ModelDesc,
         type: 'text',
         width: '100'
