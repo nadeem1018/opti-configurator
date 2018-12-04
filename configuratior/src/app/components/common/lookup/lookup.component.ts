@@ -3,7 +3,7 @@ import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { ModelbomService } from '../../../services/modelbom.service';
-import { CommonData } from "../../../models/CommonData";
+import { CommonData, ColumnSetting } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
@@ -50,7 +50,7 @@ export class LookupComponent implements OnInit {
   public fill_input_id = '';
   public item_code_columns;
   public model_template_item_columns;
-  public table_head = [];
+  public table_head: ColumnSetting[] = [];
   public rule_output_table_head = [];
   public rule_output_table_head_hidden_elements = [];
   public lookup_key = "";
@@ -212,19 +212,21 @@ export class LookupComponent implements OnInit {
     console.log(val);
   }
 
-  on_template_type_change(){
-    if(this.template_type === "model"){
+  on_template_type_change() {
+    if (this.template_type === "model") {
       this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
     }
-    else if(this.template_type === "feature"){
+    else if (this.template_type === "feature") {
       this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
     }
   }
-  on_item_select(lookup_key) {
+  on_item_select(selection) {
+    const lookup_key = selection.selectedRows[0].dataItem;
     console.log("lookup_key - " + lookup_key);
     console.log(lookup_key);
+    
 
-    this.lookupvalue.emit(lookup_key);
+    this.lookupvalue.emit(Object.values(lookup_key));
     $("#lookup_modal").modal('hide');
   }
 
@@ -233,7 +235,48 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'modify_duplicate_lookup';
-    this.table_head = [this.language.log_id, this.language.description, this.language.customer, this.language.contact_person, this.language.model, this.language.quantity];
+    // this.table_head = [this.language.log_id, this.language.description, this.language.customer, this.language.contact_person, this.language.model, this.language.quantity];
+console.log(this.serviceData);
+
+    this.table_head = [
+      {
+        field: 'OPTM_LOGID',
+        title: this.language.log_id,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DESC',
+        title: this.language.description,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_BPCODE',
+        title: this.language.customer,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_CONTACTPERSON',
+        title: this.language.contact_person,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_FGITEM',
+        title: this.language.model,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_QUANTITY',
+        title: this.language.quantity,
+        type: 'text',
+        width: '100'
+      },
+    ];
+
     //this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'OPTM_DESC';
 
@@ -255,6 +298,24 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
     this.table_head = [this.language.code, this.language.Name];
+
+    this.table_head = [
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+      
+    ];
+
+
     this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
@@ -276,7 +337,18 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemCode';
-    this.table_head = [this.language.code];
+    // this.table_head = [this.language.code];
+
+    this.table_head = [
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+     
+    ];
+
     this.table_head_hidden_elements = [false];
     this.lookup_key = 'OPTM_CODE';
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -298,7 +370,24 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.Id, this.language.code, this.language.Name];
+    // this.table_head = [this.language.Id, this.language.code, this.language.Name];
+
+    this.table_head = [ 
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+      
+    ];
+
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -331,7 +420,25 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
+    // this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
+
+    this.table_head = [   
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+      
+    ];
+
+
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -353,7 +460,26 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.ModelId, this.language.code, this.language.Name, this.language.templateid, this.language.ItemCodeGenkey];
+    // this.table_head = [this.language.ModelId, this.language.code, this.language.Name, this.language.templateid, this.language.ItemCodeGenkey];
+
+    console.log(this.serviceData);
+    this.table_head = [
+    
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+     
+    ];
+
     this.table_head_hidden_elements = [true, false, false, true, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -375,7 +501,23 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'type_value';
     this.lookup_key = 'ItemKey';
-    this.table_head = [this.language.itemkey, this.language.Name];
+    // this.table_head = [this.language.itemkey, this.language.Name];
+
+    this.table_head = [
+      {
+        field: 'ItemKey',
+        title: this.language.itemkey,
+        type: 'text',
+        width: '100'
+      },      
+      {
+        field: 'Description',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+    ];
+
     this.table_head_hidden_elements = [false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -406,7 +548,24 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'price_source';
     this.lookup_key = 'PriceListID';
-    this.table_head = [this.language.price_source, this.language.price_list_name];
+    // this.table_head = [this.language.price_source, this.language.price_list_name];
+
+    console.log(this.serviceData);
+    this.table_head = [
+      {
+        field: 'PriceListID',
+        title: this.language.price_source,
+        type: 'text',
+        width: '100'
+      },      
+      {
+        field: 'ListName',
+        title: this.language.price_list_name,
+        type: 'text',
+        width: '100'
+      },
+      
+    ];
     this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -427,7 +586,24 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'featureNameId';
     this.lookup_key = 'OPTM_FEATUREID';
-    this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
+    // this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
+
+    this.table_head = [
+   
+      {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+    
+    ];
     this.table_head_hidden_elements = [true, false, false, true];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -447,6 +623,29 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.lookup_key = 'code';
     this.table_head = [this.language.select, this.language.rule, this.language.description];
+    console.log(this.serviceData);
+    // this.table_head = [
+    //   {
+    //     field: 'OPTM_LOGID',
+    //     title: this.language.select,
+    //     type: 'text',
+    //     width: '100'
+    //   },      
+    //   {
+    //     field: 'OPTM_LOGID',
+    //     title: this.language.rule,
+    //     type: 'text',
+    //     width: '100'
+    //   },
+    //   {
+    //     field: 'OPTM_DESC',
+    //     title: this.language.description,
+    //     type: 'text',
+    //     width: '100'
+    //   },
+     
+    // ];
+
     this.table_head_hidden_elements = [false, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -686,7 +885,7 @@ export class LookupComponent implements OnInit {
       var row = this.serviceData.verify_final_data_sel_details[mcount];
       row_count++;
       //pushing item data
-      this.prepareFinalItemArray(row_count, row.item,'', row.quantity,'', row.price_ext);
+      this.prepareFinalItemArray(row_count, row.item, '', row.quantity, '', row.price_ext);
 
       //If report type is details then only we will show features
 
@@ -696,12 +895,11 @@ export class LookupComponent implements OnInit {
 
         if (report_type == "2") {
           let itemFeatureName = featureRow.featureName;
-          if(featureRow.featureName == "" || featureRow.featureName == null)
-          {
+          if (featureRow.featureName == "" || featureRow.featureName == null) {
             itemFeatureName = featureRow.Item;
           }
 
-          if(featureRow.Item == "" || featureRow.Item == null){
+          if (featureRow.Item == "" || featureRow.Item == null) {
             itemFeatureName = featureRow.featureName;
           }
 
@@ -783,8 +981,23 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
 
-
-    this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
+console.log(this.serviceData);
+    // this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
+    this.table_head = [
+    
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Model_ModelName,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_FEATUREDESC',
+        title: this.language.Model_ModelDesc,
+        type: 'text',
+        width: '100'
+      },
+    ];
     this.table_head_hidden_elements = [true, false, false];
     this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -823,7 +1036,23 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
-    this.table_head = [this.language.customer_code, this.language.Name];
+    // this.table_head = [this.language.customer_code, this.language.Name];
+    console.log(this.serviceData);
+    this.table_head = [
+      {
+        field: 'CustID',
+        title: this.language.customer_code,
+        type: 'text',
+        width: '100'
+      },      
+      {
+        field: 'Name',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+        
+    ];
     this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';
 
@@ -857,6 +1086,14 @@ export class LookupComponent implements OnInit {
     this.product_grand_details.length = 0;
     this.print_item_list_array.length = 0;
   }
+
+
+  // gridUserSelectionChange(gridUser, selection) {sdgvxfvx
+  //   // let selectedData = gridUser.data.data[selection.index];
+  //   const selectedData = selection.selectedRows[0].dataItem;
+  //   console.log(selectedData);
+  //   alert(selectedData.Name);
+  // }
 
 
   /*downloadFile() {
