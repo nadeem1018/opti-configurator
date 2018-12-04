@@ -120,7 +120,7 @@ export class OutputComponent implements OnInit {
   public salesemployee: any;
   public step3_data_final = [];
   public document_date = '';
-  public iLogID: any;
+  public iLogID: any = '';
   public CheckedData: any = [];
   public selectallRows: boolean = false;
   public isMultiDelete: boolean = false;
