@@ -191,7 +191,7 @@ export class OutputComponent implements OnInit {
 
     this.isNextButtonVisible = false;
 
-    //dummy data for 3rd screen 
+    // dummy data for 3rd screen 
     // this.step3_data_final = [
     //   {
     //     "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step2_data.model_id,
@@ -529,6 +529,7 @@ export class OutputComponent implements OnInit {
     else if (this.lookupfor == 'configure_list_lookup') {
       this.step1_data.selected_configuration_key = $event[0];
       this.step1_data.description = $event[1];
+      this.iLogID = $event[0];
       this.getAllDetails(this.step1_data.main_operation_type, this.step1_data.selected_configuration_key, this.step1_data.description);
     }
     // this.getItemDetails($event[0]);
@@ -2337,15 +2338,18 @@ export class OutputComponent implements OnInit {
           }
           else {
             this.contact_persons = [];
+            this.person = "";
+            this.step1_data.person_name = "";
           }
           if (data.DefaultSalesPerson.length > 0) {
             this.sales_employee = data.DefaultSalesPerson;
             this.salesemployee = data.DefaultSalesPerson[0].SlpName;
             this.step1_data.sales_employee = data.DefaultSalesPerson[0].SlpName;
-
           }
           else {
             this.sales_employee = [];
+            this.salesemployee = "";
+            this.step1_data.sales_employee = "";
           }
         }
         else {
@@ -2554,7 +2558,7 @@ export class OutputComponent implements OnInit {
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
     //creating header data
     final_dataset_to_save.OPConfig_OUTPUTHDR.push({
-      "OPTM_LOGID": this.step1_data.selected_configuration_key,
+      "OPTM_LOGID": this.iLogID,
       "OPTM_OUTPUTID": "",
       "OPTM_DOCTYPE": this.step1_data.document,
       "OPTM_BPCODE": this.step1_data.customer,
