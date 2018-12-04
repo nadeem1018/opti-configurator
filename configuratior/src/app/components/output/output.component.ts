@@ -949,7 +949,7 @@ export class OutputComponent implements OnInit {
       }
     }
     if (isumofpropriceitem > 0) {
-      iprotax = (isumofpropriceitem * this.feature_item_tax) / 100
+      iprotax = (isumofpropriceitem * this.feature_item_tax) / 100;
       iprodiscount = (isumofpropriceitem * this.feature_discount_percent) / 100
     }
     if (isumofaccpriceitem > 0) {

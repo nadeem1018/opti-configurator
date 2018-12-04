@@ -378,6 +378,7 @@
     "templateid" :"Template Id",
     "ItemCodeGenkey" :"ItemCodeGenkey",
     "enable_filter": "Enable Filter",
+    "item_code_cannot_update":"Item code is already used to configure products, Cannot update the following item code key.",
     "InvalidFeatureCode": "Invalid Feature Code"
 
     

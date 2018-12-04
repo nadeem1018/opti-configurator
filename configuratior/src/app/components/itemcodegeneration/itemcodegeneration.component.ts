@@ -238,6 +238,9 @@ export class ItemcodegenerationComponent implements OnInit {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('item-code-generation/view');
           return;
+        } else if (data == "AlreadyExists"){
+          this.toastr.error('', this.language.item_code_cannot_update, this.commonData.toast_config);
+          return;
         }
         else {
           this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
