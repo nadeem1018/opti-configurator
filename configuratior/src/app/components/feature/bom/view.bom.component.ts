@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
-import { CommonData } from "src/app/models/CommonData";
+import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
@@ -11,7 +11,7 @@ import { UIHelper } from '../../../helpers/ui.helpers';
     styleUrls: ['./bom.component.scss']
 })
 
- 
+
 export class ViewFeatureBOMComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
@@ -43,31 +43,47 @@ export class ViewFeatureBOMComponent implements OnInit {
     public show_dialog: boolean = false;
     public dialog_box_value: any;
     public row_id: any;
+    public dataArray: any = [];
     public CheckedData: any = [];
     public companyName: string = "";
     public username: string = "";
     public GetItemData: any = [];
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
+    public isColumnFilter: boolean = false;
 
 
+    isMobile: boolean = false;
+    isIpad: boolean = false;
+    isDesktop: boolean = true;
+    isPerfectSCrollBar: boolean = false;
 
-    isMobile:boolean=false;
-    isIpad:boolean=false;
-    isDesktop:boolean=true;
-    isPerfectSCrollBar:boolean = false;
+    public columns: ColumnSetting[] = [
+        {
+            field: 'OPTM_FEATURECODE',
+            title: this.language.Feature_Code,
+            type: 'text',
+            width: '500'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Bom_Displayname,
+            type: 'text',
+            width: '500'
+        },
+    ];
 
-    detectDevice(){
+    detectDevice() {
         let getDevice = UIHelper.isDevice();
         this.isMobile = getDevice[0];
         this.isIpad = getDevice[1];
         this.isDesktop = getDevice[2];
-        if(this.isMobile==true){
-        this.isPerfectSCrollBar = true;
-        }else if(this.isIpad==true){
-        this.isPerfectSCrollBar = false;
-        }else{
-        this.isPerfectSCrollBar = false;
+        if (this.isMobile == true) {
+            this.isPerfectSCrollBar = true;
+        } else if (this.isIpad == true) {
+            this.isPerfectSCrollBar = false;
+        } else {
+            this.isPerfectSCrollBar = false;
         }
     }
 
@@ -87,7 +103,7 @@ export class ViewFeatureBOMComponent implements OnInit {
 
     }
     ngAfterViewInit() {
-        this._el.nativeElement.focus();
+      //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -100,8 +116,8 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     service_call(page_number, search) {
-        if(this.record_per_page!== undefined && sessionStorage.getItem('defaultRecords')){
-            if(this.record_per_page !== sessionStorage.getItem('defaultRecords')){
+        if (this.record_per_page !== undefined && sessionStorage.getItem('defaultRecords')) {
+            if (this.record_per_page !== sessionStorage.getItem('defaultRecords')) {
                 sessionStorage.setItem('defaultRecords', this.record_per_page);
             }
         } else {
@@ -110,23 +126,24 @@ export class ViewFeatureBOMComponent implements OnInit {
         }
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
+                console.log(data);
+                this.dataArray = data;
+                // dataset = JSON.parse(data);
+                // console.log(dataset);
+                // this.rows = dataset[0];
+                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
+                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
+                //     pages = 1;
+                // }
+                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                // console.log(this.page_numbers);
+                // if (page_number != undefined) {
+                //     this.current_page = page_number;
+                // }
 
-                dataset = JSON.parse(data);
-                console.log(dataset);
-                this.rows = dataset[0];
-                let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    pages = 1;
-                }
-                this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                console.log(this.page_numbers);
-                if (page_number != undefined) {
-                    this.current_page = page_number;
-                }
-
-                if (search != undefined) {
-                    this.search_string = search;
-                }
+                // if (search != undefined) {
+                //     this.search_string = search;
+                // }
             });
     }
 
@@ -143,16 +160,16 @@ export class ViewFeatureBOMComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
-    button_click1(id) {
+    button_click1(data) {
 
-        this.router.navigateByUrl('feature/bom/edit/' + id);
+        this.router.navigateByUrl('feature/bom/edit/' + data.OPTM_FEATUREID);
         // button click function in here
     }
 
-    button_click2(id) {
+    button_click2(data) {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
-        this.row_id = id;
+        this.row_id = data.OPTM_FEATUREID;
 
         // var result = confirm(this.language.DeleteConfimation);
     }
@@ -197,11 +214,11 @@ export class ViewFeatureBOMComponent implements OnInit {
         var isExist = 0;
         if (this.CheckedData.length > 0) {
             for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i] == row_data) {
+                if (this.CheckedData[i].FeatureId == row_data.OPTM_FEATUREID) {
                     isExist = 1;
                     if (checkedvalue == true) {
                         this.CheckedData.push({
-                            FeatureId: row_data,
+                            FeatureId: row_data.OPTM_FEATUREID,
                             CompanyDBId: this.companyName
                         })
                     }
@@ -212,14 +229,14 @@ export class ViewFeatureBOMComponent implements OnInit {
             }
             if (isExist == 0) {
                 this.CheckedData.push({
-                    FeatureId: row_data,
+                    FeatureId: row_data.OPTM_FEATUREID,
                     CompanyDBId: this.companyName
                 })
             }
         }
         else {
             this.CheckedData.push({
-                FeatureId: row_data,
+                FeatureId: row_data.OPTM_FEATUREID,
                 CompanyDBId: this.companyName
             })
         }
@@ -235,11 +252,11 @@ export class ViewFeatureBOMComponent implements OnInit {
 
         if (checkedvalue == true) {
             this.selectall = true
-            if (this.rows.length > 0) {
-                for (let i = 0; i < this.rows.length; ++i) {
+            if (this.dataArray.length > 0) {
+                for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        FeatureId: this.rows[i][1],
+                        FeatureId: this.dataArray[i].OPTM_FEATUREID,
                         CompanyDBId: this.companyName
                     })
                 }

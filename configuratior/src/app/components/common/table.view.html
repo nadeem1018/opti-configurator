@@ -14,7 +14,7 @@
     </div> -->
     <div class="card-body">
 
-        <div class="container-fluid"> 
+        <div class="container-fluid">
             <div class="row" style="margin-bottom:6px;">
                 <div class="col-sm-6 p-0" style="margin-top: 2px;">
                     <div class="btn-toolbar mb-2 mb-md-0">
@@ -25,7 +25,8 @@
                             <button type="button" class="mr-10 btn btn-sm btn-outline-danger" (click)="delete()">
                                 <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                             </button>
-                            <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal" *ngIf="showImportButton">
+                            <button type="button" (click)="openImportPopup()" class="mr-10 btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#import_modal"
+                                *ngIf="showImportButton">
                                 <i class="fa fa-plus fa-fw"></i> {{language.import}}
                             </button>
                         </div>
@@ -34,22 +35,24 @@
 
                 <div class="col-sm-6 p-0">
                     <div class="float-right">
+                        <!-- 
                         <div class="form-group" style="position: relative;">
                             <div class="opti_search float-left">
-                                <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}"
-                                    [(ngModel)]="search_string" #searchinput>
+                                <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string"
+                                    #searchinput>
                                 <button class="" (click)="search_results()">
                                     <i class="fa fa-search"></i>
                                 </button>
-                            </div>    
+                            </div>
                         </div>
-                    </div>    
+                     -->
+                    </div>
                 </div>
-            </div>    
+            </div>
         </div>
 
-        <div class="table-responsive table-bordered">
-            <table class="table opti_fixed-header table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
+        <div class="">
+            <!-- <table class="table opti_fixed-header table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
                 <thead class="thead-dark">
                     <tr>
                         <th *ngFor="let table_columns of table_head_foot; let i = index" [hidden]="table_hidden_elements[i]">
@@ -75,8 +78,6 @@
                     </tr>
                 </tfoot>
                 <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                    <!-- <tbody> -->
-                    <!-- (change)="on_checkbox_checked(checkedvalue,row_data)" -->
                     <tr *ngFor="let row of rows  | filter:search_string">
                         <td *ngFor="let row_data of row; let i = index" [hidden]="table_hidden_elements[i]">
                             <span *ngIf="(row.length-1) != i">
@@ -98,10 +99,60 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+
+
+            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true" >
+                <ng-template kendoGridToolbarTemplate>
+                    <!-- show hide column start show hide -->
+                     <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
+                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
+                        <div class="custom-control custom-checkbox float-left">
+                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
+                                class="custom-control-input" name="columnfilter" />
+                            <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
+                        </div>
+                    </form>
+                </ng-template>
+
+                <kendo-grid-column field="" title="" filter="numeric" [width]="60" [minResizableWidth]="30">
+                    <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
+                            <label class="custom-control-label" for="parent_checkbox_{{rowIndex}}"></label>
+                       </div>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,dataItem)" [checked]=selectall id="child_checkbox_{{rowIndex}}" class="custom-control-input">
+                            <label class="custom-control-label" for="child_checkbox_{{rowIndex}}"></label>
+                            </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
+                    format="{{column.format}}" width="{{column.width}}"></kendo-grid-column>
+
+
+
+                <kendo-grid-column field="" title="Action" filter="numeric" [width]="120" [minResizableWidth]="30">
+
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
+                            <i class="{{button1_icon}}"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm mr-10 {{button2_color}}" *ngIf="show_button2" (click)="button_click2(dataItem)" title="{{button2_title}}">
+                            <i class="{{button2_icon}}"></i>
+                        </button>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+
+
+
         </div>
     </div>
-    <div class="card-footer small text-muted">
+    <!-- <div class="card-footer small text-muted">
         <div class="row col-sm-4 pull-left">
             <label class="page_size_left_label"> {{language.show}} </label>
             <select type="text" #search class="form-control form-control-sm mt3 page_size_center_select" (change)="on_page_limit_change()"
@@ -123,18 +174,7 @@
                         <a (click)="service_call(page_number, search_string)" [ngClass]="page_number == current_page ? 'page-link active' : 'page-link'"
                             href="javascript:;">{{page_number}}</a>
                     </li>
-                    <!--  <li class="page-item">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item active">
-                        <span class="page-link">
-                            2
-                            <span class="sr-only">(current)</span>
-                        </span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li> -->
+                  
                     <li class="page-item disabled">
                         <a class="page-link">
                             <i class="fa fa-angle-double-right"></i>
@@ -143,7 +183,7 @@
                 </ul>
             </nav>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <!--Custom Dialog-->

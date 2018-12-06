@@ -124,7 +124,8 @@ export class BomComponent implements OnInit {
                 this.isPriceDisabled=true
                 this.pricehide=true
                 this.isPropagateQtyDisable=false
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
+                data.FeatureDetail[i].OPTM_QUANTITY= parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                this.isQuanity =  data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
@@ -136,7 +137,8 @@ export class BomComponent implements OnInit {
                 this.isQuanityDisabled = false
                 this.isPriceDisabled=false
                 this.isPropagateQtyDisable=false
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY
+                data.FeatureDetail[i].OPTM_QUANTITY= parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                this.isQuanity =  data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else {
                 this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
@@ -171,6 +173,7 @@ export class BomComponent implements OnInit {
                 this.counter = this.feature_bom_table.length
               }
               this.counter++;
+              
               this.feature_bom_table.push({
                 rowindex: this.counter,
                 FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
@@ -205,13 +208,13 @@ export class BomComponent implements OnInit {
             this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
             this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
             this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
-            console.log('accesory - ' + this.feature_bom_data.is_accessory);
+            
             if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
               this.detail_select_options = this.commonData.less_bom_type;
-              console.log('in if  ');
+              
             } else {
               this.detail_select_options = this.commonData.bom_type;
-              console.log('in else ');
+              
             }
 
             if (this.feature_bom_data.image_path != "") {
@@ -222,7 +225,7 @@ export class BomComponent implements OnInit {
             }
             this.onExplodeClick();
           }
-
+          console.log(this.feature_bom_table);
         }
       )
     }
@@ -258,7 +261,7 @@ export class BomComponent implements OnInit {
       type_value: "",
       type_value_code: "",
       display_name: "",
-      quantity: 1,
+      quantity: parseFloat("1").toFixed(3),
       default: first_default,
       remark: "",
       attachment: "",
@@ -274,7 +277,7 @@ export class BomComponent implements OnInit {
       isPropagateQtyDisable:this.isPropagateQtyDisable,
       pricehide: this.pricehide,
       CompanyDBId: this.companyName,
-      CreatedUser: this.username
+      CreatedUser: this.username,
     });
   };
 
@@ -405,6 +408,8 @@ export class BomComponent implements OnInit {
   }
 
   on_bom_type_change(selectedvalue, rowindex) {
+    console.log('on bom type change');
+    console.log(selectedvalue);
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -416,7 +421,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = true
           this.feature_bom_table[i].type = 3
-          this.feature_bom_table[i].quantity = 0;
+          this.feature_bom_table[i].quantity = parseFloat("0").toFixed(3);
           this.feature_bom_table[i].isQuanityDisabled = true
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
@@ -429,14 +434,14 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isPropagateQtyDisable=false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
-            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = false
           this.feature_bom_table[i].pricehide = false
           }
           else {
             this.feature_bom_table[i].type = 1
-            this.feature_bom_table[i].quantity = 1;
+            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = true
             this.feature_bom_table[i].pricehide = true
@@ -450,6 +455,8 @@ export class BomComponent implements OnInit {
   }
 
   on_type_change(selectedvalue, rowindex) {
+    console.log('on type change ');
+    console.log(selectedvalue);
     this.currentrowindex = rowindex
     this.getFeatureDetails(this.feature_bom_data.feature_id, "Detail", selectedvalue);
 
@@ -465,7 +472,7 @@ export class BomComponent implements OnInit {
             this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
           }
           else {
-            this.feature_bom_table[i].quantity = value
+            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3)
           }
         }
       }

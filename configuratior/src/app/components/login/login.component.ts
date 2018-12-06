@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginBtnPress(){
-   
+   debugger
     if (this.selecetedComp == undefined && this.selecetedComp == "" ){
       this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
@@ -178,6 +178,7 @@ export class LoginComponent implements OnInit {
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {
+        debugger
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.

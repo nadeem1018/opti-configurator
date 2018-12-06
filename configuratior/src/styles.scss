@@ -1,29 +1,22 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
 @import "~ng-pick-datetime/assets/style/picker.min.css";
-
-
 // regular style toast 
 @import '~ngx-toastr/toastr.css';
 // bootstrap style toast 
 // or import a bootstrap 4 alert styled design (SASS ONLY) 
 // should be after your bootstrap imports, it uses bs4 variables, mixins, functions 
-
 // if you'd like to use it without importing all of bootstrap it requires 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~ngx-toastr/toastr-bs4-alert';
-
-
 // commoncss
-
 $primaryColor:#007bff;
 $errorColor:red;
 $whiteColor:#fff;
 $borderColor:#c7c7c7;
-
-.field-nobg-noborder{
+.field-nobg-noborder {
     background: transparent !important;
     border: none !important;
     padding-left: 0 !important;
@@ -33,30 +26,37 @@ label {
     font-weight: bold !important;
 }
 
-table th .fa-trash{
+table th .fa-trash {
     margin-left: 5px;
 }
-body .ps__rail-y{
+
+body .ps__rail-y {
     // opacity: 1;
 }
+
 .sidebar .nav-item .nav-link:hover {
     color: $primaryColor;
 }
 
-table{
-    thead{
-        th{
+table {
+    thead {
+        th {
             font-weight: normal;
         }
     }
 }
 
-body{
-    
-    table.table.opti_fixed-header{
+body {
+    table.table.opti_fixed-header {
         width: 100%;
         margin-bottom: 0;
-        thead, tbody, tr, td, th { display: block; }
+        thead,
+        tbody,
+        tr,
+        td,
+        th {
+            display: block;
+        }
         tr:after {
             content: ' ';
             display: block;
@@ -66,10 +66,10 @@ body{
         tbody {
             max-height: 300px;
             overflow-y: auto;
-            td{
+            td {
                 // border: none !important;
             }
-            tr{
+            tr {
                 // border: none;
                 //border-bottom: 1px solid $borderColor
             }
@@ -82,23 +82,21 @@ body{
                 align-items: center !important;
             }
         }
-        tbody td, thead th {
+        tbody td,
+        thead th {
             float: left;
         }
-        
         tbody tr td:last-child {
             border-right: none !important;
         }
-    }
-
-    // table, th, td {
+    } // table, th, td {
     //     border: 1px solid black;
     //     border-collapse: collapse;
     // }
 }
 
-body.add_item-code-view-model{
-    table.opti_fixed-header{
+body.add_item-code-view-model {
+    table.opti_fixed-header {
         min-width: 1000px;
         th:nth-child(1),
         tr td:nth-child(1) {
@@ -120,14 +118,14 @@ body.add_item-code-view-model{
         tr td:nth-child(5) {
             width: 10%;
         }
-        tr td{
+        tr td {
             min-height: 30px;
         }
     }
 }
 
-body.app_view-feature-model{
-    table.opti_fixed-header{
+body.app_view-feature-model {
+    table.opti_fixed-header {
         min-width: 1000px;
         th:nth-child(1),
         tr td:nth-child(1) {
@@ -165,15 +163,14 @@ body.app_view-feature-model{
         tr td:nth-child(9) {
             width: 10%;
         }
-        tr td{
+        tr td {
             min-height: 30px;
         }
     }
-    
 }
 
-body.app_feature-bom-view-model{
-    table.opti_fixed-header{
+body.app_feature-bom-view-model {
+    table.opti_fixed-header {
         th:nth-child(1),
         tr td:nth-child(1) {
             width: 4%;
@@ -198,14 +195,14 @@ body.app_feature-bom-view-model{
         tr td:nth-child(6) {
             width: 10%;
         }
-        tr td{
+        tr td {
             min-height: 30px;
-        } 
+        }
     }
 }
 
-body.app_model-bom-view-model{
-    table.opti_fixed-header{
+body.app_model-bom-view-model {
+    table.opti_fixed-header {
         th:nth-child(1),
         tr td:nth-child(1) {
             width: 4%;
@@ -234,14 +231,14 @@ body.app_model-bom-view-model{
         tr td:nth-child(7) {
             width: 10%;
         }
-        tr td{
+        tr td {
             min-height: 30px;
-        } 
+        }
     }
 }
 
-body.app_rule-wb-view-model{
-    table.opti_fixed-header{
+body.app_rule-wb-view-model {
+    table.opti_fixed-header {
         min-width: 1000px;
         th:nth-child(1),
         tr td:nth-child(1) {
@@ -283,69 +280,118 @@ body.app_rule-wb-view-model{
         tr td:nth-child(10) {
             width: 10%;
         }
-        tr td{
+        tr td {
             min-height: 30px;
         }
     }
 }
 
 // Some Global css start
-    body{
-        .opti_module-title {
-            padding: 5px 0;
+body {
+    .opti_module-title {
+        padding: 5px 0;
+        font-weight: bold;
+        font-size: 20px;
+    }
+    .form-control:focus {
+        border-color: $borderColor;
+        box-shadow: none;
+    } // search form section
+    .opti_search {
+        border: 1px solid $borderColor;
+        border-radius: 5px;
+        height: 25px;
+        input {
+            float: left;
+            border: none;
+            padding-top: 1px !important;
+            padding-bottom: 1px !important;
+            height: 100%;
         }
-        .form-control:focus {
-            border-color: $borderColor;
-            box-shadow: none;
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            float: left;
+            height: 23px;
+            padding-top: 0;
+            padding-bottom: 0;
+            i {
+                height: 23px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .fa-search:before {
+                position: relative;
+                top: -1px;
+            }
         }
-
-        // search form section
-        .opti_search{
-            border: 1px solid $borderColor;
-            border-radius: 5px;
-            height: 25px;
-            input{
-                float: left;
-                border: none;
-                padding-top: 1px !important;
-                padding-bottom: 1px !important;
+    }
+    .opti_global-table-view {
+        .opti_search {
+            max-width: 170px;
+            width: 100%;
+            input {
+                width: calc(100% - 30px);
+                max-width: 140px;
                 height: 100%;
             }
-            button{
-                cursor: pointer;
-                border: none;
-                background: none;
-                float: left;
-                height: 23px;
-                padding-top: 0;
-                padding-bottom: 0;
-                i{
-                    height: 23px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .fa-search:before{
-                    position: relative;
-                    top: -1px;
-                }
+            button {
+                float: right;
+                width: 30px;
             }
         }
+    }
+}
 
-        .opti_global-table-view{
-            .opti_search{
-                max-width: 170px;
-                width: 100%;
-                input{
-                    width: calc(100% - 30px);
-                    max-width: 140px;
-                    height: 100%;
-                }
-                button{
-                    float: right;
-                    width: 30px;
-                }
-            }   
-        }
-    }    
 // Some global css end
+.k-grid-header-wrap table {
+    thead {
+        tr {
+            background: #1BA0F1 !important;
+            color: white;
+        }
+    }
+}
+
+.table .thead-dark th {
+    background: #1BA0F1 !important;
+    color: white;
+    border-color: #1BA0F1 !important;
+}
+
+.k-grid td,
+.k-grid th {
+    padding: 4px 12px !important;
+}
+
+.k-pager-numbers .k-link,
+.k-pager-numbers .k-link:link {
+    color: #1BA0F1 !important;
+}
+
+.k-pager-wrap .k-link.k-state-selected {
+    background-color: #1BA0F1 !important;
+    color: white !important;
+}
+
+kendo-grid-toolbar {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    background: white !important;
+    padding-left: 4px !important;
+}
+
+.k-pager-wrap .k-link,
+.k-pager-wrap .k-state-selecte {
+    padding: 1px !important;
+}
+
+.k-grid-pager {
+    padding: 4px !important;
+}
+
+.footer_grid_head.k-alt {
+    border-bottom: 1px solid #c7c7c7;
+}

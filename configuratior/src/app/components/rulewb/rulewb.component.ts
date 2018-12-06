@@ -127,6 +127,8 @@ export class RulewbComponent implements OnInit {
       this.show_sequence = false;
       this.show_add_sequence_btn = true
       this._el.nativeElement.focus();
+      var current_date = new Date();
+      this.rule_wb_data.effective_from = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
     } else {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
@@ -318,7 +320,7 @@ export class RulewbComponent implements OnInit {
                 item: fetch_data.OPTM_ITEMKEY,
                 value: fetch_data.OPTM_VALUE,
                 uom: fetch_data.OPTM_UOM,
-                quantity: fetch_data.OPTM_QUANTITY,
+                quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                 edit_quantity: fetch_data.OPTM_ISQTYEDIT,
                 price_source: fetch_data.OPTM_PRICESOURCE,
                 edit_price: fetch_data.OPTM_ISPRICEEDIT,
@@ -582,7 +584,7 @@ export class RulewbComponent implements OnInit {
     this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
-        if (data.length > 0) {
+        if (data != null || data != "" || data != undefined) {
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
             this.global_rule_feature_data.push({
@@ -593,7 +595,7 @@ export class RulewbComponent implements OnInit {
               item: data[i].Item,
               value: data[i].Value,
               uom: data[i].UOM,
-              quantity: data[i].Quantity,
+              quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
               price_source: data[i].PriceSource,
               edit_price: "n",
@@ -847,8 +849,8 @@ export class RulewbComponent implements OnInit {
           this.rule_sequence_data[i]['condition'] = '';
           this.rule_sequence_data[i]['type_value'] = '';
           this.rule_sequence_data[i]['type_value_code'] = '';
-          $("#type_value_code").val("");
-          $("#type_value").val("");
+        //  $("#type_value_code").val("");
+        //  $("#type_value").val("");
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
           if (value == 2) {
             this.rule_sequence_data[i]['is_operand1_disable'] = true;
@@ -1169,7 +1171,7 @@ export class RulewbComponent implements OnInit {
           this.rule_feature_data[i].uom = value
         }
         else if (name == "quantity") {
-          this.rule_feature_data[i].quantity = value
+          this.rule_feature_data[i].quantity =parseFloat(value).toFixed(3)
         }
         else if (name == "edit_quanity") {
           this.rule_feature_data[i].edit_quantity = value
@@ -1200,10 +1202,10 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.selectrulecode, this.commonData.toast_config);
         return false;
       }
-      if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
+     /*  if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
         this.toastr.error('', this.language.description_field_not_blank, this.commonData.toast_config);
         return false;
-      }
+      } */
       if (this.rule_wb_data.effective_from == "" || this.rule_wb_data.effective_from == null) {
         this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
         return false;
