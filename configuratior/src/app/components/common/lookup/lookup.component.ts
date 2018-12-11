@@ -27,6 +27,7 @@ export class LookupComponent implements OnInit {
   @Input() ruleselected: any;
   @ViewChild('myInput')
   myInputVariable: ElementRef;
+  private skip: number = 0;
   // @ViewChild(searchlookupfield, { read: ElementRef }) lookup_search: ElementRef;
 
   public commonData = new CommonData();
@@ -85,6 +86,11 @@ export class LookupComponent implements OnInit {
   isPerfectSCrollBar: boolean = false;
   public search_string = "";
   public logo_path = this.commonData.get_current_url() + "/assets/images/logo_configurator/icon/128_icon.png";
+  public dialogOpened = false;
+
+  public close_kendo_dialog() {
+    this.dialogOpened = false;
+  }
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -105,7 +111,9 @@ export class LookupComponent implements OnInit {
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
     this.template_type = "model";
+    this.skip = 0;
     this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+    this.dialogOpened = false;
   }
 
   ngOnChanges(): void {
@@ -121,6 +129,8 @@ export class LookupComponent implements OnInit {
     this.preview_image = '';
     this.dataBind = [];
     this.outputServiceData = [];
+    this.skip = 0;
+    this.dialogOpened = false;
     //this.test_model();
     console.log("this.lookupfor " + this.lookupfor);
     this.search_string = "";
@@ -184,7 +194,7 @@ export class LookupComponent implements OnInit {
       }
 
       if (this.lookupfor == "operand_feature_lookup") {
-        this.get_features_lookup();
+        this.get_operand_lookup();
       }
 
       if (this.lookupfor == "operand_model_lookup") {
@@ -228,6 +238,13 @@ export class LookupComponent implements OnInit {
 
     this.lookupvalue.emit(Object.values(lookup_key));
     $("#lookup_modal").modal('hide');
+    console.log(selection);
+    selection.selectedRows = [];
+    selection.index = 0;
+    selection.selected = false;
+    this.serviceData = [];
+    this.skip = 0;
+    this.dialogOpened = false;
   }
 
   configure_list_lookup() {
@@ -287,7 +304,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
   }
@@ -301,13 +319,13 @@ console.log(this.serviceData);
 
     this.table_head = [
       {
-        field: 'OPTM_FEATURECODE',
+        field: 'Code',
         title: this.language.code,
         type: 'text',
         width: '100'
       },
       {
-        field: 'OPTM_DISPLAYNAME',
+        field: 'Name',
         title: this.language.Name,
         type: 'text',
         width: '100'
@@ -326,7 +344,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -341,7 +360,7 @@ console.log(this.serviceData);
 
     this.table_head = [
       {
-        field: 'OPTM_FEATURECODE',
+        field: 'OPTM_CODE',
         title: this.language.code,
         type: 'text',
         width: '100'
@@ -357,9 +376,50 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
+  }
+
+  get_operand_lookup() {
+
+
+    this.popup_title = this.language.Bom_FeatureId;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'featureNameId';
+    this.lookup_key = 'OPTM_FEATUREID';
+    // this.table_head = [this.language.Id, this.language.code, this.language.Name];
+
+    this.table_head = [
+      {
+        field: 'feature_code', 
+        title: this.language.code,
+        type: 'text',
+        width: '100'
+      },
+      {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '100'
+      },
+
+    ];
+
+    this.table_head_hidden_elements = [true, false, false];
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
+      }
+    }
+
   }
 
   get_features_lookup() {
@@ -395,7 +455,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -446,7 +507,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -487,7 +549,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -527,7 +590,8 @@ console.log(this.serviceData);
     this.log(this.serviceData);
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -573,7 +637,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
   }
@@ -611,7 +676,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 
@@ -1063,7 +1129,8 @@ console.log(this.serviceData);
     this.LookupDataLoaded = true;
     if (this.serviceData !== undefined) {
       if (this.serviceData.length > 0) {
-        $("#lookup_modal").modal('show');
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
       }
     }
 

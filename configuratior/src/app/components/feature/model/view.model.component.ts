@@ -96,6 +96,9 @@ export class ViewFeatureModelComponent implements OnInit {
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
   
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();

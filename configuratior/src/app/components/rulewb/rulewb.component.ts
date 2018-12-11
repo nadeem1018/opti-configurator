@@ -306,8 +306,9 @@ export class RulewbComponent implements OnInit {
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
-
+              console.log("default value - " + fetch_data.OPTM_DEFAULT.trim() + ' - - ' + (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true'));
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
+              let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
               this.rule_expression_data[current_count].output_data.push({
                 rowindex: i,
                 check_child: checked_child,
@@ -321,7 +322,8 @@ export class RulewbComponent implements OnInit {
                 edit_quantity: fetch_data.OPTM_ISQTYEDIT,
                 price_source: fetch_data.OPTM_PRICESOURCE,
                 edit_price: fetch_data.OPTM_ISPRICEEDIT,
-                default: fetch_data.OPTM_DEFAULT,
+                default: default_checked,
+                is_default: default_checked,
                 type: typefromdatabase
 
               });
@@ -480,6 +482,24 @@ export class RulewbComponent implements OnInit {
   }
 
   getLookupValue($event) {
+    for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+      if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
+        if (this.rule_sequence_data[i]['type'] == 1) {
+          this.rule_sequence_data[i]['operand_1'] = '';
+          this.rule_sequence_data[i]['operand_1_code'] = '';
+          this.rule_sequence_data[i]['operand_2'] = '';
+          this.rule_sequence_data[i]['operand_2_code'] = '';
+          //   this.rule_sequence_data[i]['condition'] = '';
+          if (this.rule_sequence_data[i]['condition'] != "Between") {
+            this.rule_sequence_data[i]['is_operand2_disable'] = true;
+          }
+        } else {
+          //    this.rule_sequence_data[i]['condition'] = '';
+          this.rule_sequence_data[i]['is_operand2_disable'] = true;
+
+        }
+      }
+    }
     if (this.lookupfor == 'feature_lookup') {
       this.rule_wb_data.applicable_for_feature_id = $event[0];
       this.rule_wb_data.applicable_for_feature_code = $event[1];
@@ -821,6 +841,8 @@ export class RulewbComponent implements OnInit {
 
         console.log("key - " + key);
         console.log("value - " + value);
+        console.log("rowindex - " + rowindex);
+        console.log(actualvalue);
         if (key == 'type') {
           this.rule_sequence_data[i]['operand_1'] = '';
           this.rule_sequence_data[i]['operand_1_code'] = '';
@@ -871,11 +893,12 @@ export class RulewbComponent implements OnInit {
 
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                  $(actualvalue).val("");
+                 // $(actualvalue).val("");
                   return;
                 }
                 else {
                   this.rule_sequence_data[i].type_value = data;
+                  this.rule_sequence_data[i].type_value_code = value; 
                 }
               });
           } else if (this.rule_sequence_data[i].type == 2) {
@@ -915,7 +938,15 @@ export class RulewbComponent implements OnInit {
                   return;
                 }
                 else {
-                  this.rule_sequence_data[i].type_value = data;
+                  if (key == "operand_1_code") {
+                    this.rule_sequence_data[i]['operand_1'] = data;
+                    this.rule_sequence_data[i]['operand_1_code'] = value;
+                  }
+                  if (key == "operand_2_code") {
+                    this.rule_sequence_data[i]['operand_2'] = data;
+                    this.rule_sequence_data[i]['operand_2_code'] = value;
+                  }
+                  
                 }
               });
           }
@@ -977,7 +1008,7 @@ export class RulewbComponent implements OnInit {
   }
 
   show_input_lookup(selected_type, rowindex) {
-    this.currentrowindex = rowindex
+   /*  this.currentrowindex = rowindex
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         if (selected_type == 1) {
@@ -985,15 +1016,17 @@ export class RulewbComponent implements OnInit {
         this.rule_sequence_data[i]['operand_1_code'] = '';
         this.rule_sequence_data[i]['operand_2'] = '';
         this.rule_sequence_data[i]['operand_2_code'] = '';
-        this.rule_sequence_data[i]['condition'] = '';
-          this.rule_sequence_data[i]['is_operand2_disable'] = true;
+     //   this.rule_sequence_data[i]['condition'] = '';
+          if (this.rule_sequence_data[i]['condition'] != "Between"){
+            this.rule_sequence_data[i]['is_operand2_disable'] = true;
+          }
         } else {
-          this.rule_sequence_data[i]['condition'] = '';
+      //    this.rule_sequence_data[i]['condition'] = '';
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
           
         }
       }
-    }
+    } */
    
     if (selected_type == 1) {
       this.getFeatureDetails(this.rule_wb_data.applicable_for_feature_id, "Detail", selected_type);

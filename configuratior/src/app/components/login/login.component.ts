@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import { CommonData } from "../../models/CommonData";
@@ -12,20 +12,21 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild("username") _el: ElementRef;
   imgPath = "assets/images";
-  public loginCredentials:any =[];
+  public loginCredentials: any = [];
   public psURL: string = '';
-  public showCompDropDown:boolean = false;
-  public showLoginBtn:boolean = false;
-  public config_params:any;
-  public assignedCompanies:any;
-  public selecetedComp:any;
-  public disbleConnectBtn:boolean = true;
-  public config_data:any = [];
+  public showCompDropDown: boolean = false;
+  public showLoginBtn: boolean = false;
+  public config_params: any;
+  public assignedCompanies: any;
+  public selecetedComp: any;
+  public disbleConnectBtn: boolean = true;
+  public config_data: any = [];
   public connectBtnText = "Connect";
-  public language:any = [];
+  public language: any = [];
   private commonData = new CommonData();
-  public background = this.commonData.get_current_url()+ "/assets/images/bg.jpg";
+  public background = this.commonData.get_current_url() + "/assets/images/bg.jpg";
   public login = "Login..";
   public titleInfo = "Enter username and password";
   public username = "Username";
@@ -39,19 +40,21 @@ export class LoginComponent implements OnInit {
   public CompanyRequired = 'Select Company';
   public UserNameRequired = 'Username required';
   public PasswordRequired = 'Password required';
-  public onConnectSuccess:boolean = false;
+  public onConnectSuccess: boolean = false;
   public page_title = this.commonData.project_name;
   common_params = new CommonData();
   record_per_page: any = this.common_params.default_count;
-  constructor(   
-    private auth: AuthenticationService, 
+  constructor(
+    private auth: AuthenticationService,
     private router: Router,
     private httpClientSer: HttpClient,
     private toastr: ToastrService,
     private CommonService: CommonService
   ) { }
 
-  ngOnInit() { 
+
+  ngOnInit() {
+    this._el.nativeElement.focus();
     this.selecetedComp = "";
     console.log(new Date());
     // this.CommonService.get_config();
@@ -59,13 +62,13 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/home');
     } else {
       //This Function will get the url from Database to hit Admin Portal Services
-      setTimeout(()=>{
+      setTimeout(() => {
         this.getPSURL();
       }, 2000);
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     setTimeout(function () {
       console.log(new Date());
       this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
@@ -95,96 +98,98 @@ export class LoginComponent implements OnInit {
     }, 2000);
   }
 
-  enter_to_sublit(event){
-    if(event.keyCode == 13){
-      this.onConnectBtnPress();
+  enter_to_sublit(event) {
+    if (event.keyCode == 13) {
+      if (this.selecetedComp != undefined && this.selecetedComp != "") {
+        this.onLoginBtnPress();
+      } else {
+        this.onConnectBtnPress();
+      }
     }
   }
 
   //Events
-  onConnectBtnPress(){
-      if(this.loginCredentials.userName == undefined || this.loginCredentials.userName == null){
-        this.toastr.warning('', this.UserNameRequired, this.commonData.toast_config);
-        return;
-      }
-      if(this.loginCredentials.password == undefined || this.loginCredentials.password == null){
-        this.toastr.warning('', this.PasswordRequired, this.commonData.toast_config);
-        return;
-      }
-      if(this.loginCredentials.userName != undefined && this.loginCredentials.password !=undefined){
-     
-        this.auth.login(this.loginCredentials, this.psURL).subscribe(
-          data => {
-        if(data!=null || data.Table.length > 0){
-          if(data.Table.length > 0){
-            if(data.Table[0].OPTM_ACTIVE == 1){
+  onConnectBtnPress() {
+    if (this.loginCredentials.userName == undefined || this.loginCredentials.userName == null) {
+      this.toastr.warning('', this.UserNameRequired, this.commonData.toast_config);
+      return;
+    }
+    if (this.loginCredentials.password == undefined || this.loginCredentials.password == null) {
+      this.toastr.warning('', this.PasswordRequired, this.commonData.toast_config);
+      return;
+    }
+    if (this.loginCredentials.userName != undefined && this.loginCredentials.password != undefined) {
 
-              this.connectBtnText = (this.language.connected != undefined) ? this.language.connected : "Connected";
-              //If everything is ok then we will get comapnies
-              this.getCompanies();
+      this.auth.login(this.loginCredentials, this.psURL).subscribe(
+        data => {
+          if (data != null || data.Table.length > 0) {
+            if (data.Table.length > 0) {
+              if (data.Table[0].OPTM_ACTIVE == 1) {
+
+                this.connectBtnText = (this.language.connected != undefined) ? this.language.connected : "Connected";
+                //If everything is ok then we will get comapnies
+                this.getCompanies();
+              }
+              else {
+                //If user is not active
+                this.toastr.warning('', this.UserNotActive, this.commonData.toast_config);
+              }
             }
-            else{
-              //If user is not active
-              this.toastr.warning('', this.UserNotActive, this.commonData.toast_config);
+            else {
+              //If no table found
+              this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
             }
-          }
-          else{
-            //If no table found
-            this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
-          }
-        }else{
+          } else {
             //If no username & pass matches
             this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
-        }
-          })
-      }
-    
+          }
+        })
+    }
+
   }
 
-  onLoginBtnPress(){
-   debugger
-    if (this.selecetedComp == undefined && this.selecetedComp == "" ){
+  onLoginBtnPress() {
+    if (this.selecetedComp == undefined && this.selecetedComp == "") {
       this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
     }
-    else{
-    if(this.selecetedComp.OPTM_COMPID == undefined){
-      this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
-      return;
-    } 
-    sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
-    sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
-    sessionStorage.setItem('defaultRecords', this.record_per_page);
-    sessionStorage.setItem('isLoggedIn', "true");
-    sessionStorage.setItem('defaultCurrency', "$");
-    // this.router.navigateByUrl('/home');
+    else {
+      if (this.selecetedComp.OPTM_COMPID == undefined) {
+        this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
+        return;
+      }
+      sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
+      sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
+      sessionStorage.setItem('defaultRecords', this.record_per_page);
+      sessionStorage.setItem('isLoggedIn', "true");
+      sessionStorage.setItem('defaultCurrency', "$");
+      // this.router.navigateByUrl('/home');
       // let home_page = this.commonData.application_path + '/index.html#home';
       let home_page = this.commonData.application_path + '/index.html#item-code-generation';
-      
+
       window.location.href = home_page;
     }
   }
-  
-  onUserNameBlur(){
-    
+
+  onUserNameBlur() {
+
   }
-  onPasswordBlur(){
-  
+  onPasswordBlur() {
+
   }
   //Core Functions 
   //To get url from DB
-  getPSURL(){
-   
+  getPSURL() {
+
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {
-        debugger
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
           //this.psURL = "http://localhost:9500";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
-         //this.psURL = "http://172.16.6.122/OptiproAdmin";
+          //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
         }
       }
@@ -192,42 +197,42 @@ export class LoginComponent implements OnInit {
   }
 
   //to get the companies assigned to user
-  getCompanies(){
+  getCompanies() {
     this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
       data => {
-      if(data!=null || data!= undefined){
-        this.assignedCompanies = data.Table;
-        if(this.assignedCompanies != null){
-          //If comp found
-          this.showCompDropDown = true;
-          this.showLoginBtn = true;
-          this.onConnectSuccess = true;
-        }
-        else{
-          //If no companies found then will hide elements
-          this.onConnectSuccess = false;
-          this.showLoginBtn = false;
-          this.showCompDropDown = false;
-        }
+        if (data != null || data != undefined) {
+          this.assignedCompanies = data.Table;
+          if (this.assignedCompanies != null) {
+            //If comp found
+            this.showCompDropDown = true;
+            this.showLoginBtn = true;
+            this.onConnectSuccess = true;
+          }
+          else {
+            //If no companies found then will hide elements
+            this.onConnectSuccess = false;
+            this.showLoginBtn = false;
+            this.showCompDropDown = false;
+          }
 
-      }
-      else{
-        //if No companies are retriving then we will consider that user have no company assignment
-       // alert("You Don't have Permission to Access this Product");
-        this.toastr.error('', this.language.isUserPermitted, this.commonData.toast_config);
-      }
+        }
+        else {
+          //if No companies are retriving then we will consider that user have no company assignment
+          // alert("You Don't have Permission to Access this Product");
+          this.toastr.error('', this.language.isUserPermitted, this.commonData.toast_config);
+        }
       }
     )
   }
 
-  onResetClick(){
+  onResetClick() {
     this.onConnectSuccess = false;
     this.showLoginBtn = false;
     this.showCompDropDown = false;
     this.loginCredentials = [];
     this.loginCredentials.length = 0;
-    this.connectBtnText = this.language.connect;
+    this.connectBtnText = (this.language.connect != undefined) ? this.language.connect : "Connect";
   }
 
-  
+
 }

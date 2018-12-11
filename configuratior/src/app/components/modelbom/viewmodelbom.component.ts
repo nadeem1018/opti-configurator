@@ -74,6 +74,10 @@ export class ViewModelBomComponent implements OnInit {
           },
       ];
 
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
+
     detectDevice(){
         let getDevice = UIHelper.isDevice();
         this.isMobile = getDevice[0];
@@ -197,6 +201,9 @@ export class ViewModelBomComponent implements OnInit {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('modelbom/view');
+                    return;
+                } else if (data == "ReferenceExists") {
+                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
                     return;
                 }
                 else {

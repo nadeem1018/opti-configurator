@@ -537,20 +537,20 @@
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" let-dataItem>
 
                           <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="acccessory_check{{dataItem.id}}_{{dataItem.id}}" name="child_checkbox" class="custom-control-input accesory_check_for_second_screen"
+                            <input type="checkbox" id="acccessory_parent_check{{dataItem.id}}" name="acccessory_parent_check{{dataItem.id}}" class="custom-control-input accesory_check_for_second_screen"
                               #accallcheckbox (click)="selectallAccessory(accallcheckbox.checked)">
-                            <label class="custom-control-label" for="acccessory_check{{dataItem.id}}_{{dataItem.id}}"></label>
+                            <label class="custom-control-label" for="acccessory_parent_check{{dataItem.id}}"></label>
                           </div>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="accesory_{{dataItem.id}}" name="child_checkbox" [(checked)]=dataItem.checked #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
+                            <input type="checkbox" id="accesory_child_checkbox_{{dataItem.id}}" name="accesory_child_checkbox" [(checked)]="dataItem.checked" #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
                               class="custom-control-input">
-                            <label class="custom-control-label" for="accesory_{{dataItem.id}}"></label>
+                            <label class="custom-control-label" for="accesory_child_checkbox_{{dataItem.id}}"></label>
                           </div>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150" [minResizableWidth]="30">
+                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150" [minResizableWidth]="150">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.code}}
                         </ng-template>
@@ -560,7 +560,7 @@
                           </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150" [minResizableWidth]="30">
+                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150" [minResizableWidth]="150">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.Name}}
                         </ng-template>
@@ -623,7 +623,7 @@
                   <div class="feature_table">
                     <div class="">
                       <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                        <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.Model_FeatureName}}
                           </ng-template>
@@ -634,7 +634,7 @@
                             </span>
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.item}}
                           </ng-template>
@@ -642,7 +642,7 @@
                              {{featurerow.Item}}
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.description}}
                           </ng-template>
@@ -650,7 +650,7 @@
                              {{featurerow.Description}}
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.quantity}}
                           </ng-template>
@@ -660,7 +660,7 @@
                                 #quantity [disabled]="featurerow.isQuantityDisabled" />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_source}}
                           </ng-template>
@@ -679,7 +679,7 @@
                               </div>
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_price_extn" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_price_extn" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_extn}}
                           </ng-template>
@@ -689,7 +689,7 @@
                                 #pricextn />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_accessories" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_accessories" title="" template="" [width]="120" [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.accessories}}
                           </ng-template>
@@ -966,7 +966,7 @@
                 <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
                   <div class="">
                     <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                          #
                         </ng-template>
@@ -974,7 +974,7 @@
                           {{row.rowIndex}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_serial" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_serial" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.serial}}
                         </ng-template>
@@ -982,7 +982,7 @@
                           {{row.sl_no}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.item}}
                         </ng-template>
@@ -990,7 +990,7 @@
                           {{row.item}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           <span class="text-right">{{this.language.quantity}}</span>
                         </ng-template>
@@ -998,7 +998,7 @@
                           <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.price}} ({{this.defaultCurrency}})
                         </ng-template>
@@ -1006,7 +1006,7 @@
                           {{row.price}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.price_extn}}
                         </ng-template>
@@ -1014,7 +1014,7 @@
                           {{row.price_ext}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           <i class="fa fa-trash fa-fw"></i>
                         </ng-template>
@@ -1067,7 +1067,7 @@
                       <thead class="" style=" font-size: 14px; ">
                           <tr>
                               <td>
-                                {{this.language.total_before_discount}}
+                                {{this.language.total_before_discount}} ({{defaultCurrency}})
                               </td>
                               <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
                             </tr>
@@ -1339,7 +1339,7 @@
                     <div class="col-md-12 pr-0">
                       <div class="accessories_table">
                         <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.hash}}
                             </ng-template>
@@ -1347,7 +1347,7 @@
                               {{row.rowIndex}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                SI#
                             </ng-template>
@@ -1355,7 +1355,7 @@
                               {{row.sl_no}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.item}}
                             </ng-template>
@@ -1363,7 +1363,7 @@
                               {{row.item}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right">{{this.language.quantity}}</span>
                             </ng-template>
@@ -1371,7 +1371,7 @@
                               <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.price}} ({{this.defaultCurrency}})
                             </ng-template>
@@ -1379,7 +1379,7 @@
                               {{row.price}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120" [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.price_extn}}
                             </ng-template>

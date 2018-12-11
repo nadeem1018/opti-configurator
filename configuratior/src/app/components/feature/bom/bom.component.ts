@@ -56,6 +56,7 @@ export class BomComponent implements OnInit {
   public isPriceDisabled:boolean=false
   public  pricehide:boolean=false;
   public  isPropagateQtyDisable:boolean=false;
+  public GetItemData = [];
 
   //custom dialoag params
   public dialog_params: any = [];
@@ -865,14 +866,22 @@ export class BomComponent implements OnInit {
 
   //delete record 
   delete_record() {
-    this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
+    this.GetItemData = []
+    this.GetItemData.push({
+      CompanyDBId: this.companyName,
+      FeatureId: this.feature_bom_data.feature_id
+    });
+    this.fbom.DeleteData(this.GetItemData).subscribe(
       data => {
+        console.log(data);
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.router.navigateByUrl('feature/bom/view');
           return;
-        }
-        else {
+        } else if (data == "ReferenceExists"){
+          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+          return;
+        } else {
           this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
           return;
         }

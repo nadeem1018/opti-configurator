@@ -580,3 +580,14 @@ hr {
   background-color: #1ba0f1 !important;
   border-color: #1ba0f1 !important;
 }
+
+.k-dialog-titlebar {
+  border-color: inherit;
+  color: #fff;
+  background-color: #1BA0F1 !important;
+  width: 100% !important;
+}
+
+.k-window-titlebar {
+  padding: 7px 16px !important;
+}

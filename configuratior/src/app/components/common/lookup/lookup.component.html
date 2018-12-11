@@ -1,5 +1,33 @@
 <!-- Grid Modal-->
-<div class="modal fade" id="lookup_modal" tabindex="-1" role="dialog" aria-labelledby="lookup_modal" aria-hidden="true" data-backdrop="static"
+<kendo-dialog title="{{popup_title}}" *ngIf="dialogOpened" (close)="close_kendo_dialog()"  [minWidth]="750" [width]="750">
+
+
+    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true" [resizable]="true"
+        [skip]="skip" (selectionChange)="on_item_select($event)" [pageSize]="10">
+        <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
+            <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+            <kendo-pager-numeric-buttons [buttonCount]="10"></kendo-pager-numeric-buttons>
+            <kendo-pager-next-buttons></kendo-pager-next-buttons>
+            <kendo-pager-info></kendo-pager-info>
+        </ng-template>
+        <ng-template kendoGridToolbarTemplate>
+            <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
+                <div class="custom-control custom-checkbox float-left">
+                    <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input" name="columnfilter"
+                    />
+                    <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
+                </div>
+            </form>
+        </ng-template>
+
+
+
+        <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
+            format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
+
+    </kendo-grid>
+</kendo-dialog>
+<!-- <div class="modal fade" id="lookup_modal" tabindex="-1" role="dialog" aria-labelledby="lookup_modal" aria-hidden="true" data-backdrop="static"
     data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -18,61 +46,8 @@
                     </div>
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
-                    <div class="">
-                        <div class="col-sm-6  pull-right pr-0">
-
-                            <div class="form-group clearfix lookup_search" style="position: relative;">
-                                <div class="opti_search float-right">
-                                    <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string"
-                                        #lookupsearch>
-                                    <button class="btn btn-outline-dark btn-xs mt-0" (click)="search_results()">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                     <div class="table-responsive">
-                        <!-- <table class="table table-bordered lookup_table  table-sm" id="dataTable">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th width="{{width_value}}" *ngFor="let table_columns of table_head; let i=index" [hidden]="table_head_hidden_elements[i]">{{table_columns}}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="lookup_table_body">
-                                <tr class="row_select" *ngFor="let row of serviceData | Lookupfilter:search_string; let i= index">
-
-                                    <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row); let i= index" (click)="on_item_select(row)" [hidden]="table_head_hidden_elements[i]">
-                                        <span>{{row[row_data]}}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> -->
-
-
-                        <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true" 
-                        (selectionChange)="on_item_select($event)">
-                            <ng-template kendoGridToolbarTemplate>
-                                <!-- show hide column start show hide -->
-                                 <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
-                                <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
-                                    <div class="custom-control custom-checkbox float-left">
-                                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
-                                            class="custom-control-input" name="columnfilter" />
-                                        <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
-                                    </div>
-                                </form>
-                            </ng-template>
-            
-                           
-            
-                            <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                                format="{{column.format}}" width="{{column.width}}"
-                                ></kendo-grid-column>
-            
-                        </kendo-grid>
-
+                       
 
 
                     </div>
@@ -84,7 +59,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- import data modal -->
 <!-- Grid Modal-->
@@ -254,27 +229,26 @@
                 </div>
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
-                      
-                        <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true" 
-                        >
+
+                        <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true"
+                            [resizable]="true">
                             <ng-template kendoGridToolbarTemplate>
                                 <!-- show hide column start show hide -->
-                                 <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
+                                <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
                                 <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                                     <div class="custom-control custom-checkbox float-left">
-                                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
-                                            class="custom-control-input" name="columnfilter" />
+                                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input" name="columnfilter"
+                                        />
                                         <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
                                     </div>
                                 </form>
                             </ng-template>
-            
-                           
-            
+
+
+
                             <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                                format="{{column.format}}" width="{{column.width}}"
-                                ></kendo-grid-column>
-            
+                                format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
+
                         </kendo-grid>
 
 
@@ -417,9 +391,10 @@
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-6">
-                                                <span class="">
+                                                <span style="width:75px;float:left">
                                                     <b>{{language.address}} :</b>
-                                                </span> {{customer_details.ship_to_address | blankhandler}}
+                                                </span>
+                                                <span style="width: calc(100% - 75px); float: left;"> {{customer_details.ship_to_address | blankhandler}} </span>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
@@ -433,9 +408,10 @@
                                             </div>
                                             <div class="col-sm-6 col-md-6">
                                                 <p>
-                                                    <span class="">
+                                                    <span style="width:75px;float:left">
                                                         <b>{{language.address}} :</b>
-                                                    </span>{{customer_details.bill_to_address | blankhandler}}
+                                                    </span>
+                                                    <span style="width: calc(100% - 75px); float: left;">{{customer_details.bill_to_address | blankhandler}}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -619,7 +595,7 @@
                 <div class="lookup_data" *ngIf="RuleOutputLookupDataLoaded">
                     <div class="col-md-12">
                         <kendo-grid [kendoGridBinding]="outputServiceData" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                            <kendo-grid-column field="included" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="included" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.included}}
                                 </ng-template>
@@ -627,7 +603,7 @@
                                     {{row.OPTM_ISINCLUDED}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="feature" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="feature" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.feature}}
                                 </ng-template>
@@ -635,7 +611,7 @@
                                     {{row.OPTM_FEATURECODE}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="item" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="item" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.item}}
                                 </ng-template>
@@ -643,7 +619,7 @@
                                     {{row.OPTM_ITEMKEY}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="value" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="value" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.value}}
                                 </ng-template>
@@ -651,7 +627,7 @@
                                     {{row.OPTM_VALUE}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="uom" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="uom" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.uom}}
                                 </ng-template>
@@ -659,7 +635,7 @@
                                     {{row.OPTM_UOM}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="quantity" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.quantity}}
                                 </ng-template>
@@ -667,7 +643,7 @@
                                     {{row.OPTM_QUANTITY}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="edit_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="edit_quantity" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.edit_quantity}}
                                 </ng-template>
@@ -675,7 +651,7 @@
                                     {{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="}" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="}" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.price}} ({{defaultCurrency}})
                                 </ng-template>
@@ -683,7 +659,7 @@
                                     {{row.OPTM_PRICESOURCE}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="edit_price" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="edit_price" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.edit_price}}
                                 </ng-template>
@@ -691,7 +667,7 @@
                                     {{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="default" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="default" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.default}}
                                 </ng-template>
@@ -699,7 +675,7 @@
                                     {{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="rule_excluded" title="" template="" [width]="120" [minResizableWidth]="60">
+                            <kendo-grid-column field="rule_excluded" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.rule_excluded}}
                                 </ng-template>
