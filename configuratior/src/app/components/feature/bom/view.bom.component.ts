@@ -105,6 +105,11 @@ export class ViewFeatureBOMComponent implements OnInit {
     ngAfterViewInit() {
       //  this._el.nativeElement.focus();
     }
+
+    on_selection(grid_event){
+        grid_event.selectedRows = [];
+    }
+
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
@@ -201,8 +206,10 @@ export class ViewFeatureBOMComponent implements OnInit {
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('feature/bom/view');
                     return;
-                }
-                else {
+                } else if (data == "ReferenceExists") {
+                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+                    return;
+                } else {
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
                     return;
                 }

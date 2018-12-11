@@ -113,6 +113,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     ngAfterViewInit() {
       //  this._el.nativeElement.focus();
     }
+
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
+    
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);

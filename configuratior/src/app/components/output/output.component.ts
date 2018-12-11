@@ -2115,7 +2115,8 @@ export class OutputComponent implements OnInit {
       }
 
       ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
-        var formatedquantity: any = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
+      var formatequantity: any = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
+      
 
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
@@ -2124,7 +2125,7 @@ export class OutputComponent implements OnInit {
           Item: ItemData[0].OPTM_ITEMKEY,
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
-          quantity: parseFloat(formatedquantity).toFixed(3),
+          quantity: parseFloat(formatequantity).toFixed(3),
           price: ItemData[0].ListName,
           Actualprice: ItemData[0].Price,
           pricextn: 0,
@@ -3384,6 +3385,8 @@ export class OutputComponent implements OnInit {
           });
           if (data.DataForSelectedFeatureModelItem.length > 0)
             this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+            console.log('this.feature_accessory_list');
+            console.log(this.feature_accessory_list);
         },
         error => {
           this.stoprefreshloader();

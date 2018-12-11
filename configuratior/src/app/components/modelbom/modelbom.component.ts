@@ -954,6 +954,9 @@ export class ModelbomComponent implements OnInit {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.route.navigateByUrl('modelbom/view');
           return;
+        } else if (data == "ReferenceExists") {
+          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+          return;
         }
         else {
           this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);

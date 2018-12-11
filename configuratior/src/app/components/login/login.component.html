@@ -23,7 +23,7 @@
             <form role="form" action="" method="post" class="login-form" (keydown)="enter_to_sublit($event)">
               <div class="form-group">
                 <label class="sr-only" for="form-username">{{username}}</label>
-                <input type="text" name="form-username" placeholder="{{isUsernameBlank}}" class="form-username form-control" id="form-username" [disabled]="onConnectSuccess"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
+                <input type="text" name="form-username" placeholder="{{isUsernameBlank}}" class="form-username form-control" id="form-username" #username [disabled]="onConnectSuccess" autofocus="autofocus"  [(ngModel)]="loginCredentials.userName" (change)="onUserNameBlur()">
               </div>
               <div class="form-group">
                 <label class="sr-only" for="form-password">{{password}}</label>

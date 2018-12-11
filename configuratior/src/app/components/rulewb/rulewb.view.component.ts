@@ -51,37 +51,37 @@ export class RuleWbViewComponent implements OnInit {
             field: 'OPTM_RULECODE',
             title: this.language.rule_code,
             type: 'text',
-            width: '200'
+            width: '100'
         },
         {
             field: 'OPTM_DESCRIPTION',
             title: this.language.description,
             type: 'text',
-            width: '200'
+            width: '100'
         },
         {
             field: 'OPTM_APPLICABLEFOR',
             title: this.language.applicable_for,
             type: 'text',
-            width: '200'
+            width: '100'
         },
         {
             field: 'OPTM_EFFECTIVEFROM',
             title: this.language.Fromdate,
             type: 'text',
-            width: '200'
+            width: '100'
         },
         {
             field: 'OPTM_EFFECTIVETO',
             title: this.language.Todate,
             type: 'text',
-            width: '200'
+            width: '100'
         },
         {
             field: 'OPTM_DISCONTINUE',
             title: this.language.discontinued,
             type: 'text',
-            width: '200'
+            width: '100'
         },
     ];
 
@@ -96,6 +96,9 @@ export class RuleWbViewComponent implements OnInit {
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
     
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
   
     detectDevice(){
       let getDevice = UIHelper.isDevice();
