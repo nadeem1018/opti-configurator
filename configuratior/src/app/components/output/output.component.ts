@@ -140,6 +140,8 @@ export class OutputComponent implements OnInit {
   public description: any;
   public step0_isNextButtonVisible: boolean = false;
   public setModelDataFlag: boolean = false;
+  public defaultitemflagid: any;
+  
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -1638,10 +1640,12 @@ export class OutputComponent implements OnInit {
     });
 
     GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+      obj['OPTM_QUANTITY']=parseFloat(obj['OPTM_QUANTITY'])
       return obj['checked'] == true
     })
 
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+      obj['OPTM_QUANTITY']=parseFloat(obj['OPTM_QUANTITY'])
       return obj['checked'] == true
     })
 
@@ -1930,6 +1934,8 @@ export class OutputComponent implements OnInit {
                     }
                   }
 
+                  this.defaultitemflagid=feature_model_data.OPTM_FEATUREID
+
                 }
               }
               else if (type == 3 && feature_model_data.OPTM_VALUE == null) {
@@ -2022,6 +2028,7 @@ export class OutputComponent implements OnInit {
                       }
                     }
                   }
+                  this.defaultitemflagid=feature_model_data.OPTM_FEATUREID
                 }
               }
               else if (type == 2) {
@@ -2031,12 +2038,14 @@ export class OutputComponent implements OnInit {
                   propagateqty = parentarray[0].OPTM_QUANTITY
                 }
                 this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty);
+                this.defaultitemflagid=data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
               }
 
             }//end data length
-
+           
             this.RuleIntegration(data.RuleOutputData, value);
             this.checkedFunction(feature_model_data, parentarray, value);
+            
           } //end value
           else {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -2105,6 +2114,8 @@ export class OutputComponent implements OnInit {
         ItemData[0].OPTM_QUANTITY = propagateqty
       }
 
+      ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
+        var formatedquantity: any = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
 
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
@@ -2113,7 +2124,7 @@ export class OutputComponent implements OnInit {
           Item: ItemData[0].OPTM_ITEMKEY,
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
-          quantity: ItemData[0].OPTM_QUANTITY * this.step2_data.quantity,
+          quantity: parseFloat(formatedquantity).toFixed(3),
           price: ItemData[0].ListName,
           Actualprice: ItemData[0].Price,
           pricextn: 0,
@@ -3434,7 +3445,6 @@ export class OutputComponent implements OnInit {
 
         ItemData[i].OPTM_QUANTITY = parseFloat(ItemData[i].OPTM_QUANTITY).toFixed(3)
         var formatequantity: any = ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
-        ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
 
         if (isExist.length == 0) {
           this.feature_itm_list_table.push({
@@ -3662,7 +3672,7 @@ export class OutputComponent implements OnInit {
           Item: ModelItemsData[imodelarray].OPTM_ITEMKEY,
           ItemNumber: ModelItemsData[imodelarray].DocEntry,
           Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
-          quantity: parseFloat(formatequantity),
+          quantity: parseFloat(formatequantity).toFixed(3),
           price: ModelItemsData[imodelarray].ListName,
           Actualprice: ModelItemsData[imodelarray].Price,
           pricextn: 0,
@@ -3690,15 +3700,28 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                  }
+                  else{
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                  }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                }
+                else{
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
               }
             }
           }
           else if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE == 2) {
             if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
+              var defaultitemarray=[];
               if (value == true) {
                 if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
@@ -3706,10 +3729,29 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE=this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
+                    defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
+                    if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
+                    this.getDefaultItems(defaultitemarray)
+                  }
+                  else{
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                  }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                  defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
+                  if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
+                  this.getDefaultItems(defaultitemarray)
+                }
+                else{
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
               }
             }
           }
@@ -3722,10 +3764,22 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                  }
+                  else{
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                  }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                }
+                else{
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                }
               }
             }
           }
@@ -3744,16 +3798,29 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                  }
+                  else{
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                  }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                }
+                else{
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
               }
 
             }
           }
           else if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE == 2) {
             if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
+              var defaultitemarray=[];
               if (value == true) {
                 if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
@@ -3761,10 +3828,28 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                    defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
+                    if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
+                  this.getDefaultItems(defaultitemarray)
+                  }
+                  else{
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                  }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                  defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
+                  if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
+                  this.getDefaultItems(defaultitemarray)
+                }
+                else{
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
               }
 
             }
@@ -3778,10 +3863,22 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                  }
+                  else{
+                    this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                  }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
+                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
+                }
+                else{
+                  this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
+                }
               }
 
             }
@@ -4196,9 +4293,9 @@ export class OutputComponent implements OnInit {
       if (this.feature_accessory_list[count].id == id) {
         this.feature_accessory_list[count].checked = true;
       }
-      else {
-        this.feature_accessory_list[count].checked = false;
-      }
+      // else {
+      //   this.feature_accessory_list[count].checked = false;
+      // }
     }
   }
 }
