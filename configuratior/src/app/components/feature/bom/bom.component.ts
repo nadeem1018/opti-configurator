@@ -726,6 +726,12 @@ export class BomComponent implements OnInit {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
+                  if (data[0].PHOTO != null) {
+                    if (data[0].PHOTO != "") {
+                      this.feature_bom_table[i].preview =this.commonData.get_current_url() +  data[0].OPTM_PHOTO;
+                    }
+                  }
+                 
 
                 }
               }

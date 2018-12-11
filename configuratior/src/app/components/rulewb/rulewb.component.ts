@@ -53,6 +53,8 @@ export class RulewbComponent implements OnInit {
   public defaultCurrency = sessionStorage.defaultCurrency;
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
+  public editeffectivefrom:any=""; 
+  public editeffectiveto:any="";
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
 
   page_main_title = this.language.rule_workbench
@@ -167,7 +169,8 @@ export class RulewbComponent implements OnInit {
 
             this.rule_wb_data.effective_from = effectiveFrom;
             this.rule_wb_data.effective_to = effectiveTo;
-
+            this.editeffectivefrom = effectiveFrom
+            this.editeffectiveto = effectiveTo
             /* this.rule_wb_data.effective_from = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVEFROM);
             this.rule_wb_data.effective_to  = new Date(data.RuleWorkBenchHeader[0].OPTM_EFFECTIVETO); */
 
@@ -251,7 +254,7 @@ export class RulewbComponent implements OnInit {
                 } else {
                   operand2_disabled = true;
                 }
-              
+
               }
 
               let operand1_disabled = false;
@@ -357,6 +360,15 @@ export class RulewbComponent implements OnInit {
   effective_from(effective_from_date) {
     var temp = new Date(effective_from_date);
     let effectiveFrom = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    if (this.rule_wb_data.effective_to != null) {
+      if (this.rule_wb_data.effective_to != "") {
+        if (this.rule_wb_data.effective_from > this.rule_wb_data.effective_to) {
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          this.rule_wb_data.effective_from =  this.editeffectivefrom;
+          return;
+        }
+      }
+    }
     this.rule_wb_data.effective_from = effectiveFrom;
 
   }
@@ -364,8 +376,16 @@ export class RulewbComponent implements OnInit {
   effective_to(effective_to_date) {
     var temp = new Date(effective_to_date);
     let effectiveto = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    if (this.rule_wb_data.effective_from != null) {
+      if (this.rule_wb_data.effective_from != "") {
+        if (this.rule_wb_data.effective_from > this.rule_wb_data.effective_to) {
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          this.rule_wb_data.effective_to = this.editeffectiveto;
+          return;
+        }
+      }
+    }
     this.rule_wb_data.effective_to = effectiveto;
-
   }
 
   copy(o) {
@@ -868,7 +888,7 @@ export class RulewbComponent implements OnInit {
         if (key == "condition") {
           if (value == "Between") {
             if (this.rule_sequence_data[i].type == 1) {
-            this.rule_sequence_data[i]['is_operand2_disable'] = false;
+              this.rule_sequence_data[i]['is_operand2_disable'] = false;
             } else {
               this.rule_sequence_data[i]['is_operand2_disable'] = true;
             }
@@ -1023,7 +1043,7 @@ export class RulewbComponent implements OnInit {
         } else {
       //    this.rule_sequence_data[i]['condition'] = '';
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
-          
+
         }
       }
     } */
