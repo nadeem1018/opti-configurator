@@ -26,7 +26,7 @@ export class ViewFeatureModelComponent implements OnInit {
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
-
+    public showLoader: boolean = true;
     public columns: ColumnSetting[] = [
         {
           field: 'OPTM_FEATURECODE',
@@ -125,6 +125,7 @@ export class ViewFeatureModelComponent implements OnInit {
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.service_call(this.current_page, this.search_string);
+        this.showLoader = true;
     }
     ngAfterViewInit() {
        //  this._el.nativeElement.focus();
@@ -153,6 +154,7 @@ export class ViewFeatureModelComponent implements OnInit {
                 
                 console.log(data);
                 this.dataArray = data;
+                this.showLoader = false;
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));

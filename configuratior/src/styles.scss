@@ -16,6 +16,67 @@ $primaryColor:#007bff;
 $errorColor:red;
 $whiteColor:#fff;
 $borderColor:#c7c7c7;
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // Loader css start
+    /////////////////////////////////////////////////////////////////////////////////
+    .opti_vertical-align{
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .opti_loader {
+    position: absolute;
+    background: rgba(255,255,255,1);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 99;
+
+        @extend .opti_vertical-align;
+        .opti_spinner {
+            border: 3px solid #c7c7c7;
+            border-radius: 50%;
+            border-top: 3px solid;
+            border-top-color: #3498db;
+            width: 25px;
+            height: 25px;
+            -webkit-animation: spinloader 0.5s linear infinite; /* Safari */
+            animation: spinloader 0.5s linear infinite;
+            margin: 0 auto;
+        }
+        
+        /* Safari */
+        @-webkit-keyframes spinloader {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spinloader {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    }
+
+    .opti_loader-module-grid-list{
+        height: calc(100% - 30px);
+        width: calc(100% - 106px);
+    }
+
+    body.sidebar-toggled{
+        .opti_loader-module-grid-list{
+            height: calc(100% - 30px);
+            width: calc(100% - 95px);
+        }   
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    // Loader css end
+    ////////////////////////////////////////////////////////////////////
+
+
 .field-nobg-noborder {
     background: transparent !important;
     border: none !important;

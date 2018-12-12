@@ -64,7 +64,7 @@ export class ModelComponent implements OnInit {
   public isReflookupDisabled = true;
   public IsAccessoryVisible = true;
   public minimum_date = new Date();
-
+  public showLoader:boolean  = true;
 
   ngOnInit() {
 
@@ -103,6 +103,7 @@ export class ModelComponent implements OnInit {
         this.IsAccessoryVisible = true;
       }
       this._el.nativeElement.focus();
+      this.showLoader  = false;
     }
     else {
       this.button = "update";
@@ -156,6 +157,7 @@ export class ModelComponent implements OnInit {
             this.isReflookupDisabled = false;
             this.IsAccessoryVisible = true;
           }
+          this.showLoader  = false;
         })
     }
   }

@@ -29,7 +29,7 @@ export class RuleWbViewComponent implements OnInit {
     rows: any = "";
     public ViewData: any = [];
     show_table_footer: boolean = false;
-
+    public showLoader: boolean = true;
     //custom dialoag params
     public dialog_params: any = [];
     public show_dialog: boolean = false;
@@ -116,7 +116,7 @@ export class RuleWbViewComponent implements OnInit {
 
 
     ngOnInit() {
-
+        this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
         this.detectDevice();
@@ -156,6 +156,7 @@ export class RuleWbViewComponent implements OnInit {
                 
                 console.log(data);
                 this.dataArray = data;
+                this.showLoader = false;
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));

@@ -66,7 +66,7 @@ export class RulewbComponent implements OnInit {
   public seq_count = 0;
   public editing_row = 0;
   public outputrowcounter: number = 0;
-
+  public showLoader:boolean = true;
 
   public isOutputTable: boolean = true;
 
@@ -129,6 +129,7 @@ export class RulewbComponent implements OnInit {
       this._el.nativeElement.focus();
       var current_date = new Date();
       this.rule_wb_data.effective_from = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
+      this.showLoader  = false;
     } else {
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
@@ -337,6 +338,7 @@ export class RulewbComponent implements OnInit {
           }
 
           console.log(this.rule_expression_data);
+          this.showLoader  = false;
           setTimeout(function () {
             obj.getFeatureDetailsForOutput();
           }, 300)

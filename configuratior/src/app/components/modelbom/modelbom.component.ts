@@ -46,6 +46,7 @@ export class ModelbomComponent implements OnInit {
   public complete_dataset: any = [];
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
+  public showLoader:boolean = true;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
 
   companyName: string;
@@ -109,6 +110,7 @@ export class ModelbomComponent implements OnInit {
       this.isModelIdEnable = false;
       this.ModelLookupBtnhide = false;
       this._el.nativeElement.focus();
+      this.showLoader = false;
     }
     else {
       this.isUpdateButtonVisible = true;
@@ -236,6 +238,7 @@ export class ModelbomComponent implements OnInit {
             this.rule_data = data.RuleData;
           }
           this.onExplodeClick();
+          this.showLoader = false;
         }
       )
     }

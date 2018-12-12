@@ -43,7 +43,7 @@ export class ItemcodegenerationComponent implements OnInit {
   public isDeleteButtonVisible: boolean = true;
   public isCodeDisabled: boolean = true;
   public username: string = "";
-
+  public showLoader: boolean = true;
   //button show/hide variables
   public showAddRowbtn:boolean = true;
   public showRemoveBtn:boolean = true;
@@ -122,9 +122,7 @@ export class ItemcodegenerationComponent implements OnInit {
             if(data[i].OPTM_TYPE==1){
               this.isOperationDisable=true
             }
-            else{
-              this.isOperationDisable=false
-            }
+  
             this.itemcodetable.push({
               rowindex: data[i].OPTM_LINEID,
               string: data[i].OPTM_CODESTRING,
@@ -139,10 +137,12 @@ export class ItemcodegenerationComponent implements OnInit {
             })
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING
           }
+          this.showLoader  = false;
         }
       )
 
       //Check Permission
+     
       this.checkPermission("edit");
     }
     else{
@@ -166,6 +166,7 @@ export class ItemcodegenerationComponent implements OnInit {
       })
      
       //Check Permission
+      this.showLoader  = false;
       this.checkPermission("save");
       
     }

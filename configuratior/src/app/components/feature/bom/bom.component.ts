@@ -57,7 +57,7 @@ export class BomComponent implements OnInit {
   public  pricehide:boolean=false;
   public  isPropagateQtyDisable:boolean=false;
   public GetItemData = [];
-
+  public showLoader: boolean = true;
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -103,6 +103,7 @@ export class BomComponent implements OnInit {
       this.isFeatureIdEnable = false;
       this.FeatureLookupBtnhide = false;
       this._el.nativeElement.focus();
+      this.showLoader  = false;
     }
     else {
       this.isUpdateButtonVisible = true;
@@ -226,6 +227,7 @@ export class BomComponent implements OnInit {
             }
             this.onExplodeClick();
           }
+          this.showLoader  = false;
           console.log(this.feature_bom_table);
         }
       )
