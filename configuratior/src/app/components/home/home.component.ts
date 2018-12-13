@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
   public showLoader: boolean = true;
-
+  private config_param = JSON.parse(sessionStorage.system_config);
 
   detectDevice(){
     let getDevice = UIHelper.isDevice();
