@@ -591,3 +591,8 @@ hr {
 .k-window-titlebar {
   padding: 7px 16px !important;
 }
+
+.tr-disabled {
+  background: #ece4e4;
+  color: #c7c7c7;
+}

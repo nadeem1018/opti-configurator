@@ -481,7 +481,7 @@
                               </tr>
                             </thead>
                             <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;">
+                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;" [ngClass]="{'tr-disabled' :feature_model_data.disable}">
                                 <td>
                                   <div class="{{header_data.element_class}}">
                                     <span *ngIf="header_data.is_second_level == 1">
