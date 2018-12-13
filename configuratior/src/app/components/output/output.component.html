@@ -1196,7 +1196,7 @@
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
 
             <span class="output_final_screen_save_button">
-              <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'"
+              <button (click)="onFinishPress('screen4_data', 'finishPress')" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'"
                 type="submit" class="btn btn-sm btn-primary   mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
                 <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
             </span>

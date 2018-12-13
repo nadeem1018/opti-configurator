@@ -296,7 +296,14 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
 
-  onStrBlur(selectedvalue, rowindex) {
+  onStrBlur(selectedvalue, rowindex, string_number) {
+    console.log("string_number  " + string_number + " selectedvalue " + selectedvalue);
+    if (string_number == 2){ // validate string on blur 
+      var rgexp = /^\d+$/;
+      if (rgexp.test(selectedvalue) == false) {
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+      }
+    }
     if (this.itemcodetable.length > 0) {
       this.finalstring = "";
       for (let i = 0; i < this.itemcodetable.length; ++i) {
@@ -449,7 +456,7 @@ export class ItemcodegenerationComponent implements OnInit {
           // let isDeletionAllowed:boolean
           // let isFullPermitted:boolean
 
-         this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
+        // this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
 
           // PermissionStr.forEach(function (indexValue) {
           //   if (PermissionStr[indexValue] == "A") {
