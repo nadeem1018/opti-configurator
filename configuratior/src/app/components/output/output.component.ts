@@ -1202,6 +1202,11 @@ export class OutputComponent implements OnInit {
     for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
       if (rowid == this.feature_itm_list_table[i].FeatureId && item == this.feature_itm_list_table[i].Item) {
         if (inputid == "quantity") {
+          if (isNaN(value) == true) {
+            this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+            this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
+            return;
+          }
           if (value < 0) {
             this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
             this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
@@ -1213,14 +1218,22 @@ export class OutputComponent implements OnInit {
             this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
             return;
           }
+         
           this.feature_itm_list_table[i].quantity = parseFloat(value).toFixed(3);
           var priceextn:any=this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
           this.feature_itm_list_table[i].pricextn =  parseFloat(priceextn).toFixed(3);
         }
         else if (inputid == "actual_price") {
+          if (isNaN(value) == true) {
+            this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+            var price:any=  this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
+            this.feature_itm_list_table[i].Actualprice =parseFloat(price).toFixed(3); 
+            return;
+          }
           if (value < 0) {
             this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-            this.feature_itm_list_table[i].Actualprice =  this.feature_itm_list_table[i].Actualprice
+            var price:any=  this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
+            this.feature_itm_list_table[i].Actualprice =parseFloat(price).toFixed(3); 
             return;
           }
           this.feature_itm_list_table[i].Actualprice =parseFloat(value).toFixed(3); 
@@ -1778,9 +1791,14 @@ export class OutputComponent implements OnInit {
                           return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID;
                         });
                       }
-                      else {
+                      else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2)  {
                         isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
                           return obj['OPTM_ITEMKEY'] == data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY;
+                        });
+                      }
+                      else{
+                        isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                          return obj['OPTM_VALUE'] == data.DataForSelectedFeatureModelItem[i].OPTM_VALUE;
                         });
                       }
                       if (isExist.length == 0) {
