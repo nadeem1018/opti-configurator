@@ -1204,24 +1204,28 @@ export class OutputComponent implements OnInit {
         if (inputid == "quantity") {
           if (value < 0) {
             this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-            this.feature_itm_list_table[i].quantity = parseFloat("0").toFixed(3);
+            this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
             return;
           }
           var rgexp = /^\d+$/;
           if (rgexp.test(value) == false) {
             this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-            this.feature_itm_list_table[i].quantity = parseFloat("0").toFixed(3);
+            this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
             return;
           }
           this.feature_itm_list_table[i].quantity = parseFloat(value).toFixed(3);
+          var priceextn:any=this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
+          this.feature_itm_list_table[i].pricextn =  parseFloat(priceextn).toFixed(3);
         }
-        else if (inputid == "price") {
+        else if (inputid == "actual_price") {
           if (value < 0) {
             this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-            this.feature_itm_list_table[i].price = 0;
+            this.feature_itm_list_table[i].Actualprice =  this.feature_itm_list_table[i].Actualprice
             return;
           }
-          this.feature_itm_list_table[i].price = value
+          this.feature_itm_list_table[i].Actualprice =parseFloat(value).toFixed(3); 
+          var priceextn:any=this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
+          this.feature_itm_list_table[i].pricextn =  parseFloat(priceextn).toFixed(3);
         }
         else {
           if (value < 0) {
@@ -3424,8 +3428,8 @@ export class OutputComponent implements OnInit {
   }
 
   setItemDataForFeatureAccessory(ItemData, parentarray) {
-    let isPriceDisabled: boolean = true;
-    let isPricehide: boolean = true;
+    let isPriceDisabled: boolean = false;
+    let isPricehide: boolean = false;
     if (ItemData.length > 0) {
       for (let i = 0; i < this.feature_itm_list_table.length; i++) {
         if (parentarray[0].OPTM_TYPE == 1) {
@@ -3481,7 +3485,7 @@ export class OutputComponent implements OnInit {
             pricehide: isPricehide,
             ModelId: ItemData[i].OPTM_MODELID,
             OPTM_LEVEL: parentarray[0].OPTM_LEVEL + 1,
-            isQuantityDisabled: true
+            isQuantityDisabled: false
           });
         }
       }

@@ -189,7 +189,7 @@ export class LoginComponent implements OnInit {
           //For code analysis remove in live enviorments.
         //  this.psURL = "http://localhost:57965/";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
-          //this.psURL = "http://172.16.6.122/OptiproAdmin";
+          this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
         }
       }
