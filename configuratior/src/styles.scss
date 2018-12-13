@@ -456,3 +456,9 @@ kendo-grid-toolbar {
 .footer_grid_head.k-alt {
     border-bottom: 1px solid #c7c7c7;
 }
+
+body.home-view-model{
+    #wrapper #content-wrapper{
+        padding-bottom: 0;
+    }
+}
