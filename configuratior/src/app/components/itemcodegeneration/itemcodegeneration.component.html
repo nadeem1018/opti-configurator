@@ -121,16 +121,15 @@
           </div>
           <div class="col-md-6">
             <div class="pull-right">
-              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                <i class="fa fa-times fa-fw"></i>
-                <span>{{language.cancel}}</span>
-              </button>
-
-              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
+              <button type="button" class="btn btn-sm btn-danger pr-1 mr-10" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
               </button>
               <!-- only view when edit mode -->
+              <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10 pl-1">
+                <i class="fa fa-times fa-fw"></i>
+                <span>{{language.cancel}}</span>
+              </button>
 
             </div>
           </div>
