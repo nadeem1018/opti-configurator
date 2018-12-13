@@ -308,7 +308,7 @@ export class OutputComponent implements OnInit {
     this.showPrintOptions = true;
   }
   onSavePress() {
-    this.onValidateNextPress();
+   // this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
   }
 
@@ -2597,6 +2597,9 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
+    if (button_press == 'finishPress'){
+      this.onValidateNextPress();
+    }
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];

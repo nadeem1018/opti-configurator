@@ -64,7 +64,7 @@
             <kendo-grid-column field="string" title="{{language.string}}" filter="text" [width]="430" [minResizableWidth]="430">
               <ng-template kendoGridCellTemplate let-dataItem>
                 <input type="text" class="form-control  form-control-sm" id="stringtxt" value={{dataItem.string}} title="{{dataItem.string}}" #stringtxtvalue
-                (blur)="onStrBlur(stringtxtvalue.value, dataItem.rowindex)" />
+                (blur)="onStrBlur(stringtxtvalue.value, dataItem.rowindex, dataItem.stringtype)" />
               </ng-template>
             </kendo-grid-column>
 
