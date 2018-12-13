@@ -1,13 +1,13 @@
 <ul class="sidebar navbar-nav sidebar_top_margin-3 toggled" style=" height: 100%;" id="opti_sidebar">
-  <!-- <li class="nav-item active first_menu_padding">
+  <li class="nav-item active">
     <a class="nav-link" routerLink="home" href="javascript:;">
-      <i class="fa fa-home fa-fw"></i>
+      <img src="{{imgPath}}/leftpanel/featuremodel.svg" width="25px" height="25px;">
       <span>{{this.language.dashboard}}</span>
     </a>
-  </li> -->
+  </li>
 
   <ng-container *ngFor="let menuRow of menu_obj, let i = index">
-      <li class="nav-item" [ngClass]="{'active': selectedItem == i}" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i)"
+      <li class="nav-item" [ngClass]="{'active': selectedItem == i && i!=0}" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i)"
         routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}">
         <a class="nav-link" href='javascript:;'>
           <img src="{{getMenuDetails(menuRow.OPTM_MENUID)[0].icon_path}}" width="25px" height="25px;" >
