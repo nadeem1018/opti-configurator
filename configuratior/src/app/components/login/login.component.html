@@ -38,7 +38,7 @@
                     <option value="" [selected]="selecetedComp==''">Select a company</option>
                     <!-- <option value="aps">APS</option>
                     <option value="configurator">Configurator</option> -->
-                    <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.OPTM_COMPID}}</option>
+                    <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.cmpName}} ({{cmp.OPTM_COMPID}})</option>
                   </select>
                 </div>
                 <button type="button" class="btn btn-sm btn-green mr-4 width-45" (click)="onLoginBtnPress()" *ngIf="showLoginBtn"><i class="fa fa-sign-in" ></i> {{login_btn}}</button>
