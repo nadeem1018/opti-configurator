@@ -164,8 +164,8 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('isLoggedIn', "true");
       sessionStorage.setItem('defaultCurrency', "$");
       // this.router.navigateByUrl('/home');
-      // let home_page = this.commonData.application_path + '/index.html#home';
-      let home_page = this.commonData.application_path + '/index.html#item-code-generation';
+      let home_page = this.commonData.application_path + '/index.html#home';
+      // let home_page = this.commonData.application_path + '/index.html#item-code-generation';
 
       window.location.href = home_page;
     }
