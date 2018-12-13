@@ -570,3 +570,24 @@ hr {
   border: 1px solid #ccc;
   text-align: center;
 }
+
+.bg-primary {
+  background-color: #1ba0f1 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #1ba0f1 !important;
+  border-color: #1ba0f1 !important;
+}
+
+.k-dialog-titlebar {
+  border-color: inherit;
+  color: #fff;
+  background-color: #1BA0F1 !important;
+  width: 100% !important;
+}
+
+.k-window-titlebar {
+  padding: 7px 16px !important;
+}

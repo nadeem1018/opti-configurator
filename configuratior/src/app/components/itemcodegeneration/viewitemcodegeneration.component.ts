@@ -33,7 +33,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public ViewData: any = [];
     public toDelete: any = {
     };
-
+    public showLoader: boolean = true;
     show_table_footer: boolean = false;
     public CheckedData: any = [];
 
@@ -94,6 +94,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
+        this.showLoader = true;
         this.detectDevice();
         element.classList.add("add_item-code-view-model");
         element.classList.add("opti_body-main-module");
@@ -113,6 +114,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     ngAfterViewInit() {
       //  this._el.nativeElement.focus();
     }
+
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
+    
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
@@ -140,7 +146,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             data => {
 
                 this.dataArray = data;
-
+                this.showLoader = false;
                 // dataset = JSON.parse(data);
                 // console.log(dataset)
                 // this.rows = dataset[0];

@@ -59,6 +59,8 @@ import { OutputComponent } from './components/output/output.component';
 import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BlankhandlerPipe } from './components/common/custom-pipes/blankhandler.pipe';
+import { DialogsModule } from '@progress/kendo-angular-dialog';
+
 
 
 
@@ -152,7 +154,8 @@ const routes: Routes = [
     DateInputsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    PDFExportModule
+    PDFExportModule,
+    DialogsModule
   ],
   providers: [
     {

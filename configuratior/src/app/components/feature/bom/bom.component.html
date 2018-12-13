@@ -1,3 +1,10 @@
+
+<!-- loader start -->
+<div class="opti_loader opti_loader-module-grid-list" *ngIf="showLoader">
+    <div class="opti_spinner"></div>
+</div>
+<!-- loader end --> 
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ">
 
     <div class="container-fluid">
@@ -115,136 +122,15 @@
                         </div>
                     </div>
 
-                    <!-- <div class="col-sm-12 p-0">
-                        <div class="table-responsive table-responsive-sm table-bordered">
-                            <table class="table opti_fixed-header top-table   table-sm" id="dataTable" cellspacing="0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th width="4%">#</th>
-                                        <th width="8%">{{language.Model_Type}}</th>
-                                        <th width="12%">{{language.Bom_FeatureValue}}</th>
-                                        <th width="9%">{{language.Bom_Displayname}}</th>
-                                        <th width="6%">{{language.Bom_Qty}}</th>
-                                        <th width="6%">{{language.Bom_Default}}</th>
-                                        <th width="6%">{{language.Bom_Remarks}}</th>
-                                        <th width="10%">{{language.propagate_qty}}</th>
-                                        <th width="12%">{{language.price_source}}</th>
-                                        <th width="12%">{{language.Bom_Attach}}</th>
-                                        <th width="10%">{{language.image}}</th>
-                                        <th width="5%">
-                                            <i class="fa fa-trash"></i>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                                    <tr *ngFor="let row of feature_bom_table">
-                                        <td width=4%;>
-                                            <input [disabled]="true" type="text" class="form-control field-nobg-noborder form-control-sm" id="rowNOID" name="rowNONamr"
-                                                value={{row.rowindex}}/>
-                                        </td>
-                                        <td width=8%;>
-                                            <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
-                                                <option *ngFor="let v of detail_select_options " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
-                                            </select>
-                                        </td>
-                                        <td width=12%;>
-                                            <div class="input-group">
-                                                <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value,type_value_code)"
-                                                    value={{row.type_value_code}} #type_value_code title="{{row.type_value_code}}"
-                                                />
-                                                <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
-                                                    value={{row.type_value}} #type_value title="{{row.type_value}}" />
-                                                <div class="input-group-append" [hidden]=row.hide>
-                                                    <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_change(selectedvalue.value, row.rowindex)">
-                                                        <i class="fa fa-bars"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-
-                                        </td>
-                                        <td width=9%;>
-                                            <input [disabled]="row.isDisplayNameDisabled" type="text" class="form-control  form-control-sm" id="display_name" (change)="on_displayname_change(display_name.value,row.rowindex)"
-                                                value={{row.display_name}} #display_name title="{{row.display_name}}" />
-
-
-                                        </td>
-                                        <td width=6%;>
-                                            <input type="text" [disabled]="row.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm" id="quantity"
-                                                (change)="on_quantity_change(quantity.value,row.rowindex)" value={{row.quantity}}
-                                                #quantity title="{{row.quantity}}" />
-                                        </td>
-                                        <td width=6%;>
-                                           
-
-                                            <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm" id="row.rowindex" (change)="on_defualt_change(default,row.rowindex)"
-                                                value={{row.default}} #default [(checked)]=row.default title="{{row.default}}"
-                                            />
-
-                                        </td>
-                                        <td width=6%;>
-                                            <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,row.rowindex)"
-                                                value={{row.remark}} #remark title="{{row.remark}}" />
-
-                                        </td>
-                                        <td width=10%;>
-                                            <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,row.rowindex)"
-                                                [(checked)]=row.propagate_qty [disabled]="row.isPropagateQtyDisable" #propagate_qty
-                                                title="{{row.propagate_qty}}" />
-                                        </td>
-                                        <td width=12%;>
-                                            <div class="input-group">
-                                                <input [disabled]="row.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
-                                                    title="{{row.price_source_id}}" value={{row.price_source_id}} #price_source_id
-                                                />
-
-                                                <input type="text" class="form-control  form-control-sm" id="price_source" title="{{row.price_source}}" name="price_source"
-                                                    value={{row.price_source}} (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
-                                                    #price_source [disabled]="row.isPriceDisabled" />
-                                                <div class="input-group-append" [hidden]=row.pricehide>
-                                                    <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
-                                                        <i class="fa fa-bars"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td width=12%;>
-                                            <div class="btn btn-outline-secondary btn-file btn-sm "> {{language.choose_image}}
-                                                <input type="file" class="form-control  form-control-sm " id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,row.rowindex)"
-                                                />
-                                            </div>
-                                        </td>
-                                        <td width=10%;>
-                                            <div class="clearfix"></div>
-                                            <div class="image_data" *ngIf="row.preview">
-                                                <div>
-                                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(row.preview)">
-                                                        <img src="{{row.preview}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </td>
-                                        <td width=5%;>
-                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)" title="{{this.language.delete}}">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> -->
-
                     <!-- <hr> -->
                     <div class="col-sm-12 p-0">
                         <div class="">
                         <kendo-grid [kendoGridBinding]="feature_bom_table"  [resizable]="true" [sortable]="false" [groupable]="false"
-                            [filterable]="false" > <!-- [height]="400" -->
+                            [filterable]="false" > 
 
-                            <kendo-grid-column field="rowindex" title="#" width="35" [minResizableWidth]="20" filter="numeric">
+                            <kendo-grid-column field="rowindex" title="#" [width]="35" [minResizableWidth]="35" filter="numeric">
                             </kendo-grid-column>
-                            <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="50">
+                            <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="110">
                                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                                 <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
                                     <option *ngFor="let v of detail_select_options " [value]="v.value" [selected]="dataItem.type==v.value"> {{v.Name}}</option>
@@ -274,14 +160,14 @@
                                         value={{dataItem.display_name}} #display_name title="{{dataItem.display_name}}" />
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="90" [minResizableWidth]="30">
+                            <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="90" [minResizableWidth]="90">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <input type="text" [disabled]="dataItem.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm"
                                         id="quantity" (change)="on_quantity_change(quantity.value,dataItem.rowindex)" value={{dataItem.quantity}}
                                         #quantity title="{{dataItem.quantity}}" />
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text" [width]="80" [minResizableWidth]="30" >
+                            <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text" [width]="80" [minResizableWidth]="80" >
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm" id="dataItem.rowindex" (change)="on_defualt_change(default,dataItem.rowindex)"
                                         value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}" />
@@ -293,14 +179,14 @@
                                         value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="120" [minResizableWidth]="30">
+                            <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{dataItem.propagate_qty}}
                                         (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)" [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
                                         #propagate_qty title="{{dataItem.propagate_qty}}" />
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text" [width]="110" [minResizableWidth]="30">
+                            <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text" [width]="110" [minResizableWidth]="110">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="input-group">
                                     <input [disabled]="dataItem.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)"
@@ -317,21 +203,21 @@
                                 </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Attach" title="{{language.Bom_Attach}}" [width]="130" [minResizableWidth]="30">
+                            <kendo-grid-column field="Bom_Attach" title="{{language.Bom_Attach}}" [width]="130" [minResizableWidth]="130">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div class="btn btn-outline-secondary btn-file btn-sm "> {{language.choose_image}}
                                         <input type="file" class="form-control  form-control-sm " id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,dataItem.rowindex)" />
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="image" title="{{language.image}}" [width]="100" [minResizableWidth]="30">
+                            <kendo-grid-column field="image" title="{{language.image}}" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(dataItem.preview)">
                                         <img src="{{dataItem.preview}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
                                     </a>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="30" >
+                            <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="60" >
 
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     <i class="fa fa-trash"></i>

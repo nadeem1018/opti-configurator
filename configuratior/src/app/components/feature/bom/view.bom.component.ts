@@ -27,7 +27,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     table_head_foot = [this.language.select, this.language.hash, this.language.Bom_FeatureId, this.language.Feature_Code, this.language.Bom_Displayname, this.language.action];
     public table_hidden_elements = [false, true, true, false, false, false];
     record_per_page_list: any = this.common_params.default_limits;
-
+    public showLoader: boolean = true;
     record_per_page: any;
     search_string: any = "";
     current_page: any = 1;
@@ -88,7 +88,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
         this.detectDevice()
@@ -105,6 +105,11 @@ export class ViewFeatureBOMComponent implements OnInit {
     ngAfterViewInit() {
       //  this._el.nativeElement.focus();
     }
+
+    on_selection(grid_event){
+        grid_event.selectedRows = [];
+    }
+
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
@@ -128,6 +133,7 @@ export class ViewFeatureBOMComponent implements OnInit {
             data => {
                 console.log(data);
                 this.dataArray = data;
+                this.showLoader = false;
                 // dataset = JSON.parse(data);
                 // console.log(dataset);
                 // this.rows = dataset[0];
@@ -201,8 +207,10 @@ export class ViewFeatureBOMComponent implements OnInit {
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('feature/bom/view');
                     return;
-                }
-                else {
+                } else if (data == "ReferenceExists") {
+                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+                    return;
+                } else {
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
                     return;
                 }

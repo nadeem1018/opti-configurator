@@ -1,17 +1,14 @@
+<!-- loader start -->
+<div class="opti_loader opti_loader-module-grid-list" *ngIf="showLoader">
+    <div class="opti_spinner"></div>
+</div>
+<!-- loader end --> 
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
     <div class="opti_module-title">{{page_main_title}}</div>
 </div>
 
-<!-- <ol class="breadcrumb breadcrumb_mini_margin">
-   
-    <li class="breadcrumb-item ">{{page_main_title}}</li>
-    <li class="breadcrumb-item active">{{language.view}}</li>
-</ol> -->
 <div class="card mb-3 opti_global-table-view">
-    <!-- <div class="card-header">
-        <i class="fa fa-table"></i>
-       {{table_title}}
-    </div> -->
     <div class="card-body">
 
         <div class="container-fluid">
@@ -35,78 +32,17 @@
 
                 <div class="col-sm-6 p-0">
                     <div class="float-right">
-                        <!-- 
-                        <div class="form-group" style="position: relative;">
-                            <div class="opti_search float-left">
-                                <input type="text" class="col-sm-9 form-control form-control-sm" id="search" placeholder="{{language.search}}" [(ngModel)]="search_string"
-                                    #searchinput>
-                                <button class="" (click)="search_results()">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                     -->
+                        
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="">
-            <!-- <table class="table opti_fixed-header table-bordered  table-sm" id="dataTable" width="100%" cellspacing="0">
-                <thead class="thead-dark">
-                    <tr>
-                        <th *ngFor="let table_columns of table_head_foot; let i = index" [hidden]="table_hidden_elements[i]">
-                            <span *ngIf="i ==0">
-                                <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id=""  [checked]=selectall>
-                            </span>
-                            <span *ngIf="i!=0">
-                                {{table_columns}}
-                            </span>
-                        </th>
-                    </tr>
-                </thead>
-                <tfoot class="thead-dark" *ngIf='show_table_footer'>
-                    <tr>
-                        <th *ngFor="let table_columns of table_head_foot; let i = index" [hidden]="table_hidden_elements[i]">
-                                <span *ngIf="i ==0">
-                                    <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="">
-                                </span>
-                                <span *ngIf="i!=0">
-                                    {{table_columns}}
-                                </span>
-                        </th>
-                    </tr>
-                </tfoot>
-                <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                    <tr *ngFor="let row of rows  | filter:search_string">
-                        <td *ngFor="let row_data of row; let i = index" [hidden]="table_hidden_elements[i]">
-                            <span *ngIf="(row.length-1) != i">
-                                <span *ngIf="i==0">
-                                    <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,row_data)" [checked]=selectall>
-                                </span>
-                                <span *ngIf="i!=0">
-                                    {{row_data}}
-                                </span>
-                            </span>
-                            <span *ngIf="(row.length-1) == i">
-                                <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(row_data)" title="{{button1_title}}">
-                                    <i class="{{button1_icon}}"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm mr-10 {{button2_color}}" *ngIf="show_button2" (click)="button_click2(row_data)" title="{{button2_title}}">
-                                    <i class="{{button2_icon}}"></i>
-                                </button>
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
-
-
-            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true" >
+           
+            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true" [resizable]="true"  (selectionChange)="on_selection($event)" >
                 <ng-template kendoGridToolbarTemplate>
-                    <!-- show hide column start show hide -->
-                     <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
-                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
+                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                         <div class="custom-control custom-checkbox float-left">
                             <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
                                 class="custom-control-input" name="columnfilter" />
@@ -115,7 +51,7 @@
                     </form>
                 </ng-template>
 
-                <kendo-grid-column field="" title="" filter="numeric" [width]="60" [minResizableWidth]="30">
+                <kendo-grid-column field="" title="" filter="numeric" [width]="60" [minResizableWidth]="60">
                     <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
@@ -131,12 +67,8 @@
                 </kendo-grid-column>
 
                 <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                    format="{{column.format}}" width="{{column.width}}"></kendo-grid-column>
-
-
-
-                <kendo-grid-column field="" title="Action" filter="numeric" [width]="120" [minResizableWidth]="30">
-
+                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" ></kendo-grid-column>
+                <kendo-grid-column field="" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120">
                     <ng-template kendoGridCellTemplate let-dataItem>
                         <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
                             <i class="{{button1_icon}}"></i>
@@ -147,43 +79,8 @@
                     </ng-template>
                 </kendo-grid-column>
             </kendo-grid>
-
-
-
         </div>
     </div>
-    <!-- <div class="card-footer small text-muted">
-        <div class="row col-sm-4 pull-left">
-            <label class="page_size_left_label"> {{language.show}} </label>
-            <select type="text" #search class="form-control form-control-sm mt3 page_size_center_select" (change)="on_page_limit_change()"
-                [(ngModel)]="record_per_page" id="per_page_recrod">
-                <option *ngFor="let record of record_per_page_list" [selected]="record_per_page==record" value="{{record}}">{{record}} </option>
-            </select>
-            <label class="page_size_right_label"> {{language.per_page}} </label>
-        </div>
-
-        <div class="pull-right">
-            <nav aria-label="pagination">
-                <ul class="pagination pagination-sm">
-                    <li class="page-item disabled">
-                        <span class="page-link">
-                            <i class="fa fa-angle-double-left"></i>
-                        </span>
-                    </li>
-                    <li *ngFor="let page_number of page_numbers" class="page-item">
-                        <a (click)="service_call(page_number, search_string)" [ngClass]="page_number == current_page ? 'page-link active' : 'page-link'"
-                            href="javascript:;">{{page_number}}</a>
-                    </li>
-                  
-                    <li class="page-item disabled">
-                        <a class="page-link">
-                            <i class="fa fa-angle-double-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div> -->
 </div>
 
 <!--Custom Dialog-->

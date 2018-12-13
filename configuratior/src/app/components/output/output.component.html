@@ -10,15 +10,16 @@
             <div class="" *ngIf="showPrintOptions">
               <div class="form-group row clearfix">
                 <div class="col-sm-8 padding_right_0">
-                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type" style=" height: calc(1.35rem + 1px) !important; "
-                    #print_operation_type>
+                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type"
+                    style=" height: calc(1.35rem + 1px) !important; " #print_operation_type>
                     <option value="">{{language.print_option}}</option>
                     <option value="1">{{language.summary}}</option>
                     <option value="2">{{language.detail}}</option>
                   </select>
                 </div>
                 <div class="col-sm-2 padding_left_1">
-                  <button class="btn btn-sm btn-success" (click)="output_invvoice_print_lookup(print_operation_type.value)" title="Test Invoice">
+                  <button class="btn btn-sm btn-success" (click)="output_invvoice_print_lookup(print_operation_type.value)"
+                    title="Test Invoice">
                     <i class="fa fa-print  fa-fw"></i>
                   </button>
                 </div>
@@ -77,8 +78,9 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-5 col-form-label" for="customer_doc">{{language.operation}}</label>
                   <div class="col-sm-5">
-                    <select class="form-control  form-control-sm mt3" name="main_operation_type" id="main_operation_type" [(ngModel)]="step1_data.main_operation_type"
-                      (change)="onOperationChange(main_operation_type.value)" #main_operation_type>
+                    <select class="form-control  form-control-sm mt3" name="main_operation_type" id="main_operation_type"
+                      [(ngModel)]="step1_data.main_operation_type" (change)="onOperationChange(main_operation_type.value)"
+                      #main_operation_type>
                       <option value=""></option>
                       <option value="1">{{language.new}}</option>
                       <option value="2">{{language.modify_existing}}</option>
@@ -93,8 +95,9 @@
                     <label class="col-sm-5 col-form-label" for="modify_duplicate_lookup">{{language.configuration}}</label>
                     <div class="col-sm-5 input-group">
                       <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="on_configuration_id_change(modify_duplicate_lookup.value)"
-                        name="modify_duplicate_lookup" #modify_duplicate_lookup id="modify_duplicate_lookup" placeholder="{{language.configuration}}"
-                        [(ngModel)]="step1_data.selected_configuration_key" #selected_configuration_key>
+                        name="modify_duplicate_lookup" #modify_duplicate_lookup id="modify_duplicate_lookup"
+                        placeholder="{{language.configuration}}" [(ngModel)]="step1_data.selected_configuration_key"
+                        #selected_configuration_key>
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon basic-addon2-duplicate" id="basic-addon2" (click)="open_config_lookup()">
                           <i class="fa fa-bars"></i>
@@ -108,8 +111,9 @@
                 <div class="form-group row clearfix new_output_config" *ngIf="new_output_config">
                   <label class="col-sm-5 col-form-label" for="description">{{language.description}}</label>
                   <div class="col-sm-5">
-                    <input type="text" class="form-control  form-control-sm mt3" id="description" name="description" value="" placeholder="{{language.description}}"
-                      [(ngModel)]="step1_data.description" (change)="description" #description />
+                    <input type="text" class="form-control  form-control-sm mt3" id="description" name="description"
+                      value="" placeholder="{{language.description}}" [(ngModel)]="step1_data.description" (change)="description"
+                      #description />
                   </div>
                 </div>
 
@@ -128,7 +132,8 @@
             <!-- <button type="button" *ngIf="step0_isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-next btn-sm" (click)="onStep0NextPress()" data-next-block="customer_details">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button> -->
 
-            <button style="display:none;" id="step0_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="customer_details">
+            <button style="display:none;" id="step0_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
+              data-next-block="customer_details">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
             <button *ngIf="step0_isNextButtonVisible" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onStep0NextPress()">
@@ -154,9 +159,10 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.document}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document" (change)="onDocumentChange(document.value)"
-                        #document>
-                        <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value"> {{v.Name}}</option>
+                      <select class="form-control  form-control-sm mt3" name="document" id="document" [(ngModel)]="step1_data.document"
+                        (change)="onDocumentChange(document.value)" #document>
+                        <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value">
+                          {{v.Name}}</option>
                         <!--   <option *ngFor="let v of doctype" [value]="v.value" [selected]="v.value == '1'"> {{v.Name}}</option> -->
                       </select>
                     </div>
@@ -178,8 +184,8 @@
                       <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                     </div> -->
                     <div class="col-sm-7">
-                      <input class="form-control  form-control-sm mt3" name='posting_date' type="text" value="" id="posting_date" name="posting_date"
-                        readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
+                      <input class="form-control  form-control-sm mt3" name='posting_date' type="text" value="" id="posting_date"
+                        name="posting_date" readonly placeholder="{{language.posting_date}}" [(ngModel)]="step1_data.posting_date">
                       <!-- <div class="input-group-append">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="posting_date_icon">
                           <i class="fa fa-calendar"></i>
@@ -192,8 +198,8 @@
                     <label class="col-sm-5 col-form-label" for="delivery_until">{{document_date}}</label>
                     <div class="col-sm-7 input-group">
                       <input [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3"
-                        name='delivery_until' type="text" value="" id="delivery_until" name="delivery_until" readonly placeholder="{{document_date}}"
-                        [(ngModel)]="step1_data.delivery_until">
+                        name='delivery_until' type="text" value="" id="delivery_until" name="delivery_until" readonly
+                        placeholder="{{document_date}}" [(ngModel)]="step1_data.delivery_until">
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt13" id="delivery_until_icon">
                           <i class="fa fa-calendar"></i>
@@ -217,8 +223,9 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.customer}}</label>
                     <div class="col-sm-7 input-group">
-                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()" name="customer" id="customer"
-                        placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer" #customer>
+                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()"
+                        name="customer" id="customer" placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer"
+                        #customer>
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openCustomerLookUp()">
                           <i class="fa fa-bars"></i>
@@ -230,8 +237,9 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.Name}}</label>
                     <div class="col-sm-7">
-                      <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name" id="customer_name"
-                        placeholder="{{language.name}}" [(ngModel)]="step1_data.customer_name" #customername>
+                      <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="customer_name"
+                        id="customer_name" placeholder="{{language.name}}" [(ngModel)]="step1_data.customer_name"
+                        #customername>
 
                     </div>
                   </div>
@@ -239,8 +247,10 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="contact_persons">{{language.contact_person}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons" (change)="onContactPersonChange(person.value)">
-                        <option [selected]="person.value == v.Name" *ngFor="let v of contact_persons" [value]="v.Name"> {{v.Name}}</option>
+                      <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons"
+                        (change)="onContactPersonChange(person.value)">
+                        <option [selected]="person.value == v.Name" *ngFor="let v of contact_persons" [value]="v.Name">
+                          {{v.Name}}</option>
                       </select>
                     </div>
                   </div>
@@ -253,8 +263,10 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="ship_to">{{language.ship_to}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to" (change)="onShipToChange(customerShipTo.value)">
-                        <option [selected]="customerShipTo.value == v.ShipToDef" *ngFor="let v of ship_to" [value]="v.ShipToDef"> {{v.ShipToDef}}</option>
+                      <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to"
+                        (change)="onShipToChange(customerShipTo.value)">
+                        <option [selected]="customerShipTo.value == v.ShipToDef" *ngFor="let v of ship_to" [value]="v.ShipToDef">
+                          {{v.ShipToDef}}</option>
                       </select>
                     </div>
                   </div>
@@ -262,8 +274,9 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="ship_to_address">{{language.address}}</label>
                     <div class="col-sm-7">
-                      <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address" id="ship_to_address"
-                        placeholder="{{language.ship_to_address}}" [(ngModel)]="step1_data.ship_to_address" #shipto></textarea>
+                      <textarea type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="ship_to_address"
+                        id="ship_to_address" placeholder="{{language.ship_to_address}}" [(ngModel)]="step1_data.ship_to_address"
+                        #shipto></textarea>
                     </div>
                   </div>
 
@@ -275,8 +288,10 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="bill_to">{{language.bill_to}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to" (change)="onBillToChange(customerBillTo.value)">
-                        <option [selected]="customerBillTo.value == v.BillToDef" *ngFor="let v of bill_to" [value]="v.BillToDef"> {{v.BillToDef}}</option>
+                      <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to"
+                        (change)="onBillToChange(customerBillTo.value)">
+                        <option [selected]="customerBillTo.value == v.BillToDef" *ngFor="let v of bill_to" [value]="v.BillToDef">
+                          {{v.BillToDef}}</option>
                       </select>
                     </div>
                   </div>
@@ -284,8 +299,9 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="bill_to_address">{{language.address}}</label>
                     <div class="col-sm-7">
-                      <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address" id="bill_to_address"
-                        placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address" #shipto></textarea>
+                      <textarea type="text" rows="3" readonly ngValue="" class="form-control  form-control-sm mt3" name="bill_to_address"
+                        id="bill_to_address" placeholder="{{language.bill_to_address}}" [(ngModel)]="step1_data.bill_to_address"
+                        #shipto></textarea>
                     </div>
                   </div>
 
@@ -330,8 +346,10 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee" (change)="onSalesPersonChange(salesemployee.value)">
-                        <option [selected]="salesemployee.value == v.SlpName" *ngFor="let v of sales_employee" [value]="v.SlpName"> {{v.SlpName}}</option>
+                      <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee"
+                        (change)="onSalesPersonChange(salesemployee.value)">
+                        <option [selected]="salesemployee.value == v.SlpName" *ngFor="let v of sales_employee" [value]="v.SlpName">
+                          {{v.SlpName}}</option>
                       </select>
                     </div>
                   </div>
@@ -341,15 +359,16 @@
                       <!-- <input type="text" ngValue="" readonly class="form-control  form-control-sm mt3" name="owner" id="owner" placeholder="{{language.owner}}"
                         [(ngModel)]="step1_data.owner" #owner> -->
                       <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
-                        <option *ngFor="let v of owner_list" [selected]="owner.value == v.lastName" [value]="v.value"> {{v.lastName}}</option>
+                        <option *ngFor="let v of owner_list" [selected]="owner.value == v.lastName" [value]="v.value">
+                          {{v.lastName}}</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="remark">{{language.remark}}</label>
                     <div class="col-sm-7">
-                      <textarea type="text" rows="4" ngValue="" class="form-control  form-control-sm mt3" name="remark" id="remark" placeholder="{{language.remark}}"
-                        [(ngModel)]="step1_data.remark" #remark> </textarea>
+                      <textarea type="text" rows="4" ngValue="" class="form-control  form-control-sm mt3" name="remark"
+                        id="remark" placeholder="{{language.remark}}" [(ngModel)]="step1_data.remark" #remark> </textarea>
 
                     </div>
                   </div>
@@ -383,7 +402,8 @@
             </span>
 
 
-            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="this.showPrintOptions = false;" data-previous-block="choose_operation">
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="this.showPrintOptions = false;"
+              data-previous-block="choose_operation">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-sm " (click)="step2_next_click_validation()">
               <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
@@ -412,10 +432,10 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="model">{{language.model}}</label>
                   <div class="col-sm-9 input-group">
-                    <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.modal_id" name="modelName"
-                      id="modelNameId">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="model" id="model" placeholder="{{language.model}}"
-                      [(ngModel)]="step2_data.model_code" #modelcode (change)="onModelCodeChange()">
+                    <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.modal_id"
+                      name="modelName" id="modelNameId">
+                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="model" id="model"
+                      placeholder="{{language.model}}" [(ngModel)]="step2_data.model_code" #modelcode (change)="onModelCodeChange()">
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openModalList()">
                         <i class="fa fa-bars"></i>
@@ -426,20 +446,21 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="quantity">{{language.quantity}}</label>
                   <div class="col-sm-9">
-                    <input type="text" ngValue="" pattern="\d+" class="form-control  form-control-sm mt3 pull-right" name="quantity" id="quantity"
-                      placeholder="{{language.quantity}}" [(ngModel)]="step2_data.quantity" #quantity (change)="on_input_change('quantity',quantity.value)"
-                      style="text-align:right">
+                    <input type="text" ngValue="" pattern="\d+" class="form-control  form-control-sm mt3 pull-right"
+                      name="quantity" id="quantity" placeholder="{{language.quantity}}" [(ngModel)]="step2_data.quantity"
+                      #quantity (change)="on_input_change('quantity',quantity.value)" style="text-align:right">
 
                   </div>
                 </div>
                 <hr>
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist" aria-multiselectable="true">
+                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist"
+                    aria-multiselectable="true">
                     <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
                       <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
                         <h4 class="panel-title">
-                          <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}" attr.aria-expanded="false"
-                            attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
+                          <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}"
+                            attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
                             {{header_data.OPTM_DISPLAYNAME}}
                             <span class="text-right pull-right custom_panel_icon_section">
                               <i class="fa fa-plus"></i>
@@ -447,8 +468,8 @@
                           </a>
                         </h4>
                       </div>
-                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
-                        attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section"
+                        role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
                         <div class="panel-body">
                           <table class="parent_table inner-table table table-bordered table-strip table-sm">
                             <thead class="thead-dark">
@@ -499,8 +520,8 @@
                                   <div class="{{header_data.element_class}}">
                                     <input type="{{header_data.element_type}}" id="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}"
                                       name="checkbox_{{header_data.OPTM_FEATUREID}}" #selectionchecked class="custom-control-input"
-                                      (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)" [(checked)]="FeatureBOMDataForSecondLevel.checked"
-                                      [disabled]="FeatureBOMDataForSecondLevel.disable">
+                                      (change)="onselectionchange(header_data,selectionchecked,selectionchecked.id)"
+                                      [(checked)]="FeatureBOMDataForSecondLevel.checked" [disabled]="FeatureBOMDataForSecondLevel.disable">
                                     <label class="custom-control-label" for="checkbox_{{header_data.OPTM_FEATUREID}}_{{header_data.OPTM_LINENO}}_{{header_data.OPTM_MODELID}}">
                                     </label>
                                   </div>
@@ -531,26 +552,30 @@
                 <div class="form-group row clearfix" style="padding-right: 15px;">
                   <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
                   <div class="col-sm-12 pr-0">
-                    <kendo-grid [kendoGridBinding]="feature_accessory_list" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                      <kendo-grid-column field="step_2_accesories_checkbox" title="" template="" [width]="30" [minResizableWidth]="30">
+                    <kendo-grid [kendoGridBinding]="feature_accessory_list" [resizable]="true" [sortable]="false"
+                      [groupable]="false" [filterable]="false">
+                      <kendo-grid-column field="step_2_accesories_checkbox" title="" template="" [width]="30"
+                        [minResizableWidth]="30">
 
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" let-dataItem>
 
                           <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="acccessory_check{{dataItem.id}}_{{dataItem.id}}" name="child_checkbox" class="custom-control-input accesory_check_for_second_screen"
-                              #accallcheckbox (click)="selectallAccessory(accallcheckbox.checked)">
-                            <label class="custom-control-label" for="acccessory_check{{dataItem.id}}_{{dataItem.id}}"></label>
+                            <input type="checkbox" id="acccessory_parent_check{{dataItem.id}}" name="acccessory_parent_check{{dataItem.id}}"
+                              class="custom-control-input accesory_check_for_second_screen" #accallcheckbox (click)="selectallAccessory(accallcheckbox.checked)">
+                            <label class="custom-control-label" for="acccessory_parent_check{{dataItem.id}}"></label>
                           </div>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="accesory_{{dataItem.id}}" name="child_checkbox" [(checked)]=dataItem.checked #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
+                            <input type="checkbox" id="accesory_child_checkbox_{{dataItem.id}}" name="accesory_child_checkbox"
+                              [(checked)]="dataItem.checked" #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
                               class="custom-control-input">
-                            <label class="custom-control-label" for="accesory_{{dataItem.id}}"></label>
+                            <label class="custom-control-label" for="accesory_child_checkbox_{{dataItem.id}}"></label>
                           </div>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150" [minResizableWidth]="30">
+                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150"
+                        [minResizableWidth]="150">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.code}}
                         </ng-template>
@@ -560,7 +585,8 @@
                           </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150" [minResizableWidth]="30">
+                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150"
+                        [minResizableWidth]="150">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.Name}}
                         </ng-template>
@@ -622,79 +648,99 @@
                 <div class="feature_block">
                   <div class="feature_table">
                     <div class="">
-                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                        <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false"
+                        [groupable]="false" [filterable]="false">
+                        <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.Model_FeatureName}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             <span>
-                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3" id="type_value" value={{featurerow.FeatureId}}
-                                title="{{featurerow.FeatureId}}" /> {{featurerow.featureName}}
+                              <input [disabled]="featurerow.FeatureId" type="hidden" class="form-control  form-control-sm mt3"
+                                id="type_value" value={{featurerow.FeatureId}} title="{{featurerow.FeatureId}}" />
+                              {{featurerow.featureName}}
                             </span>
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.item}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                             {{featurerow.Item}}
+                            {{featurerow.Item}}
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.description}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                             {{featurerow.Description}}
+                            {{featurerow.Description}}
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_quantity" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.quantity}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                             <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value="{{featurerow.quantity}}"
-                                title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
-                                #quantity [disabled]="featurerow.isQuantityDisabled" />
+                            <input type="text" step="0" class="form-control  form-control-sm mt3" style="text-align:right"
+                              id="quantity" value="{{featurerow.quantity}}" title="{{featurerow.quantity}}" (change)="on_feature_input_change('quantity',quantity.value,featurerow.FeatureId,featurerow.Item)"
+                              #quantity [disabled]="featurerow.isQuantityDisabled" />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120" [minResizableWidth]="60">
+                       <!--  <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_source}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                              <div class=" input-group">
-                                <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="featurerow.price_id"
-                                  name="priceId" id="priceId">
-                                <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3"
-                                  name="price_code" id="price_code" (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
-                                  value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
-                                <div class="input-group-append" [hidden]=featurerow.pricehide>
-                                  <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
-                                    <i class="fa fa-bars"></i>
-                                  </span>
-                                </div>
+                            <div class=" input-group">
+                              <input type="hidden" title="{{featurerow.price_id}}" ngValue="" class="form-control  form-control-sm mt3"
+                                [(ngModel)]="featurerow.price_id" name="priceId" id="priceId">
+                              <input type="text" title="{{featurerow.price}}" style="text-align:right" ngValue="" class="form-control  form-control-sm mt3"
+                                name="price_code" id="price_code" (change)="on_feature_input_change('price',price.value,featurerow.FeatureId,featurerow.Item)"
+                                value={{featurerow.price}} #price_code [disabled]="featurerow.isPriceDisabled">
+                              <div class="input-group-append" [hidden]=featurerow.pricehide>
+                                <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openPriceListLookup()">
+                                  <i class="fa fa-bars"></i>
+                                </span>
                               </div>
+                            </div>
+                          </ng-template>
+                        </kendo-grid-column> -->
+                        <kendo-grid-column field="step_2_right_grid_price" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
+                          <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            {{this.language.price}}
+                          </ng-template>
+                          <ng-template kendoGridCellTemplate let-featurerow>
+                            <input [disabled]="featurerow.isPriceDisabled" type="text"  #actual_price title="{{featurerow.Actualprice}}" class="form-control  form-control-sm mt3"
+                              style="text-align:right" id="quantity" value={{featurerow.Actualprice}} (change)="on_feature_input_change('actual_price',actual_price.value,featurerow.FeatureId,featurerow.Item)"
+                              #pricextn />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_price_extn" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_price_extn" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_extn}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                             <input type="number" title="{{featurerow.priceext}}" class="form-control  form-control-sm mt3" style="text-align:right" id="quantity"
-                                value={{featurerow.pricextn}} (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
-                                #pricextn />
+                            <input type="text" title="{{featurerow.priceext}}" disabled class="form-control  form-control-sm mt3"
+                              style="text-align:right" id="quantity" value={{featurerow.pricextn}} (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
+                              #pricextn />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_accessories" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid-column field="step_2_right_grid_accessories" title="" template="" [width]="120"
+                          [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.accessories}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                             {{featurerow.is_accessory}}
+                            {{featurerow.is_accessory}}
                           </ng-template>
                         </kendo-grid-column>
                       </kendo-grid>
@@ -769,9 +815,9 @@
                             <td width="70%">{{language.product_discount}}</td>
                             <td width="30%">
                               <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
-    text-align: right;     padding-right: 1.5px !important;" id="product_discount" name="product_discount" #product_discount
-                                (change)="on_calculation_change('product_discount',product_discount.value)" [(ngModel)]="this.feature_discount_percent"
-                              />
+    text-align: right;     padding-right: 1.5px !important;"
+                                id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
+                                [(ngModel)]="this.feature_discount_percent" />
                             </td>
                           </tr>
                         </thead>
@@ -795,9 +841,10 @@
                             </td>
                             <td class="text-right mr-3">
                               <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
-    text-align: right; padding-right: 1.5px !important;" id="accessory_item_discount" name="accessory_item_discount" #accessory_item_discount
-                                (change)="on_calculation_change('accesory_discount',accessory_item_discount.value)" [(ngModel)]="this.accessory_discount_percent"
-                              />
+    text-align: right; padding-right: 1.5px !important;"
+                                id="accessory_item_discount" name="accessory_item_discount" #accessory_item_discount
+                                (change)="on_calculation_change('accesory_discount',accessory_item_discount.value)"
+                                [(ngModel)]="this.accessory_discount_percent" />
                             </td>
                           </tr>
                           <!-- <tr>
@@ -848,8 +895,8 @@
               <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="customer_details">
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
 
-              <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next" data-next-block="accept_bom_so"
-                (click)="onModelBillNextPress()">
+              <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
+                data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
               <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onValidateNextPress()">
@@ -882,13 +929,15 @@
                   <label class="col-sm-4 col-form-label">
                     <b>{{language.posting_date}}</b>
                   </label>
-                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.posting_date | date: 'MM/dd/yyyy' }}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.posting_date | date:
+                    'MM/dd/yyyy' }}</label>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label">
                     <b>{{language.delivery_date}}</b>
                   </label>
-                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
+                  <label class="col-sm-8 col-form-label font-weight-light">{{step1_data.delivery_until | date:
+                    'MM/dd/yyyy'}}</label>
                 </div>
                 <div class="form-group row clearfix">
                   <label class="col-sm-4 col-form-label">
@@ -965,16 +1014,19 @@
                 </div>
                 <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
                   <div class="">
-                    <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                    <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false"
+                      [filterable]="false">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                         #
+                          #
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
                           {{row.rowIndex}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_serial" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_serial" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.serial}}
                         </ng-template>
@@ -982,7 +1034,8 @@
                           {{row.sl_no}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.item}}
                         </ng-template>
@@ -990,7 +1043,8 @@
                           {{row.item}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_quantity" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           <span class="text-right">{{this.language.quantity}}</span>
                         </ng-template>
@@ -998,7 +1052,8 @@
                           <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.price}} ({{this.defaultCurrency}})
                         </ng-template>
@@ -1006,7 +1061,8 @@
                           {{row.price}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           {{this.language.price_extn}}
                         </ng-template>
@@ -1014,12 +1070,14 @@
                           {{row.price_ext}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                      <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                        [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           <i class="fa fa-trash fa-fw"></i>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
-                          <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
+                          <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)"
+                            title="{{language.remove_this_modal}}">
                             <i class="fa fa-trash fa-fw"></i>
                           </button>
                         </ng-template>
@@ -1065,12 +1123,12 @@
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
                       <thead class="" style=" font-size: 14px; ">
-                          <tr>
-                              <td>
-                                {{this.language.total_before_discount}}
-                              </td>
-                              <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
-                            </tr>
+                        <tr>
+                          <td>
+                            {{this.language.total_before_discount}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                        </tr>
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
                           <td width="30%" class="text-right mr-3">
@@ -1138,8 +1196,8 @@
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
 
             <span class="output_final_screen_save_button">
-              <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'" type="submit" class="btn btn-sm btn-primary   mr-10 btn-submit  btn-next"
-                data-next-block="fina_doc_create">
+              <button (click)="onFinishPress()" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'"
+                type="submit" class="btn btn-sm btn-primary   mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
                 <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
             </span>
           </div>
@@ -1231,14 +1289,16 @@
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.posting_date}}</b>
                         </label>
-                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.posting_date | date: 'MM/dd/yyyy'}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.posting_date |
+                          date: 'MM/dd/yyyy'}}</label>
                       </div>
 
                       <div class="form-group row clearfix ">
                         <label class="col-sm-5 col-form-label text-left">
                           <b>{{language.delivery_date}}</b>
                         </label>
-                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_until | date: 'MM/dd/yyyy'}}</label>
+                        <label class="col-sm-7 col-form-label text-right font-weight-light">{{step1_data.delivery_until
+                          | date: 'MM/dd/yyyy'}}</label>
                       </div>
 
                       <div class="form-group row clearfix ">
@@ -1338,8 +1398,10 @@
                     <!-- <div class="col-md-3"> </div> -->
                     <div class="col-md-12 pr-0">
                       <div class="accessories_table">
-                        <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
-                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120" [minResizableWidth]="60">
+                        <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false"
+                          [groupable]="false" [filterable]="false">
+                          <kendo-grid-column field="step_5_right_grid_rowIndex" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.hash}}
                             </ng-template>
@@ -1347,15 +1409,17 @@
                               {{row.rowIndex}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_sl_no" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                               SI#
+                              SI#
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
                               {{row.sl_no}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_item" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.item}}
                             </ng-template>
@@ -1363,7 +1427,8 @@
                               {{row.item}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_qunatity" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right">{{this.language.quantity}}</span>
                             </ng-template>
@@ -1371,7 +1436,8 @@
                               <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.price}} ({{this.defaultCurrency}})
                             </ng-template>
@@ -1379,7 +1445,8 @@
                               {{row.price}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120" [minResizableWidth]="60">
+                          <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120"
+                            [minResizableWidth]="120">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               {{this.language.price_extn}}
                             </ng-template>

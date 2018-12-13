@@ -56,7 +56,8 @@ export class BomComponent implements OnInit {
   public isPriceDisabled:boolean=false
   public  pricehide:boolean=false;
   public  isPropagateQtyDisable:boolean=false;
-
+  public GetItemData = [];
+  public showLoader: boolean = true;
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -102,6 +103,7 @@ export class BomComponent implements OnInit {
       this.isFeatureIdEnable = false;
       this.FeatureLookupBtnhide = false;
       this._el.nativeElement.focus();
+      this.showLoader  = false;
     }
     else {
       this.isUpdateButtonVisible = true;
@@ -225,6 +227,7 @@ export class BomComponent implements OnInit {
             }
             this.onExplodeClick();
           }
+          this.showLoader  = false;
           console.log(this.feature_bom_table);
         }
       )
@@ -725,6 +728,12 @@ export class BomComponent implements OnInit {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
+                  if (data[0].PHOTO != null) {
+                    if (data[0].PHOTO != "") {
+                      this.feature_bom_table[i].preview =this.commonData.get_current_url() +  data[0].OPTM_PHOTO;
+                    }
+                  }
+                 
 
                 }
               }
@@ -865,14 +874,22 @@ export class BomComponent implements OnInit {
 
   //delete record 
   delete_record() {
-    this.fbom.DeleteData(this.feature_bom_data.feature_id).subscribe(
+    this.GetItemData = []
+    this.GetItemData.push({
+      CompanyDBId: this.companyName,
+      FeatureId: this.feature_bom_data.feature_id
+    });
+    this.fbom.DeleteData(this.GetItemData).subscribe(
       data => {
+        console.log(data);
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.router.navigateByUrl('feature/bom/view');
           return;
-        }
-        else {
+        } else if (data == "ReferenceExists"){
+          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+          return;
+        } else {
           this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
           return;
         }
