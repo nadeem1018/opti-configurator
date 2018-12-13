@@ -187,7 +187,7 @@ export class OutputComponent implements OnInit {
       this.step1_data.document_name = this.language.SalesOrder;
     }
     this.feature_accessory_list = []
-    this.step2_data.quantity = parseFloat("1").toFixed(3);
+    this.step2_data.quantity = parseFloat("1");
     this._el.nativeElement.focus();
     var todaysDate = new Date();
     //var mindate =new Date(todaysDate) ;
@@ -383,7 +383,7 @@ export class OutputComponent implements OnInit {
       this.OutputService.GetModelIdbyModelCode(ModelBOMData[0].OPTM_ITEMCODE).subscribe(
         data => {
           if (data.length > 0) {
-            this.step2_data.quantity = parseFloat(ModelBOMData[0].OPTM_QUANTITY).toFixed(3)
+            this.step2_data.quantity = parseFloat(ModelBOMData[0].OPTM_QUANTITY);
             this.step2_data.model_id = data[0].OPTM_FEATUREID
             this.step2_data.model_code = ModelBOMData[0].OPTM_ITEMCODE
             this.step2_data.model_name = data[0].OPTM_DISPLAYNAME
@@ -570,18 +570,18 @@ export class OutputComponent implements OnInit {
     if (inputid == "quantity") {
       if (value == 0 || value == '' || value == null || value == undefined) {
         this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
-        this.step2_data.quantity = parseFloat(this.previousquantity).toFixed(3);
+        this.step2_data.quantity = parseFloat(this.previousquantity);
         return;
       }
       if (value < 0) {
         this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-        this.step2_data.quantity = parseFloat(this.previousquantity).toFixed(3);
+        this.step2_data.quantity = parseFloat(this.previousquantity);
         return;
       }
       var rgexp = /^\d+$/;
       if (rgexp.test(value) == false) {
         this.toastr.error('', this.language.quantity_numeric_only, this.commonData.toast_config);
-        this.step2_data.quantity = parseFloat(this.previousquantity).toFixed(3);
+        this.step2_data.quantity = parseFloat(this.previousquantity);
         return;
       }
       else {
@@ -595,7 +595,7 @@ export class OutputComponent implements OnInit {
 
         this.feature_price_calculate();
       }
-      value = parseFloat(value).toFixed(3);
+      value = parseFloat(value);
       this.previousquantity = value
       this.step2_data.quantity = value
     }
@@ -1415,7 +1415,7 @@ export class OutputComponent implements OnInit {
     this.feature_tax_total[1].value = 0;
     this.feature_discount_percent = 0;
     this.accessory_discount_percent = 0;
-    this.step2_data.quantity = parseFloat("1").toFixed(3);
+    this.step2_data.quantity = parseFloat("1");
     this._el.nativeElement.focus();
     this.ModelHeaderData = [];
     this.ModelBOMDataForSecondLevel = [];
@@ -3611,7 +3611,7 @@ export class OutputComponent implements OnInit {
         return obj['FeatureId'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['Description'] == ModelData[imodelarray].OPTM_DISPLAYNAME;
       });
 
-      ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3)
+      ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
       var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
       
       if (isExist.length == 0) {

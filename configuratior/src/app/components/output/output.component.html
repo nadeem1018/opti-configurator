@@ -692,7 +692,7 @@
                               #quantity [disabled]="featurerow.isQuantityDisabled" />
                           </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120"
+                       <!--  <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_source}}
@@ -711,14 +711,14 @@
                               </div>
                             </div>
                           </ng-template>
-                        </kendo-grid-column>
+                        </kendo-grid-column> -->
                         <kendo-grid-column field="step_2_right_grid_price" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                            <input type="number"  #actual_price disabled title="{{featurerow.Actualprice}}" class="form-control  form-control-sm mt3"
+                            <input [disabled]="featurerow.isPriceDisabled" type="text"  #actual_price title="{{featurerow.Actualprice}}" class="form-control  form-control-sm mt3"
                               style="text-align:right" id="quantity" value={{featurerow.Actualprice}} (change)="on_feature_input_change('actual_price',actual_price.value,featurerow.FeatureId,featurerow.Item)"
                               #pricextn />
                           </ng-template>
@@ -729,7 +729,7 @@
                             {{this.language.price_extn}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                            <input type="number" title="{{featurerow.priceext}}" disabled class="form-control  form-control-sm mt3"
+                            <input type="text" title="{{featurerow.priceext}}" disabled class="form-control  form-control-sm mt3"
                               style="text-align:right" id="quantity" value={{featurerow.pricextn}} (change)="on_feature_input_change('priceext',pricextn.value,featurerow.FeatureId,featurerow.Item)"
                               #pricextn />
                           </ng-template>
