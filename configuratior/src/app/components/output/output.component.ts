@@ -141,7 +141,7 @@ export class OutputComponent implements OnInit {
   public step0_isNextButtonVisible: boolean = false;
   public setModelDataFlag: boolean = false;
   public defaultitemflagid: any;
-  
+
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -341,8 +341,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.document = "sales_order"
           }
           //Bug no. 18436..Draft status was not showing...Ashish Devade
-          if (data.CustomerOutput[0].OPTM_STATUS == "D")
-          {
+          if (data.CustomerOutput[0].OPTM_STATUS == "D") {
             this.step1_data.document = 'draft';
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
@@ -590,7 +589,7 @@ export class OutputComponent implements OnInit {
           this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
           this.feature_itm_list_table[i].pricextn = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
           this.feature_itm_list_table[i].quantity = parseFloat(this.feature_itm_list_table[i].quantity).toFixed(3)
-          this.feature_itm_list_table[i].pricextn = parseFloat(this.feature_itm_list_table[i].pricextn ).toFixed(3)
+          this.feature_itm_list_table[i].pricextn = parseFloat(this.feature_itm_list_table[i].pricextn).toFixed(3)
         }
 
         this.feature_price_calculate();
@@ -1218,27 +1217,27 @@ export class OutputComponent implements OnInit {
             this.feature_itm_list_table[i].quantity = parseFloat("1").toFixed(3);
             return;
           }
-         
+
           this.feature_itm_list_table[i].quantity = parseFloat(value).toFixed(3);
-          var priceextn:any=this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
-          this.feature_itm_list_table[i].pricextn =  parseFloat(priceextn).toFixed(3);
+          var priceextn: any = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
+          this.feature_itm_list_table[i].pricextn = parseFloat(priceextn).toFixed(3);
         }
         else if (inputid == "actual_price") {
           if (isNaN(value) == true) {
             this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-            var price:any=  this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
-            this.feature_itm_list_table[i].Actualprice =parseFloat(price).toFixed(3); 
+            var price: any = this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
+            this.feature_itm_list_table[i].Actualprice = parseFloat(price).toFixed(3);
             return;
           }
           if (value < 0) {
             this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-            var price:any=  this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
-            this.feature_itm_list_table[i].Actualprice =parseFloat(price).toFixed(3); 
+            var price: any = this.feature_itm_list_table[i].pricextn / this.feature_itm_list_table[i].quantity
+            this.feature_itm_list_table[i].Actualprice = parseFloat(price).toFixed(3);
             return;
           }
-          this.feature_itm_list_table[i].Actualprice =parseFloat(value).toFixed(3); 
-          var priceextn:any=this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
-          this.feature_itm_list_table[i].pricextn =  parseFloat(priceextn).toFixed(3);
+          this.feature_itm_list_table[i].Actualprice = parseFloat(value).toFixed(3);
+          var priceextn: any = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
+          this.feature_itm_list_table[i].pricextn = parseFloat(priceextn).toFixed(3);
         }
         else {
           if (value < 0) {
@@ -1441,7 +1440,7 @@ export class OutputComponent implements OnInit {
     let AllDataForModelBomOutput: any = {};
     AllDataForModelBomOutput.modelinputdatalookup = [];
     AllDataForModelBomOutput.getmodelsavedata = [];
-    
+
     AllDataForModelBomOutput.modelinputdatalookup.push({
       CompanyDBID: this.common_output_data.companyName,
       ModelID: this.step2_data.model_id,
@@ -1662,16 +1661,16 @@ export class OutputComponent implements OnInit {
       selectedvalue: selectedvalue,
       CompanyDBID: this.common_output_data.companyName,
       SuperModelId: this.step2_data.model_id,
-      currentDate : this.step1_data.posting_date
+      currentDate: this.step1_data.posting_date
     });
 
     GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-      obj['OPTM_QUANTITY']=parseFloat(obj['OPTM_QUANTITY'])
+      obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
       return obj['checked'] == true
     })
 
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-      obj['OPTM_QUANTITY']=parseFloat(obj['OPTM_QUANTITY'])
+      obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
       return obj['checked'] == true
     })
 
@@ -1791,12 +1790,12 @@ export class OutputComponent implements OnInit {
                           return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID;
                         });
                       }
-                      else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2)  {
+                      else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2) {
                         isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
                           return obj['OPTM_ITEMKEY'] == data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY;
                         });
                       }
-                      else{
+                      else {
                         isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
                           return obj['OPTM_VALUE'] == data.DataForSelectedFeatureModelItem[i].OPTM_VALUE;
                         });
@@ -1965,7 +1964,7 @@ export class OutputComponent implements OnInit {
                     }
                   }
 
-                  this.defaultitemflagid=feature_model_data.OPTM_FEATUREID
+                  this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
 
                 }
               }
@@ -2059,7 +2058,7 @@ export class OutputComponent implements OnInit {
                       }
                     }
                   }
-                  this.defaultitemflagid=feature_model_data.OPTM_FEATUREID
+                  this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                 }
               }
               else if (type == 2) {
@@ -2069,14 +2068,14 @@ export class OutputComponent implements OnInit {
                   propagateqty = parentarray[0].OPTM_QUANTITY
                 }
                 this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty);
-                this.defaultitemflagid=data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
+                this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
               }
 
             }//end data length
-           
+
             this.RuleIntegration(data.RuleOutputData, value);
             this.checkedFunction(feature_model_data, parentarray, value);
-            
+
           } //end value
           else {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -2147,7 +2146,7 @@ export class OutputComponent implements OnInit {
 
       ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
       var formatequantity: any = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
-      
+
       var priceextn: any = formatequantity * ItemData[0].Price
 
       if (isExist.length == 0) {
@@ -2428,7 +2427,7 @@ export class OutputComponent implements OnInit {
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
               ShipTo: this.customerShipTo,
-              currentDate : this.step1_data.posting_date
+              currentDate: this.step1_data.posting_date
             });
             this.OutputService.fillShipAddress(this.ship_data).subscribe(
               data => {
@@ -2897,9 +2896,9 @@ export class OutputComponent implements OnInit {
     this.step3_data_final = [];
 
     this.step2_final_dataset_to_save = [];
-    let grand_total = Number(this.acc_grand_total) 
+    let grand_total = Number(this.acc_grand_total)
     let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
-    let price_ext:any = grand_total;
+    let price_ext: any = grand_total;
     this.step3_data_final.push({
       "rowIndex": "1",
       "sl_no": "1",
@@ -2992,7 +2991,7 @@ export class OutputComponent implements OnInit {
           "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
           "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
           "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
-          "OPTM_DISCPERCENT":0,
+          "OPTM_DISCPERCENT": 0,
           "OPTM_CREATEDBY": this.common_output_data.username,
           "OPTM_MODIFIEDBY": this.common_output_data.username,
           "UNIQUEIDNT": imodelData[0].OPTM_UNIQUEIDNT,
@@ -3151,7 +3150,7 @@ export class OutputComponent implements OnInit {
               "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
               "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
               "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
-              "OPTM_DISCPERCENT":0,
+              "OPTM_DISCPERCENT": 0,
               "OPTM_CREATEDBY": this.common_output_data.username,
               "OPTM_MODIFIEDBY": this.common_output_data.username,
               "UNIQUEIDNT": ifeatureHeaderData[0].OPTM_UNIQUEIDNT,
@@ -3252,9 +3251,23 @@ export class OutputComponent implements OnInit {
         }
 
       }
+
       this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey.toString()
     }
+    var sortitemkey="";
+    var sortitemkeyarray = this.step2_final_dataset_to_save[0].OPTM_KEY.split("-").sort((a, b) => a - b)
 
+    for (var isort in sortitemkeyarray) {
+      if (sortitemkey.length == 0) {
+        sortitemkey = sortitemkeyarray[isort]
+      } else {
+        sortitemkey = sortitemkey + "-" + sortitemkeyarray[isort]
+      }
+    }
+
+    this.step2_final_dataset_to_save[0].OPTM_KEY = sortitemkey.toString()
+    itemkey=sortitemkey
+   
     for (var isave in this.step2_final_dataset_to_save) {
       if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "") {
         this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkey
@@ -3425,8 +3438,8 @@ export class OutputComponent implements OnInit {
           });
           if (data.DataForSelectedFeatureModelItem.length > 0)
             this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
-            console.log('this.feature_accessory_list');
-            console.log(this.feature_accessory_list);
+          console.log('this.feature_accessory_list');
+          console.log(this.feature_accessory_list);
         },
         error => {
           this.stoprefreshloader();
@@ -3625,7 +3638,7 @@ export class OutputComponent implements OnInit {
     var isExist;
     let isPriceDisabled: boolean = true;
     let isPricehide: boolean = true;
-    let ItemPrice:any = 0;
+    let ItemPrice: any = 0;
 
     for (var imodelarray in ModelData) {
       isExist = this.feature_itm_list_table.filter(function (obj) {
@@ -3634,7 +3647,7 @@ export class OutputComponent implements OnInit {
 
       ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
       var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
-      
+
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
@@ -3645,7 +3658,7 @@ export class OutputComponent implements OnInit {
           quantity: parseFloat(formatequantity).toFixed(3),
           price: ModelData[imodelarray].ListName,
           Actualprice: 0,
-          pricextn:0,
+          pricextn: 0,
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
@@ -3751,20 +3764,20 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                   }
-                  else{
+                  else {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                   }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                 }
-                else{
+                else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
               }
@@ -3772,7 +3785,7 @@ export class OutputComponent implements OnInit {
           }
           else if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE == 2) {
             if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
-              var defaultitemarray=[];
+              var defaultitemarray = [];
               if (value == true) {
                 if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
@@ -3780,27 +3793,27 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
-                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE=this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
+                    this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE = this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
                     defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
-                    if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
-                    this.getDefaultItems(defaultitemarray)
+                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                      this.getDefaultItems(defaultitemarray)
                   }
-                  else{
+                  else {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                   }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                   defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
-                  if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
-                  this.getDefaultItems(defaultitemarray)
+                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                    this.getDefaultItems(defaultitemarray)
                 }
-                else{
+                else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
               }
@@ -3815,20 +3828,20 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                   }
-                  else{
+                  else {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                   }
                 }
               }
               else {
                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                 }
-                else{
+                else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
               }
@@ -3849,20 +3862,20 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                   }
-                  else{
+                  else {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                   }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                 }
-                else{
+                else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
               }
@@ -3871,7 +3884,7 @@ export class OutputComponent implements OnInit {
           }
           else if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_TYPE == 2) {
             if (this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
-              var defaultitemarray=[];
+              var defaultitemarray = [];
               if (value == true) {
                 if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = true
@@ -3879,26 +3892,26 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                     defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
-                    if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
-                  this.getDefaultItems(defaultitemarray)
+                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                      this.getDefaultItems(defaultitemarray)
                   }
-                  else{
+                  else {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                   }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True"){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                   defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
-                  if(this.defaultitemflagid!=defaultitemarray[0].OPTM_FEATUREID)
-                  this.getDefaultItems(defaultitemarray)
+                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                    this.getDefaultItems(defaultitemarray)
                 }
-                else{
+                else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
               }
@@ -3914,20 +3927,20 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                  if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                   }
-                  else{
+                  else {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                   }
                 }
               }
               else {
                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                if(RuleOutputData[iItemRule].OPTM_DEFAULT=="True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID!=this.defaultitemflagid){
+                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                 }
-                else{
+                else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                 }
               }
