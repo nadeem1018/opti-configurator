@@ -2849,12 +2849,15 @@ export class OutputComponent implements OnInit {
       return obj['OPTM_MANDATORY'] == "Y"
     })
     let isMandatoryCount = 0;
+    var counted=0;
+    var itemnotselectedarray=[];
     if (isMandatoryItems.length > 0) {
       for (let imandtory = 0; imandtory < isMandatoryItems.length; imandtory++) {
-        if (isMandatoryItems[imandtory].OPTM_TYPE == "2") {
+        if (isMandatoryItems[imandtory].OPTM_TYPE == "3") {
           for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
-            if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitems].FeatureId) {
+            if (isMandatoryItems[imandtory].OPTM_CHILDMODELID == this.feature_itm_list_table[ifeatureitems].FeatureId) {
               isMandatoryCount++;
+              counted=1;
             }
           }
         }
@@ -2862,23 +2865,30 @@ export class OutputComponent implements OnInit {
           for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
             if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true) {
               isMandatoryCount++;
+              counted=1;
             }
           }
-        }
-        else {
           for (let imodelBOMitems = 0; imodelBOMitems < this.ModelBOMDataForSecondLevel.length; imodelBOMitems++) {
             if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked == true) {
               isMandatoryCount++;
+              counted=1;
             }
           }
         }
-
-
-
+        if(counted==0){
+          itemnotselectedarray.push(isMandatoryItems[imandtory].OPTM_DISPLAYNAME)
+        }
+        counted=0;
       }
     }
     if (isMandatoryCount != isMandatoryItems.length) {
-      this.toastr.error('', this.language.MandatoryItems, this.commonData.toast_config);
+      var psmsg=this.language.MandatoryItems
+      if(itemnotselectedarray.length>0){
+        for(var item in itemnotselectedarray ){
+          psmsg=psmsg + " - " +  itemnotselectedarray[item]
+        }
+      }
+      this.toastr.error('',psmsg, this.commonData.toast_config);
       return;
     }
     this.navigatenextbtn = true;
