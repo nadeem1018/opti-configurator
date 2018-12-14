@@ -158,10 +158,12 @@ export class LoginComponent implements OnInit {
         this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
         return;
       }
+      
       sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
       sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
       sessionStorage.setItem('defaultRecords', this.record_per_page);
       sessionStorage.setItem('isLoggedIn', "true");
+
       sessionStorage.setItem('defaultCurrency', "$");
       // this.router.navigateByUrl('/home');
       let home_page = this.commonData.application_path + '/index.html#home';
