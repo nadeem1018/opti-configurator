@@ -89,6 +89,7 @@
     "UserNotActive": "User is not active",
     "InvalidCredentials": "Username or password not valid",
     "isUserPermitted": "You Don't have Permission to Access this Product",
+    "FailedToReadCurrency": "There was some error while fetching currency details",
     "isUsernameBlank": "Enter Username",
     "isPasswordBlank": "Enter Password",
     "PasswordRequired": "Password required",
