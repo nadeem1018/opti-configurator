@@ -206,6 +206,8 @@
     "description_field_not_blank":"Description field cannot be blank.",
     "selecteffromdate": "Select effective from date",
     "selectefftodate": "Select effective to date",
+    "effective_to_greater_effective_from": "Effective From date cannot be greater than Effective To date",
+    "effective_to_less_effective_from": "Effective To date cannot be less than Effective From date",
     "selectoperator": "Select operator at row index: ",
     "selectbraces": "Select braces at row index: ",
     "selectcondition": "Select condition at row index:",

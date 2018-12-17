@@ -161,13 +161,14 @@ export class LoginComponent implements OnInit {
         this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
         return;
       }
+      
       sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
       sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
       sessionStorage.setItem('defaultRecords', this.record_per_page);
       sessionStorage.setItem('isLoggedIn', "true");
       // this.router.navigateByUrl('/home');
-      // let home_page = this.commonData.application_path + '/index.html#home';
-      let home_page = this.commonData.application_path + '/index.html#item-code-generation';
+      let home_page = this.commonData.application_path + '/index.html#home';
+      // let home_page = this.commonData.application_path + '/index.html#item-code-generation';
 
       window.location.href = home_page;
     }

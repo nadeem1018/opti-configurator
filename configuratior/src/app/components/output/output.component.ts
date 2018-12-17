@@ -378,13 +378,20 @@ export class OutputComponent implements OnInit {
   }
 
   getModelDatabyModelCodeAndId(ModelBOMData) {
+    console.log(ModelBOMData);
     if (ModelBOMData.length > 0) {
-      this.OutputService.GetModelIdbyModelCode(ModelBOMData[0].OPTM_ITEMCODE).subscribe(
+      let tempModelData = []; 
+      tempModelData =  ModelBOMData.filter(function(obj){
+        return obj['OPTM_KEY']!="" && obj['OPTM_ITEMTYPE']=="0"
+      })
+      console.log('tempModelData');
+      console.log(tempModelData);
+      this.OutputService.GetModelIdbyModelCode(tempModelData[0].OPTM_ITEMCODE).subscribe(
         data => {
           if (data.length > 0) {
-            this.step2_data.quantity = parseFloat(ModelBOMData[0].OPTM_QUANTITY);
+            this.step2_data.quantity = parseFloat(tempModelData[0].OPTM_QUANTITY);
             this.step2_data.model_id = data[0].OPTM_FEATUREID
-            this.step2_data.model_code = ModelBOMData[0].OPTM_ITEMCODE
+            this.step2_data.model_code = tempModelData[0].OPTM_ITEMCODE
             this.step2_data.model_name = data[0].OPTM_DISPLAYNAME
             this.step2_data.templateid = data[0].OPTM_MODELTEMPLATEITEM;
             this.step2_data.itemcodegenkey = data[0].OPTM_ITEMCODEGENREF;

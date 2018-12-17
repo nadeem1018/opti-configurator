@@ -2,9 +2,13 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
+<<<<<<< HEAD
 	"service_url":"http://localhost:9512/",
+=======
+	"service_url":"http://localhost:9632/",
+>>>>>>> 11cd2614d2623335a3050a8a86e6209e758ee6fb
 	"admin_db_name":"OPTIPROADMIN",
 	"product_code":"CNF",
-	"system_version":"2.0",
+	"system_version":"1.5",
 	"installed" : 1
 }
