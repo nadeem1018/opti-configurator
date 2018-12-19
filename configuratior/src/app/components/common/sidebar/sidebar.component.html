@@ -1,6 +1,6 @@
 <ul class="sidebar navbar-nav sidebar_top_margin-3 toggled" style=" height: 100%;" id="opti_sidebar">
   
-  <li class="nav-item " (click)="onMenuPressHome('home')" [ngClass]="{'active': selectedItem == 'home'}">
+  <li class="nav-item " (click)="onMenuPressHome('home')" [ngClass]="{'active': selectedItem == 'home'}" title="{{this.language.dashboard}}">
     <a class="nav-link" routerLink="home" href="javascript:;">
       <img src="{{imgPath}}/leftpanel/home.svg" width="25px" height="25px;">
       <span>{{this.language.dashboard}}</span>
@@ -9,8 +9,8 @@
 
   <ng-container *ngFor="let menuRow of menu_obj, let i = index">
       <li class="nav-item" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i, getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL)"
-        routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}" [ngClass]="{'active': selectedItem == getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL}">
-        <a class="nav-link" href='javascript:;'>
+        routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}" [ngClass]="{'active': selectedItem == getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL}" title="{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}">
+        <a class="nav-link" href='javascript:;' >
           <img src="{{getMenuDetails(menuRow.OPTM_MENUID)[0].icon_path}}" width="25px" height="25px;" >
           <span>{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}</span>
         </a>

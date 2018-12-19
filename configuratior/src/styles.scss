@@ -65,6 +65,10 @@ $borderColor:#c7c7c7;
         width: calc(100% - 106px);
     }
 
+    .opti_lookup-loader {
+        background: rgba(255,255,255,0.5);
+    }
+
     body.sidebar-toggled{
         .opti_loader-module-grid-list{
             height: calc(100% - 30px);
@@ -461,4 +465,12 @@ body.home-view-model{
     #wrapper #content-wrapper{
         padding-bottom: 0;
     }
+}
+
+ul.parent_ul div:first-child li::after {
+    border-top: none;
+}
+
+ul.parent_ul div:first-child li treeview li::after {
+    border-top: 1px solid #fff;
 }
