@@ -154,20 +154,28 @@ export class LoginComponent implements OnInit {
       return;
     }
     else {
+      //This will get the currency code from db
+      this.getCurrencyCode(this.selecetedComp.OPTM_COMPID);
+
       if (this.selecetedComp.OPTM_COMPID == undefined) {
         this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
         return;
       }
+      
       sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
       sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
       sessionStorage.setItem('defaultRecords', this.record_per_page);
       sessionStorage.setItem('isLoggedIn', "true");
+
+      this.CommonService.setisLoggedInData();
+
       sessionStorage.setItem('defaultCurrency', "$");
       // this.router.navigateByUrl('/home');
-      // let home_page = this.commonData.application_path + '/index.html#home';
-      let home_page = this.commonData.application_path + '/index.html#item-code-generation';
+      let home_page = this.commonData.application_path + '/index.html#home';
+      // let home_page = this.commonData.application_path + '/index.html#item-code-generation';
 
-      window.location.href = home_page;
+      //window.location.href = home_page;
+      this.router.navigateByUrl('/home');
     }
   }
 
@@ -187,9 +195,9 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-         // this.psURL = "http://localhost:9500";
+          // this.psURL = "http://localhost:9500";
           //this.psURL = "http://172.16.6.140/OptiAdmin";
-         // this.psURL = "http://172.16.6.122/OptiproAdmin";
+          //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
         }
       }
@@ -234,5 +242,27 @@ export class LoginComponent implements OnInit {
     this.connectBtnText = (this.language.connect != undefined) ? this.language.connect : "Connect";
   }
 
+  //Get Currency code from backend
+  getCurrencyCode(selectedCompID) {
+    this.auth.getCurrencyCode(selectedCompID).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+          if (data.length > 0) {
+            sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
+          }
+          else {
+            sessionStorage.setItem('defaultCurrency', "$");
+          }
+        }
+        else {
+          sessionStorage.setItem('defaultCurrency', "$");
+        }
+      },
+      error => {
+        sessionStorage.setItem('defaultCurrency', "$");
+        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+      }
+    )
+  }
 
 }

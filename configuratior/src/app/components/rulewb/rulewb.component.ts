@@ -365,7 +365,7 @@ export class RulewbComponent implements OnInit {
     if (this.rule_wb_data.effective_to != null) {
       if (this.rule_wb_data.effective_to != "") {
         if (this.rule_wb_data.effective_from > this.rule_wb_data.effective_to) {
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          this.toastr.error('', this.language.effective_to_greater_effective_from, this.commonData.toast_config);
           this.rule_wb_data.effective_from =  this.editeffectivefrom;
           return;
         }
@@ -381,7 +381,7 @@ export class RulewbComponent implements OnInit {
     if (this.rule_wb_data.effective_from != null) {
       if (this.rule_wb_data.effective_from != "") {
         if (this.rule_wb_data.effective_from > this.rule_wb_data.effective_to) {
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          this.toastr.error('', this.language.effective_to_less_effective_from, this.commonData.toast_config);
           this.rule_wb_data.effective_to = this.editeffectiveto;
           return;
         }
@@ -690,13 +690,13 @@ export class RulewbComponent implements OnInit {
 
 
       if (index != "0") {
-        /*  if (type != "" ) {
-           this.generated_expression_value = "";
-           this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
-           this.showAddSequenceBtn = false;
-           this.showUpdateSequenceBtn == false;
-           return false;
-         } */
+        if (type != "" && operator == ""){
+          this.generated_expression_value = "";
+          this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
+          this.showAddSequenceBtn = false;
+          this.showUpdateSequenceBtn == false;
+          return false;
+        }
       }
 
       if (index == "0") {

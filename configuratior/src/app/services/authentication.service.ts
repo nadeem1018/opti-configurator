@@ -43,6 +43,15 @@ common_params = new CommonData();
     return this.httpclient.post(this.config_params.service_url + "/Base/GetPSURL", jObject, this.common_params.httpOptions);
   }
 
+   //Get currency code
+   getCurrencyCode(selectedCompID): Observable<any> {
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config')); 
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject: any = { GetPSURL: JSON.stringify([{ CompanyDBID: selectedCompID }]) };
+    //Return the response form the API 
+    return this.httpclient.post(this.config_params.service_url + "/Base/GetCurrencyCode", jObject, this.common_params.httpOptions);
+  }
+
 }
 
 

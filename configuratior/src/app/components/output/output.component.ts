@@ -18,6 +18,7 @@ import { NullInjector } from '../../../../node_modules/@angular/core/src/di/inje
   styleUrls: ['./output.component.scss']
 })
 export class OutputComponent implements OnInit {
+  public selectedImage = "";
   @ViewChild("modelcode") _el: ElementRef;
   @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
@@ -378,13 +379,20 @@ export class OutputComponent implements OnInit {
   }
 
   getModelDatabyModelCodeAndId(ModelBOMData) {
+    console.log(ModelBOMData);
     if (ModelBOMData.length > 0) {
-      this.OutputService.GetModelIdbyModelCode(ModelBOMData[0].OPTM_ITEMCODE).subscribe(
+      let tempModelData = []; 
+      tempModelData =  ModelBOMData.filter(function(obj){
+        return obj['OPTM_KEY']!="" && obj['OPTM_ITEMTYPE']=="0"
+      })
+      console.log('tempModelData');
+      console.log(tempModelData);
+      this.OutputService.GetModelIdbyModelCode(tempModelData[0].OPTM_ITEMCODE).subscribe(
         data => {
           if (data.length > 0) {
-            this.step2_data.quantity = parseFloat(ModelBOMData[0].OPTM_QUANTITY);
+            this.step2_data.quantity = parseFloat(tempModelData[0].OPTM_QUANTITY);
             this.step2_data.model_id = data[0].OPTM_FEATUREID
-            this.step2_data.model_code = ModelBOMData[0].OPTM_ITEMCODE
+            this.step2_data.model_code = tempModelData[0].OPTM_ITEMCODE
             this.step2_data.model_name = data[0].OPTM_DISPLAYNAME
             this.step2_data.templateid = data[0].OPTM_MODELTEMPLATEITEM;
             this.step2_data.itemcodegenkey = data[0].OPTM_ITEMCODEGENREF;
@@ -2587,7 +2595,7 @@ export class OutputComponent implements OnInit {
     )
   }
 
-  onDocumentChange() {
+  onDocumentChange(documentValue) {
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.SalesQuote;

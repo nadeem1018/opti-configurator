@@ -13,6 +13,11 @@ import { UIHelper } from '../../../helpers/ui.helpers';
 
 
 export class ViewFeatureBOMComponent implements OnInit {
+
+    serviceData: any;
+    public lookupfor = '';
+    public selectedImage = "";
+
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     language = JSON.parse(sessionStorage.getItem('current_lang'));
@@ -72,6 +77,10 @@ export class ViewFeatureBOMComponent implements OnInit {
             width: '500'
         },
     ];
+
+    getLookupValue($event) {
+        
+    }  
 
     detectDevice() {
         let getDevice = UIHelper.isDevice();

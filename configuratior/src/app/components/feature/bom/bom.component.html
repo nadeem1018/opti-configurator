@@ -143,7 +143,7 @@
                                         <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value,type_value_code)"
                                             value={{dataItem.type_value_code}} #type_value_code title="{{dataItem.type_value_code}}"
                                         />
-                                        <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value)"
+                                        <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, dataItem.type_value_code)"
                                             value={{dataItem.type_value}} #type_value title="{{dataItem.type_value}}" />
                                         <div class="input-group-append" [hidden]=dataItem.hide>
                                             <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_change(dataItem.type, dataItem.rowindex)">
