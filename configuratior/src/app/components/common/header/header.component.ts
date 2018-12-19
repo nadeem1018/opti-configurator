@@ -16,10 +16,19 @@ export class HeaderComponent implements OnInit {
   language: any = "";
   project_name:any = 'OptiPro Product Configurator';
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) {}
-  showHeader: boolean = (sessionStorage.getItem('isLoggedIn') !== null) ? true : false;
+  showHeader: boolean ;
   imgPath = 'assets/images';
   
   ngOnInit() {
+
+    this.CommonService.currentIsLoggedInDataData.subscribe(
+      (data) => {
+          console.log('data'+data);
+          this.showHeader = data;
+          }
+    );
+
+
      this.CommonService.get_config();
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
@@ -48,11 +57,13 @@ export class HeaderComponent implements OnInit {
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('selectedComp');
     sessionStorage.removeItem('loggedInUser');
-
+    
     // this.router.navigateByUrl('/login');
-   setTimeout(function(){
-     window.location.href = login_page;
-   }, 1000);
+   
+    setTimeout(()=>{   
+      this.CommonService.setisLoggedInData();
+      this.router.navigateByUrl('/login');
+    }, 1000);
   }
 
   /* checkSession(){

@@ -15,6 +15,8 @@ import { UIHelper } from '../../../helpers/ui.helpers';
 
 
 export class ViewFeatureModelComponent implements OnInit {
+    serviceData: any;
+    public selectedImage = "";
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     public commonData = new CommonData();
@@ -95,6 +97,10 @@ export class ViewFeatureModelComponent implements OnInit {
     isIpad:boolean=false;
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
+
+    getLookupValue($event) {
+        
+    }
   
     on_selection(grid_event) {
         grid_event.selectedRows = [];

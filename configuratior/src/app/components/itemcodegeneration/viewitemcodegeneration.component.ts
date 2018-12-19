@@ -16,6 +16,9 @@ import { UIHelper } from '../../helpers/ui.helpers';
 
 
 export class ViewItemCodeGenerationComponent implements OnInit {
+    serviceData: any;
+    public lookupfor = '';
+    public selectedImage = "";
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
     page_main_title = 'Item Code Generation';
@@ -75,6 +78,10 @@ export class ViewItemCodeGenerationComponent implements OnInit {
           width: '500'      
         },        
       ];
+
+    getLookupValue($event) {
+        
+    }
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();

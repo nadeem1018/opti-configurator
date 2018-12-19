@@ -52,6 +52,23 @@ common_params = new CommonData();
     return this.httpclient.post(this.config_params.service_url + "/Base/GetCurrencyCode", jObject, this.common_params.httpOptions);
   }
 
+
+  getLicenseData(compId: string, loginCredentials: any): Observable<any> {
+
+    let jObject = {
+      LoginId: loginCredentials.userName,
+      CompanyId: compId
+    };
+    return this.httpclient.post(this.config_params.service_url + "/Login/GetLicenseData", jObject, this.common_params.httpOptions);
+  }
+
+
+
+  RemoveLoggedInUser(): Observable<any> {
+    var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
+    return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
+  }
+
 }
 
 

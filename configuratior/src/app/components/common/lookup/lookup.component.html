@@ -70,7 +70,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
 
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(import_modal)" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('import_modal')" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -136,7 +136,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="enlarge_image_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(enlarge_image_modal)" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -156,7 +156,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-info mr-10" type="button" data-dismiss="modal" (click)="close_lookup(enlarge_image_modal)">
+                    <button class="btn btn-sm btn-info mr-10" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')">
                         <i class="fa fa-check"></i> {{this.language.close}}</button>
                 </div>
             </div>
@@ -171,7 +171,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="tree_view_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(tree_view)" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('tree_view')" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -200,7 +200,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-info mr-10" type="button" data-dismiss="modal" (click)="close_lookup(tree_view)">
+                    <button class="btn btn-sm btn-info mr-10" type="button" data-dismiss="modal" (click)="close_lookup('tree_view')">
                         <i class="fa fa-check"></i> {{this.language.close}}</button>
                 </div>
             </div>
@@ -215,7 +215,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="simple_table_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(simple_table_modal)" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('simple_table_modal')" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -291,7 +291,7 @@
                         <h5 class="modal-title" id="invoice_modal_title">{{popup_title}}</h5>
                     </div>
                     <div class="col-sm-6">
-                        <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup(invoice_modal)" aria-label="Close">
+                        <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup('invoice_modal')" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="fa fa-window-close"></i>
                             </span>
@@ -580,7 +580,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rule_output_table_lookup_title">{{language.rule_output}}</h5>
-                <button class="close" type="button" aria-label="Close" (click)="close_rule_model(rule_output_table_lookup)">
+                <button class="close" type="button" aria-label="Close" (click)="close_rule_model('rule_output_table_lookup')">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -731,7 +731,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rule_selection_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup(rule_selection)" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')" aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -798,7 +798,7 @@
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-info mr-10" type="button" (click)="rule_select_ok()">
                         <i class="fa fa-check"></i> {{this.language.ok}}</button>
-                    <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup(rule_selection)">
+                    <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')">
                         <i class="fa fa-close"></i> {{this.language.close}}</button>
                 </div>
             </div>

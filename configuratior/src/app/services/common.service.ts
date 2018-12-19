@@ -72,4 +72,13 @@ export class CommonService {
     let jObject = { Permission: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') , MenuId:  sessionStorage.getItem('currentMenu') }]) }
     return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetPermissionDetails", jObject, this.common_params.httpOptions);
   }
+
+  // save session data
+  private isLoggedInData = new BehaviorSubject<any>(sessionStorage.getItem('isLoggedIn'));
+  currentIsLoggedInDataData = this.isLoggedInData.asObservable();
+
+  public setisLoggedInData() {
+    this.isLoggedInData.next(sessionStorage.getItem('isLoggedIn'));
+  }
+
 }

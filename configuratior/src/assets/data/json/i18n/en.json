@@ -145,6 +145,7 @@
     "Model_FeatureDesc": "Feature Desc",
     "Model_ModelDesc": "Model Desc",
     "Model_RefValidate": "Invalid value in 'Item Code Generation Ref'",
+    "Invalid_feature_item_value": "Invalid value in 'Feature/Item/Value'",
     "FeatureIDBlank": "Feature id cannot be blank",
     "FeatureCodeBlank": "Feature Code cannot be blank",
     "SelectFeature": "Select feature at row index: ",
@@ -382,7 +383,8 @@
     "ItemCodeGenkey" :"ItemCodeGenkey",
     "enable_filter": "Enable Filter",
    "item_code_cannot_update": "Item code is already used to configure products therefore, cannot update final string",
-    "InvalidFeatureCode": "Invalid Feature Code"
+    "InvalidFeatureCode": "Invalid Feature Code",
+    "Minimumitemsarenotselected":"Minimum items are not selected - "
 
     
 }
