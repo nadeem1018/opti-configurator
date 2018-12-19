@@ -15,14 +15,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(private commonService: CommonService, private toastr: ToastrService, private router: Router) { }
   public menu_obj:any;
-  public menu_options: any = [
-    { "menu_code": 200, "menu_title": "Item Code Generation", "router_link": "item-code-generation/view", "icon_path": this.imgPath +"/leftpanel/code.svg ", "chkURL":"item-code-generation"},
-    { "menu_code": 201, "menu_title": "Feature Model" , "router_link": "feature/model/view", "icon_path":this.imgPath + "/leftpanel/featuremodel.svg", "chkURL":"model" },
-    { "menu_code": 202, "menu_title": "Feature BOM" , "router_link": "feature/bom/view", "icon_path":this.imgPath + "/leftpanel/featureBOM.svg", "chkURL":"bom" },
-    { "menu_code": 203, "menu_title": "Model BOM", "router_link": "modelbom/view" , "icon_path":this.imgPath + "/leftpanel/modelBOM.svg", "chkURL":"modelbom" },
-    { "menu_code": 204, "menu_title": "Rule Work Bench", "router_link": "rulewb/view" , "icon_path":this.imgPath + "/leftpanel/ruleworkbench.svg", "chkURL":"rulewb" },
-    { "menu_code": 205, "menu_title": "Configure", "router_link": "output/view", "icon_path":this.imgPath + "/leftpanel/configure.svg", "chkURL":"output"  }
-  ];
+  public menu_options: any = [];
 
   showSidebar: boolean ;
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
@@ -42,7 +35,14 @@ export class SidebarComponent implements OnInit {
     // get current url with last word
     let getURL = window.location.href;
     //console.log(getURL);
-
+    this.menu_options = [
+      { "menu_code": 200, "menu_title": this.language.itemcodegeneration, "router_link": "item-code-generation/view", "icon_path": this.imgPath + "/leftpanel/code.svg ", "chkURL": "item-code-generation" },
+      { "menu_code": 201, "menu_title": this.language.feature_Model, "router_link": "feature/model/view", "icon_path": this.imgPath + "/leftpanel/featuremodel.svg", "chkURL": "model" },
+      { "menu_code": 202, "menu_title": this.language.feature_Bom, "router_link": "feature/bom/view", "icon_path": this.imgPath + "/leftpanel/featureBOM.svg", "chkURL": "bom" },
+      { "menu_code": 203, "menu_title": this.language.Model_Bom, "router_link": "modelbom/view", "icon_path": this.imgPath + "/leftpanel/modelBOM.svg", "chkURL": "modelbom" },
+      { "menu_code": 204, "menu_title": this.language.rule_workbench, "router_link": "rulewb/view", "icon_path": this.imgPath + "/leftpanel/ruleworkbench.svg", "chkURL": "rulewb" },
+      { "menu_code": 205, "menu_title": this.language.configure, "router_link": "output/view", "icon_path": this.imgPath + "/leftpanel/configure.svg", "chkURL": "output" }
+    ]
     let chkISFeature = getURL.includes('feature');
     
 
