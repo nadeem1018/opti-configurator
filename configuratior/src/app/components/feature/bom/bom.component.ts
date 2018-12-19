@@ -546,7 +546,7 @@ export class BomComponent implements OnInit {
             data => {
 
               if (data === "False") {
-                this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
+                this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
                 this.feature_bom_table[i].type_value = "";
                 this.feature_bom_table[i].type_value_code = "";
                 this.feature_bom_table[i].display_name = "";
@@ -642,7 +642,7 @@ export class BomComponent implements OnInit {
     }
   }
 
-  openFeatureLookUp(status) {
+  openFeatureLookUp() {
     console.log('inopen feature');
     this.serviceData = []
     this.lookupfor = 'feature_lookup';

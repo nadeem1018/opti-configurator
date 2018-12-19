@@ -145,6 +145,7 @@
     "Model_FeatureDesc": "Feature Desc",
     "Model_ModelDesc": "Model Desc",
     "Model_RefValidate": "Invalid value in 'Item Code Generation Ref'",
+    "Invalid_feature_item_value": "Invalid value in 'Feature/Item/Value'",
     "FeatureIDBlank": "Feature id cannot be blank",
     "FeatureCodeBlank": "Feature Code cannot be blank",
     "SelectFeature": "Select feature at row index: ",

@@ -26,14 +26,14 @@ function calculate_progress(progress_block) {
   "use strict"; // Start of use strict
 
   // Toggle the side navigation
-  $("#sidebarToggle").click(function(e) {
+  $(document).on("click","#sidebarToggle", function(e) {
     e.preventDefault();
     $("body").toggleClass("sidebar-toggled");
     $(".sidebar").toggleClass("toggled");
   });
 
   // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+  $(document).on('mousewheel DOMMouseScroll wheel', 'body.fixed-nav .sidebar', function(e) {
     if ($window.width() > 768) {
       var e0 = e.originalEvent,
         delta = e0.wheelDelta || -e0.detail;
@@ -76,7 +76,7 @@ function calculate_progress(progress_block) {
     target_obj.slideToggle();
   });
 
-  $(".gototop").click(function () {
+  $(document).on("click", ".gototop",function () {
     $("html, body").animate({ scrollTop: 0 }, "slow");
     return false;
   });

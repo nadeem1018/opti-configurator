@@ -492,7 +492,7 @@ export class ModelbomComponent implements OnInit {
       });
   } */
 
-  openFeatureLookUp(status) {
+  openFeatureLookUp() {
     this.serviceData = []
     this.service.GetModelList().subscribe(
       data => {
@@ -868,7 +868,7 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  on_isready_change(value, rowindex) {
+  on_isready_change(value) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (value.checked == true) {
         this.modelbom_data[i].ReadyToUse = true

@@ -18,6 +18,7 @@ import { NullInjector } from '../../../../node_modules/@angular/core/src/di/inje
   styleUrls: ['./output.component.scss']
 })
 export class OutputComponent implements OnInit {
+  public selectedImage = "";
   @ViewChild("modelcode") _el: ElementRef;
   @ViewChild("refresh_button") _refresh_el: ElementRef;
   public commonData = new CommonData();
@@ -2592,7 +2593,7 @@ export class OutputComponent implements OnInit {
     )
   }
 
-  onDocumentChange() {
+  onDocumentChange(documentValue) {
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.SalesQuote;

@@ -13,6 +13,11 @@ import { UIHelper } from '../../helpers/ui.helpers';
 
 
 export class RuleWbViewComponent implements OnInit {
+
+    serviceData: any;
+    public lookupfor = '';
+    public selectedImage = "";
+
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
 
@@ -95,6 +100,10 @@ export class RuleWbViewComponent implements OnInit {
     isIpad:boolean=false;
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
+
+    getLookupValue($event) {
+        
+    } 
     
     on_selection(grid_event) {
         grid_event.selectedRows = [];
