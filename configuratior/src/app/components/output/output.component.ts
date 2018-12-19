@@ -308,7 +308,7 @@ export class OutputComponent implements OnInit {
     this.showPrintOptions = true;
   }
   onSavePress() {
-   // this.onValidateNextPress();
+    // this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
   }
 
@@ -380,9 +380,9 @@ export class OutputComponent implements OnInit {
   getModelDatabyModelCodeAndId(ModelBOMData) {
     console.log(ModelBOMData);
     if (ModelBOMData.length > 0) {
-      let tempModelData = []; 
-      tempModelData =  ModelBOMData.filter(function(obj){
-        return obj['OPTM_KEY']!="" && obj['OPTM_ITEMTYPE']=="0"
+      let tempModelData = [];
+      tempModelData = ModelBOMData.filter(function (obj) {
+        return obj['OPTM_KEY'] != "" && obj['OPTM_ITEMTYPE'] == "0"
       })
       console.log('tempModelData');
       console.log(tempModelData);
@@ -532,10 +532,11 @@ export class OutputComponent implements OnInit {
       if (this.step1_data.customer != undefined) {
         this.isNextButtonVisible = true;
         //get contact person
-        this.fillContactPerson();
-        this.fillShipTo();
-        this.fillBillTo();
-        this.fillOwners();
+        this.getCustomerAllInfo();
+        // this.fillContactPerson();
+        // this.fillShipTo();
+        // this.fillBillTo();
+        // this.fillOwners();
       }
       else {
         this.isNextButtonVisible = false;
@@ -2569,11 +2570,12 @@ export class OutputComponent implements OnInit {
 
         else {
           this.isNextButtonVisible = true;
-          this.GetCustomername();
-          this.fillContactPerson();
-          this.fillShipTo();
-          this.fillBillTo();
-          this.fillOwners();
+          this.getCustomerAllInfo();
+          //this.GetCustomername();
+          // this.fillContactPerson();
+          // this.fillShipTo();
+          // this.fillBillTo();
+          // this.fillOwners();
         }
       })
 
@@ -2604,7 +2606,7 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    if (button_press == 'finishPress'){
+    if (button_press == 'finishPress') {
       this.onValidateNextPress();
     }
     let final_dataset_to_save: any = {};
@@ -2856,15 +2858,15 @@ export class OutputComponent implements OnInit {
       return obj['OPTM_MANDATORY'] == "Y"
     })
     let isMandatoryCount = 0;
-    var counted=0;
-    var itemnotselectedarray=[];
+    var counted = 0;
+    var itemnotselectedarray = [];
     if (isMandatoryItems.length > 0) {
       for (let imandtory = 0; imandtory < isMandatoryItems.length; imandtory++) {
         if (isMandatoryItems[imandtory].OPTM_TYPE == "3") {
           for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
             if (isMandatoryItems[imandtory].OPTM_CHILDMODELID == this.feature_itm_list_table[ifeatureitems].FeatureId) {
               isMandatoryCount++;
-              counted=1;
+              counted = 1;
             }
           }
         }
@@ -2872,30 +2874,30 @@ export class OutputComponent implements OnInit {
           for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
             if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true) {
               isMandatoryCount++;
-              counted=1;
+              counted = 1;
             }
           }
           for (let imodelBOMitems = 0; imodelBOMitems < this.ModelBOMDataForSecondLevel.length; imodelBOMitems++) {
             if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked == true) {
               isMandatoryCount++;
-              counted=1;
+              counted = 1;
             }
           }
         }
-        if(counted==0){
+        if (counted == 0) {
           itemnotselectedarray.push(isMandatoryItems[imandtory].OPTM_DISPLAYNAME)
         }
-        counted=0;
+        counted = 0;
       }
     }
     if (isMandatoryCount != isMandatoryItems.length) {
-      var psmsg=this.language.MandatoryItems
-      if(itemnotselectedarray.length>0){
-        for(var item in itemnotselectedarray ){
-          psmsg=psmsg + " - " +  itemnotselectedarray[item]
+      var psmsg = this.language.MandatoryItems
+      if (itemnotselectedarray.length > 0) {
+        for (var item in itemnotselectedarray) {
+          psmsg = psmsg + " - " + itemnotselectedarray[item]
         }
       }
-      this.toastr.error('',psmsg, this.commonData.toast_config);
+      this.toastr.error('', psmsg, this.commonData.toast_config);
       return;
     }
     this.navigatenextbtn = true;
@@ -3271,7 +3273,7 @@ export class OutputComponent implements OnInit {
 
       this.step2_final_dataset_to_save[0].OPTM_KEY = itemkey.toString()
     }
-    var sortitemkey="";
+    var sortitemkey = "";
     var sortitemkeyarray = this.step2_final_dataset_to_save[0].OPTM_KEY.split("-").sort((a, b) => a - b)
 
     for (var isort in sortitemkeyarray) {
@@ -3283,8 +3285,8 @@ export class OutputComponent implements OnInit {
     }
 
     this.step2_final_dataset_to_save[0].OPTM_KEY = sortitemkey.toString()
-    itemkey=sortitemkey
-   
+    itemkey = sortitemkey
+
     for (var isave in this.step2_final_dataset_to_save) {
       if (this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 0 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 1 && this.step2_final_dataset_to_save[isave].OPTM_ITEMTYPE != 3 && this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY == "") {
         this.step2_final_dataset_to_save[isave].OPTM_PARENTKEY = itemkey
@@ -4382,6 +4384,167 @@ export class OutputComponent implements OnInit {
       // else {
       //   this.feature_accessory_list[count].checked = false;
       // }
+    }
+  }
+
+  //This method will get Customer's all info.
+
+  getCustomerAllInfo() {
+    this.OutputService.getCustomerAllInfo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+          this.console.log("ALL CUSTOMER INFO-->", data)
+
+          //Fill Contact Person
+          if(data.ContactPerson != undefined){
+            if (data.ContactPerson.length > 0) {
+              this.contact_persons = data.ContactPerson;
+              this.person = data.ContactPerson[0].Name;
+              this.step1_data.person_name = this.person;
+            }
+            else {
+              this.contact_persons = [];
+              this.person = "";
+              this.step1_data.person_name = "";
+            }
+            if (data.DefaultSalesPerson.length > 0) {
+              this.sales_employee = data.DefaultSalesPerson;
+              this.salesemployee = data.DefaultSalesPerson[0].SlpName;
+              this.step1_data.sales_employee = data.DefaultSalesPerson[0].SlpName;
+            }
+            else {
+              this.sales_employee = [];
+              this.salesemployee = "";
+              this.step1_data.sales_employee = "";
+            }
+          }
+          else{
+            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+            return;
+          }
+          
+
+          //Fill bill to
+          if (data.BillToDef.length > 0) {
+            this.bill_to = data.BillToDef;
+            this.customerBillTo = data.BillToDef[0].BillToDef;
+            this.step1_data.bill_to = data.BillToDef[0].BillToDef;
+
+            this.bill_data.push({
+              CompanyDBId: this.common_output_data.companyName,
+              Customer: this.step1_data.customer,
+              BillTo: this.customerBillTo,
+              currentDate: this.submit_date
+
+            });
+            //To get bill address
+            this.fillBillAddress(this.bill_data, data);
+          }
+          else {
+            this.bill_to = [];
+            this.step1_data.bill_to_address = '';
+          }
+
+          //Fill Ship to
+          if (data.ShipDetail.length > 0) {
+            this.ship_to = data.ShipDetail;
+            this.customerShipTo = data.ShipDetail[0].ShipToDef;
+            this.step1_data.ship_to = data.ShipDetail[0].ShipToDef;
+
+
+            this.ship_data.push({
+              CompanyDBId: this.common_output_data.companyName,
+              Customer: this.step1_data.customer,
+              ShipTo: this.customerShipTo,
+              currentDate: this.step1_data.posting_date
+            });
+
+            //To get ship address
+            this.fillShipAddress(this.ship_data, data);
+          }
+          else {
+            this.ship_to = [];
+            this.step1_data.ship_to_address = '';
+          }
+        }
+      },
+      error=>{
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      })
+
+  }
+
+  fillBillAddress(bill_data, orig_data) {
+    this.OutputService.fillBillAddress(bill_data).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+          this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+
+          this.fillShipDetails(orig_data);
+        }
+        else {
+          this.step1_data.bill_to_address = '';
+        }
+      })
+  }
+
+  fillShipAddress(ship_data, orig_data) {
+    this.OutputService.fillShipAddress(ship_data).subscribe(
+      data => {
+        if (data != null || data != undefined && data.length > 0) {
+          this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+
+          this.fillAllOwners(orig_data);
+        }
+        else {
+          this.step1_data.ship_to_address = '';
+        }
+      })
+  }
+
+  fillShipDetails(data) {
+    //Fill Ship Detail
+    //if default is set else
+    let ShipDetails: any;
+    if (data.DefaultShipDetail != undefined) {
+      ShipDetails = data.DefaultShipDetail;
+    }
+    else {
+      ShipDetails = data.ShipDetail;
+    }
+
+    if (ShipDetails.length > 0) {
+      this.ship_to = ShipDetails;
+      this.customerShipTo = ShipDetails[0].ShipToDef;
+      this.step1_data.ship_to = ShipDetails[0].ShipToDef;
+
+
+      this.ship_data.push({
+        CompanyDBId: this.common_output_data.companyName,
+        Customer: this.step1_data.customer,
+        ShipTo: this.customerShipTo,
+        currentDate: this.step1_data.posting_date,
+        BillTo: this.customerBillTo
+      });
+
+      this.fillShipAddress(this.ship_data, data);
+    }
+    else {
+      this.ship_to = [];
+      this.step1_data.ship_to_address = '';
+    }
+  }
+
+
+  fillAllOwners(data) {
+    //fill all owners
+    if (data.AllOwners.length > 0) {
+      this.owner_list = data;
+      this.step1_data.owner = data.AllOwners[0].lastName;
+    }
+    else {
+      this.owner_list = [];
     }
   }
 }

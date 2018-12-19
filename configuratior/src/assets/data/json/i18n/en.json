@@ -162,7 +162,7 @@
     "filecannotupload": "File cannot upload",
     "rule_WB": "Rule WB",
     "rule_workbench": "Rule Workbench",
-    "Refrence": "Cannot delete. Reference exists.",
+    "Refrence": "Cannot delete, reference exists.",
     "InvalidFeatureId": "Invalid Feature Id",
     "InvalidModelId": "Invalid Model Id",
     "cyclic_ref_restriction": "Cyclic reference not allowed",
