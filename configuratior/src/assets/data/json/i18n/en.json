@@ -379,7 +379,8 @@
     "ItemCodeGenkey" :"ItemCodeGenkey",
     "enable_filter": "Enable Filter",
    "item_code_cannot_update": "Item code is already used to configure products therefore, cannot update final string",
-    "InvalidFeatureCode": "Invalid Feature Code"
+    "InvalidFeatureCode": "Invalid Feature Code",
+    "Minimumitemsarenotselected":"Minimum items are not selected - "
 
     
 }
