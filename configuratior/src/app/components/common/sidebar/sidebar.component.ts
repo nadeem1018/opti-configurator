@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   private commonData = new CommonData();
 
-  selectedItem: string;
+  selectedItem: string='home';
 
   ngOnInit() { 
 
