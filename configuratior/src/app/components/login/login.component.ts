@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   @ViewChild("username") _el: ElementRef;
   imgPath = "assets/images";
+  public licenseData: any = [];
   public loginCredentials: any = [];
   public psURL: string = '';
   public showCompDropDown: boolean = false;
@@ -102,6 +103,7 @@ export class LoginComponent implements OnInit {
     if (event.keyCode == 13) {
       if (this.selecetedComp != undefined && this.selecetedComp != "") {
         this.onLoginBtnPress();
+        // this.getLisenceData();
       } else {
         this.onConnectBtnPress();
       }
@@ -178,6 +180,43 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }
   }
+
+  getLisenceData(){
+    this.auth.getLicenseData(this.selecetedComp.OPTM_COMPID, this.loginCredentials).subscribe(
+      data => {
+        if (data != undefined) {
+          this.licenseData = data;
+          this.handleLicenseDataSuccessResponse();
+        } else {
+          alert("Lisence Failed");
+        }
+        // this.licenseData = data;
+
+      },
+      error => {
+        debugger
+        // this.showLoader = false;
+        alert("license Failed");
+      }
+    );  
+  }
+
+
+  private handleLicenseDataSuccessResponse() {
+    if (this.licenseData.length > 0) {
+      if (this.licenseData[0].ErrMessage == "" || this.licenseData[0].ErrMessage == null) {
+        sessionStorage.setItem("GUID", this.licenseData[0].GUID);
+        sessionStorage.setItem("Token", this.licenseData[0].Token);
+        this.onLoginBtnPress();
+
+      } else {
+        alert(this.licenseData[0].ErrMessage);
+      }
+    } else {
+      alert(this.licenseData[0].ErrMessage);
+    }
+  }
+
 
   onUserNameBlur() {
 
