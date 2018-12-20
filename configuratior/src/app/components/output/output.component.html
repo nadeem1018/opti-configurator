@@ -715,7 +715,7 @@
                         <kendo-grid-column field="step_2_right_grid_price" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.price}}
+                            {{this.language.price}} ({{defaultCurrency}})
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             <input [disabled]="featurerow.isPriceDisabled" type="text"  #actual_price title="{{featurerow.Actualprice}}" class="form-control  form-control-sm mt3"
@@ -809,7 +809,7 @@
                             <td>
                               {{this.language.total_before_discount}} ({{defaultCurrency}})
                             </td>
-                            <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                            <td class="text-right mr-3">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                           </tr>
                           <tr>
                             <td width="70%">{{language.product_discount}}</td>
@@ -833,7 +833,7 @@
                             <td>
                               {{this.language.product_total}} ({{defaultCurrency}})
                             </td>
-                            <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                            <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
                           </tr>
                           <tr>
                             <td>
@@ -857,13 +857,13 @@
                             <td>
                               {{this.language.accessories_total}} ({{defaultCurrency}})
                             </td>
-                            <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                            <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
                           </tr>
                         </tbody>
                         <tfoot>
                           <tr style=" font-size: 14px; ">
                             <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
-                            <td class="text-right mr-3">{{this.acc_grand_total}}</td>
+                            <td class="text-right mr-3">{{this.acc_grand_total | toFixed:'3'}}</td>
                           </tr>
                         </tfoot>
                       </table>
@@ -1049,7 +1049,7 @@
                           <span class="text-right">{{this.language.quantity}}</span>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
-                          <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
+                          <span class="text-right" style=" float: right; ">{{row.quantity}}</span>
                         </ng-template>
                       </kendo-grid-column>
                       <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
@@ -1127,7 +1127,7 @@
                           <td>
                             {{this.language.total_before_discount}} ({{defaultCurrency}})
                           </td>
-                          <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                          <td class="text-right mr-3">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                         </tr>
                         <tr>
                           <th width="70%">{{language.product_discount}}</th>
@@ -1147,14 +1147,14 @@
                           <td>
                             {{this.language.product_total}} ({{defaultCurrency}})
                           </td>
-                          <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                          <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
                         </tr>
                         <tr>
                           <td>
                             {{this.language.accessories_discount}}
                           </td>
                           <td class="text-right mr-3">
-                            {{this.accessory_discount_percent}}
+                            {{this.accessory_discount_percent | toFixed:'3'}}
                           </td>
                         </tr>
                         <!-- <tr>
@@ -1167,13 +1167,13 @@
                           <td>
                             {{this.language.accessories_total}} ({{defaultCurrency}})
                           </td>
-                          <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                          <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
                         </tr>
                       </tbody>
                       <tfoot>
                         <tr style=" font-size: 14px; ">
                           <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
-                          <td class="text-right mr-3">{{this.acc_grand_total}}</td>
+                          <td class="text-right mr-3">{{this.acc_grand_total | toFixed:'3'}}</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -1433,7 +1433,7 @@
                               <span class="text-right">{{this.language.quantity}}</span>
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
-                              <span class="text-right" style=" float: right; ">{{row.qunatity}}</span>
+                              <span class="text-right" style=" float: right; ">{{row.quantity}}</span>
                             </ng-template>
                           </kendo-grid-column>
                           <kendo-grid-column field="step_5_right_grid_price" title="" template="" [width]="120"
@@ -1502,7 +1502,7 @@
                               <td>
                                 {{this.language.total_before_discount}} ({{defaultCurrency}})
                               </td>
-                              <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
+                              <td class="text-right mr-3">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                             </tr>
                             <tr>
                               <th>{{language.product_discount}}</th>
@@ -1522,7 +1522,7 @@
                               <td>
                                 {{this.language.product_total}} ({{defaultCurrency}})
                               </td>
-                              <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                              <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
                             </tr>
                             <tr>
                               <td>
@@ -1542,13 +1542,13 @@
                               <td>
                                 {{this.language.accessories_total}} ({{defaultCurrency}})
                               </td>
-                              <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                              <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
                             </tr>
                           </tbody>
                           <tfoot>
                             <tr style=" font-size: 14px; ">
                               <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
-                              <td class="text-right mr-3">{{this.acc_grand_total}}</td>
+                              <td class="text-right mr-3">{{this.acc_grand_total | toFixed:'3'}}</td>
                             </tr>
                           </tfoot>
                         </table>
