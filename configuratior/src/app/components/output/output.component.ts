@@ -59,7 +59,7 @@ export class OutputComponent implements OnInit {
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn, "", "", "delete"];
-  public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false];
+  public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false,false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
   public feature_item_tax: number = 0
@@ -200,7 +200,7 @@ export class OutputComponent implements OnInit {
     // dummy data for 3rd screen 
     // this.step3_data_final = [
     //   {
-    //     "rowIndex": "1", "sl_no": "1", "item": "Model 1", "qunatity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step2_data.model_id,
+    //     "rowIndex": "1", "sl_no": "1", "item": "Model 1", "quantity": "10", "price": "2000", "price_ext": "20", "rowIndexBtn": "1","model_id": this.step2_data.model_id,
     //     "feature": [{
     //       "feature_name": "Feature001",
     //       "item": "item001",
@@ -1053,6 +1053,7 @@ export class OutputComponent implements OnInit {
     });
     //pushing all price details
     this.serviceData.product_grand_details.push({
+      "total_before_discount": this.feature_total_before_discount,
       "product_total": this.feature_item_total,
       "product_discount": this.feature_discount_percent,
       "accessories_discount": this.accessory_discount_percent,
@@ -2817,12 +2818,13 @@ export class OutputComponent implements OnInit {
       "rowIndex": "1",
       "sl_no": "1",
       "item": this.step2_data.model_code,
-      "qunatity": parseFloat(this.step2_data.quantity).toFixed(3),
-      "price": per_item_price,
-      "price_ext": price_ext,
+      "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
+      "price": parseFloat(per_item_price).toFixed(3),
+      "price_ext": parseFloat(price_ext).toFixed(3),
       "feature": this.feature_itm_list_table,
       "accesories": this.feature_accessory_list,
       "model_id": this.step2_data.model_id,
+      "desc": this.step2_data.model_name,
     })
 
     // for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {

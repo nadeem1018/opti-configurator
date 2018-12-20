@@ -1,9 +1,9 @@
 <!-- Grid Modal-->
-<kendo-dialog title="{{popup_title}}" *ngIf="dialogOpened" (close)="close_kendo_dialog()"  [minWidth]="750" [width]="750">
+<kendo-dialog title="{{popup_title}}" *ngIf="dialogOpened" (close)="close_kendo_dialog()" [minWidth]="750" [width]="750">
 
 
-    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true" [resizable]="true"
-        [skip]="skip" (selectionChange)="on_item_select($event)" [pageSize]="10">
+    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true"
+        [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" [pageSize]="10">
         <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
             <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
             <kendo-pager-numeric-buttons [buttonCount]="10"></kendo-pager-numeric-buttons>
@@ -13,8 +13,8 @@
         <ng-template kendoGridToolbarTemplate>
             <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                 <div class="custom-control custom-checkbox float-left">
-                    <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input" name="columnfilter"
-                    />
+                    <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input"
+                        name="columnfilter" />
                     <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
                 </div>
             </form>
@@ -63,14 +63,15 @@
 
 <!-- import data modal -->
 <!-- Grid Modal-->
-<div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true" data-backdrop="static"
-    data-keyboard="false">
+<div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
 
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('import_modal')" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('import_modal')"
+                    aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -96,8 +97,8 @@
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="Status">{{language.template_type}}</label>
                         <div class="col-sm-6">
-                            <select class="form-control  form-control-sm mt3" (change)="on_template_type_change()" [(ngModel)]="template_type" name="template_type"
-                                id="templateTypeID">
+                            <select class="form-control  form-control-sm mt3" (change)="on_template_type_change()"
+                                [(ngModel)]="template_type" name="template_type" id="templateTypeID">
                                 <option value="model">{{language.model}}</option>
                                 <option value="feature">{{language.feature}}</option>
                             </select>
@@ -108,7 +109,8 @@
                     <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>
                         <div class="col-sm-6">
-                            <input type="file" class="form-control  form-control-sm mt3-file" #myInput id="image" (change)="file_input($event)">
+                            <input type="file" class="form-control  form-control-sm mt3-file" #myInput id="image"
+                                (change)="file_input($event)">
                         </div>
                     </div>
                 </div>
@@ -130,13 +132,14 @@
 
 <!-- enlarge image modal -->
 
-<div class="modal fade" id="enlarge_image_modal" tabindex="-1" role="dialog" aria-labelledby="enlarge_image_modal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="enlarge_image_modal" tabindex="-1" role="dialog" aria-labelledby="enlarge_image_modal"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="enlarge_image_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')"
+                    aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -165,8 +168,8 @@
 </div>
 
 <!-- tree view modal -->
-<div class="modal fade" id="tree_view" tabindex="-1" role="dialog" aria-labelledby="tree_view" aria-hidden="true" data-backdrop="static"
-    data-keyboard="false">
+<div class="modal fade" id="tree_view" tabindex="-1" role="dialog" aria-labelledby="tree_view" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -192,7 +195,8 @@
                                         <span>
                                             <i class="fa fa-folder"></i> {{element.component}}
                                         </span>
-                                        <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+                                        <treeview [tree_data_json]="check_component_exist(element.component, i)"
+                                            [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                                     </li>
                                 </div>
                             </ul>
@@ -209,13 +213,14 @@
 </div>
 
 <!-- tree view modal -->
-<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="simple_table_modal" tabindex="-1" role="dialog" aria-labelledby="simple_table_modal"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="simple_table_modal_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('simple_table_modal')" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('simple_table_modal')"
+                    aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -230,24 +235,26 @@
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="col-md-12">
 
-                        <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="10" [pageable]="true"
-                            [resizable]="true">
+                        <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true"
+                            [pageSize]="10" [pageable]="true" [resizable]="true">
                             <ng-template kendoGridToolbarTemplate>
                                 <!-- show hide column start show hide -->
                                 <!-- <kendo-grid-column-chooser class="float-left opti_hide-in-mobile"></kendo-grid-column-chooser>  -->
                                 <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                                     <div class="custom-control custom-checkbox float-left">
-                                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input" name="columnfilter"
-                                        />
-                                        <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
+                                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
+                                            class="custom-control-input" name="columnfilter" />
+                                        <label class="custom-control-label" for="columnFilter"> &nbsp;
+                                            {{language.enable_filter}}</label>
                                     </div>
                                 </form>
                             </ng-template>
 
 
 
-                            <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                                format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
+                            <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}"
+                                filter="{{column.type}}" format="{{column.format}}" width="{{column.width}}"
+                                minResizableWidth="{{column.width}}"></kendo-grid-column>
 
                         </kendo-grid>
 
@@ -291,12 +298,14 @@
                         <h5 class="modal-title" id="invoice_modal_title">{{popup_title}}</h5>
                     </div>
                     <div class="col-sm-6">
-                        <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup('invoice_modal')" aria-label="Close">
+                        <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup('invoice_modal')"
+                            aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="fa fa-window-close"></i>
                             </span>
                         </button>
-                        <button class="text-right pull-right btn btn-sm btn-success mt-1" type="button" (click)="pdf.saveAs(downLoadfileName)" title="Test Invoice">
+                        <button class="text-right pull-right btn btn-sm btn-success mt-1" type="button" (click)="pdf.saveAs(downLoadfileName)"
+                            title="Test Invoice">
                             <i class="fa fa-download  fa-fw"></i>
                         </button>
                     </div>
@@ -394,7 +403,8 @@
                                                 <span style="width:75px;float:left">
                                                     <b>{{language.address}} :</b>
                                                 </span>
-                                                <span style="width: calc(100% - 75px); float: left;"> {{customer_details.ship_to_address | blankhandler}} </span>
+                                                <span style="width: calc(100% - 75px); float: left;">
+                                                    {{customer_details.ship_to_address | blankhandler}} </span>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
@@ -411,7 +421,8 @@
                                                     <span style="width:75px;float:left">
                                                         <b>{{language.address}} :</b>
                                                     </span>
-                                                    <span style="width: calc(100% - 75px); float: left;">{{customer_details.bill_to_address | blankhandler}}</span>
+                                                    <span style="width: calc(100% - 75px); float: left;">{{customer_details.bill_to_address
+                                                        | blankhandler}}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -438,12 +449,14 @@
                                         <p>
                                             <span class="">
                                                 <b>{{customer_details.doc_type_date_label}}:</b>
-                                            </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy' | blankhandler}}
+                                            </span> {{customer_details.delivery_until | date: 'MM/dd/yyyy' |
+                                            blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
                                                 <b>{{language.posting_date}} :</b>
-                                            </span>{{customer_details.posting_date | date: 'MM/dd/yyyy' | blankhandler}}
+                                            </span>{{customer_details.posting_date | date: 'MM/dd/yyyy' |
+                                            blankhandler}}
                                         </p>
                                         <p>
                                             <span class="">
@@ -461,7 +474,7 @@
                                 <div class="row">
                                     <div class="table-responsive col-sm-12">
                                         <table class="table table-invoice">
-                                            <thead class="">
+                                            <thead class="thead-dark">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>{{language.ModelBom_FeatureValue}}</th>
@@ -472,30 +485,28 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
-                                                <tr *ngFor="let row of print_item_list_array">
-                                                    <td>
-                                                        {{row['sl_no']}}
-                                                    </td>
-                                                    <td>
-                                                        {{row['item']}}
-                                                    </td>
-                                                    <td>
-                                                        {{row['item_desc']}}
-                                                    </td>
-
-                                                    <td class="text-right">
-                                                        {{row['quantity']}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{row['price']}}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{row['price_ext']}}
-                                                    </td>
-
-
-                                                </tr>
+                                                <tr *ngFor="let row of print_item_list_array"  [ngClass]="{'highlight_fg_row' :row.isFG}">
+                                                     
+                                                        <td>
+                                                            {{row['sl_no']}}
+                                                        </td>
+                                                        <td>
+                                                            {{row['item']}}
+                                                        </td>
+                                                        <td>
+                                                            {{row['item_desc']}}
+                                                        </td>
+    
+                                                        <td class="text-right">
+                                                            {{row['quantity']}}
+                                                        </td>
+                                                        <td class="text-right">
+                                                            {{row['price']}}
+                                                        </td>
+                                                        <td class="text-right">
+                                                            {{row['price_ext']}}
+                                                        </td>
+                                                    </tr>
 
                                             </tbody>
                                         </table>
@@ -510,13 +521,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-bold-800">
+                                                            <b class="">{{this.language.total_before_discount}} ({{defaultCurrency}}) </b>
+                                                        </td>
+                                                        <td class="text-right">{{product_grand_details.total_before_discount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-bold-800">
                                                             <b class="">{{language.product_discount}}</b>
                                                         </td>
                                                         <td class="text-right">{{product_grand_details.product_discount}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold-800">
-                                                            <b class="">{{language.product_total}}</b>
+                                                            <b class="">{{language.product_total}} ({{defaultCurrency}})</b>
                                                         </td>
                                                         <td class="text-right">{{product_grand_details.product_total}}</td>
                                                     </tr>
@@ -528,13 +545,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-bold-800">
-                                                            <b class="">{{language.accessories_total}}</b>
+                                                            <b class="">{{language.accessories_total}} ({{defaultCurrency}})</b>
                                                         </td>
                                                         <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
                                                     </tr>
                                                     <tr class="bg-grey bg-lighten-4">
                                                         <td class="text-bold-800">
-                                                            <b class="">{{language.grand_total}}</b>
+                                                            <b class="">{{language.grand_total}} ({{defaultCurrency}})</b>
                                                         </td>
                                                         <td class="text-bold-800 text-right">{{product_grand_details.grand_total}}</td>
                                                     </tr>
@@ -594,7 +611,8 @@
                 </div>
                 <div class="lookup_data" *ngIf="RuleOutputLookupDataLoaded">
                     <div class="col-md-12">
-                        <kendo-grid [kendoGridBinding]="outputServiceData" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false">
+                        <kendo-grid [kendoGridBinding]="outputServiceData" [resizable]="true" [sortable]="false"
+                            [groupable]="false" [filterable]="false">
                             <kendo-grid-column field="included" title="" template="" [width]="120" [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.included}}
@@ -643,7 +661,8 @@
                                     {{row.OPTM_QUANTITY}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="edit_quantity" title="" template="" [width]="120" [minResizableWidth]="120">
+                            <kendo-grid-column field="edit_quantity" title="" template="" [width]="120"
+                                [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.edit_quantity}}
                                 </ng-template>
@@ -659,7 +678,8 @@
                                     {{row.OPTM_PRICESOURCE}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="edit_price" title="" template="" [width]="120" [minResizableWidth]="120">
+                            <kendo-grid-column field="edit_price" title="" template="" [width]="120"
+                                [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.edit_price}}
                                 </ng-template>
@@ -675,7 +695,8 @@
                                     {{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="rule_excluded" title="" template="" [width]="120" [minResizableWidth]="120">
+                            <kendo-grid-column field="rule_excluded" title="" template="" [width]="120"
+                                [minResizableWidth]="120">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     {{language.rule_excluded}}
                                 </ng-template>
@@ -731,7 +752,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rule_selection_title">{{popup_title}}</h5>
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')" aria-label="Close">
+                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')"
+                    aria-label="Close">
                     <span aria-hidden="true">
                         <i class="fa fa-window-close"></i>
                     </span>
@@ -751,13 +773,14 @@
                                 <h6 class="panel-title row col-sm-12">
                                     <div class="col-sm-1">
                                         <div class="custom-control custom-checkbox mt--3">
-                                            <input type="checkbox" id="rule_check_{{rule_data.OPTM_RULEID}}" name="child_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,rule_data)"
+                                            <input type="checkbox" id="rule_check_{{rule_data.OPTM_RULEID}}" name="child_checkbox"
+                                                #checkedvalue (change)="on_checkbox_checked(checkedvalue.checked,rule_data)"
                                                 [checked]="rule_data['Selected']" class="custom-control-input">
                                             <label class="custom-control-label" for="rule_check_{{rule_data.OPTM_RULEID}}"></label>
                                         </div>
                                     </div>
-                                    <div role="button" attr.data-toggle="collapse" attr.data-parent="#rule_panel{{rule_data.OPTM_RULEID}}" attr.aria-expanded="false"
-                                        attr.aria-controls="{{rule_data.OPTM_RULEID}}" class="custom_panel_parent_section col-sm-11">
+                                    <div role="button" attr.data-toggle="collapse" attr.data-parent="#rule_panel{{rule_data.OPTM_RULEID}}"
+                                        attr.aria-expanded="false" attr.aria-controls="{{rule_data.OPTM_RULEID}}" class="custom_panel_parent_section col-sm-11">
                                         {{rule_data.OPTM_RULECODE}}
                                         <span class="text-right pull-right custom_panel_icon_section">
                                             <i class="fa fa-plus"></i>
@@ -765,8 +788,8 @@
                                     </div>
                                 </h6>
                             </div>
-                            <div id="rule_panel{{rule_data.OPTM_RULEID}}" class="panel-collapse collapse custom_panel_child_section" role="tabpanel"
-                                attr.aria-labelledby="rule_engine{{rule_data.OPTM_RULEID}}">
+                            <div id="rule_panel{{rule_data.OPTM_RULEID}}" class="panel-collapse collapse custom_panel_child_section"
+                                role="tabpanel" attr.aria-labelledby="rule_engine{{rule_data.OPTM_RULEID}}">
                                 <div class="panel-body">
                                     <table class="inner-table table table-bordered table-strip table-sm">
                                         <thead class="thead-dark">
