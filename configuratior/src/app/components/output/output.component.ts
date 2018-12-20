@@ -10,6 +10,7 @@ import { UIHelper } from '../../helpers/ui.helpers';
 import { isNumber } from 'util';
 import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 //import { LookupComponent } from '../common/lookup/lookup.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   //providers:[LookupComponent],
@@ -103,7 +104,7 @@ export class OutputComponent implements OnInit {
   public complete_dataset: any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef ) { }
   serviceData: any;
   public new_output_config: boolean = false;
   public contact_persons: any = [];
@@ -239,10 +240,17 @@ export class OutputComponent implements OnInit {
       this.tree_view_expand_collapse()
     }, 2000); */
   }
+  
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+  
 
   start_new_configuration_click() {
-    //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
-    this.route.navigateByUrl("/output/view/" + Math.round(Math.random() * 10000));
+    this.onOperationChange('');
+    this.delete_all_row_data();
+    $("fieldset").hide();
+    $("fieldset:first").show();
   }
 
   onOperationChange(operation_type) {
@@ -258,6 +266,7 @@ export class OutputComponent implements OnInit {
     this.step1_data.description = "";
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
+    this.step3_data_final = [];
     this.onclearselection();
     if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
@@ -458,6 +467,7 @@ export class OutputComponent implements OnInit {
   openTaxCodes() { }
 
   onContactPersonChange(contact) {
+    console.log(contact);
     this.person = contact;
     this.step1_data.person_name = this.person;
   }
@@ -4336,11 +4346,10 @@ export class OutputComponent implements OnInit {
               this.person = "";
               this.step1_data.person_name = "";
             }
+
             if (data.DefaultSalesPerson.length > 0) {
               this.sales_employee = data.DefaultSalesPerson;
-              console.log(this.sales_employee);
               this.salesemployee = data.DefaultSalesPerson[0].SlpName;
-              console.log(this.salesemployee);
               this.step1_data.sales_employee = this.salesemployee;
             }
             else {
@@ -4397,6 +4406,8 @@ export class OutputComponent implements OnInit {
             this.ship_to = [];
             this.step1_data.ship_to_address = '';
           }
+        } else {
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         }
       },
       error=>{

@@ -1093,55 +1093,16 @@
                         </ng-template>
                       </kendo-grid-column>
                     </kendo-grid>
-                    <!-- <table class="table opti_fixed-header table-bordered table-sm">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th *ngFor="let label of final_selection_header; let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-                            <span *ngIf="final_selection_header.length-1 == i">
-                              <i class="fa fa-trash fa-fw"></i>
-                            </span>
-                            <span *ngIf="final_selection_header.length-1 != i">
-                              {{label}}
-                            </span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                        <tr class="" *ngFor="let row of step3_data_final">
-                          <td *ngFor="let row_data of Object.keys(row); let i= index" [hidden]="step3_data_final_hidden_elements[i]">
-                            <span *ngIf="(Object.keys(row).length-1) != i">
-                              <span *ngIf="i==0">
-                                <input type="checkbox" name="modal_checkbox" #checkedvalue (change)="on_checkbox_checked(checkedvalue, row)">
-                              </span>
-                              <span *ngIf="i!=0">
-                                {{row[row_data]}}
-                              </span>
-                            </span>
-                            <span *ngIf="(Object.keys(row).length-1) == i">
-                              <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
-                                <i class="fa fa-trash fa-fw"></i>
-                              </button>
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table> -->
+                  
                   </div>
 
                 </div>
                 <div class="final_item_discount_table">
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
-                      <!-- <thead class="" style=" font-size: 14px; ">
-                       
-                      </thead> -->
+                    
                       <tbody>
-                        <!-- <tr>
-                          <td>
-                            {{this.language.product_tax}}
-                          </td>
-                          <td>{{this.feature_item_tax}}</td>
-                        </tr> -->
+                       
 
                         <tr>
                           <td width="70%">
@@ -1580,9 +1541,9 @@
             <hr>
             <!-- <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" data-previous-block="accept_bom_so">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button> -->
-            <a href="javascript:;" type="button" class="btn btn-sm btn-primary  mr-10 text-white" (click)="start_new_configuration_click()">
+            <button type="button" class="btn btn-sm btn-primary  mr-10 text-white" (click)="start_new_configuration_click()">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.start_new_configuration}}
-            </a>
+            </button>
             <!--   <button type="submit" class="btn btn-sm btn-primary  mr-10 btn-submit">Submit</button> -->
           </div>
         </fieldset>
