@@ -316,6 +316,7 @@
     "pricevalid": "Price cannot be negative",
     "pricevalidextn": "Price extension cannot be negative",
     "negativequantityvalid": "Quantity cannot be negative",
+    "negativediscountvalid": "Discount cannot be negative",
     "decimalquantityvalid": "Quantity cannot be decimal",
     "quantity_numeric_only":"Only Numeric Value allowed in Quantity",
     "blank_or_zero_not_allowed":"Blank or zero quantity not allowed",
