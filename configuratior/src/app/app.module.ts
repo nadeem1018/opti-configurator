@@ -60,6 +60,7 @@ import { flattenStyles } from '@angular/platform-browser/src/dom/dom_renderer';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BlankhandlerPipe } from './components/common/custom-pipes/blankhandler.pipe';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { ToFixedPipe } from './components/common/custom-pipes/to-fixed.pipe';
 
 
 
@@ -94,7 +95,7 @@ const routes: Routes = [
   { path: 'output/view/:id', component: OutputComponent },
   { path: 'output/view/new', component: OutputComponent },
 
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
 ];
 
@@ -131,7 +132,8 @@ const routes: Routes = [
     RulewbComponent,
     RuleWbViewComponent,
     OutputComponent,
-    BlankhandlerPipe
+    BlankhandlerPipe,
+    ToFixedPipe
   ],
   imports: [
     BrowserModule,

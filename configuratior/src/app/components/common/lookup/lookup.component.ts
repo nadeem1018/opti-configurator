@@ -69,6 +69,7 @@ export class LookupComponent implements OnInit {
   public template_path = "";
   public print_item_list_array: any = [];
   //Print Data variables
+  public report_type;
   public showCustDetailsSec: boolean = false;
   public showPaymentDetails: boolean = false;
   public showGeneralDetails: boolean = false;
@@ -234,7 +235,7 @@ export class LookupComponent implements OnInit {
     const lookup_key = selection.selectedRows[0].dataItem;
     console.log("lookup_key - " + lookup_key);
     console.log(lookup_key);
-    
+
 
     this.lookupvalue.emit(Object.values(lookup_key));
     $("#lookup_modal").modal('hide');
@@ -253,7 +254,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'modify_duplicate_lookup';
     // this.table_head = [this.language.log_id, this.language.description, this.language.customer, this.language.contact_person, this.language.model, this.language.quantity];
-console.log(this.serviceData);
+    console.log(this.serviceData);
 
     this.table_head = [
       {
@@ -330,7 +331,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-      
+
     ];
 
 
@@ -365,7 +366,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-     
+
     ];
 
     this.table_head_hidden_elements = [false];
@@ -394,7 +395,7 @@ console.log(this.serviceData);
 
     this.table_head = [
       {
-        field: 'feature_code', 
+        field: 'feature_code',
         title: this.language.code,
         type: 'text',
         width: '100'
@@ -432,7 +433,7 @@ console.log(this.serviceData);
     this.lookup_key = 'OPTM_FEATUREID';
     // this.table_head = [this.language.Id, this.language.code, this.language.Name];
 
-    this.table_head = [ 
+    this.table_head = [
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -445,7 +446,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-      
+
     ];
 
     this.table_head_hidden_elements = [true, false, false];
@@ -483,7 +484,7 @@ console.log(this.serviceData);
     this.lookup_key = 'OPTM_FEATUREID';
     // this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
 
-    this.table_head = [   
+    this.table_head = [
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -496,7 +497,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-      
+
     ];
 
 
@@ -526,7 +527,7 @@ console.log(this.serviceData);
 
     console.log(this.serviceData);
     this.table_head = [
-    
+
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -539,7 +540,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-     
+
     ];
 
     this.table_head_hidden_elements = [true, false, false, true, true];
@@ -572,7 +573,7 @@ console.log(this.serviceData);
         title: this.language.itemkey,
         type: 'text',
         width: '100'
-      },      
+      },
       {
         field: 'Description',
         title: this.language.Name,
@@ -621,14 +622,14 @@ console.log(this.serviceData);
         title: this.language.price_source,
         type: 'text',
         width: '100'
-      },      
+      },
       {
         field: 'ListName',
         title: this.language.price_list_name,
         type: 'text',
         width: '100'
       },
-      
+
     ];
     this.table_head_hidden_elements = [false];
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -654,7 +655,7 @@ console.log(this.serviceData);
     // this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
 
     this.table_head = [
-   
+
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -667,7 +668,7 @@ console.log(this.serviceData);
         type: 'text',
         width: '100'
       },
-    
+
     ];
     this.table_head_hidden_elements = [true, false, false, true];
     this.width_value = ((100 / this.table_head.length) + '%');
@@ -709,7 +710,7 @@ console.log(this.serviceData);
     //     type: 'text',
     //     width: '100'
     //   },
-     
+
     // ];
 
     this.table_head_hidden_elements = [false, false, false];
@@ -882,14 +883,14 @@ console.log(this.serviceData);
 
   output_invoice_print() {
     this.popup_title = this.language.print_quote;
-    let report_type;
+
 
     //Print Criteria
     //Summary --> Customer + COM + Qty + Acces.
     //Details --> BOM + Feat. + Item + Acces.
 
     if (this.serviceData.print_types != undefined) {
-      report_type = this.serviceData.print_types[0].selected_print_type;
+      this.report_type = this.serviceData.print_types[0].selected_print_type;
       //1 for summary and 2 for detail
     }
 
@@ -951,7 +952,7 @@ console.log(this.serviceData);
       var row = this.serviceData.verify_final_data_sel_details[mcount];
       row_count++;
       //pushing item data
-      this.prepareFinalItemArray(row_count, row.item, '', row.quantity, '', row.price_ext);
+      this.prepareFinalItemArray(row_count, row.item, row.desc , row.quantity, row.price, row.price_ext,true);
 
       //If report type is details then only we will show features
 
@@ -959,7 +960,7 @@ console.log(this.serviceData);
         let featureRow = row['feature'][fcount];
         row_count++;
 
-        if (report_type == "2") {
+        if (this.report_type == "2") {
           let itemFeatureName = featureRow.featureName;
           if (featureRow.featureName == "" || featureRow.featureName == null) {
             itemFeatureName = featureRow.Item;
@@ -969,12 +970,12 @@ console.log(this.serviceData);
             itemFeatureName = featureRow.featureName;
           }
 
-          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn));
+          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
         }
         else {
           if (featureRow.ItemNumber == "" && featureRow.Item == null) {
 
-            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description,  Number(featureRow.quantity),  Number(featureRow.Actualprice),  Number(featureRow.pricextn));
+            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
           }
           else {
             row_count--;
@@ -997,11 +998,12 @@ console.log(this.serviceData);
     //product grand details
     if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
       this.showProdGrandDetails = true;
-      this.product_grand_details.product_total = this.serviceData.product_grand_details[0].product_total;
-      this.product_grand_details.product_discount = this.serviceData.product_grand_details[0].product_discount;
-      this.product_grand_details.accessories_discount = this.serviceData.product_grand_details[0].accessories_discount;
-      this.product_grand_details.accessories_total = this.serviceData.product_grand_details[0].accessories_total;
-      this.product_grand_details.grand_total = this.serviceData.product_grand_details[0].grand_total;
+      this.product_grand_details.total_before_discount = parseFloat(this.serviceData.product_grand_details[0].total_before_discount).toFixed(3);
+      this.product_grand_details.product_total = parseFloat(this.serviceData.product_grand_details[0]. product_total).toFixed(3);
+      this.product_grand_details.product_discount = parseFloat(this.serviceData.product_grand_details[0].product_discount).toFixed(3);
+      this.product_grand_details.accessories_discount = parseFloat(this.serviceData.product_grand_details[0].accessories_discount).toFixed(3);
+      this.product_grand_details.accessories_total = parseFloat(this.serviceData.product_grand_details[0].accessories_total).toFixed(3);
+      this.product_grand_details.grand_total = parseFloat(this.serviceData.product_grand_details[0].grand_total).toFixed(3);
     }
     else {
       this.showProdGrandDetails = false;
@@ -1029,15 +1031,20 @@ console.log(this.serviceData);
   public tree_data_json: any = '';
   @Input() component;
 
-  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext) {
-
+  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext,isFG) {
+    // if (this.report_type == "2" && isFG == true) {
+    //   price = "";
+    //   quantity = "";
+    //   price_ext = "";
+    // }
     this.print_item_list_array.push({
       "sl_no": index,
       "item": itemCode,
       "item_desc": itemDesc,
-      "quantity": quantity,
-      "price": price,
-      "price_ext": price_ext,
+      "quantity": parseFloat(quantity).toFixed(3),
+      "price": parseFloat(price).toFixed(3),
+      "price_ext": parseFloat(price_ext).toFixed(3),
+      "isFG":isFG
     });
   }
 
@@ -1047,10 +1054,10 @@ console.log(this.serviceData);
     this.LookupDataLoaded = false;
     this.showLoader = true;
 
-console.log(this.serviceData);
+    console.log(this.serviceData);
     // this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
     this.table_head = [
-    
+
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Model_ModelName,
@@ -1110,14 +1117,14 @@ console.log(this.serviceData);
         title: this.language.customer_code,
         type: 'text',
         width: '100'
-      },      
+      },
       {
         field: 'Name',
         title: this.language.Name,
         type: 'text',
         width: '100'
       },
-        
+
     ];
     this.table_head_hidden_elements = [false, false];
     this.lookup_key = 'Name';

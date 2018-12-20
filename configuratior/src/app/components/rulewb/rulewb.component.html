@@ -5,6 +5,12 @@
 </div>
 <!-- loader end --> 
 
+<!-- loader start for lookup -->
+<!-- <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader">
+  <div class="opti_spinner"></div>
+</div> -->
+<!-- loader end for lookup --> 
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
   <div class="opti_module-title">
     {{page_main_title}}
@@ -44,7 +50,7 @@
             <label class="col-sm-3 col-form-label" for="rule_code">{{language.rule_code}}</label>
             <div class="col-sm-5">
               <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
-                [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}" tabindex="1">
+                [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}" tabindex="1" [disabled]="code_disabled">
             </div>
 
             <!-- <label class="opt_custome-label col-form-label" for="rule_description">{{language.description}}</label>

@@ -237,7 +237,7 @@ export class ModelbomComponent implements OnInit {
           if(data.RuleData.length > 0){
             this.rule_data = data.RuleData;
           }
-          this.onExplodeClick();
+          this.onExplodeClick('auto');
           this.showLoader = false;
         }
       )
@@ -978,7 +978,10 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  onExplodeClick() {
+  onExplodeClick(type) {
+    if (type == "manual") {
+      this.showtree();
+    }
     this.lookupfor = 'tree_view__model_bom_lookup"';
 
     if (this.modelbom_data.modal_id != undefined) {
@@ -1235,17 +1238,29 @@ export class ModelbomComponent implements OnInit {
   
   }
 
-  toggleTree(e){
+  toggleTree(e) {
     let element = document.getElementById('right-tree-section');
-    element.classList.toggle('d-none');
-    element.classList.toggle('d-block');
-  
-    if(element.classList.contains('d-block')) {
-      $('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
-    }else{
-      let leftSection = document.getElementById('left-table-section');
-      let classes = leftSection.classList;
-      $('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
+    if (element.classList.contains('d-block')) {
+      this.hidetree();
+    } else {
+      this.showtree();
+    }
+  }
+
+  showtree() {
+    if ($(document).find('#right-tree-section').hasClass('d-none')) {
+      $(document).find('#right-tree-section').removeClass('d-none');
+      $(document).find('#right-tree-section').addClass('d-block');
+      $(document).find('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
+    }
+  }
+
+
+  hidetree() {
+    if ($(document).find('#right-tree-section').hasClass('d-block')) {
+      $(document).find('#right-tree-section').removeClass('d-block');
+      $(document).find('#right-tree-section').addClass('d-none');
+      $(document).find('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
     }
   }
 
