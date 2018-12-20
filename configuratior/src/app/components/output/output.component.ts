@@ -381,9 +381,9 @@ export class OutputComponent implements OnInit {
   getModelDatabyModelCodeAndId(ModelBOMData) {
     console.log(ModelBOMData);
     if (ModelBOMData.length > 0) {
-      let tempModelData = []; 
-      tempModelData =  ModelBOMData.filter(function(obj){
-        return obj['OPTM_KEY']!="" && obj['OPTM_ITEMTYPE']=="0"
+      let tempModelData = [];
+      tempModelData = ModelBOMData.filter(function (obj) {
+        return obj['OPTM_KEY'] != "" && obj['OPTM_ITEMTYPE'] == "0"
       })
       console.log('tempModelData');
       console.log(tempModelData);
@@ -593,8 +593,63 @@ export class OutputComponent implements OnInit {
       }
       else {
         //this.step2_data.quantity = value
-        for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
-          this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+        for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+          var tempfeatureid = this.feature_itm_list_table[i].FeatureId
+
+          if (this.feature_itm_list_table[i].is_accessory == "N") {
+            var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
+              return obj['OPTM_FEATUREID'] == tempfeatureid
+            })
+            if (modelheaderpropagatechecked.length > 0) {
+              if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                if (modelheaderpropagatechecked[0].OPTM_TYPE == "1") {
+                  var itemkey = this.feature_itm_list_table[i].Item
+                  var featurepropagatecheck = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                    return obj['OPTM_ITEMKEY'] == itemkey
+                  })
+                  if (featurepropagatecheck.length > 0) {
+                    if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
+                      this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                    }
+                  }
+                }
+                else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
+                  if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[i].Item) {
+                    this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                  }
+                }
+                else {
+                  var itemkey = this.feature_itm_list_table[i].Item
+                  var modelfeaturepropagatecheck = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                    return obj['OPTM_ITEMKEY'] == itemkey
+                  })
+                  if (modelfeaturepropagatecheck.length > 0) {
+                    if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
+                      this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                    }
+                  }
+                }
+
+              }
+
+            }
+          }
+          else {
+            var modelheaderpropagatechecked = this.Accessoryarray.filter(function (obj) {
+              return obj['OPTM_FEATUREID'] == tempfeatureid
+            })
+            if (modelheaderpropagatechecked.length > 0) {
+              if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                if (this.feature_itm_list_table[i].ispropogateqty == "Y") {
+                  this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                }
+
+              }
+
+            }
+          }
+
+
           this.feature_itm_list_table[i].pricextn = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
           this.feature_itm_list_table[i].quantity = parseFloat(this.feature_itm_list_table[i].quantity).toFixed(3)
           this.feature_itm_list_table[i].pricextn = parseFloat(this.feature_itm_list_table[i].pricextn).toFixed(3)
@@ -978,7 +1033,10 @@ export class OutputComponent implements OnInit {
 
     iproducttotal = isumofpropriceitem + iprotax - iprodiscount
     iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
+
+
     this.feature_total_before_discount = isumofpropriceitem + isumofaccpriceitem
+
     igrandtotal = iproducttotal + iacctotal
     this.feature_item_total = iproducttotal
     this.accessory_item_total = iacctotal
@@ -1111,7 +1169,8 @@ export class OutputComponent implements OnInit {
                       pricehide: true,
                       parentId: this.selectfeaturedata[0].parentId,
                       model_id: this.step2_data.model_id,
-                      isQuantityDisabled: true
+                      isQuantityDisabled: true,
+                      ispropogateqty: data[i].OPTM_PROPOGATEQTY
 
                     });
                   }
@@ -1398,7 +1457,7 @@ export class OutputComponent implements OnInit {
   on_calculation_change(inputid, value) {
     if (value < 0) {
       this.feature_discount_percent = 0;
-      this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+      this.toastr.error('', this.language.negativediscountvalid, this.commonData.toast_config);
       value = 0;
     }
     else if (value > 100) {
@@ -1441,6 +1500,7 @@ export class OutputComponent implements OnInit {
     this.ModelBOMDataForSecondLevel = [];
     this.FeatureBOMDataForSecondLevel = [];
     this.feature_total_before_discount = 0;
+    this.previousquantity = parseFloat("1");
 
   }
 
@@ -1723,12 +1783,24 @@ export class OutputComponent implements OnInit {
                             ifeatureitemsgrid = ifeatureitemsgrid - 1;
                           }
                         }
+                        for (let ideletefeaturebomdata = 0; ideletefeaturebomdata < this.FeatureBOMDataForSecondLevel.length; ideletefeaturebomdata++) {
+                          if (this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitemsgrid].FeatureId && this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID != null) {
+                            this.feature_itm_list_table.splice(ifeatureitemsgrid, 1);
+                            ifeatureitemsgrid = ifeatureitemsgrid - 1;
+                          }
+                        }
                       }
                       for (let imodeldataforsecond = 0; imodeldataforsecond < this.ModelBOMDataForSecondLevel.length; imodeldataforsecond++) {
                         if (this.ModelBOMDataForSecondLevel[imodeldataforsecond].OPTM_MODELID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
                           //  this.ModelBOMDataForSecondLevel[imodeldataforsecond].checked=value
                           this.ModelBOMDataForSecondLevel.splice(imodeldataforsecond, 1);
                           imodeldataforsecond = imodeldataforsecond - 1;
+                        }
+                      }
+                      for (let ideletemodeldataforfeaturesecond = 0; ideletemodeldataforfeaturesecond < this.FeatureBOMDataForSecondLevel.length; ideletemodeldataforfeaturesecond++) {
+                        if (this.FeatureBOMDataForSecondLevel[ideletemodeldataforfeaturesecond].OPTM_FEATUREID == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
+                          this.FeatureBOMDataForSecondLevel.splice(ideletemodeldataforfeaturesecond, 1);
+                          ideletemodeldataforfeaturesecond = ideletemodeldataforfeaturesecond - 1;
                         }
                       }
                       let removemodelheaderid = this.ModelHeaderData[imodelheader].OPTM_FEATUREID
@@ -1955,6 +2027,17 @@ export class OutputComponent implements OnInit {
                                       });
 
                                     if (data.dtFeatureDataWithDefault[idtfeature].OPTM_DEFAULT == "Y") {
+                                      // parentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                                      //   return obj['OPTM_CHILDFEATUREID'] == data.dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID
+                                      // });
+                                      var tempparentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                                        return obj['OPTM_CHILDFEATUREID'] == data.dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID
+                                      });
+                                      if (tempparentarray.length > 0) {
+                                        parentarray[0].OPTM_TYPE = tempparentarray[0].OPTM_TYPE
+                                        parentarray[0].feature_code = tempparentarray[0].feature_code
+                                        parentarray[0].OPTM_LEVEL = tempparentarray[0].OPTM_LEVEL
+                                      }
                                       itemData.push(data.dtFeatureDataWithDefault[idtfeature])
                                       this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
                                     }
@@ -2081,7 +2164,7 @@ export class OutputComponent implements OnInit {
               }
 
             }//end data length
-
+            this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
             this.checkedFunction(feature_model_data, parentarray, value);
 
@@ -2093,7 +2176,7 @@ export class OutputComponent implements OnInit {
                 i = i - 1;
               }
             }
-
+            this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
 
           }
@@ -2147,15 +2230,17 @@ export class OutputComponent implements OnInit {
           return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
         });
       }
-
-      if (propagateqtychecked == "Y") {
+      var formatequantity: any;
+      if (propagateqtychecked == "Y" && ItemData[0].OPTM_PROPOGATEQTY == "Y") {
         propagateqty = parseFloat(propagateqty).toFixed(3)
         ItemData[0].OPTM_QUANTITY = propagateqty
+        ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
+        formatequantity = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
       }
-
-      ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
-      var formatequantity: any = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
-
+      else {
+        ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
+        formatequantity = ItemData[0].OPTM_QUANTITY
+      }
       var priceextn: any = formatequantity * ItemData[0].Price
 
       if (isExist.length == 0) {
@@ -2607,7 +2692,7 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    if (button_press == 'finishPress'){
+    if (button_press == 'finishPress') {
       this.onValidateNextPress();
     }
     let final_dataset_to_save: any = {};
@@ -2918,7 +3003,7 @@ export class OutputComponent implements OnInit {
             return obj['OPTM_MODELID'] == tempfeatureid && obj['checked'] == true
           })
         }
-        
+
         if (isMinItemsCounted.length < this.ModelHeaderData[iMinModelHeaderData].OPTM_MINSELECTABLE) {
           this.toastr.error('', this.language.Minimumitemsarenotselected + this.ModelHeaderData[iMinModelHeaderData].OPTM_DISPLAYNAME, this.commonData.toast_config);
           return;
@@ -3104,9 +3189,9 @@ export class OutputComponent implements OnInit {
               return obj['Item'] == imodelfilteritems[i].OPTM_ITEMKEY && obj['ModelId'] == imodelfilteritems[i].OPTM_MODELID
             })
 
-           var  checkmodelitem = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+            var checkmodelitem = this.ModelBOMDataForSecondLevel.filter(function (obj) {
               return obj['OPTM_MODELID'] == featureitemlistfilterdata[0].ModelId && obj['OPTM_TYPE'] == 2 &&
-              obj['OPTM_ITEMKEY'] == featureitemlistfilterdata[0].Item 
+                obj['OPTM_ITEMKEY'] == featureitemlistfilterdata[0].Item
             })
 
             if (checkmodelitem.length > 0) {
@@ -3596,8 +3681,18 @@ export class OutputComponent implements OnInit {
           });
         }
 
-        ItemData[i].OPTM_QUANTITY = parseFloat(ItemData[i].OPTM_QUANTITY).toFixed(3)
-        var formatequantity: any = ItemData[i].OPTM_QUANTITY * this.step2_data.quantity
+
+        var formatequantity: any;
+        if (parentarray[0].OPTM_PROPOGATEQTY == "Y" && ItemData[0].OPTM_PROPOGATEQTY == "Y") {
+          ItemData[0].OPTM_QUANTITY = parentarray[0].OPTM_QUANTITY
+          ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
+          formatequantity = ItemData[0].OPTM_QUANTITY * this.step2_data.quantity
+        }
+        else {
+          ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
+          formatequantity = ItemData[0].OPTM_QUANTITY
+        }
+
         var priceextn: any = formatequantity * ItemData[i].Price
 
         if (isExist.length == 0) {
@@ -3616,7 +3711,9 @@ export class OutputComponent implements OnInit {
             pricehide: isPricehide,
             ModelId: ItemData[i].OPTM_MODELID,
             OPTM_LEVEL: parentarray[0].OPTM_LEVEL + 1,
-            isQuantityDisabled: false
+            isQuantityDisabled: false,
+            ispropogateqty: ItemData[i].OPTM_PROPOGATEQTY
+
           });
         }
       }
@@ -3894,8 +3991,12 @@ export class OutputComponent implements OnInit {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE = this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
                     defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
-                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
+
+                      this.removefeatureitemlist(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)
+
                       this.getDefaultItems(defaultitemarray)
+                    }
                   }
                   else {
                     this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
@@ -3907,8 +4008,11 @@ export class OutputComponent implements OnInit {
                 if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                   defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
-                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
+                    this.removefeatureitemlist(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)
                     this.getDefaultItems(defaultitemarray)
+                  }
+
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
@@ -3992,8 +4096,11 @@ export class OutputComponent implements OnInit {
                   if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                     defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
-                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                    if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
+                      this.removefeatureitemlist(this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID)
                       this.getDefaultItems(defaultitemarray)
+                    }
+
                   }
                   else {
                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
@@ -4005,8 +4112,10 @@ export class OutputComponent implements OnInit {
                 if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                   defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
-                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID)
+                  if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
+                    this.removefeatureitemlist(this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID)
                     this.getDefaultItems(defaultitemarray)
+                  }
                 }
                 else {
                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
@@ -4061,7 +4170,70 @@ export class OutputComponent implements OnInit {
               else {
                 this.feature_itm_list_table[iFeatureItemaddedTable].isQuantityDisabled = true
               }
-              this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(RuleOutputData[iItemRule].OPTM_QUANTITY).toFixed(3)
+
+              var tempfeatureid = this.feature_itm_list_table[iFeatureItemaddedTable].FeatureId
+              if (this.feature_itm_list_table[iFeatureItemaddedTable].is_accessory == "N") {
+                var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
+                  return obj['OPTM_FEATUREID'] == tempfeatureid
+                })
+                if (modelheaderpropagatechecked.length > 0) {
+                  if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                    if (modelheaderpropagatechecked[0].OPTM_TYPE == "1") {
+                      var itemkey = this.feature_itm_list_table[iFeatureItemaddedTable].Item
+                      var featurepropagatecheck = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                        return obj['OPTM_ITEMKEY'] == itemkey
+                      })
+                      if (featurepropagatecheck.length > 0) {
+                        if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
+                          this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
+                        }
+                      }
+                    }
+                    else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
+                      if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[iFeatureItemaddedTable].Item) {
+                        this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
+                      }
+                    }
+                    else {
+                      var itemkey = this.feature_itm_list_table[iFeatureItemaddedTable].Item
+                      var modelfeaturepropagatecheck = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                        return obj['OPTM_ITEMKEY'] == itemkey
+                      })
+                      if (modelfeaturepropagatecheck.length > 0) {
+                        if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
+                          this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
+                        }
+                      }
+                    }
+                  }
+                  else {
+                    this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(RuleOutputData[iItemRule].OPTM_QUANTITY).toFixed(3)
+                  }
+
+                }
+                else {
+                  this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(RuleOutputData[iItemRule].OPTM_QUANTITY).toFixed(3)
+                }
+              }
+              else {
+                var modelheaderpropagatechecked = this.Accessoryarray.filter(function (obj) {
+                  return obj['OPTM_FEATUREID'] == tempfeatureid
+                })
+                if (modelheaderpropagatechecked.length > 0) {
+                  if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                    if (this.feature_itm_list_table[iFeatureItemaddedTable].ispropogateqty == "Y") {
+                      this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
+                    }
+    
+                  }
+    
+                }
+              }
+
+
+
+              this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(this.feature_itm_list_table[iFeatureItemaddedTable].quantity).toFixed(3)
+
               if (RuleOutputData[iItemRule].OPTM_ISPRICEEDIT == "y") {
                 this.feature_itm_list_table[iFeatureItemaddedTable].isPriceDisabled = false
                 this.feature_itm_list_table[iFeatureItemaddedTable].pricehide = false
@@ -4090,6 +4262,7 @@ export class OutputComponent implements OnInit {
       }
 
     }
+    this.defaultitemflagid = "";
   }
 
   checkedFunction(feature_model_data, parentarray, value) {
@@ -4464,4 +4637,34 @@ export class OutputComponent implements OnInit {
       // }
     }
   }
+
+  //this remove items which have 1 maximum selectable
+  removefeatureitemlist(featureid) {
+    var maxselect = this.ModelHeaderData.filter(function (obj) {
+      return obj['OPTM_FEATUREID'] == featureid
+    })
+    if (maxselect.length > 0) {
+      if (maxselect[0].OPTM_MAXSELECTABLE == "1") {
+        for (var iFeatureItemadded = 0; iFeatureItemadded < this.feature_itm_list_table.length; iFeatureItemadded++) {
+          if (this.feature_itm_list_table[iFeatureItemadded].FeatureId == maxselect[0].OPTM_FEATUREID) {
+            this.feature_itm_list_table.splice(iFeatureItemadded, 1)
+            iFeatureItemadded = iFeatureItemadded - 1;
+          }
+
+        }
+      }
+    }
+  }
+
+  enableFeatureModelsItems() {
+    this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+      obj['disable'] = false
+      return obj
+    })
+    this.ModelBOMDataForSecondLevel = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+      obj['disable'] = false
+      return obj
+    })
+  }
+
 }
