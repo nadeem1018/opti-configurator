@@ -804,23 +804,9 @@
                   <div class="feature_discount_table">
                     <div class="col-md-6 pull-right pr-0 ">
                       <table class="table table-bordered table-sm">
-                        <thead class="" style=" font-size: 14px; ">
-                          <tr>
-                            <td>
-                              {{this.language.total_before_discount}} ({{defaultCurrency}})
-                            </td>
-                            <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
-                          </tr>
-                          <tr>
-                            <td width="70%">{{language.product_discount}}</td>
-                            <td width="30%">
-                              <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
-    text-align: right;     padding-right: 1.5px !important;"
-                                id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
-                                [(ngModel)]="this.feature_discount_percent" />
-                            </td>
-                          </tr>
-                        </thead>
+                        <!-- <thead class="" style=" font-size: 14px; ">
+                          
+                        </thead> -->
                         <tbody>
                           <!-- <tr>
                               <td>
@@ -829,17 +815,37 @@
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
 
+                          
+                            <tr>
+                              <td width="70%">
+                                {{this.language.total_before_discount}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right" width="30%">{{this.feature_total_before_discount}}</td>
+                            </tr>
+
+                            <tr>
+                              <td width="70%">{{language.product_discount}}</td>
+                              <td width="30%">
+                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
+      text-align: right;     padding-right: 1.5px !important;"
+                                  id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
+                                  [(ngModel)]="this.feature_discount_percent" />
+                              </td>
+                            </tr>
+
+
                           <tr>
-                            <td>
+                            <td width="70%">
                               {{this.language.product_total}} ({{defaultCurrency}})
                             </td>
-                            <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                            <td width="30%" class="text-right">{{this.feature_item_total}}</td>
                           </tr>
+
                           <tr>
-                            <td>
+                            <td width="70%">
                               {{this.language.accessories_discount}}
                             </td>
-                            <td class="text-right mr-3">
+                            <td class="text-right" width="30%">
                               <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
     text-align: right; padding-right: 1.5px !important;"
                                 id="accessory_item_discount" name="accessory_item_discount" #accessory_item_discount
@@ -847,6 +853,7 @@
                                 [(ngModel)]="this.accessory_discount_percent" />
                             </td>
                           </tr>
+
                           <!-- <tr>
                               <td>
                                 {{this.language.accessories_tax}}
@@ -854,18 +861,21 @@
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
                           <tr>
-                            <td>
+                            <td width="70%">
                               {{this.language.accessories_total}} ({{defaultCurrency}})
                             </td>
-                            <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                            <td class="text-right" width="30%">{{this.accessory_item_total}}</td>
                           </tr>
+
+                          <tr >
+                            <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
+                            <td class="text-right" width="30%">{{this.acc_grand_total}}</td>
+                          </tr>
+
                         </tbody>
-                        <tfoot>
-                          <tr style=" font-size: 14px; ">
-                            <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
-                            <td class="text-right mr-3">{{this.acc_grand_total}}</td>
-                          </tr>
-                        </tfoot>
+                        <!-- <tfoot>
+                          
+                        </tfoot> -->
                       </table>
                     </div>
                   </div>
@@ -1122,20 +1132,9 @@
                 <div class="final_item_discount_table">
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
-                      <thead class="" style=" font-size: 14px; ">
-                        <tr>
-                          <td>
-                            {{this.language.total_before_discount}} ({{defaultCurrency}})
-                          </td>
-                          <td class="text-right mr-3">{{this.feature_total_before_discount}}</td>
-                        </tr>
-                        <tr>
-                          <th width="70%">{{language.product_discount}}</th>
-                          <td width="30%" class="text-right mr-3">
-                            {{this.feature_discount_percent}}
-                          </td>
-                        </tr>
-                      </thead>
+                      <!-- <thead class="" style=" font-size: 14px; ">
+                       
+                      </thead> -->
                       <tbody>
                         <!-- <tr>
                           <td>
@@ -1143,17 +1142,32 @@
                           </td>
                           <td>{{this.feature_item_tax}}</td>
                         </tr> -->
+
                         <tr>
-                          <td>
-                            {{this.language.product_total}} ({{defaultCurrency}})
+                          <td width="70%">
+                            {{this.language.total_before_discount}} ({{defaultCurrency}})
                           </td>
-                          <td class="text-right mr-3">{{this.feature_item_total}}</td>
+                          <td class="text-right" width="30%">{{this.feature_total_before_discount}}</td>
                         </tr>
                         <tr>
-                          <td>
+                          <td width="70%">{{language.product_discount}}</td>
+                          <td width="30%" class="text-right">
+                            {{this.feature_discount_percent}}
+                          </td>
+                        </tr>
+
+
+                        <tr>
+                          <td width="70%">
+                            {{this.language.product_total}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right" width="30%">{{this.feature_item_total}}</td>
+                        </tr>
+                        <tr>
+                          <td width="70%">
                             {{this.language.accessories_discount}}
                           </td>
-                          <td class="text-right mr-3">
+                          <td class="text-right" width="30%">
                             {{this.accessory_discount_percent}}
                           </td>
                         </tr>
@@ -1164,18 +1178,19 @@
                           <td>{{this.acc_item_tax}}</td>
                         </tr> -->
                         <tr>
-                          <td>
+                          <td width="70%">
                             {{this.language.accessories_total}} ({{defaultCurrency}})
                           </td>
-                          <td class="text-right mr-3">{{this.accessory_item_total}}</td>
+                          <td class="text-right" width="30%">{{this.accessory_item_total}}</td>
+                        </tr>
+                        <tr>
+                          <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
+                          <td class="text-right" width="70%">{{this.acc_grand_total}}</td>
                         </tr>
                       </tbody>
-                      <tfoot>
-                        <tr style=" font-size: 14px; ">
-                          <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
-                          <td class="text-right mr-3">{{this.acc_grand_total}}</td>
-                        </tr>
-                      </tfoot>
+                      <!-- <tfoot>
+                        
+                      </tfoot> -->
                     </table>
                   </div>
                 </div>

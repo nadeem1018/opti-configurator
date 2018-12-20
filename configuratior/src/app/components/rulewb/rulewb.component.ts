@@ -67,7 +67,7 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
   public showLoader:boolean = true;
-
+  public code_disabled = "false";
   public isOutputTable: boolean = true;
 
   imgPath = 'assets/images';
@@ -122,6 +122,7 @@ export class RulewbComponent implements OnInit {
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
       this.isUpdateButtonVisible = false;
+      this.code_disabled = "false";
       this.isSaveButtonVisible = true;
       this.isDeleteButtonVisible = false;
       this.show_sequence = false;
@@ -132,6 +133,7 @@ export class RulewbComponent implements OnInit {
       this.showLoader  = false;
     } else {
       this.isUpdateButtonVisible = true;
+      this.code_disabled = "true";
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = false;
       this.show_sequence = false;

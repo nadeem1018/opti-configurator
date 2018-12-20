@@ -87,32 +87,6 @@ export class OutputService {
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataForSelectedFeatureModelItem", jObject, this.common_params.httpOptions);
   }
 
-
-  fillContactPerson(CompanyDBID: string, Customer: string): Observable<any> {
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ContactPerson: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
-
-    //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Wizard/FillContactPerson", jObject, this.common_params.httpOptions);
-  }
-
-
-  fillShipTo(CompanyDBID: string, Customer: string): Observable<any> {
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject = { AddressList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
-
-    //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Wizard/FillShipAddress", jObject, this.common_params.httpOptions);
-  }
-
-  fillBillTo(CompanyDBID: string, Customer: string): Observable<any> {
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject = { AddressList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
-
-    //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Wizard/FillBillAddress", jObject, this.common_params.httpOptions);
-  }
-
   fillShipAddress(ShipData): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
     // let jObject = { AddressDetail: JSON.stringify([{ CompanyDBID: CompanyDBID,Customer: Customer,ShipTo:ShipTo }]) };
@@ -201,5 +175,14 @@ export class OutputService {
     let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: modelcode }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
+  }
+  
+  //This method will bring all data for customer
+  getCustomerAllInfo(CompanyDBID: string, Customer: string): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerAllInfo", jObject, this.common_params.httpOptions);
   }
 }
