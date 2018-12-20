@@ -253,7 +253,7 @@
                                     <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSaveClick()" class="btn btn-sm btn-primary mr-10">
                                         <i class="fa fa-save"></i> {{language.update}}</button>
 
-                                    <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick()" class="btn btn-sm btn-secondary  mr-10">
+                                    <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick('manual')" class="btn btn-sm btn-secondary  mr-10">
                                         <i class="fa fa-window-maximize"></i> {{language.explode}}
                                     </button>
 

@@ -225,7 +225,7 @@ export class BomComponent implements OnInit {
                 this.showImageBlock = true;
               }
             }
-            this.onExplodeClick();
+            this.onExplodeClick('auto');
           }
           this.showLoader  = false;
           console.log(this.feature_bom_table);
@@ -939,7 +939,10 @@ export class BomComponent implements OnInit {
     }
   }
 
-  onExplodeClick() {
+  onExplodeClick(type) {
+    if (type == "manual"){
+      this.showtree();
+    }
     if (this.feature_bom_data.feature_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
@@ -1064,16 +1067,27 @@ export class BomComponent implements OnInit {
 
   toggleTree(e){
     let element = document.getElementById('right-tree-section');
-    element.classList.toggle('d-none');
-    element.classList.toggle('d-block');
-  
-    if(element.classList.contains('d-block')) {
-      $('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
-    }else{
-      let leftSection = document.getElementById('left-table-section');
-      let classes = leftSection.classList;
-      $('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
+    if (element.classList.contains('d-block')) {
+      this.hidetree();
+    } else {
+      this.showtree();
     }
   }
 
+  showtree(){
+    if ($(document).find('#right-tree-section').hasClass('d-none')) {
+      $(document).find('#right-tree-section').removeClass('d-none');
+      $(document).find('#right-tree-section').addClass('d-block');
+      $(document).find('#left-table-section').removeClass('col-md-12').addClass('col-md-9');
+    }
+  }
+
+
+  hidetree(){
+    if ($(document).find('#right-tree-section').hasClass('d-block')) {
+      $(document).find('#right-tree-section').removeClass('d-block');
+      $(document).find('#right-tree-section').addClass('d-none');
+      $(document).find('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
+    }
+  }
 }
