@@ -8,17 +8,23 @@ export class ToFixedPipe implements PipeTransform {
   transform(value: any, args?: any): any {
 
     switch (args) {
-      case "3":
+      case "3": {
         return parseFloat(value).toFixed(3);
         break;
-        case "2":
+      }
+      case "2": {
         return parseFloat(value).toFixed(2);
         break;
-        case "4":
+      }
+      case "4": {
         return parseFloat(value).toFixed(4);
         break;
-      default:
+      }
+      default: {
         return parseFloat(value).toFixed(3);
+        break;
+      }
+
     }
 
   }
