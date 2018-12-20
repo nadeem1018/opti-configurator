@@ -830,3 +830,28 @@ only screen and ( min-resolution: 2dppx) {
 .img-thumbnail {
     border: none;
 }
+
+.feature_discount_table tr {
+    height: 34px;
+}
+
+.feature_discount_table tr td{
+    display: table-cell;
+    vertical-align: middle;
+    strong{
+        font-size: 14px;
+    }
+}
+
+
+.final_item_discount_table tr {
+    height: 34px;
+}
+
+.final_item_discount_table tr td{
+    display: table-cell;
+    vertical-align: middle;
+    strong{
+        font-size: 14px;
+    }
+}
