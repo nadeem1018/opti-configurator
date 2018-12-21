@@ -2896,7 +2896,7 @@ export class OutputComponent implements OnInit {
     var itemkeyforparentmodel = "";
 
     this.step2_final_dataset_to_save = [];
-    let grand_total = Number(this.acc_grand_total)
+    let grand_total = Number(this.feature_total_before_discount)
     let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
     let price_ext: any = grand_total;
     this.step3_data_final.push({
