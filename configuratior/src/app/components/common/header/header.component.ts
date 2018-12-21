@@ -49,22 +49,7 @@ export class HeaderComponent implements OnInit {
  
   logout(){
 
-    this.CommonService.RemoveLoggedInUser().subscribe(
-      data => {
-        debugger
-        if(data){
-          alert("remove license done");
-        }else{
-          alert("there is some issue in removing license");
-        }
-
-        // this.router.navigateByUrl('account');
-      },
-      error => {
-        debugger
-        alert("remove license Failed");
-      }
-    );
+    this.CommonService.RemoveLoggedInUser().subscribe();
     
     this.CommonService.signOut(this.toastr, this.router);
 

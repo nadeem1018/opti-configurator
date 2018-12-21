@@ -33,7 +33,7 @@ export class FeaturebomService {
   }
 
   SaveModelBom(SaveData): Observable<any>{
-    let jObject:any = { AddModelBom: JSON.stringify( SaveData) };
+    let jObject: any = { AddModelBom: JSON.stringify(SaveData), GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") };
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/AddUpdateFeatureBOMData", jObject, this.common_params.httpOptions);
   }
 

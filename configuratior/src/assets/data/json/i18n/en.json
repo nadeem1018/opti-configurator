@@ -157,6 +157,7 @@
     "ModelIDBlank": "Model id cannot be blank",
     "ModelCodeBlank": "Model Code cannot be blank",
     "SelectModel": "Select model at row index: ",
+    "session_stopped":"Session has been stopped",
     "available":"Available",
     "NoDataAvailable": "No data available",
     "Norowselected": "No row selected",

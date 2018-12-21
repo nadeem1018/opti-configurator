@@ -87,6 +87,8 @@ export class LookupComponent implements OnInit {
   isPerfectSCrollBar: boolean = false;
   public search_string = "";
   public logo_path = this.commonData.get_current_url() + "/assets/images/logo_configurator/icon/128_icon.png";
+  public company_name:any  = "N/A";
+  public company_address:any = "N/A";
   public dialogOpened = false;
 
   public close_kendo_dialog() {
@@ -883,7 +885,23 @@ export class LookupComponent implements OnInit {
 
   output_invoice_print() {
     this.popup_title = this.language.print_quote;
-
+    this.common_service.GetCompanyDetails(this.companyName).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+          if (data.length > 0) {
+            if (data[0].LogoImage != ""){
+              this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
+            }
+            this.company_name = data[0].CompanyName;
+            this.company_address = data[0].CompanyAddress;
+            
+          }
+        }
+      },
+      error => {
+        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+      }
+    )
 
     //Print Criteria
     //Summary --> Customer + COM + Qty + Acces.
@@ -983,15 +1001,6 @@ export class LookupComponent implements OnInit {
         }
       }
 
-      //preparing data for accessories
-      // for (let acount = 0; acount < row['accesories'].length; acount++) {
-      //   let featureRow = row['accesories'][acount];
-      //   row_count++;
-      //   if(featureRow.checked == true){
-      //     this.prepareFinalItemArray(row_count, featureRow.key, featureRow.name, row.quantity, row.price, row.price_ext);
-      //   }
-      // }
-
     }
 
 
@@ -1010,22 +1019,7 @@ export class LookupComponent implements OnInit {
     }
 
     $("#invoice_modal").modal('show');
-    // setTimeout(function () {
-    //   // @ts-ignore: Unreachable code error
-    //   /*  let doc = new jsPDF();
-    //     let specialElementHandlers = {
-    //         '#editor': function (element, renderer) {
-    //             return true;
-    //         }
-    //     };
-    //     doc.fromHTML($('#invoice-template').html(), 15, 15, {
-    //       'width': 170,
-    //           'elementHandlers': specialElementHandlers
-    //   });
-    //    doc.save('report.pdf');*/
-    //   window.print();
-
-    // }, 2000);
+  
   }
 
   public tree_data_json: any = '';
