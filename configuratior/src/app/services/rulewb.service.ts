@@ -47,7 +47,7 @@ export class RulewbService {
   SaveData(Data): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { AddRule: JSON.stringify(Data) };
+    let jObject: any = { AddRule: JSON.stringify(Data), GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/AddUpdateDataForRuleWorkBench", jObject, this.common_params.httpOptions);
   }
