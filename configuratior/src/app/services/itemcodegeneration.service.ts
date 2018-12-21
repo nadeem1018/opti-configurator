@@ -41,7 +41,7 @@ export class ItemcodegenerationService {
   viewItemGenerationData(CompanyDBID: string,search:string,PageNumber:any,record_per_page:any): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page }]) };
+    let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page, GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/GetItemGenerationData", jObject, this.common_params.httpOptions);
   }

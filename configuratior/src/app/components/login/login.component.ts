@@ -102,8 +102,8 @@ export class LoginComponent implements OnInit {
   enter_to_sublit(event) {
     if (event.keyCode == 13) {
       if (this.selecetedComp != undefined && this.selecetedComp != "") {
-        this.onLoginBtnPress();
-        // this.getLisenceData();
+        // this.onLoginBtnPress();
+        this.getLisenceData();
       } else {
         this.onConnectBtnPress();
       }

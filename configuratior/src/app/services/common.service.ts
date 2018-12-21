@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { CommonData } from "src/app/models/CommonData";
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -81,4 +83,28 @@ export class CommonService {
     this.isLoggedInData.next(sessionStorage.getItem('isLoggedIn'));
   }
 
+
+
+  RemoveLoggedInUser(): Observable<any> {
+    var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
+    return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
+  } 
+
+  signOut(toastr: ToastrService, router: Router){
+    toastr.success('', 'Session has been stopped', this.common_params.toast_config);
+    /* sessionStorage.clear();
+    localStorage.clear(); */
+    let login_page = this.common_params.application_path + '/index.html#login';
+        
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('selectedComp');
+    sessionStorage.removeItem('loggedInUser');
+    
+    // this.router.navigateByUrl('/login');
+   
+    setTimeout(()=>{   
+      this.setisLoggedInData();
+      router.navigateByUrl('/login');
+    }, 1000);
+  }
 }
