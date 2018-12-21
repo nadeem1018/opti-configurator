@@ -212,10 +212,10 @@ export class LoginComponent implements OnInit {
         this.onLoginBtnPress();
 
       } else {
-        alert(this.licenseData[0].ErrMessage);
+         this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
       }
     } else {
-      alert(this.licenseData[0].ErrMessage);
+       this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
     }
   }
 

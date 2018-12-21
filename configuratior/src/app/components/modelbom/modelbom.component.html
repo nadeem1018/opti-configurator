@@ -5,9 +5,9 @@
 <!-- loader end --> 
 
 <!-- loader start for lookup -->
- <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader">
+<!--  <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader">
   <div class="opti_spinner"></div>
-</div>
+</div> -->
 <!-- loader end for lookup --> 
 
 
@@ -128,112 +128,7 @@
                  {{language.rule}}</button>
             </div>
           </div>
-          
-          <!-- <div class="col-sm-12 p-0">
-            <div class="table-responsive table-responsive-sm table-bordered">
-              <table class="table opti_fixed-header top-table   table-sm" id="dataTable" cellspacing="0" >
-                <thead class="thead-dark">
-                  <tr>
-                    <th width="3%">#</th>
-                    <th width="9%">{{language.Model_Type}}</th>
-                    <th width="12%">{{language.ModelBom_FeatureValue}}</th>
-                    <th width="9%">{{language.Bom_Displayname}}</th>
-                    <th width="5%">{{language.uom}}</th>
-                    <th width="6%">{{language.Bom_Qty}}</th>
-                    <th width="9%">{{language.min_selectable}}</th>
-                    <th width="9%">{{language.max_selectable}}</th>
-                    <th width="9%">{{language.propagate_qty}}</th>
-                    <th width="8%">{{language.price_source}}</th>
-                    <th width="7%">{{language.mandatory}}</th>
-                    <th width="10%">{{language.unique_identifier}}</th>
-                    <th width="4%">
-                      <i class="fa fa-trash"></i>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                  <tr *ngFor="let row of modelbom_data">
-                    <td width="3%">
-                      <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr" value={{row.rowindex}} title={{row.rowindex}}/>
-                    </td>
-                    <td width="9%">
-                      <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,row.rowindex)">
-                        <option *ngFor="let v of commonData.model_bom_type " [value]="v.value" [selected]="row.type==v.value"> {{v.Name}}</option>
-                      </select>
-                    </td>
-                    <td width="12%">
-                      <div class="input-group">
-                        <input [disabled]="row.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
-                          value={{row.type_value}} #type_value  title={{row.type_value}}/>
-
-                        <input [disabled]="row.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,row.rowindex, type_value_code.value)"
-                          value={{row.type_value_code}} #type_value_code  title={{row.type_value_code}}/>
-                        <div class="input-group-append" [hidden]=row.hide>
-                          <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_click(selectedvalue.value, row.rowindex)">
-                            <i class="fa fa-bars"></i>
-                          </span>
-                        </div>
-                      </div>
-
-                    </td>
-                    <td width="9%">
-                      <input type="text" class="form-control  form-control-sm" id="display_name" value={{row.display_name}} (change)="on_display_name_change(display_name.value,row.rowindex)"
-                        #display_name title={{row.display_name}} />
-                    </td>
-                    <td width="5%">
-                      <input type="text" [disabled]="row.isUOMDisabled" class="form-control  form-control-sm" id="uom" value={{row.uom}} (change)="on_uom_change(uom.value,row.rowindex)"
-                        #uom title={{row.uom}} />
-                    </td>
-                    <td width="6%">
-                      <input type="text" class="form-control  form-control-sm" style="text-align:right" id="quantity" value={{row.quantity}}
-                        (change)="on_quantity_change(quantity.value,row.rowindex)" title={{row.quantity}} #quantity />
-                    </td>
-                    <td width="9%">
-                      <input type="text" [disabled]="row.isMinSelectedDisable" class="form-control  form-control-sm" style="text-align:right" id="min_selected" value={{row.min_selected}}
-                        (change)="on_min_selected_change(min_selected.value,row.rowindex,min_selected)" #min_selected title="{{row.min_selected}}" />
-                    </td>
-                    <td width="9%">
-                      <input type="text" [disabled]="row.isMaxSelectedDisable" class="form-control  form-control-sm pull-right" style="text-align:right" id="max_selected" value={{row.max_selected}}
-                        (change)="on_max_selected_change(max_selected.value,row.rowindex,max_selected)" #max_selected title="{{row.max_selected}}" />
-                    </td>
-                    <td width="9%">
-                      <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{row.propagate_qty}}
-                        (change)="on_propagate_qty_change(propagate_qty,row.rowindex)" [(checked)]=row.propagate_qty #propagate_qty title="{{row.propagate_qty}}"
-                      />
-                    </td>
-                    <td width="8%">
-                      <div class="input-group">
-                          <input [disabled]="row.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" title="{{row.price_source_id}}" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
-                          value={{row.price_source_id}} #price_source_id />  
-
-                        <input type="text" class="form-control  form-control-sm" id="price_source" value={{row.price_source}} name="price_source" (change)="on_price_source_change(price_source_id.value,price_source.value,row.rowindex,price_source)"
-                          #price_source [disabled]="row.isPriceDisabled" title="{{row.price_source}}" />
-                        <div class="input-group-append" [hidden]=row.pricehide>
-                          <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(row.type_value,row.rowindex)">
-                            <i class="fa fa-bars"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td width="7%">
-                      <input type="checkbox" class="form-control  form-control-sm" id="mandatory" value={{row.mandatory}} (change)="on_mandatory_change(mandatory,row.rowindex)"
-                        #mandatory [(checked)]=row.mandatory title="{{row.mandatory}}"/>
-                    </td>
-                    <td width="10%">
-                      <input type="checkbox" class="form-control  form-control-sm" id="unique_identifer" value={{row.unique_identifer}} [(checked)]=row.unique_identifer
-                        (change)="on_unique_identifer_change(unique_identifer,row.rowindex)" title="{{row.unique_identifer}}" #unique_identifer />
-                    </td>
-                    <td width="4%">
-                      <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(row.rowindex)">
-                        <i class="fa fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div> -->
+        
           <!-- <hr> -->
           <div class="col-sm-12 p-0">
             <div class="">
@@ -280,7 +175,7 @@
                     </kendo-grid-column>
                 <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="80" [minResizableWidth]="80">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                  <input type="text" class="form-control  form-control-sm" style="text-align:right" id="quantity" value={{dataItem.quantity}} (change)="on_quantity_change(quantity.value,dataItem.rowindex)"
+                  <input type="text" class="form-control  form-control-sm" style="text-align:right" name="bom_quantity" id="quantity" value={{dataItem.quantity}} (change)="on_quantity_change(quantity.value,dataItem.rowindex)"
                     title={{dataItem.quantity}} #quantity />
                   </ng-template>
                 </kendo-grid-column>

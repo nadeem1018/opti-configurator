@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
@@ -10,7 +10,7 @@ import { UIHelper } from '../../helpers/ui.helpers';
 import { isNumber } from 'util';
 import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 //import { LookupComponent } from '../common/lookup/lookup.component';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   //providers:[LookupComponent],

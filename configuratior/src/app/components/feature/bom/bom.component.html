@@ -169,7 +169,7 @@
                             <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="90" [minResizableWidth]="90">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <input type="text" [disabled]="dataItem.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm"
-                                        id="quantity" (change)="on_quantity_change(quantity.value,dataItem.rowindex)" value={{dataItem.quantity}}
+                                        id="quantity" name="feature_quantity" (change)="on_quantity_change(quantity.value,dataItem.rowindex)" value={{dataItem.quantity}}
                                         #quantity title="{{dataItem.quantity}}" />
                                 </ng-template>
                             </kendo-grid-column>
