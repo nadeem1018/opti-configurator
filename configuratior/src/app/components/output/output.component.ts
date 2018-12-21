@@ -4533,6 +4533,10 @@ export class OutputComponent implements OnInit {
   //This method will get Customer's all info.
 
   getCustomerAllInfo() {
+
+    //first we will clear the details
+    this.cleanCustomerAllInfo();
+
     this.OutputService.getCustomerAllInfo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
         if (data != null || data != undefined && data.length > 0) {
@@ -4692,5 +4696,30 @@ export class OutputComponent implements OnInit {
       this.owner_list = [];
       this.step1_data.owner = "";
     }
+  }
+
+  //Clean all Customer Info
+  cleanCustomerAllInfo(){
+    //clear all owners info
+    this.owner_list.length = 0;
+    this.step1_data.owner = "";
+
+    //clear all bill to detial
+    this.bill_to.length = 0;
+    this.step1_data.bill_to_address = '';
+
+    //clear contact person detail
+    this.contact_persons.length = 0;
+    this.person = "";
+    this.step1_data.person_name = "";
+
+    //clear sales employee detail
+    this.sales_employee.length = 0;
+    this.salesemployee = "";
+    this.step1_data.sales_employee = "";
+
+    //clear ship to detail
+    this.ship_to.length = 0;
+    this.step1_data.ship_to_address = '';
   }
 }

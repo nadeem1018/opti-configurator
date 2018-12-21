@@ -16,8 +16,6 @@ export class ToFixedPipe implements PipeTransform {
     } else  {
         return parseFloat(value).toFixed(3);
     }
-
-
   }
 
 }
