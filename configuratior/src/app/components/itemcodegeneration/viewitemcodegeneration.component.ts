@@ -156,18 +156,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
                 this.showLoader = false;
                 if (data.length > 0 && data[0].ErrorMsg == "7001") {
-                    this.commonservice.RemoveLoggedInUser().subscribe(
-                        data => {
-                          debugger
-                          this.commonservice.signOut(this.toastr, this.router);
-                        },
-                        error => {
-                          debugger
-                          alert("remove lisence Failed");
-                        }
-                      );
-                    alert("session expire");
-          
+                    this.commonservice.RemoveLoggedInUser().subscribe();
+                    this.commonservice.signOut(this.toastr, this.router);
                     return;
                   } else if (data != undefined) {
                     this.dataArray = data;

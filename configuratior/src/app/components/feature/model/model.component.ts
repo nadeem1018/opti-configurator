@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import * as XLSX from 'ts-xlsx';
 import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
 import * as $ from 'jquery';
+import { CommonService } from 'src/app/services/common.service';
 
 
 
@@ -33,7 +34,8 @@ export class ModelComponent implements OnInit {
   public view_route_link = '/feature/model/view';
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  constructor(private fms: FeaturemodelService, private lookup: LookupComponent, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute) { }
+  constructor(private fms: FeaturemodelService, private lookup: LookupComponent, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute,
+    private commanService: CommonService) { }
   page_main_title = this.language.model_feature_master;
   section_title = "";
   companyName: string;
@@ -216,6 +218,12 @@ export class ModelComponent implements OnInit {
 
         data => {
 
+          if (data == "7001") {
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          } 
+
           if (data == "True") {
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
@@ -356,6 +364,12 @@ export class ModelComponent implements OnInit {
       this.fms.updateData(this.featureModel).subscribe(
         data => {
           console.log(data);
+          if (data == "7001") {
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          } 
+
           if (data == "True") {
             this.toastr.success('', this.language.DataUpdateSuccesfully, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
