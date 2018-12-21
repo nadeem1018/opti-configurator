@@ -134,9 +134,9 @@
 
 <div class="modal fade" id="enlarge_image_modal" tabindex="-1" role="dialog" aria-labelledby="enlarge_image_modal"
     aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog  modal-lg" role="document" style="background:transparent !important;border:none !important;">
+        <div class="modal-content" style="background:transparent !important;border:none !important;">
+            <!-- <div class="modal-header">
                 <h5 class="modal-title" id="enlarge_image_modal_title">{{popup_title}}</h5>
                 <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')"
                     aria-label="Close">
@@ -144,7 +144,7 @@
                         <i class="fa fa-window-close"></i>
                     </span>
                 </button>
-            </div>
+            </div> -->
             <div class="modal-body">
                 <div class="opti_loader " *ngIf="showLoader">
                     <div class="text-center">
@@ -154,14 +154,19 @@
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="row image_data">
                         <div class="col-lg-8" style=" margin: 0 auto; ">
+                            <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')" aria-label="Close" style="position: relative;top: 10px;left: 12px;">
+                                <span aria-hidden="true">
+                                    <i class="fa fa-window-close"></i>
+                                </span>
+                            </button>
                             <img src="{{preview_image}}" class="img-thumbnail rounded float-left" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <!-- <div class="modal-footer">
                     <button class="btn btn-sm btn-info mr-10" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')">
                         <i class="fa fa-check"></i> {{this.language.close}}</button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
