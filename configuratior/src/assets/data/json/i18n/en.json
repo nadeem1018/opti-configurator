@@ -20,6 +20,7 @@
     "feature_Bom": "Feature BOM",
     "permission_load_error": "There was some error while loading user wright permission",
     "submit": "Submit",
+    "license_failed":"License Failed",
     "model": "Model",
     "bom": "BOM",
     "lookup": "Lookup",

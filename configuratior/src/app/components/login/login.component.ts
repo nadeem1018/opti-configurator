@@ -188,7 +188,8 @@ export class LoginComponent implements OnInit {
           this.licenseData = data;
           this.handleLicenseDataSuccessResponse();
         } else {
-          alert("Lisence Failed");
+         //  alert("Lisence Failed");
+         this.toastr.error('', this.language.license_failed, this.commonData.toast_config);
         }
         // this.licenseData = data;
 
@@ -196,7 +197,8 @@ export class LoginComponent implements OnInit {
       error => {
         debugger
         // this.showLoader = false;
-        alert("license Failed");
+       //  alert("license Failed");
+       this.toastr.error('', this.language.license_failed, this.commonData.toast_config);
       }
     );  
   }

@@ -884,8 +884,10 @@ export class LookupComponent implements OnInit {
   }
 
   output_invoice_print() {
+     this.company_name = "Optipro Product Configuration";
+    this.company_address = "255 Street, Washington DC, USA ";
     this.popup_title = this.language.print_quote;
-    this.common_service.GetCompanyDetails(this.companyName).subscribe(
+   /*  this.common_service.GetCompanyDetails(this.companyName).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
@@ -901,7 +903,7 @@ export class LookupComponent implements OnInit {
       error => {
         this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
       }
-    )
+    ) */
 
     //Print Criteria
     //Summary --> Customer + COM + Qty + Acces.

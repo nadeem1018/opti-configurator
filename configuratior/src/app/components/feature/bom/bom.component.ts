@@ -256,12 +256,16 @@ export class BomComponent implements OnInit {
     let first_default = false;
     if(this.feature_bom_table.length == 0){
       first_default = true;
-    }
-
+    } 
+    let table_default_type  = 1;
+    if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y'){
+        table_default_type = 2;
+      }
+    
     this.feature_bom_table.push({
       rowindex: this.counter,
       FeatureId: this.feature_bom_data.feature_id,
-      type: 1,
+      type: table_default_type,
       type_value: "",
       type_value_code: "",
       display_name: "",
