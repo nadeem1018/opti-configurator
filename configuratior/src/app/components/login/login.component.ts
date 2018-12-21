@@ -283,22 +283,16 @@ export class LoginComponent implements OnInit {
 
   //Get Currency code from backend
   getCurrencyCode(selectedCompID) {
-    this.auth.getCurrencyCode(selectedCompID).subscribe(
+    sessionStorage.setItem('defaultCurrency', "$");
+    this.CommonService.GetCompanyDetails(selectedCompID).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
             sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
           }
-          else {
-            sessionStorage.setItem('defaultCurrency', "$");
-          }
-        }
-        else {
-          sessionStorage.setItem('defaultCurrency', "$");
         }
       },
       error => {
-        sessionStorage.setItem('defaultCurrency', "$");
         this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
       }
     )

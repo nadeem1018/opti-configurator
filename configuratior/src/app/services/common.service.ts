@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CommonService {
   public config_params:any;
   common_params = new CommonData();
+  public logged_in_company = sessionStorage.selectedComp;
   constructor(private httpclient: HttpClient) {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
    }
@@ -108,4 +109,13 @@ export class CommonService {
       router.navigateByUrl('/login');
     }, 1000);
   }
+
+  // get company details 
+  GetCompanyDetails(selectedCompID): Observable<any> {
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: selectedCompID }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Base/GetCompanyDetails", jObject, this.common_params.httpOptions);
+  }
+
 }
