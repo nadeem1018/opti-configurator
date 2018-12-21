@@ -47,7 +47,7 @@ export class OutputComponent implements OnInit {
   public currentDate = new Date();
   public submit_date;
   //public step2_data_all_data={};
-  public print_operation_type:any = "";
+
   // public router_link_new_config = "";
 
   public defaultCurrency = sessionStorage.defaultCurrency;
@@ -59,7 +59,7 @@ export class OutputComponent implements OnInit {
   public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
   public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn, "", "", "delete"];
-  public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false,false];
+  public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false, false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
   public feature_item_tax: number = 0
@@ -104,7 +104,7 @@ export class OutputComponent implements OnInit {
   public complete_dataset: any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef ) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef) { }
   serviceData: any;
   public new_output_config: boolean = false;
   public contact_persons: any = [];
@@ -240,19 +240,17 @@ export class OutputComponent implements OnInit {
       this.tree_view_expand_collapse()
     }, 2000); */
   }
-  
+
   ngAfterContentChecked() {
     this.cdref.detectChanges();
   }
-  
+
 
   start_new_configuration_click() {
     this.onOperationChange('');
     this.delete_all_row_data();
     $("fieldset").hide();
     $("fieldset:first").show();
-    $(".accesory_check_for_second_screen").prop("checked", false);
-    $("#print_operation_type").val("");
   }
 
   onOperationChange(operation_type) {
@@ -587,6 +585,11 @@ export class OutputComponent implements OnInit {
 
   on_input_change(inputid, value) {
     if (inputid == "quantity") {
+      if (isNaN(value) == true) {
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        this.step2_data.quantity = parseFloat(this.previousquantity);
+        return;
+      }
       if (value == 0 || value == '' || value == null || value == undefined) {
         this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
         this.step2_data.quantity = parseFloat(this.previousquantity);
@@ -599,7 +602,7 @@ export class OutputComponent implements OnInit {
       }
       var rgexp = /^\d+$/;
       if (rgexp.test(value) == false) {
-        this.toastr.error('', this.language.quantity_numeric_only, this.commonData.toast_config);
+        this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
         this.step2_data.quantity = parseFloat(this.previousquantity);
         return;
       }
@@ -1848,8 +1851,8 @@ export class OutputComponent implements OnInit {
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: feature_model_data.OPTM_LINENO,
                       OPTM_MANDATORY: "N",
-                      OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
-                      OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
+                      OPTM_MAXSELECTABLE: "1",
+                      OPTM_MINSELECTABLE: "1",
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
                       OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                       OPTM_MODIFIEDDATETIME: String(feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
@@ -1860,8 +1863,8 @@ export class OutputComponent implements OnInit {
                       OPTM_UNIQUEIDNT: parentarray[0].OPTM_UNIQUEIDNT,
                       OPTM_UOM: parentarray[0].OPTM_UOM,
                       child_code: parentarray[0].child_code,
-                      element_class: parentarray[0].element_class,
-                      element_type: parentarray[0].element_type,
+                      element_class: "custom-control custom-radio",
+                      element_type: "radio",
                       feature_code: feature_model_data.feature_code,
                       parentfeatureid: parentfeatureid,
                       parentmodelid: parentmodelid,
@@ -1924,8 +1927,8 @@ export class OutputComponent implements OnInit {
                           checked: checkeddefault,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                           is_second_level: 1,
-                          element_class: parentarray[0].element_class,
-                          element_type: parentarray[0].element_type,
+                          element_class: "custom-control custom-radio",
+                          element_type: "radio",
                           parentfeatureid: parentfeatureid,
                           parentmodelid: parentmodelid,
                         });
@@ -1968,8 +1971,8 @@ export class OutputComponent implements OnInit {
                                   OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                                   OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                                   OPTM_MANDATORY: "N",
-                                  OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
-                                  OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
+                                  OPTM_MAXSELECTABLE: "1",
+                                  OPTM_MINSELECTABLE: "1",
                                   OPTM_MODELID: parentarray[0].OPTM_MODELID,
                                   OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                                   OPTM_MODIFIEDDATETIME: String(data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
@@ -2033,8 +2036,8 @@ export class OutputComponent implements OnInit {
                                         checked: checkeddefault,
                                         OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                                         is_second_level: 1,
-                                        element_class: parentarray[0].element_class,
-                                        element_type: parentarray[0].element_type,
+                                        element_class: "custom-control custom-radio",
+                                        element_type: "radio",
                                         parentfeatureid: data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID,
                                         parentmodelid: parentmodelid,
                                       });
@@ -2091,8 +2094,8 @@ export class OutputComponent implements OnInit {
                     OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                     OPTM_LINENO: feature_model_data.OPTM_LINENO,
                     OPTM_MANDATORY: "N",
-                    OPTM_MAXSELECTABLE: parentarray[0].OPTM_MAXSELECTABLE,
-                    OPTM_MINSELECTABLE: parentarray[0].OPTM_MINSELECTABLE,
+                    OPTM_MAXSELECTABLE: "1",
+                      OPTM_MINSELECTABLE: "1",
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
                     OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                     OPTM_MODIFIEDDATETIME: String(feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
@@ -2155,8 +2158,8 @@ export class OutputComponent implements OnInit {
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                           is_second_level: 1,
-                          element_class: parentarray[0].element_class,
-                          element_type: parentarray[0].element_type,
+                          element_class: "custom-control custom-radio",
+                          element_type: "radio",
                           parentfeatureid: parentfeatureid,
                           parentmodelid: parentmodelid,
                         });
@@ -2898,7 +2901,7 @@ export class OutputComponent implements OnInit {
     var itemkeyforparentmodel = "";
 
     this.step2_final_dataset_to_save = [];
-    let grand_total = Number(this.acc_grand_total)
+    let grand_total = Number(this.feature_total_before_discount)
     let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
     let price_ext: any = grand_total;
     this.step3_data_final.push({
@@ -4089,9 +4092,9 @@ export class OutputComponent implements OnInit {
                     if (this.feature_itm_list_table[iFeatureItemaddedTable].ispropogateqty == "Y") {
                       this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
                     }
-    
+
                   }
-    
+
                 }
               }
 
@@ -4545,7 +4548,7 @@ export class OutputComponent implements OnInit {
           this.console.log("ALL CUSTOMER INFO-->", data)
 
           //Fill Contact Person
-          if(data.ContactPerson != undefined){
+          if (data.ContactPerson != undefined) {
             if (data.ContactPerson.length > 0) {
               this.contact_persons = data.ContactPerson;
               this.person = data.ContactPerson[0].Name;
@@ -4568,11 +4571,11 @@ export class OutputComponent implements OnInit {
               this.step1_data.sales_employee = "";
             }
           }
-          else{
+          else {
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
             return;
           }
-          
+
 
           //Fill bill to
           if (data.BillToDef.length > 0) {
@@ -4620,7 +4623,7 @@ export class OutputComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         }
       },
-      error=>{
+      error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       })
@@ -4688,7 +4691,7 @@ export class OutputComponent implements OnInit {
     }
   }
 
- //fill all owners
+  //fill all owners
   fillAllOwners(data) {
     if (data.AllOwners.length > 0) {
       this.owner_list = data.AllOwners;
@@ -4701,15 +4704,14 @@ export class OutputComponent implements OnInit {
   }
 
   //Clean all Customer Info
-  cleanCustomerAllInfo(){
+  cleanCustomerAllInfo() {
     //clear all owners info
     this.owner_list.length = 0;
     this.step1_data.owner = "";
 
     //clear all bill to detial
     this.bill_to.length = 0;
-    this.step1_data.bill_to_address = '';
-
+    this.step1_data.bill_to_address = 
     //clear contact person detail
     this.contact_persons.length = 0;
     this.person = "";
