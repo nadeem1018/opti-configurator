@@ -347,7 +347,7 @@
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee"
                         (change)="onSalesPersonChange(salesemployee.value)">
-                        <option [selected]="salesemployee.value == v.SlpName" *ngFor="let v of sales_employee" [value]="v.SlpName">
+                        <option [selected]="salesemployee.value" *ngFor="let v of sales_employee" [value]="v.SlpName">
                           {{v.SlpName}}</option>
                       </select>
                     </div>
