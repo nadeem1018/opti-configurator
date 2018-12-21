@@ -48,22 +48,27 @@ export class HeaderComponent implements OnInit {
   }
  
   logout(){
+
+    this.CommonService.RemoveLoggedInUser().subscribe();
     
-    this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
-    /* sessionStorage.clear();
-    localStorage.clear(); */
-    let login_page = this.commonData.application_path + '/index.html#login';
+    this.CommonService.signOut(this.toastr, this.router);
+
+
+    // this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
+    // /* sessionStorage.clear();
+    // localStorage.clear(); */
+    // let login_page = this.commonData.application_path + '/index.html#login';
         
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('selectedComp');
-    sessionStorage.removeItem('loggedInUser');
+    // sessionStorage.removeItem('isLoggedIn');
+    // sessionStorage.removeItem('selectedComp');
+    // sessionStorage.removeItem('loggedInUser');
     
-    // this.router.navigateByUrl('/login');
+    // // this.router.navigateByUrl('/login');
    
-    setTimeout(()=>{   
-      this.CommonService.setisLoggedInData();
-      this.router.navigateByUrl('/login');
-    }, 1000);
+    // setTimeout(()=>{   
+    //   this.CommonService.setisLoggedInData();
+    //   this.router.navigateByUrl('/login');
+    // }, 1000);
   }
 
   /* checkSession(){

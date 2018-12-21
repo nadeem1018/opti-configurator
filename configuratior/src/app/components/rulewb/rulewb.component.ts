@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import 'bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-rulewb',
@@ -55,7 +56,7 @@ export class RulewbComponent implements OnInit {
   public ModelLookupBtnhide: boolean = true;
   public editeffectivefrom:any=""; 
   public editeffectiveto:any="";
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService, private commonService: CommonService) { }
 
   page_main_title = this.language.rule_workbench
   serviceData: any;
@@ -1349,6 +1350,12 @@ export class RulewbComponent implements OnInit {
       single_data_set.single_data_set_output = extracted_output
       this.service.SaveData(single_data_set).subscribe(
         data => {
+          if (data == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            return;
+          } 
+
           if (data === "True") {
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.route.navigateByUrl('rulewb/view');

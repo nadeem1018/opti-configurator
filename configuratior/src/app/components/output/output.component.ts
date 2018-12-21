@@ -47,7 +47,7 @@ export class OutputComponent implements OnInit {
   public currentDate = new Date();
   public submit_date;
   //public step2_data_all_data={};
-
+  public print_operation_type:any = "";
   // public router_link_new_config = "";
 
   public defaultCurrency = sessionStorage.defaultCurrency;
@@ -251,6 +251,8 @@ export class OutputComponent implements OnInit {
     this.delete_all_row_data();
     $("fieldset").hide();
     $("fieldset:first").show();
+    $(".accesory_check_for_second_screen").prop("checked", false);
+    $("#print_operation_type").val("");
   }
 
   onOperationChange(operation_type) {

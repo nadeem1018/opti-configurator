@@ -8,6 +8,7 @@ import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
 import { jaLocale } from 'ngx-bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-bom',
   templateUrl: './bom.component.html',
@@ -61,7 +62,7 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
-  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient) { }
+  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService) { }
 
   isMobile:boolean=false;
   isIpad:boolean=false;
@@ -389,6 +390,12 @@ export class BomComponent implements OnInit {
 
     this.fbom.SaveModelBom(this.feature_bom_table).subscribe(
       data => {
+        if (data == "7001") {
+          this.commanService.RemoveLoggedInUser().subscribe();
+          this.commanService.signOut(this.toastr, this.router);
+          return;
+        } 
+
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('feature/bom/view');

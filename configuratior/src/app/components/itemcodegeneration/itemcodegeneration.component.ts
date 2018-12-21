@@ -235,6 +235,13 @@ export class ItemcodegenerationComponent implements OnInit {
     console.log(this.itemcodetable);
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
+
+        if (data == "7001") {
+          this.commanService.RemoveLoggedInUser().subscribe();
+          this.commanService.signOut(this.toastr, this.route);
+          return;
+        } 
+
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('item-code-generation/view');
