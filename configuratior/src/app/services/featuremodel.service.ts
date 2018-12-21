@@ -17,9 +17,11 @@ export class FeaturemodelService {
    
   //Submit feature bom data
   saveData(featureBom):Observable<any>{
+    featureBom[0]['GUID'] = sessionStorage.getItem("GUID");
+    featureBom[0]['UsernameForLic'] = sessionStorage.getItem("loggedInUser");
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-    let jObject: any = { Feature: JSON.stringify(featureBom), GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") };
+    let jObject: any = { Feature: JSON.stringify(featureBom) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/AddFeatures", jObject, this.common_params.httpOptions);
     }
@@ -60,9 +62,13 @@ export class FeaturemodelService {
 
       //Submit feature bom data
     updateData(featureBom):Observable<any>{
+
+      featureBom[0]['GUID'] = sessionStorage.getItem("GUID");
+      featureBom[0]['UsernameForLic'] = sessionStorage.getItem("loggedInUser");
+
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-      let jObject: any = { UpdateFeature: JSON.stringify(featureBom), GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") };
+      let jObject: any = { UpdateFeature: JSON.stringify(featureBom)};
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/UpdateFeatures", jObject, this.common_params.httpOptions);
     }
