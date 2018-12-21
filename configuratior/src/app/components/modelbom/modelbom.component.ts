@@ -767,7 +767,7 @@ export class ModelbomComponent implements OnInit {
             data => {
             console.log(data);
             if (data != null) {
-              if(value > data){
+              if(parseFloat(value) > parseFloat(data)){
                 $(actualvalue).val(1);
                 this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
                 return; 
