@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 
 
 
@@ -57,7 +58,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     table_head_foot = [this.language.checkbox_here, this.language.hash, this.language.code, this.language.finalstring, this.language.action];
     public table_hidden_elements = [false, true, false, false, false];
     
-    constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService) { }
+    constructor(private router: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService, 
+        private commonservice: CommonService) { }
 
     isMobile:boolean=false;
     isIpad:boolean=false;
@@ -152,23 +154,24 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         var dataset = this.itemgen.viewItemGenerationData(this.companyName, search, page_number, this.record_per_page).subscribe(
             data => {
 
-                this.dataArray = data;
                 this.showLoader = false;
-                // dataset = JSON.parse(data);
-                // console.log(dataset)
-                // this.rows = dataset[0];
-                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                //     pages = 1;
-                // }
-                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                // if (page_number != undefined) {
-                //     this.current_page = page_number;
-                // }
-
-                // if (search != undefined) {
-                //     this.search_string = search;
-                // }
+                if (data.length > 0 && data[0].ErrorMsg == "7001") {
+                    this.commonservice.RemoveLoggedInUser().subscribe(
+                        data => {
+                          debugger
+                          this.commonservice.signOut(this.toastr, this.router);
+                        },
+                        error => {
+                          debugger
+                          alert("remove lisence Failed");
+                        }
+                      );
+                    alert("session expire");
+          
+                    return;
+                  } else if (data != undefined) {
+                    this.dataArray = data;
+                  }
             });
     }
 
