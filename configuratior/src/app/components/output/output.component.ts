@@ -47,7 +47,7 @@ export class OutputComponent implements OnInit {
   public currentDate = new Date();
   public submit_date;
   //public step2_data_all_data={};
-  public print_operation_type:any = "";
+
   // public router_link_new_config = "";
 
   public defaultCurrency = sessionStorage.defaultCurrency;
@@ -251,8 +251,6 @@ export class OutputComponent implements OnInit {
     this.delete_all_row_data();
     $("fieldset").hide();
     $("fieldset:first").show();
-    $(".accesory_check_for_second_screen").prop("checked", false);
-    $("#print_operation_type").val("");
   }
 
   onOperationChange(operation_type) {
@@ -587,6 +585,11 @@ export class OutputComponent implements OnInit {
 
   on_input_change(inputid, value) {
     if (inputid == "quantity") {
+      if (isNaN(value) == true) {
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        this.step2_data.quantity = parseFloat(this.previousquantity);
+        return;
+      }
       if (value == 0 || value == '' || value == null || value == undefined) {
         this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
         this.step2_data.quantity = parseFloat(this.previousquantity);
@@ -599,7 +602,7 @@ export class OutputComponent implements OnInit {
       }
       var rgexp = /^\d+$/;
       if (rgexp.test(value) == false) {
-        this.toastr.error('', this.language.quantity_numeric_only, this.commonData.toast_config);
+        this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
         this.step2_data.quantity = parseFloat(this.previousquantity);
         return;
       }
@@ -4708,8 +4711,7 @@ export class OutputComponent implements OnInit {
 
     //clear all bill to detial
     this.bill_to.length = 0;
-    this.step1_data.bill_to_address = '';
-
+    this.step1_data.bill_to_address = 
     //clear contact person detail
     this.contact_persons.length = 0;
     this.person = "";
