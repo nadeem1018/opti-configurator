@@ -5,6 +5,7 @@ import { ModelbomService } from '../../services/modelbom.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-modelbom',
   templateUrl: './modelbom.component.html',
@@ -47,7 +48,7 @@ export class ModelbomComponent implements OnInit {
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
   public showLoader:boolean = true;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService) { }
 
   companyName: string;
   page_main_title = this.language.Model_Bom
@@ -767,7 +768,7 @@ export class ModelbomComponent implements OnInit {
             data => {
             console.log(data);
             if (data != null) {
-              if(value > data){
+              if(parseFloat(value) > parseFloat(data)){
                 $(actualvalue).val(1);
                 this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
                 return; 
@@ -1220,6 +1221,13 @@ export class ModelbomComponent implements OnInit {
     objDataset.RuleData = this.rule_data;
     this.service.SaveModelBom(objDataset).subscribe(
       data => {
+
+        if (data == "7001") {
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route);
+          return;
+        } 
+
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('modelbom/view');

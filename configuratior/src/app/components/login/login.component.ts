@@ -102,8 +102,8 @@ export class LoginComponent implements OnInit {
   enter_to_sublit(event) {
     if (event.keyCode == 13) {
       if (this.selecetedComp != undefined && this.selecetedComp != "") {
-        this.onLoginBtnPress();
-        // this.getLisenceData();
+        // this.onLoginBtnPress();
+        this.getLisenceData();
       } else {
         this.onConnectBtnPress();
       }
@@ -283,22 +283,16 @@ export class LoginComponent implements OnInit {
 
   //Get Currency code from backend
   getCurrencyCode(selectedCompID) {
-    this.auth.getCurrencyCode(selectedCompID).subscribe(
+    sessionStorage.setItem('defaultCurrency', "$");
+    this.CommonService.GetCompanyDetails(selectedCompID).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
             sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
           }
-          else {
-            sessionStorage.setItem('defaultCurrency', "$");
-          }
-        }
-        else {
-          sessionStorage.setItem('defaultCurrency', "$");
         }
       },
       error => {
-        sessionStorage.setItem('defaultCurrency', "$");
         this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
       }
     )
