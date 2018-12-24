@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { OutputService } from '../../services/output.service';
@@ -10,7 +10,7 @@ import { UIHelper } from '../../helpers/ui.helpers';
 import { isNumber } from 'util';
 import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
 //import { LookupComponent } from '../common/lookup/lookup.component';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   //providers:[LookupComponent],
@@ -2111,7 +2111,7 @@ export class OutputComponent implements OnInit {
                     OPTM_LINENO: feature_model_data.OPTM_LINENO,
                     OPTM_MANDATORY: "N",
                     OPTM_MAXSELECTABLE: "1",
-                      OPTM_MINSELECTABLE: "1",
+                    OPTM_MINSELECTABLE: "1",
                     OPTM_MODELID: parentarray[0].OPTM_MODELID,
                     OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                     OPTM_MODIFIEDDATETIME: String(feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
@@ -4578,8 +4578,25 @@ export class OutputComponent implements OnInit {
             }
 
             if (data.DefaultSalesPerson.length > 0) {
-              this.sales_employee = data.DefaultSalesPerson;
+
+              //remove -No Sales Employee-
+              this.sales_employee = (data.DefaultSalesPerson).filter(function (row) {
+                return row.SlpCode != "-1";
+              });
+
+              //sort it 
+              this.sales_employee = (this.sales_employee).sort(function (a, b) {
+                return a.SlpName.localeCompare(b.name);
+              });
+
+              //now push -No Sales Employee- to first position
+
+              this.sales_employee.unshift({ SlpName: "-No Sales Employee-", SlpCode: "-1" });
+
+              //Set Default Sales Person
               this.salesemployee = data.DefaultSalesPerson[0].SlpName;
+
+
               this.step1_data.sales_employee = this.salesemployee;
             }
             else {
@@ -4728,9 +4745,9 @@ export class OutputComponent implements OnInit {
 
     //clear all bill to detial
     this.bill_to.length = 0;
-    this.step1_data.bill_to_address = 
-    //clear contact person detail
-    this.contact_persons.length = 0;
+    this.step1_data.bill_to_address =
+      //clear contact person detail
+      this.contact_persons.length = 0;
     this.person = "";
     this.step1_data.person_name = "";
 

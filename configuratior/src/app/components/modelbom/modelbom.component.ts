@@ -47,7 +47,7 @@ export class ModelbomComponent implements OnInit {
   public complete_dataset: any = [];
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
-  public showLoader:boolean = true;
+  public showLoader: boolean = true;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService) { }
 
   companyName: string;
@@ -59,25 +59,25 @@ export class ModelbomComponent implements OnInit {
   public dialog_params: any = [];
   public show_dialog: boolean = false;
 
-    isMobile:boolean=false;
-    isIpad:boolean=false;
-    isDesktop:boolean=true;
-    isPerfectSCrollBar:boolean = false;
-  
+  isMobile: boolean = false;
+  isIpad: boolean = false;
+  isDesktop: boolean = true;
+  isPerfectSCrollBar: boolean = false;
 
-    detectDevice(){
-        let getDevice = UIHelper.isDevice();
-        this.isMobile = getDevice[0];
-        this.isIpad = getDevice[1];
-        this.isDesktop = getDevice[2];
-        if(this.isMobile==true){
-        this.isPerfectSCrollBar = true;
-        }else if(this.isIpad==true){
-        this.isPerfectSCrollBar = false;
-        }else{
-        this.isPerfectSCrollBar = false;
-        }
+
+  detectDevice() {
+    let getDevice = UIHelper.isDevice();
+    this.isMobile = getDevice[0];
+    this.isIpad = getDevice[1];
+    this.isDesktop = getDevice[2];
+    if (this.isMobile == true) {
+      this.isPerfectSCrollBar = true;
+    } else if (this.isIpad == true) {
+      this.isPerfectSCrollBar = false;
+    } else {
+      this.isPerfectSCrollBar = false;
     }
+  }
 
   ngOnInit() {
 
@@ -199,14 +199,14 @@ export class ModelbomComponent implements OnInit {
               if (this.modelbom_data.length > 0) {
                 this.counter = this.modelbom_data.length
               }
-              data.ModelDetail[i].OPTM_QUANTITY=parseFloat(data.ModelDetail[i].OPTM_QUANTITY).toFixed(3)
+              data.ModelDetail[i].OPTM_QUANTITY = parseFloat(data.ModelDetail[i].OPTM_QUANTITY).toFixed(3)
 
               this.counter++;
               this.modelbom_data.push({
                 rowindex: this.counter,
                 ModelId: data.ModelDetail[i].OPTM_MODELID,
                 description: this.modelbom_data.feature_name,
-                ReadyToUse: this.modelbom_data.is_ready_to_use ,
+                ReadyToUse: this.modelbom_data.is_ready_to_use,
                 type: data.ModelDetail[i].OPTM_TYPE,
                 type_value: this.typevaluefromdatabase,
                 type_value_code: this.typevaluecodefromdatabase,
@@ -228,14 +228,14 @@ export class ModelbomComponent implements OnInit {
                 isPriceDisabled: this.isPriceDisabled,
                 pricehide: this.pricehide,
                 isUOMDisabled: this.isUOMDisabled,
-                isMinSelectedDisable :this.isMinSelectedDisable,
+                isMinSelectedDisable: this.isMinSelectedDisable,
                 isMaxSelectedDisable: this.isMaxSelectedDisable
               });
 
             }
           }
 
-          if(data.RuleData.length > 0){
+          if (data.RuleData.length > 0) {
             this.rule_data = data.RuleData;
           }
           this.onExplodeClick('auto');
@@ -291,8 +291,8 @@ export class ModelbomComponent implements OnInit {
       isPriceDisabled: true,
       pricehide: true,
       isUOMDisabled: true,
-      isMinSelectedDisable : false,
-      isMaxSelectedDisable :false
+      isMinSelectedDisable: false,
+      isMaxSelectedDisable: false
 
     });
   };
@@ -313,16 +313,16 @@ export class ModelbomComponent implements OnInit {
               console.log(remove_tree_data);
               console.log(tree_element_child);
               console.log(this.tree_data_json); */
-             /*  if (tree_element_child.length > 0) {
-                this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
-                return false;
-              } else { */
-                for (let j = 0; j < this.tree_data_json.length; ++j) {
-                  if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
-                    this.tree_data_json.splice(j, 1);
-                  }
+              /*  if (tree_element_child.length > 0) {
+                 this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
+                 return false;
+               } else { */
+              for (let j = 0; j < this.tree_data_json.length; ++j) {
+                if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
+                  this.tree_data_json.splice(j, 1);
                 }
-             /*  } */
+              }
+              /*  } */
             }
           }
           this.modelbom_data.splice(i, 1);
@@ -342,7 +342,7 @@ export class ModelbomComponent implements OnInit {
     //this.modelbom_data[rowindex].type_value="";
     this.modelbom_data[rowindex].uom = "";
     this.modelbom_data[rowindex].display_name = "";
-    this.modelbom_data[rowindex].quantity =parseFloat("0").toFixed(3);
+    this.modelbom_data[rowindex].quantity = parseFloat("0").toFixed(3);
     this.modelbom_data[rowindex].min_selected = 1;
     this.modelbom_data[rowindex].max_selected = 1;
     this.modelbom_data[rowindex].propagate_qty = 'N';
@@ -380,7 +380,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
-          this.modelbom_data[i].quantity =  parseFloat("1").toFixed(3);
+          this.modelbom_data[i].quantity = parseFloat("1").toFixed(3);
           if (selectedvalue == 2) {
             this.lookupfor = 'Item_Detail_lookup';
             this.modelbom_data[i].type = 2
@@ -512,9 +512,9 @@ export class ModelbomComponent implements OnInit {
     )
   }
 
-  openPriceLookUp(ItemKey,rowindex) {
+  openPriceLookUp(ItemKey, rowindex) {
     this.serviceData = []
-    this.currentrowindex=rowindex;
+    this.currentrowindex = rowindex;
     this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
@@ -552,7 +552,7 @@ export class ModelbomComponent implements OnInit {
 
     }
     else if (this.lookupfor == 'Price_lookup') {
-      this.getPriceDetails($event[1],$event[0],  this.currentrowindex);
+      this.getPriceDetails($event[1], $event[0], this.currentrowindex);
     }
     else if (this.lookupfor == 'rule_section_lookup') {
       this.rule_data = $event;
@@ -566,7 +566,7 @@ export class ModelbomComponent implements OnInit {
   }
 
 
-  getPriceDetails(price_list_name,price, index) {
+  getPriceDetails(price_list_name, price, index) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === index) {
         this.modelbom_data[i].price_source = price_list_name.toString()
@@ -629,20 +629,20 @@ export class ModelbomComponent implements OnInit {
     this.service.getItemDetails(ItemKey).subscribe(
       data => {
         if (data != null) {
-        if (data.length > 0) {
-          for (let i = 0; i < this.modelbom_data.length; ++i) {
-            if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-              this.modelbom_data[i].type_value = data[0].ItemKey;
-              this.modelbom_data[i].type_value_code = data[0].ItemKey;
-              this.modelbom_data[i].display_name = data[0].Description
-              this.modelbom_data[i].uom = data[0].InvUOM
-              this.modelbom_data[i].price_source = "";
-              this.modelbom_data[i].price_source_id = "";
-              this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+          if (data.length > 0) {
+            for (let i = 0; i < this.modelbom_data.length; ++i) {
+              if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+                this.modelbom_data[i].type_value = data[0].ItemKey;
+                this.modelbom_data[i].type_value_code = data[0].ItemKey;
+                this.modelbom_data[i].display_name = data[0].Description
+                this.modelbom_data[i].uom = data[0].InvUOM
+                this.modelbom_data[i].price_source = "";
+                this.modelbom_data[i].price_source_id = "";
+                this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+              }
             }
           }
         }
-      }
       })
   }
 
@@ -675,7 +675,7 @@ export class ModelbomComponent implements OnInit {
         else if (this.modelbom_data[i].type == 2) {
           this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
-                console.log(data);
+              console.log(data);
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.modelbom_data[iIndex].type_value = "";
@@ -714,14 +714,29 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         if (value == 0) {
-          this.modelbom_data[i].quantity = ""
+          value = 1;
+          this.modelbom_data[i].quantity = parseFloat(value).toFixed(3);
           this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
         }
         else {
-          this.modelbom_data[i].quantity =  parseFloat(value).toFixed(3);
+          var rgexp = /^\d+$/;
+          if (isNaN(value) == true) {
+            value = 1;
+            this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+          } else if (value == 0 || value == '' || value == null || value == undefined) {
+            value = 1;
+            this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
+          } else if (value < 0) {
+            value = 1;
+            this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+          } else if (rgexp.test(value) == false) {
+            value = 1;
+            this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
+          } 
+          this.modelbom_data[i].quantity = parseFloat(value).toFixed(3);
         }
 
-
+        $('input[name="bom_quantity"]').eq((rowindex - 1)).val(parseFloat(value).toFixed(3));
 
       }
     }
@@ -740,53 +755,53 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  on_min_selected_change(value, rowindex,actualvalue) {
+  on_min_selected_change(value, rowindex, actualvalue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].min_selected = value
-         if(this.modelbom_data[i].max_selected != "") {
-          if(parseInt(this.modelbom_data[i].max_selected) < parseInt(value)){
+        if (this.modelbom_data[i].max_selected != "") {
+          if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
             $(actualvalue).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
           }
-         }
+        }
 
       }
     }
 
   }
 
-  on_max_selected_change(value, rowindex,actualvalue) {
+  on_max_selected_change(value, rowindex, actualvalue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].max_selected = value
-        if(this.modelbom_data[i].type == "1"){
+        if (this.modelbom_data[i].type == "1") {
           this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
             data => {
-            console.log(data);
-            if (data != null) {
-              if(parseFloat(value) > parseFloat(data)){
-                $(actualvalue).val(1);
-                this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
-                return; 
+              console.log(data);
+              if (data != null) {
+                if (parseFloat(value) > parseFloat(data)) {
+                  $(actualvalue).val(1);
+                  this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
+                  return;
+                }
               }
-            }
             })
         }
 
-        if(this.modelbom_data[i].min_selected != "") {
-          if(parseInt(this.modelbom_data[i].min_selected) > parseInt(value)){
+        if (this.modelbom_data[i].min_selected != "") {
+          if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
-            this.modelbom_data[i].max_selected =1;
+            this.modelbom_data[i].max_selected = 1;
             $(actualvalue).val(1);
-            this.toastr.error('', this.language.qty_validation , this.commonData.toast_config);
+            this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
           }
-         }
+        }
 
       }
     }
@@ -811,11 +826,11 @@ export class ModelbomComponent implements OnInit {
 
   }
 
-  on_price_source_change(id,value, rowindex,actualValue) {
+  on_price_source_change(id, value, rowindex, actualValue) {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-        this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value,value).subscribe(
+        this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
           data => {
             if (data === "False") {
               $(actualValue).val("");
@@ -827,7 +842,7 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data[i].price_source = value
               this.lookupfor = ""
             }
-            
+
           })
       }
     }
@@ -889,14 +904,14 @@ export class ModelbomComponent implements OnInit {
       return;
     }
 
-    obj.onVerifyOutput(function(response){
-      console.log('in validate true '+ response);
-      if(response == true){
+    obj.onVerifyOutput(function (response) {
+      console.log('in validate true ' + response);
+      if (response == true) {
         obj.save_data();
-      } 
+      }
     });
 
-    
+
   }
 
   validation(btnpress) {
@@ -1046,17 +1061,17 @@ export class ModelbomComponent implements OnInit {
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
         if (data !== undefined && data != "") {
-        if (data == "Rules Conflict") {
-          this.toastr.error('', this.language.conflict, this.commonData.toast_config);
-          success_call(false);
-          return false;
+          if (data == "Rules Conflict") {
+            this.toastr.error('', this.language.conflict, this.commonData.toast_config);
+            success_call(false);
+            return false;
+          }
+          else {
+            this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
+            success_call(true);
+            return true;
+          }
         }
-        else{
-          this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
-          success_call(true);
-          return true;
-        }
-      }
       })
   }
 
@@ -1081,7 +1096,7 @@ export class ModelbomComponent implements OnInit {
         }
         else {
           this.lookupfor = "ModelBom_lookup"
-          this.modelbom_data.modal_id= data;
+          this.modelbom_data.modal_id = data;
           this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
 
         }
@@ -1099,7 +1114,7 @@ export class ModelbomComponent implements OnInit {
         if (data.length > 0) {
           this.serviceData = data;
         }
-        else{
+        else {
           this.toastr.error('', this.language.norules, this.commonData.toast_config);
           return;
         }
@@ -1119,10 +1134,10 @@ export class ModelbomComponent implements OnInit {
         }
         else {
           this.lookupfor = "";
-          this.modelbom_data.modal_id= data;
+          this.modelbom_data.modal_id = data;
           this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
         }
-       
+
       })
   }
 
@@ -1180,7 +1195,7 @@ export class ModelbomComponent implements OnInit {
     });
     return data;
   }
-  save_data(){
+  save_data() {
     if (this.modelbom_data.length > 0) {
       this.modelbom_data[0].id = this.update_id;
       for (let i = 0; i < this.modelbom_data.length; ++i) {
@@ -1209,7 +1224,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].ReadyToUse = "Y"
         }
 
-        this.modelbom_data[i].type_value= this.modelbom_data[i].type_value.toString();
+        this.modelbom_data[i].type_value = this.modelbom_data[i].type_value.toString();
 
 
       }
@@ -1227,7 +1242,7 @@ export class ModelbomComponent implements OnInit {
           this.commonService.RemoveLoggedInUser().subscribe();
           this.commonService.signOut(this.toastr, this.route);
           return;
-        } 
+        }
 
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
@@ -1244,7 +1259,7 @@ export class ModelbomComponent implements OnInit {
         }
       }
     )
-  
+
   }
 
   toggleTree(e) {

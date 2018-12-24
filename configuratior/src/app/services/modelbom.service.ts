@@ -64,7 +64,10 @@ export class ModelbomService {
   }
 
   SaveModelBom(SaveData): Observable<any>{
-    var jObject = { AddModel: JSON.stringify(SaveData), GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")  };
+    SaveData["ModelData"][0]['GUID'] =  sessionStorage.getItem("GUID");
+    SaveData["ModelData"][0]['UsernameForLic'] =  sessionStorage.getItem("loggedInUser");
+
+    var jObject = { AddModel: JSON.stringify(SaveData) };
 
     //let jObject:any={ AddModel: JSON.stringify(SaveData), RuleModel: JSON.stringify(RuleData)};
 

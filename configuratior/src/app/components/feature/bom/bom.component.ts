@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
@@ -62,7 +62,7 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
-  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService) { }
+  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef) { }
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -257,11 +257,15 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_table.length == 0) {
       first_default = true;
     }
+    let table_default_type = 1;
+    if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
+      table_default_type = 2;
+    }
 
     this.feature_bom_table.push({
       rowindex: this.counter,
       FeatureId: this.feature_bom_data.feature_id,
-      type: 1,
+      type: table_default_type,
       type_value: "",
       type_value_code: "",
       display_name: "",
@@ -474,22 +478,40 @@ export class BomComponent implements OnInit {
   }
 
   on_quantity_change(value, rowindex) {
-    this.currentrowindex = rowindex
+    this.currentrowindex = rowindex;
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         if (this.feature_bom_table[i].type == 1 || this.feature_bom_table[i].type == 2) {
+
           if (value == 0) {
-            this.feature_bom_table[i].quantity = ""
+            value = 1;
+            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3);
             this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
           }
           else {
-            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3)
+            var rgexp = /^\d+$/;
+            if (isNaN(value) == true) {
+              value = 1;
+              this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+            } else if (value == 0 || value == '' || value == null || value == undefined) {
+              value = 1;
+              this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
+            } else if (value < 0) {
+              value = 1;
+              this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+            } else if (rgexp.test(value) == false) {
+              value = 1;
+              this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
+            }
+            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3);
+            
           }
+          $('input[name="feature_quantity"]').eq((rowindex - 1)).val(parseFloat(value).toFixed(3));
         }
       }
 
     }
-
+    this.cdref.detectChanges()
   }
 
   on_remark_change(value, rowindex) {
