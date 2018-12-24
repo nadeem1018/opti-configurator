@@ -143,6 +143,7 @@ export class OutputComponent implements OnInit {
   public step0_isNextButtonVisible: boolean = false;
   public setModelDataFlag: boolean = false;
   public defaultitemflagid: any;
+  public ModelInModelArray:any=[];
 
 
   isMobile: boolean = false;
@@ -615,6 +616,17 @@ export class OutputComponent implements OnInit {
             var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
               return obj['OPTM_FEATUREID'] == tempfeatureid
             })
+            if(modelheaderpropagatechecked.length==0){
+               modelheaderpropagatechecked = this.ModelInModelArray.filter(function (obj) {
+                return obj['OPTM_CHILDMODELID'] == tempfeatureid
+              })
+            }
+            if(modelheaderpropagatechecked.length==0 && this.feature_itm_list_table[i].Item!=""){
+              var itemkey = this.feature_itm_list_table[i].Item
+              modelheaderpropagatechecked = this.ModelHeaderItemsArray.filter(function (obj) {
+               return obj['OPTM_ITEMKEY'] == itemkey
+             })
+           }
             if (modelheaderpropagatechecked.length > 0) {
               if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                 if (modelheaderpropagatechecked[0].OPTM_TYPE == "1") {
@@ -634,15 +646,15 @@ export class OutputComponent implements OnInit {
                   }
                 }
                 else {
-                  var itemkey = this.feature_itm_list_table[i].Item
-                  var modelfeaturepropagatecheck = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-                    return obj['OPTM_ITEMKEY'] == itemkey
-                  })
-                  if (modelfeaturepropagatecheck.length > 0) {
-                    if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
+                 // var itemkey = this.feature_itm_list_table[i].Item
+                 // var modelfeaturepropagatecheck = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                 //   return obj['OPTM_ITEMKEY'] == itemkey
+                //  })
+                //  if (modelfeaturepropagatecheck.length > 0) {
+                   // if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
                       this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
-                    }
-                  }
+                   // }
+                 // }
                 }
 
               }
@@ -1612,6 +1624,8 @@ export class OutputComponent implements OnInit {
             return obj['OPTM_TYPE'] == "3"
           });
 
+          this.ModelInModelArray=ModelArray
+
           this.setModelDataInGrid(ModelArray, this.ModelBOMDataForSecondLevel);
 
           this.setModelItemsDataInGrid(this.ModelHeaderItemsArray)
@@ -1800,7 +1814,7 @@ export class OutputComponent implements OnInit {
                           }
                         }
                         for (let ideletefeaturebomdata = 0; ideletefeaturebomdata < this.FeatureBOMDataForSecondLevel.length; ideletefeaturebomdata++) {
-                          if (this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitemsgrid].FeatureId && this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID != null) {
+                          if (this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID == this.feature_itm_list_table[ifeatureitemsgrid].FeatureId && this.FeatureBOMDataForSecondLevel[ideletefeaturebomdata].OPTM_FEATUREID != null && parentmodelid==this.feature_itm_list_table[ifeatureitemsgrid].ModelId && parentmodelid!=null) {
                             this.feature_itm_list_table.splice(ifeatureitemsgrid, 1);
                             ifeatureitemsgrid = ifeatureitemsgrid - 1;
                           }
@@ -1918,6 +1932,7 @@ export class OutputComponent implements OnInit {
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                           OPTM_MODIFIEDDATETIME: String(data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
+                          OPTM_PROPOGATEQTY: data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY,
                           OPTM_QUANTITY: parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3),
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
@@ -1952,7 +1967,7 @@ export class OutputComponent implements OnInit {
                             }
                             if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2) {
                               itemData.push(data.DataForSelectedFeatureModelItem[i])
-                              this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                              this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty,parentarray[0].feature_code);
                             }
                             else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                               isExist = this.ModelHeaderData.filter(function (obj) {
@@ -2026,6 +2041,7 @@ export class OutputComponent implements OnInit {
                                         OPTM_LINENO: data.dtFeatureDataWithDefault[idtfeature].OPTM_LINENO,
                                         OPTM_MODIFIEDBY: data.dtFeatureDataWithDefault[idtfeature].OPTM_MODIFIEDBY,
                                         OPTM_MODIFIEDDATETIME: String(data.dtFeatureDataWithDefault[idtfeature].OPTM_MODIFIEDDATETIME).toString(),
+                                        OPTM_PROPOGATEQTY: data.dtFeatureDataWithDefault[i].OPTM_PROPOGATEQTY,
                                         OPTM_PRICESOURCE: data.dtFeatureDataWithDefault[idtfeature].ListName,
                                         OPTM_QUANTITY: parseFloat(data.dtFeatureDataWithDefault[idtfeature].OPTM_QUANTITY).toFixed(3),
                                         OPTM_REMARKS: data.dtFeatureDataWithDefault[idtfeature].OPTM_REMARKS,
@@ -2051,11 +2067,11 @@ export class OutputComponent implements OnInit {
                                       });
                                       if (tempparentarray.length > 0) {
                                         parentarray[0].OPTM_TYPE = tempparentarray[0].OPTM_TYPE
-                                        parentarray[0].feature_code = tempparentarray[0].feature_code
+                                       // parentarray[0].feature_code = tempparentarray[0].feature_code
                                         parentarray[0].OPTM_LEVEL = tempparentarray[0].OPTM_LEVEL
                                       }
                                       itemData.push(data.dtFeatureDataWithDefault[idtfeature])
-                                      this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty);
+                                      this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty,tempparentarray[0].feature_code);
                                     }
                                   }
 
@@ -2152,6 +2168,7 @@ export class OutputComponent implements OnInit {
                           OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
                           OPTM_QUANTITY: parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3),
                           OPTM_REMARKS: data.DataForSelectedFeatureModelItem[i].OPTM_REMARKS,
+                          OPTM_PROPOGATEQTY: data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY,
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
                           OPTM_VALUE: data.DataForSelectedFeatureModelItem[i].OPTM_VALUE,
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
@@ -2175,7 +2192,7 @@ export class OutputComponent implements OnInit {
                   parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                   propagateqty = parentarray[0].OPTM_QUANTITY
                 }
-                this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty);
+                this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty,parentarray[0].feature_code);
                 this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
               }
 
@@ -2209,7 +2226,7 @@ export class OutputComponent implements OnInit {
 
   } //end selection
 
-  setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty) {
+  setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty,tempfeaturecode) {
     let isPriceDisabled: boolean = true;
     let isPricehide: boolean = true;
     if (ItemData.length > 0) {
@@ -2262,7 +2279,7 @@ export class OutputComponent implements OnInit {
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ItemData[0].OPTM_FEATUREID,
-          featureName: parentarray[0].feature_code,
+          featureName:tempfeaturecode,
           Item: ItemData[0].OPTM_ITEMKEY,
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
