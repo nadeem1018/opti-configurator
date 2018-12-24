@@ -391,6 +391,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].propagate_qty = "Y"
         }
 
+        this.feature_bom_table[i].quantity = this.feature_bom_table[i].quantity.toString();
       }
     }
     this.showLookupLoader = true;
@@ -537,8 +538,9 @@ export class BomComponent implements OnInit {
   }
 
   on_typevalue_change(value, rowindex, code, type_value_code) {
-
+    var iIndex;
     this.currentrowindex = rowindex
+    iIndex = this.currentrowindex - 1;
     for (let j = 0; j < this.feature_bom_table.length; j++) {
       var psTypeCode = this.feature_bom_table[j].type_value_code;
       if (psTypeCode != undefined && psTypeCode != "") {
@@ -558,19 +560,19 @@ export class BomComponent implements OnInit {
         if (this.feature_bom_table[i].type == 1) {
           this.fbom.onFeatureIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
-
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                this.feature_bom_table[i].type_value = "";
-                this.feature_bom_table[i].type_value_code = "";
-                this.feature_bom_table[i].display_name = "";
+                this.feature_bom_table[iIndex].type_value = "";
+                this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].display_name = "";
+                $(type_value_code).val("");
                 return;
               }
               else {
                 //this.lookupfor = 'feature_lookup';
                 //First we will check the conflicts
-                this.feature_bom_table[i].type_value = data;
-                this.checkFeaturesAlreadyAddedinParent(value, this.feature_bom_table[i].type_value, i, "change");
+                this.feature_bom_table[iIndex].type_value = data;
+                this.checkFeaturesAlreadyAddedinParent(value, this.feature_bom_table[iIndex].type_value, iIndex, "change");
               }
             })
         }
@@ -580,15 +582,16 @@ export class BomComponent implements OnInit {
 
               if (data === "False") {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
-                this.feature_bom_table[i].type_value = "";
-                this.feature_bom_table[i].type_value_code = "";
-                this.feature_bom_table[i].display_name = "";
+                this.feature_bom_table[iIndex].type_value = "";
+                this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].display_name = "";
+                $(type_value_code).val("");
                 return;
               }
               else {
                 this.lookupfor = "";
-                this.feature_bom_table[i].type_value = data;
-                this.getItemDetails(this.feature_bom_table[i].type_value);
+                this.feature_bom_table[iIndex].type_value = data;
+                this.getItemDetails(this.feature_bom_table[iIndex].type_value);
               }
             })
         }

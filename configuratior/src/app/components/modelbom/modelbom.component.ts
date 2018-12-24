@@ -665,6 +665,7 @@ export class ModelbomComponent implements OnInit {
 
   on_typevalue_change(value, rowindex, code) {
     this.currentrowindex = rowindex
+    var iIndex=this.currentrowindex - 1; 
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].type_value = value.toString()
@@ -675,15 +676,15 @@ export class ModelbomComponent implements OnInit {
 
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                this.modelbom_data[i].type_value = "";
-                this.modelbom_data[i].type_value_code = "";
-                this.modelbom_data[i].display_name = "";
+                this.modelbom_data[iIndex].type_value = "";
+                this.modelbom_data[iIndex].type_value_code = "";
+                this.modelbom_data[iIndex].display_name= "";
                 return;
               }
               else {
                 this.lookupfor = ""
-                this.modelbom_data[i].type_value = data;
-                this.getModelFeatureDetails(this.modelbom_data[i].type_value, "Header", i)
+                this.modelbom_data[iIndex].type_value = data;
+                this.getModelFeatureDetails(this.modelbom_data[iIndex].type_value, "Header", iIndex)
               }
 
             })
@@ -694,15 +695,15 @@ export class ModelbomComponent implements OnInit {
               console.log(data);
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
-                this.modelbom_data[i].type_value = "";
-                this.modelbom_data[i].type_value_code = "";
-                this.modelbom_data[i].display_name = "";
+                this.modelbom_data[iIndex].type_value = "";
+                this.modelbom_data[iIndex].type_value_code = "";
+                this.modelbom_data[iIndex].display_name= "";
                 return;
               }
               else {
                 this.lookupfor = "";
-                this.modelbom_data[i].type_value = data;
-                this.getItemDetails(this.modelbom_data[i].type_value);
+                this.modelbom_data[iIndex].type_value= data;
+                this.getItemDetails(this.modelbom_data[iIndex].type_value);
               }
             })
         }
