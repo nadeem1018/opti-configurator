@@ -48,6 +48,7 @@ export class ModelbomComponent implements OnInit {
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
   public showLoader: boolean = true;
+  public showLookupLoader:boolean = false;
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService) { }
 
   companyName: string;
@@ -426,11 +427,12 @@ export class ModelbomComponent implements OnInit {
 
   getModelFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
-
+    this.showLookupLoader = true;
     this.serviceData = []
     this.service.getModelFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
         if (data.length > 0) {
+          this.showLookupLoader = false;
           if (press_location == "Header") {
             if (this.lookupfor == 'feature_lookup') {
               // this.feature_bom_data.feature_id = data;
@@ -469,6 +471,9 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, 
+      error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -494,11 +499,13 @@ export class ModelbomComponent implements OnInit {
   } */
 
   openFeatureLookUp() {
+    this.showLookupLoader = true;
     this.serviceData = []
     this.service.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
+          this.showLookupLoader = false;
           this.serviceData = data;
 
         }
@@ -508,17 +515,22 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      },
+      error => {
+        this.showLookupLoader = false;
       }
     )
   }
 
   openPriceLookUp(ItemKey, rowindex) {
     this.serviceData = []
+    this.showLookupLoader = true;
     this.currentrowindex = rowindex;
     this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'Price_lookup';
+          this.showLookupLoader = false;
           this.serviceData = data;
 
         }
@@ -528,6 +540,8 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -577,10 +591,11 @@ export class ModelbomComponent implements OnInit {
 
 
   getModelDetails(Model_code, press_location, index) {
-
+    this.showLookupLoader = true;
     this.service.getModelDetails(Model_code, press_location, index).subscribe(
       data => {
         if (data.length > 0) {
+          this.showLookupLoader = false;
           if (press_location == "Header") {
             if (this.lookupfor == 'ModelBom_lookup') {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
@@ -619,6 +634,8 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false;
       }
 
     )
@@ -902,7 +919,7 @@ export class ModelbomComponent implements OnInit {
     if (obj.validation("Save") == false) {
       return;
     }
-
+    this.showLookupLoader = true;
     obj.onVerifyOutput(function (response) {
       console.log('in validate true ' + response);
       if (response == true) {
@@ -1236,7 +1253,7 @@ export class ModelbomComponent implements OnInit {
     objDataset.RuleData = this.rule_data;
     this.service.SaveModelBom(objDataset).subscribe(
       data => {
-
+        this.showLookupLoader = false;
         if (data == "7001") {
           this.commonService.RemoveLoggedInUser().subscribe();
           this.commonService.signOut(this.toastr, this.route);
@@ -1256,6 +1273,8 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
 

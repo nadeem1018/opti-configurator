@@ -67,6 +67,7 @@ export class ModelComponent implements OnInit {
   public IsAccessoryVisible = true;
   public minimum_date = new Date();
   public showLoader:boolean  = true;
+  public showLookupLoader:boolean = false;
 
   ngOnInit() {
 
@@ -196,6 +197,7 @@ export class ModelComponent implements OnInit {
 
   }
   onSaveClick() {
+    this.showLookupLoader = true;
     this.featureModel = [];
     var validateStatus = this.Validation();
     if (validateStatus == true) {
@@ -217,7 +219,7 @@ export class ModelComponent implements OnInit {
       this.fms.saveData(this.featureModel).subscribe(
 
         data => {
-
+          this.showLookupLoader = false;
           if (data == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router);
@@ -237,12 +239,17 @@ export class ModelComponent implements OnInit {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
-        })
+        },
+        error => {
+          this.showLookupLoader = false;
+        }
+        )
     }
   }
 
   onTemplateItemPress(status) {
     this.lookupfor = 'model_template';
+    this.showLookupLoader = true;
     this.getAllTemplateItems();
 
   }
@@ -250,8 +257,11 @@ export class ModelComponent implements OnInit {
   getAllTemplateItems() {
     this.fms.getTemplateItems(this.companyName).subscribe(
       data => {
+        this.showLookupLoader = false;
         this.serviceData = data;
 
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -303,13 +313,17 @@ export class ModelComponent implements OnInit {
   // }
 
   onItemGenerationPress(status) {
+    this.showLookupLoader = true;
     this.lookupfor = 'model_item_generation';
     this.getAllItemGenerated();
   }
   getAllItemGenerated() {
     this.fms.getGeneratedItems(this.companyName).subscribe(
       data => {
+        this.showLookupLoader = false;
         this.serviceData = data;
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -342,6 +356,7 @@ export class ModelComponent implements OnInit {
     return true;
   }
   onUpdateClick() {
+    this.showLookupLoader = true;
     this.featureModel = [];
     var validateStatus = this.Validation();
     if (validateStatus == true) {
@@ -363,6 +378,7 @@ export class ModelComponent implements OnInit {
 
       this.fms.updateData(this.featureModel).subscribe(
         data => {
+          this.showLookupLoader = false;
           console.log(data);
           if (data == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
@@ -383,6 +399,8 @@ export class ModelComponent implements OnInit {
             this.toastr.error('', this.language.DataNotUpdate, this.commonData.toast_config);
             return;
           }
+        }, error=> {
+          this.showLookupLoader = false;
         })
     }
   }

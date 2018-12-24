@@ -67,7 +67,9 @@ export class RulewbComponent implements OnInit {
   public seq_count = 0;
   public editing_row = 0;
   public outputrowcounter: number = 0;
-  public showLoader:boolean = true;
+  public showLoader: boolean = true;
+  public showLookupLoader:boolean = false;
+  
   public code_disabled = "false";
   public isOutputTable: boolean = true;
 
@@ -487,21 +489,27 @@ export class RulewbComponent implements OnInit {
 
   getFetureListLookup(status) {
     console.log('inopen feature');
+    this.showLookupLoader = true;
     this.serviceData = []
     this.lookupfor = 'feature_lookup';
     this.service.getFeatureList().subscribe(
       data => {
         if (data.length > 0) {
           this.serviceData = data;
+          this.showLookupLoader = false;
           console.log(this.serviceData);
 
         }
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, 
+      error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -565,11 +573,13 @@ export class RulewbComponent implements OnInit {
   }
 
   getFeatureDetails(feature_code, press_location, index) {
+    this.showLookupLoader = true;
     console.log('inopen feature');
     this.serviceData = []
     //this.lookupfor = 'feature_lookup';
     this.service.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
+      this.showLookupLoader = false;
         if (data.length > 0) {
           if (press_location == "Detail") {
             if (index == 1) {
@@ -584,6 +594,8 @@ export class RulewbComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      } , error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -606,6 +618,7 @@ export class RulewbComponent implements OnInit {
     this.close_rule_sequence();
     this.rule_feature_data = new Array();
     //this.outputrowcounter=0;
+    this.showLookupLoader = true;
     this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
@@ -631,7 +644,9 @@ export class RulewbComponent implements OnInit {
 
           }
         }
-
+        this.showLookupLoader = false;
+      }, error =>{
+        this.showLookupLoader = false;
       }
 
     )
@@ -996,20 +1011,27 @@ export class RulewbComponent implements OnInit {
   }
 
   getModelDetails() {
+    this.showLookupLoader = true;
     this.serviceData = [];
     this.service.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
+          this.showLookupLoader = false;
           this.serviceData = data;
         }
+      }, 
+      error => { 
+        this.showLookupLoader = false;
       }
     )
   }
 
   show_operand_lookup(type, type_value, rowindex, operand_value) {
+    this.showLookupLoader = true;
     this.service.get_model_feature_options(type_value, type).subscribe(
       data => {
+        this.showLookupLoader = false;
         if (data.length > 0) {
           console.log(data);
           this.currentrowindex = rowindex;
@@ -1028,6 +1050,8 @@ export class RulewbComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -1091,9 +1115,10 @@ export class RulewbComponent implements OnInit {
   }
 
   onFeatureIdChange(feature_id_code) {
+    this.showLookupLoader = true;
     this.service.onFeatureIdChange(feature_id_code).subscribe(
       data => {
-
+        this.showLookupLoader = false;
         if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
           this.rule_wb_data.applicable_for_feature_id = "";
@@ -1316,6 +1341,7 @@ export class RulewbComponent implements OnInit {
     if (this.validation("Save") == false)
       return;
     if (this.rule_expression_data.length > 0) {
+      this.showLookupLoader = true;
       let single_data_set: any = {};
       single_data_set.single_data_set_header = [];
       single_data_set.single_data_set_output = [];
@@ -1350,6 +1376,7 @@ export class RulewbComponent implements OnInit {
       single_data_set.single_data_set_output = extracted_output
       this.service.SaveData(single_data_set).subscribe(
         data => {
+          this.showLookupLoader = false;
           if (data == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
@@ -1369,6 +1396,9 @@ export class RulewbComponent implements OnInit {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
+        }, 
+        error => {
+          this.showLookupLoader = false;
         }
       )
     }

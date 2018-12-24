@@ -6,9 +6,9 @@
 <!-- loader end --> 
 
 <!-- loader start for lookup -->
-<!-- <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader">
+ <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader" *ngIf="showLookupLoader">
   <div class="opti_spinner"></div>
-</div> -->
+</div>
 <!-- loader end for lookup --> 
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -518,6 +518,8 @@
 </div>
 
 <!--Custom Dialog-->
+<span [hidden]="showLookupLoader">
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
+</span>
 
 <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
