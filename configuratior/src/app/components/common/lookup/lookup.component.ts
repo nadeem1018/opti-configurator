@@ -240,7 +240,7 @@ export class LookupComponent implements OnInit {
 
 
     this.lookupvalue.emit(Object.values(lookup_key));
-    $("#lookup_modal").modal('hide');
+  //   $("#lookup_modal").modal('hide');
     console.log(selection);
     selection.selectedRows = [];
     selection.index = 0;

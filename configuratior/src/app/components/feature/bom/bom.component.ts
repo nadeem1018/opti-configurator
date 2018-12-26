@@ -59,6 +59,8 @@ export class BomComponent implements OnInit {
   public isPropagateQtyDisable: boolean = false;
   public GetItemData = [];
   public showLoader: boolean = true;
+  public showLookupLoader: boolean = false;
+
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -392,9 +394,10 @@ export class BomComponent implements OnInit {
         this.feature_bom_table[i].quantity = this.feature_bom_table[i].quantity.toString();
       }
     }
-
+    this.showLookupLoader = true;
     this.fbom.SaveModelBom(this.feature_bom_table).subscribe(
       data => {
+        this.showLookupLoader = false;
         if (data == "7001") {
           this.commanService.RemoveLoggedInUser().subscribe();
           this.commanService.signOut(this.toastr, this.router);
@@ -472,7 +475,8 @@ export class BomComponent implements OnInit {
   on_type_change(selectedvalue, rowindex) {
     console.log('on type change ');
     console.log(selectedvalue);
-    this.currentrowindex = rowindex
+    this.currentrowindex = rowindex;
+    this.showLookupLoader = true;
     this.getFeatureDetails(this.feature_bom_data.feature_id, "Detail", selectedvalue);
 
   }
@@ -675,12 +679,14 @@ export class BomComponent implements OnInit {
   }
 
   openFeatureLookUp() {
+    this.showLookupLoader = true;
     console.log('inopen feature');
     this.serviceData = []
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
         if (data.length > 0) {
+          this.showLookupLoader = false;
           this.serviceData = data;
           console.log(this.serviceData);
 
@@ -691,6 +697,9 @@ export class BomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, 
+      error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -719,6 +728,7 @@ export class BomComponent implements OnInit {
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
         if (data.length > 0) {
+          this.showLookupLoader = false;
           if (press_location == "Header") {
             if (this.lookupfor == 'feature_lookup') {
               // this.feature_bom_data.feature_id = data;
@@ -789,17 +799,22 @@ export class BomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      }
+      },
+       error =>{
+         this.showLookupLoader = false;
+       }
     )
   }
 
   openPriceLookUp(ItemKey, rowindex) {
+    this.showLookupLoader = true;
     this.serviceData = []
     this.currentrowindex = rowindex;
     this.fbom.GetPriceList(ItemKey).subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'Price_lookup';
+          this.showLookupLoader = false;
           this.serviceData = data;
 
         }
@@ -809,6 +824,9 @@ export class BomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, 
+      error => {
+        this.showLookupLoader = false;
       }
     )
   }
