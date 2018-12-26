@@ -1,3 +1,6 @@
+
+
+
 <div class="top-content">
 
   <div class="inner-bg">
@@ -9,7 +12,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="ml-4 col-sm-5 form-box">
+        <div class="ml-4 col-sm-5 form-box p-0">
           <div class="form-top">
             <div class="form-top-left">
               <h3>{{login}}</h3>
@@ -20,6 +23,11 @@
             </div>
           </div>
           <div class="form-bottom">
+
+              <div class="opti_loader loginloader">
+                <div class="opti_spinner"></div>
+              </div>
+
             <form role="form" action="" method="post" class="login-form" (keydown)="enter_to_sublit($event)">
               <div class="form-group">
                 <label class="sr-only" for="form-username">{{username}}</label>
