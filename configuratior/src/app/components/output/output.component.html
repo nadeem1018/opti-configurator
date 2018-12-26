@@ -1,3 +1,9 @@
+<!-- loader start for lookup -->
+<div class="opti_loader opti_loader-module-grid-list opti_lookup-loader" *ngIf="showLookupLoader">
+  <div class="opti_spinner"></div>
+</div>
+<!-- loader end for lookup -->
+
 <div class="card mb-3">
 
   <div class="">
@@ -347,7 +353,7 @@
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee"
                         (change)="onSalesPersonChange(salesemployee.value)">
-                        <option [selected]="salesemployee.value" *ngFor="let v of sales_employee" [value]="v.SlpName">
+                        <option [selected]="salesemployee.value == v.SlpName" *ngFor="let v of sales_employee" [value]="v.SlpName">
                           {{v.SlpName}}</option>
                       </select>
                     </div>
@@ -508,7 +514,9 @@
                                 <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
                                   <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(feature_model_data.IMAGEPATH)">
                                     <img src="{{feature_model_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
+                                    </a>
                                   </div>
                                 </td>
                               </tr>
@@ -534,7 +542,9 @@
                                 <td>{{header_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
                                   <div class="image-preivew" *ngIf="header_data.IMAGEPATH!=''">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_data.IMAGEPATH)">
                                     <img src="{{header_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
+                                    </a>
                                   </div>
                                 </td>
                               </tr>
@@ -1556,5 +1566,6 @@
 <!--Custom Dialog-->
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
 
-
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+<span [hidden]="showLookupLoader">
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+</span>

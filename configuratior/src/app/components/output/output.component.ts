@@ -46,6 +46,7 @@ export class OutputComponent implements OnInit {
   public warehouse: string = "";
   public currentDate = new Date();
   public submit_date;
+  public showLookupLoader:boolean = false;
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -242,6 +243,11 @@ export class OutputComponent implements OnInit {
     }, 2000); */
   }
 
+  enlage_image(image) {
+    this.lookupfor = 'large_image_view';
+    this.selectedImage = image;
+  }
+
   ngAfterContentChecked() {
     this.cdref.detectChanges();
   }
@@ -325,18 +331,23 @@ export class OutputComponent implements OnInit {
 
   open_config_lookup() {
     this.serviceData = []
+    this.showLookupLoader = true;
     this.lookupfor = 'configure_list_lookup';
     this.OutputService.getConfigurationList(this.step1_data.main_operation_type).subscribe(
       data => {
         if (data.length > 0) {
+          this.showLookupLoader = false;
           this.serviceData = data;
         }
         else {
           this.lookupfor = "";
+          this.showLookupLoader = false;
           this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false;
       }
     )
   }
@@ -444,20 +455,24 @@ export class OutputComponent implements OnInit {
   }
 
   openCustomerLookUp() {
-
+    this.showLookupLoader = true;
     this.serviceData = [];
     this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'output_customer';
+          this.showLookupLoader = false;
           this.serviceData = data;
         }
         else {
           this.lookupfor = "";
+          this.showLookupLoader = false;
           this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => { 
+        this.showLookupLoader = false;
       }
     )
 
@@ -474,21 +489,26 @@ export class OutputComponent implements OnInit {
   }
 
   openModalList() {
+     this.showLookupLoader = true; 
     this.serviceData = []
     this.setModelDataFlag = false;
     this.OutputService.GetModelList().subscribe(
       data => {
         if (data.length > 0) {
           this.lookupfor = 'ModelBomForWizard_lookup';
+           this.showLookupLoader = false; 
           this.serviceData = data;
 
         }
         else {
           this.lookupfor = "";
+           this.showLookupLoader = false; 
           this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = false; 
       }
     )
   }
@@ -1440,7 +1460,7 @@ export class OutputComponent implements OnInit {
 
   step2_next_click_validation() {
     if (this.step1_data.document == "draft") {
-      this.step1_data.customer = "";
+    /*   this.step1_data.customer = "";
       this.step1_data.ship_to = "";
       this.step1_data.bill_to = "";
       this.step1_data.person_name = "";
@@ -1449,7 +1469,7 @@ export class OutputComponent implements OnInit {
       this.step1_data.owner = "";
       this.step1_data.remark = "",
         this.step1_data.bill_to_address = "",
-        this.step1_data.ship_to_address = "",
+        this.step1_data.ship_to_address = "", */
         // this.step1_data.posting_date="",
         $(".step_2_redirect").trigger('click');
     } else {
@@ -1533,6 +1553,7 @@ export class OutputComponent implements OnInit {
   }
 
   GetAllDataForModelBomOutput(getmodelsavedata) {
+    this.showLookupLoader = true; 
     let AllDataForModelBomOutput: any = {};
     AllDataForModelBomOutput.modelinputdatalookup = [];
     AllDataForModelBomOutput.getmodelsavedata = [];
@@ -1548,7 +1569,7 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetDataByModelIDForFirstLevel(AllDataForModelBomOutput).subscribe(
       //this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
-        if (data != null || data != undefined) {
+        if (data != null && data != undefined) {
           console.log(data);
           if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
             if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined) {
@@ -1637,15 +1658,17 @@ export class OutputComponent implements OnInit {
           if (this.setModelDataFlag == true) {
             this.setModelDataInOutputBom(getmodelsavedata);
           }
-
+          this.showLookupLoader = false; 
         }
         else {
+          this.showLookupLoader = false; 
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         }
 
       },
       error => {
+        this.showLookupLoader = false; 
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -1745,7 +1768,7 @@ export class OutputComponent implements OnInit {
     this.checkedFunction(feature_model_data, parentarray, value);
 
 
-
+    this.showLookupLoader = true; 
     let GetDataForSelectedFeatureModelItemData: any = {};
     GetDataForSelectedFeatureModelItemData.selecteddata = [];
     GetDataForSelectedFeatureModelItemData.featurebomdata = [];
@@ -2200,7 +2223,7 @@ export class OutputComponent implements OnInit {
             this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
             this.checkedFunction(feature_model_data, parentarray, value);
-
+            this.showLookupLoader = false; 
           } //end value
           else {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -2211,11 +2234,13 @@ export class OutputComponent implements OnInit {
             }
             this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
-
+            this.showLookupLoader = false; 
           }
         }//end data null
+        this.showLookupLoader = false; 
       },//end data
       error => {
+        this.showLookupLoader = false; 
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -2304,6 +2329,7 @@ export class OutputComponent implements OnInit {
   }
 
   GetDataForModelBomOutput() {
+    this.showLookupLoader = true;
     this.lookupfor = 'tree_view__model_bom_Output_lookup"';
     this.tree_data_json = [];
     if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
@@ -2342,14 +2368,17 @@ export class OutputComponent implements OnInit {
             setTimeout(() => {
               this.tree_view_expand_collapse()
             }, 2000);
+            this.showLookupLoader = false;
           }
           else {
+            this.showLookupLoader = false;
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
 
         },
         error => {
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         }
@@ -2501,14 +2530,19 @@ export class OutputComponent implements OnInit {
       ShipTo: SelectedShipTo,
       currentDate: this.submit_date
     });
+    this.showLookupLoader = true; 
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
+        if (data != null && data != undefined) {
+          this.showLookupLoader = false; 
           this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
         }
         else {
           this.step1_data.ship_to_address = '';
+          this.showLookupLoader = false; 
         }
+      }, error => {
+        this.showLookupLoader = false; 
       })
   }
 
@@ -2521,20 +2555,29 @@ export class OutputComponent implements OnInit {
       ShipTo: SelectedBillTo,
       currentDate: this.submit_date
     });
+    this.showLookupLoader = true; 
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
-          this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+        if (data != null && data != undefined) {
+          if (data.BillingAdress[0]!= undefined){
+            this.showLookupLoader = false; 
+            this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+          }
         }
         else {
+          this.showLookupLoader = false; 
           this.step1_data.bill_to_address = '';
         }
+      }, error => {
+        this.showLookupLoader = false; 
       })
   }
   onCustomerChange() {
+    this.showLookupLoader = true;
     this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
         if (data === "False") {
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
           this.isNextButtonVisible = false;
           this.step1_data.customer = "";
@@ -2552,13 +2595,11 @@ export class OutputComponent implements OnInit {
         else {
           this.isNextButtonVisible = true;
           this.getCustomerAllInfo();
-          //this.GetCustomername();
-          // this.fillContactPerson();
-          // this.fillShipTo();
-          // this.fillBillTo();
-          // this.fillOwners();
         }
-      })
+      }, error => {
+        this.showLookupLoader = false;
+      }
+      )
   }
 
   GetCustomername() {
@@ -2589,6 +2630,7 @@ export class OutputComponent implements OnInit {
     if (button_press == 'finishPress') {
       this.onValidateNextPress();
     }
+     this.showLookupLoader = true; 
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
@@ -2644,23 +2686,27 @@ export class OutputComponent implements OnInit {
 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
+        if (data != null || data != undefined) {
           if (data[0].Status == "True") {
+            this.showLookupLoader = false; 
             this.iLogID = data[0].LogId;
             this.toastr.success('', this.language.OperCompletedSuccess, this.commonData.toast_config);
           }
           else {
+            this.showLookupLoader = false; 
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
 
         }
         else {
+          this.showLookupLoader = false; 
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         }
       },
       error => {
+        this.showLookupLoader = false; 
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -2703,6 +2749,7 @@ export class OutputComponent implements OnInit {
   }
 
   refresh_bom_status() {
+    this.showLookupLoader = true;
     this.dontShowFinalLoader = true;
     this.showFinalLoader = false;
     this.getFinalBOMStatus();
@@ -3367,10 +3414,10 @@ export class OutputComponent implements OnInit {
 
   //For getting final status this mehod will handle 
   getFinalBOMStatus() {
+    this.showLookupLoader = true;
     this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
       data => {
-        console.log('data');
-        console.log(data);
+        this.showLookupLoader = false;
         if (data != null) {
           console.log('in if data');
           if (data.FinalStatus[0].OPTM_STATUS == "P") {
@@ -3398,6 +3445,7 @@ export class OutputComponent implements OnInit {
         }
       },
       error => {
+        this.showLookupLoader = false;
         this.stoprefreshloader();
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
@@ -3471,6 +3519,7 @@ export class OutputComponent implements OnInit {
 
   onAccessorySelectionChange(value, rowData) {
     if (value == true) {
+      this.showLookupLoader = true; 
       let parentfeatureid = rowData.parentfeatureid
       let GetDataForSelectedFeatureModelItemData: any = {};
       GetDataForSelectedFeatureModelItemData.selecteddata = [];
@@ -3507,8 +3556,10 @@ export class OutputComponent implements OnInit {
             this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
           console.log('this.feature_accessory_list');
           console.log(this.feature_accessory_list);
+          this.showLookupLoader = false; 
         },
         error => {
+          this.showLookupLoader = false; 
           this.stoprefreshloader();
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
@@ -3607,6 +3658,7 @@ export class OutputComponent implements OnInit {
   }
 
   selectallAccessory(value) {
+    this.showLookupLoader = true; 
     for (let i = 0; i < this.feature_accessory_list.length; ++i) {
       this.feature_accessory_list[i].checked = value;
       if (value == true) {
@@ -3645,8 +3697,10 @@ export class OutputComponent implements OnInit {
             });
             if (data.DataForSelectedFeatureModelItem.length > 0)
               this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+              this.showLookupLoader = false; 
           },
           error => {
+            this.showLookupLoader = false; 
             this.stoprefreshloader();
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
@@ -4215,9 +4269,11 @@ export class OutputComponent implements OnInit {
   }
 
   onModelCodeChange() {
+    this.showLookupLoader = true; 
     this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
       data => {
         if (data === "False") {
+          this.showLookupLoader = false; 
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
           this.step2_data.modal_id = "";
           this.step2_data.model_code = "";
@@ -4228,6 +4284,8 @@ export class OutputComponent implements OnInit {
           this.step2_data.model_id = data;
           this.GetAllDataForModelBomOutput("");
         }
+      }, error => {
+        this.showLookupLoader = false; 
       })
   }
   setModelDataInOutputBom(getmodelsavedata) {
@@ -4558,10 +4616,10 @@ export class OutputComponent implements OnInit {
 
     //first we will clear the details
     this.cleanCustomerAllInfo();
-
+    this.showLookupLoader = true; 
     this.OutputService.getCustomerAllInfo(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
+        if (data != null && data != undefined) {
           this.console.log("ALL CUSTOMER INFO-->", data)
 
           //Fill Contact Person
@@ -4590,7 +4648,6 @@ export class OutputComponent implements OnInit {
               });
 
               //now push -No Sales Employee- to first position
-
               this.sales_employee.unshift({ SlpName: "-No Sales Employee-", SlpCode: "-1" });
 
               //Set Default Sales Person
@@ -4598,15 +4655,18 @@ export class OutputComponent implements OnInit {
 
 
               this.step1_data.sales_employee = this.salesemployee;
+              this.showLookupLoader = false; 
             }
             else {
               this.sales_employee = [];
               this.salesemployee = "";
+              this.showLookupLoader = false; 
               this.step1_data.sales_employee = "";
             }
           }
           else {
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+            this.showLookupLoader = false; 
             return;
           }
 
@@ -4631,33 +4691,13 @@ export class OutputComponent implements OnInit {
             this.bill_to = [];
             this.step1_data.bill_to_address = '';
           }
-
-          //Fill Ship to
-          if (data.ShipDetail.length > 0) {
-            this.ship_to = data.ShipDetail;
-            this.customerShipTo = data.ShipDetail[0].ShipToDef;
-            this.step1_data.ship_to = data.ShipDetail[0].ShipToDef;
-
-
-            this.ship_data.push({
-              CompanyDBId: this.common_output_data.companyName,
-              Customer: this.step1_data.customer,
-              ShipTo: this.customerShipTo,
-              currentDate: this.step1_data.posting_date
-            });
-
-            //To get ship address
-            this.fillShipAddress(this.ship_data, data);
-          }
-          else {
-            this.ship_to = [];
-            this.step1_data.ship_to_address = '';
-          }
         } else {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         }
+        this.showLookupLoader = false;
       },
       error => {
+        this.showLookupLoader = false;
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       })
@@ -4667,32 +4707,42 @@ export class OutputComponent implements OnInit {
   fillBillAddress(bill_data, orig_data) {
     this.OutputService.fillBillAddress(bill_data).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
-          this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
-
-          this.fillShipDetails(orig_data);
+        this.showLookupLoader = false;
+        if (data != null && data != undefined) {
+          if (data.BillingAdress!= undefined){
+            this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
+          }
         }
         else {
           this.step1_data.bill_to_address = '';
         }
+        this.fillShipDetails(orig_data);
+      }, error =>{
+        this.showLookupLoader = false; 
       })
   }
 
   fillShipAddress(ship_data, orig_data) {
     this.OutputService.fillShipAddress(ship_data).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
-          this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+        this.showLookupLoader = false;
+        if (data != null && data != undefined) {
+          if(data.ShippingAdress!= undefined){
+            this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
+          }
 
           this.fillAllOwners(orig_data);
         }
         else {
           this.step1_data.ship_to_address = '';
+          this.showLookupLoader = false; 
         }
+      }, error=> {
+        this.showLookupLoader = false; 
       })
   }
 
-  fillShipDetails(data) {
+   fillShipDetails(data) {
     //Fill Ship Detail
     //if default is set else
     let ShipDetails: any;
@@ -4722,17 +4772,20 @@ export class OutputComponent implements OnInit {
     else {
       this.ship_to = [];
       this.step1_data.ship_to_address = '';
+      this.showLookupLoader = false; 
     }
-  }
+  } 
 
   //fill all owners
   fillAllOwners(data) {
     if (data.AllOwners.length > 0) {
+      this.showLookupLoader = false; 
       this.owner_list = data.AllOwners;
       this.step1_data.owner = data.AllOwners[0].lastName;
     }
     else {
       this.owner_list = [];
+      this.showLookupLoader = false; 
       this.step1_data.owner = "";
     }
   }
@@ -4741,23 +4794,33 @@ export class OutputComponent implements OnInit {
   cleanCustomerAllInfo() {
     //clear all owners info
     this.owner_list.length = 0;
+    this.owner_list = [];
+
     this.step1_data.owner = "";
 
     //clear all bill to detial
     this.bill_to.length = 0;
-    this.step1_data.bill_to_address =
+    this.bill_to = [];
+
+    this.step1_data.bill_to_address = "";
       //clear contact person detail
-      this.contact_persons.length = 0;
+    this.contact_persons.length = 0;
+    this.contact_persons = [];
+
     this.person = "";
     this.step1_data.person_name = "";
 
     //clear sales employee detail
     this.sales_employee.length = 0;
+    this.sales_employee = []; 
+
     this.salesemployee = "";
     this.step1_data.sales_employee = "";
 
     //clear ship to detail
     this.ship_to.length = 0;
+    this.ship_to = [];
+
     this.step1_data.ship_to_address = '';
   }
 }

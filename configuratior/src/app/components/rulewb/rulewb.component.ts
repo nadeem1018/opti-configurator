@@ -517,11 +517,14 @@ export class RulewbComponent implements OnInit {
   getLookupValue($event) {
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-        if (this.rule_sequence_data[i]['type'] == 1) {
+        if (this.lookupfor == 'feature_Detail_lookup' || this.lookupfor == 'ModelBom_lookup'){
           this.rule_sequence_data[i]['operand_1'] = '';
           this.rule_sequence_data[i]['operand_1_code'] = '';
           this.rule_sequence_data[i]['operand_2'] = '';
           this.rule_sequence_data[i]['operand_2_code'] = '';
+        }  
+
+        if (this.rule_sequence_data[i]['type'] == 1) {
           //   this.rule_sequence_data[i]['condition'] = '';
           if (this.rule_sequence_data[i]['condition'] != "Between") {
             this.rule_sequence_data[i]['is_operand2_disable'] = true;
@@ -533,6 +536,9 @@ export class RulewbComponent implements OnInit {
         }
       }
     }
+
+   
+
     if (this.lookupfor == 'feature_lookup') {
       this.rule_wb_data.applicable_for_feature_id = $event[0];
       this.rule_wb_data.applicable_for_feature_code = $event[1];
@@ -953,6 +959,7 @@ export class RulewbComponent implements OnInit {
                 }
                 else {
                   this.rule_sequence_data[i].type_value = data;
+                  this.rule_sequence_data[i].type_value_code = value; 
                 }
               });
           }
