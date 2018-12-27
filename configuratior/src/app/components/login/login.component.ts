@@ -330,7 +330,9 @@ export class LoginComponent implements OnInit {
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
-            sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
+            if (data[0].HomeCurrency != "" && data[0].HomeCurrency != null && data[0].HomeCurrency != undefined){
+              sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
+            }
           }
         }
       },
