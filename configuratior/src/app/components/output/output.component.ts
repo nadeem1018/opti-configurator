@@ -254,6 +254,10 @@ export class OutputComponent implements OnInit {
 
 
   start_new_configuration_click() {
+    this.final_order_status = "";
+    this.final_document_number = "";
+    this.final_ref_doc_entry = "";
+    this.iLogID = "";
     this.onOperationChange('');
     this.delete_all_row_data();
     $("fieldset").hide();

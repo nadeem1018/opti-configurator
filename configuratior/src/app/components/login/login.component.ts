@@ -77,8 +77,8 @@ export class LoginComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(function () {
       console.log(new Date());
-      this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+        this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+        this.language = JSON.parse(sessionStorage.getItem('current_lang'));
       if (this.language == undefined && this.language != "" && this.language != 0) {
         if (this.config_data != undefined && this.config_data != "") {
           if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
@@ -197,6 +197,10 @@ export class LoginComponent implements OnInit {
 
   getLisenceData(){
     this.showLoginLoader = true;
+    if (this.selecetedComp == undefined && this.selecetedComp == "") {
+      this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
+      return;
+    }
     this.auth.getLicenseData(this.selecetedComp.OPTM_COMPID, this.loginCredentials).subscribe(
       data => {
         if (data != undefined) {
@@ -312,13 +316,17 @@ export class LoginComponent implements OnInit {
     this.showCompDropDown = false;
     this.loginCredentials = [];
     this.loginCredentials.length = 0;
+    this.selecetedComp = []; 
     this.connectBtnText = (this.language.connect != undefined) ? this.language.connect : "Connect";
   }
 
   //Get Currency code from backend
   getCurrencyCode(selectedCompID) {
     sessionStorage.setItem('defaultCurrency', "$");
-    this.CommonService.GetCompanyDetails(selectedCompID).subscribe(
+    if (this.config_params == undefined || this.config_params == "") {
+      this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    }
+    this.CommonService.GetCompanyDetails(selectedCompID, this.config_params.service_url).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
