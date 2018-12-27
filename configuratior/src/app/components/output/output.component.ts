@@ -262,6 +262,7 @@ export class OutputComponent implements OnInit {
 
   onOperationChange(operation_type) {
     this.step1_data = [];
+    this.iLogID = '';
     let cDate = new Date();
     this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     this.contact_persons = [];
@@ -404,7 +405,7 @@ export class OutputComponent implements OnInit {
     if (ModelBOMData.length > 0) {
       let tempModelData = [];
       tempModelData = ModelBOMData.filter(function (obj) {
-        return obj['OPTM_KEY'] != "" && obj['OPTM_ITEMTYPE'] == "0"
+        return (obj['OPTM_KEY']).trim() != "" && (obj['OPTM_ITEMTYPE']).trim() == "0"
       })
       console.log('tempModelData');
       console.log(tempModelData);

@@ -66,8 +66,9 @@ export class ModelComponent implements OnInit {
   public isReflookupDisabled = true;
   public IsAccessoryVisible = true;
   public minimum_date = new Date();
-  public showLoader:boolean  = true;
-  public showLookupLoader:boolean = false;
+  public showLoader: boolean = true;
+  public showLookupLoader: boolean = false;
+  public isUsedAccesoriesDisabled = false;
 
   ngOnInit() {
 
@@ -106,7 +107,7 @@ export class ModelComponent implements OnInit {
         this.IsAccessoryVisible = true;
       }
       this._el.nativeElement.focus();
-      this.showLoader  = false;
+      this.showLoader = false;
     }
     else {
       this.button = "update";
@@ -129,6 +130,13 @@ export class ModelComponent implements OnInit {
           this.featureBom.ItemName = data[0].OPTM_MODELTEMPLATEITEM
           this.featureBom.Ref = data[0].OPTM_ITEMCODEGENREF
           this.featureBom.Accessory = data[0].OPTM_ACCESSORY
+          if (data[0].isRefExists == "Ref_already_exist") {
+            this.isUsedAccesoriesDisabled = true;
+          }
+          else {
+            this.isUsedAccesoriesDisabled = false;
+          }
+
           if (data[0].OPTM_PHOTO !== undefined && data[0].OPTM_PHOTO !== "" && data[0].OPTM_PHOTO !== 0) {
             this.featureBom.Image = data[0].OPTM_PHOTO
             this.ModelImage = this.commonData.get_current_url() + data[0].OPTM_PHOTO
@@ -160,7 +168,7 @@ export class ModelComponent implements OnInit {
             this.isReflookupDisabled = false;
             this.IsAccessoryVisible = true;
           }
-          this.showLoader  = false;
+          this.showLoader = false;
         })
     }
   }
@@ -224,7 +232,7 @@ export class ModelComponent implements OnInit {
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router);
             return;
-          } 
+          }
 
           if (data == "True") {
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
@@ -243,7 +251,7 @@ export class ModelComponent implements OnInit {
         error => {
           this.showLookupLoader = false;
         }
-        )
+      )
     }
   }
 
@@ -384,7 +392,7 @@ export class ModelComponent implements OnInit {
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router);
             return;
-          } 
+          }
 
           if (data == "True") {
             this.toastr.success('', this.language.DataUpdateSuccesfully, this.commonData.toast_config);
@@ -399,7 +407,7 @@ export class ModelComponent implements OnInit {
             this.toastr.error('', this.language.DataNotUpdate, this.commonData.toast_config);
             return;
           }
-        }, error=> {
+        }, error => {
           this.showLookupLoader = false;
         })
     }
