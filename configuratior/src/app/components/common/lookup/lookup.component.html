@@ -660,7 +660,7 @@
                                     {{language.quantity}}
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-row>
-                                    {{row.OPTM_QUANTITY}}
+                                    <div  style="text-align:right">{{row.OPTM_QUANTITY}}</div>
                                 </ng-template>
                             </kendo-grid-column>
                             <kendo-grid-column field="edit_quantity" title="" template="" [width]="120"
@@ -677,7 +677,7 @@
                                     {{language.price}} ({{defaultCurrency}})
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-row>
-                                    {{row.OPTM_PRICESOURCE}}
+                                    <div  style="text-align:right">{{row.OPTM_PRICESOURCE | toFixed:'3' }}</div>
                                 </ng-template>
                             </kendo-grid-column>
                             <kendo-grid-column field="edit_price" title="" template="" [width]="120"

@@ -12,11 +12,14 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class CommonService {
-  public config_params:any;
+  
   common_params = new CommonData();
   public logged_in_company = sessionStorage.selectedComp;
+  public config_params: any = "";
   constructor(private httpclient: HttpClient) {
+    
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    console.log("the config param  - ", this.config_params);
    }
   config_parameter;
 
@@ -66,6 +69,9 @@ export class CommonService {
   //This will get he service according to user settings done on Admin Portal
   getMenuRecord(): Observable<any>{
     //this.config_params.product_code = 'CNF';
+    if (this.config_params == undefined || this.config_params == "") {
+      this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    }
     let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
     return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
   }
@@ -111,11 +117,12 @@ export class CommonService {
   }
 
   // get company details 
-  GetCompanyDetails(selectedCompID): Observable<any> {
+  GetCompanyDetails(selectedCompID, service_url): Observable<any> {
+   
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: selectedCompID }]) };
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Base/GetCompanyDetails", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(service_url + "/Base/GetCompanyDetails", jObject, this.common_params.httpOptions);
   }
 
 }

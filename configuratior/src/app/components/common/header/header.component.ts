@@ -14,43 +14,57 @@ export class HeaderComponent implements OnInit {
   private commonData = new CommonData();
   config_data: any = "";
   language: any = "";
-  project_name:any = 'OptiPro Product Configurator';
-  constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) {}
-  showHeader: boolean ;
+  project_name: any = 'OptiPro Product Configurator';
+  constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) { }
+  showHeader: boolean;
   imgPath = 'assets/images';
-  
+  search_for = "Search for...";
+  user_profile = "User Profile";
+  preferences = "Preferences";
+  signout = "Sign-out";
+
   ngOnInit() {
 
     this.CommonService.currentIsLoggedInDataData.subscribe(
       (data) => {
-          console.log('data'+data);
-          this.showHeader = data;
-          }
+        console.log('data' + data);
+        this.showHeader = data;
+      }
     );
 
 
-     this.CommonService.get_config();
+    this.CommonService.get_config();
 
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-   // this.commonData.checkSession();
-    if (this.config_data != undefined && this.config_data != "" ){
-       if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0){
-       // this.CommonService.set_language(this.config_data['locale']);
+    // this.commonData.checkSession();
+    if (this.config_data != undefined && this.config_data != "") {
+      if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
+        // this.CommonService.set_language(this.config_data['locale']);
       }
       this.project_name = this.config_data['app_title'];
-      this.language = JSON.parse(sessionStorage.getItem('current_lang')); 
-    }
-    
+      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+   }
+
   }
 
   ngOnChanges() {
-   // this.commonData.checkSession();
+    // this.commonData.checkSession();
   }
- 
-  logout(){
+
+  ngAfterViewInit(): void {
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+    this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+    
+      this.search_for = this.language.search_for;
+      this.user_profile = this.language.user_profile;
+      this.preferences = this.language.preferences;
+      this.signout = this.language.signout;
+  }
+
+  logout() {
 
     this.CommonService.RemoveLoggedInUser().subscribe();
-    
+
     this.CommonService.signOut(this.toastr, this.router);
 
 
@@ -58,13 +72,13 @@ export class HeaderComponent implements OnInit {
     // /* sessionStorage.clear();
     // localStorage.clear(); */
     // let login_page = this.commonData.application_path + '/index.html#login';
-        
+
     // sessionStorage.removeItem('isLoggedIn');
     // sessionStorage.removeItem('selectedComp');
     // sessionStorage.removeItem('loggedInUser');
-    
+
     // // this.router.navigateByUrl('/login');
-   
+
     // setTimeout(()=>{   
     //   this.CommonService.setisLoggedInData();
     //   this.router.navigateByUrl('/login');
@@ -78,6 +92,6 @@ export class HeaderComponent implements OnInit {
     }  
   } */
 
- 
+
 
 }

@@ -200,7 +200,7 @@ export class ModelbomComponent implements OnInit {
               if (this.modelbom_data.length > 0) {
                 this.counter = this.modelbom_data.length
               }
-              data.ModelDetail[i].OPTM_QUANTITY = parseFloat(data.ModelDetail[i].OPTM_QUANTITY).toFixed(3)
+              data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
 
               this.counter++;
               this.modelbom_data.push({
@@ -276,7 +276,7 @@ export class ModelbomComponent implements OnInit {
       type_value_code: "",
       display_name: "",
       uom: '',
-      quantity: parseFloat("1").toFixed(3),
+      quantity: ("1"),
       min_selected: 1,
       max_selected: 1,
       propagate_qty: false,
@@ -343,7 +343,7 @@ export class ModelbomComponent implements OnInit {
     //this.modelbom_data[rowindex].type_value="";
     this.modelbom_data[rowindex].uom = "";
     this.modelbom_data[rowindex].display_name = "";
-    this.modelbom_data[rowindex].quantity = parseFloat("0").toFixed(3);
+    this.modelbom_data[rowindex].quantity = ("0");
     this.modelbom_data[rowindex].min_selected = 1;
     this.modelbom_data[rowindex].max_selected = 1;
     this.modelbom_data[rowindex].propagate_qty = 'N';
@@ -373,7 +373,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isPriceDisabled = true
           this.modelbom_data[i].pricehide = true
           this.modelbom_data[i].isUOMDisabled = true
-          this.modelbom_data[i].quantity = parseFloat("1").toFixed(3);
+          this.modelbom_data[i].quantity = ("1");
           this.modelbom_data[i].isMinSelectedDisable = false;
           this.modelbom_data[i].isMaxSelectedDisable = false;
         }
@@ -381,7 +381,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].isDisplayNameDisabled = false
           this.modelbom_data[i].isTypeDisabled = false
           this.modelbom_data[i].hide = false
-          this.modelbom_data[i].quantity = parseFloat("1").toFixed(3);
+          this.modelbom_data[i].quantity = ("1");
           if (selectedvalue == 2) {
             this.lookupfor = 'Item_Detail_lookup';
             this.modelbom_data[i].type = 2
@@ -547,7 +547,20 @@ export class ModelbomComponent implements OnInit {
   }
 
   getLookupValue($event) {
-
+    if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup"){
+      for (let j = 0; j < this.modelbom_data.length; j++) {
+        var psTypeCode = this.modelbom_data[j].type_value_code;
+        if (psTypeCode != undefined && psTypeCode != "") {
+          if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
+            this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
+           
+            $(".row_type_value_id").eq(this.currentrowindex - 1).val("");
+            $(".row_type_value_code").eq(this.currentrowindex - 1).val("");
+            return;
+          }
+        }
+      }
+    }
 
     if (this.lookupfor == 'ModelBom_lookup') {
       //alert($event);
@@ -663,9 +676,20 @@ export class ModelbomComponent implements OnInit {
       })
   }
 
-  on_typevalue_change(value, rowindex, code) {
+  on_typevalue_change(value, rowindex, code, type_value_code) {
     this.currentrowindex = rowindex
     var iIndex=this.currentrowindex - 1; 
+    for (let j = 0; j < this.modelbom_data.length; j++) {
+      var psTypeCode = this.modelbom_data[j].type_value_code;
+      if (psTypeCode != undefined && psTypeCode != "") {
+        if (psTypeCode.toUpperCase() == code.toUpperCase()) {
+          this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
+          $(type_value_code).val("");
+          return;
+        }
+      }
+    }
+
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].type_value = value.toString()
@@ -732,7 +756,7 @@ export class ModelbomComponent implements OnInit {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         if (value == 0) {
           value = 1;
-          this.modelbom_data[i].quantity = parseFloat(value).toFixed(3);
+          this.modelbom_data[i].quantity = (value);
           this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
         }
         else {
@@ -750,10 +774,10 @@ export class ModelbomComponent implements OnInit {
             value = 1;
             this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
           } 
-          this.modelbom_data[i].quantity = parseFloat(value).toFixed(3);
+          this.modelbom_data[i].quantity = (value);
         }
 
-        $('input[name="bom_quantity"]').eq((rowindex - 1)).val(parseFloat(value).toFixed(3));
+        $('input[name="bom_quantity"]').eq((rowindex - 1)).val((value));
 
       }
     }
@@ -780,7 +804,8 @@ export class ModelbomComponent implements OnInit {
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
-            $(actualvalue).val(1);
+            // $(actualvalue).val(1);
+            $(".min_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
           }
@@ -802,8 +827,9 @@ export class ModelbomComponent implements OnInit {
               console.log(data);
               if (data != null) {
                 if (parseFloat(value) > parseFloat(data)) {
-                  $(actualvalue).val(1);
-                  this.toastr.error('', this.language.max_selected_validation, this.commonData.toast_config);
+                  this.modelbom_data[i].max_selected = 1;
+                  $(".max_selectable_row").eq((rowindex - 1)).val(1);
+                  this.toastr.error('', this.language.max_selected_validation + " " + data, this.commonData.toast_config);
                   return;
                 }
               }
@@ -814,7 +840,7 @@ export class ModelbomComponent implements OnInit {
           if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
             this.modelbom_data[i].max_selected = 1;
-            $(actualvalue).val(1);
+            $(".max_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
           }

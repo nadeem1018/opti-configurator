@@ -41,8 +41,13 @@ export class LoginComponent implements OnInit {
   public CompanyRequired = 'Select Company';
   public UserNameRequired = 'Username required';
   public PasswordRequired = 'Password required';
+  public default_server_error_msg = "There was some error, please try again";
+  public license_failed = "License Failed";
+  public isUserPermitted = "You Don't have Permission to Access this Product";
+  public FailedToReadCurrency = "There was some error while fetching currency details";
   public onConnectSuccess: boolean = false;
   public page_title = this.commonData.project_name;
+  public showLoginLoader:boolean = true;
   common_params = new CommonData();
   record_per_page: any = this.common_params.default_count;
   constructor(
@@ -72,8 +77,8 @@ export class LoginComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(function () {
       console.log(new Date());
-      this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+        this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+        this.language = JSON.parse(sessionStorage.getItem('current_lang'));
       if (this.language == undefined && this.language != "" && this.language != 0) {
         if (this.config_data != undefined && this.config_data != "") {
           if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
@@ -95,6 +100,10 @@ export class LoginComponent implements OnInit {
         this.CompanyRequired = this.language.CompanyRequired;
         this.UserNameRequired = this.language.UserNameRequired;
         this.PasswordRequired = this.language.PasswordRequired;
+        this.default_server_error_msg = this.language.server_error;
+        this.license_failed = this.language.license_failed;
+        this.isUserPermitted = this.language.isUserPermitted;
+        this.FailedToReadCurrency = this.language.FailedToReadCurrency;
       }
     }, 2000);
   }
@@ -121,7 +130,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     if (this.loginCredentials.userName != undefined && this.loginCredentials.password != undefined) {
-
+      this.showLoginLoader = true;
       this.auth.login(this.loginCredentials, this.psURL).subscribe(
         data => {
           if (data != null || data.Table.length > 0) {
@@ -134,17 +143,22 @@ export class LoginComponent implements OnInit {
               }
               else {
                 //If user is not active
+                this.showLoginLoader = false;
                 this.toastr.warning('', this.UserNotActive, this.commonData.toast_config);
               }
             }
             else {
               //If no table found
+              this.showLoginLoader = false;
               this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
             }
           } else {
             //If no username & pass matches
+            this.showLoginLoader = false;
             this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
           }
+        }, error=> {
+          this.showLoginLoader = false;
         })
     }
 
@@ -182,6 +196,11 @@ export class LoginComponent implements OnInit {
   }
 
   getLisenceData(){
+    this.showLoginLoader = true;
+    if (this.selecetedComp == undefined && this.selecetedComp == "") {
+      this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
+      return;
+    }
     this.auth.getLicenseData(this.selecetedComp.OPTM_COMPID, this.loginCredentials).subscribe(
       data => {
         if (data != undefined) {
@@ -189,16 +208,17 @@ export class LoginComponent implements OnInit {
           this.handleLicenseDataSuccessResponse();
         } else {
          //  alert("Lisence Failed");
-         this.toastr.error('', this.language.license_failed, this.commonData.toast_config);
+          this.showLoginLoader = false;
+         this.toastr.error('', this.license_failed, this.commonData.toast_config);
         }
         // this.licenseData = data;
 
       },
       error => {
-        debugger
         // this.showLoader = false;
+        this.showLoginLoader = false;
        //  alert("license Failed");
-       this.toastr.error('', this.language.license_failed, this.commonData.toast_config);
+       this.toastr.error('', this.license_failed, this.commonData.toast_config);
       }
     );  
   }
@@ -212,9 +232,11 @@ export class LoginComponent implements OnInit {
         this.onLoginBtnPress();
 
       } else {
+        this.showLoginLoader = false;
          this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
       }
     } else {
+      this.showLoginLoader = false;
        this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
     }
   }
@@ -240,7 +262,16 @@ export class LoginComponent implements OnInit {
           //this.psURL = "http://172.16.6.140/OptiAdmin";
           //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
+          this.showLoginLoader = false;
+        } else {
+          this.showLoginLoader = false;
+          this.toastr.error('',this.default_server_error_msg, this.commonData.toast_config);
+          return;
         }
+      }, error => {
+        this.showLoginLoader = false;
+        this.toastr.error('',this.default_server_error_msg, this.commonData.toast_config);
+        return;
       }
     )
   }
@@ -249,8 +280,10 @@ export class LoginComponent implements OnInit {
   getCompanies() {
     this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
       data => {
+        this.showLoginLoader = false;
         if (data != null || data != undefined) {
           this.assignedCompanies = data.Table;
+          this.showLoginLoader = false;
           if (this.assignedCompanies != null) {
             //If comp found
             this.showCompDropDown = true;
@@ -263,13 +296,16 @@ export class LoginComponent implements OnInit {
             this.showLoginBtn = false;
             this.showCompDropDown = false;
           }
-
-        }
-        else {
+        } else {
           //if No companies are retriving then we will consider that user have no company assignment
           // alert("You Don't have Permission to Access this Product");
-          this.toastr.error('', this.language.isUserPermitted, this.commonData.toast_config);
+          this.showLoginLoader = false;
+          this.toastr.error('', this.isUserPermitted, this.commonData.toast_config);
         }
+      }, error => {
+        this.showLoginLoader = false;
+        this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
+        return;
       }
     )
   }
@@ -280,13 +316,17 @@ export class LoginComponent implements OnInit {
     this.showCompDropDown = false;
     this.loginCredentials = [];
     this.loginCredentials.length = 0;
+    this.selecetedComp = []; 
     this.connectBtnText = (this.language.connect != undefined) ? this.language.connect : "Connect";
   }
 
   //Get Currency code from backend
   getCurrencyCode(selectedCompID) {
     sessionStorage.setItem('defaultCurrency', "$");
-    this.CommonService.GetCompanyDetails(selectedCompID).subscribe(
+    if (this.config_params == undefined || this.config_params == "") {
+      this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    }
+    this.CommonService.GetCompanyDetails(selectedCompID, this.config_params.service_url).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
@@ -295,7 +335,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error => {
-        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+        this.toastr.error('', this.FailedToReadCurrency, this.commonData.toast_config);
       }
     )
   }

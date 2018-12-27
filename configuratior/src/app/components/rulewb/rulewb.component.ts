@@ -69,7 +69,7 @@ export class RulewbComponent implements OnInit {
   public outputrowcounter: number = 0;
   public showLoader: boolean = true;
   public showLookupLoader:boolean = false;
-  
+  public editModeSequence:any = "";
   public code_disabled = "false";
   public isOutputTable: boolean = true;
 
@@ -305,7 +305,6 @@ export class RulewbComponent implements OnInit {
             for (let i = 0; i < data.RuleWorkBenchOutput.length; ++i) {
               if (data.RuleWorkBenchOutput[i].OPTM_FEATUREID != "" || data.RuleWorkBenchOutput[i].OPTM_FEATUREID != null) {
                 typefromdatabase = 1;
-
               }
               else {
                 typefromdatabase = 2;
@@ -314,8 +313,8 @@ export class RulewbComponent implements OnInit {
 
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
+              this.editModeSequence = this.seq_count;
               let current_count = (this.seq_count - 1);
-              console.log("default value - " + fetch_data.OPTM_DEFAULT.trim() + ' - - ' + (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true'));
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
               this.rule_expression_data[current_count].output_data.push({
@@ -329,16 +328,13 @@ export class RulewbComponent implements OnInit {
                 uom: fetch_data.OPTM_UOM,
                 quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                 edit_quantity: fetch_data.OPTM_ISQTYEDIT,
-                price_source: fetch_data.OPTM_PRICESOURCE,
+                price_source: parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3),
                 edit_price: fetch_data.OPTM_ISPRICEEDIT,
                 default: default_checked,
                 is_default: default_checked,
                 type: typefromdatabase
 
               });
-
-
-
             }
           }
 
@@ -412,6 +408,9 @@ export class RulewbComponent implements OnInit {
       return;
     if (this.rule_expression_data.length > 0) {
       this.seq_count = this.rule_expression_data.length;
+      if (this.editModeSequence != ""){
+        this.seq_count = this.editModeSequence;
+      }
     } else {
       this.seq_count = 0;
     }
@@ -517,11 +516,14 @@ export class RulewbComponent implements OnInit {
   getLookupValue($event) {
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-        if (this.rule_sequence_data[i]['type'] == 1) {
+        if (this.lookupfor == 'feature_Detail_lookup' || this.lookupfor == 'ModelBom_lookup'){
           this.rule_sequence_data[i]['operand_1'] = '';
           this.rule_sequence_data[i]['operand_1_code'] = '';
           this.rule_sequence_data[i]['operand_2'] = '';
           this.rule_sequence_data[i]['operand_2_code'] = '';
+        }  
+
+        if (this.rule_sequence_data[i]['type'] == 1) {
           //   this.rule_sequence_data[i]['condition'] = '';
           if (this.rule_sequence_data[i]['condition'] != "Between") {
             this.rule_sequence_data[i]['is_operand2_disable'] = true;
@@ -533,6 +535,9 @@ export class RulewbComponent implements OnInit {
         }
       }
     }
+
+   
+
     if (this.lookupfor == 'feature_lookup') {
       this.rule_wb_data.applicable_for_feature_id = $event[0];
       this.rule_wb_data.applicable_for_feature_code = $event[1];
@@ -635,7 +640,7 @@ export class RulewbComponent implements OnInit {
               uom: data[i].UOM,
               quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
-              price_source: data[i].PriceSource,
+              price_source: parseFloat(data[i].PriceSource).toFixed(3),
               edit_price: "n",
               default: false,
               type: data[i].type
@@ -953,6 +958,7 @@ export class RulewbComponent implements OnInit {
                 }
                 else {
                   this.rule_sequence_data[i].type_value = data;
+                  this.rule_sequence_data[i].type_value_code = value; 
                 }
               });
           }

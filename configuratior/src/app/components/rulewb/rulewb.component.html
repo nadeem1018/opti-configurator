@@ -373,7 +373,7 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="quantity" title="{{language.quantity}}" filter="text" [width]="115" [minResizableWidth]="115">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm pull-right" id="quantity" name="quantity" value={{dataItem.quantity}}
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm pull-right" id="quantity"  style="text-align:right" name="quantity" value={{dataItem.quantity}}
                             title={{dataItem.quantity}} #quantity (change)="output_change_event('quantity',quantity.value,dataItem.rowindex)"
                           />
                         </ng-template>
@@ -387,7 +387,7 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="price" title="{{language.price}} ({{defaultCurrency}})" filter="text" [width]="115" [minResizableWidth]="115">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm pull-right" #price_source id="price_soure" name="price_soure"
+                          <input type="text" [disabled]="true"  style="text-align:right" class="form-control  form-control-sm pull-right" #price_source id="price_soure" name="price_soure"
                             value={{dataItem.price_source}} title={{dataItem.price_source}} (change)="output_change_event('price_soure',price_source.value,dataItem.rowindex)"
                           />
                         </ng-template>

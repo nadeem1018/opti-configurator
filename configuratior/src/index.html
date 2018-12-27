@@ -11,10 +11,22 @@
   <link rel="stylesheet" href="assets/css/new_custom.css">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+
+  <style type="text/css">
+    body.sidebar-toggled .opti_loader-module-grid-list.beforelogin{
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
   
 </head>
 <body class="sidebar-toggled">
   <app-root></app-root>
+  <!-- loader start -->
+<div class="opti_loader opti_loader-module-grid-list beforelogin">
+  <div class="opti_spinner"></div>
+</div>
+<!-- loader end --> 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
@@ -22,5 +34,12 @@
 <script src="assets/js/main.js"></script>
 <!-- <script src="assets/js/jspdf.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js" type="application/javascript"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() { // Once document will load loader will hide
+      $('.beforelogin').hide(); 
+  });
+</script>
+
 </html>
 
