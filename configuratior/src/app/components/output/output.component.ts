@@ -182,15 +182,19 @@ export class OutputComponent implements OnInit {
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
     this.doctype = this.commonData.document_type;
-    this.step1_data.document = "sales_quote";
+    // this.step1_data.document = "sales_quote";
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.SalesQuote;
     }
-    else {
+    else if (this.step1_data.document == "sales_order") {
       this.document_date = this.language.delivery_date;
       this.step1_data.document_name = this.language.SalesOrder;
     }
+    else {
+      this.step1_data.document_name = this.language.draft;
+    }
+
     this.feature_accessory_list = []
     this.step2_data.quantity = parseFloat("1");
     this._el.nativeElement.focus();
@@ -255,14 +259,21 @@ export class OutputComponent implements OnInit {
 
 
   start_new_configuration_click() {
+    this.clear_all_screen_data()
+    this.onOperationChange('');
+    $("fieldset").hide();
+    $("fieldset:first").show();
+  }
+
+  clear_all_screen_data(){
     this.final_order_status = "";
     this.final_document_number = "";
     this.final_ref_doc_entry = "";
     this.iLogID = "";
-    this.onOperationChange('');
+    this.new_item_list = [];
+    this.onclearselection()
     this.delete_all_row_data();
-    $("fieldset").hide();
-    $("fieldset:first").show();
+   
   }
 
   onOperationChange(operation_type) {
@@ -293,6 +304,7 @@ export class OutputComponent implements OnInit {
         this.new_output_config = true;
         this.step0_isNextButtonVisible = true;
         this.step1_data.document = 'draft';
+        this.step1_data.document_name = this.language.draft;
         this.isNextButtonVisible = true;
       }
 
@@ -371,6 +383,7 @@ export class OutputComponent implements OnInit {
           //Bug no. 18436..Draft status was not showing...Ashish Devade
           if (data.CustomerOutput[0].OPTM_STATUS == "D") {
             this.step1_data.document = 'draft';
+            this.step1_data.document_name = this.language.draft;
           }
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
@@ -580,6 +593,7 @@ export class OutputComponent implements OnInit {
       }
     }
     else if (this.lookupfor == 'configure_list_lookup') {
+      this.clear_all_screen_data();
       this.step1_data.selected_configuration_key = $event[0];
       this.step1_data.description = $event[1];
       this.iLogID = $event[0];
@@ -1555,6 +1569,7 @@ export class OutputComponent implements OnInit {
     this.FeatureBOMDataForSecondLevel = [];
     this.feature_total_before_discount = 0;
     this.previousquantity = parseFloat("1");
+
 
   }
 
@@ -2754,9 +2769,12 @@ export class OutputComponent implements OnInit {
       this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.SalesQuote;
     }
-    else {
+    else if (this.step1_data.document == "sales_order") {
       this.document_date = this.language.delivery_date;
-      this.step1_data.document_name = this.language.SalesOrder;
+      this.step1_data.document_name = this.language.SalesOrder; 
+    }
+    else {
+      this.step1_data.document_name = this.language.draft;
     }
   }
 
@@ -3553,22 +3571,18 @@ export class OutputComponent implements OnInit {
       data => {
         this.showLookupLoader = false;
         if (data != null) {
-          console.log('in if data');
           if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
           }
           else {
-            console.log('in else data');
             this.final_order_status = this.language.pending_status;
           }
 
           if (data.GeneratedNewItemList.length > 0 && data.GeneratedNewItemList !== undefined) {
-            console.log('in GeneratedNewItemList');
             console.log(data.GeneratedNewItemList)
             this.new_item_list = data.GeneratedNewItemList;
-            data.GeneratedNewItemList
           }
           this.stoprefreshloader();
         }
@@ -3826,13 +3840,14 @@ export class OutputComponent implements OnInit {
 
         this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
           data => {
+            this.showLookupLoader = false;
             let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
             let parentarray = this.Accessoryarray.filter(function (obj) {
               return obj['OPTM_FEATUREID'] == parentfeatureid
             });
             if (data.DataForSelectedFeatureModelItem.length > 0)
               this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
-              this.showLookupLoader = false; 
+        
           },
           error => {
             this.showLookupLoader = false; 
@@ -3841,7 +3856,7 @@ export class OutputComponent implements OnInit {
             return;
           });
       }
-      else {
+      else { 
         if (this.feature_itm_list_table.length > 0) {
           for (let iacc = 0; iacc < this.feature_itm_list_table.length; iacc++) {
             if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
@@ -3851,6 +3866,7 @@ export class OutputComponent implements OnInit {
 
           }
         }
+        this.showLookupLoader = false;
       }
     }
     this.feature_price_calculate();
