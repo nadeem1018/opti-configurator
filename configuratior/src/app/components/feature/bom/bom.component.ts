@@ -129,7 +129,7 @@ export class BomComponent implements OnInit {
                 this.isPriceDisabled = true
                 this.pricehide = true
                 this.isPropagateQtyDisable = false
-                data.FeatureDetail[i].OPTM_QUANTITY = parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
@@ -142,7 +142,7 @@ export class BomComponent implements OnInit {
                 this.isQuanityDisabled = false
                 this.isPriceDisabled = false
                 this.isPropagateQtyDisable = false
-                data.FeatureDetail[i].OPTM_QUANTITY = parseFloat(data.FeatureDetail[i].OPTM_QUANTITY).toFixed(3)
+                data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
                 this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
               }
               else {
@@ -271,7 +271,7 @@ export class BomComponent implements OnInit {
       type_value: "",
       type_value_code: "",
       display_name: "",
-      quantity: parseFloat("1").toFixed(3),
+      quantity: ("1"),
       default: first_default,
       remark: "",
       attachment: "",
@@ -439,7 +439,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isTypeDisabled = false
           this.feature_bom_table[i].hide = true
           this.feature_bom_table[i].type = 3
-          this.feature_bom_table[i].quantity = parseFloat("0").toFixed(3);
+          this.feature_bom_table[i].quantity = ("0");
           this.feature_bom_table[i].isQuanityDisabled = true
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
@@ -452,14 +452,14 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isPropagateQtyDisable = false
           if (selectedvalue == 2) {
             this.feature_bom_table[i].type = 2
-            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
+            this.feature_bom_table[i].quantity = ("1");
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = false
             this.feature_bom_table[i].pricehide = false
           }
           else {
             this.feature_bom_table[i].type = 1
-            this.feature_bom_table[i].quantity = parseFloat("1").toFixed(3);
+            this.feature_bom_table[i].quantity = ("1");
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = true
             this.feature_bom_table[i].pricehide = true
@@ -489,7 +489,7 @@ export class BomComponent implements OnInit {
 
           if (value == 0) {
             value = 1;
-            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3);
+            this.feature_bom_table[i].quantity = (value);
             this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
           }
           else {
@@ -507,10 +507,10 @@ export class BomComponent implements OnInit {
               value = 1;
               this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
             }
-            this.feature_bom_table[i].quantity = parseFloat(value).toFixed(3);
-            
+            this.feature_bom_table[i].quantity = (value);
+
           }
-          $('input[name="feature_quantity"]').eq((rowindex - 1)).val(parseFloat(value).toFixed(3));
+          $('input[name="feature_quantity"]').eq((rowindex - 1)).val((value));
         }
       }
 
@@ -697,7 +697,7 @@ export class BomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      }, 
+      },
       error => {
         this.showLookupLoader = false;
       }
@@ -758,10 +758,6 @@ export class BomComponent implements OnInit {
               if (this.feature_bom_table.length > 0) {
                 this.feature_bom_table = [];
               }
-
-              // this.header_image_data = [
-              //   "/assets/UploadFile/Image/hyundai-creta.jpg"
-              // ]
             }
             else {
               // this.feature_bom_table=data;
@@ -770,10 +766,8 @@ export class BomComponent implements OnInit {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
-                  if (data[0].PHOTO != null) {
-                    if (data[0].PHOTO != "") {
-                      this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
-                    }
+                  if (data[0].OPTM_PHOTO != null && data[0].OPTM_PHOTO != "") {
+                    this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
                   }
 
 
@@ -800,9 +794,9 @@ export class BomComponent implements OnInit {
           return;
         }
       },
-       error =>{
-         this.showLookupLoader = false;
-       }
+      error => {
+        this.showLookupLoader = false;
+      }
     )
   }
 
@@ -824,7 +818,7 @@ export class BomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      }, 
+      },
       error => {
         this.showLookupLoader = false;
       }

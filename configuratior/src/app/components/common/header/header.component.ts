@@ -18,10 +18,10 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) { }
   showHeader: boolean;
   imgPath = 'assets/images';
-  search_for = "";
-  user_profile = "";
-  preferences = "";
-  signout = "";
+  search_for = "Search for...";
+  user_profile = "User Profile";
+  preferences = "Preferences";
+  signout = "Sign-out";
 
   ngOnInit() {
 

@@ -69,7 +69,7 @@ export class RulewbComponent implements OnInit {
   public outputrowcounter: number = 0;
   public showLoader: boolean = true;
   public showLookupLoader:boolean = false;
-  
+  public editModeSequence:any = "";
   public code_disabled = "false";
   public isOutputTable: boolean = true;
 
@@ -305,7 +305,6 @@ export class RulewbComponent implements OnInit {
             for (let i = 0; i < data.RuleWorkBenchOutput.length; ++i) {
               if (data.RuleWorkBenchOutput[i].OPTM_FEATUREID != "" || data.RuleWorkBenchOutput[i].OPTM_FEATUREID != null) {
                 typefromdatabase = 1;
-
               }
               else {
                 typefromdatabase = 2;
@@ -314,8 +313,8 @@ export class RulewbComponent implements OnInit {
 
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
+              this.editModeSequence = this.seq_count;
               let current_count = (this.seq_count - 1);
-              console.log("default value - " + fetch_data.OPTM_DEFAULT.trim() + ' - - ' + (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true'));
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
               this.rule_expression_data[current_count].output_data.push({
@@ -409,6 +408,9 @@ export class RulewbComponent implements OnInit {
       return;
     if (this.rule_expression_data.length > 0) {
       this.seq_count = this.rule_expression_data.length;
+      if (this.editModeSequence != ""){
+        this.seq_count = this.editModeSequence;
+      }
     } else {
       this.seq_count = 0;
     }
