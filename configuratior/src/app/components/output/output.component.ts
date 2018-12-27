@@ -2336,11 +2336,16 @@ export class OutputComponent implements OnInit {
 
                   }
 
-               //   if (this.ModelHeaderData[iremovemodelheader].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID) {
+                  if (this.ModelHeaderData[iremovemodelheader].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID) {
                     this.ModelHeaderData.splice(iremovemodelheader, 1);
                     iremovemodelheader = iremovemodelheader - 1;
 
-              //    }
+                  }
+                  if (this.ModelHeaderData[iremovemodelheader].parentmodelid == feature_model_data.OPTM_MODELID && this.ModelHeaderData[iremovemodelheader].parentfeatureid == feature_model_data.OPTM_FEATUREID) {
+                    this.ModelHeaderData.splice(iremovemodelheader, 1);
+                    iremovemodelheader = iremovemodelheader - 1;
+
+                  }
 
                   //  }
                 }
@@ -4420,6 +4425,13 @@ export class OutputComponent implements OnInit {
         }
         if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && parentarray[0].element_type == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
+          var tempfeaturechild=this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
+          this.FeatureBOMDataForSecondLevel=this.FeatureBOMDataForSecondLevel.filter(function(obj){
+            if(obj['OPTM_FEATUREID']==tempfeaturechild){
+              obj['checked']=false
+            }
+            return obj
+          })
         }
       }
       else {
