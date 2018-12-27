@@ -1087,7 +1087,7 @@ export class OutputComponent implements OnInit {
     iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
 
 
-    this.feature_total_before_discount = isumofpropriceitem + isumofaccpriceitem
+    this.feature_total_before_discount = isumofpropriceitem //+ isumofaccpriceitem
 
     igrandtotal = iproducttotal + iacctotal
     this.feature_item_total = iproducttotal
