@@ -329,16 +329,13 @@ export class RulewbComponent implements OnInit {
                 uom: fetch_data.OPTM_UOM,
                 quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                 edit_quantity: fetch_data.OPTM_ISQTYEDIT,
-                price_source: fetch_data.OPTM_PRICESOURCE,
+                price_source: parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3),
                 edit_price: fetch_data.OPTM_ISPRICEEDIT,
                 default: default_checked,
                 is_default: default_checked,
                 type: typefromdatabase
 
               });
-
-
-
             }
           }
 
@@ -641,7 +638,7 @@ export class RulewbComponent implements OnInit {
               uom: data[i].UOM,
               quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
-              price_source: data[i].PriceSource,
+              price_source: parseFloat(data[i].PriceSource).toFixed(3),
               edit_price: "n",
               default: false,
               type: data[i].type
