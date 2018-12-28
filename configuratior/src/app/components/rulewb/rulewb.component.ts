@@ -315,27 +315,32 @@ export class RulewbComponent implements OnInit {
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
-              console.log("default value - " + fetch_data.OPTM_DEFAULT.trim() + ' - - ' + (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true'));
+             
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
-              this.rule_expression_data[current_count].output_data.push({
-                rowindex: i,
-                check_child: checked_child,
-                seq_number: this.seq_count,
-                feature: fetch_data.OPTM_FEATUREID.toString(),
-                featureCode: fetch_data.OPTM_FEATURECODE,
-                item: fetch_data.OPTM_ITEMKEY,
-                value: fetch_data.OPTM_VALUE,
-                uom: fetch_data.OPTM_UOM,
-                quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
-                edit_quantity: fetch_data.OPTM_ISQTYEDIT,
-                price_source: parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3),
-                edit_price: fetch_data.OPTM_ISPRICEEDIT,
-                default: default_checked,
-                is_default: default_checked,
-                type: typefromdatabase
+            
+              if (this.rule_expression_data[current_count] != undefined) {
+                this.rule_expression_data[current_count].output_data.push({
+                  rowindex: i,
+                  check_child: checked_child,
+                  seq_number: this.seq_count,
+                  feature: fetch_data.OPTM_FEATUREID.toString(),
+                  featureCode: fetch_data.OPTM_FEATURECODE,
+                  item: fetch_data.OPTM_ITEMKEY,
+                  value: fetch_data.OPTM_VALUE,
+                  uom: fetch_data.OPTM_UOM,
+                  quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
+                  edit_quantity: fetch_data.OPTM_ISQTYEDIT,
+                  price_source: parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3),
+                  edit_price: fetch_data.OPTM_ISPRICEEDIT,
+                  default: default_checked,
+                  is_default: default_checked,
+                  type: typefromdatabase
 
-              });
+                });
+              }
+             
+            
             }
           }
 
@@ -408,7 +413,12 @@ export class RulewbComponent implements OnInit {
     if (this.validation("AddRow") == false)
       return;
     if (this.rule_expression_data.length > 0) {
-      this.seq_count = this.rule_expression_data.length;
+      var seq_array = [];
+      this.rule_expression_data.filter(function(object){
+       seq_array.push(object.seq_count);
+       return object.seq_count;
+      })
+      this.seq_count = Math.max.apply(null, seq_array);
     } else {
       this.seq_count = 0;
     }
@@ -1249,8 +1259,14 @@ export class RulewbComponent implements OnInit {
         else if (name == "edit_price") {
           this.rule_feature_data[i].edit_price = value
         }
-        else {
+        else if (name == "default" ) {
+          this.rule_feature_data.forEach(function(data){
+            data.default = false;  
+            data.is_default = false;  
+          });
           this.rule_feature_data[i].default = value
+          this.rule_feature_data[i].is_default = value
+          console.log(this.rule_feature_data);
         }
       }
     }

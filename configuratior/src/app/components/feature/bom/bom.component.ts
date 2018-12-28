@@ -768,6 +768,7 @@ export class BomComponent implements OnInit {
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
                   if (data[0].OPTM_PHOTO != null && data[0].OPTM_PHOTO != "") {
                     this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
+                    this.feature_bom_table[i].attachment = data[0].OPTM_PHOTO;
                   }
 
 

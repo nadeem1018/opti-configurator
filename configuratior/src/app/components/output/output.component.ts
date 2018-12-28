@@ -29,6 +29,7 @@ export class OutputComponent implements OnInit {
   public common_output_data: any = [];
   public feature_accessory_list: any[];
   public step1_data: any = [];
+  public stepp_data: any = [];
   public step2_data: any = [];
   public step3_data: any = [];
   public step4_data: any = [];
@@ -192,6 +193,7 @@ export class OutputComponent implements OnInit {
       this.step1_data.document_name = this.language.SalesOrder;
     }
     else {
+      this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.draft;
     }
 
@@ -246,6 +248,7 @@ export class OutputComponent implements OnInit {
     /* setTimeout(() => {
       this.tree_view_expand_collapse()
     }, 2000); */
+
   }
 
   enlage_image(image) {
@@ -377,8 +380,10 @@ export class OutputComponent implements OnInit {
         if (data.CustomerOutput.length > 0) {
           if (data.CustomerOutput[0].OPTM_DOCTYPE = "23") {
             this.step1_data.document = "sales_quote"
+            this.step1_data.document_name = this.language.SalesQuote;
           } else {
             this.step1_data.document = "sales_order"
+            this.step1_data.document_name = this.language.SalesOrder;
           }
           //Bug no. 18436..Draft status was not showing...Ashish Devade
           if (data.CustomerOutput[0].OPTM_STATUS == "D") {
@@ -2774,6 +2779,7 @@ export class OutputComponent implements OnInit {
       this.step1_data.document_name = this.language.SalesOrder; 
     }
     else {
+      this.document_date = this.language.valid_date;
       this.step1_data.document_name = this.language.draft;
     }
   }
@@ -3157,8 +3163,8 @@ export class OutputComponent implements OnInit {
         "OPTM_LEVEL": 0,
         "OPTM_QUANTITY": parseFloat(this.step2_data.quantity).toFixed(3),
         "OPTM_PRICELIST": 0,
-        "OPTM_UNITPRICE": 0,
-        "OPTM_TOTALPRICE": 0,
+        "OPTM_UNITPRICE": parseFloat("0").toFixed(3),
+        "OPTM_TOTALPRICE": parseFloat("0").toFixed(3),
         "OPTM_DISCPERCENT": 0,
         "OPTM_CREATEDBY": this.common_output_data.username,
         "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3218,6 +3224,8 @@ export class OutputComponent implements OnInit {
           }
 
         }
+        var formatedTotalPrice: any = this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice
+        formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
         this.step2_final_dataset_to_save.push({
           "OPTM_OUTPUTID": "",
@@ -3233,8 +3241,8 @@ export class OutputComponent implements OnInit {
           "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
           "OPTM_QUANTITY": parseFloat(this.feature_itm_list_table[ifeature].quantity).toFixed(3),
           "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
-          "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
-          "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
+          "OPTM_UNITPRICE": parseFloat(this.feature_itm_list_table[ifeature].Actualprice).toFixed(3),
+          "OPTM_TOTALPRICE": formatedTotalPrice,
           "OPTM_DISCPERCENT": 0,
           "OPTM_CREATEDBY": this.common_output_data.username,
           "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3277,6 +3285,8 @@ export class OutputComponent implements OnInit {
               return obj['OPTM_MODELID'] == featureitemlistfilterdata[0].ModelId && obj['OPTM_TYPE'] == 2 &&
                 obj['OPTM_ITEMKEY'] == featureitemlistfilterdata[0].Item
             })
+            var formatedTotalPrice: any = featureitemlistfilterdata[0].quantity * featureitemlistfilterdata[0].Actualprice
+            formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
             if (checkmodelitem.length > 0) {
               this.step2_final_dataset_to_save.push({
@@ -3293,8 +3303,8 @@ export class OutputComponent implements OnInit {
                 "OPTM_LEVEL": featureitemlistfilterdata[0].OPTM_LEVEL,
                 "OPTM_QUANTITY": parseFloat(featureitemlistfilterdata[0].quantity).toFixed(3),
                 "OPTM_PRICELIST": Number(featureitemlistfilterdata[0].price),
-                "OPTM_UNITPRICE": Number(featureitemlistfilterdata[0].Actualprice),
-                "OPTM_TOTALPRICE": Number(featureitemlistfilterdata[0].quantity * featureitemlistfilterdata[0].Actualprice),
+                "OPTM_UNITPRICE": parseFloat(featureitemlistfilterdata[0].Actualprice).toFixed(3),
+                "OPTM_TOTALPRICE": formatedTotalPrice,
                 "OPTM_DISCPERCENT": 0,
                 "OPTM_CREATEDBY": this.common_output_data.username,
                 "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3386,6 +3396,8 @@ export class OutputComponent implements OnInit {
               itemtype = 2;
             }
 
+            var formatedTotalPrice: any = this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice
+            formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
             // if (ifeatureData.length > 0) {
             this.step2_final_dataset_to_save.push({
               "OPTM_OUTPUTID": "",
@@ -3401,8 +3413,8 @@ export class OutputComponent implements OnInit {
               "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
               "OPTM_QUANTITY": parseFloat(this.feature_itm_list_table[ifeature].quantity).toFixed(3),
               "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
-              "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
-              "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
+              "OPTM_UNITPRICE": parseFloat(this.feature_itm_list_table[ifeature].Actualprice).toFixed(3),
+              "OPTM_TOTALPRICE": formatedTotalPrice,
               "OPTM_DISCPERCENT": 0,
               "OPTM_CREATEDBY": this.common_output_data.username,
               "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3427,6 +3439,8 @@ export class OutputComponent implements OnInit {
             else {
               itemtype = 2;
             }
+            var formatedTotalPrice: any = this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice
+            formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
             // if (ifeatureData.length > 0) {
             this.step2_final_dataset_to_save.push({
@@ -3443,8 +3457,8 @@ export class OutputComponent implements OnInit {
               "OPTM_LEVEL": this.feature_itm_list_table[ifeature].OPTM_LEVEL,
               "OPTM_QUANTITY": parseFloat(this.feature_itm_list_table[ifeature].quantity).toFixed(3),
               "OPTM_PRICELIST": Number(this.feature_itm_list_table[ifeature].price),
-              "OPTM_UNITPRICE": Number(this.feature_itm_list_table[ifeature].Actualprice),
-              "OPTM_TOTALPRICE": Number(this.feature_itm_list_table[ifeature].quantity * this.feature_itm_list_table[ifeature].Actualprice),
+              "OPTM_UNITPRICE": parseFloat(this.feature_itm_list_table[ifeature].Actualprice).toFixed(3),
+              "OPTM_TOTALPRICE": formatedTotalPrice,
               "OPTM_DISCPERCENT": 0,
               "OPTM_CREATEDBY": this.common_output_data.username,
               "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -4900,8 +4914,11 @@ export class OutputComponent implements OnInit {
 
               //Set Default Sales Person
               this.salesemployee = data.DefaultSalesPerson[0].SlpName;
-
-
+              var obj = this;
+              this.sales_employee = this.sales_employee.filter(function (row) {
+                (obj.salesemployee == row.SlpName) ? row.selected = true : row.selected = false;
+                return row;
+              });
               this.step1_data.sales_employee = this.salesemployee;
               this.showLookupLoader = false; 
             }
