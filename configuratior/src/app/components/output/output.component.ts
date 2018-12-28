@@ -1780,6 +1780,12 @@ export class OutputComponent implements OnInit {
       parentarray = this.ModelHeaderData.filter(function (obj) {
         return obj['OPTM_FEATUREID'] == parentfeatureid
       });
+      if(parentarray.length>0){
+        if(parentarray[0].parentmodelid!=this.step2_data.model_id){
+          parentarray[0].OPTM_MODELID=parentarray[0].parentmodelid
+        }
+      }
+      
     }
 
     if (parentarray[0].OPTM_MAXSELECTABLE > 1 && value == true) {
@@ -2302,9 +2308,13 @@ export class OutputComponent implements OnInit {
               }
               else if (type == 2) {
                 if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
-                  propagateqtychecked = "Y"
-                  parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
-                  propagateqty = parentarray[0].OPTM_QUANTITY
+                  if(data.DataForSelectedFeatureModelItem[0].OPTM_PROPOGATEQTY=="Y"){
+                    propagateqtychecked = "Y"
+                    parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
+                    propagateqty = parentarray[0].OPTM_QUANTITY * data.DataForSelectedFeatureModelItem[0].OPTM_QUANTITY 
+                   
+                  }
+                
                 }
                 this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO);
                 this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
