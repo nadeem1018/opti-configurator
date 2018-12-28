@@ -1880,14 +1880,14 @@ export class OutputComponent implements OnInit {
                       imodelheader = imodelheader - 1;
                       this.removemodelheaderdatatable(removemodelheaderid)
                     }
-                    else {
-                      for (let ifeatureitemsgrid = 0; ifeatureitemsgrid < this.feature_itm_list_table.length; ifeatureitemsgrid++) {
-                        if (this.feature_itm_list_table[ifeatureitemsgrid].FeatureId == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
-                          this.feature_itm_list_table.splice(ifeatureitemsgrid, 1);
-                          ifeatureitemsgrid = ifeatureitemsgrid - 1;
-                        }
-                      }
-                    }
+                    // else {
+                    //   for (let ifeatureitemsgrid = 0; ifeatureitemsgrid < this.feature_itm_list_table.length; ifeatureitemsgrid++) {
+                    //     if (this.feature_itm_list_table[ifeatureitemsgrid].FeatureId == this.ModelHeaderData[imodelheader].OPTM_FEATUREID) {
+                    //       this.feature_itm_list_table.splice(ifeatureitemsgrid, 1);
+                    //       ifeatureitemsgrid = ifeatureitemsgrid - 1;
+                    //     }
+                    //   }
+                    // }
                   }
                   else if (parentmodelid != "" && this.ModelHeaderData[imodelheader].parentmodelid != undefined) {
                     if (this.ModelHeaderData[imodelheader].parentmodelid == parentmodelid) {
