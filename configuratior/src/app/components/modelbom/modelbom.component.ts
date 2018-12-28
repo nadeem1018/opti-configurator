@@ -548,10 +548,22 @@ export class ModelbomComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup"){
+      console.log("in here - selection ");
       for (let j = 0; j < this.modelbom_data.length; j++) {
         var psTypeCode = this.modelbom_data[j].type_value_code;
+var result = false;
         if (psTypeCode != undefined && psTypeCode != "") {
-          if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
+          if (this.lookupfor == "Item_Detail_lookup"){
+            if (psTypeCode.toUpperCase() == $event[1].toUpperCase() || psTypeCode.toUpperCase() == $event[0].toUpperCase()) {
+              result = true;
+            }
+          } else {
+            if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
+              result = true;
+            }
+          }
+
+          if (result == true) {
             this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
            
             $(".row_type_value_id").eq(this.currentrowindex - 1).val("");
@@ -861,9 +873,6 @@ export class ModelbomComponent implements OnInit {
         else {
           this.modelbom_data[i].propagate_qty = false
         }
-
-
-
       }
     }
 

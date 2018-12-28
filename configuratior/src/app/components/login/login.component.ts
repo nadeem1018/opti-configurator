@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
   public FailedToReadCurrency = "There was some error while fetching currency details";
   public onConnectSuccess: boolean = false;
   public page_title = this.commonData.project_name;
-  public showLoginLoader:boolean = true;
+  public showLoginLoader: boolean = true;
   common_params = new CommonData();
   record_per_page: any = this.common_params.default_count;
   constructor(
@@ -77,8 +77,8 @@ export class LoginComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(function () {
       console.log(new Date());
-        this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-        this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+      this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
       if (this.language == undefined && this.language != "" && this.language != 0) {
         if (this.config_data != undefined && this.config_data != "") {
           if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
@@ -157,7 +157,7 @@ export class LoginComponent implements OnInit {
             this.showLoginLoader = false;
             this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
           }
-        }, error=> {
+        }, error => {
           this.showLoginLoader = false;
         })
     }
@@ -177,7 +177,7 @@ export class LoginComponent implements OnInit {
         this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
         return;
       }
-      
+
       sessionStorage.setItem('selectedComp', this.selecetedComp.OPTM_COMPID);
       sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
       sessionStorage.setItem('defaultRecords', this.record_per_page);
@@ -195,32 +195,36 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  getLisenceData(){
-    this.showLoginLoader = true;
-    if (this.selecetedComp == undefined && this.selecetedComp == "") {
+  getLisenceData() {
+    console.log(" this.selecetedComp ");
+    console.log(this.selecetedComp);
+    if (this.selecetedComp == undefined || this.selecetedComp == "") {
       this.toastr.warning('', this.CompanyRequired, this.commonData.toast_config);
       return;
-    }
-    this.auth.getLicenseData(this.selecetedComp.OPTM_COMPID, this.loginCredentials).subscribe(
-      data => {
-        if (data != undefined) {
-          this.licenseData = data;
-          this.handleLicenseDataSuccessResponse();
-        } else {
-         //  alert("Lisence Failed");
-          this.showLoginLoader = false;
-         this.toastr.error('', this.license_failed, this.commonData.toast_config);
-        }
-        // this.licenseData = data;
+    } else {
 
-      },
-      error => {
-        // this.showLoader = false;
-        this.showLoginLoader = false;
-       //  alert("license Failed");
-       this.toastr.error('', this.license_failed, this.commonData.toast_config);
-      }
-    );  
+      this.showLoginLoader = true;
+      this.auth.getLicenseData(this.selecetedComp.OPTM_COMPID, this.loginCredentials).subscribe(
+        data => {
+          if (data != undefined) {
+            this.licenseData = data;
+            this.handleLicenseDataSuccessResponse();
+          } else {
+            //  alert("Lisence Failed");
+            this.showLoginLoader = false;
+            this.toastr.error('', this.license_failed, this.commonData.toast_config);
+          }
+          // this.licenseData = data;
+
+        },
+        error => {
+          // this.showLoader = false;
+          this.showLoginLoader = false;
+          //  alert("license Failed");
+          this.toastr.error('', this.license_failed, this.commonData.toast_config);
+        }
+      );
+    }
   }
 
 
@@ -233,11 +237,11 @@ export class LoginComponent implements OnInit {
 
       } else {
         this.showLoginLoader = false;
-         this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
+        this.toastr.error('', this.licenseData[0].ErrMessage, this.commonData.toast_config);
       }
     } else {
       this.showLoginLoader = false;
-       this.toastr.error('', this.licenseData[0].ErrMessage,  this.commonData.toast_config);
+      this.toastr.error('', this.licenseData[0].ErrMessage, this.commonData.toast_config);
     }
   }
 
@@ -265,12 +269,12 @@ export class LoginComponent implements OnInit {
           this.showLoginLoader = false;
         } else {
           this.showLoginLoader = false;
-          this.toastr.error('',this.default_server_error_msg, this.commonData.toast_config);
+          this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
           return;
         }
       }, error => {
         this.showLoginLoader = false;
-        this.toastr.error('',this.default_server_error_msg, this.commonData.toast_config);
+        this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
         return;
       }
     )
@@ -316,7 +320,7 @@ export class LoginComponent implements OnInit {
     this.showCompDropDown = false;
     this.loginCredentials = [];
     this.loginCredentials.length = 0;
-    this.selecetedComp = []; 
+    this.selecetedComp = [];
     this.connectBtnText = (this.language.connect != undefined) ? this.language.connect : "Connect";
   }
 
@@ -330,7 +334,7 @@ export class LoginComponent implements OnInit {
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
-            if (data[0].HomeCurrency != "" && data[0].HomeCurrency != null && data[0].HomeCurrency != undefined){
+            if (data[0].HomeCurrency != "" && data[0].HomeCurrency != null && data[0].HomeCurrency != undefined) {
               sessionStorage.setItem('defaultCurrency', data[0].HomeCurrency);
             }
           }
