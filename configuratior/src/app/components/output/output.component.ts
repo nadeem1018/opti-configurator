@@ -2386,6 +2386,7 @@ export class OutputComponent implements OnInit {
             }
             this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
+            this.feature_price_calculate();
             this.showLookupLoader = false; 
           }
         }//end data null
