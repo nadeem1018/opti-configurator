@@ -870,3 +870,12 @@ only screen and ( min-resolution: 2dppx) {
 .ecselect{
     background: #333;
 }
+
+.opti_detai-table{
+    border: 1px solid #dee2e6;
+    tr {
+        th, td{
+            padding: 3px !important; 
+        }
+    }
+}

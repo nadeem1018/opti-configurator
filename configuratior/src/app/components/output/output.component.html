@@ -1117,6 +1117,43 @@
                   </div>
 
                 </div>
+
+
+                <!-- new table with detail -->
+                <kendo-grid
+                  [data]="data"
+                  [height]="400"
+                  selectable="true"
+                  >
+                  <kendo-grid-column field="ProductID"></kendo-grid-column>
+                  <kendo-grid-column field="ProductName"></kendo-grid-column>
+                  <kendo-grid-column field="UnitPrice"></kendo-grid-column>
+                  <ng-template kendoGridDetailTemplate let-dataItem>
+                    <div *ngIf="dataItem.Category">
+                      <!-- <header>{{dataItem.Category?.CategoryName}}</header>
+                      <span>{{dataItem.Category?.Description}}</span> -->
+                      <table class="opti_detai-table">
+                        <thead>
+                            <tr>
+                              <th>Id</th>
+                              <th>Name</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{dataItem.Category?.CategoryID}}</td>
+                            <td>{{dataItem.Category?.CategoryName}}</td>
+                            <td>{{dataItem.Category?.Description}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-template>
+                </kendo-grid>
+                <!-- new table end with detail -->
+
+
                 <div class="final_item_discount_table">
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
