@@ -154,7 +154,8 @@
                 <div class="lookup_data" *ngIf="LookupDataLoaded">
                     <div class="row image_data">
                         <div class="col-lg-8" style=" margin: 0 auto; ">
-                            <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')" aria-label="Close" style="position: relative;top: 10px;left: 12px;">
+                            <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('enlarge_image_modal')"
+                                aria-label="Close" style="position: relative;top: 10px;left: 12px;">
                                 <span aria-hidden="true">
                                     <i class="fa fa-window-close"></i>
                                 </span>
@@ -334,7 +335,7 @@
                                         <div class="media-body">
                                             <ul class="ml-2 px-0 list-unstyled">
                                                 <li class="text-bold-800">{{company_name}}</li>
-                                               <li>{{company_address}}</li>
+                                                <li>{{company_address}}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -487,28 +488,28 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let row of print_item_list_array"  [ngClass]="{'highlight_fg_row' :row.isFG}">
-                                                     
-                                                        <td>
-                                                            {{row['sl_no']}}
-                                                        </td>
-                                                        <td>
-                                                            {{row['item']}}
-                                                        </td>
-                                                        <td>
-                                                            {{row['item_desc']}}
-                                                        </td>
-    
-                                                        <td class="text-right">
-                                                            {{row['quantity']}}
-                                                        </td>
-                                                        <td class="text-right">
-                                                            {{row['price']}}
-                                                        </td>
-                                                        <td class="text-right">
-                                                            {{row['price_ext']}}
-                                                        </td>
-                                                    </tr>
+                                                <tr *ngFor="let row of print_item_list_array" [ngClass]="{'highlight_fg_row' :row.isFG}">
+
+                                                    <td>
+                                                        {{row['sl_no']}}
+                                                    </td>
+                                                    <td>
+                                                        {{row['item']}}
+                                                    </td>
+                                                    <td>
+                                                        {{row['item_desc']}}
+                                                    </td>
+
+                                                    <td class="text-right">
+                                                        {{row['quantity']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{row['price']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{row['price_ext']}}
+                                                    </td>
+                                                </tr>
 
                                             </tbody>
                                         </table>
@@ -523,7 +524,22 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-bold-800">
-                                                            <b class="">{{this.language.total_before_discount}} ({{defaultCurrency}}) </b>
+                                                            <b class="">{{language.product_total}}
+                                                                ({{defaultCurrency}})</b>
+                                                        </td>
+                                                        <td class="text-right">{{product_grand_details.product_total}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                            <td class="text-bold-800">
+                                                                <b class="">{{language.accessories_total}}
+                                                                    ({{defaultCurrency}})</b>
+                                                            </td>
+                                                            <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
+                                                        </tr>
+                                                    <tr>
+                                                        <td class="text-bold-800">
+                                                            <b class="">{{this.language.subtotal}}
+                                                                ({{defaultCurrency}}) </b>
                                                         </td>
                                                         <td class="text-right">{{product_grand_details.total_before_discount}}</td>
                                                     </tr>
@@ -533,24 +549,14 @@
                                                         </td>
                                                         <td class="text-right">{{product_grand_details.product_discount}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="text-bold-800">
-                                                            <b class="">{{language.product_total}} ({{defaultCurrency}})</b>
-                                                        </td>
-                                                        <td class="text-right">{{product_grand_details.product_total}}</td>
-                                                    </tr>
+
                                                     <tr>
                                                         <td class="text-bold-800">
                                                             <b class="">{{language.accessories_discount}}</b>
                                                         </td>
                                                         <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="text-bold-800">
-                                                            <b class="">{{language.accessories_total}} ({{defaultCurrency}})</b>
-                                                        </td>
-                                                        <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
-                                                    </tr>
+                                                    
                                                     <tr class="bg-grey bg-lighten-4">
                                                         <td class="text-bold-800">
                                                             <b class="">{{language.grand_total}} ({{defaultCurrency}})</b>
@@ -660,7 +666,7 @@
                                     {{language.quantity}}
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-row>
-                                    <div  style="text-align:right">{{row.OPTM_QUANTITY}}</div>
+                                    <div style="text-align:right">{{row.OPTM_QUANTITY}}</div>
                                 </ng-template>
                             </kendo-grid-column>
                             <kendo-grid-column field="edit_quantity" title="" template="" [width]="120"
@@ -677,7 +683,7 @@
                                     {{language.price}} ({{defaultCurrency}})
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-row>
-                                    <div  style="text-align:right">{{row.OPTM_PRICESOURCE | toFixed:'3' }}</div>
+                                    <div style="text-align:right">{{row.OPTM_PRICESOURCE | toFixed:'3' }}</div>
                                 </ng-template>
                             </kendo-grid-column>
                             <kendo-grid-column field="edit_price" title="" template="" [width]="120"
