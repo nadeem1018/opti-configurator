@@ -3634,6 +3634,9 @@ export class OutputComponent implements OnInit {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
+          } else if (data.FinalStatus[0].OPTM_STATUS == "E" || data.FinalStatus[0].OPTM_STATUS == "e") {
+            this.final_order_status = this.language.error_status;
+            this.toastr.error('', this.language.error_occured + ': ' +  data.FinalStatus[0].OPTM_ERRDESC, this.commonData.toast_config);
           }
           else {
             this.final_order_status = this.language.pending_status;

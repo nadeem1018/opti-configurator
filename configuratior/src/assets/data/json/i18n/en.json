@@ -342,6 +342,8 @@
     "refresh": "Refresh",
     "process_status": "Processed",
     "pending_status": "Pending",
+    "error_status" : "Error",
+    "error_occured":"Error Occurred",
     "expand_this_branch": "Expand this branch",
     "collapse_this_branch": "Collapse this branch",
     "DuplicateId": "Duplicate ID",
