@@ -2,7 +2,7 @@
 	"company_name":"Optipro ERP",
 	"app_title":"OptiPro Configurator",
 	"locale":"en",
-	"service_url":"http://localhost:9633/",
+	"service_url":"http://172.16.6.140/optiproconfigurator/",
 	"admin_db_name":"OPTIPROADMIN",
 	"product_code":"CNF",
 	"system_version":"1.9",

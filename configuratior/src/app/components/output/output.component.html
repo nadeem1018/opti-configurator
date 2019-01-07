@@ -457,9 +457,16 @@
 
                   </div>
                 </div>
+                <!-- <button (click)="toggleAccordion('true');">Show</button><button (click)="toggleAccordion('false');">Hide</button> -->
                 <hr>
+
+                <div *ngIf="ModelHeaderData.length > 0">
+                    <i id="showAccordion" class="fa fa-expand" aria-hidden="true" title="Expand"></i>  <i id="hideAccordion" class="fa fa-compress ecselect" aria-hidden="true" title="Collapse"></i>
+                </div>
+
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist"
+                  <!-- <button id="showAccordion">Show</button><button id="hideAccordion">Hide</button> -->
+                  <div  class="panel-group opti_optiLeftTopAccordion" id="step_default_{{step2_data.model_code}}" role="tablist"
                     aria-multiselectable="true">
                     <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
                       <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">

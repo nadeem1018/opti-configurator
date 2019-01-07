@@ -25,6 +25,18 @@ function calculate_progress(progress_block) {
 (function($) {
   "use strict"; // Start of use strict
 
+  $(document).on("click", "#showAccordion" , function(e){
+    $(".fa-compress").removeClass("ecselect");
+    $(".fa-expand").addClass("ecselect");
+    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").removeClass('collapse');
+  });
+
+  $(document).on("click", "#hideAccordion" , function(e){
+    $(".fa-compress").addClass("ecselect");
+    $(".fa-expand").removeClass("ecselect");
+    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").addClass('collapse');
+  });
+
   // Toggle the side navigation
   $(document).on("click","#sidebarToggle", function(e) {
     e.preventDefault();
