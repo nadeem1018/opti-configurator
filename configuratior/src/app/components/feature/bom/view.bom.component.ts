@@ -18,6 +18,10 @@ export class ViewFeatureBOMComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
 
+    pageSizeNumber:number = 5;
+    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
+    public selectedValue: string = "5";
+
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     language = JSON.parse(sessionStorage.getItem('current_lang'));
