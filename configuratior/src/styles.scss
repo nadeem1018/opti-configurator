@@ -474,3 +474,32 @@ ul.parent_ul div:first-child li::after {
 ul.parent_ul div:first-child li treeview li::after {
     border-top: 1px solid #fff;
 }
+
+.opti_grid-table-outer{
+    position: relative;
+    .opti_pagelimit-container{
+        position: absolute;
+        bottom: 4px;
+        left: 5px;
+        z-index: 1;
+        width: 85px;
+        .k-dropdown-wrap{
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+    }
+    kendo-dropdownlist{
+        border: 1px solid #c7c7c7;
+    }
+    kendo-pager-prev-buttons{
+        margin-left: 50px;
+    }
+    .k-dropdown .k-dropdown-wrap .k-select{
+        width: 15px;
+    }
+    .k-dropdown-wrap .k-input{
+        padding-left: 2px;
+        padding-right: 2px;   
+    }
+}
