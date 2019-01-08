@@ -457,9 +457,16 @@
 
                   </div>
                 </div>
+                <!-- <button (click)="toggleAccordion('true');">Show</button><button (click)="toggleAccordion('false');">Hide</button> -->
                 <hr>
+
+                <div *ngIf="ModelHeaderData.length > 0">
+                    <i id="showAccordion" class="fa fa-expand" aria-hidden="true" title="Expand"></i>  <i id="hideAccordion" class="fa fa-compress ecselect" aria-hidden="true" title="Collapse"></i>
+                </div>
+
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
-                  <div class="panel-group" id="step_default_{{step2_data.model_code}}" role="tablist"
+                  <!-- <button id="showAccordion">Show</button><button id="hideAccordion">Hide</button> -->
+                  <div  class="panel-group opti_optiLeftTopAccordion" id="step_default_{{step2_data.model_code}}" role="tablist"
                     aria-multiselectable="true">
                     <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
                       <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
@@ -824,10 +831,21 @@
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
 
-                          
                             <tr>
                               <td width="70%">
-                                {{this.language.total_before_discount}} ({{defaultCurrency}})
+                                {{this.language.product_total}} ({{defaultCurrency}})
+                              </td>
+                              <td width="30%" class="text-right">{{this.feature_item_total | toFixed:'3'}}</td>
+                            </tr>
+                            <tr>
+                              <td width="70%">
+                                {{this.language.accessories_total}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
+                            </tr>
+                            <tr>
+                              <td width="70%">
+                                {{this.language.subtotal}} ({{defaultCurrency}})
                               </td>
                               <td class="text-right" width="30%">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                             </tr>
@@ -841,15 +859,6 @@
                                   [(ngModel)]="this.feature_discount_percent" />
                               </td>
                             </tr>
-
-
-                          <tr>
-                            <td width="70%">
-                              {{this.language.product_total}} ({{defaultCurrency}})
-                            </td>
-                            <td width="30%" class="text-right">{{this.feature_item_total | toFixed:'3'}}</td>
-                          </tr>
-
                           <tr>
                             <td width="70%">
                               {{this.language.accessories_discount}}
@@ -869,12 +878,7 @@
                               </td>
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
-                          <tr>
-                            <td width="70%">
-                              {{this.language.accessories_total}} ({{defaultCurrency}})
-                            </td>
-                            <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
-                          </tr>
+                          
 
                           <tr >
                             <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
@@ -1119,16 +1123,64 @@
                   </div>
 
                 </div>
+
+
+                <!-- new table with detail -->
+                <kendo-grid
+                  [data]="data"
+                  [height]="400"
+                  selectable="true"
+                  >
+                  <kendo-grid-column field="ProductID"></kendo-grid-column>
+                  <kendo-grid-column field="ProductName"></kendo-grid-column>
+                  <kendo-grid-column field="UnitPrice"></kendo-grid-column>
+                  <ng-template kendoGridDetailTemplate let-dataItem>
+                    <div *ngIf="dataItem.Category">
+                      <!-- <header>{{dataItem.Category?.CategoryName}}</header>
+                      <span>{{dataItem.Category?.Description}}</span> -->
+                      <table class="opti_detai-table">
+                        <thead>
+                            <tr>
+                              <th>Id</th>
+                              <th>Name</th>
+                              <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{dataItem.Category?.CategoryID}}</td>
+                            <td>{{dataItem.Category?.CategoryName}}</td>
+                            <td>{{dataItem.Category?.Description}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-template>
+                </kendo-grid>
+                <!-- new table end with detail -->
+
+
                 <div class="final_item_discount_table">
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
                     
                       <tbody>
                        
-
                         <tr>
                           <td width="70%">
-                            {{this.language.total_before_discount}} ({{defaultCurrency}})
+                            {{this.language.product_total}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right" width="30%">{{this.feature_item_total | toFixed:'3'}}</td>
+                        </tr>
+                        <tr>
+                          <td width="70%">
+                            {{this.language.accessories_total}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
+                        </tr>
+                        <tr>
+                          <td width="70%">
+                            {{this.language.subtotal}} ({{defaultCurrency}})
                           </td>
                           <td class="text-right" width="30%">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                         </tr>
@@ -1137,14 +1189,6 @@
                           <td width="30%" class="text-right">
                             {{this.feature_discount_percent}}
                           </td>
-                        </tr>
-
-
-                        <tr>
-                          <td width="70%">
-                            {{this.language.product_total}} ({{defaultCurrency}})
-                          </td>
-                          <td class="text-right" width="30%">{{this.feature_item_total | toFixed:'3'}}</td>
                         </tr>
                         <tr>
                           <td width="70%">
@@ -1160,12 +1204,7 @@
                           </td>
                           <td>{{this.acc_item_tax}}</td>
                         </tr> -->
-                        <tr>
-                          <td width="70%">
-                            {{this.language.accessories_total}} ({{defaultCurrency}})
-                          </td>
-                          <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
-                        </tr>
+                        
                         <tr>
                           <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
                           <td class="text-right" width="70%">{{this.acc_grand_total | toFixed:'3'}}</td>
@@ -1500,9 +1539,21 @@
                       <div class="col-md-4 pull-right">
                         <table class="table table-bordered table-sm">
                           <thead class="" style=" font-size: 14px; ">
+                              <tr>
+                                  <td>
+                                    {{this.language.product_total}} ({{defaultCurrency}})
+                                  </td>
+                                  <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      {{this.language.accessories_total}} ({{defaultCurrency}})
+                                    </td>
+                                    <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
+                                  </tr>
                             <tr>
                               <td>
-                                {{this.language.total_before_discount}} ({{defaultCurrency}})
+                                {{this.language.subtotal}} ({{defaultCurrency}})
                               </td>
                               <td class="text-right mr-3">{{this.feature_total_before_discount | toFixed:'3'}}</td>
                             </tr>
@@ -1520,12 +1571,7 @@
                               </td>
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
-                            <tr>
-                              <td>
-                                {{this.language.product_total}} ({{defaultCurrency}})
-                              </td>
-                              <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
-                            </tr>
+                            
                             <tr>
                               <td>
                                 {{this.language.accessories_discount}}
@@ -1540,12 +1586,7 @@
                               </td>
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
-                            <tr>
-                              <td>
-                                {{this.language.accessories_total}} ({{defaultCurrency}})
-                              </td>
-                              <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
-                            </tr>
+                            
                           </tbody>
                           <tfoot>
                             <tr style=" font-size: 14px; ">
