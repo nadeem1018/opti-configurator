@@ -2305,6 +2305,10 @@ export class OutputComponent implements OnInit {
     this.ModelBOMDataForSecondLevel = [];
   }
 
+  onAddedModelChange(model_row_index){
+
+  }
+
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){

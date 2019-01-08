@@ -910,7 +910,7 @@
                   style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" [(ngModel)]="step2_selected_model" (change)="onAddedModelChange(step2_model_ref.value)"
                   #step2_model_ref>
                   <option value=""  >{{language.select_model_on_config}}</option>
-                 <!--  <option *ngFor="let model_data as this.step3_data_final" [value]="model_data.rowIndex" >{{model_data.item}}</option> -->
+                  <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" >{{model_data.item}}</option>
                    
                 </select>
 
