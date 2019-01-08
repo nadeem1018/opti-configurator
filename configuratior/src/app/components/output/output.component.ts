@@ -48,6 +48,8 @@ export class OutputComponent implements OnInit {
   public currentDate = new Date();
   public submit_date;
   public showLookupLoader: boolean = false;
+  public step2_selected_model:any = '';
+  public step2_selected_model_id : any = '';
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -1574,7 +1576,8 @@ export class OutputComponent implements OnInit {
     this.FeatureBOMDataForSecondLevel = [];
     this.feature_total_before_discount = 0;
     this.previousquantity = parseFloat("1");
-
+    this.step2_selected_model = "";
+    this.step2_selected_model_id = "";
 
   }
 
@@ -2831,7 +2834,7 @@ export class OutputComponent implements OnInit {
 
   onFinishPress(screen_name, button_press) {
     if (button_press == 'finishPress') {
-      this.onValidateNextPress();
+      this.onValidateNextPress(true, "");
     }
     this.showLookupLoader = true;
     let final_dataset_to_save: any = {};
@@ -3072,7 +3075,45 @@ export class OutputComponent implements OnInit {
     this.ModelBOMDataForSecondLevel = [];
   }
 
-  onValidateNextPress() {
+  add_fg_multiple_model(){
+    var obj = this;
+    this.onValidateNextPress(false, function(){
+      obj.fill_step3_data_array();
+      setTimeout(() => {
+       obj.onclearselection();
+      }, 400);
+    })
+  }
+
+  fill_step3_data_array(){
+    let grand_total = Number(this.feature_total_before_discount)
+    let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
+    let price_ext: any = grand_total;
+    let rowIndex = 0;
+    let sl_no = 0;
+    if (this.step3_data_final.length > 0){
+      rowIndex = this.step3_data_final.length;
+      sl_no = this.step3_data_final.length;
+    }
+    rowIndex++;
+    sl_no++;
+    this.step3_data_final.push({
+      "rowIndex": rowIndex,
+      "sl_no": sl_no,
+      "item": this.step2_data.model_code,
+      "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
+      "price": parseFloat(per_item_price).toFixed(3),
+      "price_ext": parseFloat(price_ext).toFixed(3),
+      "feature": this.feature_itm_list_table,
+      "accesories": this.feature_accessory_list,
+      "model_id": this.step2_data.model_id,
+      "desc": this.step2_data.model_name,
+    });
+    this.console.log("this.step3_data_final");
+    this.console.log(this.step3_data_final);
+  }
+
+  onValidateNextPress(navigte, for_multiple_model ) {
     this.navigatenextbtn = false;
     this.validnextbtn = true;
     if (this.feature_itm_list_table.length == 0) {
@@ -3155,42 +3196,25 @@ export class OutputComponent implements OnInit {
 
     this.navigatenextbtn = true;
     // this.validnextbtn=false;
-    $("#modelbom_next_click_id").trigger('click');
-    this.onModelBillNextPress();
+    if (navigte == true){
+      $("#modelbom_next_click_id").trigger('click');
+      this.onModelBillNextPress();
+    }  else {
+      for_multiple_model();
+    }
   }
 
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
     var isModelFeatureItem = 0;
-    this.step3_data_final = [];
+   //  this.step3_data_final = [];
     var imodelfilteritems = [];
     var itemkeyforparentmodel = "";
 
-    this.step2_final_dataset_to_save = [];
-    let grand_total = Number(this.feature_total_before_discount)
-    let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
-    let price_ext: any = grand_total;
-    this.step3_data_final.push({
-      "rowIndex": "1",
-      "sl_no": "1",
-      "item": this.step2_data.model_code,
-      "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
-      "price": parseFloat(per_item_price).toFixed(3),
-      "price_ext": parseFloat(price_ext).toFixed(3),
-      "feature": this.feature_itm_list_table,
-      "accesories": this.feature_accessory_list,
-      "model_id": this.step2_data.model_id,
-      "desc": this.step2_data.model_name,
-    })
-
-    // for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
-    //   let row_data = this.step3_data_final[itemCount];
-    //   this.new_item_list.push(
-    //     row_data.item
-    //   )
-    // }
-
+    if (this.step3_data_final.length == 0){
+      this.fill_step3_data_array();
+    }
 
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
@@ -3616,8 +3640,8 @@ export class OutputComponent implements OnInit {
         }
       }
     }
-
-
+  console.log("this.step2_final_dataset_to_save");
+    console.log(this.step2_final_dataset_to_save);
 
 
     this.feature_price_calculate();

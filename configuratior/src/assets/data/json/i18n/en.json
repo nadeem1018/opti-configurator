@@ -391,7 +391,8 @@
    "item_code_cannot_update": "Item code is already used to configure products therefore, cannot update final string",
     "InvalidFeatureCode": "Invalid Feature Code",
     "Minimumitemsarenotselected":"Minimum items are not selected - ",
-    "draft":"Draft"
+    "draft":"Draft",
+    "select_model_on_config":"Select a Model"
 
     
 }

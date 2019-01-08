@@ -901,8 +901,17 @@
             <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
               <button type="button" class="btn btn-sm btn-secondary  mr-10 float-left" (click)="onclearselection()">
                 <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
-              <!-- <button type="button" class="btn btn-sm btn-info  mr-10 ">
-                <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button> -->
+            
+                <select class="ml-10 pl-10 form-control  form-control-sm mt3 thin_select" name="added_model_list" id="added_model_list"
+                  style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" [(ngModel)]="step2_selected_model" (change)="onAddedModelChange(step2_model_ref.value)"
+                  #step2_model_ref>
+                  <option value=""  >{{language.select_model_on_config}}</option>
+                 <!--  <option *ngFor="let model_data as this.step3_data_final" [value]="model_data.rowIndex" >{{model_data.item}}</option> -->
+                   
+                </select>
+
+             <button type="button" class="btn btn-sm btn-info  mr-10 " (click)="add_fg_multiple_model()">  <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>  
+          
             </div>
             <div class="f1-buttons col-sm-8 pull-right f1_button_top_border_padding">
 
@@ -918,7 +927,7 @@
                 data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
-              <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onValidateNextPress()">
+              <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onValidateNextPress(true, '')">
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
             </div>
           </div>
