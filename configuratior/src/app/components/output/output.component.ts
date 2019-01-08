@@ -2308,21 +2308,25 @@ export class OutputComponent implements OnInit {
   onAddedModelChange(model_row_index, from_step4){
     console.log("model_row_index");
     console.log(model_row_index);
-    this.step2_selected_model_id = model_row_index;
+   
     this.console.log("this.step2_selected_model - " + this.step2_selected_model);
     this.step2_selected_model =  this.step3_data_final.filter(function(obj){
-     return obj.rowIndex = this.step2_selected_model_id;
+      return obj.rowIndex == model_row_index;
     });
     console.log(this.step2_selected_model);
-    from_step4();
+    this.step2_selected_model_id = model_row_index;
+    if (from_step4 !== undefined && from_step4 != "" ){
+      from_step4();
+    }
   }
 
   step4_edit_model(model_data){
     console.log("step4_edit_model rowindex " + model_data.rowIndex);
     console.log(model_data);
     this.onAddedModelChange(model_data.rowIndex, function(){
-      $("fieldset").hide();
-      $("fieldset").eq(3).show();
+    // remove the below component when finilised
+    //  $("fieldset").hide();
+    //  $("fieldset").eq(2).show();
     });
 
   }
@@ -2330,19 +2334,32 @@ export class OutputComponent implements OnInit {
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){
-      obj.fill_step3_data_array();
+      obj.fill_step3_data_array('add', '0');
       setTimeout(() => {
        obj.onclearselection();
       }, 400);
     })
   }
 
-  fill_step3_data_array(){
+  update_added_model(){
+
+    for (var i = 0; i <= this.step3_data_final.length; i++){
+      if (this.step3_data_final[i].rowIndex == this.step2_selected_model_id){
+        this.fill_step3_data_array('update', i);
+       }
+    }
+  }
+
+  fill_step3_data_array(mode, row_id){
     let grand_total = Number(this.feature_total_before_discount)
     let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
     let price_ext: any = grand_total;
     let rowIndex = 0;
     let sl_no = 0;
+    if (mode == 'add'){
+
+    }
+
     if (this.step3_data_final.length > 0){
       rowIndex = this.step3_data_final.length;
       sl_no = this.step3_data_final.length;
@@ -2465,7 +2482,7 @@ export class OutputComponent implements OnInit {
     var itemkeyforparentmodel = "";
 
     if (this.step3_data_final.length == 0){
-      this.fill_step3_data_array();
+      this.fill_step3_data_array('add', '0');
     }
 
     this.step2_final_dataset_to_save = [];

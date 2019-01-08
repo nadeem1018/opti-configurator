@@ -907,14 +907,16 @@
                 <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
             
                 <select class="ml-10 pl-10 form-control  form-control-sm mt3 thin_select" name="added_model_list" id="added_model_list"
-                  style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" [(ngModel)]="step2_selected_model" (change)="onAddedModelChange(step2_model_ref.value)"
+                  style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0"  (change)="onAddedModelChange(step2_model_ref.value,'')"
                   #step2_model_ref>
                   <option value=""  >{{language.select_model_on_config}}</option>
-                  <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="this.step2_selected_model_id == model_data.rowIndex" >{{model_data.item}}</option>
+                  <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="step2_selected_model_id == model_data.rowIndex" >{{model_data.item}}</option>
                    
                 </select>
 
-             <button type="button" class="btn btn-sm btn-info  mr-10 " (click)="add_fg_multiple_model()">  <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>  
+             <button type="button" class="btn btn-sm btn-info  mr-10 " (click)="add_fg_multiple_model()" *ngIf="step2_selected_model_id==''">  <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>  
+            <button type="button" class="btn btn-sm btn-info  mr-10 " (click)="update_added_model()" *ngIf="step2_selected_model_id!=''"> <i class="fa fa-plus-square fa-fw"></i>
+              {{language.update_model}}</button>
           
             </div>
             <div class="f1-buttons col-sm-8 pull-right f1_button_top_border_padding">
@@ -1040,7 +1042,7 @@
               </div>
               <div class="col-md-7 border-left-primary" id="opti_configur-wizard-four-step-right">
                 <div class="col-md-12 pl-0">
-                  <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()">
+                  <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()" style="display:none;">
                     <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                   </button>
                 </div>
