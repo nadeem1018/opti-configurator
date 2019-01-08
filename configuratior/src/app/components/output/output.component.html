@@ -910,7 +910,7 @@
                   style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" [(ngModel)]="step2_selected_model" (change)="onAddedModelChange(step2_model_ref.value)"
                   #step2_model_ref>
                   <option value=""  >{{language.select_model_on_config}}</option>
-                  <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" >{{model_data.item}}</option>
+                  <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="this.step2_selected_model_id == model_data.rowIndex" >{{model_data.item}}</option>
                    
                 </select>
 
@@ -1109,9 +1109,12 @@
                       <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
                         [minResizableWidth]="120">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          <i class="fa fa-trash fa-fw"></i>
+                          {{this.language.action}}
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-row>
+                          <button type="button" class="btn btn-sm mr-10 btn-info" (click)="step4_edit_model(row)" title="{{language.remove_this_modal}}">
+                            <i class="fa fa-edit fa-fw"></i>
+                          </button>
                           <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)"
                             title="{{language.remove_this_modal}}">
                             <i class="fa fa-trash fa-fw"></i>

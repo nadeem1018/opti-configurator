@@ -43,6 +43,6 @@ export class FormElementTreeViewComponent {
     }
 
     on_element_input_change(data,value) {
-        this.OutputObject.on_element_input_change(data,value)
+   //     this.OutputObject.on_element_input_change(data,value)
       }
 }

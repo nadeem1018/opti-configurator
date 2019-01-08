@@ -2305,7 +2305,25 @@ export class OutputComponent implements OnInit {
     this.ModelBOMDataForSecondLevel = [];
   }
 
-  onAddedModelChange(model_row_index){
+  onAddedModelChange(model_row_index, from_step4){
+    console.log("model_row_index");
+    console.log(model_row_index);
+    this.step2_selected_model_id = model_row_index;
+    this.console.log("this.step2_selected_model - " + this.step2_selected_model);
+    this.step2_selected_model =  this.step3_data_final.filter(function(obj){
+     return obj.rowIndex = this.step2_selected_model_id;
+    });
+    console.log(this.step2_selected_model);
+    from_step4();
+  }
+
+  step4_edit_model(model_data){
+    console.log("step4_edit_model rowindex " + model_data.rowIndex);
+    console.log(model_data);
+    this.onAddedModelChange(model_data.rowIndex, function(){
+      $("fieldset").hide();
+      $("fieldset").eq(3).show();
+    });
 
   }
 
