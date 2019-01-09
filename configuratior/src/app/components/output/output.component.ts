@@ -276,7 +276,7 @@ export class OutputComponent implements OnInit {
     this.final_ref_doc_entry = "";
     this.iLogID = "";
     this.new_item_list = [];
-    this.onclearselection()
+    this.onclearselection(1)
     this.delete_all_row_data();
 
   }
@@ -296,7 +296,7 @@ export class OutputComponent implements OnInit {
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
     this.step3_data_final = [];
-    this.onclearselection();
+    this.onclearselection(1);
     if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
       this.new_output_config = true;
@@ -331,7 +331,7 @@ export class OutputComponent implements OnInit {
         return;
       }
       this.setModelDataFlag = false;
-      this.onclearselection();
+      this.onclearselection(1);
 
     }
     if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
@@ -537,7 +537,7 @@ export class OutputComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBomForWizard_lookup') {
-      this.onclearselection();
+      this.onclearselection(1);
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
@@ -933,7 +933,7 @@ export class OutputComponent implements OnInit {
     this.feature_price_calculate();
   }
 
-  onclearselection() {
+  onclearselection(all_clear) {
     this.serviceData = [];
     this.step2_data = [];
     this.tree_data_json = [];
@@ -957,8 +957,10 @@ export class OutputComponent implements OnInit {
     this.FeatureBOMDataForSecondLevel = [];
     this.feature_total_before_discount = 0;
     this.previousquantity = parseFloat("1");
-    this.step2_selected_model = "";
-    this.step2_selected_model_id = "";
+    if(all_clear == 1){
+      this.step2_selected_model = "";
+      this.step2_selected_model_id = "";
+    }
 
   }
 
@@ -2204,6 +2206,8 @@ export class OutputComponent implements OnInit {
     this.step2_data.model_code = '';
     this.feature_itm_list_table = [];
     $(".accesory_check_for_second_screen").prop('checked', false);
+    this.step2_selected_model_id = '';
+    this.step2_selected_model = '';
 
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
@@ -2268,23 +2272,50 @@ export class OutputComponent implements OnInit {
   }
 
   onAddedModelChange(model_row_index, from_step4){
-    console.log("model_row_index");
     console.log(model_row_index);
-    this.step2_selected_model_id = model_row_index;
-    this.console.log("this.step2_selected_model - " + this.step2_selected_model);
-    this.step2_selected_model =  this.step3_data_final.filter(function(obj){
-     return obj.rowIndex = this.step2_selected_model_id;
-    });
-    console.log(this.step2_selected_model);
-    from_step4();
+    if (model_row_index != "" && model_row_index != undefined){
+      this.showLookupLoader = true;
+      this.onclearselection(0);
+      var current_row = 0;
+      for (var i = 0; i < this.step3_data_final.length; i++) {
+        if (this.step3_data_final[i] !== undefined) {
+          if (this.step3_data_final[i].rowIndex == model_row_index) {
+            current_row = i;
+
+          }
+        }
+      }
+
+      this.step2_selected_model = this.step3_data_final[current_row];
+
+      this.step2_data.model_code = this.step2_selected_model.item;
+      this.step2_data.quantity = parseInt(this.step2_selected_model.quantity);
+      this.feature_accessory_list = this.step2_selected_model.accesories;
+      this.feature_itm_list_table = this.step2_selected_model.feature;
+      this.ModelHeaderData = this.step2_selected_model.ModelHeaderData;
+      this.FeatureBOMDataForSecondLevel = this.step2_selected_model.FeatureBOMDataForSecondLevel;
+      this.ModelBOMDataForSecondLevel = this.step2_selected_model.ModelBOMDataForSecondLevel;
+      this.step2_selected_model_id = model_row_index;
+      this.feature_price_calculate();
+      this.showLookupLoader = false;
+
+      if (from_step4 !== undefined && from_step4 != "") {
+        from_step4();
+      }
+    } else {
+      this.onclearselection(1);
+    }
+    
   }
 
   step4_edit_model(model_data){
     console.log("step4_edit_model rowindex " + model_data.rowIndex);
     console.log(model_data);
     this.onAddedModelChange(model_data.rowIndex, function(){
-      $("fieldset").hide();
-      $("fieldset").eq(3).show();
+    // remove the below component when finilised
+    
+    //  $("fieldset").hide();
+    //  $("fieldset").eq(2).show();
     });
 
   }
@@ -2292,44 +2323,81 @@ export class OutputComponent implements OnInit {
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){
-      obj.fill_step3_data_array();
+      obj.fill_step3_data_array('add', '0');
       setTimeout(() => {
-       obj.onclearselection();
+       obj.onclearselection(1);
+       $(".accesory_check_for_second_screen").prop('checked', false);
       }, 400);
     })
   }
 
-  fill_step3_data_array(){
+  update_added_model(){
+    this.console.log(this.step3_data_final.length);
+    for (var i = 0; i < this.step3_data_final.length; i++){
+      if (this.step3_data_final[i] !== undefined){
+        if (this.step3_data_final[i].rowIndex == this.step2_selected_model_id){
+          this.fill_step3_data_array('update', i);
+        }
+      }
+    }
+  }
+
+  fill_step3_data_array(mode, row_id){
     let grand_total = Number(this.feature_total_before_discount)
     let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
     let price_ext: any = grand_total;
     let rowIndex = 0;
     let sl_no = 0;
-    if (this.step3_data_final.length > 0){
-      rowIndex = this.step3_data_final.length;
-      sl_no = this.step3_data_final.length;
+    if (mode == 'add'){
+        if (this.step3_data_final.length > 0) {
+          rowIndex = this.step3_data_final.length;
+          sl_no = this.step3_data_final.length;
+        }
+        rowIndex++;
+        sl_no++;
+        this.step3_data_final.push({
+          "rowIndex": rowIndex,
+          "sl_no": sl_no,
+          "item": this.step2_data.model_code,
+          "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
+          "price": parseFloat(per_item_price).toFixed(3),
+          "price_ext": parseFloat(price_ext).toFixed(3),
+          "feature": this.feature_itm_list_table,
+          "accesories": this.feature_accessory_list,
+          "model_id": this.step2_data.model_id,
+          "desc": this.step2_data.model_name,
+          "ModelHeaderData": this.ModelHeaderData,
+          "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
+          "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
+        });
+        this.console.log("this.step3_data_final");
+        this.console.log(this.step3_data_final);
+    } else {
+          this.step3_data_final[row_id]["item"]  =  this.step2_data.model_code;
+          this.step3_data_final[row_id]["quantity"]  =  parseFloat(this.step2_data.quantity).toFixed(3);
+          this.step3_data_final[row_id]["price"]  =  parseFloat(per_item_price).toFixed(3);
+          this.step3_data_final[row_id]["price_ext"]  =  parseFloat(price_ext).toFixed(3);
+          this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
+          this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
+          this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;
+          this.step3_data_final[row_id]["desc"]  =  this.step2_data.model_name;
+          this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
+          this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
+          this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"]  =  this.ModelBOMDataForSecondLevel;
     }
-    rowIndex++;
-    sl_no++;
-    this.step3_data_final.push({
-      "rowIndex": rowIndex,
-      "sl_no": sl_no,
-      "item": this.step2_data.model_code,
-      "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
-      "price": parseFloat(per_item_price).toFixed(3),
-      "price_ext": parseFloat(price_ext).toFixed(3),
-      "feature": this.feature_itm_list_table,
-      "accesories": this.feature_accessory_list,
-      "model_id": this.step2_data.model_id,
-      "desc": this.step2_data.model_name,
-    });
-    this.console.log("this.step3_data_final");
-    this.console.log(this.step3_data_final);
+
   }
+
+    
 
   onValidateNextPress(navigte, for_multiple_model ) {
     this.navigatenextbtn = false;
     this.validnextbtn = true;
+    if (navigte == true && this.step3_data_final.length > 0) {
+      $("#modelbom_next_click_id").trigger('click');
+      return;
+    }
+
     if (this.feature_itm_list_table.length == 0) {
       this.toastr.error('', this.language.no_item_selected, this.commonData.toast_config);
       return;
@@ -2427,8 +2495,10 @@ export class OutputComponent implements OnInit {
     var itemkeyforparentmodel = "";
 
     if (this.step3_data_final.length == 0){
-      this.fill_step3_data_array();
-    }
+      this.fill_step3_data_array('add', '0');
+      this.step2_selected_model = this.step3_data_final[0];
+      this.step2_selected_model_id = 1;
+    }  
 
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
@@ -3800,7 +3870,7 @@ export class OutputComponent implements OnInit {
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
           this.step2_data.modal_id = "";
           this.step2_data.model_code = "";
-          this.onclearselection();
+          this.onclearselection(1);
           return;
         }
         else {

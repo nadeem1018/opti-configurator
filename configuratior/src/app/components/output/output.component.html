@@ -907,23 +907,29 @@
           <!-- Model BOM To Configure Product end -->
 
           <div class="row">
-            <div class="f1-buttons col-sm-4 pull-left  model_bom_buttons f1_button_top_border_padding">
-              <button type="button" class="btn btn-sm btn-secondary  mr-10 float-left" (click)="onclearselection()">
+            <div class="f1-buttons col-md-5 pull-left  model_bom_buttons f1_button_top_border_padding">
+              <button type="button" class="btn btn-sm btn-secondary  mr-10 float-left" (click)="onclearselection(1)">
                 <i class="fa fa-times fa-fw"></i> {{language.clear_selection}}</button>
 
-              <select class="ml-10 pl-10 form-control  form-control-sm mt3 thin_select" name="added_model_list" id="added_model_list"
-                style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" [(ngModel)]="step2_selected_model"
-                (change)="onAddedModelChange(step2_model_ref.value)" #step2_model_ref>
-                <option value="">{{language.select_model_on_config}}</option>
-                <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="this.step2_selected_model_id == model_data.rowIndex">{{model_data.item}}</option>
+                <div class="opti_add-update-modal ml-5">
+                  <div class="opti_select-section float-left">
+                    <select class="ml-10 pl-10 form-control  form-control-sm  thin_select" name="added_model_list" id="added_model_list"
+                      style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0"  (change)="onAddedModelChange(step2_model_ref.value,'')"
+                      #step2_model_ref>
+                      <option value=""  >{{language.select_model_on_config}}</option>
+                      <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="step2_selected_model_id == model_data.rowIndex" >{{model_data.item}}</option>
+                    </select>
+                  </div>  
 
-              </select>
-
-              <button type="button" class="btn btn-sm btn-info  mr-10 " (click)="add_fg_multiple_model()"> <i class="fa fa-plus-square fa-fw"></i>
-                {{language.add_model}}</button>
-
+                  <div class="opti_add-update-modal-btn float-left">
+                      <button type="button" class="btn btn-sm btn-info ml-1 add-update-btn add-btn float-left" (click)="add_fg_multiple_model()" *ngIf="step2_selected_model_id==''">  <i class="fa fa-plus-square fa-fw"></i> {{language.add_model}}</button>  
+                      <button type="button" class="btn btn-sm btn-info ml-1 add-update-btn update-btn float-left" (click)="update_added_model()" *ngIf="step2_selected_model_id!=''"> <i class="fa fa-plus-square fa-fw"></i>
+                        {{language.update_model}}</button>
+                    </div>
+                </div>    
+          
             </div>
-            <div class="f1-buttons col-sm-8 pull-right f1_button_top_border_padding">
+            <div class="f1-buttons col-md-7 pull-right f1_button_top_border_padding">
 
               <span class="output_final_screen_save_button">
                 <button (click)="onSavePress()" type="button" class="btn btn-sm btn-success  mr-10 ">
@@ -1046,7 +1052,7 @@
               </div>
               <div class="col-md-7 border-left-primary" id="opti_configur-wizard-four-step-right">
                 <div class="col-md-12 pl-0">
-                  <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()">
+                  <button type="button" class="mr-10 btn btn-sm btn-outline-danger mb-2" (click)="delete_multiple_final_modal()" style="display:none;">
                     <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                   </button>
                 </div>
