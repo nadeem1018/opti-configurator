@@ -2288,6 +2288,7 @@ export class OutputComponent implements OnInit {
 
       this.step2_selected_model = this.step3_data_final[current_row];
 
+      this.step2_data.model_id = this.step2_selected_model.model_id; 
       this.step2_data.model_code = this.step2_selected_model.item;
       this.step2_data.quantity = parseInt(this.step2_selected_model.quantity);
       this.feature_accessory_list = this.step2_selected_model.accesories;
@@ -2296,6 +2297,8 @@ export class OutputComponent implements OnInit {
       this.FeatureBOMDataForSecondLevel = this.step2_selected_model.FeatureBOMDataForSecondLevel;
       this.ModelBOMDataForSecondLevel = this.step2_selected_model.ModelBOMDataForSecondLevel;
       this.step2_selected_model_id = model_row_index;
+      this.feature_discount_percent = this.step2_selected_model.feature_discount_percent;
+      this.accessory_discount_percent = this.step2_selected_model.accessory_discount_percent;
       this.feature_price_calculate();
       this.showLookupLoader = false;
 
@@ -2365,6 +2368,8 @@ export class OutputComponent implements OnInit {
           "ModelHeaderData": this.ModelHeaderData,
           "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
           "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
+          "feature_discount_percent": this.feature_discount_percent,
+          "accessory_discount_percent": this.accessory_discount_percent,
         });
         this.console.log("this.step3_data_final");
         this.console.log(this.step3_data_final);
@@ -2380,6 +2385,8 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
           this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
           this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"]  =  this.ModelBOMDataForSecondLevel;
+      this.step3_data_final[row_id]["feature_discount_percent"] = this.feature_discount_percent;
+        this.step3_data_final[row_id]["accessory_discount_percent"] = this.accessory_discount_percent;
     }
 
   }
