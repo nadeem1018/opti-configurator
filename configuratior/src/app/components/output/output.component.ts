@@ -19,44 +19,6 @@ import { NullInjector } from '../../../../node_modules/@angular/core/src/di/inje
   styleUrls: ['./output.component.scss']
 })
 export class OutputComponent implements OnInit {
-
-
-  // New table with detail
-   public data = [{
-         "ProductID": 1,
-         "ProductName": "Chai",
-         "UnitPrice": 18.0000,
-         "Discontinued": false,
-         "Category": {
-             "CategoryID": 1,
-             "CategoryName": "Beverages",
-             "Description": "Soft drinks, coffees, teas, beers, and ales"
-         }
-       }, {
-         "ProductID": 2,
-         "ProductName": "Chang",
-         "UnitPrice": 19.0000,
-         "Discontinued": false,
-         "Category": {
-             "CategoryID": 2,
-             "CategoryName": "Beverages",
-             "Description": "Soft drinks, coffees, teas, beers, and ales"
-         }
-       }, {
-         "ProductID": 3,
-         "ProductName": "Aniseed Syrup",
-         "UnitPrice": 10.0000,
-         "Discontinued": false,
-         "Category": {
-             "CategoryID": 3,
-             "CategoryName": "Condiments",
-             "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
-         }
-     }];
-  // New tab;le end with detail
-
-
-
   public selectedImage = "";
   @ViewChild("modelcode") _el: ElementRef;
   @ViewChild("refresh_button") _refresh_el: ElementRef;
@@ -4485,5 +4447,10 @@ export class OutputComponent implements OnInit {
     this.ship_to = [];
 
     this.step1_data.ship_to_address = '';
+  }
+
+
+  getFeatureHasAccesory(selected_feature_in_model){
+   return  selected_feature_in_model.filter(obj => obj.is_accessory == 'Y');
   }
 }

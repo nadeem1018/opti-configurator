@@ -16,7 +16,8 @@
             <div class="" *ngIf="showPrintOptions">
               <div class="form-group row clearfix">
                 <div class="col-sm-8 padding_right_0">
-                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type"                     style=" height: calc(1.35rem + 1px) !important; " #print_operation_type >
+                  <select class="form-control  form-control-sm mt3 thin_select" name="print_operation_type" id="print_operation_type"
+                    style=" height: calc(1.35rem + 1px) !important; " #print_operation_type>
                     <option value="">{{language.print_option}}</option>
                     <option value="1">{{language.summary}}</option>
                     <option value="2">{{language.detail}}</option>
@@ -117,8 +118,7 @@
                   <label class="col-sm-5 col-form-label" for="description">{{language.description}}</label>
                   <div class="col-sm-5">
                     <input type="text" class="form-control  form-control-sm mt3" id="description" name="description"
-                      value="" placeholder="{{language.description}}" [(ngModel)]="step1_data.description"
-                      #description />
+                      value="" placeholder="{{language.description}}" [(ngModel)]="step1_data.description" #description />
                   </div>
                 </div>
 
@@ -461,12 +461,13 @@
                 <hr>
 
                 <div *ngIf="ModelHeaderData.length > 0">
-                    <i id="showAccordion" class="fa fa-expand" aria-hidden="true" title="Expand"></i>  <i id="hideAccordion" class="fa fa-compress ecselect" aria-hidden="true" title="Collapse"></i>
+                  <i id="showAccordion" class="fa fa-expand" aria-hidden="true" title="Expand"></i> <i id="hideAccordion"
+                    class="fa fa-compress ecselect" aria-hidden="true" title="Collapse"></i>
                 </div>
 
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
                   <!-- <button id="showAccordion">Show</button><button id="hideAccordion">Hide</button> -->
-                  <div  class="panel-group opti_optiLeftTopAccordion" id="step_default_{{step2_data.model_code}}" role="tablist"
+                  <div class="panel-group opti_optiLeftTopAccordion" id="step_default_{{step2_data.model_code}}" role="tablist"
                     aria-multiselectable="true">
                     <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
                       <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
@@ -493,7 +494,8 @@
                               </tr>
                             </thead>
                             <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;" [ngClass]="{'tr-disabled' :feature_model_data.disable}">
+                              <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"
+                                [ngClass]="{'tr-disabled' :feature_model_data.disable}">
                                 <td>
                                   <div class="{{header_data.element_class}}">
                                     <span *ngIf="header_data.is_second_level == 1">
@@ -521,8 +523,9 @@
                                 <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
                                   <div class="image-preivew" *ngIf="feature_model_data.IMAGEPATH!=''">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(feature_model_data.IMAGEPATH)">
-                                    <img src="{{feature_model_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal"
+                                      (click)="enlage_image(feature_model_data.IMAGEPATH)">
+                                      <img src="{{feature_model_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
                                     </a>
                                   </div>
                                 </td>
@@ -549,8 +552,9 @@
                                 <td>{{header_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
                                   <div class="image-preivew" *ngIf="header_data.IMAGEPATH!=''">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_data.IMAGEPATH)">
-                                    <img src="{{header_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal"
+                                      (click)="enlage_image(header_data.IMAGEPATH)">
+                                      <img src="{{header_data.IMAGEPATH}}" style="width:40px" alt="" class="img-thumbnail">
                                     </a>
                                   </div>
                                 </td>
@@ -664,8 +668,8 @@
                 <div class="feature_block">
                   <div class="feature_table">
                     <div class="">
-                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false" [height]="350"
-                        [groupable]="false" [filterable]="false">
+                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false"
+                        [height]="350" [groupable]="false" [filterable]="false">
                         <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
@@ -708,7 +712,7 @@
                               #quantity [disabled]="featurerow.isQuantityDisabled" />
                           </ng-template>
                         </kendo-grid-column>
-                       <!--  <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120"
+                        <!--  <kendo-grid-column field="step_2_right_grid_price_source" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                             {{this.language.price_source}}
@@ -734,8 +738,9 @@
                             {{this.language.price}} ({{defaultCurrency}})
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
-                            <input [disabled]="featurerow.isPriceDisabled" type="text"  #actual_price title="{{featurerow.Actualprice}}" class="form-control  form-control-sm mt3"
-                              style="text-align:right" id="quantity" value={{featurerow.Actualprice}} (change)="on_feature_input_change('actual_price',actual_price.value,featurerow.FeatureId,featurerow.Item)"
+                            <input [disabled]="featurerow.isPriceDisabled" type="text" #actual_price title="{{featurerow.Actualprice}}"
+                              class="form-control  form-control-sm mt3" style="text-align:right" id="quantity" value={{featurerow.Actualprice}}
+                              (change)="on_feature_input_change('actual_price',actual_price.value,featurerow.FeatureId,featurerow.Item)"
                               #pricextn />
                           </ng-template>
                         </kendo-grid-column>
@@ -831,34 +836,34 @@
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
 
-                            <tr>
-                              <td width="70%">
-                                {{this.language.product_total}} ({{defaultCurrency}})
-                              </td>
-                              <td width="30%" class="text-right">{{this.feature_item_total | toFixed:'3'}}</td>
-                            </tr>
-                            <tr>
-                              <td width="70%">
-                                {{this.language.accessories_total}} ({{defaultCurrency}})
-                              </td>
-                              <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
-                            </tr>
-                            <tr>
-                              <td width="70%">
-                                {{this.language.subtotal}} ({{defaultCurrency}})
-                              </td>
-                              <td class="text-right" width="30%">{{this.feature_total_before_discount | toFixed:'3'}}</td>
-                            </tr>
+                          <tr>
+                            <td width="70%">
+                              {{this.language.product_total}} ({{defaultCurrency}})
+                            </td>
+                            <td width="30%" class="text-right">{{this.feature_item_total | toFixed:'3'}}</td>
+                          </tr>
+                          <tr>
+                            <td width="70%">
+                              {{this.language.accessories_total}} ({{defaultCurrency}})
+                            </td>
+                            <td class="text-right" width="30%">{{this.accessory_item_total | toFixed:'3'}}</td>
+                          </tr>
+                          <tr>
+                            <td width="70%">
+                              {{this.language.subtotal}} ({{defaultCurrency}})
+                            </td>
+                            <td class="text-right" width="30%">{{this.feature_total_before_discount | toFixed:'3'}}</td>
+                          </tr>
 
-                            <tr>
-                              <td width="70%">{{language.product_discount}}</td>
-                              <td width="30%">
-                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
+                          <tr>
+                            <td width="70%">{{language.product_discount}}</td>
+                            <td width="30%">
+                              <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
       text-align: right;     padding-right: 1.5px !important;"
-                                  id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
-                                  [(ngModel)]="this.feature_discount_percent" />
-                              </td>
-                            </tr>
+                                id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
+                                [(ngModel)]="this.feature_discount_percent" />
+                            </td>
+                          </tr>
                           <tr>
                             <td width="70%">
                               {{this.language.accessories_discount}}
@@ -878,9 +883,9 @@
                               </td>
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
-                          
 
-                          <tr >
+
+                          <tr>
                             <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
                             <td class="text-right" width="30%">{{this.acc_grand_total | toFixed:'3'}}</td>
                           </tr>
@@ -1051,7 +1056,7 @@
                     <i class="fa fa-trash fa-fw"></i> {{language.delete}}
                   </button>
                 </div>
-                <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
+                <!-- <div class="step_3_selection_table" id="opti_configur-wizard-four-step-selectiontable">
                   <div class="">
                     <kendo-grid [kendoGridBinding]="step3_data_final" [resizable]="true" [sortable]="false" [groupable]="false"
                       [filterable]="false">
@@ -1132,39 +1137,50 @@
                   
                   </div>
 
-                </div>
+                </div> -->
 
 
                 <!-- new table with detail -->
-                <kendo-grid
-                  [data]="data"
-                  [height]="400"
-                  selectable="true"
-                  >
-                  <kendo-grid-column field="ProductID"></kendo-grid-column>
-                  <kendo-grid-column field="ProductName"></kendo-grid-column>
-                  <kendo-grid-column field="UnitPrice"></kendo-grid-column>
-                  <ng-template kendoGridDetailTemplate let-dataItem>
-                    <div *ngIf="dataItem.Category">
-                      <!-- <header>{{dataItem.Category?.CategoryName}}</header>
-                      <span>{{dataItem.Category?.Description}}</span> -->
-                      <table class="opti_detai-table">
-                        <thead>
-                            <tr>
-                              <th>Id</th>
-                              <th>Name</th>
-                              <th>Description</th>
+                <kendo-grid [data]="step3_data_final" [height]="400" selectable="true">
+                  <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
+                  <kendo-grid-column title="{{this.language.serial}}" field="sl_no"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.item}}" field="item"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.quantity}}" field="quantity"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.price_extn}}" field="price_ext"></kendo-grid-column>
+
+                  <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                    [minResizableWidth]="120">
+                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                      {{this.language.action}}
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-row>
+                      <button type="button" class="btn btn-sm mr-10 btn-info" (click)="step4_edit_model(row)" title="{{language.remove_this_modal}}">
+                        <i class="fa fa-edit fa-fw"></i>
+                      </button>
+                      <button type="button" class="btn btn-sm mr-10 btn-danger" (click)="remove_final_modal(row)" title="{{language.remove_this_modal}}">
+                        <i class="fa fa-trash fa-fw"></i>
+                      </button>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <ng-template kendoGridDetailTemplate let-dataItem  >
+                    <ng-container *ngIf="getFeatureHasAccesory(dataItem.feature).length  > 0">
+                      <div >
+                        <table class="opti_detai-table">
+                          <tbody>
+                            <tr *ngFor="let rows of dataItem.feature; let i= index;">
+                              <span *ngIf="rows.is_accessory == 'Y'">
+                                <td>{{i}}</td>
+                                <td>{{rows.Item}}</td>
+                                <td>{{rows.quantity}}</td>
+                                <td>{{rows.Actualprice}}</td>
+                                <td>{{rows.pricextn}}</td>
+                              </span>
                             </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>{{dataItem.Category?.CategoryID}}</td>
-                            <td>{{dataItem.Category?.CategoryName}}</td>
-                            <td>{{dataItem.Category?.Description}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                          </tbody>
+                        </table>
+                      </div>
+                    </ng-container>
                   </ng-template>
                 </kendo-grid>
                 <!-- new table end with detail -->
@@ -1173,9 +1189,9 @@
                 <div class="final_item_discount_table">
                   <div class="col-md-6 pull-right pr-0 mt-4">
                     <table class="table table-bordered table-sm">
-                    
+
                       <tbody>
-                       
+
                         <tr>
                           <td width="70%">
                             {{this.language.product_total}} ({{defaultCurrency}})
@@ -1214,7 +1230,7 @@
                           </td>
                           <td>{{this.acc_item_tax}}</td>
                         </tr> -->
-                        
+
                         <tr>
                           <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
                           <td class="text-right" width="70%">{{this.acc_grand_total | toFixed:'3'}}</td>
@@ -1490,8 +1506,8 @@
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
                               <div style="text-align:right">
-                              {{row.price}}
-                                </div>
+                                {{row.price}}
+                              </div>
                             </ng-template>
                           </kendo-grid-column>
                           <kendo-grid-column field="step_5_right_grid_price_ext" title="" template="" [width]="120"
@@ -1501,7 +1517,7 @@
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
                               <div style="text-align:right">
-                              {{row.price_ext}}
+                                {{row.price_ext}}
                               </div>
                             </ng-template>
                           </kendo-grid-column>
@@ -1549,18 +1565,18 @@
                       <div class="col-md-4 pull-right">
                         <table class="table table-bordered table-sm">
                           <thead class="" style=" font-size: 14px; ">
-                              <tr>
-                                  <td>
-                                    {{this.language.product_total}} ({{defaultCurrency}})
-                                  </td>
-                                  <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                      {{this.language.accessories_total}} ({{defaultCurrency}})
-                                    </td>
-                                    <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
-                                  </tr>
+                            <tr>
+                              <td>
+                                {{this.language.product_total}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right mr-3">{{this.feature_item_total | toFixed:'3'}}</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                {{this.language.accessories_total}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right mr-3">{{this.accessory_item_total | toFixed:'3'}}</td>
+                            </tr>
                             <tr>
                               <td>
                                 {{this.language.subtotal}} ({{defaultCurrency}})
@@ -1581,7 +1597,7 @@
                               </td>
                               <td>{{this.feature_item_tax}}</td>
                             </tr> -->
-                            
+
                             <tr>
                               <td>
                                 {{this.language.accessories_discount}}
@@ -1596,7 +1612,7 @@
                               </td>
                               <td>{{this.acc_item_tax}}</td>
                             </tr> -->
-                            
+
                           </tbody>
                           <tfoot>
                             <tr style=" font-size: 14px; ">
@@ -1635,5 +1651,6 @@
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
 
 <span [hidden]="showLookupLoader">
-  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) "
+    [selectedImage]="selectedImage"></app-lookup>
 </span>
