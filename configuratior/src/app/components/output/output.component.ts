@@ -4457,4 +4457,64 @@ export class OutputComponent implements OnInit {
   getFeatureHasAccesory(selected_feature_in_model){
    return  selected_feature_in_model.filter(obj => obj.is_accessory == 'Y');
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public data = [{
+    "ProductID": 1,
+    "ProductName": "Chai",
+    "UnitPrice": 18.0000,
+    "Discontinued": false,
+    "Category": {
+        "CategoryID": 1,
+        "CategoryName": "Beverages",
+        "Description": "Soft drinks, coffees, teas, beers, and ales"
+    }
+  }, {
+    "ProductID": 2,
+    "ProductName": "Chang",
+    "UnitPrice": 19.0000,
+    "Discontinued": false,
+    "Category": {
+        "CategoryID": 1,
+        "CategoryName": "Beverages",
+        "Description": "Soft drinks, coffees, teas, beers, and ales"
+    }
+  }, {
+    "ProductID": 3,
+    "ProductName": "Aniseed Syrup",
+    "UnitPrice": 10.0000,
+    "Discontinued": false,
+    "Category": {
+        "CategoryID": 2,
+        "CategoryName": "Condiments",
+        "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
+    }
+}];
+
+public showOnlyBeveragesDetails(dataItem: any, index: number): boolean {
+   return dataItem.Category.CategoryID === 1;
+}
+
+
+
+
+
 }

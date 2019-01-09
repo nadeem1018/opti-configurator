@@ -1141,15 +1141,15 @@
 
 
                 <!-- new table with detail -->
-                <kendo-grid [data]="step3_data_final" [height]="400" selectable="true">
+                <kendo-grid class="opti_screen4-detail-row" [data]="step3_data_final" [height]="400" selectable="true">
                   <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
-                  <kendo-grid-column title="{{this.language.serial}}" field="sl_no"></kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.item}}" field="item"></kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.quantity}}" field="quantity"></kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price"></kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.price_extn}}" field="price_ext"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.item}}" field="item" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.quantity}}" field="quantity" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                  <kendo-grid-column title="{{this.language.price_extn}}" field="price_ext" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
 
-                  <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="120"
+                  <kendo-grid-column field="step_4_right_grid_item" title="" template="" [headerStyle]="{'width': '100px'}"
                     [minResizableWidth]="120">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       {{this.language.action}}
@@ -1163,8 +1163,8 @@
                       </button>
                     </ng-template>
                   </kendo-grid-column>
-                  <ng-template kendoGridDetailTemplate let-dataItem  >
-                    <ng-container *ngIf="getFeatureHasAccesory(dataItem.feature).length  > 0">
+                  <ng-template kendoGridDetailTemplate let-dataItem  let-column let-columnIndex="columnIndex" >
+                    <!-- <ng-container *ngIf="getFeatureHasAccesory(dataItem.feature).length  > 0">
                       <div >
                         <table class="opti_detai-table">
                           <tbody>
@@ -1179,8 +1179,30 @@
                             </tr>
                           </tbody>
                         </table>
-                      </div>
-                    </ng-container>
+                      </div> 
+                    </ng-container> -->
+
+                    <kendo-grid
+                      class="opti_screen4-detail-row"
+                      [data]="dataItem.feature"
+                      [selectable]="true"
+                      style="height:100px"
+
+                    >
+                    <kendo-grid-column field="sl_no" title="Sl#"  [headerStyle]="{'width': '100px'}"> 
+                        <ng-template kendoGridCellTemplate let-dataItem let-row  let-rowIndex="rowIndex" >
+                      {{rowIndex+1}} 
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="Item" title="Item" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                    <kendo-grid-column field="quantity" title="Quantity" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                    <kendo-grid-column field="price" title="Price ()" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                    <kendo-grid-column field="pricextn" title="Price Extn." [headerStyle]="{'width': '100px'}"></kendo-grid-column>
+                  
+                  </kendo-grid>
+
+
+
                   </ng-template>
                 </kendo-grid>
                 <!-- new table end with detail -->
