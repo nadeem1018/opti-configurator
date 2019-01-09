@@ -2347,13 +2347,9 @@ export class OutputComponent implements OnInit {
   }
 
   step4_edit_model(model_data){
-    console.log("step4_edit_model rowindex " + model_data.rowIndex);
-    console.log(model_data);
     this.onAddedModelChange(model_data.rowIndex, function(){
-    // remove the below component when finilised
-    
-    //  $("fieldset").hide();
-    //  $("fieldset").eq(2).show();
+       $("fieldset").hide();
+       $("fieldset").eq(2).show();
     });
 
   }
@@ -2567,7 +2563,7 @@ export class OutputComponent implements OnInit {
         "OPTM_PARENTTYPE": 2
       })
     }
-
+// commented below lines as user can plan with new and prev button in multiple model senario
    /*  if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
       //Clear the array when user play with next prev button
       this.step3_data_final = [];
