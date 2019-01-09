@@ -2568,10 +2568,10 @@ export class OutputComponent implements OnInit {
       })
     }
 
-    if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
+   /*  if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
       //Clear the array when user play with next prev button
       this.step3_data_final = [];
-    }
+    } */
     for (var ifeature in this.feature_itm_list_table) {
       if (this.feature_itm_list_table[ifeature].Item == null || this.feature_itm_list_table[ifeature].Item == "" || this.feature_itm_list_table[ifeature].Item == undefined) {
         imodelfilteritems = [];
