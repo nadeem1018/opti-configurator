@@ -281,6 +281,9 @@ export class OutputComponent implements OnInit {
     this.new_item_list = [];
     this.onclearselection(1)
     this.delete_all_row_data();
+    this.step4_final_prod_total = '';
+    this.step4_final_acc_total = '';
+    this.step4_final_grand_total = '';
 
   }
 
@@ -726,8 +729,8 @@ export class OutputComponent implements OnInit {
       iaccdiscount = (isumofaccpriceitem * this.accessory_discount_percent) / 100
     }
 
-    iproducttotal = isumofpropriceitem + iprotax - iprodiscount
-    iacctotal = isumofaccpriceitem + iaccotax - iaccdiscount
+    iproducttotal = Number(isumofpropriceitem + iprotax - iprodiscount);
+    iacctotal = Number(isumofaccpriceitem + iaccotax - iaccdiscount);
 
 
     this.feature_total_before_discount = isumofpropriceitem //+ isumofaccpriceitem
@@ -736,41 +739,10 @@ export class OutputComponent implements OnInit {
     this.feature_item_total = iproducttotal
     this.accessory_item_total = iacctotal
     this.acc_grand_total = igrandtotal
-
-    // this.feature_tax_total[0].value = this.feature_item_tax
-    // this.feature_tax_total[1].value = this.feature_item_total
-    // this.item_tax_total[2].value = this.acc_grand_total
-    // }
+    this.step4_final_price_calculation();
   }
 
-  // accesory_price_calculate() {
-  //   // if (this.accessory_itm_list_table.length > 0) {
-  //   let itotal = 0;
-  //   let isumofpriceitem = 0;
-  //   let itax = 0;
-  //   let idiscount = 0;
-
-  //   for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-  //     isumofpriceitem = isumofpriceitem + (this.accessory_itm_list_table[iacc].quantity * this.accessory_itm_list_table[iacc].price);
-  //   }
-  //   if (isumofpriceitem > 0) {
-  //     itax = (isumofpriceitem * this.acc_item_tax) / 100
-  //   }
-  //   if (isumofpriceitem > 0) {
-  //     idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
-  //   }
-  //   itotal = isumofpriceitem + itax + idiscount
-  //   this.acc_total = itotal
-
-  //   this.acc_grand_total = this.feature_item_total + this.acc_total
-
-  //   this.item_tax_total[0].value = this.acc_item_tax
-  //   this.item_tax_total[1].value = this.acc_total
-  //   this.item_tax_total[2].value = this.acc_grand_total
-
-
-  //   //  }
-  // }
+ 
 
   output_invvoice_print_lookup(operation_type) {
     this.lookupfor = 'output_invoice_print';
@@ -964,7 +936,7 @@ export class OutputComponent implements OnInit {
       this.step2_selected_model = "";
       this.step2_selected_model_id = "";
     }
-
+    $(".accesory_check_for_second_screen").prop('checked', false);
   }
 
   GetAllDataForModelBomOutput(getmodelsavedata) {
@@ -2214,6 +2186,7 @@ export class OutputComponent implements OnInit {
 
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
+    this.step4_final_price_calculation();
   }
 
   delete_all_row_data() {
@@ -2324,9 +2297,19 @@ export class OutputComponent implements OnInit {
 
   step4_final_price_calculation(){
 
-    this.step4_final_prod_total;
-    this.step4_final_acc_total;
-    this.step4_final_grand_total;
+    this.step4_final_prod_total = 0;
+    this.step4_final_acc_total  = 0;
+    this.step4_final_grand_total = 0;
+    if (this.step3_data_final.length > 0 && this.step3_data_final!= undefined){
+      for (var i = 0; i < this.step3_data_final.length; i++) {
+        let step3_temp = this.step3_data_final[i];
+        this.step4_final_prod_total += Number(step3_temp.discounted_price); 
+        this.step4_final_acc_total += Number(step3_temp.accesory_final_price);
+      }
+    }
+
+    this.step4_final_grand_total = Number(this.step4_final_prod_total) + Number(this.step4_final_acc_total);
+  
   }
   
 
@@ -2355,20 +2338,20 @@ export class OutputComponent implements OnInit {
   fill_step3_data_array(mode, row_id){
     let feature_discount:any  = 0;
     if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
-      feature_discount = this.feature_discount_percent;
+      feature_discount = Number(this.feature_discount_percent);
     }
     
     let accessory_discount:any = 0;
     if (this.accessory_discount_percent !== undefined && this.accessory_discount_percent != 0) {
-      accessory_discount = this.accessory_discount_percent;
+      accessory_discount = Number(this.accessory_discount_percent);
     }
     let product_total:any = 0;
     if(accessory_discount == 0){
       product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
-      this.console.log("in accessory_discount if " + this.accessory_item_total);
     } else {
-      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) / ( Number(accessory_discount) /100 ) ) )
-      this.console.log("in accessory_discount else " + acc_total_no_dis);
+      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) * ( Number(accessory_discount) /100 ) ) );
+      console.log("acc_total_no_dis - " + acc_total_no_dis);
+      
       product_total = Number(this.feature_total_before_discount) - acc_total_no_dis;
     }
     
@@ -2392,23 +2375,25 @@ export class OutputComponent implements OnInit {
           "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
           "price": parseFloat(per_item_price).toFixed(3),
           "price_ext": parseFloat(price_ext).toFixed(3),
+          "discounted_price": (this.feature_item_total).toFixed(3),
           "feature": this.feature_itm_list_table,
           "accesories": this.feature_accessory_list,
+          "accessory_item_total": (this.accessory_item_total).toFixed(3),
           "model_id": this.step2_data.model_id,
           "desc": this.step2_data.model_name,
           "ModelHeaderData": this.ModelHeaderData,
           "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
           "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
-          "feature_discount_percent":  feature_discount,
-          "accessory_discount_percent":accessory_discount,
+          "feature_discount_percent": feature_discount,
+          "accessory_discount_percent": accessory_discount,
+          "accesory_final_price": (this.accessory_item_total).toFixed(3),
         });
-        this.console.log("this.step3_data_final");
-        this.console.log(this.step3_data_final);
-    } else {
+      } else {
           this.step3_data_final[row_id]["item"]  =  this.step2_data.model_code;
           this.step3_data_final[row_id]["quantity"]  =  parseFloat(this.step2_data.quantity).toFixed(3);
           this.step3_data_final[row_id]["price"]  =  parseFloat(per_item_price).toFixed(3);
-          this.step3_data_final[row_id]["price_ext"]  =  parseFloat(price_ext).toFixed(3);
+          this.step3_data_final[row_id]["price_ext"] = parseFloat(price_ext).toFixed(3);
+          this.step3_data_final[row_id]["discounted_price"] = (this.feature_item_total).toFixed(3);
           this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
           this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
           this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;
@@ -2416,10 +2401,13 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
           this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
           this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"]  =  this.ModelBOMDataForSecondLevel;
-      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
-        this.step3_data_final[row_id]["accessory_discount_percent"] =accessory_discount;
-    }
-
+          this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
+          this.step3_data_final[row_id]["accessory_discount_percent"] = accessory_discount;
+          this.step3_data_final[row_id]["accesory_final_price"] = (this.accessory_item_total).toFixed(3);
+          this.step3_data_final[row_id]["accessory_item_total"] = (this.accessory_item_total).toFixed(3);
+        }
+    
+        this.step4_final_price_calculation();
   }
 
     
@@ -3211,69 +3199,72 @@ export class OutputComponent implements OnInit {
   }
 
   selectallAccessory(value) {
-    this.showLookupLoader = true;
-    for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-      this.feature_accessory_list[i].checked = value;
-      if (value == true) {
-        let GetDataForSelectedFeatureModelItemData: any = {};
-        GetDataForSelectedFeatureModelItemData.selecteddata = [];
-        GetDataForSelectedFeatureModelItemData.featurebomdata = [];
-        GetDataForSelectedFeatureModelItemData.modelbomdata = [];
-        GetDataForSelectedFeatureModelItemData.selecteddata.push({
-          type: 1,
-          modelid: "",
-          featureid: this.feature_accessory_list[i].id,
-          item: "",
-          parentfeatureid: this.feature_accessory_list[i].parentfeatureid,
-          parentmodelid: "",
-          selectedvalue: "",
-          CompanyDBID: this.common_output_data.companyName,
-          SuperModelId: this.step2_data.model_id,
-          currentDate: this.submit_date
-        });
-
-        GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-          obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
-          return obj['checked'] == true
-        })
-
-        GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-          obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
-          return obj['checked'] == true
-        })
-
-        this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
-          data => {
-            this.showLookupLoader = false;
-            let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
-            let parentarray = this.Accessoryarray.filter(function (obj) {
-              return obj['OPTM_FEATUREID'] == parentfeatureid
-            });
-            if (data.DataForSelectedFeatureModelItem.length > 0)
-              this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
-
-          },
-          error => {
-            this.showLookupLoader = false;
-            this.stoprefreshloader();
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            return;
+    if(this.feature_accessory_list.length > 0){
+      this.showLookupLoader = true;
+      for (let i = 0; i < this.feature_accessory_list.length; ++i) {
+        this.feature_accessory_list[i].checked = value;
+        if (value == true) {
+          let GetDataForSelectedFeatureModelItemData: any = {};
+          GetDataForSelectedFeatureModelItemData.selecteddata = [];
+          GetDataForSelectedFeatureModelItemData.featurebomdata = [];
+          GetDataForSelectedFeatureModelItemData.modelbomdata = [];
+          GetDataForSelectedFeatureModelItemData.selecteddata.push({
+            type: 1,
+            modelid: "",
+            featureid: this.feature_accessory_list[i].id,
+            item: "",
+            parentfeatureid: this.feature_accessory_list[i].parentfeatureid,
+            parentmodelid: "",
+            selectedvalue: "",
+            CompanyDBID: this.common_output_data.companyName,
+            SuperModelId: this.step2_data.model_id,
+            currentDate: this.submit_date
           });
-      }
-      else {
-        if (this.feature_itm_list_table.length > 0) {
-          for (let iacc = 0; iacc < this.feature_itm_list_table.length; iacc++) {
-            if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-              this.feature_itm_list_table.splice(iacc, 1)
-              iacc = iacc - 1;
-            }
 
-          }
+          GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+            obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
+            return obj['checked'] == true
+          })
+
+          GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+            obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
+            return obj['checked'] == true
+          })
+
+          this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
+            data => {
+              this.showLookupLoader = false;
+              let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
+              let parentarray = this.Accessoryarray.filter(function (obj) {
+                return obj['OPTM_FEATUREID'] == parentfeatureid
+              });
+              if (data.DataForSelectedFeatureModelItem.length > 0)
+                this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+
+            },
+            error => {
+              this.showLookupLoader = false;
+              this.stoprefreshloader();
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+              return;
+            });
         }
-        this.showLookupLoader = false;
+        else {
+          if (this.feature_itm_list_table.length > 0) {
+            for (let iacc = 0; iacc < this.feature_itm_list_table.length; iacc++) {
+              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
+                this.feature_itm_list_table.splice(iacc, 1)
+                iacc = iacc - 1;
+              }
+
+            }
+          }
+          this.showLookupLoader = false;
+        }
       }
+      this.feature_price_calculate();
     }
-    this.feature_price_calculate();
+    
   }
 
   getDefaultItems(DefaultData) {

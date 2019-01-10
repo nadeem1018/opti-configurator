@@ -18,13 +18,13 @@ export class RuleWbViewComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
 
-    pageSizeNumber:number = 5;
-    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
-    public selectedValue: string = "5";
-
+    
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
-
+    pageSizeNumber:any = this.commonData.default_count;
+    public listItems: Array<string> = this.commonData.default_limits;
+    public selectedValue: string = this.commonData.default_count;
+    
 
     public companyName: string = ""; 
     public isColumnFilter: boolean = false;

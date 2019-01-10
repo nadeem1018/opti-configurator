@@ -18,13 +18,11 @@ export class ViewModelBomComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
 
-    pageSizeNumber:number = 5;
-    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
-    public selectedValue: string = "5";
-
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
-   
+    public listItems: Array<string> = this.commonData.default_limits;
+    public selectedValue: string = this.commonData.default_count;
+
     public companyName: string = "";
     public username: string = "";
     add_route_link = '/modelbom/add';

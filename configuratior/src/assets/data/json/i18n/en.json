@@ -281,6 +281,7 @@
     "price_extn": "Price Extn.",
     "price": "Price",
     "discount_per": "Discount %",
+    "discounted_price":"Dicounted Price",
     "Excluded": "Excluded",
     "conflict": "Rules are conflicting",
     "model_code_label": "Model/Feature Code",
