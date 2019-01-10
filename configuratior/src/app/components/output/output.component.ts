@@ -50,6 +50,9 @@ export class OutputComponent implements OnInit {
   public showLookupLoader: boolean = false;
   public step2_selected_model:any = '';
   public step2_selected_model_id : any = '';
+  public step4_final_prod_total: any = '';
+  public step4_final_acc_total: any = '';
+  public step4_final_grand_total:any ='';
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -2319,6 +2322,14 @@ export class OutputComponent implements OnInit {
 
   }
 
+  step4_final_price_calculation(){
+
+    this.step4_final_prod_total;
+    this.step4_final_acc_total;
+    this.step4_final_grand_total;
+  }
+  
+
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){
@@ -2342,11 +2353,31 @@ export class OutputComponent implements OnInit {
   }
 
   fill_step3_data_array(mode, row_id){
-    let grand_total = Number(this.feature_total_before_discount)
-    let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
-    let price_ext: any = grand_total;
+    let feature_discount:any  = 0;
+    if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
+      feature_discount = this.feature_discount_percent;
+    }
+    
+    let accessory_discount:any = 0;
+    if (this.accessory_discount_percent !== undefined && this.accessory_discount_percent != 0) {
+      accessory_discount = this.accessory_discount_percent;
+    }
+    let product_total:any = 0;
+    if(accessory_discount == 0){
+      product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
+      this.console.log("in accessory_discount if " + this.accessory_item_total);
+    } else {
+      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) / ( Number(accessory_discount) /100 ) ) )
+      this.console.log("in accessory_discount else " + acc_total_no_dis);
+      product_total = Number(this.feature_total_before_discount) - acc_total_no_dis;
+    }
+    
+    let per_item_price: any = (product_total / Number(this.step2_data.quantity));
+    let price_ext: any = product_total;
     let rowIndex = 0;
     let sl_no = 0;
+
+
     if (mode == 'add'){
         if (this.step3_data_final.length > 0) {
           rowIndex = this.step3_data_final.length;
@@ -2368,8 +2399,8 @@ export class OutputComponent implements OnInit {
           "ModelHeaderData": this.ModelHeaderData,
           "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
           "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
-          "feature_discount_percent": this.feature_discount_percent,
-          "accessory_discount_percent": this.accessory_discount_percent,
+          "feature_discount_percent":  feature_discount,
+          "accessory_discount_percent":accessory_discount,
         });
         this.console.log("this.step3_data_final");
         this.console.log(this.step3_data_final);
@@ -2385,8 +2416,8 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
           this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
           this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"]  =  this.ModelBOMDataForSecondLevel;
-      this.step3_data_final[row_id]["feature_discount_percent"] = this.feature_discount_percent;
-        this.step3_data_final[row_id]["accessory_discount_percent"] = this.accessory_discount_percent;
+      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
+        this.step3_data_final[row_id]["accessory_discount_percent"] =accessory_discount;
     }
 
   }
@@ -4460,64 +4491,4 @@ export class OutputComponent implements OnInit {
   getFeatureHasAccesory(selected_feature_in_model){
    return  selected_feature_in_model.filter(obj => obj.is_accessory == 'Y');
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  public data = [{
-    "ProductID": 1,
-    "ProductName": "Chai",
-    "UnitPrice": 18.0000,
-    "Discontinued": false,
-    "Category": {
-        "CategoryID": 1,
-        "CategoryName": "Beverages",
-        "Description": "Soft drinks, coffees, teas, beers, and ales"
-    }
-  }, {
-    "ProductID": 2,
-    "ProductName": "Chang",
-    "UnitPrice": 19.0000,
-    "Discontinued": false,
-    "Category": {
-        "CategoryID": 1,
-        "CategoryName": "Beverages",
-        "Description": "Soft drinks, coffees, teas, beers, and ales"
-    }
-  }, {
-    "ProductID": 3,
-    "ProductName": "Aniseed Syrup",
-    "UnitPrice": 10.0000,
-    "Discontinued": false,
-    "Category": {
-        "CategoryID": 2,
-        "CategoryName": "Condiments",
-        "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
-    }
-}];
-
-public showOnlyBeveragesDetails(dataItem: any, index: number): boolean {
-   return dataItem.Category.CategoryID === 1;
-}
-
-
-
-
-
 }
