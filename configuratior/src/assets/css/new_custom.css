@@ -598,6 +598,9 @@ hr {
   background: #ece4e4;
   color: #c7c7c7;
 }
+.tr-hide{
+  display:none;
+}
 
 .highlight_fg_row {
   background: #b3c7d2;
