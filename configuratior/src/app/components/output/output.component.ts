@@ -391,7 +391,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.document_name = this.language.SalesOrder;
           }
           //Bug no. 18436..Draft status was not showing...Ashish Devade
-          if (data.CustomerOutput[0].OPTM_STATUS == "D") {
+          if (data.CustomerOutput[0].OPTM_STATUS == "D" && data.CustomerOutput[0].OPTM_DELIVERYDATE == null) {
             this.step1_data.document = 'draft';
             this.step1_data.document_name = this.language.draft;
           }
