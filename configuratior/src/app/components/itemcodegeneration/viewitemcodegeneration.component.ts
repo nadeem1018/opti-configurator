@@ -31,9 +31,8 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     
 
 
-    pageSizeNumber:number = 5;
-    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
-    public selectedValue: string = "5";
+    public listItems: Array<string> = this.commonData.default_limits;
+    public selectedValue: number = Number(this.commonData.default_count);
 
 
     record_per_page: any;

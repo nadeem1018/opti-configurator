@@ -16,15 +16,16 @@ import { UIHelper } from '../../../helpers/ui.helpers';
 
 export class ViewFeatureModelComponent implements OnInit {
 
-    pageSizeNumber:number = 5;
-    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
-    public selectedValue: string = "5";
-
+    
     serviceData: any;
     public selectedImage = "";
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
     public commonData = new CommonData();
+
+    public listItems: Array<string> = this.commonData.default_limits;
+    public selectedValue: string = this.commonData.default_count;
+
     public isColumnFilter: boolean = false;
     // generate table default constants
     table_pages: any;

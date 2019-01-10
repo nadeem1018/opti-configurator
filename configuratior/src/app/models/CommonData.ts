@@ -125,8 +125,8 @@ export class CommonData {
 
 
     // for common view
-    public default_limits = [10, 25, 50, 100];
-    public default_count = 10;
+    public default_limits = ["10", "25", "50", "100"];
+    public default_count = "10";
 
     blobToFile = (theBlob: Blob, fileName: string): File => {
         var b: any = theBlob;

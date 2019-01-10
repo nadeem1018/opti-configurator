@@ -18,12 +18,13 @@ export class ViewFeatureBOMComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
 
-    pageSizeNumber:number = 5;
-    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
-    public selectedValue: string = "5";
-
+    
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
+
+    public listItems: Array<string> = this.common_params.default_limits;
+    public selectedValue: string = this.common_params.default_count;
+
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
     add_route_link = '/feature/bom/add';

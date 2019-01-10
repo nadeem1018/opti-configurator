@@ -485,6 +485,8 @@
                                                     <th class="text-right">{{language.quantity}}</th>
                                                     <th class="text-right">{{language.price}}</th>
                                                     <th class="text-right">{{language.price_extn}}</th>
+                                                    <th class="text-right">{{language.discount_per}}</th>
+                                                    <th class="text-right">{{language.discounted_price}}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -508,6 +510,12 @@
                                                     </td>
                                                     <td class="text-right">
                                                         {{row['price_ext']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{row['feature_discount_percent']}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{row['discounted_price']}}
                                                     </td>
                                                 </tr>
 
@@ -536,7 +544,7 @@
                                                             </td>
                                                             <td class="pink text-right">{{product_grand_details.accessories_total}}</td>
                                                         </tr>
-                                                    <tr>
+                                                   <!--  <tr>
                                                         <td class="text-bold-800">
                                                             <b class="">{{this.language.subtotal}}
                                                                 ({{defaultCurrency}}) </b>
@@ -555,7 +563,7 @@
                                                             <b class="">{{language.accessories_discount}}</b>
                                                         </td>
                                                         <td class="text-bold-800 text-right">{{product_grand_details.accessories_discount}}</td>
-                                                    </tr>
+                                                    </tr> -->
                                                     
                                                     <tr class="bg-grey bg-lighten-4">
                                                         <td class="text-bold-800">
