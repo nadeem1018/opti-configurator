@@ -965,8 +965,6 @@ export class LookupComponent implements OnInit {
       this.showProdDetailsTable = false;
     }
 
-    //demo creating comman array
-
     let row_count = 0;
     for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
       var row = this.serviceData.verify_final_data_sel_details[mcount];
@@ -975,7 +973,6 @@ export class LookupComponent implements OnInit {
       this.prepareFinalItemArray(row_count, row.item, row.desc , row.quantity, row.price, row.price_ext,true);
 
       //If report type is details then only we will show features
-
       for (let fcount = 0; fcount < row['feature'].length; fcount++) {
         let featureRow = row['feature'][fcount];
         row_count++;
@@ -993,8 +990,10 @@ export class LookupComponent implements OnInit {
           this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
         }
         else {
-          if (featureRow.ItemNumber == "" && featureRow.Item == null) {
-
+          //As discussed with Meenesh & Pulkit
+          //For Summary report will not show sub models,show Accessories in Summary
+          // if (featureRow.ItemNumber == "" && featureRow.Item == null && featureRow.OPTM_ITEMTYPE != 1) {
+          if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
             this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
           }
           else {

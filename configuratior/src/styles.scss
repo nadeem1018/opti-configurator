@@ -474,3 +474,70 @@ ul.parent_ul div:first-child li::after {
 ul.parent_ul div:first-child li treeview li::after {
     border-top: 1px solid #fff;
 }
+
+.opti_grid-table-outer{
+    position: relative;
+    .opti_pagelimit-container{
+        position: absolute;
+        bottom: 4px;
+        left: 5px;
+        z-index: 1;
+        width: 85px;
+        .k-dropdown-wrap{
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+    }
+    kendo-dropdownlist{
+        border: 1px solid #c7c7c7;
+    }
+    kendo-pager-prev-buttons{
+        margin-left: 50px;
+    }
+    .k-dropdown .k-dropdown-wrap .k-select{
+        width: 15px;
+    }
+    .k-dropdown-wrap .k-input{
+        padding-left: 2px;
+        padding-right: 2px;   
+    }
+    
+}
+.k-list .k-item.k-state-selected {
+    background: #1BA0F1 !important;
+}
+
+
+// .opti_screen4-detail-row-top tr th.k-header, .opti_screen4-detail-row-top tr td {
+//     width: 120px !important;
+// }
+
+// .opti_screen4-detail-row-top .opti_screen4-detail-row-btm tr th.k-header, .opti_screen4-detail-row-top .opti_screen4-detail-row-btm tr td {
+//     width: 120px !important;
+// }
+
+.opti_screen4-detail-row-top {
+    .k-detail-row td.k-detail-cell {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+.opti_screen4-detail-row-btm tr th:first-child,
+.opti_screen4-detail-row-btm tr td:first-child {
+    width: 33px !important;
+}
+.opti_screen4-detail-row-top{
+    tr.k-detail-row > td.k-hierarchy-cell{
+        display: none;
+    }
+}
+
+.opti_screen4-detail-row-btm{
+    .k-grid-header{
+        display: none;
+    }
+    .k-grid-content{
+        overflow-y: hidden;
+    }
+}

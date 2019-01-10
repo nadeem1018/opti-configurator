@@ -51,6 +51,7 @@
     "connected": "Connected",
     "close": "Close",
     "total_before_discount": "Total Before Discount",
+    "subtotal":"Subtotal",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Failed to save data",
     "DataDeleteSuccesfully": "Data deleted successfully",
@@ -273,7 +274,8 @@
     "Nodataforsave": "No expression added to save in the system, please add expression before saving.",
     "DateValidation": "From date cannot be greater than to date",
     "clear_selection": "Clear Selection",
-    "add_model": "Add Mdel",
+    "add_model": "Add Model",
+    "update_model": "Update Model",
     "features": "Features",
     "accessories": "Accessories",
     "price_extn": "Price Extn.",
@@ -342,6 +344,8 @@
     "refresh": "Refresh",
     "process_status": "Processed",
     "pending_status": "Pending",
+    "error_status" : "Error",
+    "error_occured":"Error Occurred",
     "expand_this_branch": "Expand this branch",
     "collapse_this_branch": "Collapse this branch",
     "DuplicateId": "Duplicate ID",
@@ -389,7 +393,8 @@
    "item_code_cannot_update": "Item code is already used to configure products therefore, cannot update final string",
     "InvalidFeatureCode": "Invalid Feature Code",
     "Minimumitemsarenotselected":"Minimum items are not selected - ",
-    "draft":"Draft"
+    "draft":"Draft",
+    "select_model_on_config":"Select a Model"
 
     
 }

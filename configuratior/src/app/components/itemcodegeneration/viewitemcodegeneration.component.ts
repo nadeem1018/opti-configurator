@@ -27,7 +27,15 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public companyName: string = "";
     public username: string = "";
     add_route_link = '/item-code-genration/add';
-    record_per_page_list: any = [10, 25, 50, 100]
+    record_per_page_list: any = [10, 25, 50, 100];
+    
+
+
+    pageSizeNumber:number = 5;
+    public listItems: Array<string> = [ "5", "10", "25", "50", "100" ];
+    public selectedValue: string = "5";
+
+
     record_per_page: any;
     search_string: any = "";
     current_page: any = 1;

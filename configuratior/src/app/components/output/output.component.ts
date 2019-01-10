@@ -48,6 +48,11 @@ export class OutputComponent implements OnInit {
   public currentDate = new Date();
   public submit_date;
   public showLookupLoader: boolean = false;
+  public step2_selected_model:any = '';
+  public step2_selected_model_id : any = '';
+  public step4_final_prod_total: any = '';
+  public step4_final_acc_total: any = '';
+  public step4_final_grand_total:any ='';
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -274,7 +279,7 @@ export class OutputComponent implements OnInit {
     this.final_ref_doc_entry = "";
     this.iLogID = "";
     this.new_item_list = [];
-    this.onclearselection()
+    this.onclearselection(1)
     this.delete_all_row_data();
 
   }
@@ -294,7 +299,7 @@ export class OutputComponent implements OnInit {
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
     this.step3_data_final = [];
-    this.onclearselection();
+    this.onclearselection(1);
     if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
       this.new_output_config = true;
@@ -329,7 +334,7 @@ export class OutputComponent implements OnInit {
         return;
       }
       this.setModelDataFlag = false;
-      this.onclearselection();
+      this.onclearselection(1);
 
     }
     if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
@@ -466,17 +471,7 @@ export class OutputComponent implements OnInit {
     )
   }
 
-  openChildFeatureLookUp(feature_id, feature_code) {
-    this.serviceData = []
-    this.parentfeatureid = feature_id
-    this.lookupfor = 'feature_Detail_Output_lookup';
-    this.OutputService.getFeatureDetails(feature_id, this.step2_data.model_id).subscribe(
-      data => {
-        if (data.AllFeatures.length > 0) {
-          this.serviceData = data.AllFeatures
-        }
-      })
-  }
+ 
 
   openCustomerLookUp() {
     this.showLookupLoader = true;
@@ -545,7 +540,7 @@ export class OutputComponent implements OnInit {
 
   getLookupValue($event) {
     if (this.lookupfor == 'ModelBomForWizard_lookup') {
-      this.onclearselection();
+      this.onclearselection(1);
       this.step2_data.model_id = $event[0];
       this.step2_data.model_code = $event[1];
       this.step2_data.model_name = $event[2];
@@ -556,20 +551,6 @@ export class OutputComponent implements OnInit {
       this.validnextbtn = true;
       // this.GetDataForModelBomOutput();
       this.GetAllDataForModelBomOutput("");
-    }
-    else if (this.lookupfor == 'feature_lookup') {
-      this.step2_data.feature_id = $event[0];
-      this.step2_data.feature_code = $event[1];
-      this.getFeatureDetails($event[0], $event[1]);
-    }
-    else if (this.lookupfor == 'feature_Detail_Output_lookup') {
-      for (let i = 0; i < this.feature_child_data.length; ++i) {
-        if (this.feature_child_data[i].featureparentid == this.parentfeatureid) {
-          this.feature_child_data[i].featurechildcode = $event[1];
-        }
-
-      }
-      this.getFeatureDetails($event[0], $event[1]);
     }
     else if (this.lookupfor == 'Price_lookup') {
       // this.getPriceDetails($event[0], "Header", this.currentrowindex);
@@ -607,27 +588,7 @@ export class OutputComponent implements OnInit {
     // this.getItemDetails($event[0]);
   }
 
-  getFeatureDetails(feature_id, feature_code) {
-    this.serviceData = []
-    this.OutputService.getFeatureDetails(feature_id, this.step2_data.model_id).subscribe(
-      data => {
-        if (data.ItemDataForFeature.length > 0) {
-          this.getItemDataForFeature(data.ItemDataForFeature);
-        }
-        if (data.FeaturesWithAccessoryYes.length > 0) {
-          this.getAccessory(data.FeaturesWithAccessoryYes)
-        }
-        if (data.DefaultWarehouse.length > 0) {
-          this.warehouse = data.DefaultWarehouse[0].DEFAULTWAREHOUSE
-        }
-        this.feature_price_calculate();
-        if (this.selecteddataforelement != null || this.selecteddataforelement != undefined) {
-          this.generatekey(this.selecteddataforelement)
-        }
-
-      }
-    )
-  }
+  
 
   on_input_change(inputid, value) {
     if (inputid == "quantity") {
@@ -734,344 +695,6 @@ export class OutputComponent implements OnInit {
       this.step2_data.quantity = value
     }
   }
-
-  getAccessory(accesorydata: any) {
-    if (accesorydata.length > 0) {
-      let checkedacc = false;
-      if (this.feature_accessory_list.length > 0) {
-        let isExist = 0;
-        for (let i = 0; i < accesorydata.length; ++i) {
-          for (let j = 0; j < this.feature_accessory_list.length; ++j) {
-            if (this.feature_accessory_list[j].id == accesorydata[i].OPTM_CHILDFEATUREID) {
-              isExist = 1;
-            }
-          }
-          if (isExist == 0) {
-            if (accesorydata[i].OPTM_DEFAULT == "Y") {
-              checkedacc = true
-            }
-            else {
-              checkedacc = false
-            }
-            this.feature_accessory_list.push({
-              id: accesorydata[i].OPTM_CHILDFEATUREID,
-              key: accesorydata[i].OPTM_FEATURECODE,
-              name: accesorydata[i].OPTM_DISPLAYNAME,
-              model_id: this.step2_data.model_id,
-              checked: checkedacc,
-              parentId: this.selectfeaturedata[0].parentId
-            });
-          }
-        }
-      }
-      else {
-        for (let i = 0; i < accesorydata.length; ++i) {
-          if (accesorydata[i].OPTM_DEFAULT == "Y") {
-            checkedacc = true
-          }
-          else {
-            checkedacc = false
-          }
-          this.feature_accessory_list.push({
-            id: accesorydata[i].OPTM_CHILDFEATUREID,
-            key: accesorydata[i].OPTM_FEATURECODE,
-            name: accesorydata[i].OPTM_DISPLAYNAME,
-            model_id: this.step2_data.model_id,
-            checked: checkedacc,
-            parentId: this.selectfeaturedata[0].parentId
-          });
-        }
-      }
-
-    }
-  }
-
-  getAccessoryForBydefault(accesorydata: any) {
-    if (accesorydata.length > 0) {
-      let checkedacc = false;
-      if (this.feature_accessory_list.length > 0) {
-        let isExist = 0;
-        for (let i = 0; i < accesorydata.length; ++i) {
-          for (let j = 0; j < this.feature_accessory_list.length; ++j) {
-            if (this.feature_accessory_list[j].id == accesorydata[i].OPTM_CHILDFEATUREID) {
-              isExist = 1;
-            }
-          }
-          if (isExist == 0) {
-            if (accesorydata[i].Mandatory == "Y") {
-              if (accesorydata[i].checked == "Y") {
-                checkedacc = true
-              }
-              else {
-                checkedacc = false
-              }
-              this.feature_accessory_list.push({
-                id: accesorydata[i].FeatureId,
-                key: accesorydata[i].parentId,
-                name: accesorydata[i].parentId,
-                model_id: this.step2_data.model_id,
-                checked: checkedacc,
-                parentId: accesorydata[i].parentId
-              });
-            }
-
-          }
-        }
-      }
-      else {
-        for (let i = 0; i < accesorydata.length; ++i) {
-          if (accesorydata[i].Mandatory == "Y") {
-            if (accesorydata[i].checked == "Y") {
-              checkedacc = true
-            }
-            else {
-              checkedacc = false
-            }
-            this.feature_accessory_list.push({
-              id: accesorydata[i].FeatureId,
-              key: accesorydata[i].parentId,
-              name: accesorydata[i].parentId,
-              model_id: this.step2_data.model_id,
-              checked: checkedacc,
-              parentId: accesorydata[i].parentId
-            });
-          }
-
-        }
-      }
-
-    }
-    for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-      if (this.feature_accessory_list[i].checked == true)
-        for (let j = 0; j < this.tree_data_json.length; ++j) {
-          if (this.tree_data_json[j].component == this.feature_accessory_list[i].parentId && this.tree_data_json[j].Mandatory == "Y") {
-            this.tree_data_json[j].checked = true
-          }
-        }
-      this.onAccessoryChange(this.feature_accessory_list[i].checked, this.feature_accessory_list[i])
-    }
-
-  }
-
-
-
-  getItemDataForFeature(ItemData) {
-    let isPriceDisabled: boolean = false;
-    let isPricehide: boolean = false;
-    if (ItemData.length > 0) {
-      if (this.feature_itm_list_table.length > 0) {
-        let isExist = 0;
-
-        for (let i = 0; i < ItemData.length; ++i) {
-          for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
-            if (this.feature_itm_list_table[j].FeatureId == ItemData[0].OPTM_FEATUREID && this.feature_itm_list_table[j].Item == ItemData[0].OPTM_ITEMKEY) {
-              isExist = 1;
-            }
-          }
-          // if (ItemData[0].OPTM_ISPRICEEDIT == "y") {
-          //   isPriceDisabled = false
-          //   isPricehide = false
-          // }
-          // else {
-          //   isPriceDisabled = true
-          //   isPricehide = true
-          // }
-
-          if (isExist == 0) {
-            if (this.selectfeaturedata.length > 0) {
-              for (let isel = 0; isel < this.selectfeaturedata.length; ++isel) {
-                if (this.selectfeaturedata[isel].component == ItemData[0].OPTM_DISPLAYNAME) {
-                  this.feature_itm_list_table.push({
-                    FeatureId: ItemData[0].OPTM_FEATUREID,
-                    featureName: ItemData[0].OPTM_DISPLAYNAME,
-                    Item: ItemData[0].OPTM_ITEMKEY,
-                    ItemNumber: ItemData[0].ITEMNUMBER,
-                    Description: ItemData[0].OPTM_FEATUREDESC,
-                    quantity: ItemData[0].OPTM_QUANTITY,
-                    price: ItemData[0].Pricesource,
-                    Actualprice: ItemData[0].Price,
-                    pricextn: 0,
-                    is_accessory: "N",
-                    isPriceDisabled: isPriceDisabled,
-                    pricehide: isPricehide,
-                    parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id,
-                    isQuantityDisabled: true
-
-                  });
-                }
-              }
-
-            }
-            else {
-              if (this.modelitemflag == 1) {
-                this.feature_itm_list_table.push({
-                  FeatureId: ItemData[0].OPTM_FEATUREID,
-                  featureName: ItemData[0].OPTM_DISPLAYNAME,
-                  Item: ItemData[0].OPTM_ITEMKEY,
-                  ItemNumber: ItemData[0].ITEMNUMBER,
-                  Description: ItemData[0].OPTM_FEATUREDESC,
-                  quantity: ItemData[0].OPTM_QUANTITY,
-                  price: ItemData[0].Pricesource,
-                  Actualprice: ItemData[0].Price,
-                  pricextn: 0,
-                  is_accessory: "N",
-                  isPriceDisabled: isPriceDisabled,
-                  pricehide: isPricehide,
-                  parentId: this.step2_data.model_id,
-                  model_id: this.step2_data.model_id,
-                  isQuantityDisabled: true
-
-                });
-              }
-            }
-          }
-          isExist = 0;
-        }
-      }
-      else {
-        for (let i = 0; i < ItemData.length; ++i) {
-          if (ItemData[0].OPTM_ISPRICEEDIT == "y") {
-            isPriceDisabled = false
-            isPricehide = false
-          }
-          else {
-            isPriceDisabled = true
-            isPricehide = true
-          }
-          if (this.selectfeaturedata.length > 0) {
-            for (let isel = 0; isel < this.selectfeaturedata.length; ++isel) {
-              if (this.selectfeaturedata[isel].component == ItemData[0].OPTM_DISPLAYNAME) {
-                this.feature_itm_list_table.push({
-                  FeatureId: ItemData[0].OPTM_FEATUREID,
-                  featureName: ItemData[0].OPTM_DISPLAYNAME,
-                  Item: ItemData[0].OPTM_ITEMKEY,
-                  ItemNumber: ItemData[0].ITEMNUMBER,
-                  Description: ItemData[0].OPTM_FEATUREDESC,
-                  quantity: ItemData[0].OPTM_QUANTITY,
-                  price: ItemData[0].Pricesource,
-                  Actualprice: ItemData[0].Price,
-                  pricextn: 0,
-                  is_accessory: "N",
-                  isPriceDisabled: isPriceDisabled,
-                  pricehide: isPricehide,
-                  parentId: this.selectfeaturedata[0].parentId,
-                  model_id: this.step2_data.model_id,
-                  isQuantityDisabled: true
-                });
-              }
-            }
-
-          }
-          else {
-            if (this.modelitemflag == 1) {
-              this.feature_itm_list_table.push({
-                FeatureId: ItemData[0].OPTM_FEATUREID,
-                featureName: ItemData[0].OPTM_DISPLAYNAME,
-                Item: ItemData[0].OPTM_ITEMKEY,
-                ItemNumber: ItemData[0].ITEMNUMBER,
-                Description: ItemData[0].OPTM_FEATUREDESC,
-                quantity: ItemData[0].OPTM_QUANTITY,
-                price: ItemData[0].Pricesource,
-                Actualprice: ItemData[0].Price,
-                pricextn: 0,
-                is_accessory: "N",
-                isPriceDisabled: isPriceDisabled,
-                pricehide: isPricehide,
-                parentId: this.step2_data.model_id,
-                model_id: this.step2_data.model_id,
-                isQuantityDisabled: true
-
-              });
-            }
-          }
-
-
-        }
-      }
-
-    }
-    this.modelitemflag = 0;
-    this.feature_price_calculate();
-    // this.generatekey();
-  }
-
-  generatekey(selecteddata) {
-    let itemkeydata = [];
-    if (this.feature_itm_list_table.length > 0) {
-      // let itemkey;
-      // let counter=0;
-      // for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
-      //   for (let itree = 0; itree < this.tree_data_json.length; ++itree) {
-      //     if(this.feature_itm_list_table[i].model_id==this.step2_data.model_id){
-      //       if (this.feature_itm_list_table[i].parentId == this.tree_data_json[itree].FeatureId && this.tree_data_json[itree].checked==true) {
-      //         itemkeydata.push({
-      //           ItemNumber: counter,
-      //           Component: this.tree_data_json[itree].component,
-      //           parentId: this.tree_data_json[itree].parentId,
-      //           ItemKey: "",
-      //           FeatureId: this.feature_itm_list_table[i].FeatureId
-      //         });
-      //         counter++;
-      //       }
-      //     }
-      //     else{
-      //       if (this.feature_itm_list_table[i].parentId == this.tree_data_json[itree].parentId && this.tree_data_json[itree].checked==true) {
-      //         itemkeydata.push({
-      //           ItemNumber: counter,
-      //           Component: this.tree_data_json[itree].component,
-      //           parentId: this.tree_data_json[itree].parentId,
-      //           ItemKey: "",
-      //           FeatureId: this.feature_itm_list_table[i].FeatureId
-      //         });
-      //         counter++;
-      //       }
-      //     }
-
-      //   }
-      // }
-      // let j = 0;
-      // for (let i = 0; i < itemkeydata.length; ++i) {
-      //   for (let j = i; j < itemkeydata.length; ++j) {
-      //     if (itemkeydata[i].Component == itemkeydata[j].parentId) {
-      //       if (itemkey.length == 0) {
-      //         itemkey = itemkeydata[i].ItemNumber
-      //       }
-      //       else {
-      //         itemkey = itemkey + "-" + itemkeydata[i].ItemNumber
-      //       }
-
-      //     }
-      //   }
-      // }
-    }
-  }
-
-  // feature_price_calculate() {
-  //   // if (this.feature_itm_list_table.length > 0) {
-  //   let itotal = 0;
-  //   let isumofpriceitem = 0;
-  //   let itax = 0;
-  //   let idiscount = 0;
-
-  //   for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-  //     isumofpriceitem = isumofpriceitem + (this.feature_itm_list_table[iacc].quantity * this.feature_itm_list_table[iacc].price);
-  //   }
-  //   if (isumofpriceitem > 0) {
-  //     itax = (isumofpriceitem * this.feature_item_tax) / 100
-  //   }
-  //   if (isumofpriceitem > 0) {
-  //     idiscount = (isumofpriceitem * this.feature_discount_percent) / 100
-  //   }
-  //   itotal = isumofpriceitem + itax + idiscount
-  //   this.feature_item_total = itotal
-  //   this.acc_grand_total = this.feature_item_total + this.acc_total
-
-  //   this.feature_tax_total[0].value = this.feature_item_tax
-  //   this.feature_tax_total[1].value = this.feature_item_total
-  //   this.item_tax_total[2].value = this.acc_grand_total
-  //   // }
-  // }
 
   feature_price_calculate() {
     let igrandtotal = 0;
@@ -1186,156 +809,7 @@ export class OutputComponent implements OnInit {
     this.serviceData.payment_details = undefined;
   }
 
-  onAccessoryChange(value, row) {
-    for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-      if (this.feature_accessory_list[i].id == row.id) {
-        this.feature_accessory_list[i].checked = value;
-        if (this.feature_accessory_list[i].checked == true) {
-          this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id, this.step2_data.model_id).subscribe(data => {
-            if (data.length > 0) {
-              for (let i = 0; i < data.length; ++i) {
-                let isExist = 0;
-                let isPriceDisabled: boolean = false;
-                let isPricehide: boolean = false;
-                if (data[i].OPTM_ISPRICEEDIT == "y") {
-                  isPriceDisabled = false
-                  isPricehide = false
-                }
-                else {
-                  isPriceDisabled = true
-                  isPricehide = true
-                }
-                // for (let iacc = 0; iacc < this.accessory_itm_list_table.length; ++iacc) {
-                //   if (this.accessory_itm_list_table[iacc].Item == data[i].OPTM_ITEMKEY && this.accessory_itm_list_table[iacc].FeatureId == data[i].OPTM_FEATUREID) {
-                //     isExist = 1;
-                //   }
-                // }
-                // if (isExist == 0) {
-                //   this.accessory_itm_list_table.push({
-                //     FeatureId: data[i].OPTM_FEATUREID,
-                //     Item: data[i].OPTM_ITEMKEY,
-                //     Description: data[i].OPTM_DISPLAYNAME,
-                //     quantity: data[i].OPTM_QUANTITY,
-                //     price: 0,
-                //     pricextn: 0
-                //   });
-                // }
-                if (this.feature_itm_list_table.length > 0) {
-                  for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
-                    if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
-                      isExist = 1;
-                    }
-                  }
-                  if (isExist == 0) {
-                    this.feature_itm_list_table.push({
-                      FeatureId: data[i].OPTM_FEATUREID,
-                      featureName: data[i].OPTM_DISPLAYNAME,
-                      Item: data[i].OPTM_ITEMKEY,
-                      ItemNumber: data[i].ITEMNUMBER,
-                      Description: data[i].OPTM_DISPLAYNAME,
-                      quantity: parseFloat(data[i].OPTM_QUANTITY).toFixed(3),
-                      price: data[i].Pricesource,
-                      Actualprice: data[i].Price,
-                      pricextn: 0,
-                      is_accessory: "Y",
-                      isPriceDisabled: true,
-                      pricehide: true,
-                      parentId: this.selectfeaturedata[0].parentId,
-                      model_id: this.step2_data.model_id,
-                      isQuantityDisabled: true,
-                      ispropogateqty: data[i].OPTM_PROPOGATEQTY
-
-                    });
-                  }
-                }
-                else {
-                  this.feature_itm_list_table.push({
-                    FeatureId: data[i].OPTM_FEATUREID,
-                    featureName: data[i].OPTM_DISPLAYNAME,
-                    Item: data[i].OPTM_ITEMKEY,
-                    ItemNumber: data[i].ITEMNUMBER,
-                    Description: data[i].OPTM_DISPLAYNAME,
-                    quantity: parseFloat(data[i].OPTM_QUANTITY).toFixed(3),
-                    price: data[i].Pricesource,
-                    Actualprice: data[i].Price,
-                    pricextn: 0,
-                    is_accessory: "Y",
-                    isPriceDisabled: isPriceDisabled,
-                    pricehide: isPricehide,
-                    parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id,
-                    isQuantityDisabled: true
-                  });
-                }
-
-
-              }
-              this.feature_price_calculate();
-            }
-
-          })
-
-        }
-        else {
-          if (this.feature_itm_list_table.length > 0) {
-            for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-                this.feature_itm_list_table.splice(iacc, 1)
-                iacc = iacc - 1;
-              }
-
-
-            }
-          }
-          this.feature_price_calculate();
-        }
-      }
-    }
-    // this.accesory_price_calculate();
-
-  }
-
-  // on_accessory_input_change(inputid, value, rowid, item) {
-  //   for (let i = 0; i < this.accessory_itm_list_table.length; ++i) {
-  //     if (rowid == this.accessory_itm_list_table[i].FeatureId && item == this.accessory_itm_list_table[i].Item) {
-  //       if (inputid == "quantity") {
-  //         if (value < 0) {
-  //           this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-  //           this.accessory_itm_list_table[i].quantity = 0;
-  //           return;
-  //         }
-  //         this.accessory_itm_list_table[i].quantity = value
-  //       }
-  //       else if (inputid == "price") {
-  //         if (value < 0) {
-  //           this.toastr.error('', this.language.pricevalid, this.commonData.toast_config);
-  //           this.accessory_itm_list_table[i].price = 0;
-  //           return;
-  //         }
-  //         var rgexp = /^\d+$/;
-  //         if (rgexp.test(value) == false) {
-  //           this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-  //           this.accessory_itm_list_table[i].quantity = 0;
-  //           return;
-  //         }
-  //         this.accessory_itm_list_table[i].price = value
-  //       }
-  //       else {
-  //         if (value < 0) {
-  //           this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-  //           this.accessory_itm_list_table[i].pricextn = 0;
-  //           return;
-  //         }
-  //         this.accessory_itm_list_table[i].pricextn = value
-  //       }
-
-  //       // this.accesory_price_calculate();
-
-
-  //     }
-
-  //   }
-  // }
+  
 
   on_feature_input_change(inputid, value, rowid, item) {
     for (let i = 0; i < this.feature_itm_list_table.length; ++i) {
@@ -1394,94 +868,6 @@ export class OutputComponent implements OnInit {
 
     }
   }
-
-  selectall(value) {
-    for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-      this.feature_accessory_list[i].checked = value;
-      if (value == true) {
-        this.OutputService.GetItemDataForSelectedAccessorry(this.feature_accessory_list[i].id, this.step2_data.model_id).subscribe(data => {
-          if (data.length > 0) {
-            for (let i = 0; i < data.length; ++i) {
-              let isExist = 0;
-              let isPriceDisabled: boolean = false;
-              let isPricehide: boolean = false;
-              if (data[i].OPTM_ISPRICEEDIT == "y") {
-                isPriceDisabled = false
-                isPricehide = false
-              }
-              else {
-                isPriceDisabled = true
-                isPricehide = true
-              }
-
-              if (this.feature_itm_list_table.length > 0) {
-                for (let j = 0; j < this.feature_itm_list_table.length; ++j) {
-                  if (this.feature_itm_list_table[j].Item == data[i].OPTM_ITEMKEY && this.feature_itm_list_table[j].FeatureId == data[i].OPTM_FEATUREID) {
-                    isExist = 1;
-                  }
-                }
-                if (isExist == 0) {
-                  this.feature_itm_list_table.push({
-                    FeatureId: data[i].OPTM_FEATUREID,
-                    featureName: "",
-                    Item: data[i].OPTM_ITEMKEY,
-                    Description: data[i].OPTM_DISPLAYNAME,
-                    ItemNumber: "",
-                    quantity: parseFloat(data[i].OPTM_QUANTITY).toFixed(3),
-                    price: data[i].Pricesource,
-                    Actualprice: data[i].Price,
-                    pricextn: 0,
-                    is_accessory: "Y",
-                    isPriceDisabled: true,
-                    pricehide: true,
-                    parentId: this.selectfeaturedata[0].parentId,
-                    model_id: this.step2_data.model_id,
-                    isQuantityDisabled: true
-                  });
-                }
-              }
-              else {
-                this.feature_itm_list_table.push({
-                  FeatureId: data[i].OPTM_FEATUREID,
-                  featureName: "",
-                  Item: data[i].OPTM_ITEMKEY,
-                  Description: data[i].OPTM_DISPLAYNAME,
-                  quantity: parseFloat(data[i].OPTM_QUANTITY).toFixed(3),
-                  ItemNumber: "",
-                  price: data[i].Pricesource,
-                  Actualprice: data[i].Price,
-                  pricextn: 0,
-                  is_accessory: "Y",
-                  isPriceDisabled: true,
-                  pricehide: true,
-                  parentId: this.selectfeaturedata[0].parentId,
-                  model_id: this.step2_data.model_id,
-                  isQuantityDisabled: true
-                });
-              }
-            }
-            this.feature_price_calculate();
-
-          }
-
-        })
-      }
-      else {
-        if (this.feature_itm_list_table.length > 0) {
-          for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-            if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-              this.feature_itm_list_table.splice(iacc, 1)
-              iacc = iacc - 1;
-            }
-
-
-          }
-        }
-        this.feature_price_calculate();
-      }
-    }
-  }
-
 
   step2_next_click_validation() {
     if (this.step1_data.document == "draft") {
@@ -1550,7 +936,7 @@ export class OutputComponent implements OnInit {
     this.feature_price_calculate();
   }
 
-  onclearselection() {
+  onclearselection(all_clear) {
     this.serviceData = [];
     this.step2_data = [];
     this.tree_data_json = [];
@@ -1574,7 +960,10 @@ export class OutputComponent implements OnInit {
     this.FeatureBOMDataForSecondLevel = [];
     this.feature_total_before_discount = 0;
     this.previousquantity = parseFloat("1");
-
+    if(all_clear == 1){
+      this.step2_selected_model = "";
+      this.step2_selected_model_id = "";
+    }
 
   }
 
@@ -2601,196 +1990,7 @@ export class OutputComponent implements OnInit {
 
   }
 
-  GetDataForModelBomOutput() {
-    this.showLookupLoader = true;
-    this.lookupfor = 'tree_view__model_bom_Output_lookup"';
-    this.tree_data_json = [];
-    if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-      this.OutputService.GetDataForModelBomOutput(this.step2_data.model_id, this.step2_data.model_name).subscribe(
-        data => {
-          if (data != null || data != undefined) {
-            // this.serviceData = data;
-            // this.lookupfor = "tree_view__model_bom_lookup";
-            let counter_temp = 0;
-            let temp_data = data.Table2.filter(function (obj) {
-              // obj['live_row_id'] = (counter_temp++);
-              return obj;
-            });
-            for (let i = 0; i < temp_data.length; ++i) {
-              if (temp_data[i].checked == "Y") {
-                temp_data[i].checked = true
-              }
-              else {
-                temp_data[i].checked = false
-              }
-              if (temp_data[i].MaxSelectable == "1") {
-                temp_data[i].element_type = "radio"
-              }
-              else {
-                if (temp_data[i].MaxSelectable > 1) {
-                  temp_data[i].element_type = "checkbox"
-                }
-
-              }
-            }
-            this.tree_data_json = temp_data;
-            this.tree_accessory_json = data.Table3;
-            this.GetDataByModelId(this.step2_data.model_id);
-            this.getAccessoryForBydefault(data.Table3)
-
-            setTimeout(() => {
-              this.tree_view_expand_collapse()
-            }, 2000);
-            this.showLookupLoader = false;
-          }
-          else {
-            this.showLookupLoader = false;
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            return;
-          }
-
-        },
-        error => {
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-          return;
-        }
-      );
-    }
-    else {
-      // let sequence_count = parseInt(this.tree_data_json.length + 1);
-      // if (this.live_tree_view_data.length > 0) {
-      //   console.log(this.live_tree_view_data);
-      //   for (var key in this.live_tree_view_data) {
-      //     this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
-      //   }
-
-      //   this.live_tree_view_data = [];
-      //   console.log(this.tree_data_json);
-      // }
-    }
-  }
-
-  on_element_input_change(data, value) {
-    this.selectfeaturedata = [];
-    this.selectfeaturedata.push(data)
-    if (this.feature_accessory_list.length > 0) {
-      for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-        if (this.feature_accessory_list[i].parentId == data.parentId) {
-          if (this.feature_itm_list_table.length > 0) {
-            for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-                this.feature_itm_list_table.splice(iacc, 1)
-                iacc = iacc - 1;
-              }
-            }
-          }
-          this.feature_price_calculate();
-          this.feature_accessory_list.splice(i, 1);
-          i = i - 1;
-        }
-      }
-    }
-    // let itotalcheckfeature = 0;
-    // for (let itree = 0; itree < this.tree_data_json.length; ++itree) {
-    //   if (this.tree_data_json[itree].FeatureId == data.FeatureId && this.tree_data_json[itree].checked == true) {
-    //     itotalcheckfeature = itotalcheckfeature + 1;
-    //   }
-    //   if (itotalcheckfeature >= data.MaxSelectable && this.tree_data_json[itree].component == data.component) {
-    //     this.tree_data_json[itree].checked = false
-    //     this.toastr.error('', "cannot select greater than maximum selectable limit", this.commonData.toast_config);
-    //     return;
-    //   }
-    //   else {
-    //     if(this.tree_data_json[itree].component == data.component){
-    //       this.tree_data_json[itree].checked = true
-    //     }
-    //   }
-    // }
-    for (let iacc = 0; iacc < this.feature_itm_list_table.length; ++iacc) {
-      if (this.feature_itm_list_table[iacc].FeatureId == data.FeatureId) {
-        if (data.MaxSelectable == 1) {
-          this.feature_itm_list_table.splice(iacc, 1)
-          iacc = iacc - 1;
-          for (let itree = 0; itree < this.tree_data_json.length; ++itree) {
-            if (this.tree_data_json[itree].FeatureId == data.FeatureId) {
-              //itotalcheckfeature = itotalcheckfeature + 1;
-              if (this.tree_data_json[itree].component != data.component) {
-                this.tree_data_json[itree].checked = false
-              }
-
-            }
-          }
-        }
-      }
-      if (value == false) {
-        if (data.component == this.feature_itm_list_table[iacc].featureName) {
-          this.feature_itm_list_table.splice(iacc, 1)
-          iacc = iacc - 1;
-        }
-      }
-    }
-    if (value == true) {
-      if (data.FeatureId == this.step2_data.model_id) {
-        this.bycheckboxpress = 1
-        this.GetDataByModelId(this.step2_data.model_id)
-      }
-      else {
-
-        this.getFeatureDetails(data.FeatureId, this.step2_data.model_id);
-        this.selecteddataforelement = data;
-      }
-    }
-  }
-
-  GetDataByModelId(id) {
-    this.OutputService.GetDataByModelId(id).subscribe(
-      data => {
-        this.modelitemflag = 1;
-        this.getItemDataForFeature(data.ModelDetail);
-        this.modelitemflag = 0;
-        this.selectfeaturedata = [];
-        for (let iacc = 0; iacc < this.tree_data_json.length; ++iacc) {
-          if (this.tree_data_json[iacc].checked == true && this.tree_data_json[iacc].OPTM_ITEMKEY != "" && this.tree_data_json[iacc].parentId != this.step2_data.model_code && this.tree_data_json[iacc].Mandatory == "Y") {
-            this.selectfeaturedata.push(this.tree_data_json[iacc])
-            if (this.feature_accessory_list.length > 0) {
-              for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-                if (this.feature_accessory_list[i].parentId == this.tree_data_json[iacc].parentId) {
-                  if (this.feature_itm_list_table.length > 0) {
-                    for (let iaccss = 0; iaccss < this.feature_itm_list_table.length; ++iaccss) {
-                      if (this.feature_itm_list_table[iaccss].FeatureId == this.feature_accessory_list[i].id) {
-                        this.feature_itm_list_table.splice(iaccss, 1)
-                        iaccss = iaccss - 1;
-                      }
-                    }
-                  }
-                  this.feature_price_calculate();
-                  this.feature_accessory_list.splice(i, 1);
-                  i = i - 1;
-                }
-              }
-            }
-            if (this.bycheckboxpress == 0) {
-              for (let iaccess = 0; iaccess < this.feature_itm_list_table.length; ++iaccess) {
-                if (this.feature_itm_list_table[iaccess].parentId == this.tree_data_json[iacc].parentId) {
-                  this.feature_itm_list_table.splice(iaccess, 1)
-                  iaccess = iaccess - 1;
-                }
-              }
-
-            }
-
-          }
-        }
-        // this.on_element_input_change(this.tree_data_json[iacc],false)
-        for (let iaccss = 0; iaccss < this.selectfeaturedata.length; iaccss++) {
-          this.getFeatureDetails(this.selectfeaturedata[iaccss].FeatureId, this.step2_data.model_id);
-        }
-
-        this.bycheckboxpress = 0;
-      }
-    )
-  }
+  
 
   onShipToChange(SelectedShipTo) {
 
@@ -2905,7 +2105,7 @@ export class OutputComponent implements OnInit {
 
   onFinishPress(screen_name, button_press) {
     if (button_press == 'finishPress') {
-      this.onValidateNextPress();
+      this.onValidateNextPress(true, "");
     }
     this.showLookupLoader = true;
     let final_dataset_to_save: any = {};
@@ -3083,6 +2283,8 @@ export class OutputComponent implements OnInit {
     this.step2_data.model_code = '';
     this.feature_itm_list_table = [];
     $(".accesory_check_for_second_screen").prop('checked', false);
+    this.step2_selected_model_id = '';
+    this.step2_selected_model = '';
 
     //After the removal of all data of that model will recalculate the prices
     this.feature_price_calculate();
@@ -3146,9 +2348,164 @@ export class OutputComponent implements OnInit {
     this.ModelBOMDataForSecondLevel = [];
   }
 
-  onValidateNextPress() {
+  onAddedModelChange(model_row_index, from_step4){
+    console.log(model_row_index);
+    if (model_row_index != "" && model_row_index != undefined){
+      this.showLookupLoader = true;
+      this.onclearselection(0);
+      var current_row = 0;
+      for (var i = 0; i < this.step3_data_final.length; i++) {
+        if (this.step3_data_final[i] !== undefined) {
+          if (this.step3_data_final[i].rowIndex == model_row_index) {
+            current_row = i;
+
+          }
+        }
+      }
+
+      this.step2_selected_model = this.step3_data_final[current_row];
+
+      this.step2_data.model_id = this.step2_selected_model.model_id; 
+      this.step2_data.model_code = this.step2_selected_model.item;
+      this.step2_data.quantity = parseInt(this.step2_selected_model.quantity);
+      this.feature_accessory_list = this.step2_selected_model.accesories;
+      this.feature_itm_list_table = this.step2_selected_model.feature;
+      this.ModelHeaderData = this.step2_selected_model.ModelHeaderData;
+      this.FeatureBOMDataForSecondLevel = this.step2_selected_model.FeatureBOMDataForSecondLevel;
+      this.ModelBOMDataForSecondLevel = this.step2_selected_model.ModelBOMDataForSecondLevel;
+      this.step2_selected_model_id = model_row_index;
+      this.feature_discount_percent = this.step2_selected_model.feature_discount_percent;
+      this.accessory_discount_percent = this.step2_selected_model.accessory_discount_percent;
+      this.feature_price_calculate();
+      this.showLookupLoader = false;
+
+      if (from_step4 !== undefined && from_step4 != "") {
+        from_step4();
+      }
+    } else {
+      this.onclearselection(1);
+    }
+    
+  }
+
+  step4_edit_model(model_data){
+    this.onAddedModelChange(model_data.rowIndex, function(){
+       $("fieldset").hide();
+       $("fieldset").eq(2).show();
+    });
+
+  }
+
+  step4_final_price_calculation(){
+
+    this.step4_final_prod_total;
+    this.step4_final_acc_total;
+    this.step4_final_grand_total;
+  }
+  
+
+  add_fg_multiple_model(){
+    var obj = this;
+    this.onValidateNextPress(false, function(){
+      obj.fill_step3_data_array('add', '0');
+      setTimeout(() => {
+       obj.onclearselection(1);
+       $(".accesory_check_for_second_screen").prop('checked', false);
+      }, 400);
+    })
+  }
+
+  update_added_model(){
+    this.console.log(this.step3_data_final.length);
+    for (var i = 0; i < this.step3_data_final.length; i++){
+      if (this.step3_data_final[i] !== undefined){
+        if (this.step3_data_final[i].rowIndex == this.step2_selected_model_id){
+          this.fill_step3_data_array('update', i);
+        }
+      }
+    }
+  }
+
+  fill_step3_data_array(mode, row_id){
+    let feature_discount:any  = 0;
+    if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
+      feature_discount = this.feature_discount_percent;
+    }
+    
+    let accessory_discount:any = 0;
+    if (this.accessory_discount_percent !== undefined && this.accessory_discount_percent != 0) {
+      accessory_discount = this.accessory_discount_percent;
+    }
+    let product_total:any = 0;
+    if(accessory_discount == 0){
+      product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
+      this.console.log("in accessory_discount if " + this.accessory_item_total);
+    } else {
+      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) / ( Number(accessory_discount) /100 ) ) )
+      this.console.log("in accessory_discount else " + acc_total_no_dis);
+      product_total = Number(this.feature_total_before_discount) - acc_total_no_dis;
+    }
+    
+    let per_item_price: any = (product_total / Number(this.step2_data.quantity));
+    let price_ext: any = product_total;
+    let rowIndex = 0;
+    let sl_no = 0;
+
+
+    if (mode == 'add'){
+        if (this.step3_data_final.length > 0) {
+          rowIndex = this.step3_data_final.length;
+          sl_no = this.step3_data_final.length;
+        }
+        rowIndex++;
+        sl_no++;
+        this.step3_data_final.push({
+          "rowIndex": rowIndex,
+          "sl_no": sl_no,
+          "item": this.step2_data.model_code,
+          "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
+          "price": parseFloat(per_item_price).toFixed(3),
+          "price_ext": parseFloat(price_ext).toFixed(3),
+          "feature": this.feature_itm_list_table,
+          "accesories": this.feature_accessory_list,
+          "model_id": this.step2_data.model_id,
+          "desc": this.step2_data.model_name,
+          "ModelHeaderData": this.ModelHeaderData,
+          "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
+          "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
+          "feature_discount_percent":  feature_discount,
+          "accessory_discount_percent":accessory_discount,
+        });
+        this.console.log("this.step3_data_final");
+        this.console.log(this.step3_data_final);
+    } else {
+          this.step3_data_final[row_id]["item"]  =  this.step2_data.model_code;
+          this.step3_data_final[row_id]["quantity"]  =  parseFloat(this.step2_data.quantity).toFixed(3);
+          this.step3_data_final[row_id]["price"]  =  parseFloat(per_item_price).toFixed(3);
+          this.step3_data_final[row_id]["price_ext"]  =  parseFloat(price_ext).toFixed(3);
+          this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
+          this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
+          this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;
+          this.step3_data_final[row_id]["desc"]  =  this.step2_data.model_name;
+          this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
+          this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
+          this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"]  =  this.ModelBOMDataForSecondLevel;
+      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
+        this.step3_data_final[row_id]["accessory_discount_percent"] =accessory_discount;
+    }
+
+  }
+
+    
+
+  onValidateNextPress(navigte, for_multiple_model ) {
     this.navigatenextbtn = false;
     this.validnextbtn = true;
+    if (navigte == true && this.step3_data_final.length > 0) {
+      $("#modelbom_next_click_id").trigger('click');
+      return;
+    }
+
     if (this.feature_itm_list_table.length == 0) {
       this.toastr.error('', this.language.no_item_selected, this.commonData.toast_config);
       return;
@@ -3229,42 +2586,27 @@ export class OutputComponent implements OnInit {
 
     this.navigatenextbtn = true;
     // this.validnextbtn=false;
-    $("#modelbom_next_click_id").trigger('click');
-    this.onModelBillNextPress();
+    if (navigte == true){
+      $("#modelbom_next_click_id").trigger('click');
+      this.onModelBillNextPress();
+    }  else {
+      for_multiple_model();
+    }
   }
 
   //For next press towards finsh screen
   onModelBillNextPress() {
     //Clear the array
     var isModelFeatureItem = 0;
-    this.step3_data_final = [];
+   //  this.step3_data_final = [];
     var imodelfilteritems = [];
     var itemkeyforparentmodel = "";
 
-    this.step2_final_dataset_to_save = [];
-    let grand_total = Number(this.feature_total_before_discount)
-    let per_item_price: any = (grand_total / Number(this.step2_data.quantity));
-    let price_ext: any = grand_total;
-    this.step3_data_final.push({
-      "rowIndex": "1",
-      "sl_no": "1",
-      "item": this.step2_data.model_code,
-      "quantity": parseFloat(this.step2_data.quantity).toFixed(3),
-      "price": parseFloat(per_item_price).toFixed(3),
-      "price_ext": parseFloat(price_ext).toFixed(3),
-      "feature": this.feature_itm_list_table,
-      "accesories": this.feature_accessory_list,
-      "model_id": this.step2_data.model_id,
-      "desc": this.step2_data.model_name,
-    })
-
-    // for (let itemCount = 0; itemCount < this.step3_data_final.length; itemCount++) {
-    //   let row_data = this.step3_data_final[itemCount];
-    //   this.new_item_list.push(
-    //     row_data.item
-    //   )
-    // }
-
+    if (this.step3_data_final.length == 0){
+      this.fill_step3_data_array('add', '0');
+      this.step2_selected_model = this.step3_data_final[0];
+      this.step2_selected_model_id = 1;
+    }  
 
     this.step2_final_dataset_to_save = [];
     if (this.step2_final_dataset_to_save.length == 0) {
@@ -3295,11 +2637,11 @@ export class OutputComponent implements OnInit {
         "OPTM_PARENTTYPE": 2
       })
     }
-
-    if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
+// commented below lines as user can plan with new and prev button in multiple model senario
+   /*  if (this.feature_accessory_list.length <= 0 && this.feature_itm_list_table.length <= 0) {
       //Clear the array when user play with next prev button
       this.step3_data_final = [];
-    }
+    } */
     for (var ifeature in this.feature_itm_list_table) {
       if (this.feature_itm_list_table[ifeature].Item == null || this.feature_itm_list_table[ifeature].Item == "" || this.feature_itm_list_table[ifeature].Item == undefined) {
         imodelfilteritems = [];
@@ -3690,8 +3032,8 @@ export class OutputComponent implements OnInit {
         }
       }
     }
-
-
+  console.log("this.step2_final_dataset_to_save");
+    console.log(this.step2_final_dataset_to_save);
 
 
     this.feature_price_calculate();
@@ -3708,6 +3050,9 @@ export class OutputComponent implements OnInit {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
+          } else if (data.FinalStatus[0].OPTM_STATUS == "E" || data.FinalStatus[0].OPTM_STATUS == "e") {
+            this.final_order_status = this.language.error_status;
+            this.toastr.error('', this.language.error_occured + ': ' +  data.FinalStatus[0].OPTM_ERRDESC, this.commonData.toast_config);
           }
           else {
             this.final_order_status = this.language.pending_status;
@@ -4100,6 +3445,7 @@ export class OutputComponent implements OnInit {
           OPTM_LEVEL: 1,
           isQuantityDisabled: true,
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
+          OPTM_ITEMTYPE: 1
         });
       }
 
@@ -4700,7 +4046,7 @@ export class OutputComponent implements OnInit {
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
           this.step2_data.modal_id = "";
           this.step2_data.model_code = "";
-          this.onclearselection();
+          this.onclearselection(1);
           return;
         }
         else {
@@ -5288,5 +4634,10 @@ this.feature_price_calculate();
     this.ship_to = [];
 
     this.step1_data.ship_to_address = '';
+  }
+
+
+  getFeatureHasAccesory(selected_feature_in_model){
+   return  selected_feature_in_model.filter(obj => obj.is_accessory == 'Y');
   }
 }

@@ -855,3 +855,32 @@ only screen and ( min-resolution: 2dppx) {
         font-size: 14px;
     }
 }
+
+.fa-expand, .fa-compress{
+    background: #007bff;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    margin-right: 1px;
+    margin-bottom: 5px;
+}
+.fa-expand:hover, .fa-compress:hover{
+    background: #333;
+}
+.ecselect{
+    background: #333;
+}
+
+.opti_detai-table{
+    border: 1px solid #dee2e6;
+    tr {
+        th, td{
+            padding: 3px !important; 
+        }
+    }
+}
+
+.opti_add-update-modal{
+    float: right !important;
+    // width: 260px;
+}
