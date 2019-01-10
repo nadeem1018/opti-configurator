@@ -421,6 +421,9 @@ export class OutputComponent implements OnInit {
             });
           this.step1_data.owner = data.CustomerOutput[0].OPTM_OWNER
 
+          this.feature_discount_percent = data.CustomerOutput[0].OPTM_TOTALDISCOUNT
+          this.accessory_discount_percent = data.CustomerOutput[0].OPTM_ACCESSORYDIS
+          
           this.getModelDatabyModelCodeAndId(data.ModelBOMData);
         }
         this.isNextButtonVisible = true;
