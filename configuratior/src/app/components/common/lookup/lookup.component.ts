@@ -970,8 +970,10 @@ export class LookupComponent implements OnInit {
       var row = this.serviceData.verify_final_data_sel_details[mcount];
       row_count++;
       //pushing item data
-      this.prepareFinalItemArray(row_count, row.item, row.desc , row.quantity, row.price, row.price_ext,true);
+      this.prepareFinalItemArray(row_count, row.item, row.desc , row.quantity, row.price, row.price_ext, row.feature_discount_percent, row.discounted_price,true);
 
+      let detailed_discount;
+      let discounted_detailed_price;
       //If report type is details then only we will show features
       for (let fcount = 0; fcount < row['feature'].length; fcount++) {
         let featureRow = row['feature'][fcount];
@@ -987,14 +989,29 @@ export class LookupComponent implements OnInit {
             itemFeatureName = featureRow.featureName;
           }
 
-          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
+          detailed_discount =0;
+         discounted_detailed_price = featureRow.pricextn;
+          if(featureRow.is_accessory == "Y"){
+            detailed_discount = row.accessory_discount_percent
+          }
+          else{
+            detailed_discount = row.feature_discount_percent
+          }
+
+          if(detailed_discount != 0){
+            discounted_detailed_price = (featureRow.pricextn - (featureRow.pricextn * (detailed_discount / 100)));
+          }
+          
+          
+
+          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),Number(detailed_discount),Number(discounted_detailed_price),false);
         }
         else {
           //As discussed with Meenesh & Pulkit
           //For Summary report will not show sub models,show Accessories in Summary
           // if (featureRow.ItemNumber == "" && featureRow.Item == null && featureRow.OPTM_ITEMTYPE != 1) {
           if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
-            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),false);
+            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),Number(row.accessory_discount_percent),Number((featureRow.pricextn - (featureRow.pricextn * (row.accessory_discount_percent / 100)))),false);
           }
           else {
             row_count--;
@@ -1008,12 +1025,9 @@ export class LookupComponent implements OnInit {
     //product grand details
     if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
       this.showProdGrandDetails = true;
-      this.product_grand_details.total_before_discount = parseFloat(this.serviceData.product_grand_details[0].total_before_discount).toFixed(3);
-      this.product_grand_details.product_total = parseFloat(this.serviceData.product_grand_details[0]. product_total).toFixed(3);
-      this.product_grand_details.product_discount = parseFloat(this.serviceData.product_grand_details[0].product_discount).toFixed(3);
-      this.product_grand_details.accessories_discount = parseFloat(this.serviceData.product_grand_details[0].accessories_discount).toFixed(3);
-      this.product_grand_details.accessories_total = parseFloat(this.serviceData.product_grand_details[0].accessories_total).toFixed(3);
-      this.product_grand_details.grand_total = parseFloat(this.serviceData.product_grand_details[0].grand_total).toFixed(3);
+      this.product_grand_details.step4_final_prod_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_prod_total).toFixed(3);
+      this.product_grand_details.step4_final_acc_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_acc_total).toFixed(3);
+      this.product_grand_details.step4_final_grand_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_grand_total).toFixed(3);
     }
     else {
       this.showProdGrandDetails = false;
@@ -1026,7 +1040,7 @@ export class LookupComponent implements OnInit {
   public tree_data_json: any = '';
   @Input() component;
 
-  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext,isFG) {
+  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext,feature_discount_percent,discounted_price,isFG) {
     // if (this.report_type == "2" && isFG == true) {
     //   price = "";
     //   quantity = "";
@@ -1039,6 +1053,8 @@ export class LookupComponent implements OnInit {
       "quantity": parseFloat(quantity).toFixed(3),
       "price": parseFloat(price).toFixed(3),
       "price_ext": parseFloat(price_ext).toFixed(3),
+      "feature_discount_percent": parseFloat(feature_discount_percent).toFixed(3),
+      "discounted_price": parseFloat(discounted_price).toFixed(3),
       "isFG":isFG
     });
   }

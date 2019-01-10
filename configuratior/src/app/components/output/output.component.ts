@@ -771,12 +771,9 @@ export class OutputComponent implements OnInit {
     });
     //pushing all price details
     this.serviceData.product_grand_details.push({
-      "total_before_discount": this.feature_total_before_discount,
-      "product_total": this.feature_item_total,
-      "product_discount": this.feature_discount_percent,
-      "accessories_discount": this.accessory_discount_percent,
-      "accessories_total": this.accessory_item_total,
-      "grand_total": this.acc_grand_total
+      "step4_final_prod_total": this.step4_final_prod_total ,
+      "step4_final_acc_total": this.step4_final_acc_total,
+      "step4_final_grand_total": this.step4_final_grand_total,
     });
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
