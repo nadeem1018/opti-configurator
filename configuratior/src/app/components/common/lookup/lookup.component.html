@@ -483,10 +483,10 @@
                                                     <th>{{language.ModelBom_FeatureValue}}</th>
                                                     <th>{{language.description}}</th>
                                                     <th class="text-right">{{language.quantity}}</th>
-                                                    <th class="text-right">{{language.price}}</th>
-                                                    <th class="text-right">{{language.price_extn}}</th>
+                                                    <th class="text-right">{{language.price}} ({{defaultCurrency}})</th>
+                                                    <th class="text-right">{{language.price_extn}} ({{defaultCurrency}})</th>
                                                     <th class="text-right">{{language.discount_per}}</th>
-                                                    <th class="text-right">{{language.discounted_price}}</th>
+                                                    <th class="text-right">{{language.discounted_price}} ({{defaultCurrency}})</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -515,7 +515,7 @@
                                                         {{row['feature_discount_percent']}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{row['discounted_price']}}
+                                                        {{row['discounted_price']}} 
                                                     </td>
                                                 </tr>
 
@@ -532,8 +532,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-bold-800">
-                                                            <b class="">{{language.product_total}}
-                                                                ({{defaultCurrency}})</b>
+                                                            <b class="">{{language.product_total}} ({{defaultCurrency}})</b>
                                                         </td>
                                                         <td class="text-right">{{product_grand_details.product_total}}</td>
                                                     </tr>
