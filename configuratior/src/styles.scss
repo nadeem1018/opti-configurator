@@ -509,8 +509,35 @@ ul.parent_ul div:first-child li treeview li::after {
 }
 
 
-// .opti_screen4-detail-row{
-//     tr th{
-//         width: 120px !important;
-//     }
+// .opti_screen4-detail-row-top tr th.k-header, .opti_screen4-detail-row-top tr td {
+//     width: 120px !important;
 // }
+
+// .opti_screen4-detail-row-top .opti_screen4-detail-row-btm tr th.k-header, .opti_screen4-detail-row-top .opti_screen4-detail-row-btm tr td {
+//     width: 120px !important;
+// }
+
+.opti_screen4-detail-row-top {
+    .k-detail-row td.k-detail-cell {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+.opti_screen4-detail-row-btm tr th:first-child,
+.opti_screen4-detail-row-btm tr td:first-child {
+    width: 33px !important;
+}
+.opti_screen4-detail-row-top{
+    tr.k-detail-row > td.k-hierarchy-cell{
+        display: none;
+    }
+}
+
+.opti_screen4-detail-row-btm{
+    .k-grid-header{
+        display: none;
+    }
+    .k-grid-content{
+        overflow-y: hidden;
+    }
+}

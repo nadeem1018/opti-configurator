@@ -1141,7 +1141,7 @@
 
 
                 <!-- new table with detail -->
-                <kendo-grid class="opti_screen4-detail-row" [data]="step3_data_final" [height]="400" selectable="true">
+                <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-top" [data]="step3_data_final" [height]="400" selectable="true">
                   <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
                   <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
                   <kendo-grid-column title="{{this.language.item}}" field="item" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
@@ -1183,12 +1183,14 @@
                     </ng-container> -->
 
                     <kendo-grid
-                      class="opti_screen4-detail-row"
+                      class="opti_screen4-detail-row opti_screen4-detail-row-btm"
                       [data]="dataItem.feature"
                       [selectable]="true"
-                      style="height:100px"
+                      
 
                     >
+                    
+                    <kendo-grid-column class="k-hierarchy-cell k-header" field="" title="" ></kendo-grid-column>
                     <kendo-grid-column field="sl_no" title="Sl#"  [headerStyle]="{'width': '100px'}"> 
                         <ng-template kendoGridCellTemplate let-dataItem let-row  let-rowIndex="rowIndex" >
                       {{rowIndex+1}} 
