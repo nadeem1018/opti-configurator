@@ -2149,6 +2149,11 @@ export class OutputComponent implements OnInit {
       "OPTM_ACCESSORYDIS":"",
       "OPTM_ACCESSORYTOTAL": "",
       "OPTM_TOTALDISCOUNT": "",
+      "prod_total_log": Number(this.step4_final_prod_total),
+      "prod_discount_log":0,
+      "accessory_dis_amount_log":0,
+      "grand_total_log": Number(this.step4_final_grand_total),
+      "accessory_total_log":Number(this.step4_final_acc_total)
     })
     }
 
