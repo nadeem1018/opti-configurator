@@ -966,62 +966,62 @@ export class LookupComponent implements OnInit {
     }
 
     let row_count = 0;
-    for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
-      var row = this.serviceData.verify_final_data_sel_details[mcount];
-      row_count++;
-      //pushing item data
-      this.prepareFinalItemArray(row_count, row.item, row.desc , row.quantity, row.price, row.price_ext, row.feature_discount_percent, row.discounted_price,true);
-
-      let detailed_discount;
-      let discounted_detailed_price;
-      //If report type is details then only we will show features
-      for (let fcount = 0; fcount < row['feature'].length; fcount++) {
-        let featureRow = row['feature'][fcount];
+    if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
+      for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
+        var row = this.serviceData.verify_final_data_sel_details[mcount];
         row_count++;
+        //pushing item data
+        this.prepareFinalItemArray(row_count, row.item, row.desc, row.quantity, row.price, row.price_ext, row.feature_discount_percent, row.discounted_price, true);
 
-        if (this.report_type == "2") {
-          let itemFeatureName = featureRow.featureName;
-          if (featureRow.featureName == "" || featureRow.featureName == null) {
-            itemFeatureName = featureRow.Item;
-          }
+        let detailed_discount;
+        let discounted_detailed_price;
+        //If report type is details then only we will show features
+        for (let fcount = 0; fcount < row['feature'].length; fcount++) {
+          let featureRow = row['feature'][fcount];
+          row_count++;
 
-          if (featureRow.Item == "" || featureRow.Item == null) {
-            itemFeatureName = featureRow.featureName;
-          }
+          if (this.report_type == "2") {
+            let itemFeatureName = featureRow.featureName;
+            if (featureRow.featureName == "" || featureRow.featureName == null) {
+              itemFeatureName = featureRow.Item;
+            }
 
-          detailed_discount =0;
-         discounted_detailed_price = featureRow.pricextn;
-          if(featureRow.is_accessory == "Y"){
-            detailed_discount = row.accessory_discount_percent
-          }
-          else{
-            detailed_discount = row.feature_discount_percent
-          }
+            if (featureRow.Item == "" || featureRow.Item == null) {
+              itemFeatureName = featureRow.featureName;
+            }
 
-          if(detailed_discount != 0){
-            discounted_detailed_price = (featureRow.pricextn - (featureRow.pricextn * (detailed_discount / 100)));
-          }
-          
-          
+            detailed_discount = 0;
+            discounted_detailed_price = featureRow.pricextn;
+            if (featureRow.is_accessory == "Y") {
+              detailed_discount = row.accessory_discount_percent
+            }
+            else {
+              detailed_discount = row.feature_discount_percent
+            }
 
-          this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),Number(detailed_discount),Number(discounted_detailed_price),false);
-        }
-        else {
-          //As discussed with Meenesh & Pulkit
-          //For Summary report will not show sub models,show Accessories in Summary
-          // if (featureRow.ItemNumber == "" && featureRow.Item == null && featureRow.OPTM_ITEMTYPE != 1) {
-          if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
-            this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn),Number(row.accessory_discount_percent),Number((featureRow.pricextn - (featureRow.pricextn * (row.accessory_discount_percent / 100)))),false);
+            if (detailed_discount != 0) {
+              discounted_detailed_price = (featureRow.pricextn - (featureRow.pricextn * (detailed_discount / 100)));
+            }
+
+
+
+            this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(detailed_discount), Number(discounted_detailed_price), false);
           }
           else {
-            row_count--;
+            //As discussed with Meenesh & Pulkit
+            //For Summary report will not show sub models,show Accessories in Summary
+            if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
+              this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(row.accessory_discount_percent), Number((featureRow.pricextn - (featureRow.pricextn * (row.accessory_discount_percent / 100)))), false);
+            }
+            else {
+              row_count--;
+            }
           }
         }
+
       }
-
     }
-
-
+    
     //product grand details
     if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
       this.showProdGrandDetails = true;
