@@ -54,6 +54,9 @@ export class OutputComponent implements OnInit {
   public step4_final_acc_total: any = '';
   public step4_final_grand_total:any ='';
   public step4_final_DetailModelData=[];
+  //Outputlog
+  public prod_discount:any = '';
+  public access_dis_amount_log:any = '';
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -2085,6 +2088,7 @@ export class OutputComponent implements OnInit {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
+    final_dataset_to_save.OPConfig_OUTPUTLOG = [];
     final_dataset_to_save.ConnectionDetails = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
     //creating header data
@@ -2120,6 +2124,20 @@ export class OutputComponent implements OnInit {
     //   "OPTM_TOTALDISCOUNT": Number(total_discount),
     // })
 
+    //Creating OutputLog table
+    final_dataset_to_save.OPConfig_OUTPUTLOG.push({
+      "OPTM_LOGID": this.iLogID,
+      "OPTM_DOCTYPE": this.step1_data.document,
+      "OPTM_PAYMENTTERM":0,
+      "OPTM_DESC": this.step1_data.description,
+      "OPTM_PRODTOTAL": Number(this.step4_final_prod_total),
+      "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
+      "OPTM_PRODDISCOUNT" :this.prod_discount,
+      "OPTM_ACCESSORYDISAMOUNT" :0,
+      "OPTM_ACCESSORYTOTAL": Number(this.step4_final_acc_total),
+      "OPTM_CREATEDBY": this.common_output_data.username
+    });
+
     for(let iHdrCount = 0; iHdrCount < this.step3_data_final.length; iHdrCount++){
        final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.iLogID,
@@ -2151,11 +2169,6 @@ export class OutputComponent implements OnInit {
       "OPTM_ACCESSORYDIS":"",
       "OPTM_ACCESSORYTOTAL": "",
       "OPTM_TOTALDISCOUNT": "",
-      "prod_total_log": Number(this.step4_final_prod_total),
-      "prod_discount_log":0,
-      "accessory_dis_amount_log":0,
-      "grand_total_log": Number(this.step4_final_grand_total),
-      "accessory_total_log":Number(this.step4_final_acc_total)
     })
     }
 
@@ -2416,11 +2429,14 @@ export class OutputComponent implements OnInit {
     this.step4_final_prod_total = 0;
     this.step4_final_acc_total  = 0;
     this.step4_final_grand_total = 0;
+    this.prod_discount = 0;
+
     if (this.step3_data_final.length > 0 && this.step3_data_final!= undefined){
       for (var i = 0; i < this.step3_data_final.length; i++) {
         let step3_temp = this.step3_data_final[i];
         this.step4_final_prod_total += Number(step3_temp.discounted_price); 
         this.step4_final_acc_total += Number(step3_temp.accesory_final_price);
+        this.prod_discount += Number(step3_temp.feature_discount_percent);
       }
     }
 
