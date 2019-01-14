@@ -111,8 +111,8 @@ export class LoginComponent implements OnInit {
   enter_to_sublit(event) {
     if (event.keyCode == 13) {
       if (this.selecetedComp != undefined && this.selecetedComp != "") {
-        // this.onLoginBtnPress();
-        this.getLisenceData();
+         this.onLoginBtnPress();
+       // this.getLisenceData();
       } else {
         this.onConnectBtnPress();
       }
@@ -255,7 +255,7 @@ export class LoginComponent implements OnInit {
   //Core Functions 
   //To get url from DB
   getPSURL() {
-
+    this.psURL = "http://172.16.6.140/OptiAdmin";
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {
@@ -263,7 +263,7 @@ export class LoginComponent implements OnInit {
           this.psURL = data;
           //For code analysis remove in live enviorments.
           // this.psURL = "http://localhost:9500";
-          //this.psURL = "http://172.16.6.140/OptiAdmin";
+          this.psURL = "http://172.16.6.140/OptiAdmin";
           //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
           this.showLoginLoader = false;
