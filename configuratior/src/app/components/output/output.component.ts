@@ -288,6 +288,7 @@ export class OutputComponent implements OnInit {
     this.step4_final_prod_total = '';
     this.step4_final_acc_total = '';
     this.step4_final_grand_total = '';
+    this.prod_discount = '';
 
   }
 
