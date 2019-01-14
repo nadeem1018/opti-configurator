@@ -2132,7 +2132,7 @@ export class OutputComponent implements OnInit {
       "OPTM_DESC": this.step1_data.description,
       "OPTM_PRODTOTAL": Number(this.step4_final_prod_total),
       "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
-      "OPTM_PRODDISCOUNT" :this.prod_discount,
+      "OPTM_PRODDISCOUNT" : Number(this.prod_discount),
       "OPTM_ACCESSORYDISAMOUNT" :0,
       "OPTM_ACCESSORYTOTAL": Number(this.step4_final_acc_total),
       "OPTM_CREATEDBY": this.common_output_data.username
