@@ -773,7 +773,7 @@
                 <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
 
               <button style="display:none;" id="modelbom_next_click_id" type="button" class="btn btn-sm btn-primary  mr-10 btn-next"
-                data-next-block="accept_bom_so" (click)="onModelBillNextPress()">
+                data-next-block="accept_bom_so" > <!-- (click)="onModelBillNextPress()"-->
                 <i class="fa fa-arrow-right fa-fw"></i> {{language.next}}</button>
 
               <button *ngIf="validnextbtn" type="button" class="btn btn-sm btn-primary  mr-10" (click)="onValidateNextPress(true, '')">
