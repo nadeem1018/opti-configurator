@@ -2449,15 +2449,18 @@ export class OutputComponent implements OnInit {
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){
+      $(".multiple_model_click_btn").attr("disabled", "true");
       obj.fill_step3_data_array('add', '0');
       setTimeout(() => {
         obj.onclearselection(1);
        $(".accesory_check_for_second_screen").prop('checked', false);
+        $(".multiple_model_click_btn").removeAttr("disabled");
       }, 400);
     })
   }
 
   update_added_model(){
+    $(".multiple_model_click_btn").attr("disabled", "true");
     this.console.log(this.step3_data_final.length);
     for (var i = 0; i < this.step3_data_final.length; i++){
       if (this.step3_data_final[i] !== undefined){
@@ -2466,11 +2469,13 @@ export class OutputComponent implements OnInit {
         }
       }
     }
+    $(".multiple_model_click_btn").removeAttr("disabled");
   }
 
   fill_step3_data_array(mode, row_id){
+    $(".multiple_model_click_btn").attr("disabled", "true");
     let feature_discount:any  = 0;
-
+    let fg_discount_amount: any = 0;
     if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
       feature_discount = Number(this.feature_discount_percent);
     }
@@ -2480,20 +2485,19 @@ export class OutputComponent implements OnInit {
       accessory_discount = Number(this.accessory_discount_percent);
     }
     let product_total:any = 0;
-    let fg_discount_amount:any = 0;
+   
     if(accessory_discount == 0){
       product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
     } else {
-      fg_discount_amount = Number( ( Number(this.accessory_item_total) * ( Number(accessory_discount) /100 ) ) );
-     
       
-      product_total = Number(this.feature_total_before_discount) - fg_discount_amount;
+      product_total = Number(this.feature_total_before_discount) - Number((Number(this.accessory_item_total) * (Number(accessory_discount) / 100))); 
     }
     
     let per_item_price: any = (product_total / Number(this.step2_data.quantity));
     let price_ext: any = product_total;
     let rowIndex = 0;
     let sl_no = 0;
+    fg_discount_amount = (product_total - this.feature_item_total);
 
     for (let fiti = 0; fiti < this.feature_itm_list_table.length; fiti++) {
       var discount_amount = 0;
@@ -2503,22 +2507,17 @@ export class OutputComponent implements OnInit {
         if(accessory_discount != 0){
           discount_amount = (this.feature_itm_list_table[fiti].pricextn * (accessory_discount / 100));
           this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
-          this.feature_itm_list_table[fiti].discount = (accessory_discount).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (accessory_discount);
         }
       } else {
         if (feature_discount!= 0){
           discount_amount = (this.feature_itm_list_table[fiti].pricextn * (feature_discount / 100));
           this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
-          this.feature_itm_list_table[fiti].discount = (feature_discount).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (feature_discount);
         } 
       }
-
-   
       this.feature_itm_list_table[fiti].dicount_amount = (discount_amount).toFixed(3);
     }
-
-    
-
 
     if (mode == 'add'){
         if (this.step3_data_final.length > 0) {
@@ -2578,6 +2577,7 @@ export class OutputComponent implements OnInit {
         this.console.log( "this.step3_data_final");
         this.console.log( this.step3_data_final);
         this.step4_final_price_calculation();
+    $(".multiple_model_click_btn").removeAttr("disabled");
   }
 
     
