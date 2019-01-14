@@ -2627,6 +2627,11 @@ export class OutputComponent implements OnInit {
     if (navigte == true){
       $("#modelbom_next_click_id").trigger('click');
       // this.onModelBillNextPress(); // method commented 
+      if (this.step3_data_final.length == 0){
+        this.fill_step3_data_array('add', '0');
+        this.step2_selected_model = this.step3_data_final[0];
+        this.step2_selected_model_id = 1;
+      }  
     }  else {
       for_multiple_model();
     }
