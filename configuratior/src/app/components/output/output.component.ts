@@ -63,10 +63,10 @@ export class OutputComponent implements OnInit {
   public lookupfor: string = '';
   public view_route_link: any = "/home";
   public accessory_table_head = ["#", this.language.code, this.language.Name];
-  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn, this.language.accessories];
-  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
+  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.extension, this.language.accessories];
+  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.extension];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn, "", "", "delete"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.extension, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false, false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
@@ -106,7 +106,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.extension];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -2453,6 +2453,7 @@ export class OutputComponent implements OnInit {
 
   fill_step3_data_array(mode, row_id){
     let feature_discount:any  = 0;
+
     if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
       feature_discount = Number(this.feature_discount_percent);
     }
@@ -2462,19 +2463,44 @@ export class OutputComponent implements OnInit {
       accessory_discount = Number(this.accessory_discount_percent);
     }
     let product_total:any = 0;
+    let fg_discount_amount:any = 0;
     if(accessory_discount == 0){
       product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
     } else {
-      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) * ( Number(accessory_discount) /100 ) ) );
-      console.log("acc_total_no_dis - " + acc_total_no_dis);
+      fg_discount_amount = Number( ( Number(this.accessory_item_total) * ( Number(accessory_discount) /100 ) ) );
+     
       
-      product_total = Number(this.feature_total_before_discount) - acc_total_no_dis;
+      product_total = Number(this.feature_total_before_discount) - fg_discount_amount;
     }
     
     let per_item_price: any = (product_total / Number(this.step2_data.quantity));
     let price_ext: any = product_total;
     let rowIndex = 0;
     let sl_no = 0;
+
+    for (let fiti = 0; fiti < this.feature_itm_list_table.length; fiti++) {
+      var discount_amount = 0;
+      this.feature_itm_list_table[fiti].gross = Number(this.feature_itm_list_table[fiti].pricextn);
+       this.feature_itm_list_table[fiti].discount = 0;
+      if (this.feature_itm_list_table[fiti].is_accessory == 'Y'){
+        if(accessory_discount != 0){
+          discount_amount = (this.feature_itm_list_table[fiti].pricextn * (accessory_discount / 100));
+          this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (accessory_discount).toFixed(3);
+        }
+      } else {
+        if (feature_discount!= 0){
+          discount_amount = (this.feature_itm_list_table[fiti].pricextn * (feature_discount / 100));
+          this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (feature_discount).toFixed(3);
+        } 
+      }
+
+   
+      this.feature_itm_list_table[fiti].dicount_amount = (discount_amount).toFixed(3);
+    }
+
+    
 
 
     if (mode == 'add'){
@@ -2492,6 +2518,7 @@ export class OutputComponent implements OnInit {
           "price": parseFloat(per_item_price).toFixed(3),
           "price_ext": parseFloat(price_ext).toFixed(3),
           "discounted_price": (this.feature_item_total).toFixed(3),
+          "discount_amount": (fg_discount_amount).toFixed(3),
           "feature": this.feature_itm_list_table,
           "accesories": this.feature_accessory_list,
           "accessory_item_total": (this.accessory_item_total).toFixed(3),
@@ -2514,6 +2541,7 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["price"]  =  parseFloat(per_item_price).toFixed(3);
           this.step3_data_final[row_id]["price_ext"] = parseFloat(price_ext).toFixed(3);
           this.step3_data_final[row_id]["discounted_price"] = (this.feature_item_total).toFixed(3);
+          this.step3_data_final[row_id]["discount_amount"] = (fg_discount_amount).toFixed(3);
           this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
           this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
           this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;
@@ -2530,7 +2558,8 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["ModelHeaderItemsArray"] =  this.ModelHeaderItemsArray;
           this.step3_data_final[row_id]["Accessoryarray"] = this.Accessoryarray;
         }
-    
+        this.console.log( "this.step3_data_final");
+        this.console.log( this.step3_data_final);
         this.step4_final_price_calculation();
   }
 
