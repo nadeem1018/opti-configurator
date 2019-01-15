@@ -54,6 +54,9 @@ export class OutputComponent implements OnInit {
   public step4_final_acc_total: any = '';
   public step4_final_grand_total:any ='';
   public step4_final_DetailModelData=[];
+  //Outputlog
+  public prod_discount_log:any = '';
+  public access_dis_amount_log:any = '';
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -63,10 +66,10 @@ export class OutputComponent implements OnInit {
   public lookupfor: string = '';
   public view_route_link: any = "/home";
   public accessory_table_head = ["#", this.language.code, this.language.Name];
-  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn, this.language.accessories];
-  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.price_extn];
+  public feature_itm_list_table_head = [this.language.Model_FeatureName, this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.extension, this.language.accessories];
+  public itm_list_table_head = [this.language.item, this.language.description, this.language.quantity, this.language.price_source, this.language.extension];
   public model_discount_table_head = [this.language.discount_per, this.feature_discount_percent];
-  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn, "", "", "delete"];
+  public final_selection_header = ["#", this.language.serial, this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.extension, "", "", "delete"];
   public step3_data_final_hidden_elements = [false, false, false, false, false, false, true, true, false, false];
   public step4_data_final_hidden_elements = [false, false, false, false, false, false, true, true, true];
   public feature_total_before_discount = 0;
@@ -106,7 +109,7 @@ export class OutputComponent implements OnInit {
   public showFinalLoader: boolean = true;
   public dontShowFinalLoader: boolean = false;
   public Accessory_table_hidden_elements = [false, false, false, true, true, true, true];
-  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.price_extn];
+  public order_creation_table_head = [this.language.hash, 'SI#', this.language.item, this.language.quantity, this.language.price + ' (' + this.defaultCurrency + ')', this.language.extension];
   feature_child_data: any = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
@@ -282,9 +285,11 @@ export class OutputComponent implements OnInit {
     this.new_item_list = [];
     this.onclearselection(1)
     this.delete_all_row_data();
-    this.step4_final_prod_total = '';
-    this.step4_final_acc_total = '';
-    this.step4_final_grand_total = '';
+    this.step4_final_prod_total = 0;
+    this.step4_final_acc_total = 0;
+    this.step4_final_grand_total = 0;
+    this.prod_discount_log = 0;
+    this.access_dis_amount_log = 0;
 
   }
 
@@ -775,6 +780,8 @@ export class OutputComponent implements OnInit {
       "step4_final_prod_total": this.step4_final_prod_total ,
       "step4_final_acc_total": this.step4_final_acc_total,
       "step4_final_grand_total": this.step4_final_grand_total,
+      "prod_discount_log" : this.prod_discount_log,
+      "access_dis_amount_log" : this.access_dis_amount_log,
     });
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
@@ -2094,10 +2101,24 @@ export class OutputComponent implements OnInit {
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
+    final_dataset_to_save.OPConfig_OUTPUTLOG = [];
     final_dataset_to_save.ConnectionDetails = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
-    //creating header data
- 
+
+    //Creating OutputLog table
+    final_dataset_to_save.OPConfig_OUTPUTLOG.push({
+      "OPTM_LOGID": this.iLogID,
+      "OPTM_DOCTYPE": this.step1_data.document,
+      "OPTM_PAYMENTTERM":0,
+      "OPTM_DESC": this.step1_data.description,
+      "OPTM_PRODTOTAL": Number(this.step4_final_prod_total),
+      "OPTM_PRODDISCOUNT" : Number(this.prod_discount_log),
+      "OPTM_ACCESSORYTOTAL": Number(this.step4_final_acc_total),
+      "OPTM_ACCESSORYDISAMOUNT" :Number(this.access_dis_amount_log),
+      "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
+      "OPTM_CREATEDBY": this.common_output_data.username
+    });
+
     for(let iHdrCount = 0; iHdrCount < this.step3_data_final.length; iHdrCount++){
        final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.iLogID,
@@ -2129,11 +2150,6 @@ export class OutputComponent implements OnInit {
       "OPTM_ACCESSORYDIS":"",
       "OPTM_ACCESSORYTOTAL": "",
       "OPTM_TOTALDISCOUNT": "",
-      "prod_total_log": Number(this.step4_final_prod_total),
-      "prod_discount_log":0,
-      "accessory_dis_amount_log":0,
-      "grand_total_log": Number(this.step4_final_grand_total),
-      "accessory_total_log":Number(this.step4_final_acc_total)
     })
     }
 
@@ -2394,15 +2410,19 @@ export class OutputComponent implements OnInit {
     this.step4_final_prod_total = 0;
     this.step4_final_acc_total  = 0;
     this.step4_final_grand_total = 0;
+    this.prod_discount_log = 0;
+    this.access_dis_amount_log = 0;
+
     if (this.step3_data_final.length > 0 && this.step3_data_final!= undefined){
       for (var i = 0; i < this.step3_data_final.length; i++) {
         let step3_temp = this.step3_data_final[i];
-        this.step4_final_prod_total += Number(step3_temp.discounted_price); 
-        this.step4_final_acc_total += Number(step3_temp.accesory_final_price);
+        this.step4_final_prod_total += Number(step3_temp.price_ext); 
+        this.step4_final_acc_total += Number(step3_temp.accessory_total_before_dis);
+        this.prod_discount_log += Number(step3_temp.discount_amount);
+        this.access_dis_amount_log += Number(step3_temp.accessory_discount_amount);
       }
     }
-
-    this.step4_final_grand_total = Number(this.step4_final_prod_total) + Number(this.step4_final_acc_total);
+    this.step4_final_grand_total = (Number(this.step4_final_prod_total) + Number(this.step4_final_acc_total)) - (this.prod_discount_log + this.access_dis_amount_log);
   
   }
   
@@ -2410,15 +2430,18 @@ export class OutputComponent implements OnInit {
   add_fg_multiple_model(){
     var obj = this;
     this.onValidateNextPress(false, function(){
+      $(".multiple_model_click_btn").attr("disabled", "true");
       obj.fill_step3_data_array('add', '0');
       setTimeout(() => {
         obj.onclearselection(1);
        $(".accesory_check_for_second_screen").prop('checked', false);
+        $(".multiple_model_click_btn").removeAttr("disabled");
       }, 400);
     })
   }
 
   update_added_model(){
+    $(".multiple_model_click_btn").attr("disabled", "true");
     this.console.log(this.step3_data_final.length);
     for (var i = 0; i < this.step3_data_final.length; i++){
       if (this.step3_data_final[i] !== undefined){
@@ -2427,10 +2450,13 @@ export class OutputComponent implements OnInit {
         }
       }
     }
+    $(".multiple_model_click_btn").removeAttr("disabled");
   }
 
   fill_step3_data_array(mode, row_id){
+    $(".multiple_model_click_btn").attr("disabled", "true");
     let feature_discount:any  = 0;
+    let fg_discount_amount: any = 0;
     if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0){
       feature_discount = Number(this.feature_discount_percent);
     }
@@ -2440,20 +2466,47 @@ export class OutputComponent implements OnInit {
       accessory_discount = Number(this.accessory_discount_percent);
     }
     let product_total:any = 0;
+   
     if(accessory_discount == 0){
       product_total = Number(this.feature_total_before_discount) - Number(this.accessory_item_total);
     } else {
-      let acc_total_no_dis = Number( ( Number(this.accessory_item_total) * ( Number(accessory_discount) /100 ) ) );
-      console.log("acc_total_no_dis - " + acc_total_no_dis);
       
-      product_total = Number(this.feature_total_before_discount) - acc_total_no_dis;
+      product_total = Number(this.feature_total_before_discount) - Number((Number(this.accessory_item_total) * (Number(accessory_discount) / 100))); 
     }
     
     let per_item_price: any = (product_total / Number(this.step2_data.quantity));
     let price_ext: any = product_total;
     let rowIndex = 0;
     let sl_no = 0;
+    let tota_dis_on_acces:any = 0;
+    let acc_total_before_dis:any = 0;
+    if (feature_discount != 0){
+      fg_discount_amount = (price_ext * feature_discount) / 100;
+    } else {
+      fg_discount_amount = 0;
+    }
 
+    for (let fiti = 0; fiti < this.feature_itm_list_table.length; fiti++) {
+      var discount_amount = 0;
+      this.feature_itm_list_table[fiti].gross = Number(this.feature_itm_list_table[fiti].pricextn);
+       this.feature_itm_list_table[fiti].discount = 0;
+      if (this.feature_itm_list_table[fiti].is_accessory == 'Y'){
+        acc_total_before_dis += Number(this.feature_itm_list_table[fiti].pricextn);
+        if(accessory_discount != 0){
+          discount_amount = (this.feature_itm_list_table[fiti].pricextn * (accessory_discount / 100));
+          tota_dis_on_acces += Number(discount_amount);
+          this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (accessory_discount);
+        }
+      } else {
+        if (feature_discount!= 0){
+          discount_amount = (this.feature_itm_list_table[fiti].pricextn * (feature_discount / 100));
+          this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
+          this.feature_itm_list_table[fiti].discount = (feature_discount);
+        } 
+      }
+      this.feature_itm_list_table[fiti].dicount_amount = (discount_amount).toFixed(3);
+    }
 
     if (mode == 'add'){
         if (this.step3_data_final.length > 0) {
@@ -2470,6 +2523,9 @@ export class OutputComponent implements OnInit {
           "price": parseFloat(per_item_price).toFixed(3),
           "price_ext": parseFloat(price_ext).toFixed(3),
           "discounted_price": (this.feature_item_total).toFixed(3),
+          "discount_amount": (fg_discount_amount).toFixed(3),
+          "accessory_discount_amount": parseFloat(tota_dis_on_acces).toFixed(3),
+          "accessory_total_before_dis": parseFloat(acc_total_before_dis).toFixed(3),
           "feature": this.feature_itm_list_table,
           "accesories": this.feature_accessory_list,
           "accessory_item_total": (this.accessory_item_total).toFixed(3),
@@ -2492,6 +2548,9 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["price"]  =  parseFloat(per_item_price).toFixed(3);
           this.step3_data_final[row_id]["price_ext"] = parseFloat(price_ext).toFixed(3);
           this.step3_data_final[row_id]["discounted_price"] = (this.feature_item_total).toFixed(3);
+          this.step3_data_final[row_id]["discount_amount"] = (fg_discount_amount).toFixed(3);
+          this.step3_data_final[row_id]["accessory_discount_amount"] = parseFloat(tota_dis_on_acces).toFixed(3);
+          this.step3_data_final[row_id]["accessory_total_before_dis"] = parseFloat(acc_total_before_dis).toFixed(3);
           this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
           this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
           this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;
@@ -2508,8 +2567,10 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["ModelHeaderItemsArray"] =  this.ModelHeaderItemsArray;
           this.step3_data_final[row_id]["Accessoryarray"] = this.Accessoryarray;
         }
-    
+        this.console.log( "this.step3_data_final");
+        this.console.log( this.step3_data_final);
         this.step4_final_price_calculation();
+    $(".multiple_model_click_btn").removeAttr("disabled");
   }
 
     

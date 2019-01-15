@@ -1033,7 +1033,9 @@ export class LookupComponent implements OnInit {
       this.showProdGrandDetails = false;
     }
 
-    $("#invoice_modal").modal('show');
+
+      $("#invoice_modal").modal('show');
+    
   
   }
 
