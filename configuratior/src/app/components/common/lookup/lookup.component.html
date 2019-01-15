@@ -543,7 +543,18 @@
                                                             </td>
                                                             <td class="pink text-right">{{product_grand_details.step4_final_acc_total}}</td>
                                                         </tr>
-                                                    
+                                                    <tr>
+                                                        <td width="70%">
+                                                            {{this.language.prod_disc_amount}} ({{defaultCurrency}})
+                                                        </td>
+                                                        <td class="text-right" width="30%">{{product_grand_details.prod_discount_log | toFixed:'3'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="70%">
+                                                            {{this.language.acc_disc_amount}} ({{defaultCurrency}})
+                                                        </td>
+                                                        <td class="text-right" width="30%">{{product_grand_details.access_dis_amount_log | toFixed:'3'}}</td>
+                                                    </tr>
                                                     <tr class="bg-grey bg-lighten-4">
                                                         <td class="text-bold-800">
                                                             <b class="">{{language.grand_total}} ({{defaultCurrency}})</b>

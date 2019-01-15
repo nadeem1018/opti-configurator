@@ -55,7 +55,7 @@ export class OutputComponent implements OnInit {
   public step4_final_grand_total:any ='';
   public step4_final_DetailModelData=[];
   //Outputlog
-  public prod_discount:any = '';
+  public prod_discount_log:any = '';
   public access_dis_amount_log:any = '';
   //public step2_data_all_data={};
 
@@ -285,10 +285,11 @@ export class OutputComponent implements OnInit {
     this.new_item_list = [];
     this.onclearselection(1)
     this.delete_all_row_data();
-    this.step4_final_prod_total = '';
-    this.step4_final_acc_total = '';
-    this.step4_final_grand_total = '';
-    this.prod_discount = '';
+    this.step4_final_prod_total = 0;
+    this.step4_final_acc_total = 0;
+    this.step4_final_grand_total = 0;
+    this.prod_discount_log = 0;
+    this.access_dis_amount_log = 0;
 
   }
 
@@ -779,6 +780,8 @@ export class OutputComponent implements OnInit {
       "step4_final_prod_total": this.step4_final_prod_total ,
       "step4_final_acc_total": this.step4_final_acc_total,
       "step4_final_grand_total": this.step4_final_grand_total,
+      "prod_discount_log" : this.prod_discount_log,
+      "access_dis_amount_log" : this.access_dis_amount_log,
     });
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
@@ -2132,10 +2135,10 @@ export class OutputComponent implements OnInit {
       "OPTM_PAYMENTTERM":0,
       "OPTM_DESC": this.step1_data.description,
       "OPTM_PRODTOTAL": Number(this.step4_final_prod_total),
-      "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
-      "OPTM_PRODDISCOUNT" : Number(this.prod_discount),
-      "OPTM_ACCESSORYDISAMOUNT" :0,
+      "OPTM_PRODDISCOUNT" : Number(this.prod_discount_log),
       "OPTM_ACCESSORYTOTAL": Number(this.step4_final_acc_total),
+      "OPTM_ACCESSORYDISAMOUNT" :Number(this.access_dis_amount_log),
+      "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
       "OPTM_CREATEDBY": this.common_output_data.username
     });
 
@@ -2430,18 +2433,19 @@ export class OutputComponent implements OnInit {
     this.step4_final_prod_total = 0;
     this.step4_final_acc_total  = 0;
     this.step4_final_grand_total = 0;
-    this.prod_discount = 0;
+    this.prod_discount_log = 0;
+    this.access_dis_amount_log = 0;
 
     if (this.step3_data_final.length > 0 && this.step3_data_final!= undefined){
       for (var i = 0; i < this.step3_data_final.length; i++) {
         let step3_temp = this.step3_data_final[i];
-        this.step4_final_prod_total += Number(step3_temp.discounted_price); 
-        this.step4_final_acc_total += Number(step3_temp.accesory_final_price);
-        this.prod_discount += Number(step3_temp.feature_discount_percent);
+        this.step4_final_prod_total += Number(step3_temp.price_ext); 
+        this.step4_final_acc_total += Number(step3_temp.accessory_total_before_dis);
+        this.prod_discount_log += Number(step3_temp.discount_amount);
+        this.access_dis_amount_log += Number(step3_temp.accessory_discount_amount);
       }
     }
-
-    this.step4_final_grand_total = Number(this.step4_final_prod_total) + Number(this.step4_final_acc_total);
+    this.step4_final_grand_total = (Number(this.step4_final_prod_total) + Number(this.step4_final_acc_total)) - (this.prod_discount_log + this.access_dis_amount_log);
   
   }
   
@@ -2497,15 +2501,23 @@ export class OutputComponent implements OnInit {
     let price_ext: any = product_total;
     let rowIndex = 0;
     let sl_no = 0;
-    fg_discount_amount = (product_total - this.feature_item_total);
+    let tota_dis_on_acces:any = 0;
+    let acc_total_before_dis:any = 0;
+    if (feature_discount != 0){
+      fg_discount_amount = (price_ext * feature_discount) / 100;
+    } else {
+      fg_discount_amount = 0;
+    }
 
     for (let fiti = 0; fiti < this.feature_itm_list_table.length; fiti++) {
       var discount_amount = 0;
       this.feature_itm_list_table[fiti].gross = Number(this.feature_itm_list_table[fiti].pricextn);
        this.feature_itm_list_table[fiti].discount = 0;
       if (this.feature_itm_list_table[fiti].is_accessory == 'Y'){
+        acc_total_before_dis += Number(this.feature_itm_list_table[fiti].pricextn);
         if(accessory_discount != 0){
           discount_amount = (this.feature_itm_list_table[fiti].pricextn * (accessory_discount / 100));
+          tota_dis_on_acces += Number(discount_amount);
           this.feature_itm_list_table[fiti].gross = (Number(this.feature_itm_list_table[fiti].pricextn) - Number(discount_amount)).toFixed(3);
           this.feature_itm_list_table[fiti].discount = (accessory_discount);
         }
@@ -2535,6 +2547,8 @@ export class OutputComponent implements OnInit {
           "price_ext": parseFloat(price_ext).toFixed(3),
           "discounted_price": (this.feature_item_total).toFixed(3),
           "discount_amount": (fg_discount_amount).toFixed(3),
+          "accessory_discount_amount": parseFloat(tota_dis_on_acces).toFixed(3),
+          "accessory_total_before_dis": parseFloat(acc_total_before_dis).toFixed(3),
           "feature": this.feature_itm_list_table,
           "accesories": this.feature_accessory_list,
           "accessory_item_total": (this.accessory_item_total).toFixed(3),
@@ -2558,6 +2572,8 @@ export class OutputComponent implements OnInit {
           this.step3_data_final[row_id]["price_ext"] = parseFloat(price_ext).toFixed(3);
           this.step3_data_final[row_id]["discounted_price"] = (this.feature_item_total).toFixed(3);
           this.step3_data_final[row_id]["discount_amount"] = (fg_discount_amount).toFixed(3);
+          this.step3_data_final[row_id]["accessory_discount_amount"] = parseFloat(tota_dis_on_acces).toFixed(3);
+          this.step3_data_final[row_id]["accessory_total_before_dis"] = parseFloat(acc_total_before_dis).toFixed(3);
           this.step3_data_final[row_id]["feature"]  =  this.feature_itm_list_table;
           this.step3_data_final[row_id]["accesories"]  =  this.feature_accessory_list;
           this.step3_data_final[row_id]["model_id"]  =  this.step2_data.model_id;

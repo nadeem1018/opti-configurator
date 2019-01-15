@@ -953,7 +953,7 @@
                   <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                     <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                       [selectable]="false" [resizable]="true">
-                      <kendo-grid-column class="k-hierarchy-cell k-header" field="" title="" ></kendo-grid-column>
+                      <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" ></kendo-grid-column>
                       <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
                         <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                           {{rowIndex+1}}
@@ -1019,7 +1019,18 @@
                           </td>
                           <td class="text-right" width="30%">{{this.step4_final_acc_total | toFixed:'3'}}</td>
                         </tr>
-                       
+                        <tr>
+                          <td width="70%">
+                            {{this.language.prod_disc_amount}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right" width="30%">{{this.prod_discount_log | toFixed:'3'}}</td>
+                        </tr>
+                        <tr>
+                          <td width="70%">
+                            {{this.language.acc_disc_amount}} ({{defaultCurrency}})
+                          </td>
+                          <td class="text-right" width="30%">{{this.access_dis_amount_log | toFixed:'3'}}</td>
+                        </tr>
                         <tr>
                           <td width="70%"><strong>{{this.language.grand_total}} ({{defaultCurrency}})</strong></td>
                           <td class="text-right" width="70%">{{this.step4_final_grand_total | toFixed:'3'}}</td>
@@ -1287,7 +1298,7 @@
                           <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                             <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                               [selectable]="false" [resizable]="true">
-                              <kendo-grid-column class="k-hierarchy-cell k-header" field="" title=""></kendo-grid-column>
+                              <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex"></kendo-grid-column>
                               <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
                                 <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                                   {{rowIndex+1}}
@@ -1368,12 +1379,19 @@
                               </td>
                               <td class="text-right mr-3">{{this.step4_final_acc_total | toFixed:'3'}}</td>
                             </tr>
-                            
+                            <tr>
+                              <td width="70%">
+                                {{this.language.prod_disc_amount}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right" width="30%">{{this.prod_discount_log | toFixed:'3'}}</td>
+                            </tr>
+                            <tr>
+                              <td width="70%">
+                                {{this.language.acc_disc_amount}} ({{defaultCurrency}})
+                              </td>
+                              <td class="text-right" width="30%">{{this.access_dis_amount_log | toFixed:'3'}}</td>
+                            </tr>
                           </thead>
-                          <tbody>
-                            
-
-                          </tbody>
                           <tfoot>
                             <tr style=" font-size: 14px; ">
                               <th>{{this.language.grand_total}} ({{defaultCurrency}})</th>
