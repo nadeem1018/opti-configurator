@@ -980,6 +980,13 @@ export class OutputComponent implements OnInit {
             return data.ModelBOMDataForSecondLevel
           })
 
+          data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
+            if(obj['checked'] =="True"){
+              obj['checked'] =true
+            }
+            return data.ModelBOMDataForSecondLevel
+          })
+
           data.ObjFeatureItemDataWithDfaultY = data.ObjFeatureItemDataWithDfaultY.filter(function (obj) {
             obj['OPTM_LEVEL'] = 1;
             return data.ObjFeatureItemDataWithDfaultY
@@ -1045,10 +1052,12 @@ export class OutputComponent implements OnInit {
 
           this.ModelLookupFlag = true
 
+          this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
+
           if (this.setModelDataFlag == true) {
             this.setModelDataInOutputBom(getmodelsavedata);
             var Modelfeaturesaveditems=this.FeatureBOMDataForSecondLevel.filter(function(obj){
-              return obj['checked']==true
+              return obj['checked']==true && obj['OPTM_TYPE']==2
             })
             if(Modelfeaturesaveditems.length>0){
               this.SetModelFeatureSavedItems(Modelfeaturesaveditems)
@@ -2077,10 +2086,10 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    if (button_press == 'finishPress') {
+   // if (button_press == 'finishPress' ) {
       // this.onValidateNextPress(true, "");
       this.generate_unique_key();
-    }
+    // }
     this.showLookupLoader = true;
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
@@ -2088,38 +2097,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.ConnectionDetails = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
     //creating header data
-    // final_dataset_to_save.OPConfig_OUTPUTHDR.push({
-    //   "OPTM_LOGID": this.iLogID,
-    //   "OPTM_OUTPUTID": "",
-    //   "OPTM_DOCTYPE": this.step1_data.document,
-    //   "OPTM_BPCODE": this.step1_data.customer,
-    //   "OPTM_SHIPTO": this.step1_data.ship_to,
-    //   "OPTM_BILLTO": this.step1_data.bill_to,
-    //   "OPTM_CONTACTPERSON": this.step1_data.person_name,
-    //   "OPTM_TAX": this.acc_item_tax,
-    //   "OPTM_PAYMENTTERM": 0,
-    //   "OPTM_FGITEM": this.step2_data.model_code,
-    //   "OPTM_KEY": "",
-    //   "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
-    //   "OPTM_QUANTITY": parseFloat(this.step2_data.quantity).toFixed(3),
-    //   "OPTM_CREATEDBY": this.common_output_data.username,
-    //   "OPTM_MODIFIEDBY": this.common_output_data.username,
-    //   "OPTM_DESC": this.step1_data.description,
-    //   "OPTM_SALESEMP": this.step1_data.sales_employee,
-    //   "OPTM_OWNER": this.step1_data.owner,
-    //   "OPTM_REMARKS": this.step1_data.remark,
-    //   "OPTM_BILLADD": this.step1_data.bill_to_address,
-    //   "OPTM_SHIPADD": this.step1_data.ship_to_address,
-    //   "OPTM_POSTINGDATE": this.step1_data.posting_date,
-    //   "OPTM_GRANDTOTAL": Number(this.acc_grand_total),
-    //   "OPTM_PRODTOTAL": Number(this.feature_item_total),
-    //   "OPTM_TOTALBEFOREDIS": Number(this.feature_total_before_discount),
-    //   "OPTM_PRODDISCOUNT": Number(this.feature_discount_percent),
-    //   "OPTM_ACCESSORYDIS": Number(this.accessory_discount_percent),
-    //   "OPTM_ACCESSORYTOTAL": Number(this.accessory_item_total),
-    //   "OPTM_TOTALDISCOUNT": Number(total_discount),
-    // })
-
+ 
     for(let iHdrCount = 0; iHdrCount < this.step3_data_final.length; iHdrCount++){
        final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.iLogID,
