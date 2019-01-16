@@ -953,7 +953,7 @@
                   <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                     <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                       [selectable]="false" [resizable]="true">
-                      <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" ></kendo-grid-column>
+                      <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
                       <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
                         <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                           {{rowIndex+1}}
@@ -1060,7 +1060,7 @@
 
             <span class="output_final_screen_save_button">
               <button (click)="onFinishPress('screen4_data', 'finishPress')" *ngIf="step3_data_final.length > 0  && step1_data.document != 'draft'"
-                type="submit" class="btn btn-sm btn-primary   mr-10 btn-submit  btn-next" data-next-block="fina_doc_create">
+                type="submit" class="btn btn-sm btn-primary mr-10 btn-submit btn-next js-btn-finish" data-next-block="fina_doc_create">
                 <i class="fa fa-check-circle fa-fw"></i> {{language.finish}}</button>
             </span>
           </div>
@@ -1251,7 +1251,9 @@
                       <div class="accessories_table">
                         <!-- new table with detail -->
                         <!-- new table with detail -->
-                        <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-top" [data]="step3_data_final" [height]="400" [resizable]="true"
+                        <kendo-grid 
+                        (detailExpand)="colSpanValue($event)"
+                        class="opti_screen4-detail-row opti_screen4-detail-row-top opti_screen4-detail-row-lastchildTable" [data]="step3_data_final" [height]="400" [resizable]="true"
                           [selectable]="false">
                           <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
                           <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [headerStyle]="{'width': '100px'}">
@@ -1298,7 +1300,7 @@
                           <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                             <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                               [selectable]="false" [resizable]="true">
-                              <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex"></kendo-grid-column>
+                              <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
                               <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
                                 <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                                   {{rowIndex+1}}
@@ -1324,21 +1326,21 @@
                                   <span class="text-right pull-right"> {{childDataItem.pricextn}} </span>
                                 </ng-template>
                               </kendo-grid-column>
-                            <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [headerStyle]="{'width': '100px'}">
-                              <ng-template kendoGridCellTemplate let-row let-childDataItem>
-                                <span class="text-right pull-right"> {{childDataItem.discount}} </span>
-                              </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
-                              <ng-template kendoGridCellTemplate let-row let-childDataItem>
-                                {{childDataItem.dicount_amount}}
-                              </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
-                              <ng-template kendoGridCellTemplate let-row let-childDataItem>
-                                {{childDataItem.gross}}
-                              </ng-template>
-                            </kendo-grid-column>
+                              <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [headerStyle]="{'width': '100px'}">
+                                <ng-template kendoGridCellTemplate let-row let-childDataItem>
+                                  <span class="text-right pull-right"> {{childDataItem.discount}} </span>
+                                </ng-template>
+                              </kendo-grid-column>
+                              <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                                <ng-template kendoGridCellTemplate let-row let-childDataItem>
+                                  {{childDataItem.dicount_amount}}
+                                </ng-template>
+                              </kendo-grid-column>
+                              <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                                <ng-template kendoGridCellTemplate let-row let-childDataItem>
+                                  {{childDataItem.gross}}
+                                </ng-template>
+                              </kendo-grid-column>
                             </kendo-grid>
                           </ng-template>
                         </kendo-grid>

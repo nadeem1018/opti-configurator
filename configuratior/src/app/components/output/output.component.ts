@@ -362,6 +362,7 @@ export class OutputComponent implements OnInit {
   onSavePress() {
     // this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
+    
   }
 
   open_config_lookup() {
@@ -2196,6 +2197,12 @@ export class OutputComponent implements OnInit {
         return;
       }
     )
+    
+  }
+  colSpanValue(e){
+    setTimeout(() => {  
+      $('.opti_screen4-detail-row-lastchildTable .k-detail-row td.k-detail-cell').attr('colspan',9);
+    }, 1000);
   }
   openPriceListLookup() {
   }
@@ -2442,6 +2449,7 @@ export class OutputComponent implements OnInit {
 
   update_added_model(){
     $(".multiple_model_click_btn").attr("disabled", "true");
+    
     this.console.log(this.step3_data_final.length);
     for (var i = 0; i < this.step3_data_final.length; i++){
       if (this.step3_data_final[i] !== undefined){
@@ -2450,7 +2458,7 @@ export class OutputComponent implements OnInit {
         }
       }
     }
-    $(".multiple_model_click_btn").removeAttr("disabled");
+    $(".multiple_model_click_btn").removeAttr("disabled");    
   }
 
   fill_step3_data_array(mode, row_id){
