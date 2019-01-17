@@ -366,6 +366,7 @@ export class OutputComponent implements OnInit {
   onSavePress() {
     // this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
+    
   }
 
   open_config_lookup() {
@@ -994,6 +995,13 @@ export class OutputComponent implements OnInit {
             return data.ModelBOMDataForSecondLevel
           })
 
+          data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
+            if(obj['checked'] =="True"){
+              obj['checked'] =true
+            }
+            return data.ModelBOMDataForSecondLevel
+          })
+
           data.ObjFeatureItemDataWithDfaultY = data.ObjFeatureItemDataWithDfaultY.filter(function (obj) {
             obj['OPTM_LEVEL'] = 1;
             return data.ObjFeatureItemDataWithDfaultY
@@ -1059,10 +1067,12 @@ export class OutputComponent implements OnInit {
 
           this.ModelLookupFlag = true
 
+          this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
+
           if (this.setModelDataFlag == true) {
             this.setModelDataInOutputBom(getmodelsavedata);
             var Modelfeaturesaveditems=this.FeatureBOMDataForSecondLevel.filter(function(obj){
-              return obj['checked']==true
+              return obj['checked']==true && obj['OPTM_TYPE']==2
             })
             if(Modelfeaturesaveditems.length>0){
               this.SetModelFeatureSavedItems(Modelfeaturesaveditems)
@@ -2091,10 +2101,10 @@ export class OutputComponent implements OnInit {
   }
 
   onFinishPress(screen_name, button_press) {
-    if (button_press == 'finishPress') {
+   // if (button_press == 'finishPress' ) {
       // this.onValidateNextPress(true, "");
       this.generate_unique_key();
-    }
+    // }
     this.showLookupLoader = true;
     let final_dataset_to_save: any = {};
     final_dataset_to_save.OPConfig_OUTPUTHDR = [];
@@ -2198,6 +2208,12 @@ export class OutputComponent implements OnInit {
         return;
       }
     )
+    
+  }
+  colSpanValue(e){
+    setTimeout(() => {  
+      $('.opti_screen4-detail-row-lastchildTable .k-detail-row td.k-detail-cell').attr('colspan',9);
+    }, 1000);
   }
   openPriceListLookup() {
   }
@@ -2447,6 +2463,7 @@ export class OutputComponent implements OnInit {
 
   update_added_model(){
     $(".multiple_model_click_btn").attr("disabled", "true");
+    
     this.console.log(this.step3_data_final.length);
     for (var i = 0; i < this.step3_data_final.length; i++){
       if (this.step3_data_final[i] !== undefined){
@@ -2455,7 +2472,7 @@ export class OutputComponent implements OnInit {
         }
       }
     }
-    $(".multiple_model_click_btn").removeAttr("disabled");
+    $(".multiple_model_click_btn").removeAttr("disabled");    
   }
 
   fill_step3_data_array(mode, row_id){
