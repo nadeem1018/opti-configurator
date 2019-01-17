@@ -400,5 +400,7 @@
     "InvalidFeatureCode": "Invalid Feature Code",
     "Minimumitemsarenotselected": "Minimum items are not selected - ",
     "draft": "Draft",
-    "select_model_on_config": "Select a Model"
+    "select_model_on_config": "Select a Model",
+    "multiple_model_add":"Model Added.",
+    "multiple_model_update":"Model Updated."
 }

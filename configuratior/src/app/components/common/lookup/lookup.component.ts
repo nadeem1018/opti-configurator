@@ -1028,6 +1028,8 @@ export class LookupComponent implements OnInit {
       this.product_grand_details.step4_final_prod_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_prod_total).toFixed(3);
       this.product_grand_details.step4_final_acc_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_acc_total).toFixed(3);
       this.product_grand_details.step4_final_grand_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_grand_total).toFixed(3);
+      this.product_grand_details.prod_discount_log = parseFloat(this.serviceData.product_grand_details[0].prod_discount_log).toFixed(3);
+      this.product_grand_details.access_dis_amount_log = parseFloat(this.serviceData.product_grand_details[0].access_dis_amount_log).toFixed(3);
     }
     else {
       this.showProdGrandDetails = false;
