@@ -1369,12 +1369,12 @@
                               </kendo-grid-column>
                               <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
                                 <ng-template kendoGridCellTemplate let-row let-childDataItem>
-                                  {{childDataItem.dicount_amount}}
+                                  <span class="text-right pull-right">{{childDataItem.dicount_amount}}</span>
                                 </ng-template>
                               </kendo-grid-column>
                               <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
                                 <ng-template kendoGridCellTemplate let-row let-childDataItem>
-                                  {{childDataItem.gross}}
+                              <span class="text-right pull-right">   {{childDataItem.gross}} </span>
                                 </ng-template>
                               </kendo-grid-column>
                             </kendo-grid>

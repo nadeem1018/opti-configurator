@@ -87,10 +87,11 @@ export class LookupComponent implements OnInit {
   isPerfectSCrollBar: boolean = false;
   public search_string = "";
   public logo_path = this.commonData.get_current_url() + "/assets/images/logo_configurator/icon/128_icon.png";
-  public company_name:any  = "N/A";
-  public company_address:any = "N/A";
+  public company_name: any = "N/A";
+  public company_address: any = "N/A";
   public dialogOpened = false;
-
+  public load_print_report: boolean = false;
+  public popup_lookupfor = "";
   public close_kendo_dialog() {
     this.dialogOpened = false;
   }
@@ -119,8 +120,12 @@ export class LookupComponent implements OnInit {
     this.dialogOpened = false;
   }
 
-  ngOnChanges(): void {
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
+  async ngOnChanges(): Promise<void> {
+    this.popup_lookupfor = this.lookupfor;
     this.showLoader = true;
     this.LookupDataLoaded = false;
     this.showruleOutputLoader = true;
@@ -135,84 +140,102 @@ export class LookupComponent implements OnInit {
     this.skip = 0;
     this.dialogOpened = false;
     //this.test_model();
-    console.log("this.lookupfor " + this.lookupfor);
+    console.log("this.lookupfor " + this.popup_lookupfor);
     this.search_string = "";
+    if (this.popup_lookupfor == "output_invoice_print") {
+    await this.sleep(400);
+    }
 
-    if (this.lookupfor != "") {
-      if (this.lookupfor == "model_template") {
+    if (this.popup_lookupfor != "") {
+      if (this.popup_lookupfor == "model_template") {
         this.model_template_lookup();
+        return;
       }
-      if (this.lookupfor == "model_item_generation") {
+      if (this.popup_lookupfor == "model_item_generation") {
         this.model_item_generation_lookup();
+        return;
       }
 
-      if (this.lookupfor == "feature_lookup") {
+      if (this.popup_lookupfor == "feature_lookup") {
         this.get_features_lookup();
+        return;
       }
 
-      if (this.lookupfor == "feature_Detail_lookup") {
+      if (this.popup_lookupfor == "feature_Detail_lookup") {
         this.get_features_lookup();
+        return;
       }
 
-      if (this.lookupfor == "Item_Detail_lookup") {
+      if (this.popup_lookupfor == "Item_Detail_lookup") {
         this.get_Item_lookup();
+        return;
       }
 
       // open poup for import 
-      if (this.lookupfor == "import_popup") {
+      if (this.popup_lookupfor == "import_popup") {
         this.import_popup();
+        return;
       }
 
-      if (this.lookupfor == "ModelBom_lookup" || this.lookupfor == "ModelBom_Detail_lookup") {
+      if (this.popup_lookupfor == "ModelBom_lookup" || this.popup_lookupfor == "ModelBom_Detail_lookup") {
         this.get_Model_lookup();
+        return;
       }
 
-      if (this.lookupfor == "large_image_view") {
+      if (this.popup_lookupfor == "large_image_view") {
         this.showImage();
+        return;
       }
-      if (this.lookupfor == "Price_lookup") {
+      if (this.popup_lookupfor == "Price_lookup") {
         this.get_Price_lookup();
+        return;
       }
-      if (this.lookupfor == "rule_section_lookup") {
+      if (this.popup_lookupfor == "rule_section_lookup") {
         this.ruleSelection();
+        return;
       }
-
-      // if (this.lookupfor == "tree_view_lookup"){
-      //   this.showTreeView();
-      // }
-
-      if (this.lookupfor == "tree_view__model_bom_lookup") {
+ 
+      if (this.popup_lookupfor == "tree_view__model_bom_lookup") {
         this.showModelBOMTreeView();
+        return;
       }
 
-      if (this.lookupfor == "associated_BOM") {
+      if (this.popup_lookupfor == "associated_BOM") {
         this.showAssociatedBOMs();
+        return;
       }
-      if (this.lookupfor == "feature_Detail_Output_lookup") {
+      if (this.popup_lookupfor == "feature_Detail_Output_lookup") {
         this.get_features_Output_lookup();
+        return;
       }
 
-      if (this.lookupfor == "output_customer") {
+      if (this.popup_lookupfor == "output_customer") {
         this.customer_lookup();
+        return;
       }
 
-      if (this.lookupfor == "operand_feature_lookup") {
+      if (this.popup_lookupfor == "operand_feature_lookup") {
         this.get_operand_lookup();
+        return;
       }
 
-      if (this.lookupfor == "operand_model_lookup") {
+      if (this.popup_lookupfor == "operand_model_lookup") {
         this.get_Model_lookup();
+        return;
       }
 
-      if (this.lookupfor == "configure_list_lookup") {
+      if (this.popup_lookupfor == "configure_list_lookup") {
         this.configure_list_lookup();
+        return;
       }
-      if (this.lookupfor == "ModelBomForWizard_lookup") {
+      if (this.popup_lookupfor == "ModelBomForWizard_lookup") {
         this.get_ModelWizard_lookup();
+        return;
       }
 
-      if (this.lookupfor == "output_invoice_print") {
+      if (this.popup_lookupfor == "output_invoice_print") {
         this.output_invoice_print();
+        return;
       }
     }
   }
@@ -240,7 +263,7 @@ export class LookupComponent implements OnInit {
 
 
     this.lookupvalue.emit(Object.values(lookup_key));
-  //   $("#lookup_modal").modal('hide');
+    //   $("#lookup_modal").modal('hide');
     console.log(selection);
     selection.selectedRows = [];
     selection.index = 0;
@@ -470,8 +493,13 @@ export class LookupComponent implements OnInit {
     $("#" + lookup_id).modal('hide');
 
     //clear arrays after close button clicked on print model 
-    if (this.lookupfor == 'output_invoice_print') {
+    if (this.popup_lookupfor == 'output_invoice_print') {
       this.cleanup_print_arrays();
+
+      // popup_lookupfor  = "";
+      setTimeout(() => {
+        this.popup_lookupfor = "";
+      });
     }
 
   }
@@ -884,26 +912,28 @@ export class LookupComponent implements OnInit {
   }
 
   output_invoice_print() {
-     this.company_name = "Optipro Product Configuration";
+    this.company_name = "Optipro Product Configuration";
     this.company_address = "255 Street, Washington DC, USA ";
     this.popup_title = this.language.print_quote;
-   /*  this.common_service.GetCompanyDetails(this.companyName).subscribe(
-      data => {
-        if (data != null || data != undefined) {
-          if (data.length > 0) {
-            if (data[0].LogoImage != ""){
-              this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
-            }
-            this.company_name = data[0].CompanyName;
-            this.company_address = data[0].CompanyAddress;
-            
-          }
-        }
-      },
-      error => {
-        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
-      }
-    ) */
+    this.load_print_report = true;
+    console.log(" output_invoice_print - " + this.load_print_report);
+    /*  this.common_service.GetCompanyDetails(this.companyName).subscribe(
+       data => {
+         if (data != null || data != undefined) {
+           if (data.length > 0) {
+             if (data[0].LogoImage != ""){
+               this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
+             }
+             this.company_name = data[0].CompanyName;
+             this.company_address = data[0].CompanyAddress;
+             
+           }
+         }
+       },
+       error => {
+         this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+       }
+     ) */
 
     //Print Criteria
     //Summary --> Customer + COM + Qty + Acces.
@@ -1021,7 +1051,7 @@ export class LookupComponent implements OnInit {
 
       }
     }
-    
+
     //product grand details
     if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
       this.showProdGrandDetails = true;
@@ -1035,16 +1065,15 @@ export class LookupComponent implements OnInit {
       this.showProdGrandDetails = false;
     }
 
-
-      $("#invoice_modal").modal('show');
-    
-  
+    console.log(" invoice_modal show  - " + this.load_print_report);
+    $("#invoice_modal").modal('show');
+    //   this.lookupfor = "";
   }
 
   public tree_data_json: any = '';
   @Input() component;
 
-  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext,feature_discount_percent,discounted_price,isFG) {
+  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext, feature_discount_percent, discounted_price, isFG) {
     // if (this.report_type == "2" && isFG == true) {
     //   price = "";
     //   quantity = "";
@@ -1059,7 +1088,7 @@ export class LookupComponent implements OnInit {
       "price_ext": parseFloat(price_ext).toFixed(3),
       "feature_discount_percent": parseFloat(feature_discount_percent).toFixed(3),
       "discounted_price": parseFloat(discounted_price).toFixed(3),
-      "isFG":isFG
+      "isFG": isFG
     });
   }
 
