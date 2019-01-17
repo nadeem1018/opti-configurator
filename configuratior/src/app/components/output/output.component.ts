@@ -9,7 +9,8 @@ import { JitSummaryResolver } from '../../../../node_modules/@angular/compiler';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { isNumber } from 'util';
 import { NullInjector } from '../../../../node_modules/@angular/core/src/di/injector';
-//import { LookupComponent } from '../common/lookup/lookup.component';
+import { CommonService } from '../../services/common.service';
+import { serializePaths } from '@angular/router/src/url_tree';
 
 
 @Component({
@@ -117,7 +118,7 @@ export class OutputComponent implements OnInit {
   public complete_dataset: any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef,private CommonService: CommonService) { }
   serviceData: any;
   public new_output_config: boolean = false;
   public contact_persons: any = [];
@@ -158,6 +159,7 @@ export class OutputComponent implements OnInit {
   public defaultitemflagid: any;
   public ModelInModelArray: any = [];
   public ModelLookupFlag = false
+  public cDate = new Date();
 
 
   isMobile: boolean = false;
@@ -180,9 +182,9 @@ export class OutputComponent implements OnInit {
   }
 
   ngOnInit() {
-    let cDate = new Date();
+    
     //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
-    this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
+    //this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.detectDevice();
@@ -300,6 +302,26 @@ export class OutputComponent implements OnInit {
 
   onStep0NextPress() {
     console.log(this.step1_data.main_operation_type);
+
+    this.CommonService.GetServerDate().subscribe(
+      data => {
+        if (data.length > 0) {
+          if(data[0].DATEANDTIME != null){
+            let server_date_time = new Date(data[0].DATEANDTIME);
+            this.step1_data.posting_date = (server_date_time.getMonth() + 1) + "/" + server_date_time.getDate() + "/" + server_date_time.getFullYear();
+          }
+        }
+        else {
+          this.step1_data.posting_date = (this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear();
+          this.toastr.error('', this.language.ServerDateError, this.commonData.toast_config);
+          return;
+        }
+      }, error => {
+        this.step1_data.posting_date = (this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear();
+        this.showLookupLoader = false;
+      }
+    )
+    
     if (this.step1_data.main_operation_type == 1) {
       console.log(this.step1_data.description);
       if (this.step1_data.description == "" || this.step1_data.description == undefined) {
@@ -2090,8 +2112,8 @@ export class OutputComponent implements OnInit {
       "OPTM_GRANDTOTAL": Number(this.step4_final_grand_total),
       "OPTM_CREATEDBY": this.common_output_data.username
     });
-    
-    //creating header data
+
+    let delivery_date_string =  (this.step1_data.delivery_until.getMonth() + 1) + "/" + this.step1_data.delivery_until.getDate() + "/" + this.step1_data.delivery_until.getFullYear();
     for(let iHdrCount = 0; iHdrCount < this.step3_data_final.length; iHdrCount++){
        final_dataset_to_save.OPConfig_OUTPUTHDR.push({
       "OPTM_LOGID": this.iLogID,
@@ -2105,7 +2127,7 @@ export class OutputComponent implements OnInit {
       "OPTM_PAYMENTTERM": 0,
       "OPTM_FGITEM": this.step3_data_final[iHdrCount].item,
       "OPTM_KEY": "",
-      "OPTM_DELIVERYDATE": this.step1_data.delivery_until,
+      "OPTM_DELIVERYDATE": delivery_date_string,
       "OPTM_QUANTITY": parseFloat(this.step3_data_final[iHdrCount].quantity).toFixed(3),
       "OPTM_CREATEDBY": this.common_output_data.username,
       "OPTM_MODIFIEDBY": this.common_output_data.username,
@@ -3142,7 +3164,7 @@ export class OutputComponent implements OnInit {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
-          } else if (data.FinalStatus[0].OPTM_STATUS == "E" || data.FinalStatus[0].OPTM_STATUS == "e") {
+          } else if (data.FinalStatus[0].OPTM_STATUS == "E") {
             this.final_order_status = this.language.error_status;
             this.toastr.error('', this.language.error_occured + ': ' +  data.FinalStatus[0].OPTM_ERRDESC, this.commonData.toast_config);
           }

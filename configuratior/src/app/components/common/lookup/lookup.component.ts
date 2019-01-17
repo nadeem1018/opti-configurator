@@ -237,6 +237,7 @@ export class LookupComponent implements OnInit {
         this.output_invoice_print();
         return;
       }
+     // this.lookupfor = "";
     }
   }
 
@@ -305,7 +306,8 @@ export class LookupComponent implements OnInit {
         title: this.language.contact_person,
         type: 'text',
         width: '100'
-      },
+      }
+      /* ,
       {
         field: 'OPTM_FGITEM',
         title: this.language.model,
@@ -317,7 +319,7 @@ export class LookupComponent implements OnInit {
         title: this.language.quantity,
         type: 'text',
         width: '100'
-      },
+      }, */
     ];
 
     //this.table_head_hidden_elements = [false, false];
@@ -489,7 +491,7 @@ export class LookupComponent implements OnInit {
   }
 
   close_lookup(lookup_id) {
-    this.log("lookup id - " + lookup_id);
+   this.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
 
     //clear arrays after close button clicked on print model 

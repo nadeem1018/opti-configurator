@@ -125,4 +125,13 @@ export class CommonService {
     return this.httpclient.post(service_url + "/Base/GetCompanyDetails", jObject, this.common_params.httpOptions);
   }
 
+  //Get Server Date
+  GetServerDate(): Observable<any> {
+   
+    //JSON Obeject Prepared to be send as a param to API
+    let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: sessionStorage.getItem('selectedComp') }]) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Base/GetServerDate", jObject, this.common_params.httpOptions);
+  }
+
 }
