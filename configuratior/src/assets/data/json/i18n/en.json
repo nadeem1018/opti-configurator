@@ -401,5 +401,10 @@
     "Minimumitemsarenotselected": "Minimum items are not selected - ",
     "draft": "Draft",
     "select_model_on_config": "Select a Model",
+<<<<<<< HEAD
     "ServerDateError":"Error while fetching server date"
+=======
+    "multiple_model_add":"Model Added.",
+    "multiple_model_update":"Model Updated."
+>>>>>>> 6cb4dbebedd7f8fb498a353f27094aaf2eef376c
 }
