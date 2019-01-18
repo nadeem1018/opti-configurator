@@ -255,16 +255,12 @@ export class LoginComponent implements OnInit {
   //Core Functions 
   //To get url from DB
   getPSURL() {
-    this.psURL = "http://172.16.6.140/OptiAdmin";
     //This will get the psURL
     this.auth.getPSURL().subscribe(
       data => {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
-          // this.psURL = "http://localhost:9500";
-          this.psURL = "http://172.16.6.140/OptiAdmin";
-          //this.psURL = "http://172.16.6.122/OptiproAdmin";
           sessionStorage.setItem('psURL', this.psURL);
           this.showLoginLoader = false;
         } else {
@@ -330,7 +326,7 @@ export class LoginComponent implements OnInit {
     if (this.config_params == undefined || this.config_params == "") {
       this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     }
-    this.CommonService.GetCompanyDetails(selectedCompID, this.config_params.service_url).subscribe(
+    this.CommonService.GetCompanyDetails(selectedCompID).subscribe(
       data => {
         if (data != null || data != undefined) {
           if (data.length > 0) {
