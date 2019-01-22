@@ -176,6 +176,12 @@ export class OutputService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode", jObject, this.common_params.httpOptions);
   }
+  GetSavedDataMultiModel(modelcode): Observable<any> {
+    var jObject = { GetData: JSON.stringify(modelcode) };
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetSavedDataMultiModel", jObject, this.common_params.httpOptions);
+  }
+  
   
   //This method will bring all data for customer
   getCustomerAllInfo(CompanyDBID: string, Customer: string): Observable<any> {
