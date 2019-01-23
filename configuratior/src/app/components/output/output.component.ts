@@ -332,13 +332,14 @@ export class OutputComponent implements OnInit {
       this.onclearselection(1);
 
     }
-    if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3) {
-      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
-        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
-        return;
-      }
+    if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3 || this.step1_data.main_operation_type == 4) {
       if (this.step1_data.selected_configuration_key == "") {
         this.toastr.error('', this.language.select_configuration, this.commonData.toast_config);
+        return;
+      }
+
+      if (this.step1_data.description == "" || this.step1_data.description == undefined) {
+        this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
         return;
       }
     }
