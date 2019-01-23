@@ -3406,8 +3406,7 @@ export class OutputComponent implements OnInit {
           });
           if (data.DataForSelectedFeatureModelItem.length > 0)
             this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
-          console.log('this.feature_accessory_list');
-          console.log(this.feature_accessory_list);
+            this.RuleIntegration(data.RuleOutputData,value)
           this.showLookupLoader = false;
         },
         error => {
@@ -3429,6 +3428,7 @@ export class OutputComponent implements OnInit {
     }
     this.feature_price_calculate();
     this.updateCheckedStatus(value, rowData);
+   
   }
 
   setItemDataForFeatureAccessory(ItemData, parentarray) {
@@ -3556,6 +3556,7 @@ export class OutputComponent implements OnInit {
               });
               if (data.DataForSelectedFeatureModelItem.length > 0)
                 this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray);
+                this.RuleIntegration(data.RuleOutputData,value)
 
             },
             error => {

@@ -318,6 +318,13 @@ export class RulewbComponent implements OnInit {
              
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
+
+              if (fetch_data.OPTM_PRICESOURCE==null||fetch_data.OPTM_PRICESOURCE==undefined||fetch_data.OPTM_PRICESOURCE=="NaN"){
+                fetch_data.OPTM_PRICESOURCE=""
+              }
+              else{
+                fetch_data.OPTM_PRICESOURCE=  parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3)
+              }
             
               if (this.rule_expression_data[current_count] != undefined) {
                 this.rule_expression_data[current_count].output_data.push({
@@ -331,7 +338,7 @@ export class RulewbComponent implements OnInit {
                   uom: fetch_data.OPTM_UOM,
                   quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                   edit_quantity: fetch_data.OPTM_ISQTYEDIT,
-                  price_source: parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3),
+                  price_source:  fetch_data.OPTM_PRICESOURCE,
                   edit_price: fetch_data.OPTM_ISPRICEEDIT,
                   default: default_checked,
                   is_default: default_checked,
@@ -638,6 +645,12 @@ export class RulewbComponent implements OnInit {
         if (data != null || data != "" || data != undefined) {
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
+            if(data[i].PriceSource==null||data[i].PriceSource==undefined||data[i].PriceSource=="NaN"||data[i].PriceSource==""){
+              data[i].PriceSource=""
+            }
+            else{
+              data[i].PriceSource= parseFloat(data[i].PriceSource).toFixed(3)
+            }
             this.global_rule_feature_data.push({
               rowindex: i,
               check_child: true,
@@ -648,7 +661,7 @@ export class RulewbComponent implements OnInit {
               uom: data[i].UOM,
               quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
-              price_source: parseFloat(data[i].PriceSource).toFixed(3),
+              price_source:data[i].PriceSource,
               edit_price: "n",
               default: false,
               type: data[i].type
