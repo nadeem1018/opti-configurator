@@ -187,7 +187,7 @@ export class RulewbComponent implements OnInit {
             this.rule_wb_data.RuleId = data.RuleWorkBenchHeader[0].OPTM_RULEID;
 
           }
-
+          let seq_counter_array = [];
           if (data.RuleWorkBenchInput.length > 0) {
 
             this.counter = 0;
@@ -197,6 +197,8 @@ export class RulewbComponent implements OnInit {
             let current_exp;
             let forlineno = 0;
             let lineno;
+            
+            let input_loop_counter = 0;
             for (let i = 0; i < data.RuleWorkBenchInput.length; ++i) {
               this.counter++;
               if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
@@ -219,6 +221,10 @@ export class RulewbComponent implements OnInit {
               let fetch_data = data.RuleWorkBenchInput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
+              seq_counter_array[this.seq_count] = input_loop_counter;
+              // changed current_count for sequence number not in direct sequence 
+              current_count = input_loop_counter ;
+
               if (this.rule_expression_data[current_count] == undefined) {
                 this.rule_expression_data[current_count] = {};
                 this.rule_expression_data[current_count].expression = "";
@@ -295,11 +301,12 @@ export class RulewbComponent implements OnInit {
                 is_operand2_disable: operand2_disabled,
                 row_expression: expression,
               });
-
+              input_loop_counter++;
             }
-
           }
-
+          console.log("seq_counter_array - ");
+          console.log(seq_counter_array);
+            
           if (data.RuleWorkBenchOutput.length > 0) {
             let typefromdatabase: any;
             for (let i = 0; i < data.RuleWorkBenchOutput.length; ++i) {
@@ -315,7 +322,8 @@ export class RulewbComponent implements OnInit {
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
-             
+             // current counter for sequence not in a direct sequence 
+              current_count = seq_counter_array[this.seq_count];
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
             
