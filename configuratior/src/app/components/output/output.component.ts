@@ -2871,7 +2871,7 @@ export class OutputComponent implements OnInit {
               var tempfeatureid = step3_data_row.feature[ifeature].FeatureId
       
               imodelData = step3_data_row.ModelHeaderData.filter(function (obj) {
-                return obj['OPTM_CHILDMODELID'] == tempfeatureid
+                return obj['OPTM_CHILDMODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 3
               })
       
               imodelfilteritems = step3_data_row.ModelBOMDataForSecondLevel.filter(function (obj) {
