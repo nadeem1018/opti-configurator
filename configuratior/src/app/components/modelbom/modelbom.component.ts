@@ -753,9 +753,17 @@ var result = false;
   }
 
   on_display_name_change(value, rowindex) {
+    console.log("value - " + value);
+    console.log(" modelbom_data.feature_name " + this.modelbom_data.feature_name);
+   
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        if (this.modelbom_data.feature_name == value) {
+          this.modelbom_data[i].display_name = "";
+          this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
+          return false;
+        }
         this.modelbom_data[i].display_name = value;
         this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
       }
@@ -960,6 +968,8 @@ var result = false;
       console.log('in validate true ' + response);
       if (response == true) {
         obj.save_data();
+      } else {
+        this.showLookupLoader = false;
       }
     });
 
@@ -1051,8 +1061,10 @@ var result = false;
     if (type == "manual") {
       this.showtree();
     }
+    console.log('onExplodeClick');
     this.lookupfor = 'tree_view__model_bom_lookup"';
-
+    
+   
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
@@ -1063,10 +1075,13 @@ var result = false;
               // this.lookupfor = "tree_view__model_bom_lookup";
               let counter_temp = 0;
               let temp_data = data.filter(function (obj) {
+                obj['tree_index'] = (counter_temp);
                 obj['live_row_id'] = (counter_temp++);
                 return obj;
               });
-              this.tree_data_json = temp_data;
+             this.tree_data_json = temp_data;
+            
+             
             }
             else {
               this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1083,19 +1098,32 @@ var result = false;
       else {
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         if (this.live_tree_view_data.length > 0) {
-          console.log(this.live_tree_view_data);
+           
           for (var key in this.live_tree_view_data) {
-            this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
+            var update_index = "";
+            if (this.live_tree_view_data[key].tree_index !== undefined) {
+              let local_tree_index = this.live_tree_view_data[key].tree_index;
+              update_index = this.tree_data_json.findIndex(function (tree_el) {
+                return tree_el.tree_index == local_tree_index
+              });
+            }
+
+            let temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
+            if (update_index == "-1") {
+              this.tree_data_json.push(temp_seq);
+            } else {
+              this.tree_data_json[update_index] = (temp_seq);
+            }
           }
 
           this.live_tree_view_data = [];
-          console.log(this.tree_data_json);
+         
         }
       }
     } else {
       this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return;
-    }
+    } 
   }
 
 
@@ -1114,6 +1142,7 @@ var result = false;
       data => {
         if (data !== undefined && data != "") {
           if (data == "Rules Conflict") {
+            this.showLookupLoader = false;
             this.toastr.error('', this.language.conflict, this.commonData.toast_config);
             success_call(false);
             return false;

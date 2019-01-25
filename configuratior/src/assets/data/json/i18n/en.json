@@ -343,7 +343,8 @@
     "operator_row_1_error": "Operator at 1st row not allowed.",
     "invalid_value_model_template_item": "Invalid value in 'Model Template Item' field. ",
     "grand_total": "Grand Total",
-    "remove_this_modal": "Remove this modal",
+    "remove_this_modal": "Remove",
+    "edit_this_modal": "Edit",
     "confirm_remove_modal": "Are you sure, you want to remove this modal?",
     "confirm_remove_selected_modal": "Are you sure, you want to remove selected modal?",
     "refreshing": "Refreshing",
@@ -403,5 +404,6 @@
     "select_model_on_config": "Select a Model",
     "ServerDateError":"Error while fetching server date",
     "multiple_model_add":"Model Added.",
-    "multiple_model_update":"Model Updated."
+    "multiple_model_update":"Model Updated",
+    "model_child_name_no_same":"Model name cannot be same as Child Element Display Name"
 }

@@ -16,7 +16,6 @@ export class FooterComponent implements OnInit {
 
     this.CommonService.currentIsLoggedInDataData.subscribe(
       (data) => {
-          console.log('data'+data);
           this.showFooter = data;
           }
      );
