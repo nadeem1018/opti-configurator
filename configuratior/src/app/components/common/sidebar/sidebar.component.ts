@@ -27,7 +27,6 @@ export class SidebarComponent implements OnInit {
 
     this.commonService.currentIsLoggedInDataData.subscribe(
       (data) => {
-          console.log('data'+data);
           this.showSidebar = data;
           }
      );

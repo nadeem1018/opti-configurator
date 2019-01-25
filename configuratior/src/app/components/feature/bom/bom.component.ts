@@ -531,6 +531,11 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        if (this.feature_bom_data.feature_name == value) {
+          this.feature_bom_table[i].display_name = "";
+          this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
+          return false;
+        }
         this.feature_bom_table[i].display_name = value
         this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
       }
@@ -999,6 +1004,7 @@ export class BomComponent implements OnInit {
               // this.lookupfor = 'tree_view_lookup';
               let counter_temp = 0;
               let temp_data = data.filter(function (obj) {
+                obj['tree_index'] = (counter_temp);
                 obj['live_row_id'] = (counter_temp++);
                 return obj;
               });
@@ -1019,7 +1025,19 @@ export class BomComponent implements OnInit {
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         if (this.live_tree_view_data.length > 0) {
           for (var key in this.live_tree_view_data) {
-            this.tree_data_json.push({ "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1" });
+            var update_index ="";
+            if (this.live_tree_view_data[key].tree_index !== undefined){
+              let local_tree_index = this.live_tree_view_data[key].tree_index;
+              update_index = this.tree_data_json.findIndex(function (tree_el) {
+                return tree_el.tree_index == local_tree_index
+              });
+            }
+            let temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
+            if (update_index == "-1"){
+              this.tree_data_json.push(temp_seq);
+            } else {
+              this.tree_data_json[update_index] = (temp_seq);
+            }
           }
           this.live_tree_view_data = [];
         }

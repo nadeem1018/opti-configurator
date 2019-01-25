@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
 
     this.CommonService.currentIsLoggedInDataData.subscribe(
       (data) => {
-        console.log('data' + data);
         this.showHeader = data;
       }
     );

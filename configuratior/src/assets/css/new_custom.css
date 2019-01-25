@@ -598,12 +598,18 @@ hr {
   background: #ece4e4;
   color: #c7c7c7;
 }
-.tr-hide{
-  display:none;
+
+.tr-hide {
+  display: none;
 }
 
 .highlight_fg_row {
   background: #b3c7d2;
-    color: #000000;
-    font-weight: 700;
+  color: #000000;
+  font-weight: 700;
+}
+
+.k-window-content, .k-prompt-container {
+  padding: 5px 16px !important;
+  min-height: 130px;
 }
