@@ -111,8 +111,8 @@ export class LoginComponent implements OnInit {
   enter_to_sublit(event) {
     if (event.keyCode == 13) {
       if (this.selecetedComp != undefined && this.selecetedComp != "") {
-        // this.onLoginBtnPress();
-        this.getLisenceData();
+         this.onLoginBtnPress();
+        //this.getLisenceData();
       } else {
         this.onConnectBtnPress();
       }
@@ -261,6 +261,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.psURL = data;
           //For code analysis remove in live enviorments.
+          this.psURL="http://172.16.6.166/OptiProAdmin/"
           sessionStorage.setItem('psURL', this.psURL);
           this.showLoginLoader = false;
         } else {
