@@ -65,7 +65,9 @@ export class ModelComponent implements OnInit {
   public isItemlookupDisabled = true;
   public isReflookupDisabled = true;
   public IsAccessoryVisible = true;
-  public minimum_date = new Date();
+  public temp = new Date();
+  public  yesterday = new Date();
+  public minimum_date = new Date(this.yesterday.setDate(this.temp.getDate() - 1));
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   public isUsedAccesoriesDisabled = false;
@@ -75,8 +77,7 @@ export class ModelComponent implements OnInit {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     element.classList.add('sidebar-toggled');
-
-
+     
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
@@ -214,7 +215,7 @@ export class ModelComponent implements OnInit {
         FeatureCode: this.featureBom.Code,
         DisplayName: this.featureBom.Name,
         FeatureDesc: this.featureBom.Desc,
-        EffectiveDate: this.featureBom.Date,
+        EffectiveDate: (this.featureBom.Date).toString(),
         Type: this.featureBom.type,
         FeatureStatus: this.featureBom.Status,
         ModelTemplateItem: this.featureBom.ItemName,
