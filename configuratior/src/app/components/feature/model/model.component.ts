@@ -215,7 +215,7 @@ export class ModelComponent implements OnInit {
         FeatureCode: this.featureBom.Code,
         DisplayName: this.featureBom.Name,
         FeatureDesc: this.featureBom.Desc,
-        EffectiveDate: (this.featureBom.Date).toString(),
+        EffectiveDate: (this.featureBom.Date).getFullYear() + '/' + ((this.featureBom.Date).getMonth() + 1) + '/' + (this.featureBom.Date).getDate(),
         Type: this.featureBom.type,
         FeatureStatus: this.featureBom.Status,
         ModelTemplateItem: this.featureBom.ItemName,
