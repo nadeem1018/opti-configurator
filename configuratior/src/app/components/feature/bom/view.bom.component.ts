@@ -23,7 +23,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     common_params = new CommonData();
 
     public listItems: Array<string> = this.common_params.default_limits;
-    public selectedValue: string = this.common_params.default_count;
+    public selectedValue: number = Number(this.common_params.default_count);
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
