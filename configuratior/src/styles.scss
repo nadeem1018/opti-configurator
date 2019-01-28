@@ -467,11 +467,11 @@ body.home-view-model{
     }
 }
 
-ul.parent_ul div:first-child li::after {
+ul.parent_ul li:first-child div::after {
     border-top: none;
 }
 
-ul.parent_ul div:first-child li treeview li::after {
+ul.parent_ul li:first-child div treeview li::after {
     border-top: 1px solid #fff;
 }
 

@@ -410,7 +410,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
 .tree li::after {
   border-top: 1px solid #999;
   height: 20px;
-  top: 30px;
+  top: 23px;
   width: 25px;
 }
 
@@ -436,7 +436,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
 }
 
 .tree li:last-child::before {
-  height: 30px
+  height: 23px
 }
 
 .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
