@@ -468,6 +468,7 @@ export class ModelbomComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -820,6 +821,29 @@ var result = false;
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        var rgexp = /^\d+$/;
+        if (isNaN(value) == true) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (value == 0 || value == '' || value == null || value == undefined) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
+           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (value < 0) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
+           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (rgexp.test(value) == false) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        }
+
         this.modelbom_data[i].min_selected = value
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
@@ -828,7 +852,8 @@ var result = false;
             $(".min_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
-          }
+          } 
+        
         }
 
       }
@@ -840,6 +865,28 @@ var result = false;
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+        var rgexp = /^\d+$/;
+        if (isNaN(value) == true) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (value == 0 || value == '' || value == null || value == undefined) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
+          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (value < 0) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
+          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        } else if (rgexp.test(value) == false) {
+          this.modelbom_data[i].min_selected = 1;
+          this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
+          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          return;
+        }
         this.modelbom_data[i].max_selected = value
         if (this.modelbom_data[i].type == "1") {
           this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(

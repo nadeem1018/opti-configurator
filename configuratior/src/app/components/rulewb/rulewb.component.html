@@ -403,7 +403,7 @@
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <div class="custom-control custom-radio">
                             <input type="radio" #default class="custom-control-input" id="is_default_{{dataItem.rowindex}}" name="is_default" value={{dataItem.is_default}}
-                              title={{dataItem.is_default}} (change)="output_change_event('default',default.checked,dataItem.rowindex)" [(checked)]=dataItem.is_default>
+                              title={{dataItem.is_default}} (change)="output_change_event('default',default.checked,dataItem.rowindex)" [(checked)]=dataItem.is_default [disabled]="!dataItem.check_child">
                             <label class="custom-control-label" for="is_default_{{dataItem.rowindex}}"></label>
                           </div>
                         </ng-template>
