@@ -289,15 +289,15 @@
     <div class="opti_overflow-auto" style="max-height: 570px;">
       <div class="tree well">
         <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
-          <div *ngFor="let element of tree_data_json; let i= index;">
-            <li *ngIf="element.level == 0 && element.parentId==''">
+          <li *ngFor="let element of tree_data_json; let i= index;">
+            <div *ngIf="element.level == 0 && element.parentId==''">
               <span class="first_level">
                 <!-- <i class="fa fa-circle"></i>  -->
                 {{element.component}}
               </span>
               <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
-            </li>
-          </div>
+            </div>
+          </li>
         </ul>
       </div>  
     </div>  
