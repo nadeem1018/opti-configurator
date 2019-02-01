@@ -538,6 +538,7 @@ export class ModelbomComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
