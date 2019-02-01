@@ -1092,8 +1092,8 @@ export class RulewbComponent implements OnInit {
   }
 
   show_input_lookup(selected_type, rowindex) {
-   /*  this.currentrowindex = rowindex
-    for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+     this.currentrowindex = rowindex
+    /*for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         if (selected_type == 1) {
         this.rule_sequence_data[i]['operand_1'] = '';
