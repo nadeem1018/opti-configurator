@@ -1121,6 +1121,19 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null && data != undefined) {
           console.log(data);
+          if (data.SubModelReadyToUse !== undefined) {
+            if (data.SubModelReadyToUse.length>0) {
+              if (data.SubModelReadyToUse[0].ReadyToUse !== undefined) {
+                if (data.SubModelReadyToUse[0].ReadyToUse =="N") {
+                  this.showLookupLoader = false;
+                  this.step2_data.model_code=""
+                  this.toastr.error('', this.language.Submodelreadyforuse, this.commonData.toast_config);
+                  return;
+                }
+              }
+            }
+            
+          }
           if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
             if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined) {
               this.warehouse = data.DeafultWarehouse[0].DEFAULTWAREHOUSE;
