@@ -23,7 +23,7 @@ export class RuleWbViewComponent implements OnInit {
     public commonData = new CommonData();
     pageSizeNumber:any = this.commonData.default_count;
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: string = this.commonData.default_count;
+    public selectedValue: number = Number(this.commonData.default_count);
     
 
     public companyName: string = ""; 

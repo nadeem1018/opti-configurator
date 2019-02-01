@@ -24,7 +24,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public commonData = new CommonData();
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: string = this.commonData.default_count;
+    public selectedValue: number = Number(this.commonData.default_count);
 
     public isColumnFilter: boolean = false;
     // generate table default constants
