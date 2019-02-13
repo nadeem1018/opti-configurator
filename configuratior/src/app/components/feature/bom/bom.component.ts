@@ -1,11 +1,11 @@
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef, Input, HostListener, TemplateRef } from '@angular/core';
 import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
-import { jaLocale } from 'ngx-bootstrap';
+import { jaLocale, BsModalRef, BsModalService } from 'ngx-bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
@@ -17,6 +17,14 @@ import { CommonService } from 'src/app/services/common.service';
 export class BomComponent implements OnInit {
   @ViewChild("featureinputbox") _el: ElementRef;
   @ViewChild("button") _ele: ElementRef;
+
+  @HostListener('window:scroll, scroll', ['$event'])
+  onScroll($event, pop:any) {
+      $('body').click()
+  }
+
+  modalRef: BsModalRef;
+
   public feature_bom_data: any = [];
   public feature_bom_table: any = [];
   language = JSON.parse(sessionStorage.getItem('current_lang'));
@@ -64,7 +72,7 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
-  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef) { }
+  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService) { }
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -235,6 +243,10 @@ export class BomComponent implements OnInit {
         }
       )
     }
+    $('[data-toggle="popover"]').popover({
+        container: 'body',
+        trigger:'hover'
+    })
   }
 
   ngAfterViewInit() {
@@ -1153,4 +1165,16 @@ export class BomComponent implements OnInit {
       $(document).find('#left-table-section').removeClass('col-md-9').addClass('col-md-12');
     }
   }
+  openModal(template: TemplateRef<any>) {
+      $('body').click()
+      this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
+  }
+  childExpand(id: any){
+    id.classList.toggle("expanded")
+    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+        id.parentNode.parentNode.childNodes[4].style.display = "block";
+    } else {
+        id.parentNode.parentNode.childNodes[4].style.display = "none";
+    }
+}
 }
