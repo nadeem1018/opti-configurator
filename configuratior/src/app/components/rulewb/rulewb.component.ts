@@ -659,6 +659,13 @@ export class RulewbComponent implements OnInit {
             else{
               data[i].PriceSource= parseFloat(data[i].PriceSource).toFixed(3)
             }
+            var default_value;
+
+            if(i == 0){
+              default_value = true;
+            } else {
+              default_value = false;
+            }
             this.global_rule_feature_data.push({
               rowindex: i,
               check_child: true,
@@ -671,7 +678,8 @@ export class RulewbComponent implements OnInit {
               edit_quantity: "n",
               price_source:data[i].PriceSource,
               edit_price: "n",
-              default: false,
+              default: default_value,
+              is_default: default_value,
               type: data[i].type
 
             });
@@ -1092,8 +1100,8 @@ export class RulewbComponent implements OnInit {
   }
 
   show_input_lookup(selected_type, rowindex) {
-   /*  this.currentrowindex = rowindex
-    for (let i = 0; i < this.rule_sequence_data.length; ++i) {
+     this.currentrowindex = rowindex
+    /*for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         if (selected_type == 1) {
         this.rule_sequence_data[i]['operand_1'] = '';
@@ -1130,6 +1138,17 @@ export class RulewbComponent implements OnInit {
       this.expression_counter = 0;
       if (this.rule_expression_data.length > 0) {
         this.expression_counter = this.rule_expression_data.length
+      }
+
+      // additional validation for atleast 1 option selected as default in output
+      var feature_data_default_value = this.rule_feature_data.filter(function(obj){
+        return obj.is_default;
+      });
+      console.log("feature_data_default_value");
+      console.log(feature_data_default_value);
+      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined){
+        this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
+        return false;
       }
 
       this.expression_counter++;
@@ -1170,6 +1189,17 @@ export class RulewbComponent implements OnInit {
 
   update_rule_sequence() {
     if (this.rule_sequence_data.length > 0) {
+      // additional validation for atleast 1 option selected as default in output
+      var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
+        return obj.is_default;
+      });
+      console.log("feature_data_default_value");
+      console.log(feature_data_default_value);
+      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
+        this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
+        return false;
+      }
+
       let row_auto_index: any = '';
       for (let i = 0; i < this.rule_expression_data.length; ++i) {
         if (this.rule_expression_data[i].rowindex === this.editing_row) {
@@ -1255,6 +1285,10 @@ export class RulewbComponent implements OnInit {
       if (this.rule_feature_data[i].rowindex == rowindex) {
         if (name == "check_child") {
           this.rule_feature_data[i].check_child = value
+          if (value == false){
+            this.rule_feature_data[i].default = value
+            this.rule_feature_data[i].is_default = value
+          }
         }
         else if (name == "feature_name") {
           this.rule_feature_data[i].feature = value

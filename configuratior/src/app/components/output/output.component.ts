@@ -379,6 +379,11 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetAllOutputData(operationType, logid, description).subscribe(
       data => {
         console.log(data);
+        if (this.step1_data.main_operation_type == "3") {
+          this.iLogID = "";
+        }
+
+
         if (data.CustomerOutput.length > 0) {
           if (data.CustomerOutput[0].OPTM_DOCTYPE = "23") {
             this.step1_data.document = "sales_quote"
@@ -396,7 +401,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
             this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
             this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
-            this.step1_data.delivery_until = data.CustomerOutput[0].OPTM_DELIVERYDATE;
+            this.step1_data.delivery_until = (data.CustomerOutput[0].OPTM_DELIVERYDATE !== null) ? new Date(data.CustomerOutput[0].OPTM_DELIVERYDATE) : "";
           this.contact_persons.push({
             Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
           });
@@ -417,6 +422,8 @@ export class OutputComponent implements OnInit {
               lastName: data.CustomerOutput[0].OPTM_OWNER,
             });
           this.step1_data.owner = data.CustomerOutput[0].OPTM_OWNER
+
+          this.step1_data.remark = data.CustomerOutput[0].OPTM_REMARKS
 
           this.feature_discount_percent = data.CustomerOutput[0].OPTM_TOTALDISCOUNT
           this.accessory_discount_percent = data.CustomerOutput[0].OPTM_ACCESSORYDIS
@@ -439,7 +446,7 @@ export class OutputComponent implements OnInit {
       });
 
       AllDataForModelBomOutput.getmodelsavedata = saveddata.ModelBOMData
-
+      this.showLookupLoader = true;
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
         data => {
           if (data.length > 0) {
@@ -454,8 +461,15 @@ export class OutputComponent implements OnInit {
               this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
               this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel]);
               this.add_fg_multiple_model();
+              this.showLookupLoader = false;
             }
+            console.log("this.step3_data_final");
+            console.log(this.step3_data_final);
+          } else {
+            this.showLookupLoader = false;
           }
+        }, error => {
+          this.showLookupLoader = false;
         })
     }
   }
@@ -559,6 +573,27 @@ export class OutputComponent implements OnInit {
       this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
 
       if (this.setModelDataFlag == true) {
+        var temp_obj = this;
+        var feature_list = data.Savedgetmodelsavedata.filter(function (obj) {
+          if (obj['OPTM_ITEMTYPE'] == 2) {
+            return obj
+          }
+        });
+
+        var accessory_list = data.Savedgetmodelsavedata.filter(function (obj) {
+          if (obj['OPTM_ITEMTYPE'] == 3) {
+            return obj
+          }
+        });
+
+        if (feature_list.length > 0 && feature_list != null && feature_list != undefined) {
+          this.feature_discount_percent = feature_list[0]['OPTM_DISCPERCENT'];
+        }
+
+        if (accessory_list.length > 0 && accessory_list != null && accessory_list != undefined) {
+          this.accessory_discount_percent = accessory_list[0]['OPTM_DISCPERCENT'];
+        }
+
         this.setModelDataInOutputBom(data.Savedgetmodelsavedata, data.SelectedAccessory);
         var Modelfeaturesaveditems = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['checked'] == true && obj['OPTM_TYPE'] == 2
@@ -1086,6 +1121,19 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null && data != undefined) {
           console.log(data);
+          if (data.SubModelReadyToUse !== undefined) {
+            if (data.SubModelReadyToUse.length>0) {
+              if (data.SubModelReadyToUse[0].ReadyToUse !== undefined) {
+                if (data.SubModelReadyToUse[0].ReadyToUse =="N") {
+                  this.showLookupLoader = false;
+                  this.step2_data.model_code=""
+                  this.toastr.error('', this.language.Submodelreadyforuse, this.commonData.toast_config);
+                  return;
+                }
+              }
+            }
+            
+          }
           if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
             if (data.DeafultWarehouse[0].DEFAULTWAREHOUSE !== undefined) {
               this.warehouse = data.DeafultWarehouse[0].DEFAULTWAREHOUSE;
@@ -2215,6 +2263,7 @@ export class OutputComponent implements OnInit {
   onFinishPress(screen_name, button_press) {
     // if (button_press == 'finishPress' ) {
     // this.onValidateNextPress(true, "");
+    this.step2_final_dataset_to_save = [];
     if (this.step3_data_final.length > 0 && this.step3_data_final !== undefined) {
       this.generate_unique_key();
     }
@@ -2315,7 +2364,7 @@ export class OutputComponent implements OnInit {
     }
 
     //creating details table array
-    if (this.step2_final_dataset_to_save.length > 0 && this.step2_final_dataset_to_save !== undefined) {
+    if (this.step3_data_final.length > 0 && this.step3_data_final !== undefined) {
       final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
     }
 
@@ -2897,7 +2946,7 @@ export class OutputComponent implements OnInit {
             "OPTM_PRICELIST": 0,
             "OPTM_UNITPRICE": parseFloat("0").toFixed(3),
             "OPTM_TOTALPRICE": parseFloat("0").toFixed(3),
-            "OPTM_DISCPERCENT": 0,
+            "OPTM_DISCPERCENT": parseFloat("0").toFixed(3),
             "OPTM_CREATEDBY": this.common_output_data.username,
             "OPTM_MODIFIEDBY": this.common_output_data.username,
             "UNIQUEIDNT": "Y",
@@ -2970,7 +3019,7 @@ export class OutputComponent implements OnInit {
               "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
               "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
               "OPTM_TOTALPRICE": formatedTotalPrice,
-              "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount),
+              "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
               "OPTM_CREATEDBY": this.common_output_data.username,
               "OPTM_MODIFIEDBY": this.common_output_data.username,
               "UNIQUEIDNT": imodelData[0].OPTM_UNIQUEIDNT,
@@ -3032,7 +3081,7 @@ export class OutputComponent implements OnInit {
                     "OPTM_PRICELIST": Number(featureitemlistfilterdata[0].price),
                     "OPTM_UNITPRICE": parseFloat(featureitemlistfilterdata[0].Actualprice).toFixed(3),
                     "OPTM_TOTALPRICE": formatedTotalPrice,
-                    "OPTM_DISCPERCENT": parseFloat(featureitemlistfilterdata[0].discount),
+                    "OPTM_DISCPERCENT": parseFloat(featureitemlistfilterdata[0].discount).toFixed(3),
                     "OPTM_CREATEDBY": this.common_output_data.username,
                     "OPTM_MODIFIEDBY": this.common_output_data.username,
                     "UNIQUEIDNT": imodelfilteritems[i].OPTM_UNIQUEIDNT,
@@ -3135,7 +3184,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
                   "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
                   "OPTM_TOTALPRICE": formatedTotalPrice,
-                  "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount),
+                  "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
                   "OPTM_CREATEDBY": this.common_output_data.username,
                   "OPTM_MODIFIEDBY": this.common_output_data.username,
                   "UNIQUEIDNT": ifeatureHeaderData[0].OPTM_UNIQUEIDNT,
@@ -3179,7 +3228,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
                   "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
                   "OPTM_TOTALPRICE": formatedTotalPrice,
-                  "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount),
+                  "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
                   "OPTM_CREATEDBY": this.common_output_data.username,
                   "OPTM_MODIFIEDBY": this.common_output_data.username,
                   "UNIQUEIDNT": ifeatureHeaderData[0].OPTM_UNIQUEIDNT,

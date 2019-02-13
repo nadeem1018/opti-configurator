@@ -27,7 +27,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { ToastrModule } from 'ngx-toastr';
-
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 //pipes
 import { FilterPipe } from './filter.pipe';
@@ -157,7 +157,8 @@ const routes: Routes = [
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     PDFExportModule,
-    DialogsModule
+    DialogsModule,
+    PopoverModule.forRoot()
   ],
   providers: [
     {

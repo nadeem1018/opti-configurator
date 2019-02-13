@@ -21,7 +21,7 @@ export class ViewModelBomComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: string = this.commonData.default_count;
+    public selectedValue: number = Number(this.commonData.default_count);
 
     public companyName: string = "";
     public username: string = "";
