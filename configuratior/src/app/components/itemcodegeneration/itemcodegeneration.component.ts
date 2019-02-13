@@ -122,6 +122,10 @@ export class ItemcodegenerationComponent implements OnInit {
             if(data[i].OPTM_TYPE==1){
               this.isOperationDisable=true
             }
+
+            if(data[0].Reference==false && data[i].OPTM_TYPE==2){
+              this.isOperationDisable=false
+            }
   
             this.itemcodetable.push({
               rowindex: data[i].OPTM_LINEID,
@@ -364,6 +368,10 @@ export class ItemcodegenerationComponent implements OnInit {
         else {
           this.countnumberrow = 0;
           for (let i = 0; i < this.itemcodetable.length; ++i) {
+            if (this.codekey == "" || this.codekey == null) {
+              this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+              return false;
+            }
             if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
               if (isNaN(this.itemcodetable[i].string) == true) {
                 this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
@@ -381,8 +389,9 @@ export class ItemcodegenerationComponent implements OnInit {
                 this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
+              
             }
-            if(this.itemcodetable[i].string == ""){
+            if(this.itemcodetable[i].string.trim() == ""){
               this.toastr.error('', this.language.EnterString, this.commonData.toast_config);
               return false;
             }
