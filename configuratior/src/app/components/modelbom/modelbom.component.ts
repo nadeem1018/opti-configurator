@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, TemplateRef  } from '@angular/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { ModelbomService } from '../../services/modelbom.service';
@@ -49,7 +50,10 @@ export class ModelbomComponent implements OnInit {
   public isMaxSelectedDisable = false;
   public showLoader: boolean = true;
   public showLookupLoader:boolean = false;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService) { }
+  modalRef: BsModalRef;
+ 
+  
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
 
   companyName: string;
   page_main_title = this.language.Model_Bom
@@ -78,6 +82,12 @@ export class ModelbomComponent implements OnInit {
     } else {
       this.isPerfectSCrollBar = false;
     }
+  }
+  public pop;
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+      console.log("scrolling...window");
+      $('body').click()
   }
 
   ngOnInit() {
@@ -845,7 +855,7 @@ var result = false;
           return;
         }
 
-        this.modelbom_data[i].min_selected = value
+        this.modelbom_data[i].min_selected = value        
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
@@ -853,11 +863,11 @@ var result = false;
             $(".min_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
-          } 
-        
+          }
         }
 
       }
+
     }
 
   }
@@ -1419,6 +1429,21 @@ var result = false;
     }
   }
 
+  bodyClick(){
+    $('body').click()
+  }
+  openModal(template: TemplateRef<any>) {
+    $('body').click()
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
+  }
+  childExpand(id: any){
+    id.classList.toggle("expanded")
+    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+        id.parentNode.parentNode.childNodes[4].style.display = "block";
+    } else {
+        id.parentNode.parentNode.childNodes[4].style.display = "none";
+    }
+  }
 }
 
 

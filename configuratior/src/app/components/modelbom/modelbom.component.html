@@ -286,14 +286,33 @@
     </div>
   </div>
   <div class="col-md-3 d-none" id="right-tree-section">
-    <div class="opti_overflow-auto" style="max-height: 570px;">
+    <div class="opti_overflow-auto tree-wrapper" style="max-height: 570px;" (scroll)="bodyClick()">
       <div class="tree well">
         <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
           <li *ngFor="let element of tree_data_json; let i= index;">
             <div *ngIf="element.level == 0 && element.parentId==''">
-              <span class="first_level">
+              <ng-template #template>
+                  <div class="modal-body text-center">
+                      <img [attr.src]="element.modalImage" style="max-width:100%">
+                  </div>
+              </ng-template>
+              <ng-template #popTemplate>
+                <div class="text-center">
+                  <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100" (click)="openModal(template)">
+                  <div *ngIf="element.modalImage==''" class="no-img-msg">No Image Found</div>
+                </div>
+              </ng-template>
+              <span class="first_level"  
+               [popover]="popTemplate"
+              popoverTitle="{{element.component}}"
+              placement="left"
+              container="body"
+              [outsideClick]="true"
+              triggers="" #pop="bs-popover">
                 <!-- <i class="fa fa-circle"></i>  -->
-                {{element.component}}
+                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" *ngIf="check_component_exist(element.component, i).length > 0"></span>
+                <span (click)="pop.toggle()"
+                [attr.data-branchtype]="element.branchType">{{element.component}}</span>
               </span>
               <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
             </div>
