@@ -2097,6 +2097,9 @@ export class OutputComponent implements OnInit {
           return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
         });
       }
+      if( ItemData[0].Price==null||ItemData[0].Price==undefined||ItemData[0].Price==""){
+        ItemData[0].Price=0;
+      }
       var formatequantity: any;
       if (propagateqtychecked == "Y" && ItemData[0].OPTM_PROPOGATEQTY == "Y") {
         propagateqty = parseFloat(propagateqty).toFixed(3)
@@ -3577,6 +3580,9 @@ export class OutputComponent implements OnInit {
           ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
           formatequantity = ItemData[0].OPTM_QUANTITY
         }
+        if(ItemData[i].Price==null||ItemData[i].Price==undefined||ItemData[i].Price==""){
+          ItemData[i].Price=0
+        }
 
         var priceextn: any = formatequantity * ItemData[i].Price
 
@@ -3942,7 +3948,7 @@ export class OutputComponent implements OnInit {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
                   var checkedRowFound = false
 
-                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.FeatureBOMDataForSecondLevel)
+                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.FeatureBOMDataForSecondLevel,this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)
                   // var tempRuleArray = RuleOutputData.filter(function (obj) {
                   //   return obj['OPTM_ISINCLUDED'].trim() == "True"
                   // })
@@ -4087,7 +4093,7 @@ export class OutputComponent implements OnInit {
                 }
                 else {
                   var checkedRowFound = false
-                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.ModelBOMDataForSecondLevel)
+                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.ModelBOMDataForSecondLevel,this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID)
                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
                   if (checkedRowFound == false) {
                     if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
@@ -4265,6 +4271,25 @@ export class OutputComponent implements OnInit {
       }
       for (var iItemFeatureTable in this.FeatureBOMDataForSecondLevel) {
         this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+        // if( this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked==false &&  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_DEFAULT=="Y" ){
+          var tempcheckfeatureid= this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID
+          
+          var tempcheckedarray=[];
+          tempcheckedarray=this.FeatureBOMDataForSecondLevel.filter(function(obj){
+           return tempcheckfeatureid==obj['OPTM_FEATUREID'] && obj['checked']==true
+          })
+          if(tempcheckedarray.length==0 && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_DEFAULT=="Y"  ){
+          tempcheckedarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
+          if(tempcheckedarray.length>0){
+            tempcheckedarray[0].OPTM_FEATURECODE=tempcheckedarray[0].parent_code
+            this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked=true
+            this.getDefaultItems(tempcheckedarray)
+          } 
+        
+          }
+         
+     
+       // }
       }
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
         this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
@@ -4676,7 +4701,7 @@ export class OutputComponent implements OnInit {
     })
   }
 
-  ischeckedRow(RuleOutputData, FeatureModelData) {
+  ischeckedRow(RuleOutputData, FeatureModelData,featureid) {
     var tempRuleArray = RuleOutputData.filter(function (obj) {
       return obj['OPTM_ISINCLUDED'].trim() == "True"
     })
@@ -4685,11 +4710,11 @@ export class OutputComponent implements OnInit {
     if (tempRuleArray.length > 0) {
       for (var itemp in tempRuleArray) {
         var tempFeatArray = FeatureModelData.filter(function (obj) {
-          return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "N"
+          return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "N" &&  obj['OPTM_FEATUREID'] == featureid
         })
         if (tempFeatArray.length == 0) {
           var tempFeatArray = FeatureModelData.filter(function (obj) {
-            return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "Y" && obj['checked'] == true
+            return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "Y" && obj['checked'] == true &&  obj['OPTM_FEATUREID'] == featureid
           })
         }
         if (tempFeatArray.length > 0) {
