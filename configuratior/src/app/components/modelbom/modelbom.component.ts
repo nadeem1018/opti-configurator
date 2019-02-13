@@ -224,7 +224,7 @@ export class ModelbomComponent implements OnInit {
                 isDisplayNameDisabled: false,
                 isTypeDisabled: false,
                 hide: false,
-                CompanyDBId: data.ModelDetail[i].OPTM_COMPANYID,
+                CompanyDBId: this.companyName,
                 CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
                 isPriceDisabled: this.isPriceDisabled,
                 pricehide: this.pricehide,

@@ -107,6 +107,10 @@ export class BomComponent implements OnInit {
       this.FeatureLookupBtnhide = false;
       this._el.nativeElement.focus();
       this.showLoader = false;
+      this.feature_bom_data.multi_select = false;
+      this.feature_bom_data.multi_select_disabled = true;
+      this.feature_bom_data.feature_min_selectable = 1;
+      this.feature_bom_data.feature_max_selectable = 1;
     }
     else {
       this.isUpdateButtonVisible = true;
@@ -219,8 +223,17 @@ export class BomComponent implements OnInit {
 
             } else {
               this.detail_select_options = this.commonData.bom_type;
-
             }
+
+            if (data.FeatureHeader[0].OPTM_ISMULTISELECT == 'y' || data.FeatureHeader[0].OPTM_ISMULTISELECT == 'Y') {
+              this.feature_bom_data.multi_select = true;
+              this.feature_bom_data.multi_select_disabled = false;
+            } else {
+              this.feature_bom_data.multi_select = false;
+              this.feature_bom_data.multi_select_disabled = true;
+            }
+            this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
+            this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
 
             if (this.feature_bom_data.image_path != "") {
               if (this.feature_bom_data.image_path != null) {
@@ -244,6 +257,71 @@ export class BomComponent implements OnInit {
     else {
       this._ele.nativeElement.focus();
     }
+  }
+
+  on_multiple_model_change(current_value, current_state){
+    this.feature_bom_data.multi_select = current_state;
+    if (current_state == false){
+      this.feature_bom_data.multi_select_disabled = true;
+      this.feature_bom_data.feature_min_selectable = 1;
+      this.feature_bom_data.feature_max_selectable = 1;
+    } else {
+      this.feature_bom_data.multi_select_disabled = false;
+    }
+  }
+
+  validate_min_values(value, input_id){
+    if (value == 0) {
+      value = 1;
+      this.feature_bom_data[input_id] = (value);
+      this.toastr.error('', this.language.min_selectable_quantityvalid, this.commonData.toast_config);
+    }
+    else {
+      var rgexp = /^\d+$/;
+      if (isNaN(value) == true) {
+        value = 1;
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+      } else if (value == 0 || value == '' || value == null || value == undefined) {
+        value = 1;
+        this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
+      } else if (value < 0) {
+        value = 1;
+        this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
+      } else if (rgexp.test(value) == false) {
+        value = 1;
+        this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+      }
+      this.feature_bom_data[input_id] = (value);
+
+    }
+    $('#' + input_id).val(value);
+  }
+
+  validate_max_values(value, input_id) {
+    if (value == 0) {
+      value = 1;
+      this.feature_bom_data[input_id] = (value);
+      this.toastr.error('', this.language.max_selectable_quantityvalid, this.commonData.toast_config);
+    }
+    else {
+      var rgexp = /^\d+$/;
+      if (isNaN(value) == true) {
+        value = 1;
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+      } else if (value == 0 || value == '' || value == null || value == undefined) {
+        value = 1;
+        this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
+      } else if (value < 0) {
+        value = 1;
+        this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
+      } else if (rgexp.test(value) == false) {
+        value = 1;
+        this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
+      }
+      this.feature_bom_data[input_id] = (value);
+
+    }
+    $('#' + input_id).val(value);
   }
 
   onAddRow() {
@@ -377,6 +455,16 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_table.length > 0) {
       this.feature_bom_table[0].id = this.update_id;
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
+
+        if (this.feature_bom_data.multi_select === false) {
+          this.feature_bom_table[i].multi_select = "N"
+        }
+        else {
+          this.feature_bom_table[i].multi_select = "Y"
+        }
+
+        this.feature_bom_table[i].feature_min_selectable =  this.feature_bom_data.feature_min_selectable;
+        this.feature_bom_table[i].feature_max_selectable = this.feature_bom_data.feature_max_selectable;
         if (this.feature_bom_table[i].default === false) {
           this.feature_bom_table[i].default = "N"
         }
@@ -794,6 +882,7 @@ export class BomComponent implements OnInit {
           }
         }
         else {
+          this.showLookupLoader = false;
           this.lookupfor = "";
           this.serviceData = [];
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
@@ -821,6 +910,7 @@ export class BomComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -848,6 +938,22 @@ export class BomComponent implements OnInit {
         return false;
       }
       else {
+        var total_detail_elements = this.feature_bom_table.length;
+        if (this.feature_bom_data.multi_select_disabled == false ){
+          console.log("total_detail_elements " + total_detail_elements);
+          if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
+            this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
+            return false;
+          }
+
+          if (total_detail_elements < this.feature_bom_data.feature_max_selectable  ){
+            this.toastr.error('', this.language.max_selectable_greater_total, this.commonData.toast_config);
+            return false;
+          }
+
+          this.feature_bom_data.feature_max_selectable
+          this.feature_bom_data.feature_min_selectable
+        }
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
           let currentrow = i + 1;
           if (this.feature_bom_table[i].type == 1 && this.feature_bom_table[i].type_value == "") {

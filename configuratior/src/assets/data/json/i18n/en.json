@@ -155,6 +155,8 @@
     "SelectValue": "Select value at row index: ",
     "quantityblank": "Select quantity at row index: ",
     "quantityvalid": "Quantity cannot be 0",
+    "min_selectable_quantityvalid": "Min Selectable cannot be 0",
+    "max_selectable_quantityvalid": "Max Selectable cannot be 0",
     "quantity": "Quantity",
     "ModelIDBlank": "Model id cannot be blank",
     "ModelCodeBlank": "Model Code cannot be blank",
@@ -413,5 +415,10 @@
     "multiple_model_update":"Model Updated",
     "model_child_name_no_same":"Model name cannot be same as Child Element Display Name",
     "one_default_required":"Atleast 1 Default Option in required in Rule Output",
-    "Submodelreadyforuse":"Submodel of selected model is not ready for use"
+    "Submodelreadyforuse":"Submodel of selected model is not ready for use",
+    "multi_select":"Multi Select",
+    "min_selectable_greater_total":"Min selectable cannot be greater than total rows",
+    "max_selectable_greater_total":"Max selectable cannot be greater than total rows"
+    
+
 }

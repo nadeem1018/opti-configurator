@@ -1,15 +1,14 @@
-
 <!-- loader start -->
 <div class="opti_loader opti_loader-module-grid-list" *ngIf="showLoader">
     <div class="opti_spinner"></div>
 </div>
-<!-- loader end --> 
+<!-- loader end -->
 
 <!-- loader start for lookup -->
 <div class="opti_loader opti_loader-module-grid-list opti_lookup-loader" *ngIf="showLookupLoader">
     <div class="opti_spinner"></div>
 </div>
-<!-- loader end for lookup --> 
+<!-- loader end for lookup -->
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ">
 
@@ -60,11 +59,13 @@
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
                                 <div class="col-sm-5 input-group">
-                                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_code"
-                                        name="featureNameCode" id="featureNameCode" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
+                                        [(ngModel)]="feature_bom_data.feature_code" name="featureNameCode" id="featureNameCode"
+                                        (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
                                         #featureinputbox title="{{feature_bom_data.feature_code}}">
-                                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3" [(ngModel)]="feature_bom_data.feature_id"
-                                        name="featureName" id="featureNameId" (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
+                                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
+                                        [(ngModel)]="feature_bom_data.feature_id" name="featureName" id="featureNameId"
+                                        (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
                                         #featureinputbox title="{{feature_bom_data.feature_id}}">
                                     <div class="input-group-append" [hidden]=FeatureLookupBtnhide>
                                         <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openFeatureLookUp()">
@@ -78,16 +79,18 @@
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="featureDisplay">{{language.Bom_Displayname}}</label>
                                 <div class="col-sm-5">
-                                    <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname" placeholder="{{language.Bom_Displayname}}"
-                                        readonly [(ngModel)]="feature_bom_data.feature_name" title="{{feature_bom_data.feature_name}}">
+                                    <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname"
+                                        placeholder="{{language.Bom_Displayname}}" readonly [(ngModel)]="feature_bom_data.feature_name"
+                                        title="{{feature_bom_data.feature_name}}">
                                 </div>
                             </div>
 
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="featureDesc">{{language.Bom_FeatureDesc}}</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc" placeholder="{{language.Bom_FeatureDesc}}"
-                                        readonly [(ngModel)]="feature_bom_data.feature_desc" title="{{feature_bom_data.feature_desc}}">
+                                    <input type="text" class="form-control  form-control-sm mt3" id="featureDesc" name="feature_desc"
+                                        placeholder="{{language.Bom_FeatureDesc}}" readonly [(ngModel)]="feature_bom_data.feature_desc"
+                                        title="{{feature_bom_data.feature_desc}}">
                                 </div>
                             </div>
 
@@ -96,8 +99,10 @@
                                 <div class="col-sm-5">
                                     <div class="row image_data">
                                         <div class=" col-md-4 col-sm-4">
-                                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(header_image_data)">
-                                                <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image" alt="">
+                                            <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal"
+                                                (click)="enlage_image(header_image_data)">
+                                                <img src="{{header_image_data}}" class="img-thumbnail rounded float-left mdelbom_image"
+                                                    alt="">
                                             </a>
                                         </div>
                                     </div>
@@ -108,22 +113,58 @@
                                 <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                                 <div class="col-sm-5 mt-3px">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
-                                            value="Y" title="{{this.language.YES}}">
+                                        <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory"
+                                            class="custom-control-input" value="Y" title="{{this.language.YES}}">
                                         <label class="custom-control-label" for="yes">&nbsp; {{this.language.YES}}</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline ml-2">
-                                        <input type="radio" [disabled]="true" id="no" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
+                                        <input type="radio" [disabled]="true" id="no" name="featureAccessory"
+                                            [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
                                             value="N" title="{{this.language.NO}}">
                                         <label class="custom-control-label" for="no">&nbsp; {{this.language.NO}}</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()" #button>
+                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} "
+                                        (click)="onAddRow()" #button>
                                         <i class="fa fa-plus"></i> {{language.add_row}}
                                     </a>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row clearfix">
+                                <label class="col-sm-3 col-form-label" for="featureDisplay">{{language.multi_select}}</label>
+                                <div class="col-sm-5 mt-3px">
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" id="multiple_select_yes" name="multi_select" #multipleselectcheck [(ngModel)]="feature_bom_data.multi_select"
+                                            class="custom-control-input " style="position: relative;margin-top: 5px;"
+                                            title="{{feature_bom_data.multi_select}}" tabindex="5"  (click)="on_multiple_model_change(multipleselectcheck.value, multipleselectcheck.checked)">
+                                        <label class="custom-control-label" for="multiple_select_yes"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row clearfix">
+                                <div class="col-sm-6 row">
+                                    <label class="col-sm-6 col-form-label" for="feature_min_selectable">{{language.min_selectable}}</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_min_selectable"
+                                            name="feature_min_selectable" placeholder="{{language.min_selectable}}" #feature_min
+                                            (change)="validate_min_values(feature_min.value, 'feature_min_selectable')" [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_min_selectable" title="{{feature_bom_data.feature_min_selectable}}">
+                                    </div>
+                                </div>
+                            <div class="col-sm-6 row">
+                                <label class="col-sm-6 col-form-label" for="feature_max_selectable">{{language.max_selectable}}</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_max_selectable" name="feature_max_selectable"
+                                        placeholder="{{language.max_selectable}}" #feature_max (change)="validate_max_values(feature_max.value, 'feature_max_selectable')" [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_max_selectable"
+                                        title="{{feature_bom_data.feature_max_selectable}}">
+                                </div>
+                            </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -131,111 +172,136 @@
                     <!-- <hr> -->
                     <div class="col-sm-12 p-0">
                         <div class="">
-                        <kendo-grid [kendoGridBinding]="feature_bom_table"  [resizable]="true" [sortable]="false" [groupable]="false"
-                            [filterable]="false" > 
+                            <kendo-grid [kendoGridBinding]="feature_bom_table" [resizable]="true" [sortable]="false"
+                                [groupable]="false" [filterable]="false">
 
-                            <kendo-grid-column field="rowindex" title="#" [width]="35" [minResizableWidth]="35" filter="numeric">
-                            </kendo-grid-column>
-                            <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="110">
-                                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
-                                <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
-                                    <option *ngFor="let v of detail_select_options " [value]="v.value" [selected]="dataItem.type==v.value"> {{v.Name}}</option>
-                                </select>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Bom_FeatureValue" title="{{language.Bom_FeatureValue}}" filter="text" >
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div class="input-group">
-                                        <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm" id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value,type_value_code)"
-                                            value={{dataItem.type_value_code}} #type_value_code title="{{dataItem.type_value_code}}"
-                                        />
-                                        <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm" id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, dataItem.type_value_code)"
-                                            value={{dataItem.type_value}} #type_value title="{{dataItem.type_value}}" />
-                                        <div class="input-group-append" [hidden]=dataItem.hide>
-                                            <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_change(dataItem.type, dataItem.rowindex)">
-                                                <i class="fa fa-bars"></i>
-                                            </span>
+                                <kendo-grid-column field="rowindex" title="#" [width]="35" [minResizableWidth]="35"
+                                    filter="numeric">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}"
+                                    [width]="110" [minResizableWidth]="110">
+                                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
+                                        <select class="form-control  form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
+                                            <option *ngFor="let v of detail_select_options " [value]="v.value"
+                                                [selected]="dataItem.type==v.value"> {{v.Name}}</option>
+                                        </select>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="Bom_FeatureValue" title="{{language.Bom_FeatureValue}}"
+                                    filter="text">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="input-group">
+                                            <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm"
+                                                id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value,type_value_code)"
+                                                value={{dataItem.type_value_code}} #type_value_code title="{{dataItem.type_value_code}}" />
+                                            <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm"
+                                                id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, dataItem.type_value_code)"
+                                                value={{dataItem.type_value}} #type_value title="{{dataItem.type_value}}" />
+                                            <div class="input-group-append" [hidden]=dataItem.hide>
+                                                <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2"
+                                                    (click)="on_type_change(dataItem.type, dataItem.rowindex)">
+                                                    <i class="fa fa-bars"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
+                                    </ng-template>
+                                </kendo-grid-column>
 
-                            <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <input [disabled]="dataItem.isDisplayNameDisabled" type="text" class="form-control  form-control-sm" id="display_name" (change)="on_displayname_change(display_name.value,dataItem.rowindex)"
-                                        value={{dataItem.display_name}} #display_name title="{{dataItem.display_name}}" />
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="90" [minResizableWidth]="90">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <input type="text" [disabled]="dataItem.isQuanityDisabled" style="text-align:right" class="form-control  form-control-sm"
-                                        id="quantity" name="feature_quantity" (change)="on_quantity_change(quantity.value,dataItem.rowindex)" value={{dataItem.quantity}}
-                                        #quantity title="{{dataItem.quantity}}" />
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text" [width]="80" [minResizableWidth]="80" >
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm" id="dataItem.rowindex" (change)="on_defualt_change(default,dataItem.rowindex)"
-                                        value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}" />
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,dataItem.rowindex)"
-                                        value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="120" [minResizableWidth]="120">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty" value={{dataItem.propagate_qty}}
-                                        (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)" [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
-                                        #propagate_qty title="{{dataItem.propagate_qty}}" />
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text" [width]="110" [minResizableWidth]="110">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                <div class="input-group">
-                                    <input [disabled]="dataItem.price_source" type="hidden" class="form-control  form-control-sm" id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)"
-                                        title="{{dataItem.price_source_id}}" value={{dataItem.price_source_id}} #price_source_id />
-                                
-                                    <input type="text" class="form-control  form-control-sm" id="price_source" title="{{dataItem.price_source}}" name="price_source"
-                                        value={{dataItem.price_source}} (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)"
-                                        #price_source [disabled]="dataItem.isPriceDisabled" />
-                                    <div class="input-group-append" [hidden]=dataItem.pricehide>
-                                        <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="openPriceLookUp(dataItem.type_value,dataItem.rowindex)">
-                                            <i class="fa fa-bars"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Bom_Attach" title="{{language.Bom_Attach}}" [width]="130" [minResizableWidth]="130">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div class="btn btn-outline-secondary btn-file btn-sm "> {{language.choose_image}}
-                                        <input type="file" class="form-control  form-control-sm " id="attachment" name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,dataItem.rowindex)" />
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="image" title="{{language.image}}" [width]="100" [minResizableWidth]="100">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal" (click)="enlage_image(dataItem.preview)">
-                                        <img src="{{dataItem.preview}}" class="img-thumbnail rounded  mdelbom_image inner_table_image" alt="">
-                                    </a>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="60" >
+                                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <input [disabled]="dataItem.isDisplayNameDisabled" type="text" class="form-control  form-control-sm"
+                                            id="display_name" (change)="on_displayname_change(display_name.value,dataItem.rowindex)"
+                                            value={{dataItem.display_name}} #display_name title="{{dataItem.display_name}}" />
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="Bom_Qty" title="{{language.Bom_Qty}}" filter="text" [width]="90"
+                                    [minResizableWidth]="90">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <input type="text" [disabled]="dataItem.isQuanityDisabled" style="text-align:right"
+                                            class="form-control  form-control-sm" id="quantity" name="feature_quantity"
+                                            (change)="on_quantity_change(quantity.value,dataItem.rowindex)" value={{dataItem.quantity}}
+                                            #quantity title="{{dataItem.quantity}}" />
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text"
+                                    [width]="80" [minResizableWidth]="80">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm"
+                                            id="dataItem.rowindex" (change)="on_defualt_change(default,dataItem.rowindex)"
+                                            value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}" />
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,dataItem.rowindex)"
+                                            value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric"
+                                    [width]="120" [minResizableWidth]="120">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty"
+                                            value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
+                                            [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
+                                            #propagate_qty title="{{dataItem.propagate_qty}}" />
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text"
+                                    [width]="110" [minResizableWidth]="110">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="input-group">
+                                            <input [disabled]="dataItem.price_source" type="hidden" class="form-control  form-control-sm"
+                                                id="price_source_id" (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)"
+                                                title="{{dataItem.price_source_id}}" value={{dataItem.price_source_id}}
+                                                #price_source_id />
 
-                                <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                                    <i class="fa fa-trash"></i>
-                                </ng-template>
+                                            <input type="text" class="form-control  form-control-sm" id="price_source"
+                                                title="{{dataItem.price_source}}" name="price_source" value={{dataItem.price_source}}
+                                                (change)="on_price_source_change(price_source_id.value,price_source.value,dataItem.rowindex,price_source)"
+                                                #price_source [disabled]="dataItem.isPriceDisabled" />
+                                            <div class="input-group-append" [hidden]=dataItem.pricehide>
+                                                <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2"
+                                                    (click)="openPriceLookUp(dataItem.type_value,dataItem.rowindex)">
+                                                    <i class="fa fa-bars"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="Bom_Attach" title="{{language.Bom_Attach}}" [width]="130"
+                                    [minResizableWidth]="130">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="btn btn-outline-secondary btn-file btn-sm ">
+                                            {{language.choose_image}}
+                                            <input type="file" class="form-control  form-control-sm " id="attachment"
+                                                name="attachmentname" #attachment (change)="uploaddetailfile(attachment.files,dataItem.rowindex)" />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="image" title="{{language.image}}" [width]="100"
+                                    [minResizableWidth]="100">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <a href="javascript:;" data-toggle="modal" data-target="#enlarge_image_modal"
+                                            (click)="enlage_image(dataItem.preview)">
+                                            <img src="{{dataItem.preview}}" class="img-thumbnail rounded  mdelbom_image inner_table_image"
+                                                alt="">
+                                        </a>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="delete" title="" template="" [width]="60" [minResizableWidth]="60">
 
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(dataItem.rowindex)" title="{{this.language.delete}}">
+                                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                         <i class="fa fa-trash"></i>
-                                    </button>
-                                </ng-template>
-                            </kendo-grid-column>
-                        </kendo-grid>
+                                    </ng-template>
+
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(dataItem.rowindex)"
+                                            title="{{this.language.delete}}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
                         </div>
                     </div>
 
@@ -253,18 +319,21 @@
                                     <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSaveClick()" class="btn btn-sm btn-primary mr-10">
                                         <i class="fa fa-save"></i> {{language.update}}</button>
 
-                                    <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick('manual')" class="btn btn-sm btn-secondary  mr-10">
+                                    <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick('manual')"
+                                        class="btn btn-sm btn-secondary  mr-10">
                                         <i class="fa fa-window-maximize"></i> {{language.explode}}
                                     </button>
 
-                                    <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10" (click)="onAssociatedBOMClick()">
+                                    <button type="button" *ngIf="isAssociatedBOMButtonVisible" class="btn btn-sm btn-secondary  mr-10"
+                                        (click)="onAssociatedBOMClick()">
                                         <i class="fa fa-window-maximize"></i> {{language.associated_BOM}}
                                     </button>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="pull-right">
-                                    <button type="button" class="btn btn-sm btn-danger pr-1 mr-10" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
+                                    <button type="button" class="btn btn-sm btn-danger pr-1 mr-10" *ngIf="isDeleteButtonVisible"
+                                        (click)="onDeleteClick()">
                                         <i class="fa fa-trash fa-fw"></i>
                                         <span>{{language.delete}}</span>
                                     </button>
@@ -292,7 +361,8 @@
                                 <!-- <i class="fa fa-circle"></i>  -->
                                 {{element.component}}
                             </span>
-                            <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+                            <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json"
+                                *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                         </li>
                     </div>
                 </ul>
@@ -304,7 +374,8 @@
 <!-- <hr> -->
 
 <span [hidden]="showLookupLoader">
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+    <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"
+        [selectedImage]="selectedImage"></app-lookup>
 </span>
 
 <!--Custom Dialog-->

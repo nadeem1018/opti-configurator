@@ -152,8 +152,9 @@ export class ItemcodegenerationComponent implements OnInit {
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
       this.isDeleteButtonVisible=false;
-      this.counter=1;
-      this.itemcodetable.push({
+      // this.counter=1;
+      this.onAddRow(1);
+     /*  this.itemcodetable.push({
         rowindex:this.counter,
         string:"",
         stringtype:1,
@@ -163,7 +164,7 @@ export class ItemcodegenerationComponent implements OnInit {
         codekey:this.codekey,
         CreatedUser:this.username,
         isOperationDisable:true
-      })
+      }) */
      
       //Check Permission
       this.showLoader  = false;
@@ -182,9 +183,11 @@ export class ItemcodegenerationComponent implements OnInit {
       this._button.nativeElement.focus();
     }
   }
-  onAddRow() {
-    if (this.validateRowData("AddRow") == false) {
-      return
+  onAddRow(oninit) {
+    if( oninit == 0 ){
+      if (this.validateRowData("AddRow") == false) {
+        return
+      }
     }
     if (this.itemcodetable.length == 0) {
       this.counter = 0;
@@ -316,6 +319,7 @@ export class ItemcodegenerationComponent implements OnInit {
       for (let i = 0; i < this.itemcodetable.length; ++i) {
         if (this.itemcodetable[i].rowindex === rowindex) {
           this.itemcodetable[i].string = selectedvalue;
+          this.itemcodetable[i].codekey = this.codekey;
         }
         this.finalstring = this.finalstring + this.itemcodetable[i].string
       }
@@ -447,6 +451,12 @@ export class ItemcodegenerationComponent implements OnInit {
           this.codekey= "";
           return;
         }
+        else{
+          console.log(this.itemcodetable);
+          for (let iCount = 0; iCount < this.itemcodetable.length; ++iCount) {
+            this.itemcodetable[iCount]['codekey'] = this.codekey;
+          }
+        } 
       }
     )
   }

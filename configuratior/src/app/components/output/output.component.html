@@ -103,7 +103,7 @@
                       <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="on_configuration_id_change(modify_duplicate_lookup.value)"
                         name="modify_duplicate_lookup" #modify_duplicate_lookup id="modify_duplicate_lookup"
                         placeholder="{{language.configuration}}" [(ngModel)]="step1_data.selected_configuration_key"
-                        #selected_configuration_key>
+                        #selected_configuration_key readonly>
                       <div class="input-group-append">
                         <span class="input-group-text cursor_icon basic-addon2-duplicate" id="basic-addon2" (click)="open_config_lookup()">
                           <i class="fa fa-bars"></i>
