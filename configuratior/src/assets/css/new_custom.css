@@ -618,6 +618,18 @@ hr {
   background-clip: border-box;
   border: 1px solid rgba(0,0,0,.125);
   border-radius: .25rem;
+  min-height: calc(100% - 15px);
+  display: flex;
+  flex-direction: column;
+  overflow: visible !important;
+  max-height: 808px !important;
+}
+.tree-wrapper> .tree.well{
+  margin-bottom: 0;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: auto;
 }
 .tree li [data-branchtype]:not([data-branchtype=""]){
   padding-left:30px;

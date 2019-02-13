@@ -283,7 +283,7 @@
     </div>
 
     <div class="col-md-3 d-none" id="right-tree-section">
-        <div class="opti_overflow-auto">
+        <div class="opti_overflow-auto tree-wrapper">
             <div class="tree well">
                 <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
                     <div *ngFor="let element of tree_data_json; let i= index;">
@@ -306,10 +306,10 @@
                             popoverTitle="{{element.component}}"
                             placement="left"
                             triggers="" #pop="bs-popover"> 
-                                <span #btn (click)="childExpand(btn)" class="expand-btn" ></span>
+                                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" ></span>
                                 <span [attr.data-branchtype]="element.branchType" (click)="pop.toggle()">{{element.component}}</span>
                             </span>
-                            <treeview #tree style="display:none" [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+                            <treeview #tree [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                         </li>
                     </div>
                 </ul>
