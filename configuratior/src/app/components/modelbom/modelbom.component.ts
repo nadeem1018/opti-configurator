@@ -855,7 +855,7 @@ var result = false;
           return;
         }
 
-        this.modelbom_data[i].min_selected = value
+        this.modelbom_data[i].min_selected = value        
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
@@ -863,11 +863,11 @@ var result = false;
             $(".min_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
-          } 
-        
+          }
         }
 
       }
+
     }
 
   }

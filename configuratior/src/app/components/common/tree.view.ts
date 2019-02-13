@@ -6,7 +6,6 @@ import * as $ from 'jquery';
     selector: 'treeview',
     template: `
      <ul>
-<<<<<<< HEAD
         <li *ngFor="let inner_element of tree_data_json; let i= index;">  
             <ng-template #template>
                 <div class="modal-body text-center image-previe-container">
@@ -31,12 +30,6 @@ import * as $ from 'jquery';
             </span>
             <treeview #tree style="display:none" [tree_data_json]="get_childrens(inner_element.component, inner_element.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.component).length > 0"></treeview>
 
-=======
-        <li *ngFor="let inner_element of tree_data_json; let i= index;">
-            <span> {{inner_element.component}} </span>
-            <treeview [tree_data_json]="get_childrens(inner_element.component, inner_element.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.component, inner_element.level).length > 0"></treeview>
-         </li>
->>>>>>> 61717018380b99dbc4aacdcf6662861875871f01
     </ul>
     `,
 
@@ -45,7 +38,6 @@ import * as $ from 'jquery';
 export class TreeViewComponent {
     @Input() tree_data_json;
     @Input() complete_dataset;
-<<<<<<< HEAD
 
     @HostListener('window:scroll, scroll', ['$event'])
     onScroll($event, pop:any) {
@@ -59,8 +51,6 @@ export class TreeViewComponent {
         this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
     }
     
-=======
->>>>>>> 61717018380b99dbc4aacdcf6662861875871f01
     log(data) {
         console.log(data);
     }
@@ -71,10 +61,6 @@ export class TreeViewComponent {
         })
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 61717018380b99dbc4aacdcf6662861875871f01
     get_childrens(component, current_level ) {
         var next_level = (parseInt(current_level) + 1);
         let data = this.complete_dataset.filter(function (obj) {
