@@ -302,10 +302,13 @@ export class BomComponent implements OnInit {
       } else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+      } else if (this.feature_bom_data.feature_min_selectable > this.feature_bom_data.feature_max_selectable) {
+        value = 1;
+        this.toastr.error('', this.language.min_selectable_greater_than_max, this.commonData.toast_config);
       }
       this.feature_bom_data[input_id] = (value);
-
     }
+    
     $('#' + input_id).val(value);
   }
 
@@ -329,6 +332,9 @@ export class BomComponent implements OnInit {
       } else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
+      } else if (this.feature_bom_data.feature_max_selectable < this.feature_bom_data.feature_min_selectable ) {
+        value = 1;
+        this.toastr.error('', this.language.max_selectable_less_than_min, this.commonData.toast_config);
       }
       this.feature_bom_data[input_id] = (value);
 
