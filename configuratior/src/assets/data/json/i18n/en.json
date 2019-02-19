@@ -456,7 +456,20 @@
     "qc_time": "QC Time",
     "time_uom": "Time UOM",
     "opn_application": "Opn Applicable",
-    "in":"in"
+    "in":"in",
+    "add_resource":"Add resource",
+    "routing_resource":"Routing Resource",
+    "operation_no": "Operation No.",
+    "resource_code": "Resource Code",
+    "resource_name": "Resource Name",
+    "resource_uom" : "Resource UOM",
+    "consumption"  : "Consumption",
+    "inverse"  : "Inverse", 
+    "no_resource_used" : "No. of resource used",
+    "resource_consumption_type"  : "Consumption Type",
+    "basis" : "Basis",
+    "schedule"  : "Schedule",
+    "apply":"Apply"
 
 
     

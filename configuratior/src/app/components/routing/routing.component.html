@@ -459,7 +459,7 @@
                   <i class="fa fa-trash"></i>
                 </ng-template>
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteRow(dataItem.rowindex)"
+                  <button type="button" class="btn btn-outline-danger btn-sm" title="{{this.language.delete}}" (click)="onDeleteRow(dataItem.rowindex)"
                     *ngIf="dataItem.showOperationbtn">
                     <i class="fa fa-trash"></i>
                   </button>

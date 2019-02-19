@@ -205,6 +205,7 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     this.serviceData = []
     this.lookupfor = 'routing_resource_lookup';
+    this.showLookupLoader = false;
   }
 
 
@@ -255,7 +256,6 @@ export class RoutingComponent implements OnInit {
       showOperationbtn: true,
     });
   }
-
  
 
   on_input_change(value, rowindex, grid_element) {

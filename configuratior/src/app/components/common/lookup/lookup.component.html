@@ -241,7 +241,7 @@
 <!-- routing resource popup -->
 <div class="modal fade" id="routing_resource_modal" tabindex="-1" role="dialog" aria-labelledby="routing_resource_modal"
     aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog modal-xlg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="routing_resource_modal_title">{{popup_title}}</h5>
@@ -252,13 +252,134 @@
                     </span>
                 </button>
             </div>
-            <div class="modal-body">
-                <kendo-grid [kendoGridBinding]="serviceData" [selectable]="false" [pageable]="true" [resizable]="true">
-                    <kendo-grid-column field="" title="" filter="" format="" width="" minResizableWidth="">
+            <div class="modal-body pb-3">
+                <div class="row col-sm-12">
+                    <div class="mr-3" >
+                        <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_resource}} "
+                            (click)="insert_new_resource()">
+                            <i class="fa fa-plus"></i> {{language.add_resource}}
+                        </a>
+                    </div>
+                <kendo-grid [kendoGridBinding]="resourceServiceData" [selectable]="false" [pageable]="false" [resizable]="true">
+                    <kendo-grid-column field="seqrowno" title="{{language.hash}}" filter="text" [width]="50" [minResizableWidth]="50">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowindex"  name="rowindexName" value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
+                        </ng-template>
+                    </kendo-grid-column>
 
+                    <kendo-grid-column field="operation_no" title="{{language.operation_no}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="operation_no" value="{{dataItem.operation_no}}" [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(operation_no.value,dataItem.rowindex, 'operation_no')" #operation_no title="{{dataItem.operation_no}}" />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_name" title="{{language.resource_name}}" filter="text" [width]="155" [minResizableWidth]="155">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="input-group">
+                                <input type="hidden" class="form-control  form-control-sm row_resource_id"  id="resource_id" value={{dataItem.resource_id}} #resource_id title={{dataItem.resource_id}} />
+                                <input type="text" class="form-control  form-control-sm row_resource_code" id="resource_code" (change)="on_input_change(resource_code.value,dataItem.rowindex, 'resource_code')" value={{dataItem.resource_code}}  #resource_code title={{dataItem.resource_code}} />
+                                <div class="input-group-append" [hidden]=dataItem.hide>
+                                    <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="open_resource_lookup(dataItem.type, dataItem.rowindex)">
+                                        <i class="fa fa-bars"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_name" title="{{language.resource_name}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm " id="resource_name" value={{dataItem.resource_name}} [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(resource_name.value,dataItem.rowindex, 'resource_name')"
+                                #resource_name title={{dataItem.resource_name}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_uom" title="{{language.resource_uom}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm " id="resource_uom" value={{dataItem.resource_uom}} [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(resource_uom.value,dataItem.rowindex, 'resource_uom')"
+                                #resource_uom title={{dataItem.resource_uom}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_consumption" title="{{language.consumption}}" filter="text" [width]="140"
+                        [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="resource_consumption" value={{dataItem.resource_consumption}}
+                                (change)="on_input_change(resource_consumption.value,dataItem.rowindex, 'resource_consumption')" #resource_consumption title={{dataItem.resource_consumption}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_inverse" title="{{language.inverse}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="resource_inverse" value={{dataItem.resource_inverse}} (change)="on_input_change(resource_inverse.value,dataItem.rowindex, 'resource_inverse')"
+                                #resource_inverse title={{dataItem.resource_inverse}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="no_resource_used" title="{{language.no_resource_used}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="no_resource_used" value={{dataItem.no_resource_used}} (change)="on_input_change(no_resource_used.value,dataItem.rowindex, 'no_resource_used')"
+                                #no_resource_used title={{dataItem.no_resource_used}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="time_uom" title="{{language.time_uom}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm " id="time_uom" value={{dataItem.time_uom}} [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')"
+                                #time_uom title={{dataItem.time_uom}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="time_consumption" title="{{language.consumption}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="time_consumption" value={{dataItem.time_consumption}} [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(time_consumption.value,dataItem.rowindex, 'time_consumption')" #time_consumption title={{dataItem.time_consumption}} />
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="time_inverse" title="{{language.inverse}}" filter="text" [width]="140" [minResizableWidth]="140">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <input type="text" class="form-control  form-control-sm text-right" id="time_inverse" value={{dataItem.time_inverse}} [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(time_inverse.value,dataItem.rowindex, 'time_inverse')" #time_inverse title={{dataItem.time_inverse}} />
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <kendo-grid-column field="resource_consumption_type" title="{{language.resource_consumption_type}}" [width]="110" [minResizableWidth]="110">
+                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
+                            <select class="form-control form-control-sm" #resource_consumption_type (change)="on_input_change(resource_consumption_type.value,dataItem.rowindex, 'resource_consumption_type')">
+                                <option *ngFor="let v of commonData.resource_consumption_type" [value]="v.value" [selected]="dataItem.resource_consumption_type==v.value">
+                                    {{v.Name}}</option>
+                            </select>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="resource_basic" title="{{language.basis}}" [width]="110"
+                        [minResizableWidth]="110">
+                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
+                            <select class="form-control form-control-sm" #resource_basic (change)="on_input_change(resource_basic.value,dataItem.rowindex, 'resource_basic')">
+                                <option *ngFor="let v of commonData.resource_basic" [value]="v.value" [selected]="dataItem.resource_basic==v.value">
+                                    {{v.Name}}</option>
+                            </select>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="schedule" title="{{language.schedule}}" [width]="100"
+                        [minResizableWidth]="100">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="schedule_{{dataItem.rowindex}}" value={{dataItem.schedule}}
+                                    (change)="on_input_change(schedule,dataItem.rowindex, 'schedule')"
+                                    #schedule [(checked)]=dataItem.schedule title="{{dataItem.schedule}}"
+                                    style="position: relative;margin-top: 5px;" />
+                                <label class="custom-control-label" for="schedule_{{dataItem.rowindex}}"></label>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="delete" title="delete" template="" [width]="60" [minResizableWidth]="60">
+                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                            <i class="fa fa-trash"></i>
+                        </ng-template>
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <button type="button" class="btn btn-outline-danger btn-sm" title="{{this.language.delete}}" (click)="onDeleteRow(dataItem.rowindex)" *ngIf="dataItem.showOperationbtn">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </ng-template>
                     </kendo-grid-column>
                 </kendo-grid>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-primary mr-10" type="button" (click)="resource()">
+                <i class="fa fa-check"></i> {{this.language.apply}}</button>
+            <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')">
+                <i class="fa fa-close"></i> {{this.language.close}}</button>
         </div>
     </div>
 </div>

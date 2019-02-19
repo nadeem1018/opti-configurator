@@ -97,6 +97,19 @@ export class CommonData {
         { "value": 'y', "Name": "Yes" }
     ];
 
+    public resource_consumption_type: any = [
+        { "value": '1', "Name": "Manual" },
+        { "value": '2', "Name": "Automatic" },
+        { "value": '3', "Name": "Operation Issue" }
+    ];
+
+    public resource_basic: any = [
+        { "value": '1', "Name": "Item" },
+        { "value": '2', "Name": "Batch" },
+        { "value": '3', "Name": "Fixed" },
+        { "value": '4', "Name": "Setup" }
+    ];
+
     public bracket_list = [
         { "value": '' },
         { "value": "[" },
