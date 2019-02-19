@@ -21,7 +21,7 @@ export class ViewModelBomComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
 
     public companyName: string = "";
     public username: string = "";
@@ -84,6 +84,11 @@ export class ViewModelBomComponent implements OnInit {
           },
       ];
 
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
+      console.log('=sessionStorage=======',sessionStorage.defaultRecords);
+    }
+
     getLookupValue($event) {
         
     }  
@@ -105,7 +110,9 @@ export class ViewModelBomComponent implements OnInit {
         this.isPerfectSCrollBar = false;
         }
     }
-
+    saveFilterState() {
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter);
+    }
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
@@ -118,6 +125,16 @@ export class ViewModelBomComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {

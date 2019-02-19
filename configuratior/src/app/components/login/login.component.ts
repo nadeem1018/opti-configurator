@@ -182,6 +182,8 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('loggedInUser', this.loginCredentials.userName);
       sessionStorage.setItem('defaultRecords', this.record_per_page);
       sessionStorage.setItem('isLoggedIn', "true");
+      sessionStorage.setItem('isFilterEnabled', "false");
+
 
       this.CommonService.setisLoggedInData();
 

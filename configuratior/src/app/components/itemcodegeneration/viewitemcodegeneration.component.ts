@@ -32,7 +32,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
 
 
     record_per_page: any;
@@ -93,6 +93,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     getLookupValue($event) {
         
     }
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
+    }
 
     detectDevice(){
         let getDevice = UIHelper.isDevice();
@@ -107,7 +110,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.isPerfectSCrollBar = false;
         }
     }
-
+    saveFilterState() {
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter);
+    }
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
@@ -123,6 +128,16 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
         this.service_call(this.current_page, this.search_string);
 
         //this.CheckedData.CheckedRow=[];
