@@ -24,7 +24,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public commonData = new CommonData();
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
 
     public isColumnFilter: boolean = false;
     // generate table default constants
@@ -112,6 +112,7 @@ export class ViewFeatureModelComponent implements OnInit {
     getLookupValue($event) {
         
     }
+
   
     on_selection(grid_event) {
         grid_event.selectedRows = [];
@@ -130,6 +131,9 @@ export class ViewFeatureModelComponent implements OnInit {
         this.isPerfectSCrollBar = false;
         }
     }
+    saveFilterState() {
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter);
+    }
 
     ngOnInit() {
         const element = document.getElementsByTagName("body")[0];
@@ -141,8 +145,17 @@ export class ViewFeatureModelComponent implements OnInit {
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
         this.service_call(this.current_page, this.search_string);
         this.showLoader = true;
+    }
+
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
     }
     ngAfterViewInit() {
        //  this._el.nativeElement.focus();
