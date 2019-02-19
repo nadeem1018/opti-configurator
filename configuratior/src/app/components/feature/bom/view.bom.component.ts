@@ -73,13 +73,15 @@ export class ViewFeatureBOMComponent implements OnInit {
             field: 'OPTM_FEATURECODE',
             title: this.language.Feature_Code,
             type: 'text',
-            width: '500'
+            width: '500',
+            attrType:'link'
         },
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Bom_Displayname,
             type: 'text',
-            width: '500'
+            width: '500',
+            attrType:'text'
         },
     ];
 

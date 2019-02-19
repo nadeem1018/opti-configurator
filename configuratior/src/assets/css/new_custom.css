@@ -693,3 +693,7 @@ hr {
   min-height: 40px;
   line-height: 40px;
 }
+a.common_grid_link {
+  color: #0056b3!important;
+  cursor: pointer;
+}
