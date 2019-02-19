@@ -264,24 +264,6 @@
 
                         </kendo-grid>
 
-
-
-                        <!-- <div class="table-responsive">
-                            <table class="table table-bordered lookup_table  table-sm" id="dataTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th width="{{width_value}}" *ngFor="let table_columns of table_head; let i = index" [hidden]="table_head_hidden_elements[i]">{{table_columns}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="lookup_table_body">
-                                    <tr *ngFor="let row of serviceData">
-                                        <td width="{{width_value}}" *ngFor="let row_data of Object.keys(row); let i =index" [hidden]="table_head_hidden_elements[i]">
-                                            <span>{{row[row_data]}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -711,40 +693,7 @@
                                 </ng-template>
                             </kendo-grid-column>
                         </kendo-grid>
-                        <!-- <div class="table-responsive">
-                            <table class="table opti_fixed-header  table-sm" id="dataTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>{{language.included}}</th>
-                                        <th>{{language.feature}}</th>
-                                        <th>{{language.item}}</th>
-                                        <th>{{language.value}}</th>
-                                        <th>{{language.uom}}</th>
-                                        <th>{{language.quantity}}</th>
-                                        <th>{{language.edit_quantity}}</th>
-                                        <th>{{language.price}} ({{defaultCurrency}})</th>
-                                        <th>{{language.edit_price}}</th>
-                                        <th>{{language.default}}</th>
-                                        <th>{{language.rule_excluded}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="" style="position: relative;" [perfectScrollbar]="" [disabled]="isPerfectSCrollBar">
-                                    <tr *ngFor="let row of outputServiceData; let i=index">
-                                        <td>{{row.OPTM_ISINCLUDED}}</td>
-                                        <td>{{row.OPTM_FEATURECODE}}</td>
-                                        <td>{{row.OPTM_ITEMKEY}}</td>
-                                        <td>{{row.OPTM_VALUE}}</td>
-                                        <td>{{row.OPTM_UOM}}</td>
-                                        <td>{{row.OPTM_QUANTITY}}</td>
-                                        <td>{{(row.OPTM_ISQTYEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td>{{row.OPTM_PRICESOURCE}}</td>
-                                        <td>{{(row.OPTM_ISPRICEEDIT== 'n') ? language.NO : language.YES}}</td>
-                                        <td>{{(row.OPTM_DEFAULT== "False") ? language.NO : language.YES}}</td>
-                                        <td>{{(row.OPTM_EXCLUDED == "False") ? language.NO : language.YES}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> -->
+                        
                     </div>
                 </div>
             </div>

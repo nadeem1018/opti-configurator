@@ -54,10 +54,10 @@
             </div>
 
             <!-- <label class="opt_custome-label col-form-label" for="rule_description">{{language.description}}</label>
-        <div class="opt_custom-field">
-          <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
-            [(ngModel)]="rule_wb_data.description">
-        </div> -->
+            <div class="opt_custom-field">
+              <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+                [(ngModel)]="rule_wb_data.description">
+            </div>  -->
 
           </div>
 
@@ -99,9 +99,9 @@
                 placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id" title="{{rule_wb_data.applicable_for_feature_id}}">
               <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code"
                 title="{{rule_wb_data.applicable_for_feature_code}}" placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange(rule_wb_data.applicable_for_feature_code)"
-                style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
+                style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [readonly]="is_applicable_for_disabled">
               <div class="input-group-append">
-                <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
+                <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" [hidden]="is_applicable_for_disabled" (click)="getFetureListLookup(true)">
                   <i class="fa fa-bars"></i>
                 </span>
               </div>
@@ -422,10 +422,10 @@
                   <div class="col-md-8 pl-0">
                     <div class="pull-left">
                       <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
-                        <i class="fa fa-check-circle"></i> {{language.add_rule}}
+                        <i class="fa fa-check-circle"></i> {{language.add_expression}}
                       </button>
                       <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
-                        <i class="fa fa-pencil"></i> {{language.update_rule}}
+                        <i class="fa fa-pencil"></i> {{language.update_expression}}
                       </button>
                       <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
                         <i class="fa fa-times"></i> {{language.close}}

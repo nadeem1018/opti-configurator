@@ -154,6 +154,7 @@
     "SelectItem": "Select item at row index: ",
     "SelectValue": "Select value at row index: ",
     "quantityblank": "Select quantity at row index: ",
+    "valuezerovalid": "value cannot be 0",
     "quantityvalid": "Quantity cannot be 0",
     "min_selectable_quantityvalid": "Min Selectable cannot be 0",
     "max_selectable_quantityvalid": "Max Selectable cannot be 0",
@@ -204,6 +205,8 @@
     "required_fields": "Required Fields in Row:",
     "required_fields_direct": "Required Fields ",
     "update_rule": "Update Rule",
+    "add_expression":"Add Expression",
+    "update_expression":"Update Expression",
     "expression_generated": "Expression Generated",
     "expression_updated": "Expression Updated",
     "output_window": "Output Window",
@@ -299,7 +302,7 @@
     "hash": "#",
     "Id": "Id",
     "finalstring": "Final String",
-    "Effective Date": "Effective Date",
+    "EffectiveDate": "Effective Date",
     "select": "Select",
     "ModelId": "Model Id",
     "Fromdate": "From date",
@@ -328,13 +331,17 @@
     "pricevalid": "Price cannot be negative",
     "pricevalidextn": "Price extension cannot be negative",
     "negativequantityvalid": "Quantity cannot be negative",
+    "negativevalid": "negative value is not allowed",
     "negativeminselectablevalid": "Min Selectable cannot be negative",
     "negativemaxselectablevalid": "Max Selectable cannot be negative",
     "negativediscountvalid": "Discount cannot be negative",
     "decimalquantityvalid": "Quantity cannot be decimal",
+    "decimalvalid": "Decimal value is not allowed ",
     "decimaleminselectablevalid": "min selectable cannot be decimal",
     "decimalmaxselectablevalid": "max selectable cannot be decimal",
     "quantity_numeric_only": "Only Numeric Value allowed in Quantity",
+    "only_numeric_value_allowed" : "Only Numeric Value allowed",
+    "blank_or_zero_allowed": "Blank or zero is not allowed",
     "blank_or_zero_not_allowed": "Blank or zero quantity not allowed",
     "blank_or_zero_not_allowed_min_selectable": "Blank or zero min selectable not allowed",
     "blank_or_zero_not_allowed_max_selectable": "Blank or zero max selectable not allowed",
@@ -421,7 +428,49 @@
     "max_selectable_greater_total":"Max selectable cannot be greater than total rows",
     "min_selectable_greater_than_max": "Min selectable cannot be greater Max selectable",
     "max_selectable_less_than_min": "Max selectable cannot be less than Min selectable",
-    "atleast_one_unique_required": "Atleast 1 unique identifier is required."
+    "atleast_one_unique_required": "Atleast 1 unique identifier is required.",
+
+    "routing":"Routing",
+    "routing_for": "Routing For",
+    "warehouse":"Warehouse",
+    "default_batch_size":"Default Batch Size",
+    "default_lot_size":"Default Lot Size",
+    "use_mtq_in_planing":"Use MTQ in Planning",
+    "use_template_routing":"Use Template Routing",
+    "template_routing":"Template Routing",
+    "opm_num_format":"Opn Num Format",
+    "applicable_bom_unit":"Applicable BOM unit",
+    "insert_operation":"Insert Operation",
+    "resequence":"Resequence",
+    "resource":"Resource",
+    "bom_details": "BOM details",
+    "oper_top_level": "Oper at Top level",
+    "oper_code": "Oper Code",
+    "oper_desc": "Oper Description",
+    "wc": "WC",
+    "mtq": "MTQ",
+    "count_point_oper": "Count Point Oper",
+    "auto_move": "Auto Move",
+    "queue_time": "Queue Time",
+    "move_time": "Move time",
+    "qc_time": "QC Time",
+    "time_uom": "Time UOM",
+    "opn_application": "Opn Applicable",
+    "in":"in"
+
+
     
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

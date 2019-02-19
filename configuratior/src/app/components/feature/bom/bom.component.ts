@@ -241,7 +241,14 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.multi_select_disabled = true;
             }
             this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
+            if (this.feature_bom_data.feature_min_selectable == null || this.feature_bom_data.feature_min_selectable == "" || this.feature_bom_data.feature_min_selectable == undefined || this.feature_bom_data.feature_min_selectable == 0){
+              this.feature_bom_data.feature_min_selectable = 1;
+            }  
+            
             this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
+            if (this.feature_bom_data.feature_max_selectable == null || this.feature_bom_data.feature_max_selectable == "" || this.feature_bom_data.feature_max_selectable == undefined || this.feature_bom_data.feature_max_selectable == 0) {
+              this.feature_bom_data.feature_max_selectable = 1;
+            } 
 
             if (this.feature_bom_data.image_path != "") {
               if (this.feature_bom_data.image_path != null) {

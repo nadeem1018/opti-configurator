@@ -1021,6 +1021,9 @@ export class ModelbomComponent implements OnInit {
     if (obj.validation("Save") == false) {
       return;
     }
+    if (this.validate_unique_identifier() == false) {
+      return;
+    }
     this.showLookupLoader = true;
     obj.onVerifyOutput(function (response) {
       console.log('in validate true ' + response);
@@ -1334,19 +1337,31 @@ export class ModelbomComponent implements OnInit {
     });
     return data;
   }
+
+  validate_unique_identifier(){
+    console.log("is_ready_to_use - " + this.modelbom_data.is_ready_to_use);
+    if (this.modelbom_data.is_ready_to_use == true) {
+      var unique_item_array = this.modelbom_data.filter(function (obj) {
+        return (obj.unique_identifer == true) ? obj : ""
+      });
+      console.log("unique_item_array");
+      console.log(unique_item_array);
+      if (unique_item_array.length == 0) {
+        this.toastr.error('', this.language.atleast_one_unique_required, this.commonData.toast_config);
+        this.showLookupLoader = false;
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   save_data() {
     if (this.modelbom_data.length > 0) {
       this.modelbom_data[0].id = this.update_id;
-
-      if (this.modelbom_data.is_ready_to_use == true) {
-        var unique_item_array = this.modelbom_data.filter(function (obj) {
-          return (obj.unique_identifer == true) ? obj : ""
-        });
-        if (unique_item_array.length == 0) {
-          this.toastr.error('', this.language.atleast_one_unique_required, this.commonData.toast_config);
-          this.showLookupLoader = false;
-          return;
-        }
+      
+      if(this.validate_unique_identifier() == false){
+        return;
       }
 
       for (let i = 0; i < this.modelbom_data.length; ++i) {

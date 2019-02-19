@@ -32,7 +32,7 @@ export class ViewFeatureModelComponent implements OnInit {
     dataArray: any = [];
     search_key: any;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-    //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
+    //table_head_foot = ['Select','#','Id','Code', 'EffectiveDate','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
     public showLoader: boolean = true;
     public columns: ColumnSetting[] = [

@@ -237,7 +237,11 @@ export class LookupComponent implements OnInit {
         this.output_invoice_print();
         return;
       }
-     // this.lookupfor = "";
+
+      if(this.popup_lookupfor == 'routing_resource_lookup'){
+        this.routing_resource_lookup();
+        return;
+      }
     }
   }
 
@@ -1072,6 +1076,23 @@ export class LookupComponent implements OnInit {
     //   this.lookupfor = "";
   }
 
+
+  routing_resource_lookup(){
+    this.popup_title = this.language.resource;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        $("#routing_resource_modal").modal('show');
+      }
+    }
+   
+  }
+
   public tree_data_json: any = '';
   @Input() component;
 
@@ -1151,7 +1172,7 @@ export class LookupComponent implements OnInit {
   }
 
   customer_lookup() {
-    this.popup_title = this.language.model_template;
+    this.popup_title = this.language.customer;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
@@ -1207,62 +1228,6 @@ export class LookupComponent implements OnInit {
     this.print_item_list_array.length = 0;
   }
 
-
-  // gridUserSelectionChange(gridUser, selection) {sdgvxfvx
-  //   // let selectedData = gridUser.data.data[selection.index];
-  //   const selectedData = selection.selectedRows[0].dataItem;
-  //   console.log(selectedData);
-  //   alert(selectedData.Name);
-  // }
-
-
-  /*downloadFile() {
-    return this.http
-      .get('https://jslim.net/path/to/file/download', {
-        responseType: ResponseContentType.Blob
-      })
-      .map(res => {
-        return {
-          filename: 'filename.pdf',
-          data: res.blob()
-        };
-      })
-      .subscribe(res => {
-          console.log('start download:',res);
-          var url = window.URL.createObjectURL(res.data);
-          var a = document.createElement('a');
-          document.body.appendChild(a);
-          a.setAttribute('style', 'display: none');
-          a.href = url;
-          a.download = res.filename;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove(); // remove the element
-        }, error => {
-          console.log('download error:', JSON.stringify(error));
-        }, () => {
-          console.log('Completed file download.')
-        });
-  }*/
-
-  // dummy_json(){
-  //   return [
-  //     { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
-  //     { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
-  //     { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
-  //   ];
-  // }
 
   dummy_json() {
     return [

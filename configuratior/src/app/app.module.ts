@@ -61,6 +61,8 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BlankhandlerPipe } from './components/common/custom-pipes/blankhandler.pipe';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { ToFixedPipe } from './components/common/custom-pipes/to-fixed.pipe';
+import { RoutingComponent } from './components/routing/routing.component';
+import { ViewRoutingComponent } from './components/routing/view.routing.component';
 
 
 
@@ -94,6 +96,10 @@ const routes: Routes = [
   { path: 'output/view', component: OutputComponent },
   { path: 'output/view/:id', component: OutputComponent },
   { path: 'output/view/new', component: OutputComponent },
+
+  { path: 'routing/add', component: RoutingComponent },
+  { path: 'routing/edit/:id', component: RoutingComponent },
+  { path: 'routing/view', component: ViewRoutingComponent },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
@@ -133,7 +139,9 @@ const routes: Routes = [
     RuleWbViewComponent,
     OutputComponent,
     BlankhandlerPipe,
-    ToFixedPipe
+    ToFixedPipe,
+    RoutingComponent,
+    ViewRoutingComponent
   ],
   imports: [
     BrowserModule,
