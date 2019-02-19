@@ -65,19 +65,22 @@ export class ViewModelBomComponent implements OnInit {
           field: 'OPTM_FEATURECODE',
           title: this.language.model_ModelCode,
           type: 'text',
-          width: '200'
+          width: '200',
+          attrType: 'link'
         }, 
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Name,
             type: 'text',
-            width: '200'
+            width: '200',
+            attrType: 'text'
           },
           {
             field: 'OPTM_FEATUREDESC',
             title: this.language.description,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
           },
       ];
 

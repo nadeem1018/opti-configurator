@@ -60,37 +60,43 @@ export class RuleWbViewComponent implements OnInit {
             field: 'OPTM_RULECODE',
             title: this.language.rule_code,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'link'
         },
         {
             field: 'OPTM_DESCRIPTION',
             title: this.language.description,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_APPLICABLEFOR',
             title: this.language.applicable_for,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_EFFECTIVEFROM',
             title: this.language.Fromdate,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_EFFECTIVETO',
             title: this.language.Todate,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_DISCONTINUE',
             title: this.language.discontinued,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
     ];
 

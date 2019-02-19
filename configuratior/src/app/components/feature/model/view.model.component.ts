@@ -40,31 +40,36 @@ export class ViewFeatureModelComponent implements OnInit {
           field: 'OPTM_FEATURECODE',
           title: this.language.code,
           type: 'text',
-          width: '200'
+          width: '200',
+          attrType: 'link'
         }, 
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Bom_Displayname,
             type: 'text',
-            width: '200'
+            width: '200',
+            attrType: 'text'
           },
           {
             field: 'OPTM_EFFECTIVEDATE',
             title: this.language.Model_Date,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
           },
         {
           field: 'OPTM_TYPE',
           title: this.language.Type,
           type: 'text',
-          width: '100'      
+          width: '100',
+          attrType: 'text'
         },    
         {
             field: 'OPTM_STATUS',
             title: this.language.Model_Status,
             type: 'text',
-            width: '200'
+            width: '200',
+            attrType: 'text'
           },    
       ];
 

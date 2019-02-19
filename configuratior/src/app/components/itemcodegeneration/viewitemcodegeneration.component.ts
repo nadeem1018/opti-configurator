@@ -79,12 +79,14 @@ export class ViewItemCodeGenerationComponent implements OnInit {
           field: this.language.code,
           title: this.language.code,
           type: 'text',
-          width: '500'
+          width: '500',
+          attrType: 'link'
         }, {
           field: 'FinalString',
           title: this.language.finalstring,
           type: 'text',
-          width: '500'      
+          width: '500',
+          attrType: 'text'
         },        
       ];
 
