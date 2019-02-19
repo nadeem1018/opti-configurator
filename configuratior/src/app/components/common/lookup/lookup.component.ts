@@ -291,25 +291,29 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_LOGID',
         title: this.language.log_id,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DESC',
         title: this.language.description,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_BPCODE',
         title: this.language.customer,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_CONTACTPERSON',
         title: this.language.contact_person,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       }
       /* ,
       {
@@ -354,13 +358,15 @@ export class LookupComponent implements OnInit {
         field: 'Code',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Name',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -395,7 +401,8 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_CODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -429,13 +436,15 @@ export class LookupComponent implements OnInit {
         field: 'feature_code',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -469,13 +478,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -525,13 +536,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -568,13 +581,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -608,13 +623,15 @@ export class LookupComponent implements OnInit {
         field: 'ItemKey',
         title: this.language.itemkey,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Description',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
     ];
 
@@ -657,13 +674,15 @@ export class LookupComponent implements OnInit {
         field: 'PriceListID',
         title: this.language.price_source,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'ListName',
         title: this.language.price_list_name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -696,13 +715,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -1129,13 +1150,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Model_ModelName,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_FEATUREDESC',
         title: this.language.Model_ModelDesc,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
     ];
     this.table_head_hidden_elements = [true, false, false];
@@ -1183,13 +1206,15 @@ export class LookupComponent implements OnInit {
         field: 'CustID',
         title: this.language.customer_code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Name',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
