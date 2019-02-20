@@ -47,7 +47,7 @@ export class ViewRoutingComponent implements OnInit {
     public GetItemData: any = [];
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
-    public isColumnFilter: boolean = false;
+    public isColumnFilter: any = false;
 
     isMobile: boolean = false;
     isIpad: boolean = false;

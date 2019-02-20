@@ -106,7 +106,7 @@ export class ViewFeatureBOMComponent implements OnInit {
         }
     }
      saveFilterState() {
-       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter);
+         sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
     }
     ngOnInit() {
         this.showLoader = true;

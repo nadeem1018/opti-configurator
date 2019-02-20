@@ -132,7 +132,7 @@ export class ViewFeatureModelComponent implements OnInit {
         }
     }
     saveFilterState() {
-       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter);
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
     }
 
     ngOnInit() {
