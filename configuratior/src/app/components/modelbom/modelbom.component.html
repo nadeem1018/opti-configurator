@@ -140,8 +140,13 @@
             <div class="">
               <kendo-grid [kendoGridBinding]="modelbom_data" [resizable]="true" [sortable]="false" [groupable]="false"
                 [filterable]="false">
-
-                <kendo-grid-column field="rowindex" title="#" width="42" [minResizableWidth]="42" filter="numeric">
+                <kendo-grid-column field="rowindex" title="#" width="60" [minResizableWidth]="60" filter="numeric">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value, dataItem.type)" *ngIf="(dataItem.type_value) && (dataItem.type == '1' || dataItem.type == '3')">
+                        <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                      </a>
+                      {{dataItem.rowindex}}
+                    </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
                   [minResizableWidth]="110">
@@ -159,6 +164,7 @@
                       <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm row_type_value_id"
                         id="type_value" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value, type_value_code)"
                         value={{dataItem.type_value}} #type_value title={{dataItem.type_value}} />
+
 
                       <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm row_type_value_code"
                         id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value, type_value_code)"

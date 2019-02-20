@@ -69,7 +69,16 @@ export class ModelbomComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
 
+  navigateToFeatureOrModelBom(type_value, type ) {
+    if(type == '1'){
+      this.route.navigateByUrl("feature/bom/edit/"+type_value);
+    } else if(type == '3'){
+      this.route.navigateByUrl("modelbom/edit/"+type_value);
+      this.modelbom_data= [];
+      this.get_modelbom_details(type_value);
+    }
 
+  }
   detectDevice() {
     let getDevice = UIHelper.isDevice();
     this.isMobile = getDevice[0];
@@ -130,8 +139,14 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
+      this.get_modelbom_details(this.update_id);
 
-      this.service.GetDataByModelId(this.update_id).subscribe(
+    }
+  }
+
+  get_modelbom_details(id){
+     this.showLoader = true;
+     this.service.GetDataByModelId(id).subscribe(
         data => {
           if (data.ModelHeader.length > 0) {
             this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
@@ -242,7 +257,6 @@ export class ModelbomComponent implements OnInit {
                 isMinSelectedDisable: this.isMinSelectedDisable,
                 isMaxSelectedDisable: this.isMaxSelectedDisable
               });
-
             }
           }
 
@@ -251,9 +265,11 @@ export class ModelbomComponent implements OnInit {
           }
           this.onExplodeClick('auto');
           this.showLoader = false;
-        }
+        },
+       error => {
+           this.showLoader = false;
+       }
       )
-    }
   }
 
   ngAfterViewInit() {

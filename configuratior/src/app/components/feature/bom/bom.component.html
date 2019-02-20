@@ -181,9 +181,14 @@
                         <div class="">
                             <kendo-grid [kendoGridBinding]="feature_bom_table" [resizable]="true" [sortable]="false"
                                 [groupable]="false" [filterable]="false">
-
-                                <kendo-grid-column field="rowindex" title="#" [width]="35" [minResizableWidth]="35"
+                                <kendo-grid-column field="rowindex" title="#" [width]="60" [minResizableWidth]="60"
                                     filter="numeric">
+                                  <ng-template kendoGridCellTemplate let-dataItem>
+                                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value)" *ngIf="dataItem.type_value && dataItem.type == '1'">
+                                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                    </a>
+                                    {{dataItem.rowindex}}
+                                  </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}"
                                     [width]="110" [minResizableWidth]="110">
@@ -404,6 +409,5 @@
     <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"
         [selectedImage]="selectedImage"></app-lookup>
 </span>
-
 <!--Custom Dialog-->
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
