@@ -18,6 +18,7 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { NgxMaskModule } from 'ngx-mask'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -166,7 +167,8 @@ const routes: Routes = [
     OwlNativeDateTimeModule,
     PDFExportModule,
     DialogsModule,
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    NgxMaskModule.forRoot()
   ],
   providers: [
     {

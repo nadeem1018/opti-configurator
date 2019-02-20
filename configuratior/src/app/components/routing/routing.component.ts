@@ -22,7 +22,6 @@ export class RoutingComponent implements OnInit {
   public image_data: any = [];
   public lookupfor: string = '';
   public counter = 0;
-  public currentrowindex: number;
   public update_id = '';
   public min;
   public show_insert_operation_btn: boolean = true;
@@ -34,7 +33,11 @@ export class RoutingComponent implements OnInit {
   public showLookupLoader: boolean = false;
   public type_dropdown = '';
   public grid_option_title = '';
+  public row_selection: number[] = [];
+  public current_selected_row:any = [];
+  public selectableSettings:any = [];
   language = JSON.parse(sessionStorage.getItem('current_lang'));
+  public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RoutingService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
 
@@ -78,6 +81,9 @@ export class RoutingComponent implements OnInit {
     let current_date = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
     this.routing_header_data.EffectiveDate = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
+    this.selectableSettings = {
+      mode: 'single'
+    };
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.detectDevice();
@@ -153,17 +159,45 @@ export class RoutingComponent implements OnInit {
     }
     $('#' + input_id).val(value);
   }
+
+  
+  
+  getLookupValue($event) {
+
+  }
+
+  resequence_operation() {
+
+  }
+
+  getSelectedRowDetail(event){
+    if (event.selectedRows.length > 0){
+      this.current_selected_row = event.selectedRows[0].dataItem;
+    } else {
+      this.current_selected_row = [];
+    }
+
+    console.log('this.current_selected_row');
+    console.log(this.current_selected_row);
+  }
  
 
   openFeatureLookup(flag) {
-
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
   }
 
   openModalLookup(flag) {
-
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
   }
 
   openWarehouseLook(flag) {
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
 
   }
 
@@ -180,7 +214,9 @@ export class RoutingComponent implements OnInit {
   }
 
   openTemplateRoutingLookup(flag) {
-
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
   }
 
   getTemplateRoutingDetails(template_code) {
@@ -188,37 +224,41 @@ export class RoutingComponent implements OnInit {
   }
 
   on_type_click_lookup(type, rowindex){
-
-  }
-
-  open_operation_lookup(type, rowindex) {
-  }
-
-  open_wc_lookup(type, rowindex) {
-  }
-
-  resequence_operation(){
-
-  }
-
-  open_resource_lookup(flag){
     this.showLookupLoader = true;
-    this.serviceData = []
-    this.lookupfor = 'routing_resource_lookup';
+    this.serviceData = [];
     this.showLookupLoader = false;
   }
 
-
-  getLookupValue($event) {
-
+  open_operation_lookup(type, rowindex) {
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
   }
 
+  open_wc_lookup(type, rowindex) {
+    this.showLookupLoader = true;
+    this.serviceData = [];
+    this.showLookupLoader = false;
+  }
 
+   open_resource_lookup(flag){
+     if (Object.keys(this.current_selected_row).length > 0){
+
+      this.showLookupLoader = true;
+      // service call for operation wise resource this.current_selected_row.oper_code
+      this.serviceData = [];
+
+      this.lookupfor = 'routing_resource_lookup';
+      this.showLookupLoader = false;
+    } else {
+      this.toastr.info('', this.language.select_atleast_oper, this.commonData.toast_config);
+      return;
+    }
+  }
 
   changeEffectiveDate(picker_date) {
     var temp = new Date(picker_date);
     this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-
   }
 
 
@@ -249,7 +289,7 @@ export class RoutingComponent implements OnInit {
       effective_date: temp_effective_date,
       queue_time: '00:00',
       move_time: '00:00',
-      qc_time: '00:000',
+      qc_time: '00:00',
       time_uom: '',
       opn_application: '',
       isTypeDisabled: false,
@@ -299,27 +339,44 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'count_point_operation') {
-
+      console.log('count_point_operation');
+      if(this.routing_detail_data[currentrow].auto_move == true && value == true){
+        this.routing_detail_data[currentrow].count_point_operation = false;
+        this.toastr.error('', this.language.auto_move_count_point_cannot_bechecked + currentrow, this.commonData.toast_config);
+        return;
+      } else {
+        this.routing_detail_data[currentrow].count_point_operation = true;
+      }
+      console.log(value);
     }
 
     if (grid_element == 'auto_move') {
-
+      console.log('auto_move');
+      if (this.routing_detail_data[currentrow].count_point_operation == true && value == true) {
+        this.routing_detail_data[currentrow].auto_move = false;
+        this.toastr.error('', this.language.auto_move_count_point_cannot_bechecked + currentrow, this.commonData.toast_config);
+        return;
+      } else {
+        this.routing_detail_data[currentrow].auto_move = true;
+      }
+      console.log(value);
     }
 
     if (grid_element == 'effective_date') {
-
+      var temp = new Date(value);
+      this.routing_detail_data[currentrow].effective_date =  new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
     }
 
     if (grid_element == 'queue_time') {
-
+      this.routing_detail_data[currentrow].queue_time;
     }
 
     if (grid_element == 'move_time') {
-
+      this.routing_detail_data[currentrow].move_time;
     }
 
     if (grid_element == 'qc_time') {
-
+      this.routing_detail_data[currentrow].qc_time;
     }
 
     if (grid_element == 'time_uom') {
@@ -342,6 +399,8 @@ export class RoutingComponent implements OnInit {
           this.routing_detail_data[i].rowindex = i + 1;
         }
       }
+      this.current_selected_row = [];
+      this.row_selection = [];
     }
   }
 

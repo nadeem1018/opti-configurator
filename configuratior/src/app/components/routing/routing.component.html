@@ -271,13 +271,13 @@
       <div class="container-fluid mt-3">
         <div class="row">
           <div class="col-md-12 pl-0 pr-0">
-            <kendo-grid [kendoGridBinding]="routing_detail_data" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false" [selectable]="true">
+            <kendo-grid [kendoGridBinding]="routing_detail_data" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false" [selectable]="selectableSettings" [kendoGridSelectBy]="'rowindex'"  [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
               <ng-template kendoGridToolbarTemplate>
                 <span class="text-center">
                   <b> <i class="fa fa-"></i> {{grid_title}}</b>
                 </span>
               </ng-template>
-              <kendo-grid-column field="seqrowno" title="{{language.hash}}" filter="text" [width]="50"
+              <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="50"
                 [minResizableWidth]="50">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowindex"
@@ -384,7 +384,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" class="custom-control-input" id="count_point_operation_{{dataItem.rowindex}}" value={{dataItem.count_point_operation}}
-                      (change)="on_input_change(count_point_operation,dataItem.rowindex, 'count_point_operation')"
+                      (change)="on_input_change(count_point_operation.checked,dataItem.rowindex, 'count_point_operation')"
                       #count_point_operation [(checked)]=dataItem.count_point_operation title="{{dataItem.count_point_operation}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="count_point_operation_{{dataItem.rowindex}}"></label>
                   </div>
@@ -394,7 +394,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" class="custom-control-input" id="auto_move_{{dataItem.rowindex}}" value={{dataItem.auto_move}}
-                      (change)="on_input_change(auto_move,dataItem.rowindex, 'auto_move')" #auto_move [(checked)]=dataItem.auto_move
+                      (change)="on_input_change(auto_move.checked,dataItem.rowindex, 'auto_move')" #auto_move [(checked)]=dataItem.auto_move
                       title="{{dataItem.auto_move}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="auto_move_{{dataItem.rowindex}}"></label>
                   </div>
@@ -405,35 +405,35 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
                     name='EffectiveDate' #gridEffectiveDate type="text" value="{{dataItem.effective_date}}" id="EffectiveDate"
-                    readonly placeholder="{{language.EffectiveDate}}" [(ngModel)]="dataItem.effective_date" title="{{dataItem.effective_date}}"
+                    readonly placeholder="{{language.EffectiveDate}}" title="{{dataItem.effective_date}}"
                     style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="3">
                   <div class="input-group-append float-left">
                     <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
                       <i class="fa fa-calendar"></i>
                     </span>
                   </div>
-                  <owl-date-time #dt12 [pickerType]="'calendar'" (afterPickerClosed)="on_input_change(dataItem.gridEffectiveDate, dataItem.rowindex, 'effective_date')"></owl-date-time>
+                  <owl-date-time #dt12 [pickerType]="'calendar'" (afterPickerClosed)="on_input_change(dataItem.effective_date, dataItem.rowindex, 'effective_date')"></owl-date-time>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="queue_time" title="{{language.queue_time}}" filter="text" [width]="140"
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="queue_time" value={{dataItem.queue_time}}
-                    (change)="on_input_change(queue_time.value,dataItem.rowindex, 'queue_time')" #queue_time title={{dataItem.queue_time}} />
+                    (change)="on_input_change(queue_time.value,dataItem.rowindex, 'queue_time')" #queue_time title={{dataItem.queue_time}} [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="move_time" title="{{language.move_time}}" filter="text" [width]="140"
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="move_time" value={{dataItem.move_time}}
-                    (change)="on_input_change(move_time.value,dataItem.rowindex, 'move_time')" #move_time title={{dataItem.move_time}} />
+                    (change)="on_input_change(move_time.value,dataItem.rowindex, 'move_time')" #move_time title={{dataItem.move_time}} [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="qc_time" title="{{language.qc_time}}" filter="text" [width]="140"
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="qc_time" value={{dataItem.qc_time}}
-                    (change)="on_input_change(qc_time.value,dataItem.rowindex, 'qc_time')" #qc_time title={{dataItem.qc_time}} />
+                    (change)="on_input_change(qc_time.value,dataItem.rowindex, 'qc_time')" #qc_time title={{dataItem.qc_time}} [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="time_uom" title="{{language.time_uom}}" filter="text" [width]="140"
@@ -448,7 +448,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                    <div class="custom-control custom-checkbox custom-control-inline">
                      <input type="checkbox" class="custom-control-input" id="opn_application_{{dataItem.rowindex}}" value={{dataItem.opn_application}}
-                     (change)="on_input_change(opn_application,dataItem.rowindex, 'opn_application')" #opn_application
+                     (change)="on_input_change(opn_application.checked,dataItem.rowindex, 'opn_application')" #opn_application
                      [(checked)]=dataItem.opn_application title="{{dataItem.opn_application}}" style="position: relative;margin-top: 5px;" />
                     <label class="custom-control-label" for="opn_application_{{dataItem.rowindex}}"></label>
                     </div>

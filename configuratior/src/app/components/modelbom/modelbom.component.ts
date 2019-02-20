@@ -977,9 +977,6 @@ export class ModelbomComponent implements OnInit {
         else {
           this.modelbom_data[i].mandatory = false
         }
-
-
-
       }
     }
 

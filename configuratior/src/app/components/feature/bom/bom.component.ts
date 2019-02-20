@@ -646,7 +646,7 @@ export class BomComponent implements OnInit {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         if (this.feature_bom_data.feature_name == value) {
           this.feature_bom_table[i].display_name = "";
-          this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
+          this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
           return false;
         }
         this.feature_bom_table[i].display_name = value
