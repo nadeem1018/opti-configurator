@@ -99,6 +99,9 @@ export class BomComponent implements OnInit {
     this.feature_bom_table = [];
     this.getFeatureBomDetail(id);
   }
+  navigateToMasterHeader(feature_id) {
+    this.route.navigateByUrl('feature/model/edit/'+feature_id)
+  }
   ngOnInit() {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';

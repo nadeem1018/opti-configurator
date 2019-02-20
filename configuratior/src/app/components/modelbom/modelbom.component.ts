@@ -77,7 +77,10 @@ export class ModelbomComponent implements OnInit {
       this.modelbom_data= [];
       this.get_modelbom_details(type_value);
     }
+  }
 
+  navigateToMasterHeader(modal_id) {
+    this.route.navigateByUrl("feature/model/edit/"+modal_id);
   }
   detectDevice() {
     let getDevice = UIHelper.isDevice();
