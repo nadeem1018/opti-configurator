@@ -430,7 +430,7 @@
     "min_selectable_greater_than_max": "Min. selectable cannot be greater Max. selectable",
     "max_selectable_less_than_min": "Max. selectable cannot be less than Min. selectable",
     "atleast_one_unique_required": "Atleast 1 unique identifier is required.",
-
+    
     "routing":"Routing",
     "routing_for": "Routing For",
     "warehouse":"Warehouse",
@@ -472,21 +472,7 @@
     "schedule"  : "Schedule",
     "apply":"Apply",
     "select_atleast_oper":"Select an operation",
-    "auto_move_count_point_cannot_bechecked":"Auto Move & Count Point Operation cannot be checked at once at row "
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
+    "auto_move_count_point_cannot_bechecked":"Auto Move & Count Point Operation cannot be checked simultaneously row "
 
 
 }
