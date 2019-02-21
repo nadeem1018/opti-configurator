@@ -53,7 +53,12 @@
             <div class="col-md-6">
 
               <div class="form-group row clearfix">
-                <label class="col-sm-3 col-form-label" for="featureItemCode">{{language.model}}</label>
+                <label class="col-sm-3 col-form-label" for="featureItemCode">
+                  {{language.model}}
+                  <a class="common_grid_link" (click)="navigateToMasterHeader(modelbom_data.modal_id)">
+                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                  </a>
+                </label>
                 <div class="col-sm-5 input-group">
                   <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id"
                     title="{{modelbom_data.modal_id}}" name="featureName" [disabled]="isModelIdEnable" id="featureNameId"

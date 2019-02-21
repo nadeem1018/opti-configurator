@@ -54,10 +54,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-
-
                             <div class="form-group row clearfix">
-                                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
+                                <label class="col-sm-4 col-form-label" for="featureItemCode">
+                                  {{language.Feature_Code}}
+                                  <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)">
+                                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                  </a>
+                                </label>
                                 <div class="col-sm-5 input-group">
                                     <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
                                         [(ngModel)]="feature_bom_data.feature_code" name="featureNameCode" id="featureNameCode"
