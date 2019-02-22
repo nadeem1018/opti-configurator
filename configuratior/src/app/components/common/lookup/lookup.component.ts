@@ -320,8 +320,8 @@ export class LookupComponent implements OnInit {
     this.table_head = [
       {
         field: 'OPTM_LOGID',
-        title: this.language.log_id,
-        type: 'text',
+        title: this.language.configuration_id,
+        type: 'numeric',
         width: '100',
         attrType: 'text'
       },

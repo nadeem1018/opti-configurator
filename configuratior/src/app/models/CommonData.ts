@@ -156,5 +156,6 @@ export class CommonData {
         }
     }
 
-   
+    public excludeSpecialCharRegex = /[{}*!^=<>?|]/;
+
 }

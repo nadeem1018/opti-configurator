@@ -199,7 +199,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
     button_click1(data) {
 
-        this.router.navigateByUrl('item-code-genration/edit/' + data.Code);
+        this.router.navigateByUrl('item-code-genration/edit/' + data.Code.trim());
         // button click function in here
     }
     button_click2(data) {
