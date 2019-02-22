@@ -321,7 +321,7 @@ export class LookupComponent implements OnInit {
       {
         field: 'OPTM_LOGID',
         title: this.language.configuration_id,
-        type: 'text',
+        type: 'numeric',
         width: '100',
         attrType: 'text'
       },
