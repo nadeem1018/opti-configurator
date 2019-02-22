@@ -376,6 +376,10 @@ export class RulewbComponent implements OnInit {
     }
   }
 
+  navigateToFeatureOrModelBom(type_value) {
+      this.route.navigateByUrl("feature/bom/edit/" + type_value);
+  }
+
   ngAfterViewInit() {
     if (this.update_id === "" || this.update_id === null) {
       this._el.nativeElement.focus();

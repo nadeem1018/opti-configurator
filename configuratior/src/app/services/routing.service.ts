@@ -23,5 +23,12 @@ export class RoutingService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Routing/GetAllRoutingData", jObject, this.common_params.httpOptions);
   }
+
+  getFeatureList(): Observable<any> {
+    console.log(' in  service');
+
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureList", jObject, this.common_params.httpOptions);
+  }
  
 }

@@ -150,6 +150,7 @@
     "Invalid_feature_item_value": "Invalid value in 'Feature/Item/Value'",
     "FeatureIDBlank": "Feature id cannot be blank",
     "FeatureCodeBlank": "Feature Code cannot be blank",
+    "warehouseCodeBlank": "Warehouse cannot be blank",
     "SelectFeature": "Select feature at row index: ",
     "SelectItem": "Select item at row index: ",
     "SelectValue": "Select value at row index: ",
@@ -208,6 +209,7 @@
     "add_expression":"Add Expression",
     "update_expression":"Update Expression",
     "expression_generated": "Expression Generated",
+    "generate_expression": "Generate Expression",
     "expression_updated": "Expression Updated",
     "output_window": "Output Window",
     "selectrulecode": "Select rule code",
@@ -303,6 +305,7 @@
     "Id": "Id",
     "finalstring": "Final String",
     "EffectiveDate": "Effective Date",
+    "OverrideEffectiveDate": "Override Effective Date in BOM Details",
     "select": "Select",
     "ModelId": "Model Id",
     "Fromdate": "From date",
@@ -430,7 +433,7 @@
     "min_selectable_greater_than_max": "Min. selectable cannot be greater Max. selectable",
     "max_selectable_less_than_min": "Max. selectable cannot be less than Min. selectable",
     "atleast_one_unique_required": "Atleast 1 unique identifier is required.",
-    
+
     "routing":"Routing",
     "routing_for": "Routing For",
     "warehouse":"Warehouse",
@@ -444,7 +447,7 @@
     "insert_operation":"Insert Operation",
     "resequence":"Resequence",
     "resource":"Resource",
-    "bom_details": "BOM details",
+    "bom_details": "BOM Details",
     "oper_top_level": "Oper at Top level",
     "oper_code": "Oper Code",
     "oper_desc": "Oper Description",
@@ -472,7 +475,11 @@
     "schedule"  : "Schedule",
     "apply":"Apply",
     "select_atleast_oper":"Select an operation",
-    "auto_move_count_point_cannot_bechecked":"Auto Move & Count Point Operation cannot be checked simultaneously row "
+    "auto_move_count_point_cannot_bechecked":"Either Count Point Operation or Auto Move can be applicable for operation at row",
+    "first_oper_cannot_automove":"First operation cannot be Automove.",
+    "expression_id":"Expression ID",
+    "exp_id":"Exp. ID",
+    "confirm_override_detials_effective_date":"This will override all the effective date in the grid with header effective date, Do you wish to proceed ? "
 
 
 }

@@ -178,6 +178,12 @@
                     <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}} title="{{dataItem.seq_count}}" />
                       </ng-template>
                     </kendo-grid-column>
@@ -275,8 +281,9 @@
                   <div class="custom-grid-footer grid-footer k-grid-aria-root center_border">
                     <div class="footer_grid_head k-alt"> {{language.expression}} &nbsp; &nbsp;
                           <span class="text-center">
-                            <a href="javascript:;" (click)="genearate_expression()">
-                              <img src="{{imgPath}}/ruleweb/generate-expression.svg" width="15px" height="15px">
+                            <a href="javascript:;" (click)="genearate_expression()" class="common_grid_link" title="{{this.language.generate_expression}}">
+                              <!-- <img src="{{imgPath}}/ruleweb/generate-expression.svg" width="15px" height="15px"> -->
+                              <b><i class="fa fa-arrow-down "></i></b>
                             </a>
                           </span>
                         </div>
@@ -342,13 +349,14 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="feature" title="{{language.feature}}" filter="text" [width]="115" [minResizableWidth]="115">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm " id="feature_name" name="feature_name" value={{dataItem.feature}}
-                            title={{dataItem.feature}} #feature (change)="output_change_event('feature_name',feature.value,dataItem.rowindex)"
-                          />
+                            <a class="common_grid_link pull-left pr-1 pt-1" (click)="navigateToFeatureOrModelBom(dataItem.feature)" *ngIf="(dataItem.feature!='' && dataItem.feature!='0' && dataItem.feature!=null)">
+                              <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                            </a>
+                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm pull-left "  [ngClass]="{'width-90per' :dataItem.feature!='0' && dataItem.feature!=''}" id="feature_name" name="feature_name" value={{dataItem.feature}}
+                            title={{dataItem.feature}} #feature (change)="output_change_event('feature_name',feature.value,dataItem.rowindex)" />
 
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm " id="featureCode" name="featureCode" value={{dataItem.featureCode}}
-                            title={{dataItem.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,dataItem.rowindex)"
-                          />
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm pull-left " [ngClass]="{'width-90per' :dataItem.feature!='0' && dataItem.feature!=''}"  id="featureCode" name="featureCode" value={{dataItem.featureCode}}
+                            title={{dataItem.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,dataItem.rowindex)" />
                         </ng-template>
                       </kendo-grid-column>
                       <kendo-grid-column field="item" title="{{language.item}}" filter="text" [width]="115" [minResizableWidth]="115">
@@ -451,6 +459,12 @@
                     <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          value={{dataItem.rowindex}} />
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}}/>
                       </ng-template>
                     </kendo-grid-column>
@@ -519,7 +533,7 @@
 
 <!--Custom Dialog-->
 <span [hidden]="showLookupLoader">
-<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
 </span>
 
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>

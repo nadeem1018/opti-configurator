@@ -160,10 +160,15 @@
                 <div class="form-group row clearfic">
                   <label class="col-sm-6 col-form-label" for="EffectiveDate">{{language.EffectiveDate}}</label>
                   <div class="col-sm-6">
+                    <div class="input-group-append float-left">
+                      <span class="input-group-text cursor_icon" (click)="confirm_override_grid_effective_date()" title="{{this.language.OverrideEffectiveDate}}">
+                        <i class="fa fa-list fa-fw"></i>
+                      </span>
+                    </div>
                     <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
                       name='EffectiveDate' type="text" value="{{routing_header_data.EffectiveDate}}" id="EffectiveDate"
                       readonly placeholder="{{language.EffectiveDate}}" [(ngModel)]="routing_header_data.EffectiveDate"
-                      title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 26px) !important; width: 100%;"
+                      title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 26px) !important; width: 79%;"
                       tabindex="3">
                     <div class="input-group-append float-left">
                       <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt11" id="date_time_icon">
@@ -271,7 +276,7 @@
       <div class="container-fluid mt-3">
         <div class="row">
           <div class="col-md-12 pl-0 pr-0">
-            <kendo-grid [kendoGridBinding]="routing_detail_data" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false" [selectable]="selectableSettings" [kendoGridSelectBy]="'rowindex'"  [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
+            <kendo-grid [kendoGridBinding]="routing_detail_data" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false" [selectable]="selectableSettings" [kendoGridSelectBy]="'rowindex'"  [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)" >
               <ng-template kendoGridToolbarTemplate>
                 <span class="text-center">
                   <b> <i class="fa fa-"></i> {{grid_title}}</b>
@@ -383,7 +388,7 @@
                 [minResizableWidth]="100">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="count_point_operation_{{dataItem.rowindex}}" value={{dataItem.count_point_operation}}
+                    <input type="checkbox" class="custom-control-input count_point_operation_checkbox"  name="count_point_operation_{{dataItem.rowindex}}" id="count_point_operation_{{dataItem.rowindex}}" value={{dataItem.count_point_operation}}
                       (change)="on_input_change(count_point_operation.checked,dataItem.rowindex, 'count_point_operation')"
                       #count_point_operation [(checked)]=dataItem.count_point_operation title="{{dataItem.count_point_operation}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="count_point_operation_{{dataItem.rowindex}}"></label>
@@ -393,9 +398,8 @@
               <kendo-grid-column field="auto_move" title="{{language.auto_move}}" [width]="100" [minResizableWidth]="100">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="auto_move_{{dataItem.rowindex}}" value={{dataItem.auto_move}}
-                      (change)="on_input_change(auto_move.checked,dataItem.rowindex, 'auto_move')" #auto_move [(checked)]=dataItem.auto_move
-                      title="{{dataItem.auto_move}}" style="position: relative;margin-top: 5px;" />
+                    <input type="checkbox" class="custom-control-input auto_move_checkbox" name="auto_move_{{dataItem.rowindex}}" id="auto_move_{{dataItem.rowindex}}" value={{dataItem.auto_move}}
+                      (change)="on_input_change(auto_move.checked,dataItem.rowindex, 'auto_move')" #auto_move [(checked)]=dataItem.auto_move   title="{{dataItem.auto_move}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="auto_move_{{dataItem.rowindex}}"></label>
                   </div>
                 </ng-template>
@@ -404,15 +408,15 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-                    name='EffectiveDate' #gridEffectiveDate type="text" value="{{dataItem.effective_date}}" id="EffectiveDate"
-                    readonly placeholder="{{language.EffectiveDate}}" title="{{dataItem.effective_date}}"
+                    name='EffectiveDate_{{dataItem.rowindex}}' #gridEffectiveDate type="text"  id="EffectiveDate_{{dataItem.rowindex}}"
+                    readonly placeholder="{{language.EffectiveDate}}" title="{{dataItem.effective_date}}" [ngModel]="dataItem.effective_date"
                     style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="3">
                   <div class="input-group-append float-left">
-                    <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                    <span class="input-group-text cursor_icon"  [owlDateTimeTrigger]="dt12" id="date_time_icon">
                       <i class="fa fa-calendar"></i>
                     </span>
                   </div>
-                  <owl-date-time #dt12 [pickerType]="'calendar'" (afterPickerClosed)="on_input_change(dataItem.effective_date, dataItem.rowindex, 'effective_date')"></owl-date-time>
+                  <owl-date-time #dt12 [pickerType]="'calendar'"  [startAt]="dataItem.effective_date" (afterPickerClosed)="on_input_change(gridEffectiveDate.value, dataItem.rowindex, 'effective_date')"></owl-date-time>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="queue_time" title="{{language.queue_time}}" filter="text" [width]="140"
@@ -509,7 +513,7 @@
 
 <!--Custom Dialog-->
 <span [hidden]="showLookupLoader">
-  <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
 </span>
 <!-- Lookup and popup  -->
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>

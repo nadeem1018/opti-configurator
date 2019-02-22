@@ -69,19 +69,7 @@ export class ModelbomComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
 
-  navigateToFeatureOrModelBom(type_value, type ) {
-    if(type == '1'){
-      this.route.navigateByUrl("feature/bom/edit/"+type_value);
-    } else if(type == '3'){
-      this.route.navigateByUrl("modelbom/edit/"+type_value);
-      this.modelbom_data= [];
-      this.get_modelbom_details(type_value);
-    }
-  }
 
-  navigateToMasterHeader(modal_id) {
-    this.route.navigateByUrl("feature/model/edit/"+modal_id);
-  }
   detectDevice() {
     let getDevice = UIHelper.isDevice();
     this.isMobile = getDevice[0];
@@ -142,14 +130,8 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
-      this.get_modelbom_details(this.update_id);
 
-    }
-  }
-
-  get_modelbom_details(id){
-     this.showLoader = true;
-     this.service.GetDataByModelId(id).subscribe(
+      this.service.GetDataByModelId(this.update_id).subscribe(
         data => {
           if (data.ModelHeader.length > 0) {
             this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
@@ -260,6 +242,7 @@ export class ModelbomComponent implements OnInit {
                 isMinSelectedDisable: this.isMinSelectedDisable,
                 isMaxSelectedDisable: this.isMaxSelectedDisable
               });
+
             }
           }
 
@@ -268,11 +251,9 @@ export class ModelbomComponent implements OnInit {
           }
           this.onExplodeClick('auto');
           this.showLoader = false;
-        },
-       error => {
-           this.showLoader = false;
-       }
+        }
       )
+    }
   }
 
   ngAfterViewInit() {
@@ -308,7 +289,7 @@ export class ModelbomComponent implements OnInit {
       quantity: ("1"),
       min_selected: 1,
       max_selected: 1,
-      propagate_qty: false,
+      propagate_qty: true,
       price_source: '',
       price_source_id: '',
       mandatory: false,
@@ -405,6 +386,9 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].quantity = ("1");
           this.modelbom_data[i].isMinSelectedDisable = false;
           this.modelbom_data[i].isMaxSelectedDisable = false;
+          this.modelbom_data[i].propagate_qty = true;
+          this.modelbom_data[i].mandatory = false;
+          this.modelbom_data[i].unique_identifer = false;
         }
         else {
           this.modelbom_data[i].isDisplayNameDisabled = false
@@ -419,6 +403,9 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isUOMDisabled = false
             this.modelbom_data[i].isMinSelectedDisable = true;
             this.modelbom_data[i].isMaxSelectedDisable = true;
+            this.modelbom_data[i].propagate_qty = true;
+            this.modelbom_data[i].mandatory = false;
+            this.modelbom_data[i].unique_identifer = false;
           }
           else {
             this.modelbom_data[i].type = 1
@@ -428,6 +415,9 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isUOMDisabled = true
             this.modelbom_data[i].isMinSelectedDisable = false;
             this.modelbom_data[i].isMaxSelectedDisable = false;
+            this.modelbom_data[i].propagate_qty = true;
+            this.modelbom_data[i].mandatory = false;
+            this.modelbom_data[i].unique_identifer = false;
           }
 
         }
@@ -542,6 +532,7 @@ export class ModelbomComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -1011,9 +1002,6 @@ export class ModelbomComponent implements OnInit {
         else {
           this.modelbom_data[i].unique_identifer = false
         }
-
-
-
       }
     }
 
@@ -1266,8 +1254,10 @@ export class ModelbomComponent implements OnInit {
     this.ruleselected = [];
     //this.ruleselected=this.rule_data;
     this.serviceData = [];
+    this.showLookupLoader = true;
     this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
       data => {
+        this.showLookupLoader = false;
         console.log(data);
         if (data.length > 0) {
           this.serviceData = data;
@@ -1276,6 +1266,8 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.norules, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = true;
       });
   }
 
