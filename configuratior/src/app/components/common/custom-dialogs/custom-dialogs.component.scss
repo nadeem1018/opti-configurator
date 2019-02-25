@@ -10,26 +10,26 @@
     transform: none;
 }
 
-.custom_height_width{
-    height:50px;
-    line-height:50px;
-    font-weight:500;
+.custom_height_width {
+    height: auto;
+    min-height: 30px;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: justify;
 }
 
-.top-45{
-    top:41%
+.top-45 {
+    top: 41%
 }
 
-.footer_custom{
+.footer_custom {
     height: 35px;
- 
 }
 
-.header_custom{
+.header_custom {
     height: 35px;
- 
 }
 
-.padding_5px_imp{
+.padding_5px_imp {
     padding: 5px !important;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener, TemplateRef  } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CommonData } from "../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
@@ -49,10 +49,10 @@ export class ModelbomComponent implements OnInit {
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
   public showLoader: boolean = true;
-  public showLookupLoader:boolean = false;
+  public showLookupLoader: boolean = false;
   modalRef: BsModalRef;
- 
-  
+
+
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
 
   companyName: string;
@@ -68,6 +68,20 @@ export class ModelbomComponent implements OnInit {
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
+
+  navigateToFeatureOrModelBom(type_value, type ) {
+    if(type == '1'){
+      this.route.navigateByUrl("feature/bom/edit/"+type_value);
+    } else if(type == '3'){
+      this.route.navigateByUrl("modelbom/edit/"+type_value);
+      this.modelbom_data= [];
+      this.get_modelbom_details(type_value);
+    }
+  }
+
+  navigateToMasterHeader(modal_id) {
+    this.route.navigateByUrl("feature/model/edit/"+modal_id);
+  }
 
 
   detectDevice() {
@@ -86,8 +100,8 @@ export class ModelbomComponent implements OnInit {
   public pop;
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-      console.log("scrolling...window");
-      $('body').click()
+    console.log("scrolling...window");
+    $('body').click()
   }
 
   ngOnInit() {
@@ -130,131 +144,131 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
-
-      this.service.GetDataByModelId(this.update_id).subscribe(
-        data => {
-          if (data.ModelHeader.length > 0) {
-            this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
-            this.modelbom_data.modal_code = data.ModelHeader[0].OPTM_FEATURECODE
-            this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
-            this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
-            this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
-            this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
-            if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
-              this.showheaderImageBlock = true;
-              this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path
-            }
-
-
-            if (this.modelbom_data.is_ready_to_use == "Y") {
-              this.modelbom_data.is_ready_to_use = true;
-            }
-            else {
-              this.modelbom_data.is_ready_to_use = false;
-            }
-
-
-          }
-
-          if (data.ModelDetail.length > 0) {
-            for (let i = 0; i < data.ModelDetail.length; ++i) {
-              if (data.ModelDetail[i].OPTM_TYPE == 1) {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
-                this.isPriceDisabled = true
-                this.pricehide = true
-                this.isUOMDisabled = true
-                this.isMinSelectedDisable = false;
-                this.isMaxSelectedDisable = false;
-              }
-              else if (data.ModelDetail[i].OPTM_TYPE == 2) {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
-                this.isPriceDisabled = false
-                this.pricehide = false
-                this.isUOMDisabled = false
-                this.isMinSelectedDisable = true;
-                this.isMaxSelectedDisable = true;
-              }
-              else {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
-                this.isPriceDisabled = true
-                this.pricehide = true
-                this.isUOMDisabled = true
-                this.isMinSelectedDisable = false;
-                this.isMaxSelectedDisable = false;
-              }
-              // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
-              //   data.ModelDetail[i].OPTM_READYTOUSE = false
-              // }
-              if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
-                data.ModelDetail[i].OPTM_PROPOGATEQTY = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_PROPOGATEQTY = false
-              }
-              if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
-                data.ModelDetail[i].OPTM_UNIQUEIDNT = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_UNIQUEIDNT = false
-              }
-              if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
-                data.ModelDetail[i].OPTM_MANDATORY = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_MANDATORY = false
-              }
-              this.counter = 0;
-              if (this.modelbom_data.length > 0) {
-                this.counter = this.modelbom_data.length
-              }
-              data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
-
-              this.counter++;
-              this.modelbom_data.push({
-                rowindex: this.counter,
-                ModelId: data.ModelDetail[i].OPTM_MODELID,
-                description: this.modelbom_data.feature_name,
-                ReadyToUse: this.modelbom_data.is_ready_to_use,
-                type: data.ModelDetail[i].OPTM_TYPE,
-                type_value: this.typevaluefromdatabase,
-                type_value_code: this.typevaluecodefromdatabase,
-                display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
-                uom: data.ModelDetail[i].OPTM_UOM,
-                quantity: data.ModelDetail[i].OPTM_QUANTITY,
-                min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
-                max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
-                propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
-                price_source: data.ModelDetail[i].ListName,
-                price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
-                mandatory: data.ModelDetail[i].OPTM_MANDATORY,
-                unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
-                isDisplayNameDisabled: false,
-                isTypeDisabled: false,
-                hide: false,
-                CompanyDBId: this.companyName,
-                CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
-                isPriceDisabled: this.isPriceDisabled,
-                pricehide: this.pricehide,
-                isUOMDisabled: this.isUOMDisabled,
-                isMinSelectedDisable: this.isMinSelectedDisable,
-                isMaxSelectedDisable: this.isMaxSelectedDisable
-              });
-
-            }
-          }
-
-          if (data.RuleData.length > 0) {
-            this.rule_data = data.RuleData;
-          }
-          this.onExplodeClick('auto');
-          this.showLoader = false;
-        }
-      )
+      this.get_modelbom_details(this.update_id);
     }
   }
+
+  get_modelbom_details(id) {
+    this.showLoader = true;
+    this.service.GetDataByModelId(id).subscribe(
+      data => {
+        if (data.ModelHeader.length > 0) {
+          this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
+          this.modelbom_data.modal_code = data.ModelHeader[0].OPTM_FEATURECODE
+          this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
+          this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
+          this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
+          this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
+          if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
+            this.showheaderImageBlock = true;
+            this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path
+          }
+
+
+          if (this.modelbom_data.is_ready_to_use == "Y") {
+            this.modelbom_data.is_ready_to_use = true;
+          } else {
+            this.modelbom_data.is_ready_to_use = false;
+          }
+
+
+        }
+
+        if (data.ModelDetail.length > 0) {
+          for (let i = 0; i < data.ModelDetail.length; ++i) {
+            if (data.ModelDetail[i].OPTM_TYPE == 1) {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
+              this.isPriceDisabled = true
+              this.pricehide = true
+              this.isUOMDisabled = true
+              this.isMinSelectedDisable = false;
+              this.isMaxSelectedDisable = false;
+            } else if (data.ModelDetail[i].OPTM_TYPE == 2) {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
+              this.isPriceDisabled = false
+              this.pricehide = false
+              this.isUOMDisabled = false
+              this.isMinSelectedDisable = true;
+              this.isMaxSelectedDisable = true;
+            } else {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
+              this.isPriceDisabled = true
+              this.pricehide = true
+              this.isUOMDisabled = true
+              this.isMinSelectedDisable = false;
+              this.isMaxSelectedDisable = false;
+            }
+            // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
+            //   data.ModelDetail[i].OPTM_READYTOUSE = false
+            // }
+            if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
+              data.ModelDetail[i].OPTM_PROPOGATEQTY = true
+            } else {
+              data.ModelDetail[i].OPTM_PROPOGATEQTY = false
+            }
+            if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
+              data.ModelDetail[i].OPTM_UNIQUEIDNT = true
+            } else {
+              data.ModelDetail[i].OPTM_UNIQUEIDNT = false
+            }
+            if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
+              data.ModelDetail[i].OPTM_MANDATORY = true
+            } else {
+              data.ModelDetail[i].OPTM_MANDATORY = false
+            }
+            this.counter = 0;
+            if (this.modelbom_data.length > 0) {
+              this.counter = this.modelbom_data.length
+            }
+            data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
+
+            this.counter++;
+            this.modelbom_data.push({
+              rowindex: this.counter,
+              ModelId: data.ModelDetail[i].OPTM_MODELID,
+              description: this.modelbom_data.feature_name,
+              ReadyToUse: this.modelbom_data.is_ready_to_use,
+              type: data.ModelDetail[i].OPTM_TYPE,
+              type_value: this.typevaluefromdatabase,
+              type_value_code: this.typevaluecodefromdatabase,
+              display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
+              uom: data.ModelDetail[i].OPTM_UOM,
+              quantity: data.ModelDetail[i].OPTM_QUANTITY,
+              min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
+              max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
+              propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
+              price_source: data.ModelDetail[i].ListName,
+              price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
+              mandatory: data.ModelDetail[i].OPTM_MANDATORY,
+              unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
+              isDisplayNameDisabled: false,
+              isTypeDisabled: false,
+              hide: false,
+              CompanyDBId: this.companyName,
+              CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
+              isPriceDisabled: this.isPriceDisabled,
+              pricehide: this.pricehide,
+              isUOMDisabled: this.isUOMDisabled,
+              isMinSelectedDisable: this.isMinSelectedDisable,
+              isMaxSelectedDisable: this.isMaxSelectedDisable
+            });
+
+          }
+        }
+
+        if (data.RuleData.length > 0) {
+          this.rule_data = data.RuleData;
+        }
+        this.onExplodeClick('auto');
+        this.showLoader = false;
+      }, error => {
+        this.showLoader = false;
+     }
+    )
+  };
 
   ngAfterViewInit() {
     if (this.update_id === "" || this.update_id === null) {
@@ -289,7 +303,7 @@ export class ModelbomComponent implements OnInit {
       quantity: ("1"),
       min_selected: 1,
       max_selected: 1,
-      propagate_qty: false,
+      propagate_qty: true,
       price_source: '',
       price_source_id: '',
       mandatory: false,
@@ -386,6 +400,9 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].quantity = ("1");
           this.modelbom_data[i].isMinSelectedDisable = false;
           this.modelbom_data[i].isMaxSelectedDisable = false;
+          this.modelbom_data[i].propagate_qty = true;
+          this.modelbom_data[i].mandatory = false;
+          this.modelbom_data[i].unique_identifer = false;
         }
         else {
           this.modelbom_data[i].isDisplayNameDisabled = false
@@ -400,6 +417,9 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isUOMDisabled = false
             this.modelbom_data[i].isMinSelectedDisable = true;
             this.modelbom_data[i].isMaxSelectedDisable = true;
+            this.modelbom_data[i].propagate_qty = true;
+            this.modelbom_data[i].mandatory = false;
+            this.modelbom_data[i].unique_identifer = false;
           }
           else {
             this.modelbom_data[i].type = 1
@@ -409,6 +429,9 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isUOMDisabled = true
             this.modelbom_data[i].isMinSelectedDisable = false;
             this.modelbom_data[i].isMaxSelectedDisable = false;
+            this.modelbom_data[i].propagate_qty = true;
+            this.modelbom_data[i].mandatory = false;
+            this.modelbom_data[i].unique_identifer = false;
           }
 
         }
@@ -482,7 +505,7 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      }, 
+      },
       error => {
         this.showLookupLoader = false;
       }
@@ -523,6 +546,7 @@ export class ModelbomComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
@@ -559,13 +583,13 @@ export class ModelbomComponent implements OnInit {
   }
 
   getLookupValue($event) {
-    if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup"){
+    if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup") {
       console.log("in here - selection ");
       for (let j = 0; j < this.modelbom_data.length; j++) {
         var psTypeCode = this.modelbom_data[j].type_value_code;
-var result = false;
+        var result = false;
         if (psTypeCode != undefined && psTypeCode != "") {
-          if (this.lookupfor == "Item_Detail_lookup"){
+          if (this.lookupfor == "Item_Detail_lookup") {
             if (psTypeCode.toUpperCase() == $event[1].toUpperCase() || psTypeCode.toUpperCase() == $event[0].toUpperCase()) {
               result = true;
             }
@@ -577,7 +601,7 @@ var result = false;
 
           if (result == true) {
             this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
-           
+
             $(".row_type_value_id").eq(this.currentrowindex - 1).val("");
             $(".row_type_value_code").eq(this.currentrowindex - 1).val("");
             return;
@@ -702,7 +726,7 @@ var result = false;
 
   on_typevalue_change(value, rowindex, code, type_value_code) {
     this.currentrowindex = rowindex
-    var iIndex=this.currentrowindex - 1; 
+    var iIndex = this.currentrowindex - 1;
     for (let j = 0; j < this.modelbom_data.length; j++) {
       var psTypeCode = this.modelbom_data[j].type_value_code;
       if (psTypeCode != undefined && psTypeCode != "") {
@@ -726,7 +750,7 @@ var result = false;
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.modelbom_data[iIndex].type_value = "";
                 this.modelbom_data[iIndex].type_value_code = "";
-                this.modelbom_data[iIndex].display_name= "";
+                this.modelbom_data[iIndex].display_name = "";
                 return;
               }
               else {
@@ -745,12 +769,12 @@ var result = false;
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.modelbom_data[iIndex].type_value = "";
                 this.modelbom_data[iIndex].type_value_code = "";
-                this.modelbom_data[iIndex].display_name= "";
+                this.modelbom_data[iIndex].display_name = "";
                 return;
               }
               else {
                 this.lookupfor = "";
-                this.modelbom_data[iIndex].type_value= data;
+                this.modelbom_data[iIndex].type_value = data;
                 this.getItemDetails(this.modelbom_data[iIndex].type_value);
               }
             })
@@ -767,7 +791,7 @@ var result = false;
   on_display_name_change(value, rowindex) {
     console.log("value - " + value);
     console.log(" modelbom_data.feature_name " + this.modelbom_data.feature_name);
-   
+
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
@@ -805,7 +829,7 @@ var result = false;
           } else if (rgexp.test(value) == false) {
             value = 1;
             this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-          } 
+          }
           this.modelbom_data[i].quantity = (value);
         }
 
@@ -836,26 +860,26 @@ var result = false;
         if (isNaN(value) == true) {
           this.modelbom_data[i].min_selected = 1;
           this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(1);
           return;
         } else if (value == 0 || value == '' || value == null || value == undefined) {
           this.modelbom_data[i].min_selected = 1;
           this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
-           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(1);
           return;
         } else if (value < 0) {
           this.modelbom_data[i].min_selected = 1;
           this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
-           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(1);
           return;
         } else if (rgexp.test(value) == false) {
           this.modelbom_data[i].min_selected = 1;
           this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
-           $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(1);
           return;
         }
 
-        this.modelbom_data[i].min_selected = value        
+        this.modelbom_data[i].min_selected = value
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
             this.modelbom_data[i].min_selected = 1;
@@ -977,9 +1001,6 @@ var result = false;
         else {
           this.modelbom_data[i].mandatory = false
         }
-
-
-
       }
     }
 
@@ -995,9 +1016,6 @@ var result = false;
         else {
           this.modelbom_data[i].unique_identifer = false
         }
-
-
-
       }
     }
 
@@ -1019,6 +1037,9 @@ var result = false;
   onSave() {
     var obj = this;
     if (obj.validation("Save") == false) {
+      return;
+    }
+    if (this.validate_unique_identifier() == false) {
       return;
     }
     this.showLookupLoader = true;
@@ -1121,8 +1142,8 @@ var result = false;
     }
     console.log('onExplodeClick');
     this.lookupfor = 'tree_view__model_bom_lookup"';
-    
-   
+
+
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
@@ -1137,9 +1158,9 @@ var result = false;
                 obj['live_row_id'] = (counter_temp++);
                 return obj;
               });
-             this.tree_data_json = temp_data;
-            
-             
+              this.tree_data_json = temp_data;
+
+
             }
             else {
               this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1156,7 +1177,7 @@ var result = false;
       else {
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         if (this.live_tree_view_data.length > 0) {
-           
+
           for (var key in this.live_tree_view_data) {
             var update_index = "";
             if (this.live_tree_view_data[key].tree_index !== undefined) {
@@ -1175,13 +1196,13 @@ var result = false;
           }
 
           this.live_tree_view_data = [];
-         
+
         }
       }
     } else {
       this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return;
-    } 
+    }
   }
 
 
@@ -1247,8 +1268,10 @@ var result = false;
     this.ruleselected = [];
     //this.ruleselected=this.rule_data;
     this.serviceData = [];
+    this.showLookupLoader = true;
     this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
       data => {
+        this.showLookupLoader = false;
         console.log(data);
         if (data.length > 0) {
           this.serviceData = data;
@@ -1257,6 +1280,8 @@ var result = false;
           this.toastr.error('', this.language.norules, this.commonData.toast_config);
           return;
         }
+      }, error => {
+        this.showLookupLoader = true;
       });
   }
 
@@ -1334,9 +1359,33 @@ var result = false;
     });
     return data;
   }
+
+  validate_unique_identifier(){
+    console.log("is_ready_to_use - " + this.modelbom_data.is_ready_to_use);
+    if (this.modelbom_data.is_ready_to_use == true) {
+      var unique_item_array = this.modelbom_data.filter(function (obj) {
+        return (obj.unique_identifer == true) ? obj : ""
+      });
+      console.log("unique_item_array");
+      console.log(unique_item_array);
+      if (unique_item_array.length == 0) {
+        this.toastr.error('', this.language.atleast_one_unique_required, this.commonData.toast_config);
+        this.showLookupLoader = false;
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   save_data() {
     if (this.modelbom_data.length > 0) {
       this.modelbom_data[0].id = this.update_id;
+      
+      if(this.validate_unique_identifier() == false){
+        return;
+      }
+
       for (let i = 0; i < this.modelbom_data.length; ++i) {
         if (this.modelbom_data[i].unique_identifer == false) {
           this.modelbom_data[i].unique_identifer = "N"
@@ -1364,8 +1413,6 @@ var result = false;
         }
 
         this.modelbom_data[i].type_value = this.modelbom_data[i].type_value.toString();
-
-
       }
     }
     let objDataset: any = {};
@@ -1429,19 +1476,19 @@ var result = false;
     }
   }
 
-  bodyClick(){
+  bodyClick() {
     $('body').click()
   }
   openModal(template: TemplateRef<any>) {
     $('body').click()
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
-  childExpand(id: any){
+  childExpand(id: any) {
     id.classList.toggle("expanded")
     if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
-        id.parentNode.parentNode.childNodes[4].style.display = "block";
+      id.parentNode.parentNode.childNodes[4].style.display = "block";
     } else {
-        id.parentNode.parentNode.childNodes[4].style.display = "none";
+      id.parentNode.parentNode.childNodes[4].style.display = "none";
     }
   }
 }

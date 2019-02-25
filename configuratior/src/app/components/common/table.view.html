@@ -39,14 +39,14 @@
         </div>
 
         <div class="opti_grid-table-outer">
-            <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
+            <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
             <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="selectedValue" [pageable]="true" [resizable]="true"  (selectionChange)="on_selection($event)" >
                 <ng-template kendoGridToolbarTemplate>
                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                         <div class="custom-control custom-checkbox float-left">
-                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter"
+                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
                                 class="custom-control-input" name="columnfilter" />
-                            <label class="custom-control-label" for="columnFilter"> &nbsp; {{language.enable_filter}}</label>
+                            <label class="custom-control-label" for="columnFilter">  {{language.enable_filter}}</label>
                         </div>
                     </form>
                 </ng-template>
@@ -67,7 +67,18 @@
                 </kendo-grid-column>
 
                 <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" ></kendo-grid-column>
+                                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" >
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
+                    <ng-container *ngIf="column.attrType == 'link'">
+
+                    <a class="common_grid_link" (click)="button_click1(dataItem)">{{dataItem[column.field]}}</a>
+
+                    </ng-container>
+
+                    <ng-container *ngIf="column.attrType == 'text'">{{dataItem[column.field]}}</ng-container>
+                  </ng-template>
+                </kendo-grid-column>
+
                 <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120">
                     <ng-template kendoGridCellTemplate let-dataItem>
                         <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">

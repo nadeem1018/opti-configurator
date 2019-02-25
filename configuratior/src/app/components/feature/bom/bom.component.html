@@ -54,10 +54,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-
-
                             <div class="form-group row clearfix">
-                                <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Feature_Code}}</label>
+                                <label class="col-sm-4 col-form-label" for="featureItemCode">
+                                  {{language.Feature_Code}}
+                                  <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)">
+                                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                  </a>
+                                </label>
                                 <div class="col-sm-5 input-group">
                                     <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
                                         [(ngModel)]="feature_bom_data.feature_code" name="featureNameCode" id="featureNameCode"
@@ -135,13 +138,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group row clearfix">
-                                <label class="col-sm-3 col-form-label" for="featureDisplay">{{language.multi_select}}</label>
-                                <div class="col-sm-5 mt-3px">
-                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="checkbox" id="multiple_select_yes" name="multi_select" #multipleselectcheck [(ngModel)]="feature_bom_data.multi_select"
-                                            class="custom-control-input " style="position: relative;margin-top: 5px;"
-                                            title="{{feature_bom_data.multi_select}}" tabindex="5"  (click)="on_multiple_model_change(multipleselectcheck.value, multipleselectcheck.checked)">
-                                        <label class="custom-control-label" for="multiple_select_yes"></label>
+                                <div class="col-sm-6 row">
+                                    <label class="col-sm-6 col-form-label" for="featureDisplay">{{language.multi_select}}</label>
+                                    <div class="col-sm-6 mt-3px">
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" id="multiple_select_yes" name="multi_select"
+                                                #multipleselectcheck [(ngModel)]="feature_bom_data.multi_select" class="custom-control-input "
+                                                style="position: relative;margin-top: 5px;" title="{{feature_bom_data.multi_select}}"
+                                                tabindex="5" (click)="on_multiple_model_change(multipleselectcheck.value, multipleselectcheck.checked)">
+                                            <label class="custom-control-label" for="multiple_select_yes"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -151,18 +157,22 @@
                                     <label class="col-sm-6 col-form-label" for="feature_min_selectable">{{language.min_selectable}}</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_min_selectable"
-                                            name="feature_min_selectable" placeholder="{{language.min_selectable}}" #feature_min
-                                            (change)="validate_min_values(feature_min.value, 'feature_min_selectable')" [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_min_selectable" title="{{feature_bom_data.feature_min_selectable}}">
+                                            name="feature_min_selectable" placeholder="{{language.min_selectable}}"
+                                            #feature_min (change)="validate_min_values(feature_min.value, 'feature_min_selectable')"
+                                            [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_min_selectable"
+                                            title="{{feature_bom_data.feature_min_selectable}}">
                                     </div>
                                 </div>
-                            <div class="col-sm-6 row">
-                                <label class="col-sm-6 col-form-label" for="feature_max_selectable">{{language.max_selectable}}</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_max_selectable" name="feature_max_selectable"
-                                        placeholder="{{language.max_selectable}}" #feature_max (change)="validate_max_values(feature_max.value, 'feature_max_selectable')" [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_max_selectable"
-                                        title="{{feature_bom_data.feature_max_selectable}}">
+                                <div class="col-sm-6 row">
+                                    <label class="col-sm-6 col-form-label" for="feature_max_selectable">{{language.max_selectable}}</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_max_selectable"
+                                            name="feature_max_selectable" placeholder="{{language.max_selectable}}"
+                                            #feature_max (change)="validate_max_values(feature_max.value, 'feature_max_selectable')"
+                                            [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_max_selectable"
+                                            title="{{feature_bom_data.feature_max_selectable}}">
+                                    </div>
                                 </div>
-                            </div>
                             </div>
 
 
@@ -174,9 +184,14 @@
                         <div class="">
                             <kendo-grid [kendoGridBinding]="feature_bom_table" [resizable]="true" [sortable]="false"
                                 [groupable]="false" [filterable]="false">
-
-                                <kendo-grid-column field="rowindex" title="#" [width]="35" [minResizableWidth]="35"
+                                <kendo-grid-column field="rowindex" title="#" [width]="60" [minResizableWidth]="60"
                                     filter="numeric">
+                                  <ng-template kendoGridCellTemplate let-dataItem>
+                                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value)" *ngIf="dataItem.type_value && dataItem.type == '1'">
+                                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                    </a>
+                                    {{dataItem.rowindex}}
+                                  </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}"
                                     [width]="110" [minResizableWidth]="110">
@@ -226,9 +241,12 @@
                                 <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text"
                                     [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
-                                        <input type="radio" value="1" name="default_value_selection" class="form-control  form-control-sm"
-                                            id="dataItem.rowindex" (change)="on_defualt_change(default,dataItem.rowindex)"
-                                            value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}" />
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input" id="default_{{dataItem.rowindex}}"
+                                                (change)="on_defualt_change(default,dataItem.rowindex)" value={{dataItem.default}} #default [(checked)]=dataItem.default
+                                                title="{{dataItem.default}}" style="position: relative;margin-top: 5px;" />
+                                            <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
+                                        </div>
                                     </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text">
@@ -240,10 +258,13 @@
                                 <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric"
                                     [width]="120" [minResizableWidth]="120">
                                     <ng-template kendoGridCellTemplate let-dataItem>
-                                        <input type="checkbox" class="form-control  form-control-sm  pull-right" id="propagate_qty"
-                                            value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
-                                            [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
-                                            #propagate_qty title="{{dataItem.propagate_qty}}" />
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input  pull-right" id="propagate_qty_{{dataItem.rowindex}}"
+                                                value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
+                                                [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
+                                                #propagate_qty title="{{dataItem.propagate_qty}}" style="position: relative;margin-top: 5px;" />
+                                            <label class="custom-control-label" for="propagate_qty_{{dataItem.rowindex}}"></label>
+                                        </div>
                                     </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="price_source" title="{{language.price_source}}" filter="text"
@@ -359,26 +380,24 @@
                         <li *ngIf="element.level == 0 && element.parentId==''">
                             <ng-template #template>
                                 <div class="modal-body text-center image-previe-container">
-                                    <img [attr.src]="element.modalImage"  style="max-width:100%">
+                                    <img [attr.src]="element.modalImage" style="max-width:100%">
                                 </div>
                             </ng-template>
                             <ng-template #popTemplate>
                                 <div class="text-center">
-                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100" (click)="openModal(template)">
-                                    <div *ngIf="element.modalImage=='' || element.modalImage== undefined " class="no-img-msg">No Image Found</div>
+                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100"
+                                        (click)="openModal(template)">
+                                    <div *ngIf="element.modalImage=='' || element.modalImage== undefined " class="no-img-msg">No
+                                        Image Found</div>
                                 </div>
                             </ng-template>
-                            <span 
-                            [popover]="popTemplate"
-                            container="body"
-                            [outsideClick]="true"            
-                            popoverTitle="{{element.component}}"
-                            placement="left"
-                            triggers="" #pop="bs-popover"> 
-                                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" ></span>
+                            <span [popover]="popTemplate" container="body" [outsideClick]="true" popoverTitle="{{element.component}}"
+                                placement="left" triggers="" #pop="bs-popover">
+                                <span #btn (click)="childExpand(btn)" class="expand-btn expanded"></span>
                                 <span [attr.data-branchtype]="element.branchType" (click)="pop.toggle()">{{element.component}}</span>
                             </span>
-                            <treeview #tree [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+                            <treeview #tree [tree_data_json]="check_component_exist(element.component, i)"
+                                [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
                         </li>
                     </div>
                 </ul>
@@ -393,6 +412,5 @@
     <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)"
         [selectedImage]="selectedImage"></app-lookup>
 </span>
-
 <!--Custom Dialog-->
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>

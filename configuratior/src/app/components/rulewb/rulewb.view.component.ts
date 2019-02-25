@@ -23,7 +23,7 @@ export class RuleWbViewComponent implements OnInit {
     public commonData = new CommonData();
     pageSizeNumber:any = this.commonData.default_count;
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
     
 
     public companyName: string = ""; 
@@ -60,37 +60,43 @@ export class RuleWbViewComponent implements OnInit {
             field: 'OPTM_RULECODE',
             title: this.language.rule_code,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'link'
         },
         {
             field: 'OPTM_DESCRIPTION',
             title: this.language.description,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_APPLICABLEFOR',
             title: this.language.applicable_for,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_EFFECTIVEFROM',
             title: this.language.Fromdate,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_EFFECTIVETO',
             title: this.language.Todate,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
         {
             field: 'OPTM_DISCONTINUE',
             title: this.language.discontinued,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
         },
     ];
 
@@ -107,7 +113,11 @@ export class RuleWbViewComponent implements OnInit {
 
     getLookupValue($event) {
         
-    } 
+    }
+
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
+    }
     
     on_selection(grid_event) {
         grid_event.selectedRows = [];
@@ -127,7 +137,9 @@ export class RuleWbViewComponent implements OnInit {
       }
     }
 
-
+    saveFilterState() {
+        sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    }
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
@@ -140,6 +152,16 @@ export class RuleWbViewComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {

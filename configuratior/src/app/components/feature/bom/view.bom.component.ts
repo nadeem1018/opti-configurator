@@ -23,7 +23,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     common_params = new CommonData();
 
     public listItems: Array<string> = this.common_params.default_limits;
-    public selectedValue: number = Number(this.common_params.default_count);
+    public selectedValue: number = 0;
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
@@ -73,19 +73,24 @@ export class ViewFeatureBOMComponent implements OnInit {
             field: 'OPTM_FEATURECODE',
             title: this.language.Feature_Code,
             type: 'text',
-            width: '500'
+            width: '500',
+            attrType:'link'
         },
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Bom_Displayname,
             type: 'text',
-            width: '500'
+            width: '500',
+            attrType:'text'
         },
     ];
 
     getLookupValue($event) {
         
-    }  
+    }
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
+    }
 
     detectDevice() {
         let getDevice = UIHelper.isDevice();
@@ -100,7 +105,9 @@ export class ViewFeatureBOMComponent implements OnInit {
             this.isPerfectSCrollBar = false;
         }
     }
-
+     saveFilterState() {
+         sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    }
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
@@ -113,6 +120,16 @@ export class ViewFeatureBOMComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
         this.service_call(this.current_page, this.search_string);
 
     }
@@ -148,22 +165,6 @@ export class ViewFeatureBOMComponent implements OnInit {
                 console.log(data);
                 this.dataArray = data;
                 this.showLoader = false;
-                // dataset = JSON.parse(data);
-                // console.log(dataset);
-                // this.rows = dataset[0];
-                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                //     pages = 1;
-                // }
-                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                // console.log(this.page_numbers);
-                // if (page_number != undefined) {
-                //     this.current_page = page_number;
-                // }
-
-                // if (search != undefined) {
-                //     this.search_string = search;
-                // }
             });
     }
 
