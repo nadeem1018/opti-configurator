@@ -69,6 +69,20 @@ export class ModelbomComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
 
+  navigateToFeatureOrModelBom(type_value, type ) {
+    if(type == '1'){
+      this.route.navigateByUrl("feature/bom/edit/"+type_value);
+    } else if(type == '3'){
+      this.route.navigateByUrl("modelbom/edit/"+type_value);
+      this.modelbom_data= [];
+      this.get_modelbom_details(type_value);
+    }
+  }
+
+  navigateToMasterHeader(modal_id) {
+    this.route.navigateByUrl("feature/model/edit/"+modal_id);
+  }
+
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -130,131 +144,131 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
-
-      this.service.GetDataByModelId(this.update_id).subscribe(
-        data => {
-          if (data.ModelHeader.length > 0) {
-            this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
-            this.modelbom_data.modal_code = data.ModelHeader[0].OPTM_FEATURECODE
-            this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
-            this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
-            this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
-            this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
-            if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
-              this.showheaderImageBlock = true;
-              this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path
-            }
-
-
-            if (this.modelbom_data.is_ready_to_use == "Y") {
-              this.modelbom_data.is_ready_to_use = true;
-            }
-            else {
-              this.modelbom_data.is_ready_to_use = false;
-            }
-
-
-          }
-
-          if (data.ModelDetail.length > 0) {
-            for (let i = 0; i < data.ModelDetail.length; ++i) {
-              if (data.ModelDetail[i].OPTM_TYPE == 1) {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
-                this.isPriceDisabled = true
-                this.pricehide = true
-                this.isUOMDisabled = true
-                this.isMinSelectedDisable = false;
-                this.isMaxSelectedDisable = false;
-              }
-              else if (data.ModelDetail[i].OPTM_TYPE == 2) {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
-                this.isPriceDisabled = false
-                this.pricehide = false
-                this.isUOMDisabled = false
-                this.isMinSelectedDisable = true;
-                this.isMaxSelectedDisable = true;
-              }
-              else {
-                this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
-                this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
-                this.isPriceDisabled = true
-                this.pricehide = true
-                this.isUOMDisabled = true
-                this.isMinSelectedDisable = false;
-                this.isMaxSelectedDisable = false;
-              }
-              // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
-              //   data.ModelDetail[i].OPTM_READYTOUSE = false
-              // }
-              if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
-                data.ModelDetail[i].OPTM_PROPOGATEQTY = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_PROPOGATEQTY = false
-              }
-              if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
-                data.ModelDetail[i].OPTM_UNIQUEIDNT = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_UNIQUEIDNT = false
-              }
-              if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
-                data.ModelDetail[i].OPTM_MANDATORY = true
-              }
-              else {
-                data.ModelDetail[i].OPTM_MANDATORY = false
-              }
-              this.counter = 0;
-              if (this.modelbom_data.length > 0) {
-                this.counter = this.modelbom_data.length
-              }
-              data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
-
-              this.counter++;
-              this.modelbom_data.push({
-                rowindex: this.counter,
-                ModelId: data.ModelDetail[i].OPTM_MODELID,
-                description: this.modelbom_data.feature_name,
-                ReadyToUse: this.modelbom_data.is_ready_to_use,
-                type: data.ModelDetail[i].OPTM_TYPE,
-                type_value: this.typevaluefromdatabase,
-                type_value_code: this.typevaluecodefromdatabase,
-                display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
-                uom: data.ModelDetail[i].OPTM_UOM,
-                quantity: data.ModelDetail[i].OPTM_QUANTITY,
-                min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
-                max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
-                propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
-                price_source: data.ModelDetail[i].ListName,
-                price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
-                mandatory: data.ModelDetail[i].OPTM_MANDATORY,
-                unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
-                isDisplayNameDisabled: false,
-                isTypeDisabled: false,
-                hide: false,
-                CompanyDBId: this.companyName,
-                CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
-                isPriceDisabled: this.isPriceDisabled,
-                pricehide: this.pricehide,
-                isUOMDisabled: this.isUOMDisabled,
-                isMinSelectedDisable: this.isMinSelectedDisable,
-                isMaxSelectedDisable: this.isMaxSelectedDisable
-              });
-
-            }
-          }
-
-          if (data.RuleData.length > 0) {
-            this.rule_data = data.RuleData;
-          }
-          this.onExplodeClick('auto');
-          this.showLoader = false;
-        }
-      )
+      this.get_modelbom_details(this.update_id);
     }
   }
+
+  get_modelbom_details(id) {
+    this.showLoader = true;
+    this.service.GetDataByModelId(id).subscribe(
+      data => {
+        if (data.ModelHeader.length > 0) {
+          this.modelbom_data.modal_id = data.ModelDetail[0].OPTM_MODELID
+          this.modelbom_data.modal_code = data.ModelHeader[0].OPTM_FEATURECODE
+          this.modelbom_data.feature_name = data.ModelHeader[0].OPTM_DISPLAYNAME;
+          this.modelbom_data.feature_desc = data.ModelHeader[0].OPTM_FEATUREDESC;
+          this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
+          this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
+          if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
+            this.showheaderImageBlock = true;
+            this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path
+          }
+
+
+          if (this.modelbom_data.is_ready_to_use == "Y") {
+            this.modelbom_data.is_ready_to_use = true;
+          } else {
+            this.modelbom_data.is_ready_to_use = false;
+          }
+
+
+        }
+
+        if (data.ModelDetail.length > 0) {
+          for (let i = 0; i < data.ModelDetail.length; ++i) {
+            if (data.ModelDetail[i].OPTM_TYPE == 1) {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
+              this.isPriceDisabled = true
+              this.pricehide = true
+              this.isUOMDisabled = true
+              this.isMinSelectedDisable = false;
+              this.isMaxSelectedDisable = false;
+            } else if (data.ModelDetail[i].OPTM_TYPE == 2) {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
+              this.isPriceDisabled = false
+              this.pricehide = false
+              this.isUOMDisabled = false
+              this.isMinSelectedDisable = true;
+              this.isMaxSelectedDisable = true;
+            } else {
+              this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
+              this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
+              this.isPriceDisabled = true
+              this.pricehide = true
+              this.isUOMDisabled = true
+              this.isMinSelectedDisable = false;
+              this.isMaxSelectedDisable = false;
+            }
+            // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
+            //   data.ModelDetail[i].OPTM_READYTOUSE = false
+            // }
+            if (data.ModelDetail[i].OPTM_PROPOGATEQTY == "Y") {
+              data.ModelDetail[i].OPTM_PROPOGATEQTY = true
+            } else {
+              data.ModelDetail[i].OPTM_PROPOGATEQTY = false
+            }
+            if (data.ModelDetail[i].OPTM_UNIQUEIDNT == "Y") {
+              data.ModelDetail[i].OPTM_UNIQUEIDNT = true
+            } else {
+              data.ModelDetail[i].OPTM_UNIQUEIDNT = false
+            }
+            if (data.ModelDetail[i].OPTM_MANDATORY == "Y") {
+              data.ModelDetail[i].OPTM_MANDATORY = true
+            } else {
+              data.ModelDetail[i].OPTM_MANDATORY = false
+            }
+            this.counter = 0;
+            if (this.modelbom_data.length > 0) {
+              this.counter = this.modelbom_data.length
+            }
+            data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
+
+            this.counter++;
+            this.modelbom_data.push({
+              rowindex: this.counter,
+              ModelId: data.ModelDetail[i].OPTM_MODELID,
+              description: this.modelbom_data.feature_name,
+              ReadyToUse: this.modelbom_data.is_ready_to_use,
+              type: data.ModelDetail[i].OPTM_TYPE,
+              type_value: this.typevaluefromdatabase,
+              type_value_code: this.typevaluecodefromdatabase,
+              display_name: data.ModelDetail[i].OPTM_DISPLAYNAME,
+              uom: data.ModelDetail[i].OPTM_UOM,
+              quantity: data.ModelDetail[i].OPTM_QUANTITY,
+              min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
+              max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
+              propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
+              price_source: data.ModelDetail[i].ListName,
+              price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
+              mandatory: data.ModelDetail[i].OPTM_MANDATORY,
+              unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
+              isDisplayNameDisabled: false,
+              isTypeDisabled: false,
+              hide: false,
+              CompanyDBId: this.companyName,
+              CreatedUser: data.ModelDetail[i].OPTM_CREATEDBY,
+              isPriceDisabled: this.isPriceDisabled,
+              pricehide: this.pricehide,
+              isUOMDisabled: this.isUOMDisabled,
+              isMinSelectedDisable: this.isMinSelectedDisable,
+              isMaxSelectedDisable: this.isMaxSelectedDisable
+            });
+
+          }
+        }
+
+        if (data.RuleData.length > 0) {
+          this.rule_data = data.RuleData;
+        }
+        this.onExplodeClick('auto');
+        this.showLoader = false;
+      }, error => {
+        this.showLoader = false;
+     }
+    )
+  };
 
   ngAfterViewInit() {
     if (this.update_id === "" || this.update_id === null) {
