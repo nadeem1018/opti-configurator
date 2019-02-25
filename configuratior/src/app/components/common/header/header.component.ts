@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonData } from "../../../models/CommonData";
-import { CommonService } from "../../../services/common.service";
-import { ToastrService } from 'ngx-toastr';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonData} from "../../../models/CommonData";
+import {CommonService} from "../../../services/common.service";
+import {ToastrService} from 'ngx-toastr';
 import 'bootstrap';
 
 @Component({
@@ -15,7 +15,9 @@ export class HeaderComponent implements OnInit {
   config_data: any = "";
   language: any = "";
   project_name: any = 'OptiPro Product Configurator';
+
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) { }
+
   showHeader: boolean;
   imgPath = 'assets/images';
   search_for = "Search for...";
@@ -42,24 +44,24 @@ export class HeaderComponent implements OnInit {
       }
       this.project_name = this.config_data['app_title'];
       this.language = JSON.parse(sessionStorage.getItem('current_lang'));
-   }
-
+    }
   }
 
   ngOnChanges() {
     // this.commonData.checkSession();
   }
 
-  ngAfterViewInit(): void {
-    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-    this.language = JSON.parse(sessionStorage.getItem('current_lang'));
-    
+  ngAfterViewInit() {
+    setTimeout(function () {
+      this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
+
       this.search_for = this.language.search_for;
       this.user_profile = this.language.user_profile;
       this.preferences = this.language.preferences;
       this.signout = this.language.signout;
+    }, 2000);
   }
-
   logout() {
 
     this.CommonService.RemoveLoggedInUser().subscribe();
@@ -90,7 +92,6 @@ export class HeaderComponent implements OnInit {
       window.location.href = login_page;
     }  
   } */
-
 
 
 }
