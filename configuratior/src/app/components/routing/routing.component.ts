@@ -192,6 +192,19 @@ export class RoutingComponent implements OnInit {
 
   getLookupValue($event) {
 
+    console.log('in getLookupValue' + 'lookup for - ' + this.lookupfor, $event);
+    if (this.lookupfor == 'feature_lookup') {
+      this.routing_header_data.feature_id = $event[0];
+      this.routing_header_data.feature_code = $event[1];
+      this.getFeatureDetail($event[0], "header", 0);
+    }
+
+    if (this.lookupfor == 'ModelBom_lookup') {
+      this.routing_header_data.modal_id = $event[0];
+      this.routing_header_data.modal_code = $event[1];
+
+     //  this.getModalDetail($event[0], "header", 0);
+    }
   }
 
   resequence_operation() {
@@ -239,8 +252,27 @@ export class RoutingComponent implements OnInit {
 
   openModalLookup(flag) {
     this.showLookupLoader = true;
-    this.serviceData = [];
-    this.showLookupLoader = false;
+    this.serviceData = []
+    this.service.GetModelList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'ModelBom_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+      }
+    )
   }
 
   openWarehouseLook(flag) {
@@ -250,12 +282,20 @@ export class RoutingComponent implements OnInit {
 
   }
 
-  getFeatureDetail(feature_code) {
-
+  getFeatureDetail(feature_code, press_location, index) {
+    if(press_location == 'header'){
+ 
+    } else {
+      
+    }
   }
 
-  getModalDetail(modal_code) {
+  getModalDetail(modal_code, press_location, index) {
+    if (press_location == 'header') {
 
+    } else {
+
+    }
   }
 
   getWarehouseDetails(warehouse_code) {

@@ -30,5 +30,10 @@ export class RoutingService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureList", jObject, this.common_params.httpOptions);
   }
+
+  GetModelList(): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ModelList", jObject, this.common_params.httpOptions);
+  }
  
 }
