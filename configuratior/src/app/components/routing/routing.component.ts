@@ -207,12 +207,12 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.modal_id = $event[0];
       this.routing_header_data.modal_code = $event[1];
       this.routing_header_data.modal_description = $event[2];
-       this.GetDataByModelId($event[0], "header", 0);
+      this.GetDataByModelId($event[0], "header", 0);
     }
 
     if (this.lookupfor == 'warehouse_lookup') {
       this.routing_header_data.warehouse_id = $event[0];
-      this.routing_header_data.warehouse_code = $event[0]; 
+      this.routing_header_data.warehouse_code = $event[0];
     }
   }
 
@@ -243,7 +243,6 @@ export class RoutingComponent implements OnInit {
           this.showLookupLoader = false;
           this.serviceData = data;
           console.log(this.serviceData);
-
         }
         else {
           this.lookupfor = "";
@@ -254,6 +253,8 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
       }
     )
 
@@ -268,7 +269,6 @@ export class RoutingComponent implements OnInit {
           this.lookupfor = 'ModelBom_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
-
         }
         else {
           this.lookupfor = "";
@@ -280,6 +280,8 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
       }
     )
   }
@@ -305,20 +307,72 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
       }
     )
   }
 
   GetDataByFeatureId(feature_code, press_location, index) {
     this.routing_detail_data = [];
-    if(press_location == 'header'){
+    if (press_location == 'header') {
       this.showLookupLoader = true;
       this.service.GetDataByFeatureId(feature_code).subscribe(
         data => {
           console.log(data);
-          if (data.length > 0) {
-            /*data*/
-            this.routing_detail_data.push();
+          if (data.FeatureDetail.length > 0) {
+            this.counter = 0;
+            if (this.routing_detail_data.length > 0) {
+              this.counter = this.routing_detail_data.length
+            }
+            this.counter++;
+
+            var temp = new Date(this.routing_header_data.EffectiveDate);
+            var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+            for (let i = 0; i < data.FeatureDetail.length; ++i) {
+              var featuredata = data.FeatureDetail[i];
+              let value = '';
+              let value_code = '';
+              var desc = '';
+              if (featuredata.OPTM_TYPE == 1){
+                value = featuredata.OPTM_CHILDFEATUREID;
+                value_code = featuredata.child_code;
+                
+              } else if (featuredata.OPTM_TYPE == 2) {
+                value = featuredata.OPTM_ITEMKEY;
+                value_code = featuredata.OPTM_ITEMKEY;
+              } else if (featuredata.OPTM_TYPE == 3) {
+                value = featuredata.OPTM_VALUE;
+                value_code = featuredata.OPTM_VALUE; 
+              }
+              desc = featuredata.OPTM_DISPLAYNAME;
+
+              this.routing_detail_data.push({
+                lineno: this.counter,
+                rowindex: this.counter,
+                type: featuredata.OPTM_TYPE,
+                type_value: value,
+                type_value_code : value_code,
+                description: desc,
+                operation_top_level: '',
+                oper_id: '',
+                oper_code: '',
+                oper_desc: '',
+                wc_id: '',
+                wc_code: '',
+                mtq: '1',
+                count_point_operation: '',
+                auto_move: '',
+                effective_date: temp_effective_date,
+                queue_time: '00:00',
+                move_time: '00:00',
+                qc_time: '00:00',
+                time_uom: '',
+                opn_application: '',
+                isTypeDisabled: false,
+                showOperationbtn: true,
+              });
+            }
             this.showLookupLoader = false;
           } else {
             this.showLookupLoader = false;
@@ -326,9 +380,10 @@ export class RoutingComponent implements OnInit {
           }
         }, error => {
           this.showLookupLoader = false;
-
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
         });
-    } 
+    }
   }
 
   GetDataByModelId(modal_code, press_location, index) {
@@ -338,7 +393,7 @@ export class RoutingComponent implements OnInit {
       this.service.GetDataByModelId(modal_code).subscribe(
         data => {
           console.log(data);
-          if (data.length > 0) {
+          if (data.ModelDetail.length > 0) {
             this.routing_detail_data.push();
             this.showLookupLoader = false;
           } else {
@@ -405,12 +460,12 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
   }
 
-  confirm_override_grid_effective_date(){
+  confirm_override_grid_effective_date() {
     this.dialog_params.push({ 'dialog_type': 'confirmation', 'message': this.language.confirm_override_detials_effective_date });
     this.show_dialog = true;
   }
 
-    //This will take confimation box value
+  //This will take confimation box value
   get_dialog_value(userSelectionValue) {
     console.log('in get_dialog_value', userSelectionValue);
     if (userSelectionValue == true) {
@@ -418,8 +473,8 @@ export class RoutingComponent implements OnInit {
     }
     this.show_dialog = false;
   }
-  
-  over_ride_grid_effective_date(){
+
+  over_ride_grid_effective_date() {
     console.log('in over_ride_grid_effective_date');
     var temp = new Date(this.routing_header_data.EffectiveDate);
     var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
@@ -468,6 +523,8 @@ export class RoutingComponent implements OnInit {
       rowindex: this.counter,
       type: '1',
       type_value: "",
+      type_value_code : "",
+      description :'',
       operation_top_level: '',
       oper_id: '',
       oper_code: '',
