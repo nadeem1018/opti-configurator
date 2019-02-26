@@ -4,6 +4,7 @@ import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 //import { CustomDialogsComponent } from 'src/app/components/common/custom-dialogs/custom-dialogs.component'
 
 
@@ -82,7 +83,8 @@ export class ViewFeatureModelComponent implements OnInit {
     public dataBind: any = "";
     CompanyDBId: string;
 
-    constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService) { }
+    constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService,
+        private commonservice:CommonService) { }
     show_table_footer: boolean = false;
     public lookupfor = '';
     //custom dialoag params
@@ -165,8 +167,14 @@ export class ViewFeatureModelComponent implements OnInit {
             data => {
                 
                 console.log(data);
-                this.dataArray = data;
+                
                 this.showLoader = false;
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonservice.RemoveLoggedInUser().subscribe();
+                    this.commonservice.signOut(this.toastr, this.router);
+                    return;
+                } 
+                this.dataArray = data;
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
@@ -227,11 +235,19 @@ export class ViewFeatureModelComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.CompanyDBId,
-            FEATUREID: this.row_id
+            FEATUREID: this.row_id,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
         });
         this.fms.DeleteData(this.GetItemData).subscribe(
             data => {
-
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
@@ -271,7 +287,9 @@ export class ViewFeatureModelComponent implements OnInit {
                     if (checkedvalue == true) {
                         this.CheckedData.push({
                             FEATUREID: row_data.OPTM_FEATUREID,
-                            CompanyDBId: this.CompanyDBId
+                            CompanyDBId: this.CompanyDBId,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
                         })
                     }
                     else {
@@ -282,14 +300,18 @@ export class ViewFeatureModelComponent implements OnInit {
             if (isExist == 0) {
                 this.CheckedData.push({
                     FEATUREID: row_data.OPTM_FEATUREID,
-                    CompanyDBId: this.CompanyDBId
+                    CompanyDBId: this.CompanyDBId,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
         }
         else {
             this.CheckedData.push({
                 FEATUREID: row_data.OPTM_FEATUREID,
-                CompanyDBId: this.CompanyDBId
+                CompanyDBId: this.CompanyDBId,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
     }
@@ -306,7 +328,9 @@ export class ViewFeatureModelComponent implements OnInit {
 
                     this.CheckedData.push({
                         FEATUREID: this.dataArray[i].OPTM_FEATUREID,
-                        CompanyDBId: this.CompanyDBId
+                        CompanyDBId: this.CompanyDBId,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
@@ -330,6 +354,13 @@ export class ViewFeatureModelComponent implements OnInit {
     delete_multi_row() { 
         this.fms.DeleteData(this.CheckedData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);

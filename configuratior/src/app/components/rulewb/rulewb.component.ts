@@ -144,6 +144,13 @@ export class RulewbComponent implements OnInit {
       var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
+          if(data != undefined && data.LICDATA != undefined){
+            if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                return;
+            } 
+         }  
           console.log(data.RuleWorkBenchHeader);
           if (data.RuleWorkBenchHeader.length > 0) {
             if (data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False") {
@@ -517,6 +524,13 @@ export class RulewbComponent implements OnInit {
     this.service.getFeatureList().subscribe(
       data => {
         if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            return;
+          } 
+
           this.serviceData = data;
           this.showLookupLoader = false;
           console.log(this.serviceData);
@@ -609,6 +623,11 @@ export class RulewbComponent implements OnInit {
       data => {
       this.showLookupLoader = false;
         if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            return;
+        } 
           if (press_location == "Detail") {
             if (index == 1) {
               this.lookupfor = 'feature_Detail_lookup';
@@ -650,7 +669,14 @@ export class RulewbComponent implements OnInit {
     this.global_rule_feature_data = new Array();
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
-        if (data != null || data != "" || data != undefined) {
+        if (data != null && data != "" && data != undefined) {
+
+          if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+          } 
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
             if(data[i].PriceSource==null||data[i].PriceSource==undefined||data[i].PriceSource=="NaN"||data[i].PriceSource==""){
@@ -1061,6 +1087,11 @@ export class RulewbComponent implements OnInit {
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
           this.showLookupLoader = false;
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            return;
+        } 
           this.serviceData = data;
         }
       }, 
@@ -1075,8 +1106,15 @@ export class RulewbComponent implements OnInit {
     this.service.get_model_feature_options(type_value, type).subscribe(
       data => {
         this.showLookupLoader = false;
+        
+        
         if (data.length > 0) {
           console.log(data);
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            return;
+          } 
           this.currentrowindex = rowindex;
           if (type == 1) {
             this.lookupfor = "operand_feature_lookup";
@@ -1087,6 +1125,7 @@ export class RulewbComponent implements OnInit {
           this.operand_type = operand_value;
 
           this.serviceData = data;
+        
         } else {
           this.lookupfor = "";
           this.serviceData = [];

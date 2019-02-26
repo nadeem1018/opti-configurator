@@ -4,6 +4,7 @@ import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
     selector: 'app-feature-bom-view',
@@ -45,7 +46,8 @@ export class ViewFeatureBOMComponent implements OnInit {
     rows: any = "";
     public dataBind: any = "";
 
-    constructor(private fbs: FeaturebomService, private router: Router, private toastr: ToastrService) { }
+    constructor(private fbs: FeaturebomService, private router: Router, private toastr: ToastrService,
+        private commonservice: CommonService) { }
     show_table_footer: boolean = false;
     public showImportButton: boolean = false;
     //custom dialoag params
@@ -146,8 +148,16 @@ export class ViewFeatureBOMComponent implements OnInit {
         var dataset = this.fbs.getAllViewDataForFeatureBom(search, page_number, this.record_per_page).subscribe(
             data => {
                 console.log(data);
-                this.dataArray = data;
                 this.showLoader = false;
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
+                this.dataArray = data;
+                
                 // dataset = JSON.parse(data);
                 // console.log(dataset);
                 // this.rows = dataset[0];
@@ -212,10 +222,19 @@ export class ViewFeatureBOMComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            FeatureId: this.row_id
+            FeatureId: this.row_id,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
         });
         this.fbs.DeleteData(this.GetItemData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
@@ -241,7 +260,9 @@ export class ViewFeatureBOMComponent implements OnInit {
                     if (checkedvalue == true) {
                         this.CheckedData.push({
                             FeatureId: row_data.OPTM_FEATUREID,
-                            CompanyDBId: this.companyName
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
                         })
                     }
                     else {
@@ -252,14 +273,18 @@ export class ViewFeatureBOMComponent implements OnInit {
             if (isExist == 0) {
                 this.CheckedData.push({
                     FeatureId: row_data.OPTM_FEATUREID,
-                    CompanyDBId: this.companyName
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
         }
         else {
             this.CheckedData.push({
                 FeatureId: row_data.OPTM_FEATUREID,
-                CompanyDBId: this.companyName
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+               UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
 
@@ -279,7 +304,9 @@ export class ViewFeatureBOMComponent implements OnInit {
 
                     this.CheckedData.push({
                         FeatureId: this.dataArray[i].OPTM_FEATUREID,
-                        CompanyDBId: this.companyName
+                        CompanyDBId: this.companyName,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
@@ -309,6 +336,13 @@ export class ViewFeatureBOMComponent implements OnInit {
         if (this.CheckedData.length > 0) {
             this.fbs.DeleteData(this.CheckedData).subscribe(
                 data => {
+                    if(data != undefined && data.length > 0){
+                        if (data[0].ErrorMsg == "7001") {
+                            this.commonservice.RemoveLoggedInUser().subscribe();
+                            this.commonservice.signOut(this.toastr, this.router);
+                            return;
+                        } 
+                    }                    
                     if (data === "True") {
                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                         this.service_call(this.current_page, this.search_string);

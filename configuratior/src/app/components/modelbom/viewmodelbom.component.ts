@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
-
+import { CommonService } from 'src/app/services/common.service';
 @Component({
     selector: 'app-model-bom-view-model',
     templateUrl: '../common/table.view.html',
@@ -53,7 +53,8 @@ export class ViewModelBomComponent implements OnInit {
     table_title = this.page_main_title;
     table_head_foot = [this.language.select, this.language.hash, this.language.ModelId, this.language.model_ModelCode, this.language.Name, this.language.description, this.language.action];
     public table_hidden_elements = [false, true, true, false, false, false, false];
-    constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService) { }
+    constructor(private router: Router, private service: ModelbomService, private toastr: ToastrService,
+        private commonservice:CommonService) { }
 
     isMobile:boolean=false;
     isIpad:boolean=false;
@@ -143,8 +144,17 @@ export class ViewModelBomComponent implements OnInit {
             data => {
                 
                 console.log(data);
-                this.dataArray = data;
                 this.showLoader = false;
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
+                                
+                this.dataArray = data;
+               
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
@@ -205,10 +215,19 @@ export class ViewModelBomComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            ModelId: this.row_id
+            ModelId: this.row_id,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
         });
         this.service.DeleteData(this.GetItemData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
@@ -235,7 +254,9 @@ export class ViewModelBomComponent implements OnInit {
                     if (checkedvalue == true) {
                         this.CheckedData.push({
                             ModelId: row_data.OPTM_MODELID,
-                            CompanyDBId: this.companyName
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
                         })
                     }
                     else {
@@ -246,14 +267,18 @@ export class ViewModelBomComponent implements OnInit {
             if (isExist == 0) {
                 this.CheckedData.push({
                     ModelId: row_data.OPTM_MODELID,
-                    CompanyDBId: this.companyName
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
         }
         else {
             this.CheckedData.push({
                 ModelId: row_data.OPTM_MODELID,
-                CompanyDBId: this.companyName
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
 
@@ -272,7 +297,9 @@ export class ViewModelBomComponent implements OnInit {
 
                     this.CheckedData.push({
                         ModelId: this.dataArray[i].OPTM_MODELID,
-                        CompanyDBId: this.companyName
+                        CompanyDBId: this.companyName,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
@@ -296,6 +323,13 @@ export class ViewModelBomComponent implements OnInit {
     delete_multi_row() {
         this.service.DeleteData(this.CheckedData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);

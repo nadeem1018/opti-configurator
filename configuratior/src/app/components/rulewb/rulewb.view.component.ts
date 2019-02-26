@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
     selector: 'rule-wb-view-model',
@@ -97,7 +98,8 @@ export class RuleWbViewComponent implements OnInit {
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false, false, false];
     page_main_title = this.language.rule_workbench;
     table_title = this.page_main_title;
-    constructor(private router: Router, private service: RulewbService, private toastr: ToastrService) { }
+    constructor(private router: Router, private service: RulewbService, private toastr: ToastrService,
+        private commonservice:CommonService) { }
 
 
     isMobile:boolean=false;
@@ -168,8 +170,16 @@ export class RuleWbViewComponent implements OnInit {
             data => {
                 
                 console.log(data);
-                this.dataArray = data;
                 this.showLoader = false;
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
+                this.dataArray = data;
+                
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
@@ -230,10 +240,19 @@ export class RuleWbViewComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            RuleId: this.row_id
+            RuleId: this.row_id,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
         });
         this.service.DeleteData(this.GetItemData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
@@ -259,7 +278,9 @@ export class RuleWbViewComponent implements OnInit {
                     if (checkedvalue == true) {
                         this.CheckedData.push({
                             RuleId: row_data.OPTM_RULEID,
-                            CompanyDBId: this.companyName
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
                         })
                     }
                     else {
@@ -270,14 +291,18 @@ export class RuleWbViewComponent implements OnInit {
             if (isExist == 0) {
                 this.CheckedData.push({
                     RuleId: row_data.OPTM_RULEID,
-                    CompanyDBId: this.companyName
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
         }
         else {
             this.CheckedData.push({
                 RuleId: row_data.OPTM_RULEID,
-                CompanyDBId: this.companyName
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
     }
@@ -294,7 +319,9 @@ export class RuleWbViewComponent implements OnInit {
 
                     this.CheckedData.push({
                         RuleId: this.dataArray[i].OPTM_RULEID,
-                        CompanyDBId: this.companyName
+                        CompanyDBId: this.companyName,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
@@ -318,6 +345,13 @@ export class RuleWbViewComponent implements OnInit {
     delete_multi_row() {
         this.service.DeleteData(this.CheckedData).subscribe(
             data => {
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
+                }                
                 if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
