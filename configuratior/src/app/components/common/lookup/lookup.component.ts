@@ -79,6 +79,8 @@ export class LookupComponent implements OnInit {
   public refrence_doc_details: any = [];
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
+  public resourceServiceData: any = [];
+  public current_popup_row :any = "";
   public downLoadfileName = this.language.quatation + '.pdf';
   public template_type = "";
   isMobile: boolean = false;
@@ -92,8 +94,12 @@ export class LookupComponent implements OnInit {
   public dialogOpened = false;
   public load_print_report: boolean = false;
   public popup_lookupfor = "";
+  public resource_counter = 0;
+  public showLookupLoader: boolean = false; 
+
   public close_kendo_dialog() {
     this.dialogOpened = false;
+    this.current_popup_row = "";
   }
 
   detectDevice() {
@@ -138,7 +144,10 @@ export class LookupComponent implements OnInit {
     this.dataBind = [];
     this.outputServiceData = [];
     this.skip = 0;
+    this.resource_counter = 0;
     this.dialogOpened = false;
+    this.resourceServiceData = [];
+    this.current_popup_row = "";
     //this.test_model();
     console.log("this.lookupfor " + this.popup_lookupfor);
     this.search_string = "";
@@ -237,13 +246,70 @@ export class LookupComponent implements OnInit {
         this.output_invoice_print();
         return;
       }
-     // this.lookupfor = "";
+
+      if(this.popup_lookupfor == 'routing_resource_lookup'){
+        this.routing_resource_lookup();
+        return;
+      }
+
+      if(this.popup_lookupfor == "warehouse_lookup"){
+        this.warehouse_lookup_list();
+      }
     }
   }
 
   /*  ngAfterViewChecked() {
      
    } */
+
+  warehouse_lookup_list(){
+
+    this.popup_title = this.language.warehouse;
+    this.LookupDataLoaded = false;
+    this.showLoader = true;
+    this.fill_input_id = 'warehouseCode';
+    this.table_head = [this.language.code, this.language.Name];
+
+    this.table_head = [
+      {
+        field: 'WHSECODE',
+        title: this.language.code,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      },
+      {
+        field: 'Description',
+        title: this.language.description,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      },
+
+    ];
+
+
+    this.table_head_hidden_elements = [false, false];
+    this.lookup_key = 'Name';
+
+    this.width_value = ((100 / this.table_head.length) + '%');
+
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    if (this.serviceData !== undefined) {
+      if (this.serviceData.length > 0) {
+        this.dialogOpened = true;
+        // $("#lookup_modal").modal('show');
+      }
+    }
+
+
+  }
+
+  operation_resource_update(){
+
+  }
 
   log(val) {
     console.log(val);
@@ -259,10 +325,31 @@ export class LookupComponent implements OnInit {
   }
   on_item_select(selection) {
     const lookup_key = selection.selectedRows[0].dataItem;
-    console.log("lookup_key - " + lookup_key);
+    console.log("this.popup_lookupfor ", this.popup_lookupfor);
+    
+    console.log("lookup_key - ", lookup_key);
+    if (this.popup_lookupfor == "routing_resource_lookup"){
+      console.log("this.current_popup_row - ", this.current_popup_row);
+     
+      for (let i = 0; i <  this.resourceServiceData.length; ++i) {
+        if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
+          this.resourceServiceData[i].resource_code = "test";
+          this.resourceServiceData[i].resource_name = "test";
+          this.resourceServiceData[i].resource_uom  = "hours";
+          this.resourceServiceData[i].resource_consumption = "100";
+          this.resourceServiceData[i].resource_inverse = "100";
+          this.resourceServiceData[i].no_resource_used = "120";
+          this.resourceServiceData[i].time_uom = "hours";
+          this.resourceServiceData[i].time_consumption = "150";
+          this.resourceServiceData[i].time_inverse = "140";
+
+          this.current_popup_row = "";
+        }
+      }
+    }
+    
+    
     console.log(lookup_key);
-
-
     this.lookupvalue.emit(Object.values(lookup_key));
     //   $("#lookup_modal").modal('hide');
     console.log(selection);
@@ -272,6 +359,7 @@ export class LookupComponent implements OnInit {
     this.serviceData = [];
     this.skip = 0;
     this.dialogOpened = false;
+    this.current_popup_row = "";
   }
 
   configure_list_lookup() {
@@ -285,27 +373,31 @@ export class LookupComponent implements OnInit {
     this.table_head = [
       {
         field: 'OPTM_LOGID',
-        title: this.language.log_id,
-        type: 'text',
-        width: '100'
+        title: this.language.configuration_id,
+        type: 'numeric',
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DESC',
         title: this.language.description,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_BPCODE',
         title: this.language.customer,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_CONTACTPERSON',
         title: this.language.contact_person,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       }
       /* ,
       {
@@ -350,13 +442,15 @@ export class LookupComponent implements OnInit {
         field: 'Code',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Name',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -391,7 +485,8 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_CODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -425,13 +520,15 @@ export class LookupComponent implements OnInit {
         field: 'feature_code',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -465,13 +562,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -501,6 +600,7 @@ export class LookupComponent implements OnInit {
       // popup_lookupfor  = "";
       setTimeout(() => {
         this.popup_lookupfor = "";
+        this.current_popup_row = "";
       });
     }
 
@@ -521,13 +621,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -564,13 +666,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -604,13 +708,15 @@ export class LookupComponent implements OnInit {
         field: 'ItemKey',
         title: this.language.itemkey,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Description',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
     ];
 
@@ -653,13 +759,15 @@ export class LookupComponent implements OnInit {
         field: 'PriceListID',
         title: this.language.price_source,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'ListName',
         title: this.language.price_list_name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -692,13 +800,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -1072,6 +1182,150 @@ export class LookupComponent implements OnInit {
     //   this.lookupfor = "";
   }
 
+
+  routing_resource_lookup(){
+    this.popup_title = this.language.routing_resource;
+    this.LookupDataLoaded = false;
+
+    this.showLoader = true;
+    this.resourceServiceData = this.serviceData;
+
+    this.showLoader = false;
+    this.LookupDataLoaded = true;
+    // if (this.serviceData !== undefined) {
+    //  if (this.serviceData.length > 0) {
+        $("#routing_resource_modal").modal('show');
+   //   }
+   // }
+  }
+
+  insert_new_resource(){
+    this.resource_counter = 0;
+    if (this.resourceServiceData.length > 0) {
+      this.resource_counter = this.resourceServiceData.length
+    }
+    this.resource_counter++;
+
+    this.resourceServiceData.push({
+      lineno: this.resource_counter,
+      rowindex: this.resource_counter,
+      operation_no: '',
+      resource_code: '',
+      resource_name: '',
+      resource_uom : '',
+      resource_consumption  : "0",
+      resource_inverse  : "0", 
+      no_resource_used : "1",
+      time_uom : '',
+      time_consumption  : "0",
+      time_inverse  : "0",
+      resource_consumption_type  : '1',
+      basis : '1',
+      schedule  : '',
+      is_resource_disabled: true
+
+    });
+  }
+
+  onDeleteRow(rowindex) {
+    if (this.resourceServiceData.length > 0) {
+      for (let i = 0; i < this.resourceServiceData.length; ++i) {
+        if (this.resourceServiceData[i].rowindex === rowindex) {
+          this.resourceServiceData.splice(i, 1);
+          i = i - 1;
+        }
+        else {
+          this.resourceServiceData[i].rowindex = i + 1;
+        }
+      }
+    }
+  }
+
+  on_input_change(value, rowindex, grid_element) {
+    var currentrow = 0;
+    for (let i = 0; i < this.resourceServiceData.length; ++i) {
+      if (this.resourceServiceData[i].rowindex === rowindex) {
+        currentrow = i;
+      }
+    }
+    console.log(currentrow);
+    if(grid_element == 'operation_no'){
+
+    }
+    
+    if(grid_element == 'resource_code'){
+
+    }
+    
+    if(grid_element == 'resource_name'){
+
+    }
+    
+    if(grid_element == 'resource_uom'){
+
+    }
+    
+    if(grid_element == 'resource_consumption'){
+
+    }
+    
+    if(grid_element == 'resource_inverse'){
+
+    }
+    
+    if(grid_element == 'no_resource_used'){
+
+    }
+    
+    if(grid_element == 'time_uom'){
+
+    }
+    
+    if(grid_element == 'time_consumption'){
+
+    }
+    
+    if(grid_element == 'time_inverse'){
+
+    }
+    
+    if(grid_element == 'resource_consumption_type'){
+
+    }
+    
+    if(grid_element == 'resource_basic'){
+
+    }
+    
+    if(grid_element == 'schedule'){
+
+    }
+  }
+  
+
+  open_resource_lookup(type, rowindex) {
+    this.showLookupLoader = true;
+    this.serviceData = []
+    this.mbom.GetModelList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.dialogOpened = true;
+          this.serviceData = data;
+          this.current_popup_row = rowindex;
+        }
+        else {
+          this.dialogOpened = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.dialogOpened = false;
+        this.showLookupLoader = false;
+      }
+    )
+  }
+
   public tree_data_json: any = '';
   @Input() component;
 
@@ -1108,13 +1362,15 @@ export class LookupComponent implements OnInit {
         field: 'OPTM_DISPLAYNAME',
         title: this.language.Model_ModelName,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'OPTM_FEATUREDESC',
         title: this.language.Model_ModelDesc,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
     ];
     this.table_head_hidden_elements = [true, false, false];
@@ -1151,7 +1407,7 @@ export class LookupComponent implements OnInit {
   }
 
   customer_lookup() {
-    this.popup_title = this.language.model_template;
+    this.popup_title = this.language.customer;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'featureItemName';
@@ -1162,13 +1418,15 @@ export class LookupComponent implements OnInit {
         field: 'CustID',
         title: this.language.customer_code,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
       {
         field: 'Name',
         title: this.language.Name,
         type: 'text',
-        width: '100'
+        width: '100',
+        attrType: 'text'
       },
 
     ];
@@ -1207,62 +1465,6 @@ export class LookupComponent implements OnInit {
     this.print_item_list_array.length = 0;
   }
 
-
-  // gridUserSelectionChange(gridUser, selection) {sdgvxfvx
-  //   // let selectedData = gridUser.data.data[selection.index];
-  //   const selectedData = selection.selectedRows[0].dataItem;
-  //   console.log(selectedData);
-  //   alert(selectedData.Name);
-  // }
-
-
-  /*downloadFile() {
-    return this.http
-      .get('https://jslim.net/path/to/file/download', {
-        responseType: ResponseContentType.Blob
-      })
-      .map(res => {
-        return {
-          filename: 'filename.pdf',
-          data: res.blob()
-        };
-      })
-      .subscribe(res => {
-          console.log('start download:',res);
-          var url = window.URL.createObjectURL(res.data);
-          var a = document.createElement('a');
-          document.body.appendChild(a);
-          a.setAttribute('style', 'display: none');
-          a.href = url;
-          a.download = res.filename;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove(); // remove the element
-        }, error => {
-          console.log('download error:', JSON.stringify(error));
-        }, () => {
-          console.log('Completed file download.')
-        });
-  }*/
-
-  // dummy_json(){
-  //   return [
-  //     { "sequence" : "1",    "component"  :  "F1",        "level"  : "0",    "parent": ""   },
-  //     { "sequence" : "2",    "component"  :  "F2",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "3",    "component"  :  "F3",        "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "4",    "component"  :  "Item0001",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "5",    "component"  :  "Item0002",  "level"  : "2",    "parent": "F2" },
-  //     { "sequence" : "6",    "component"  :  "F4",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F5",        "level"  : "2",    "parent": "F3" },
-  //     { "sequence" : "7",    "component"  :  "F6",        "level"  : "3",    "parent": "F4" },
-  //     { "sequence" : "8",    "component"  :  "Item0003",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "9",    "component"  :  "Item0004",  "level"  : "3",    "parent": "F5" },
-  //     { "sequence" : "10",   "component"  :  "Item0005",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "11",   "component"  :  "Item0006",  "level"  : "4",    "parent": "F6" },
-  //     { "sequence" : "13",   "component"  :  "Item0002",  "level"  : "1",    "parent": "F1" },
-  //     { "sequence" : "14",   "component"  :  "Item0011",  "level"  : "0",    "parent": ""   }
-  //   ];
-  // }
 
   dummy_json() {
     return [

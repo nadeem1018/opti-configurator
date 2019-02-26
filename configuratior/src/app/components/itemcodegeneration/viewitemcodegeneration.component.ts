@@ -29,7 +29,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
 
 
     record_per_page: any;
@@ -76,17 +76,22 @@ export class ViewItemCodeGenerationComponent implements OnInit {
           field: this.language.code,
           title: this.language.code,
           type: 'text',
-          width: '500'
+          width: '500',
+          attrType: 'link'
         }, {
           field: 'FinalString',
           title: this.language.finalstring,
           type: 'text',
-          width: '500'      
+          width: '500',
+          attrType: 'text'
         },        
       ];
 
     getLookupValue($event) {
         
+    }
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
     }
 
     detectDevice(){
@@ -102,7 +107,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.isPerfectSCrollBar = false;
         }
     }
-
+    saveFilterState() {
+        sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    }
     ngOnInit() {
 
         const element = document.getElementsByTagName("body")[0];
@@ -118,6 +125,16 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
         this.service_call(this.current_page, this.search_string);
 
         //this.CheckedData.CheckedRow=[];
@@ -186,7 +203,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
     button_click1(data) {
 
-        this.router.navigateByUrl('item-code-genration/edit/' + data.Code);
+        this.router.navigateByUrl('item-code-genration/edit/' + data.Code.trim());
         // button click function in here
     }
     button_click2(data) {

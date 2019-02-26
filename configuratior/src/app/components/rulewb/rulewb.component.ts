@@ -49,6 +49,8 @@ export class RulewbComponent implements OnInit {
   public operand_type: any = '';
   public add_sequence_mode: boolean = false;
   public update_sequence_mode: boolean = false;
+  public is_applicable_for_disabled: boolean = false;
+  
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
   public defaultCurrency = sessionStorage.defaultCurrency;
@@ -134,6 +136,7 @@ export class RulewbComponent implements OnInit {
       var current_date = new Date();
       this.rule_wb_data.effective_from = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
       this.showLoader  = false;
+      this.is_applicable_for_disabled = false;
     } else {
       this.isUpdateButtonVisible = true;
       this.code_disabled = "true";
@@ -141,6 +144,7 @@ export class RulewbComponent implements OnInit {
       this.isDeleteButtonVisible = false;
       this.show_sequence = false;
       this.show_add_sequence_btn = true
+      this.is_applicable_for_disabled = true;
       var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
@@ -377,6 +381,10 @@ export class RulewbComponent implements OnInit {
       )
 
     }
+  }
+
+  navigateToFeatureOrModelBom(type_value) {
+      this.route.navigateByUrl("feature/bom/edit/" + type_value);
   }
 
   ngAfterViewInit() {
@@ -1275,13 +1283,14 @@ export class RulewbComponent implements OnInit {
         this.rule_feature_data.push(feature_rule_data[data]);
       }
 
-      this.show_sequence = true;
-      this.show_add_sequence_btn = false;
-      this.showAddSequenceBtn = false;
-      this.showUpdateSequenceBtn = false;
       this.generated_expression_value = row.expression;
       this.editing_row = rowindex;
       this.seq_count = row.seq_count;
+
+      this.show_sequence = true;
+      this.show_add_sequence_btn = false;
+      this.showAddSequenceBtn = false;
+      this.showUpdateSequenceBtn = true;
     }
   }
 

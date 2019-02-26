@@ -54,10 +54,10 @@
             </div>
 
             <!-- <label class="opt_custome-label col-form-label" for="rule_description">{{language.description}}</label>
-        <div class="opt_custom-field">
-          <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
-            [(ngModel)]="rule_wb_data.description">
-        </div> -->
+            <div class="opt_custom-field">
+              <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+                [(ngModel)]="rule_wb_data.description">
+            </div>  -->
 
           </div>
 
@@ -99,9 +99,9 @@
                 placeholder="{{language.applicable_for}}" [(ngModel)]="rule_wb_data.applicable_for_feature_id" title="{{rule_wb_data.applicable_for_feature_id}}">
               <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="featuer_code" [(ngModel)]="rule_wb_data.applicable_for_feature_code"
                 title="{{rule_wb_data.applicable_for_feature_code}}" placeholder="{{language.applicable_for}}" (change)="onFeatureIdChange(rule_wb_data.applicable_for_feature_code)"
-                style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
+                style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [readonly]="is_applicable_for_disabled">
               <div class="input-group-append">
-                <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="getFetureListLookup(true)">
+                <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" [hidden]="is_applicable_for_disabled" (click)="getFetureListLookup(true)">
                   <i class="fa fa-bars"></i>
                 </span>
               </div>
@@ -176,6 +176,12 @@
                         <img src="{{imgPath}}/ruleweb/input.svg" width="15px" height="15px"> {{language.input}}</span>
                     </ng-template>
                     <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}} title="{{dataItem.seq_count}}" />
@@ -275,8 +281,9 @@
                   <div class="custom-grid-footer grid-footer k-grid-aria-root center_border">
                     <div class="footer_grid_head k-alt"> {{language.expression}} &nbsp; &nbsp;
                           <span class="text-center">
-                            <a href="javascript:;" (click)="genearate_expression()">
-                              <img src="{{imgPath}}/ruleweb/generate-expression.svg" width="15px" height="15px">
+                            <a href="javascript:;" (click)="genearate_expression()" class="common_grid_link" title="{{this.language.generate_expression}}">
+                              <!-- <img src="{{imgPath}}/ruleweb/generate-expression.svg" width="15px" height="15px"> -->
+                              <b><i class="fa fa-arrow-down "></i></b>
                             </a>
                           </span>
                         </div>
@@ -342,13 +349,14 @@
                       </kendo-grid-column>
                       <kendo-grid-column field="feature" title="{{language.feature}}" filter="text" [width]="115" [minResizableWidth]="115">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm " id="feature_name" name="feature_name" value={{dataItem.feature}}
-                            title={{dataItem.feature}} #feature (change)="output_change_event('feature_name',feature.value,dataItem.rowindex)"
-                          />
+                            <a class="common_grid_link pull-left pr-1 pt-1" (click)="navigateToFeatureOrModelBom(dataItem.feature)" *ngIf="(dataItem.feature!='' && dataItem.feature!='0' && dataItem.feature!=null)">
+                              <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                            </a>
+                          <input type="hidden" [disabled]="true" class="form-control  form-control-sm pull-left "  [ngClass]="{'width-90per' :dataItem.feature!='0' && dataItem.feature!=''}" id="feature_name" name="feature_name" value={{dataItem.feature}}
+                            title={{dataItem.feature}} #feature (change)="output_change_event('feature_name',feature.value,dataItem.rowindex)" />
 
-                          <input type="text" [disabled]="true" class="form-control  form-control-sm " id="featureCode" name="featureCode" value={{dataItem.featureCode}}
-                            title={{dataItem.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,dataItem.rowindex)"
-                          />
+                          <input type="text" [disabled]="true" class="form-control  form-control-sm pull-left " [ngClass]="{'width-90per' :dataItem.feature!='0' && dataItem.feature!=''}"  id="featureCode" name="featureCode" value={{dataItem.featureCode}}
+                            title={{dataItem.featureCode}} #featureCode (change)="output_change_event('featureCode',featureCode.value,dataItem.rowindex)" />
                         </ng-template>
                       </kendo-grid-column>
                       <kendo-grid-column field="item" title="{{language.item}}" filter="text" [width]="115" [minResizableWidth]="115">
@@ -422,10 +430,10 @@
                   <div class="col-md-8 pl-0">
                     <div class="pull-left">
                       <button type="button" *ngIf="showAddSequenceBtn" (click)="add_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
-                        <i class="fa fa-check-circle"></i> {{language.add_rule}}
+                        <i class="fa fa-check-circle"></i> {{language.add_expression}}
                       </button>
                       <button type="button" *ngIf="showUpdateSequenceBtn" (click)="update_rule_sequence()" class="btn btn-sm btn-primary  mr-10">
-                        <i class="fa fa-pencil"></i> {{language.update_rule}}
+                        <i class="fa fa-pencil"></i> {{language.update_expression}}
                       </button>
                       <button type="button" (click)="close_rule_sequence()" class="btn btn-sm btn-secondary mr-10">
                         <i class="fa fa-times"></i> {{language.close}}
@@ -449,6 +457,12 @@
                       </span>
                     </ng-template>
                     <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
+                          value={{dataItem.rowindex}} />
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}}/>
@@ -519,7 +533,7 @@
 
 <!--Custom Dialog-->
 <span [hidden]="showLookupLoader">
-<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
+  <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
 </span>
 
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event)" [selectedImage]="selectedImage"></app-lookup>
+<app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>

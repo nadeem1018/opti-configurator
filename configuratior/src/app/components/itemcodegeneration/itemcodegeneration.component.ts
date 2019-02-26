@@ -308,21 +308,27 @@ export class ItemcodegenerationComponent implements OnInit {
     }
     this.show_dialog = false;
   }
-
-
+  onCodeStrBlur(code) {
+    if(code !== "" && this.commonData.excludeSpecialCharRegex.test(code) === true) {
+      this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+    }
+  }
   onStrBlur(selectedvalue, rowindex, string_number) {
-    console.log("string_number  " + string_number + " selectedvalue " + selectedvalue);
-    if (string_number == 2){ // validate string on blur 
+    if (string_number == 2){ // validate string on blur
       var rgexp = /^\d+$/;
       if (rgexp.test(selectedvalue) == false) {
         this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+      }
+    } else  {
+      if (this.commonData.excludeSpecialCharRegex.test(selectedvalue.trim()) === true) {
+        this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
       }
     }
     if (this.itemcodetable.length > 0) {
       this.finalstring = "";
       for (let i = 0; i < this.itemcodetable.length; ++i) {
         if (this.itemcodetable[i].rowindex === rowindex) {
-          this.itemcodetable[i].string = selectedvalue;
+          this.itemcodetable[i].string = selectedvalue.trim();
           this.itemcodetable[i].codekey = this.codekey;
         }
         this.finalstring = this.finalstring + this.itemcodetable[i].string
@@ -346,7 +352,6 @@ export class ItemcodegenerationComponent implements OnInit {
               return false;
             }
 
-
           }
           else {
             if (this.itemcodetable[i].operations != 1) {
@@ -358,9 +363,6 @@ export class ItemcodegenerationComponent implements OnInit {
             this.itemcodetable[i].codekey=this.codekey
           }
         }
-
-        
-
       }
     }
     else {
@@ -375,6 +377,9 @@ export class ItemcodegenerationComponent implements OnInit {
             if (this.codekey == "" || this.codekey == null) {
               this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
               return false;
+            } else if(this.commonData.excludeSpecialCharRegex.test(this.codekey) === true) {
+              this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+              return false;
             }
             if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
               if (isNaN(this.itemcodetable[i].string) == true) {
@@ -387,13 +392,16 @@ export class ItemcodegenerationComponent implements OnInit {
               }
               this.countnumberrow++;
 
+            } else if(this.itemcodetable[i].stringtype == 1 && this.commonData.excludeSpecialCharRegex.test(this.itemcodetable[i].string) === true) {
+              this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+              return false;
             }
             else {
               if (this.itemcodetable[i].operations != 1) {
                 this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
-              
+
             }
             if(this.itemcodetable[i].string.trim() == ""){
               this.toastr.error('', this.language.EnterString, this.commonData.toast_config);
@@ -472,7 +480,7 @@ export class ItemcodegenerationComponent implements OnInit {
         else{
           console.log(this.itemcodetable);
           for (let iCount = 0; iCount < this.itemcodetable.length; ++iCount) {
-            this.itemcodetable[iCount]['codekey'] = this.codekey;
+            this.itemcodetable[iCount]['codekey'] = this.codekey.replace(/ +/g, "");
           }
         } 
       }

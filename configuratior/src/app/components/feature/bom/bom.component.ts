@@ -93,7 +93,15 @@ export class BomComponent implements OnInit {
       this.isPerfectSCrollBar = false;
     }
   }
-
+  navigateToFeatureOrModelBom (id) {
+    this.route.navigateByUrl("feature/bom/edit/"+id);
+    this.feature_bom_data =[];
+    this.feature_bom_table = [];
+    this.getFeatureBomDetail(id);
+  }
+  navigateToMasterHeader(feature_id) {
+    this.route.navigateByUrl('feature/model/edit/'+feature_id)
+  }
   ngOnInit() {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
@@ -126,8 +134,13 @@ export class BomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isFeatureIdEnable = true;
       this.FeatureLookupBtnhide = true;
+      this.getFeatureBomDetail(this.update_id)
+    }
+    }
 
-      this.fbom.GetDataByFeatureId(this.update_id).subscribe(
+      getFeatureBomDetail(id) {
+        this.showLoader = true;
+        this.fbom.GetDataByFeatureId(id).subscribe(
         data => {
 
           if(data != undefined && data.LICDATA != undefined){
@@ -250,7 +263,14 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.multi_select_disabled = true;
             }
             this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
+            if (this.feature_bom_data.feature_min_selectable == null || this.feature_bom_data.feature_min_selectable == "" || this.feature_bom_data.feature_min_selectable == undefined || this.feature_bom_data.feature_min_selectable == 0){
+              this.feature_bom_data.feature_min_selectable = 1;
+            }
+
             this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
+            if (this.feature_bom_data.feature_max_selectable == null || this.feature_bom_data.feature_max_selectable == "" || this.feature_bom_data.feature_max_selectable == undefined || this.feature_bom_data.feature_max_selectable == 0) {
+              this.feature_bom_data.feature_max_selectable = 1;
+            }
 
             if (this.feature_bom_data.image_path != "") {
               if (this.feature_bom_data.image_path != null) {
@@ -262,9 +282,12 @@ export class BomComponent implements OnInit {
           }
           this.showLoader = false;
           console.log(this.feature_bom_table);
-        }
+        },
+          error => {
+           this.showLoader = false;
+       }
       )
-    }
+
     $('[data-toggle="popover"]').popover({
         container: 'body',
         trigger:'hover'
@@ -311,10 +334,13 @@ export class BomComponent implements OnInit {
       } else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+      } else if (this.feature_bom_data.feature_min_selectable > this.feature_bom_data.feature_max_selectable) {
+        value = 1;
+        this.toastr.error('', this.language.min_selectable_greater_than_max, this.commonData.toast_config);
       }
       this.feature_bom_data[input_id] = (value);
-
     }
+    
     $('#' + input_id).val(value);
   }
 
@@ -338,6 +364,9 @@ export class BomComponent implements OnInit {
       } else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
+      } else if (this.feature_bom_data.feature_max_selectable < this.feature_bom_data.feature_min_selectable ) {
+        value = 1;
+        this.toastr.error('', this.language.max_selectable_less_than_min, this.commonData.toast_config);
       }
       this.feature_bom_data[input_id] = (value);
 
@@ -642,7 +671,7 @@ export class BomComponent implements OnInit {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
         if (this.feature_bom_data.feature_name == value) {
           this.feature_bom_table[i].display_name = "";
-          this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
+          this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
           return false;
         }
         this.feature_bom_table[i].display_name = value

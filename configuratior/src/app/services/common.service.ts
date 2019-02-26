@@ -16,16 +16,13 @@ export class CommonService {
   common_params = new CommonData();
   public logged_in_company = sessionStorage.selectedComp;
   public config_params: any = "";
-  constructor(private httpclient: HttpClient) {
-    
-    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
-    console.log("the config param  - ", this.config_params);
-   }
   config_parameter;
 
   // Declaration
   private commonData = new Subject<any>();
   commonData$ = this.commonData.asObservable();
+
+  constructor(private httpclient: HttpClient) { }
 
   // Methods
   public ShareData(data: any) {
@@ -38,10 +35,13 @@ export class CommonService {
     let config_data = await config_call.json();
     let language_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/i18n/" + config_data['locale'] + ".json");
     let language_data = await language_call.json();
-    
     sessionStorage.setItem('system_config', JSON.stringify(config_data));
     sessionStorage.setItem('current_lang', JSON.stringify(language_data));
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    console.log("the config param  - ", this.config_params);
   }
+
+
 
  /*  async set_language(language) {
     let service_call = await fetch( this.common_params.get_current_url() + "/assets/data/json/i18n/" + language + ".json");

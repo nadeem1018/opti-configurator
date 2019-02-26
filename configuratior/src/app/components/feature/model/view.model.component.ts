@@ -25,7 +25,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public commonData = new CommonData();
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = Number(this.commonData.default_count);
+    public selectedValue: number = 0;
 
     public isColumnFilter: boolean = false;
     // generate table default constants
@@ -33,7 +33,7 @@ export class ViewFeatureModelComponent implements OnInit {
     dataArray: any = [];
     search_key: any;
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-    //table_head_foot = ['Select','#','Id','Code', 'Effective Date','Type', 'Display Name', 'Status', 'Action'];
+    //table_head_foot = ['Select','#','Id','Code', 'EffectiveDate','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
     public showLoader: boolean = true;
     public columns: ColumnSetting[] = [
@@ -41,31 +41,36 @@ export class ViewFeatureModelComponent implements OnInit {
           field: 'OPTM_FEATURECODE',
           title: this.language.code,
           type: 'text',
-          width: '200'
+          width: '200',
+          attrType: 'link'
         }, 
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Bom_Displayname,
             type: 'text',
-            width: '200'
+            width: '200',
+            attrType: 'text'
           },
           {
             field: 'OPTM_EFFECTIVEDATE',
             title: this.language.Model_Date,
             type: 'text',
-            width: '100'
+            width: '100',
+            attrType: 'text'
           },
         {
           field: 'OPTM_TYPE',
           title: this.language.Type,
           type: 'text',
-          width: '100'      
+          width: '100',
+          attrType: 'text'
         },    
         {
             field: 'OPTM_STATUS',
             title: this.language.Model_Status,
             type: 'text',
-            width: '200'
+            width: '200',
+            attrType: 'text'
           },    
       ];
 
@@ -109,6 +114,7 @@ export class ViewFeatureModelComponent implements OnInit {
     getLookupValue($event) {
         
     }
+
   
     on_selection(grid_event) {
         grid_event.selectedRows = [];
@@ -127,6 +133,9 @@ export class ViewFeatureModelComponent implements OnInit {
         this.isPerfectSCrollBar = false;
         }
     }
+    saveFilterState() {
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    }
 
     ngOnInit() {
         const element = document.getElementsByTagName("body")[0];
@@ -138,8 +147,17 @@ export class ViewFeatureModelComponent implements OnInit {
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
+        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
+          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        } else {
+          this.selectedValue = Number(this.commonData.default_count);
+        }
         this.service_call(this.current_page, this.search_string);
         this.showLoader = true;
+    }
+
+    getcurrentPageSize(grid_value){
+      sessionStorage.setItem('defaultRecords', grid_value);
     }
     ngAfterViewInit() {
        //  this._el.nativeElement.focus();
