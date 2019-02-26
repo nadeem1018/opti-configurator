@@ -66,6 +66,57 @@ export class ViewRoutingComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
+    public columns: ColumnSetting[] = [
+        {
+            field: 'OPTM_FEATURECODE',
+            title: this.language.code,
+            type: 'text',
+            width: '200',
+            attrType: 'link'
+        },
+        {
+            field: 'OPTM_DISPLAYNAME',
+            title: this.language.Bom_Displayname,
+            type: 'text',
+            width: '200',
+            attrType: 'text'
+        },
+        {
+            field: 'OPTM_EFFECTIVEDATE',
+            title: this.language.Model_Date,
+            type: 'text',
+            width: '100',
+            attrType: 'text'
+        },
+        {
+            field: 'OPTM_TYPE',
+            title: this.language.Type,
+            type: 'text',
+            width: '100',
+            attrType: 'text'
+        },
+        {
+            field: 'OPTM_STATUS',
+            title: this.language.Model_Status,
+            type: 'text',
+            width: '200',
+            attrType: 'text'
+        },
+    ];
+
+    getcurrentPageSize(grid_value) {
+        sessionStorage.setItem('defaultRecords', grid_value);
+    }
+
+    getLookupValue($event) {
+
+    }
+
+    
+    on_selection(grid_event) {
+        grid_event.selectedRows = [];
+    }
+
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
@@ -79,6 +130,8 @@ export class ViewRoutingComponent implements OnInit {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.service_call(this.current_page, this.search_string);
+
+        
 
     }
     ngAfterViewInit() {
@@ -107,6 +160,17 @@ export class ViewRoutingComponent implements OnInit {
                 this.dataArray = data;
                 this.showLoader = false;
             });
+    }
+
+    delete() {
+        if (this.CheckedData.length > 0) {
+            this.isMultiDelete = true;
+            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+            this.show_dialog = true;
+        }
+        else {
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
     }
 
 }

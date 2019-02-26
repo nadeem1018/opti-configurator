@@ -36,6 +36,8 @@ export class RoutingComponent implements OnInit {
   public row_selection: number[] = [];
   public current_selected_row: any = [];
   public selectableSettings: any = [];
+  public showLoader: boolean = true;
+  public selectedImage = "";
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
 
@@ -107,6 +109,7 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.default_batch_size = 1;
       this.routing_header_data.default_lot_size = 1;
       this.routing_header_data.applicable_bom_unit = 1;
+      this.showLoader = false;
     } else {
       this.isSaveButtonVisible = false;
       this.isUpdateButtonVisible = true;
@@ -196,14 +199,20 @@ export class RoutingComponent implements OnInit {
     if (this.lookupfor == 'feature_lookup') {
       this.routing_header_data.feature_id = $event[0];
       this.routing_header_data.feature_code = $event[1];
-      this.getFeatureDetail($event[0], "header", 0);
+      this.routing_header_data.feature_description = $event[2];
+      this.GetDataByFeatureId($event[0], "header", 0);
     }
 
     if (this.lookupfor == 'ModelBom_lookup') {
       this.routing_header_data.modal_id = $event[0];
       this.routing_header_data.modal_code = $event[1];
+      this.routing_header_data.modal_description = $event[2];
+       this.GetDataByModelId($event[0], "header", 0);
+    }
 
-     //  this.getModalDetail($event[0], "header", 0);
+    if (this.lookupfor == 'warehouse_lookup') {
+      this.routing_header_data.warehouse_id = $event[0];
+      this.routing_header_data.warehouse_code = $event[0]; 
     }
   }
 
@@ -277,22 +286,68 @@ export class RoutingComponent implements OnInit {
 
   openWarehouseLook(flag) {
     this.showLookupLoader = true;
-    this.serviceData = [];
-    this.showLookupLoader = false;
+    this.serviceData = []
+    this.service.getWarehouseList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'warehouse_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
 
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+      }
+    )
   }
 
-  getFeatureDetail(feature_code, press_location, index) {
+  GetDataByFeatureId(feature_code, press_location, index) {
+    this.routing_detail_data = [];
     if(press_location == 'header'){
- 
-    } else {
-      
-    }
+      this.showLookupLoader = true;
+      this.service.GetDataByFeatureId(feature_code).subscribe(
+        data => {
+          console.log(data);
+          if (data.length > 0) {
+            /*data*/
+            this.routing_detail_data.push();
+            this.showLookupLoader = false;
+          } else {
+            this.showLookupLoader = false;
+            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          }
+        }, error => {
+          this.showLookupLoader = false;
+
+        });
+    } 
   }
 
-  getModalDetail(modal_code, press_location, index) {
+  GetDataByModelId(modal_code, press_location, index) {
+    this.routing_detail_data = [];
     if (press_location == 'header') {
-
+      this.showLookupLoader = true;
+      this.service.GetDataByModelId(modal_code).subscribe(
+        data => {
+          console.log(data);
+          if (data.length > 0) {
+            this.routing_detail_data.push();
+            this.showLookupLoader = false;
+          } else {
+            this.showLookupLoader = false;
+            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          }
+        }, error => {
+          this.showLookupLoader = false;
+        });
     } else {
 
     }

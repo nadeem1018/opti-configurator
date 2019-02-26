@@ -670,6 +670,13 @@ hr {
   background-position: center;
 }
 
+.tree li [data-branchtype="value"]:before {
+  content: "";
+  background: url("../images/tree-view-icons/value-icon.svg") no-repeat;
+  background-size: auto 18px;
+  background-position: center;
+}
+
 .expand-btn {
   border: 1px solid #999;
   width: 18px;
@@ -713,6 +720,6 @@ a.common_grid_link {
   cursor: pointer;
 }
 
-.width-90per{
+.width-90per {
   width: 90% !important;
 }
