@@ -18,17 +18,20 @@ export class FeaturebomService {
   getFeatureList(): Observable<any> {
     console.log(' in  service');
 
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, GUID: sessionStorage.getItem("GUID"),
+    UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
   }
 
   getFeatureDetails(feature_code,press_location,index): Observable<any>{
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index}]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
   }
 
   getItemDetails(ItemKey): Observable<any>{
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, ItemKey: ItemKey}]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, ItemKey: ItemKey, 
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetItemList", jObject, this.common_params.httpOptions);
   }
 
@@ -42,7 +45,8 @@ export class FeaturebomService {
   getAllViewDataForFeatureBom(search:string,PageNumber:any,record_per_page:any): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page }]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForCommonView", jObject, this.common_params.httpOptions);
   }
@@ -50,7 +54,7 @@ export class FeaturebomService {
   DeleteData(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem:  JSON.stringify(id) };
+    let jObject = { ModelItem:  JSON.stringify(id)  };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/DeleteFeatureFromHDRandDTL", jObject, this.common_params.httpOptions);
   }
@@ -58,7 +62,8 @@ export class FeaturebomService {
   GetDataByFeatureId(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id, GUID: sessionStorage.getItem("GUID"),
+    UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataByFeatureId", jObject, this.common_params.httpOptions);
   }
@@ -85,27 +90,32 @@ export class FeaturebomService {
 
   GetDataForExplodeViewForFeatureBOM(CompanyDBID,featureId,featureDisplayName): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId, featureDisplayName: featureDisplayName }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,FeatureID: featureId, featureDisplayName: featureDisplayName,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetDataForExplodeViewForFeatureBOM", jObject, this.common_params.httpOptions);
   }
 
   ViewAssosciatedBOM(featureId): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureID: featureId }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureID: featureId,GUID: sessionStorage.getItem("GUID"),
+     UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/ViewAssosciatedBOM", jObject, this.common_params.httpOptions);
   }
 
   checkFeaturesAlreadyAddedinParent(enteredFeatureID,parentFeatureID): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,parentFeatureID: parentFeatureID, enteredFeatureID: enteredFeatureID }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,parentFeatureID: parentFeatureID, enteredFeatureID: enteredFeatureID,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckFeaturesAlreadyAddedinParent", jObject, this.common_params.httpOptions);
   }
 
   GetPriceList(ItemKey): Observable<any> {
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetPriceListForFeatureBOM", jObject, this.common_params.httpOptions);
   }
 
