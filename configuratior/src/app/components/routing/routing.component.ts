@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
+import { TypeaheadOptions } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-routing',
@@ -34,6 +35,7 @@ export class RoutingComponent implements OnInit {
   public type_dropdown = '';
   public grid_option_title = '';
   public row_selection: number[] = [];
+  public current_grid_action_row:number = 0;
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public showLoader: boolean = true;
@@ -215,6 +217,18 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.warehouse_id = $event[0];
       this.routing_header_data.warehouse_code = $event[0];
     }
+
+    if(this.lookupfor == 'operation_lookup'){
+      this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
+      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
+      this.current_grid_action_row = 0;
+    }
+
+    if (this.lookupfor == "workcenter_lookup" ){
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[0];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[1];
+      this.current_grid_action_row = 0;
+    }
   }
 
   resequence_operation() {
@@ -287,33 +301,6 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  openWarehouseLook(flag) {
-    this.showLookupLoader = true;
-    this.serviceData = []
-    this.service.getWarehouseList().subscribe(
-      data => {
-        if (data.length > 0) {
-          this.lookupfor = 'warehouse_lookup';
-          this.showLookupLoader = false;
-          this.serviceData = data;
-
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-        return;
-      }
-    )
-  }
-
   clearInvalidfeature() {
     this.routing_header_data.feature_id = '';
     this.routing_header_data.feature_code = '';
@@ -337,9 +324,9 @@ export class RoutingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
-            this.routing_header_data.feature_id = data[0].OPTM_FEATUREID;
-            this.routing_header_data.feature_code = data[0].OPTM_FEATURECODE;
-            this.routing_header_data.feature_description = data[0].OPTM_DISPLAYNAME
+            this.routing_header_data.feature_id = data[0].FeatureId;
+            this.routing_header_data.feature_code = data[0].FeatureCode;
+            this.routing_header_data.feature_description = data[0].DisplayName
             this.GetDataByFeatureId(feature_code, 'header', 0);
             this.showLookupLoader = false;
             this.routing_detail_data = [];
@@ -543,6 +530,33 @@ export class RoutingComponent implements OnInit {
     this.toastr.error('', this.language.InvalidWHCode, this.commonData.toast_config);
   }
 
+  openWarehouseLook(flag) {
+    this.showLookupLoader = true;
+    this.serviceData = []
+    this.service.getWarehouseList().subscribe(
+      data => {
+        if (data.length > 0) {
+          this.lookupfor = 'warehouse_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    )
+  }
+
   getWarehouseDetails(warehouse_code) {
     this.showLookupLoader = true;
     this.service.getWarehouseDetail(warehouse_code).subscribe(
@@ -588,13 +602,59 @@ export class RoutingComponent implements OnInit {
   open_operation_lookup(type, rowindex) {
     this.showLookupLoader = true;
     this.serviceData = [];
-    this.showLookupLoader = false;
+    
+    this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
+      data => {
+        if (data.length > 0) {
+          this.current_grid_action_row = this.getGridCurrentRow(rowindex);
+          this.lookupfor = 'operation_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    )
   }
 
   open_wc_lookup(type, rowindex) {
     this.showLookupLoader = true;
     this.serviceData = [];
-    this.showLookupLoader = false;
+
+    this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
+      data => {
+        if (data.length > 0) {
+          this.current_grid_action_row = this.getGridCurrentRow(rowindex);
+          this.lookupfor = 'workcenter_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    )
   }
 
   open_resource_lookup(flag) {
@@ -702,15 +762,22 @@ export class RoutingComponent implements OnInit {
     });
   }
 
+  getGridCurrentRow(rowindex){
+    var currentrow = 0;
+    if (this.routing_detail_data.length > 0){
+      for (let i = 0; i < this.routing_detail_data.length; ++i) {
+        if (this.routing_detail_data[i].rowindex === rowindex) {
+          currentrow = i;
+        }
+      }
+    }
+    return currentrow
+  }
+
 
   on_input_change(value, rowindex, grid_element) {
     var currentrow = 0;
-    for (let i = 0; i < this.routing_detail_data.length; ++i) {
-      if (this.routing_detail_data[i].rowindex === rowindex) {
-        currentrow = i;
-      }
-    }
-    console.log(currentrow);
+    currentrow = this.getGridCurrentRow(rowindex);
     if (grid_element == 'selected_type') {
       this.routing_detail_data[currentrow].selected_type = value;
     }

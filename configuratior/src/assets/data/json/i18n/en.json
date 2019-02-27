@@ -455,6 +455,7 @@
     "oper_code": "Oper Code",
     "oper_desc": "Oper Description",
     "wc": "WC",
+    "workcenter": "Workcenter",
     "mtq": "MTQ",
     "count_point_oper": "Count Point Oper",
     "auto_move": "Auto Move",

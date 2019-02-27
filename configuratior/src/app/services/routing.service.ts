@@ -37,12 +37,12 @@ export class RoutingService {
   }
 
   getFeatureDetail(id): Observable<any> {
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id }]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureCode: id }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureDetail", jObject, this.common_params.httpOptions);
   }
 
   getModalDetail(id): Observable<any> {
-    let jObject = { ModelBOMDetail: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id }]) };
+    let jObject = { ModelBOMDetail: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: id }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/ModelDetail", jObject, this.common_params.httpOptions);
   }
 
@@ -64,6 +64,16 @@ export class RoutingService {
   getWarehouseList(): Observable<any> {
     let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Routing/WarehouseList", jObject, this.common_params.httpOptions);
+  }
+
+  getOperationList(warehouse_id): Observable<any> {
+    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company, warehouseId: warehouse_id }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/OperationList", jObject, this.common_params.httpOptions);
+  }
+
+  getWCList(warehouse_id): Observable<any> {
+    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company, warehouseId: warehouse_id }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/getWCList", jObject, this.common_params.httpOptions);
   }
 
 }
