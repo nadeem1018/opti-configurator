@@ -121,6 +121,7 @@ export class RoutingComponent implements OnInit {
   }
 
   on_operation_change() {
+    this.current_selected_row = [];
     if (this.routing_header_data.routing_for == 'feature') {
       this.reset_model()
       this.show_resequence_btn = false;
@@ -361,14 +362,14 @@ export class RoutingComponent implements OnInit {
                 wc_id: '',
                 wc_code: '',
                 mtq: '1',
-                count_point_operation: '',
-                auto_move: '',
+                count_point_operation: false,
+                auto_move: false,
                 effective_date: temp_effective_date,
                 queue_time: '00:00',
                 move_time: '00:00',
                 qc_time: '00:00',
                 time_uom: '',
-                opn_application: '',
+                opn_application: false,
                 isTypeDisabled: false,
                 showOperationbtn: true,
               });
@@ -532,14 +533,14 @@ export class RoutingComponent implements OnInit {
       wc_id: '',
       wc_code: '',
       mtq: '1',
-      count_point_operation: '',
-      auto_move: '',
+      count_point_operation: false,
+      auto_move: false,
       effective_date: temp_effective_date,
       queue_time: '00:00',
       move_time: '00:00',
       qc_time: '00:00',
       time_uom: '',
-      opn_application: '',
+      opn_application: false,
       isTypeDisabled: false,
       showOperationbtn: true,
     });
