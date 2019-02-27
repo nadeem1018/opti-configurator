@@ -292,7 +292,7 @@
               <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
                 [minResizableWidth]="110">
                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
-                  <select class="form-control form-control-sm" #selected_type (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
+                  <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
                     <option *ngFor="let v of type_dropdown" [value]="v.value" [selected]="dataItem.type==v.value">
                       {{v.Name}}</option>
                   </select>
@@ -309,7 +309,7 @@
                       id="type_value_code" (change)="on_input_change(type_value_code.value,dataItem.rowindex, 'type_value_code')"
                       value={{dataItem.type_value_code}} #type_value_code title={{dataItem.type_value_code}} />
                     <div class="input-group-append" [hidden]=dataItem.hide>
-                      <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="on_type_click_lookup(dataItem.type, dataItem.rowindex)">
+                      <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2"  [hidden]="dataItem.isTypeDisabled" (click)="on_type_click_lookup(dataItem.type, dataItem.rowindex)">
                         <i class="fa fa-bars"></i>
                       </span>
                     </div>
@@ -319,7 +319,7 @@
               <kendo-grid-column field="description" title="{{language.description}}" filter="text" [width]="140"
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <input type="text" class="form-control  form-control-sm" id="description" value={{dataItem.description}}
+                  <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm" id="description" value={{dataItem.description}}
                     (change)="on_input_change(description.value,dataItem.rowindex, 'description')" #description title={{dataItem.description}} />
                 </ng-template>
               </kendo-grid-column>
@@ -328,7 +328,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
 
-                    <input type="checkbox" class="custom-control-input" id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}}
+                    <input type="checkbox" [disabled]="dataItem.isTypeDisabled" class="custom-control-input" id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}}
                       (change)="on_input_change(oper_top_level,dataItem.rowindex, 'oper_top_level')" #oper_top_level
                       [(checked)]=dataItem.operation_top_level title="{{dataItem.operation_top_level}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="oper_top_level_{{dataItem.rowindex}}"></label>
@@ -339,10 +339,10 @@
                 [minResizableWidth]="155">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="input-group">
-                    <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm row_oper_id"
+                    <input type="hidden" class="form-control  form-control-sm row_oper_id"
                       id="oper_id" value={{dataItem.oper_id}} #oper_id title={{dataItem.oper_id}} />
 
-                    <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm row_oper_code"
+                    <input type="text" class="form-control  form-control-sm row_oper_code"
                       id="oper_code" (change)="on_input_change(oper_code.value,dataItem.rowindex, 'oper_code')" value={{dataItem.oper_code}}
                       #oper_code title={{dataItem.oper_code}} />
                     <div class="input-group-append" [hidden]=dataItem.hide>
@@ -364,10 +364,10 @@
                 [minResizableWidth]="155">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="input-group">
-                    <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm row_wc_id"
+                    <input  type="hidden" class="form-control  form-control-sm row_wc_id"
                       id="wc_id" value={{dataItem.wc_id}} #wc_id title={{dataItem.wc_id}} />
 
-                    <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm row_wc_code"
+                    <input  type="text" class="form-control  form-control-sm row_wc_code"
                       id="wc_code" (change)="on_input_change(wc_code.value,dataItem.rowindex, 'wc_code')" value={{dataItem.wc_code}}
                       #wc_code title={{dataItem.wc_code}} />
                     <div class="input-group-append" [hidden]=dataItem.hide>

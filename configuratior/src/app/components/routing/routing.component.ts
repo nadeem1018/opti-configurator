@@ -314,6 +314,86 @@ export class RoutingComponent implements OnInit {
     )
   }
 
+  clearInvalidfeature() {
+    this.routing_header_data.feature_id = '';
+    this.routing_header_data.feature_code = '';
+    this.routing_header_data.feature_description = '';
+    this.routing_detail_data = [];
+    this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
+  }
+
+  clearInvalidModel() {
+    this.routing_header_data.modal_id = '';
+    this.routing_header_data.modal_code = '';
+    this.routing_header_data.modal_description = "";
+    this.routing_detail_data = [];
+    this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
+  }
+
+  getFeatureDetail(feature_code) {
+    this.showLookupLoader = true;
+    this.service.getFeatureDetail(feature_code).subscribe(
+      data => {
+        console.log(data);
+        if (data != null) {
+          if (data.length > 0) {
+            this.routing_header_data.feature_id = data[0].OPTM_FEATUREID;
+            this.routing_header_data.feature_code = data[0].OPTM_FEATURECODE;
+            this.routing_header_data.feature_description = data[0].OPTM_DISPLAYNAME
+            this.GetDataByFeatureId(feature_code, 'header', 0);
+            this.showLookupLoader = false;
+            this.routing_detail_data = [];
+          } else {
+            this.clearInvalidfeature();
+             this.showLookupLoader = false;
+            return;
+          }
+        } else {
+          this.clearInvalidfeature();
+           this.showLookupLoader = false;
+          return;
+        }
+      }, error => {
+        this.clearInvalidfeature();
+         this.showLookupLoader = false;
+        return;
+      }
+    );
+  }
+
+  getModalDetail(model_code) {
+
+    this.showLookupLoader = true;
+    this.service.getModalDetail(model_code).subscribe(
+      data => {
+        console.log(data);
+        if (data != null) {
+          if (data.length > 0) {
+            this.routing_header_data.modal_id = data[0].OPTM_FEATUREID;
+            this.routing_header_data.modal_code = data[0].OPTM_FEATURECODE;
+            this.routing_header_data.modal_description = data[0].OPTM_DISPLAYNAME;
+            this.GetDataByModelId(model_code, 'header', 0);
+            this.showLookupLoader = false;
+          } else {
+            this.clearInvalidModel();
+             this.showLookupLoader = false;
+            return;
+          }
+        } else {
+          this.clearInvalidModel();
+           this.showLookupLoader = false;
+          return;
+        }
+      }, error => {
+        this.clearInvalidModel();
+         this.showLookupLoader = false;
+        return;
+      }
+    );
+  }
+
+
+
   GetDataByFeatureId(feature_code, press_location, index) {
     this.routing_detail_data = [];
     if (press_location == 'header') {
@@ -335,16 +415,16 @@ export class RoutingComponent implements OnInit {
               let value = '';
               let value_code = '';
               var desc = '';
-              if (featuredata.OPTM_TYPE == 1){
+              if (featuredata.OPTM_TYPE == 1) {
                 value = featuredata.OPTM_CHILDFEATUREID;
                 value_code = featuredata.child_code;
-                
+
               } else if (featuredata.OPTM_TYPE == 2) {
                 value = featuredata.OPTM_ITEMKEY;
                 value_code = featuredata.OPTM_ITEMKEY;
               } else if (featuredata.OPTM_TYPE == 3) {
                 value = featuredata.OPTM_VALUE;
-                value_code = featuredata.OPTM_VALUE; 
+                value_code = featuredata.OPTM_VALUE;
               }
               desc = featuredata.OPTM_DISPLAYNAME;
 
@@ -353,7 +433,7 @@ export class RoutingComponent implements OnInit {
                 rowindex: this.counter,
                 type: featuredata.OPTM_TYPE,
                 type_value: value,
-                type_value_code : value_code,
+                type_value_code: value_code,
                 description: desc,
                 operation_top_level: '',
                 oper_id: '',
@@ -371,7 +451,7 @@ export class RoutingComponent implements OnInit {
                 time_uom: '',
                 opn_application: false,
                 isTypeDisabled: false,
-                showOperationbtn: true,
+                showOperationbtn: false,
               });
             }
             this.showLookupLoader = false;
@@ -395,7 +475,56 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log(data);
           if (data.ModelDetail.length > 0) {
-            this.routing_detail_data.push();
+            for (let i = 0; i < data.ModelDetail.length; ++i) {
+              let modeldata = data.ModelDetail[i];
+              let value = '';
+              let value_code = '';
+              var desc = '';
+              this.counter = 0;
+              if (this.routing_detail_data.length > 0) {
+                this.counter = this.routing_detail_data.length
+              }
+              this.counter++;
+              var temp = new Date(this.routing_header_data.EffectiveDate);
+              var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+              if (modeldata.OPTM_TYPE == 1) {
+                value = modeldata.OPTM_CHILDFEATUREID;
+                value_code = modeldata.feature_code;
+
+              } else if (modeldata.OPTM_TYPE == 2) {
+                value = modeldata.OPTM_ITEMKEY;
+                value_code = modeldata.OPTM_ITEMKEY;
+              } else if (modeldata.OPTM_TYPE == 3) {
+                value = modeldata.OPTM_CHILDMODELID;
+                value_code = modeldata.child_code;
+              }
+              desc = modeldata.OPTM_DISPLAYNAME;
+              this.routing_detail_data.push({
+                lineno: this.counter,
+                rowindex: this.counter,
+                type: modeldata.OPTM_TYPE,
+                type_value: value,
+                type_value_code: value_code,
+                description: desc,
+                operation_top_level: '',
+                oper_id: '',
+                oper_code: '',
+                oper_desc: '',
+                wc_id: '',
+                wc_code: '',
+                mtq: '1',
+                count_point_operation: false,
+                auto_move: false,
+                effective_date: temp_effective_date,
+                queue_time: '00:00',
+                move_time: '00:00',
+                qc_time: '00:00',
+                time_uom: '',
+                opn_application: false,
+                isTypeDisabled: false,
+                showOperationbtn: false,
+              });
+            }
             this.showLookupLoader = false;
           } else {
             this.showLookupLoader = false;
@@ -409,8 +538,35 @@ export class RoutingComponent implements OnInit {
     }
   }
 
-  getWarehouseDetails(warehouse_code) {
+  clearInvalidWarehouse(){
+    this.routing_header_data.warehouse_code = '';
+    this.toastr.error('', this.language.InvalidWHCode, this.commonData.toast_config);
+  }
 
+  getWarehouseDetails(warehouse_code) {
+    this.showLookupLoader = true;
+    this.service.getWarehouseDetail(warehouse_code).subscribe(
+      data => {
+        console.log(data);
+        if (data != null) {
+          if (data.length > 0) {
+            this.routing_header_data.warehouse_code = warehouse_code;
+          } else {
+            this.clearInvalidWarehouse();
+            this.showLookupLoader = false;
+            return;
+          }
+        } else {
+          this.clearInvalidWarehouse();
+          this.showLookupLoader = false;
+          return;
+        }
+      }, error => {
+        this.clearInvalidWarehouse();
+        this.showLookupLoader = false;
+        return;
+      }
+    );
   }
 
   openTemplateRoutingLookup(flag) {
@@ -524,8 +680,8 @@ export class RoutingComponent implements OnInit {
       rowindex: this.counter,
       type: '1',
       type_value: "",
-      type_value_code : "",
-      description :'',
+      type_value_code: "",
+      description: '',
       operation_top_level: '',
       oper_id: '',
       oper_code: '',
@@ -541,7 +697,7 @@ export class RoutingComponent implements OnInit {
       qc_time: '00:00',
       time_uom: '',
       opn_application: false,
-      isTypeDisabled: false,
+      isTypeDisabled: true,
       showOperationbtn: true,
     });
   }
