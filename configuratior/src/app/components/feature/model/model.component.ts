@@ -519,6 +519,15 @@ export class ModelComponent implements OnInit {
   onItemCodeChange() {
     this.fms.onItemCodeChange(this.companyName, this.featureBom.ItemName).subscribe(
       data => {
+
+        if(data != undefined ){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.invalid_itemcode, this.commonData.toast_config);
           this.featureBom.ItemName = "";
@@ -531,6 +540,15 @@ export class ModelComponent implements OnInit {
     this.fms.onRefCodeChange(this.companyName, this.featureBom.Ref).subscribe(
       data => {
         console.log(data);
+
+        if(data != undefined){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
           this.featureBom.Ref = "";

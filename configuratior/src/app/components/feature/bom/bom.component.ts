@@ -723,6 +723,14 @@ export class BomComponent implements OnInit {
           this.fbom.onItemIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
+              if(data != undefined){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commanService.RemoveLoggedInUser().subscribe();
+                    this.commanService.signOut(this.toastr, this.route);
+                    return;
+                } 
+             }
+
               if (data === "False") {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
@@ -1086,6 +1094,15 @@ export class BomComponent implements OnInit {
 
         this.fbom.CheckValidPriceListEntered(this.feature_bom_table[i].type_value, value).subscribe(
           data => {
+
+            if(data != undefined){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.route);
+                  return;
+              } 
+           }
+
             if (data === "False") {
               $(actualValue).val("");
               this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
@@ -1269,6 +1286,15 @@ export class BomComponent implements OnInit {
     this.fbom.onFeatureIdChange(this.feature_bom_data.feature_code).subscribe(
       data => {
         console.log(data);
+
+        if(data != undefined){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
           this.feature_bom_data.feature_id = "";

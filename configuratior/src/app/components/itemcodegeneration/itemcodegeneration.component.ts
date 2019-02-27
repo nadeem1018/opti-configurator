@@ -471,7 +471,15 @@ export class ItemcodegenerationComponent implements OnInit {
   CheckDuplicateCode(){
     this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
       data => {
-        
+
+        if(data != undefined){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+       
         if(data[0].TOTALCOUNT > 0){
           this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           this.codekey= "";
