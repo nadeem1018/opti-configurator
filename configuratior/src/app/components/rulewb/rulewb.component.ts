@@ -1007,6 +1007,15 @@ export class RulewbComponent implements OnInit {
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
 
+                if(data != undefined ){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commonService.RemoveLoggedInUser().subscribe();
+                      this.commonService.signOut(this.toastr, this.route);
+                      return;
+                  } 
+               }
+        
+
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                  // $(actualvalue).val("");
@@ -1021,6 +1030,14 @@ export class RulewbComponent implements OnInit {
             this.rule_sequence_data[i]['is_operand1_disable'] = true;
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
+
+                if(data != undefined ){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commonService.RemoveLoggedInUser().subscribe();
+                      this.commonService.signOut(this.toastr, this.route);
+                      return;
+                  } 
+               }
 
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
@@ -1039,6 +1056,15 @@ export class RulewbComponent implements OnInit {
           if (this.rule_sequence_data[i].type == 1) {
             this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
+
+                if(data != undefined ){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commonService.RemoveLoggedInUser().subscribe();
+                      this.commonService.signOut(this.toastr, this.route);
+                      return;
+                  } 
+               }
+
                 if (data === "False") {
                   if (key == "operand_1_code") {
                     this.toastr.error('', this.language.InvalidOperand1, this.commonData.toast_config);
@@ -1071,6 +1097,15 @@ export class RulewbComponent implements OnInit {
           else {
             this.service.onChildModelIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
+
+                if(data != undefined ){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commonService.RemoveLoggedInUser().subscribe();
+                      this.commonService.signOut(this.toastr, this.route);
+                      return;
+                  } 
+               }
+
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
                   $(actualvalue).val("");

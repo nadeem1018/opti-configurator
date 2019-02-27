@@ -76,14 +76,18 @@ export class FeaturebomService {
   onFeatureIdChange(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id}]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
   onItemIdChange(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemCode:id}]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemCode:id,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidItemEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
@@ -120,7 +124,8 @@ export class FeaturebomService {
   }
 
   CheckValidPriceListEntered(ItemKey,priceListName): Observable<any> {
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey, PriceListName:priceListName }]) }
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey, PriceListName:priceListName,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckPriceList", jObject, this.common_params.httpOptions);
   }
 }

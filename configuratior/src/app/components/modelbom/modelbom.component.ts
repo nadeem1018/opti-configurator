@@ -791,6 +791,13 @@ export class ModelbomComponent implements OnInit {
           this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
 
+              if(data != undefined){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                } 
+             }
               if (data === "False") {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.modelbom_data[iIndex].type_value = "";
@@ -810,6 +817,13 @@ export class ModelbomComponent implements OnInit {
           this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
               console.log(data);
+              if(data != undefined){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                } 
+             }
               if (data === "False") {
                 this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
                 this.modelbom_data[iIndex].type_value = "";
@@ -972,6 +986,14 @@ export class ModelbomComponent implements OnInit {
           this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
             data => {
               console.log(data);
+              if(data != undefined && data != null){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                } 
+             }
+      
               if (data != null) {
                 if (parseFloat(value) > parseFloat(data)) {
                   this.modelbom_data[i].max_selected = 1;
@@ -1019,6 +1041,14 @@ export class ModelbomComponent implements OnInit {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
           data => {
+            
+          if(data != undefined ){
+            if (data[0].ErrorMsg == "7001") {
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                return;
+            } 
+          }
             if (data === "False") {
               $(actualValue).val("");
               this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
@@ -1345,6 +1375,14 @@ export class ModelbomComponent implements OnInit {
       data => {
         this.showLookupLoader = false;
         console.log(data);
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+
         if (data.length > 0) {
           this.serviceData = data;
         }
@@ -1360,6 +1398,14 @@ export class ModelbomComponent implements OnInit {
   getModelItemDetails(rowIndex) {
     this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value_code).subscribe(
       data => {
+
+        if(data != undefined){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
 
         if (data === "False") {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);

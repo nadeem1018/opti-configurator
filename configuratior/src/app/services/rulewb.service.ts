@@ -77,7 +77,8 @@ export class RulewbService {
   onFeatureIdChange(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id }]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/CheckValidFeatureIdEnteredForFeatureBOM", jObject, this.common_params.httpOptions);
   }
@@ -85,7 +86,8 @@ export class RulewbService {
   onModelIdChange(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: id }]) };
+    let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelCode: id,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")  }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
   }
@@ -108,7 +110,8 @@ export class RulewbService {
   onChildFeatureIdChange(type, id, value): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, type: type, id: id, value: value }]) };
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, type: type, id: id, value: value ,
+    GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidChildofFeatureModel", jObject, this.common_params.httpOptions);
   }
@@ -116,7 +119,8 @@ export class RulewbService {
   onChildModelIdChange(type, id, value): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, type: type, id: id, value: value }]) };
+    let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, type: type, id: id, value: value,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidChildofFeatureModel", jObject, this.common_params.httpOptions);
   }
