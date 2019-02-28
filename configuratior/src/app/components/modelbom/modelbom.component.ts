@@ -791,7 +791,7 @@ export class ModelbomComponent implements OnInit {
           this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
 
-              if(data != undefined){
+              if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
                     this.commonService.signOut(this.toastr, this.route);
@@ -817,7 +817,7 @@ export class ModelbomComponent implements OnInit {
           this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
             data => {
               console.log(data);
-              if(data != undefined){
+              if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
                     this.commonService.signOut(this.toastr, this.route);
@@ -986,7 +986,7 @@ export class ModelbomComponent implements OnInit {
           this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
             data => {
               console.log(data);
-              if(data != undefined && data != null){
+              if(data != undefined && data != null && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
                     this.commonService.signOut(this.toastr, this.route);
@@ -1042,7 +1042,7 @@ export class ModelbomComponent implements OnInit {
         this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
           data => {
             
-          if(data != undefined ){
+          if(data != undefined && data.length > 0){
             if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
                 this.commonService.signOut(this.toastr, this.route);
@@ -1234,13 +1234,14 @@ export class ModelbomComponent implements OnInit {
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
         this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id, this.modelbom_data.feature_name).subscribe(
           data => {
-            if (data != null || data != undefined) {
-
+            if (data != null && data != undefined) {
+              if(data.length > 0){
               if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
                 this.commonService.signOut(this.toastr, this.route);
                 return;
              } 
+            }
               // this.serviceData = data;
               // this.lookupfor = "tree_view__model_bom_lookup";
               let counter_temp = 0;
@@ -1316,13 +1317,14 @@ export class ModelbomComponent implements OnInit {
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
         if (data !== undefined && data != "") {
-
+          if(data.length > 0){
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-         } 
-          else if (data == "Rules Conflict") {
+         }
+        } 
+          if (data == "Rules Conflict") {
             this.showLookupLoader = false;
             this.toastr.error('', this.language.conflict, this.commonData.toast_config);
             success_call(false);
@@ -1399,7 +1401,7 @@ export class ModelbomComponent implements OnInit {
     this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value_code).subscribe(
       data => {
 
-        if(data != undefined){
+        if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);

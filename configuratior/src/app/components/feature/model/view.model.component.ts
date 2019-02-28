@@ -187,11 +187,13 @@ export class ViewFeatureModelComponent implements OnInit {
                 console.log(data);
                 
                 this.showLoader = false;
+                if(data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonservice.RemoveLoggedInUser().subscribe();
                     this.commonservice.signOut(this.toastr, this.router);
                     return;
                 } 
+            }
                 this.dataArray = data;
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];

@@ -723,7 +723,7 @@ export class BomComponent implements OnInit {
           this.fbom.onItemIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
-              if(data != undefined){
+              if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commanService.RemoveLoggedInUser().subscribe();
                     this.commanService.signOut(this.toastr, this.route);
@@ -1095,7 +1095,7 @@ export class BomComponent implements OnInit {
         this.fbom.CheckValidPriceListEntered(this.feature_bom_table[i].type_value, value).subscribe(
           data => {
 
-            if(data != undefined){
+            if(data != undefined && data.length > 0){
               if (data[0].ErrorMsg == "7001") {
                   this.commanService.RemoveLoggedInUser().subscribe();
                   this.commanService.signOut(this.toastr, this.route);
@@ -1176,7 +1176,7 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_data.feature_id != undefined) {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
-          if (data != null || data != undefined) {
+          if (data != null && data != undefined) {
             if(data.length > 0){
               if (data[0].ErrorMsg == "7001") {
                   this.commanService.RemoveLoggedInUser().subscribe();
@@ -1220,7 +1220,7 @@ export class BomComponent implements OnInit {
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
         this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id, this.feature_bom_data.feature_name).subscribe(
           data => {
-            if (data != null || data != undefined) {
+            if (data != null && data != undefined) {
 
               if(data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
@@ -1287,7 +1287,7 @@ export class BomComponent implements OnInit {
       data => {
         console.log(data);
 
-        if(data != undefined){
+        if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.route);

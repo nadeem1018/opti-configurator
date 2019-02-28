@@ -29,12 +29,15 @@ export class OutputService {
   }
 
   GetModelList(): Observable<any> {
-    let jObject = { GetModel: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company }]) }
+    let jObject = { GetModel: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
   getFeatureList(modelid): Observable<any> {
-    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: modelid }]) }
+    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: modelid,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard", jObject, this.common_params.httpOptions);
   }
 
@@ -55,8 +58,8 @@ export class OutputService {
 
   getCustomerLookupData(CompanyDBID: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID }]) };
-
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerList", jObject, this.common_params.httpOptions);
   }
@@ -75,11 +78,17 @@ export class OutputService {
   //   return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
   // }
   GetDataByModelIDForFirstLevel(AllDataForModelBomOutput): Observable<any> {
+
+
+    AllDataForModelBomOutput["modelinputdatalookup"][0]['GUID'] = sessionStorage.getItem("GUID");
+    AllDataForModelBomOutput["modelinputdatalookup"][0]['UsernameForLic'] = sessionStorage.getItem("loggedInUser");
+
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { GetData: JSON.stringify(AllDataForModelBomOutput) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel", jObject, this.common_params.httpOptions);
   }
+
   GetDataForSelectedFeatureModelItem(data): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { GetData: JSON.stringify(data) }
@@ -113,16 +122,16 @@ export class OutputService {
 
   validateInputCustomer(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID, Customer: Customer }]) };
-
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date,  CompanyDBID: CompanyDBID, Customer: Customer,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/ValidateCustomer", jObject, this.common_params.httpOptions);
   }
 
   GetCustomername(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer }]) };
-
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: CompanyDBID, Customer: Customer,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerName", jObject, this.common_params.httpOptions);
   }
@@ -144,28 +153,32 @@ export class OutputService {
   getFinalBOMStatus(ilogID): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, LogID: ilogID }]) };
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, LogID: ilogID,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFinalStatus", jObject, this.common_params.httpOptions);
   }
 
   getConfigurationList(OperationType): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData", jObject, this.common_params.httpOptions);
   }
 
   GetAllOutputData(OperationType, LogID, Description): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData", jObject, this.common_params.httpOptions);
   }
   onModelIdChange(code): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: code }]) };
+    let jObject = { ModelList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: code,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered", jObject, this.common_params.httpOptions);
   }
@@ -186,7 +199,8 @@ export class OutputService {
   //This method will bring all data for customer
   getCustomerAllInfo(CompanyDBID: string, Customer: string): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer }]) };
+    let jObject = { Customer: JSON.stringify([{ CompanyDBID: CompanyDBID, Customer: Customer,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
 
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerAllInfo", jObject, this.common_params.httpOptions);

@@ -678,13 +678,14 @@ export class RulewbComponent implements OnInit {
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
         if (data != null && data != "" && data != undefined) {
-
+          if(data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               return;
           } 
+        }
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
             if(data[i].PriceSource==null||data[i].PriceSource==undefined||data[i].PriceSource=="NaN"||data[i].PriceSource==""){
@@ -1007,7 +1008,7 @@ export class RulewbComponent implements OnInit {
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
 
-                if(data != undefined ){
+                if(data != undefined && data.length > 0 ){
                   if (data[0].ErrorMsg == "7001") {
                       this.commonService.RemoveLoggedInUser().subscribe();
                       this.commonService.signOut(this.toastr, this.route);
@@ -1031,7 +1032,7 @@ export class RulewbComponent implements OnInit {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
 
-                if(data != undefined ){
+                if(data != undefined && data.length > 0 ){
                   if (data[0].ErrorMsg == "7001") {
                       this.commonService.RemoveLoggedInUser().subscribe();
                       this.commonService.signOut(this.toastr, this.route);
@@ -1057,7 +1058,7 @@ export class RulewbComponent implements OnInit {
             this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
 
-                if(data != undefined ){
+                if(data != undefined && data.length > 0){
                   if (data[0].ErrorMsg == "7001") {
                       this.commonService.RemoveLoggedInUser().subscribe();
                       this.commonService.signOut(this.toastr, this.route);
@@ -1098,7 +1099,7 @@ export class RulewbComponent implements OnInit {
             this.service.onChildModelIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
 
-                if(data != undefined ){
+                if(data != undefined && data.length > 0){
                   if (data[0].ErrorMsg == "7001") {
                       this.commonService.RemoveLoggedInUser().subscribe();
                       this.commonService.signOut(this.toastr, this.route);
