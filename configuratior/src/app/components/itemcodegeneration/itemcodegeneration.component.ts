@@ -472,7 +472,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
       data => {
 
-        if(data != undefined){
+        if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.route);

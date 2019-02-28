@@ -520,7 +520,7 @@ export class ModelComponent implements OnInit {
     this.fms.onItemCodeChange(this.companyName, this.featureBom.ItemName).subscribe(
       data => {
 
-        if(data != undefined ){
+        if(data != undefined && data.length > 0 ){
           if (data[0].ErrorMsg == "7001") {
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.router);
@@ -541,7 +541,7 @@ export class ModelComponent implements OnInit {
       data => {
         console.log(data);
 
-        if(data != undefined){
+        if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.router);

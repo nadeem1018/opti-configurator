@@ -359,8 +359,15 @@ export class OutputComponent implements OnInit {
     this.lookupfor = 'configure_list_lookup';
     this.OutputService.getConfigurationList(this.step1_data.main_operation_type).subscribe(
       data => {
-        if (data.length > 0) {
+        if (data != undefined && data.length > 0) {
           this.showLookupLoader = false;
+
+          if (data[0].ErrorMsg == "7001") {
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+        } 
+
           this.serviceData = data;
         }
         else {
@@ -379,6 +386,15 @@ export class OutputComponent implements OnInit {
   getAllDetails(operationType, logid, description) {
     this.OutputService.GetAllOutputData(operationType, logid, description).subscribe(
       data => {
+
+        if(data != undefined && data.length >0 ){
+          if (data[0].ErrorMsg == "7001") {
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+
         console.log(data);
         if (this.step1_data.main_operation_type == "3") {
           this.iLogID = "";
@@ -440,10 +456,16 @@ export class OutputComponent implements OnInit {
       let AllDataForModelBomOutput: any = {};
       AllDataForModelBomOutput.modelinputdatalookup = [];
       AllDataForModelBomOutput.getmodelsavedata = [];
+      AllDataForModelBomOutput.apidata = [];
 
       AllDataForModelBomOutput.modelinputdatalookup.push({
         CompanyDBID: this.common_output_data.companyName,
         currentDate: this.submit_date
+      });
+
+      AllDataForModelBomOutput.apidata.push({
+        GUID: sessionStorage.getItem("GUID"),
+        UsernameForLic: sessionStorage.getItem("loggedInUser")
       });
 
       AllDataForModelBomOutput.getmodelsavedata = saveddata.ModelBOMData
@@ -451,6 +473,12 @@ export class OutputComponent implements OnInit {
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
         data => {
           if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+          } 
             this.setModelDataFlag = true;
             for (var isavedmultimodel in data) {
               this.onclearselection(1);
@@ -620,6 +648,12 @@ export class OutputComponent implements OnInit {
     this.OutputService.getFeatureList(this.step2_data.model_id).subscribe(
       data => {
         if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+         } 
           this.serviceData = data;
         }
         else {
@@ -640,6 +674,12 @@ export class OutputComponent implements OnInit {
     this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
       data => {
         if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          } 
           this.lookupfor = 'output_customer';
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -674,11 +714,17 @@ export class OutputComponent implements OnInit {
     this.setModelDataFlag = false;
     this.OutputService.GetModelList().subscribe(
       data => {
+
         if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+         } 
           this.lookupfor = 'ModelBomForWizard_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
-
         }
         else {
           this.lookupfor = "";
@@ -1108,19 +1154,34 @@ export class OutputComponent implements OnInit {
     let AllDataForModelBomOutput: any = {};
     AllDataForModelBomOutput.modelinputdatalookup = [];
     AllDataForModelBomOutput.getmodelsavedata = [];
+    //AllDataForModelBomOutput.apidata = [];
 
     AllDataForModelBomOutput.modelinputdatalookup.push({
       CompanyDBID: this.common_output_data.companyName,
       ModelID: this.step2_data.model_id,
       ModelDisplayName: this.step2_data.model_name,
       currentDate: this.submit_date
+    })
+    
+    // AllDataForModelBomOutput.apidata.push({
+    //   GUID: sessionStorage.getItem("GUID"),
+    //   UsernameForLic: sessionStorage.getItem("loggedInUser")
+    // })
 
-    });
-    AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata
+    AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata    
+
     this.OutputService.GetDataByModelIDForFirstLevel(AllDataForModelBomOutput).subscribe(
       //this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
         if (data != null && data != undefined) {
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          } 
+        }
           console.log(data);
           if (data.SubModelReadyToUse !== undefined) {
             if (data.SubModelReadyToUse.length > 0) {
@@ -1404,6 +1465,7 @@ export class OutputComponent implements OnInit {
     GetDataForSelectedFeatureModelItemData.selecteddata = [];
     GetDataForSelectedFeatureModelItemData.featurebomdata = [];
     GetDataForSelectedFeatureModelItemData.modelbomdata = [];
+    GetDataForSelectedFeatureModelItemData.apidata = [];
     GetDataForSelectedFeatureModelItemData.selecteddata.push({
       type: type,
       modelid: modelid,
@@ -1427,13 +1489,25 @@ export class OutputComponent implements OnInit {
       return obj['checked'] == true
     })
 
+    GetDataForSelectedFeatureModelItemData.apidata.push({
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser") 
+    });
+
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
       data => {
 
-        if (data != null || data != undefined) {
-          if (value == true) {
+        if (data != null && data != undefined) {
+         if(data.length > 0){
+         if (data[0].ErrorMsg == "7001") {
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+        } 
+      }
 
+          if (value == true) {
             if (data.DataForSelectedFeatureModelItem.length > 0) {
               if (parentarray[0].element_type == "radio") {
                 if (parentfeatureid != "" && feature_model_data.OPTM_CHILDFEATUREID != feature_model_data.OPTM_FEATUREID) {
@@ -2115,12 +2189,22 @@ export class OutputComponent implements OnInit {
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
       ShipTo: SelectedShipTo,
-      currentDate: this.submit_date
+      currentDate: this.submit_date,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
     this.showLookupLoader = true;
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
         if (data != null && data != undefined) {
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          }
+        }   
           this.showLookupLoader = false;
           this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
         }
@@ -2140,12 +2224,22 @@ export class OutputComponent implements OnInit {
       CompanyDBId: this.common_output_data.companyName,
       Customer: this.step1_data.customer,
       ShipTo: SelectedBillTo,
-      currentDate: this.submit_date
+      currentDate: this.submit_date,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser") 
     });
     this.showLookupLoader = true;
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
         if (data != null && data != undefined) {
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          }
+        } 
           if (data.BillingAdress[0] != undefined) {
             this.showLookupLoader = false;
             this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
@@ -2163,6 +2257,18 @@ export class OutputComponent implements OnInit {
     this.showLookupLoader = true;
     this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
+
+        if(data != undefined && data != null){
+         if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+          } 
+        }
+       }
+
         if (data === "False") {
           this.showLookupLoader = false;
           this.toastr.error('', this.language.invalidcustomer, this.commonData.toast_config);
@@ -2192,7 +2298,13 @@ export class OutputComponent implements OnInit {
   GetCustomername() {
     this.OutputService.GetCustomername(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
-        if (data != null || data != undefined && data.length > 0) {
+        if (data != null && data != undefined && data.length > 0) {
+
+          if (data[0].ErrorMsg == "7001") {
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+        } 
           this.step1_data.customer_name = data[0].Name;
         }
         else {
@@ -2231,6 +2343,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.OPConfig_OUTPUTDTL = [];
     final_dataset_to_save.OPConfig_OUTPUTLOG = [];
     final_dataset_to_save.ConnectionDetails = [];
+    final_dataset_to_save.apidata = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
 
     //Creating OutputLog table
@@ -2338,11 +2451,25 @@ export class OutputComponent implements OnInit {
       currentDate: this.submit_date
       //ConfigType: this.step1_data.main_operation_type
     })
+    
+    final_dataset_to_save.apidata.push({
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser") 
+    })
+
     console.log(final_dataset_to_save);
     var obj = this;
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
-        if (data != null || data != undefined) {
+        if (data != null && data != undefined) {
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+        }
+      }
           if (data[0].Status == "True") {
             this.showLookupLoader = false;
             this.iLogID = data[0].LogId;
@@ -3337,8 +3464,16 @@ export class OutputComponent implements OnInit {
     this.OutputService.getFinalBOMStatus(this.iLogID).subscribe(
       data => {
         this.showLookupLoader = false;
-        if (data != null) {
-          if (data.FinalStatus[0].OPTM_STATUS == "P") {
+        if (data != null && data != undefined) {
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+         } 
+        }
+
+          else if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
@@ -3430,6 +3565,7 @@ export class OutputComponent implements OnInit {
       GetDataForSelectedFeatureModelItemData.selecteddata = [];
       GetDataForSelectedFeatureModelItemData.featurebomdata = [];
       GetDataForSelectedFeatureModelItemData.modelbomdata = [];
+      GetDataForSelectedFeatureModelItemData.apidata = [];
       GetDataForSelectedFeatureModelItemData.selecteddata.push({
         type: 1,
         modelid: "",
@@ -3452,8 +3588,24 @@ export class OutputComponent implements OnInit {
         obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
         return obj['checked'] == true
       })
+
+      GetDataForSelectedFeatureModelItemData.apidata.push({
+        GUID: sessionStorage.getItem("GUID"),
+        UsernameForLic: sessionStorage.getItem("loggedInUser") 
+      });
+
       this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
         data => {
+
+          if (data != null && data != undefined) {
+            if(data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+               this.CommonService.RemoveLoggedInUser().subscribe();
+               this.CommonService.signOut(this.toastr, this.route);
+               return;
+           } 
+         }
+        }
           let parentarray = this.Accessoryarray.filter(function (obj) {
             return obj['OPTM_FEATUREID'] == parentfeatureid
           });
@@ -3585,6 +3737,7 @@ export class OutputComponent implements OnInit {
           GetDataForSelectedFeatureModelItemData.selecteddata = [];
           GetDataForSelectedFeatureModelItemData.featurebomdata = [];
           GetDataForSelectedFeatureModelItemData.modelbomdata = [];
+          GetDataForSelectedFeatureModelItemData.apidata = [];
           GetDataForSelectedFeatureModelItemData.selecteddata.push({
             type: 1,
             modelid: "",
@@ -3608,9 +3761,23 @@ export class OutputComponent implements OnInit {
             return obj['checked'] == true
           })
 
+          GetDataForSelectedFeatureModelItemData.apidata.push({
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser") 
+          });  
+
           this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
             data => {
               this.showLookupLoader = false;
+              if (data != null && data != undefined) {
+                if(data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                   this.CommonService.RemoveLoggedInUser().subscribe();
+                   this.CommonService.signOut(this.toastr, this.route);
+                   return;
+               } 
+             }
+            }
               let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
               let parentarray = this.Accessoryarray.filter(function (obj) {
                 return obj['OPTM_FEATUREID'] == parentfeatureid
@@ -4341,6 +4508,16 @@ export class OutputComponent implements OnInit {
     this.showLookupLoader = true;
     this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
       data => {
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.showLookupLoader = false;
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
@@ -4808,7 +4985,15 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null && data != undefined) {
           this.console.log("ALL CUSTOMER INFO-->", data)
-
+        
+          if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+        } 
+      }
           //Fill Contact Person
           if (data.ContactPerson != undefined) {
             if (data.ContactPerson.length > 0) {
@@ -4871,8 +5056,9 @@ export class OutputComponent implements OnInit {
               CompanyDBId: this.common_output_data.companyName,
               Customer: this.step1_data.customer,
               BillTo: this.customerBillTo,
-              currentDate: this.submit_date
-
+              currentDate: this.submit_date,
+              GUID: sessionStorage.getItem("GUID"),
+              UsernameForLic: sessionStorage.getItem("loggedInUser")
             });
             //To get bill address
             this.fillBillAddress(this.bill_data, data);
@@ -4916,7 +5102,15 @@ export class OutputComponent implements OnInit {
     this.OutputService.fillShipAddress(ship_data).subscribe(
       data => {
         this.showLookupLoader = false;
+        
         if (data != null && data != undefined) {
+          if(data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }   
           if (data.ShippingAdress != undefined) {
             this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
           }
@@ -4954,7 +5148,9 @@ export class OutputComponent implements OnInit {
         Customer: this.step1_data.customer,
         ShipTo: this.customerShipTo,
         currentDate: this.step1_data.posting_date,
-        BillTo: this.customerBillTo
+        BillTo: this.customerBillTo,
+        GUID: sessionStorage.getItem("GUID"),
+        UsernameForLic: sessionStorage.getItem("loggedInUser")
       });
 
       this.fillShipAddress(this.ship_data, data);
