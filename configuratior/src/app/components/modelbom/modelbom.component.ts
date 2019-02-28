@@ -180,6 +180,8 @@ export class ModelbomComponent implements OnInit {
           }
 
 
+        } else {
+          this.route.navigateByUrl('modelbom/view');
         }
 
         if (data.ModelDetail.length > 0) {

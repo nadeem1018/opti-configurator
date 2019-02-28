@@ -142,7 +142,6 @@ export class BomComponent implements OnInit {
         this.showLoader = true;
         this.fbom.GetDataByFeatureId(id).subscribe(
         data => {
-
           if(data != undefined && data.LICDATA != undefined){
             if (data.LICDATA[0].ErrorMsg == "7001") {
                 this.commanService.RemoveLoggedInUser().subscribe();
@@ -239,6 +238,10 @@ export class BomComponent implements OnInit {
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
             }
+          } else {
+            this.route.navigateByUrl('feature/bom/view');
+            this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+            return;
           }
           if (data.FeatureHeader.length > 0) {
             this.feature_bom_data.feature_code = data.FeatureHeader[0].OPTM_FEATURECODE;
