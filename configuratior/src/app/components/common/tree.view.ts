@@ -25,10 +25,10 @@ import * as $ from 'jquery';
               popoverTitle="{{inner_element.component}}"
               placement="left"
               triggers="" #pop="bs-popover"> 
-              <span #btn (click)="childExpand(btn)" class="expand-btn" *ngIf="get_childrens(inner_element.component, inner_element.level).length > 0"></span>
+              <span #btn (click)="childExpand(btn)" class="expand-btn" *ngIf="get_childrens(inner_element.componentNumber, inner_element.level).length > 0"></span>
               <span [attr.data-branchtype]="inner_element.branchType" (click)="pop.toggle()">{{inner_element.component}}</span>
             </span>
-            <treeview #tree style="display:none" [tree_data_json]="get_childrens(inner_element.component, inner_element.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.component, inner_element.level).length > 0"></treeview>
+            <treeview #tree style="display:none" [tree_data_json]="get_childrens(inner_element.componentNumber, inner_element.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.componentNumber, inner_element.level).length > 0"></treeview>
 
     </ul>
     `,
@@ -61,10 +61,10 @@ export class TreeViewComponent {
         })
     }
 
-    get_childrens(component, current_level ) {
+    get_childrens(componentNumber, current_level ) {
         var next_level = (parseInt(current_level) + 1);
         let data = this.complete_dataset.filter(function (obj) {
-            return obj['parentId'] == component && obj.level == next_level;
+            return obj['parentNumber'] == componentNumber && obj.level == next_level;
         });
         return data;
     }

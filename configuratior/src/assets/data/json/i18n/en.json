@@ -456,6 +456,8 @@
     "oper_desc": "Oper Description",
     "wc": "WC",
     "workcenter": "Workcenter",
+    "workcenter_code": "Workcenter Code",
+    "workcenter_desc": "Workcenter Desc.",
     "mtq": "MTQ",
     "count_point_oper": "Count Point Oper",
     "auto_move": "Auto Move",
@@ -485,6 +487,10 @@
     "exp_id":"Exp. ID",
     "confirm_override_detials_effective_date":"This will override all the effective date in the grid with header effective date, Do you wish to proceed ? ",
     "InvalidWHCode": "Invalid Warehouse Code",
+    "selectWarehouse":"Select a Warehouse",
+    "noselectWarehouse":"No Warehouse selected, Select a Warehouse first",
+    "invalidOperationcodeRow":"Invalid Operation Code at row - ",
+    "invalidwccodeRow":"Invalid WC Code at row - "
 
 
 }

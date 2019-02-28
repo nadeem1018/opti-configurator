@@ -146,12 +146,13 @@
               <kendo-grid [kendoGridBinding]="modelbom_data" [resizable]="true" [sortable]="false" [groupable]="false"
                 [filterable]="false">
                 <kendo-grid-column field="rowindex" title="#" width="60" [minResizableWidth]="60" filter="numeric">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                      <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value, dataItem.type)" *ngIf="(dataItem.type_value) && (dataItem.type == '1' || dataItem.type == '3')">
-                        <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
-                      </a>
-                      {{dataItem.rowindex}}
-                    </ng-template>
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value, dataItem.type)"
+                      *ngIf="(dataItem.type_value) && (dataItem.type == '1' || dataItem.type == '3')">
+                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                    </a>
+                    {{dataItem.rowindex}}
+                  </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
                   [minResizableWidth]="110">
@@ -254,9 +255,9 @@
                 <kendo-grid-column field="mandatory" title="{{language.mandatory}}" [width]="100" [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" class="custom-control-input" id="mandatory_{{dataItem.rowindex}}"
-                        value={{dataItem.mandatory}} (change)="on_mandatory_change(mandatory,dataItem.rowindex)"
-                        #mandatory [(checked)]=dataItem.mandatory title="{{dataItem.mandatory}}" style="position: relative;margin-top: 5px;" />
+                      <input type="checkbox" class="custom-control-input" id="mandatory_{{dataItem.rowindex}}" value={{dataItem.mandatory}}
+                        (change)="on_mandatory_change(mandatory,dataItem.rowindex)" #mandatory [(checked)]=dataItem.mandatory
+                        title="{{dataItem.mandatory}}" style="position: relative;margin-top: 5px;" />
                       <label class="custom-control-label" for="mandatory_{{dataItem.rowindex}}"></label>
                     </div>
                   </ng-template>
@@ -332,7 +333,7 @@
       <div class="tree well">
         <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
           <li *ngFor="let element of tree_data_json; let i= index;">
-            <div *ngIf="element.level == 0 && element.parentId==''">
+            <div *ngIf="element.level == 0 && element.parentNumber==''">
               <ng-template #template>
                 <div class="modal-body text-center">
                   <img [attr.src]="element.modalImage" style="max-width:100%">
@@ -347,11 +348,11 @@
               <span class="first_level" [popover]="popTemplate" popoverTitle="{{element.component}}" placement="left"
                 container="body" [outsideClick]="true" triggers="" #pop="bs-popover">
                 <!-- <i class="fa fa-circle"></i>  -->
-                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" *ngIf="check_component_exist(element.component, i).length > 0"></span>
+                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" *ngIf="check_component_exist(element.componentNumber, i).length > 0"></span>
                 <span (click)="pop.toggle()" [attr.data-branchtype]="element.branchType">{{element.component}}</span>
               </span>
-              <treeview [tree_data_json]="check_component_exist(element.component, i)" [complete_dataset]="tree_data_json"
-                *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+              <treeview #tree [tree_data_json]="check_component_exist(element.componentNumber, i)" [complete_dataset]="tree_data_json"
+                *ngIf="check_component_exist(element.componentNumber, i).length > 0"></treeview>
             </div>
           </li>
         </ul>

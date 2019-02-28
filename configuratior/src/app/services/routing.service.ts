@@ -57,7 +57,7 @@ export class RoutingService {
   }
 
   getWarehouseDetail(id): Observable<any> {
-    let jObject = { getData: JSON.stringify([{ CompanyDBID: this.logged_in_company, warehouseId: id }]) };
+    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company, WarehouseId: id }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/WarehouseDetail", jObject, this.common_params.httpOptions);
   }
 
@@ -67,13 +67,23 @@ export class RoutingService {
   }
 
   getOperationList(warehouse_id): Observable<any> {
-    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company, warehouseId: warehouse_id }]) }
+    let jObject = { Operation: JSON.stringify([{ CompanyDBID: this.logged_in_company, WarehouseCode : warehouse_id }]) }
     return this.httpclient.post(this.config_params.service_url + "/Routing/OperationList", jObject, this.common_params.httpOptions);
   }
 
   getWCList(warehouse_id): Observable<any> {
-    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company, warehouseId: warehouse_id }]) }
-    return this.httpclient.post(this.config_params.service_url + "/Routing/getWCList", jObject, this.common_params.httpOptions);
+    let jObject = { WC: JSON.stringify([{ CompanyDBID: this.logged_in_company, WarehouseCode : warehouse_id }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/WCList", jObject, this.common_params.httpOptions);
+  }
+
+  getOperationDetail(id, pressLocation, rowid): Observable<any> {
+    let jObject = { Operation: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationCode: id, pressLocation: pressLocation, rowid: rowid }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/OperationDetail", jObject, this.common_params.httpOptions);
+  }
+
+  getWCDetail(id, pressLocation, rowid): Observable<any> {
+    let jObject = { WC: JSON.stringify([{ CompanyDBID: this.logged_in_company, WCCode: id, pressLocation: pressLocation, rowid: rowid }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/WCDetail", jObject, this.common_params.httpOptions);
   }
 
 }

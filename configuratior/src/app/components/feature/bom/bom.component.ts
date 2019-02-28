@@ -1360,17 +1360,17 @@ export class BomComponent implements OnInit {
 
 
   //This will recurse the tree
-  get_childrens(component) {
+  get_childrens(componentNumber) {
     let data = this.complete_dataset.filter(function (obj) {
-      return obj['parentId'] == component;
+      return obj['parentNumber'] == componentNumber;
     });
     return data;
   }
 
-  check_component_exist(component, level) {
+  check_component_exist(componentNumber, level) {
     level = (parseInt(level) + 1);
     let data = this.tree_data_json.filter(function (obj) {
-      return obj['parentId'] == component && obj['level'] == level;
+      return obj['parentNumber'] == componentNumber && obj['level'] == level;
     });
     return data;
   }

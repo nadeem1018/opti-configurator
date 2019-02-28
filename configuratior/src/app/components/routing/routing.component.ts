@@ -35,7 +35,7 @@ export class RoutingComponent implements OnInit {
   public type_dropdown = '';
   public grid_option_title = '';
   public row_selection: number[] = [];
-  public current_grid_action_row:number = 0;
+  public current_grid_action_row: number = 0;
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public showLoader: boolean = true;
@@ -138,6 +138,8 @@ export class RoutingComponent implements OnInit {
       this.type_dropdown = this.commonData.model_bom_type;
       this.grid_option_title = this.language.ModelBom_FeatureValue;
     }
+    this.current_selected_row = [];
+    this.row_selection = [];
   }
 
   reset_feature() {
@@ -218,17 +220,24 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.warehouse_code = $event[0];
     }
 
-    if(this.lookupfor == 'operation_lookup'){
+    if (this.lookupfor == 'operation_lookup') {
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
+      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
       this.current_grid_action_row = 0;
     }
 
-    if (this.lookupfor == "workcenter_lookup" ){
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[1];
+    if (this.lookupfor == "workcenter_lookup") {
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[2];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[2];
       this.current_grid_action_row = 0;
     }
+
+    var obj = this;
+    setTimeout(() => {
+      obj.lookupfor = "";
+    });
   }
 
   resequence_operation() {
@@ -327,22 +336,20 @@ export class RoutingComponent implements OnInit {
             this.routing_header_data.feature_id = data[0].FeatureId;
             this.routing_header_data.feature_code = data[0].FeatureCode;
             this.routing_header_data.feature_description = data[0].DisplayName
-            this.GetDataByFeatureId(feature_code, 'header', 0);
-            this.showLookupLoader = false;
-            this.routing_detail_data = [];
+            this.GetDataByFeatureId(this.routing_header_data.feature_id, 'header', 0);
           } else {
             this.clearInvalidfeature();
-             this.showLookupLoader = false;
+            this.showLookupLoader = false;
             return;
           }
         } else {
           this.clearInvalidfeature();
-           this.showLookupLoader = false;
+          this.showLookupLoader = false;
           return;
         }
       }, error => {
         this.clearInvalidfeature();
-         this.showLookupLoader = false;
+        this.showLookupLoader = false;
         return;
       }
     );
@@ -356,24 +363,23 @@ export class RoutingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
-            this.routing_header_data.modal_id = data[0].OPTM_FEATUREID;
-            this.routing_header_data.modal_code = data[0].OPTM_FEATURECODE;
-            this.routing_header_data.modal_description = data[0].OPTM_DISPLAYNAME;
-            this.GetDataByModelId(model_code, 'header', 0);
-            this.showLookupLoader = false;
+            this.routing_header_data.modal_id = data[0].ModelId;
+            this.routing_header_data.modal_code = data[0].ModelCode;
+            this.routing_header_data.modal_description = data[0].DisplayName;
+            this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0);
           } else {
             this.clearInvalidModel();
-             this.showLookupLoader = false;
+            this.showLookupLoader = false;
             return;
           }
         } else {
           this.clearInvalidModel();
-           this.showLookupLoader = false;
+          this.showLookupLoader = false;
           return;
         }
       }, error => {
         this.clearInvalidModel();
-         this.showLookupLoader = false;
+        this.showLookupLoader = false;
         return;
       }
     );
@@ -389,11 +395,7 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log(data);
           if (data.FeatureDetail.length > 0) {
-            this.counter = 0;
-            if (this.routing_detail_data.length > 0) {
-              this.counter = this.routing_detail_data.length
-            }
-            this.counter++;
+
 
             var temp = new Date(this.routing_header_data.EffectiveDate);
             var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
@@ -402,6 +404,11 @@ export class RoutingComponent implements OnInit {
               let value = '';
               let value_code = '';
               var desc = '';
+              this.counter = 0;
+              if (this.routing_detail_data.length > 0) {
+                this.counter = this.routing_detail_data.length
+              }
+              this.counter++;
               if (featuredata.OPTM_TYPE == 1) {
                 value = featuredata.OPTM_CHILDFEATUREID;
                 value_code = featuredata.child_code;
@@ -414,7 +421,6 @@ export class RoutingComponent implements OnInit {
                 value_code = featuredata.OPTM_VALUE;
               }
               desc = featuredata.OPTM_DISPLAYNAME;
-
               this.routing_detail_data.push({
                 lineno: this.counter,
                 rowindex: this.counter,
@@ -525,7 +531,7 @@ export class RoutingComponent implements OnInit {
     }
   }
 
-  clearInvalidWarehouse(){
+  clearInvalidWarehouse() {
     this.routing_header_data.warehouse_code = '';
     this.toastr.error('', this.language.InvalidWHCode, this.commonData.toast_config);
   }
@@ -565,6 +571,7 @@ export class RoutingComponent implements OnInit {
         if (data != null) {
           if (data.length > 0) {
             this.routing_header_data.warehouse_code = warehouse_code;
+            this.showLookupLoader = false;
           } else {
             this.clearInvalidWarehouse();
             this.showLookupLoader = false;
@@ -600,9 +607,14 @@ export class RoutingComponent implements OnInit {
   }
 
   open_operation_lookup(type, rowindex) {
-    this.showLookupLoader = true;
     this.serviceData = [];
-    
+
+    if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
+      this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
+      return;
+    }
+
+    this.showLookupLoader = true;
     this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
       data => {
         if (data.length > 0) {
@@ -629,17 +641,21 @@ export class RoutingComponent implements OnInit {
   }
 
   open_wc_lookup(type, rowindex) {
-    this.showLookupLoader = true;
     this.serviceData = [];
 
-    this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
+    if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
+      this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
+      return;
+    }
+
+    this.showLookupLoader = true;
+    this.service.getWCList(this.routing_header_data.warehouse_code).subscribe(
       data => {
         if (data.length > 0) {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'workcenter_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
-
         }
         else {
           this.lookupfor = "";
@@ -762,9 +778,9 @@ export class RoutingComponent implements OnInit {
     });
   }
 
-  getGridCurrentRow(rowindex){
+  getGridCurrentRow(rowindex) {
     var currentrow = 0;
-    if (this.routing_detail_data.length > 0){
+    if (this.routing_detail_data.length > 0) {
       for (let i = 0; i < this.routing_detail_data.length; ++i) {
         if (this.routing_detail_data[i].rowindex === rowindex) {
           currentrow = i;
@@ -795,7 +811,46 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'oper_code') {
-      this.routing_detail_data[currentrow].oper_code = value;
+      this.showLookupLoader = true;
+      this.service.getOperationDetail(value, 'detail', rowindex).subscribe(
+        data => {
+          console.log(data);
+          if (data != null) {
+            if (data.length > 0) {
+              this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
+              this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
+              this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
+              this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
+              this.showLookupLoader = false;
+            } else {
+              this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
+              this.routing_detail_data[currentrow].oper_id = "";
+              this.routing_detail_data[currentrow].oper_code = "";
+              $(".row_oper_id").eq(currentrow).val("");
+              $(".row_oper_code").eq(currentrow).val("");
+              this.showLookupLoader = false;
+              return;
+            }
+          } else {
+            this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
+            this.routing_detail_data[currentrow].oper_id = "";
+            this.routing_detail_data[currentrow].oper_code = "";
+            $(".row_oper_id").eq(currentrow).val("");
+            $(".row_oper_code").eq(currentrow).val("");
+            this.showLookupLoader = false;
+            return;
+          }
+        }, error => {
+          this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
+          this.routing_detail_data[currentrow].oper_id = "";
+          this.routing_detail_data[currentrow].oper_code = "";
+          $(".row_oper_id").eq(currentrow).val("");
+          $(".row_oper_code").eq(currentrow).val("");
+          this.showLookupLoader = false;
+          return;
+        }
+      );
+
     }
 
     if (grid_element == 'oper_desc') {
@@ -803,7 +858,46 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'wc_code') {
-      this.routing_detail_data[currentrow].wc_code = value;
+
+      this.showLookupLoader = true;
+      this.service.getWCDetail(value, 'detail', rowindex).subscribe(
+        data => {
+          console.log(data);
+          if (data != null) {
+            if (data.length > 0) {
+              this.routing_detail_data[currentrow].wc_id = data[0].WCCode;
+              this.routing_detail_data[currentrow].wc_code = data[0].WCCode;
+              this.showLookupLoader = false;
+            } else {
+              this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
+              this.routing_detail_data[currentrow].wc_id = "";
+              this.routing_detail_data[currentrow].wc_code = "";
+              $(".row_wc_id").eq(currentrow).val("");
+              $(".row_wc_code").eq(currentrow).val("");
+              this.showLookupLoader = false;
+              return;
+            }
+          } else {
+            this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
+            this.routing_detail_data[currentrow].wc_id = "";
+            this.routing_detail_data[currentrow].wc_code = "";
+            $(".row_wc_id").eq(currentrow).val("");
+            $(".row_wc_code").eq(currentrow).val("");
+            this.showLookupLoader = false;
+            return;
+          }
+        }, error => {
+          this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
+          this.routing_detail_data[currentrow].wc_id = "";
+          this.routing_detail_data[currentrow].wc_code = "";
+          $(".row_wc_id").eq(currentrow).val("");
+          $(".row_wc_code").eq(currentrow).val("");
+          this.showLookupLoader = false;
+          return;
+        }
+      );
+
+
     }
 
     if (grid_element == 'mtq') {

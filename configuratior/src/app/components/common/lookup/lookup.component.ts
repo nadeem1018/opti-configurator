@@ -275,8 +275,8 @@ export class LookupComponent implements OnInit {
 
     this.table_head = [
       {
-        field: 'WHSECODE',
-        title: this.language.code,
+        field: 'WCCode',
+        title: this.language.workcenter,
         type: 'text',
         width: '100',
         attrType: 'text'
@@ -288,6 +288,13 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
+     /*  {
+        field: 'WHCode',
+        title: this.language.warehouse,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      } */
     ];
 
     this.table_head_hidden_elements = [false, false];
@@ -313,19 +320,40 @@ export class LookupComponent implements OnInit {
 
     this.table_head = [
       {
-        field: 'WHSECODE',
-        title: this.language.code,
+        field: 'OPRCode',
+        title: this.language.operation_no,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      },
+      {
+        field: 'OPRDesc',
+        title: this.language.description,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      },
+      {
+        field: 'WCCode',
+        title: this.language.workcenter_code,
         type: 'text',
         width: '100',
         attrType: 'text'
       },
       {
         field: 'Description',
-        title: this.language.description,
+        title: this.language.workcenter_desc,
         type: 'text',
         width: '100',
         attrType: 'text'
       },
+      /* {
+        field: 'WHCode',
+        title: this.language.warehouse,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      } */
     ];
 
     this.table_head_hidden_elements = [false, false];
