@@ -6,9 +6,6 @@ import { CommonData, ColumnSetting } from "../../models/CommonData";
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
 
-
-
-
 @Component({
     selector: 'app-item-code-view-model',
     templateUrl: '../common/table.view.html',
@@ -178,7 +175,14 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         var dataset = this.itemgen.viewItemGenerationData(this.companyName, search, page_number, this.record_per_page).subscribe(
             data => {
 
-                this.showLoader = false;
+            this.showLoader = false;                
+            if(data != undefined && data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonservice.RemoveLoggedInUser().subscribe();
+                    this.commonservice.signOut(this.toastr, this.router);
+                    return;
+                } 
+            }
               this.dataArray = data;
               
             });
@@ -231,8 +235,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
             CompanyDBId: this.companyName,
-            ItemCode: this.row_id
-
+            ItemCode: this.row_id,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
         })
         this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
             data => {
@@ -243,6 +248,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 else {
                     this.itemgen.DeleteData(this.GetItemData).subscribe(
                         data => {
+                            if(data != undefined && data.length > 0){
+                                if (data[0].ErrorMsg == "7001") {
+                                    this.commonservice.RemoveLoggedInUser().subscribe();
+                                    this.commonservice.signOut(this.toastr, this.router);
+                                    return;
+                                } 
+                             }
                             if (data === "True") {
                                 this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                                 this.service_call(this.current_page, this.search_string);
@@ -269,7 +281,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                     if (checkedvalue == true) {
                         this.CheckedData.push({
                             ItemCode: row_data.Code,
-                            CompanyDBId: this.companyName
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
                         })
                     }
                     else {
@@ -280,14 +294,18 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             if (isExist == 0) {
                 this.CheckedData.push({
                     ItemCode: row_data.Code,
-                    CompanyDBId: this.companyName
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
         }
         else {
             this.CheckedData.push({
                 ItemCode: row_data.Code,
-                CompanyDBId: this.companyName
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
 
@@ -305,7 +323,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
                     this.CheckedData.push({
                         ItemCode: this.dataArray[i].Code,
-                        CompanyDBId: this.companyName
+                        CompanyDBId: this.companyName,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
@@ -338,6 +358,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 else {
                     this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
                         data => {
+                            if(data != undefined && data.length > 0){
+                                if (data[0].ErrorMsg == "7001") {
+                                    this.commonservice.RemoveLoggedInUser().subscribe();
+                                    this.commonservice.signOut(this.toastr, this.router);
+                                    return;
+                                } 
+                             }
                             if (data === "True") {
                                 this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                                 this.service_call(this.current_page, this.search_string);

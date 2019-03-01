@@ -142,6 +142,14 @@ export class BomComponent implements OnInit {
         this.showLoader = true;
         this.fbom.GetDataByFeatureId(id).subscribe(
         data => {
+          if(data != undefined && data.LICDATA != undefined){
+            if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.router);
+                return;
+            } 
+        }
+
           if (data.FeatureDetail.length > 0) {
             for (let i = 0; i < data.FeatureDetail.length; ++i) {
               if (data.FeatureDetail[i].OPTM_TYPE == 1) {
@@ -230,6 +238,10 @@ export class BomComponent implements OnInit {
                 CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               });
             }
+          } else {
+            this.route.navigateByUrl('feature/bom/view');
+            this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+            return;
           }
           if (data.FeatureHeader.length > 0) {
             this.feature_bom_data.feature_code = data.FeatureHeader[0].OPTM_FEATURECODE;
@@ -714,6 +726,14 @@ export class BomComponent implements OnInit {
           this.fbom.onItemIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
+              if(data != undefined && data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commanService.RemoveLoggedInUser().subscribe();
+                    this.commanService.signOut(this.toastr, this.route);
+                    return;
+                } 
+             }
+
               if (data === "False") {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
@@ -819,6 +839,14 @@ export class BomComponent implements OnInit {
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
+      if(data != undefined && data.length > 0){
+        if (data[0].ErrorMsg == "7001") {
+            this.showLookupLoader = false;
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+        } 
+    }
         if (data.length > 0) {
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -841,6 +869,13 @@ export class BomComponent implements OnInit {
   getItemDetails(ItemKey) {
     this.fbom.getItemDetails(ItemKey).subscribe(
       data => {
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         if (data.length > 0) {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -861,6 +896,15 @@ export class BomComponent implements OnInit {
     //this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         if (data.length > 0) {
           this.showLookupLoader = false;
           if (press_location == "Header") {
@@ -942,6 +986,14 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex;
     this.fbom.GetPriceList(ItemKey).subscribe(
       data => {
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         if (data.length > 0) {
           this.lookupfor = 'Price_lookup';
           this.showLookupLoader = false;
@@ -1045,6 +1097,15 @@ export class BomComponent implements OnInit {
 
         this.fbom.CheckValidPriceListEntered(this.feature_bom_table[i].type_value, value).subscribe(
           data => {
+
+            if(data != undefined && data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.route);
+                  return;
+              } 
+           }
+
             if (data === "False") {
               $(actualValue).val("");
               this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
@@ -1074,10 +1135,19 @@ export class BomComponent implements OnInit {
     this.GetItemData = []
     this.GetItemData.push({
       CompanyDBId: this.companyName,
-      FeatureId: this.feature_bom_data.feature_id
+      FeatureId: this.feature_bom_data.feature_id,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
     this.fbom.DeleteData(this.GetItemData).subscribe(
       data => {
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         console.log(data);
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
@@ -1109,7 +1179,15 @@ export class BomComponent implements OnInit {
     if (this.feature_bom_data.feature_id != undefined) {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
-          if (data != null || data != undefined) {
+          if (data != null && data != undefined) {
+            if(data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.router);
+                  return;
+              } 
+          }
+
             if (data.length > 0) {
               this.serviceData = data;
               this.lookupfor = 'associated_BOM';
@@ -1145,7 +1223,16 @@ export class BomComponent implements OnInit {
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
         this.fbom.GetDataForExplodeViewForFeatureBOM(this.companyName, this.feature_bom_data.feature_id, this.feature_bom_data.feature_name).subscribe(
           data => {
-            if (data != null || data != undefined) {
+            if (data != null && data != undefined) {
+
+              if(data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commanService.RemoveLoggedInUser().subscribe();
+                    this.commanService.signOut(this.toastr, this.router);
+                    return;
+                } 
+              }
+            
               //Earlier we were opening this in lookup
               // this.serviceData = data;
               // this.lookupfor = 'tree_view_lookup';
@@ -1202,6 +1289,15 @@ export class BomComponent implements OnInit {
     this.fbom.onFeatureIdChange(this.feature_bom_data.feature_code).subscribe(
       data => {
         console.log(data);
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
           this.feature_bom_data.feature_id = "";
@@ -1224,6 +1320,13 @@ export class BomComponent implements OnInit {
 
     this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID, this.feature_bom_data.feature_id).subscribe(
       data => {
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+       }
         if (data.length > 0) {
           //If exists then will restrict user 
           if (data == "Exist") {

@@ -45,10 +45,11 @@ export class ItemcodegenerationService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/DeleteItemGenerationCode", jObject, this.common_params.httpOptions);
   }
-  viewItemGenerationData(CompanyDBID: string,search:string,PageNumber:any,record_per_page:any): Observable<any> {
 
+  viewItemGenerationData(CompanyDBID: string,search:string,PageNumber:any,record_per_page:any): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page}]) };
+    let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page
+      , GUID: sessionStorage.getItem("GUID") , UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/GetItemGenerationData", jObject, this.common_params.httpOptions);
   }
@@ -70,7 +71,8 @@ export class ItemcodegenerationService {
   CheckDuplicateCode(CompanyDBID: string,codekey:string): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ItemList: JSON.stringify([{ CompanyDBID: CompanyDBID, codekey:codekey}]) };
+    let jObject = { ItemList: JSON.stringify([{ CompanyDBID: CompanyDBID, codekey:codekey,
+      GUID: sessionStorage.getItem("GUID") , UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/ItemGeneration/CheckDuplicateItemCode", jObject, this.common_params.httpOptions);
   }

@@ -51,7 +51,7 @@
                     </form>
                 </ng-template>
 
-                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60">
+                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60" [filterable]="false">
                     <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
@@ -79,7 +79,7 @@
                   </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120">
+                <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120" [filterable]="false">
                     <ng-template kendoGridCellTemplate let-dataItem>
                         <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
                             <i class="{{button1_icon}}"></i>

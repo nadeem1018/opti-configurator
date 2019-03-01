@@ -29,7 +29,8 @@ export class FeaturemodelService {
     //get template items to hit API
   getTemplateItems(CompanyDBID:string):Observable<any>{
      //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: CompanyDBID,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
 
    //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetModelTemplateItem",jObject,this.common_params.httpOptions);
@@ -39,7 +40,8 @@ export class FeaturemodelService {
     //get template items to hit API
   getGeneratedItems(CompanyDBID:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ItemCodeGenerationReference: JSON.stringify([{ CompanyDBID: CompanyDBID }]) };
+    let jObject = { ItemCodeGenerationReference: JSON.stringify([{ CompanyDBID: CompanyDBID, 
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
        
   //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetItemCodeGenerationReference",jObject,this.common_params.httpOptions);
@@ -47,14 +49,16 @@ export class FeaturemodelService {
       //get template items to hit API
   getAllViewData(CompanyDBID:string,search:string,PageNumber:any,record_per_page:any):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
-   let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page}]) };
+   let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page,
+    GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
   //Return the response form the API  
    return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetAllData",jObject,this.common_params.httpOptions);
   }
       //get template items to hit API
       GetRecordById(CompanyDBID:string, FEATUREID: string):Observable<any>{
         //JSON Obeject Prepared to be send as a param to API
-       let jObject = { FeatureCode: JSON.stringify([{ CompanyDBID: CompanyDBID, FEATUREID: FEATUREID }]) };
+       let jObject = { FeatureCode: JSON.stringify([{ CompanyDBID: CompanyDBID, FEATUREID: FEATUREID,
+        GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     
       //Return the response form the API  
        return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/GetRecordById",jObject,this.common_params.httpOptions);
@@ -74,7 +78,7 @@ export class FeaturemodelService {
     }
     DeleteData(Id):Observable<any>{
       //JSON Obeject Prepared to be send as a param to API
-     let jObject = { DeleteFeature: JSON.stringify(Id) };
+     let jObject = { DeleteFeature: JSON.stringify(Id)};
   
     //Return the response form the API  
      return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/DeleteFeatures",jObject,this.common_params.httpOptions);
@@ -95,7 +99,8 @@ export class FeaturemodelService {
     onRefCodeChange(CompanyDBID:string,ItemGenerationCode:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, ItemGenerationCode: ItemGenerationCode }]) };
+      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, ItemGenerationCode: ItemGenerationCode,
+        GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
       
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemCodeGeneration", jObject, this.common_params.httpOptions);
@@ -107,7 +112,8 @@ export class FeaturemodelService {
     onItemCodeChange(CompanyDBID:string,TemplateItem:string):Observable<any>{
     //JSON Obeject Prepared to be send as a param to API
       //JSON Obeject Prepared to be send as a param to API
-      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, TemplateItem: TemplateItem }]) };
+      let jObject = { GetRecord: JSON.stringify([{ CompanyDBID: CompanyDBID, TemplateItem: TemplateItem ,
+        GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
       
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/FeatureHeader/ChkValidItemTemplate", jObject, this.common_params.httpOptions);

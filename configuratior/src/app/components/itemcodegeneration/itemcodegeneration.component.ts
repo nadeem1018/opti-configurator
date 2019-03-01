@@ -242,7 +242,7 @@ export class ItemcodegenerationComponent implements OnInit {
     console.log(this.itemcodetable);
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-
+      
         if (data == "7001") {
           this.commanService.RemoveLoggedInUser().subscribe();
           this.commanService.signOut(this.toastr, this.route);
@@ -420,11 +420,13 @@ export class ItemcodegenerationComponent implements OnInit {
         this.GetItemData = []
         this.GetItemData.push({
           CompanyDBId: this.companyName,
-          ItemCode: this.codekey
-
+          ItemCode: this.codekey,
+          GUID: sessionStorage.getItem("GUID"),
+          UsernameForLic: sessionStorage.getItem("loggedInUser")
         })
         this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
           data => {
+            
             if (data == "True") {
               this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
               return false;
@@ -432,6 +434,13 @@ export class ItemcodegenerationComponent implements OnInit {
             else {
               this.itemgen.DeleteData(this.GetItemData).subscribe(
                 data => {
+                  if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commanService.RemoveLoggedInUser().subscribe();
+                        this.commanService.signOut(this.toastr, this.route);
+                        return;
+                    } 
+                 }
                   if (data === "True") {
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.route.navigateByUrl('item-code-generation/view');
@@ -462,7 +471,15 @@ export class ItemcodegenerationComponent implements OnInit {
   CheckDuplicateCode(){
     this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
       data => {
-        
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.route);
+              return;
+          } 
+       }
+       
         if(data[0].TOTALCOUNT > 0){
           this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           this.codekey= "";

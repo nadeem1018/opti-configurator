@@ -57,7 +57,7 @@
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="featureItemCode">
                                   {{language.Feature_Code}}
-                                  <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)">
+                                  <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)" *ngIf="feature_bom_data.feature_id && feature_bom_data.feature_code">
                                     <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
                                   </a>
                                 </label>

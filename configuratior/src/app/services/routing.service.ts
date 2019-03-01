@@ -30,5 +30,36 @@ export class RoutingService {
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureList", jObject, this.common_params.httpOptions);
   }
- 
+
+  GetModelList(): Observable<any> {
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ModelList", jObject, this.common_params.httpOptions);
+  }
+
+  getFeatureDetail(id): Observable<any> {
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureDetail", jObject, this.common_params.httpOptions);
+  }
+
+  getModalDetail(id): Observable<any> {
+    let jObject = { ModelBOMDetail: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ModelDetail", jObject, this.common_params.httpOptions);
+  }
+
+  GetDataByFeatureId(id): Observable<any> {
+    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/GetDataByFeatureId", jObject, this.common_params.httpOptions);
+  }
+
+  GetDataByModelId(id): Observable<any> {
+    let jObject = { ModelBOMDetail: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/GetDataByModelID", jObject, this.common_params.httpOptions);
+  }
+
+
+  getWarehouseList(): Observable<any> {
+    let jObject = { WareHouse: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/WarehouseList", jObject, this.common_params.httpOptions);
+  }
+
 }

@@ -121,6 +121,16 @@ export class ModelComponent implements OnInit {
 
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
         data => {
+
+          if(data != undefined && data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+                this.showLoader = false;
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.router);
+                return;
+            } 
+        }
+
           console.log(data);
           this.featureBom.Code = data[0].OPTM_FEATURECODE
           this.featureBom.Name = data[0].OPTM_DISPLAYNAME
@@ -253,6 +263,10 @@ export class ModelComponent implements OnInit {
           this.showLookupLoader = false;
         }
       )
+     
+    }
+    else{
+      this.showLookupLoader = false;
     }
   }
 
@@ -267,6 +281,15 @@ export class ModelComponent implements OnInit {
     this.fms.getTemplateItems(this.companyName).subscribe(
       data => {
         this.showLookupLoader = false;
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.showLoader = false;
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         this.serviceData = data;
 
       }, error => {
@@ -330,6 +353,13 @@ export class ModelComponent implements OnInit {
     this.fms.getGeneratedItems(this.companyName).subscribe(
       data => {
         this.showLookupLoader = false;
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         this.serviceData = data;
       }, error => {
         this.showLookupLoader = false;
@@ -341,24 +371,28 @@ export class ModelComponent implements OnInit {
   Validation() {
     if (this.featureBom.Code == undefined || this.featureBom.Code == '') {
       this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+      this.showLookupLoader = false;
       return false;
     }
-
     if (this.featureBom.type == undefined || this.featureBom.type == '') {
       this.toastr.error('', this.language.TypeBlank, this.commonData.toast_config);
+      this.showLookupLoader = false;
       return false;
     }
     if (this.featureBom.Name == undefined || this.featureBom.Name == '') {
       this.toastr.error('', this.language.ModelName, this.commonData.toast_config);
+      this.showLookupLoader = false;
       return false;
     }
     if (this.featureBom.type == "Model") {
       if (this.featureBom.ItemName == undefined || this.featureBom.ItemName == '') {
         this.toastr.error('', this.language.ModelItem, this.commonData.toast_config);
+        this.showLookupLoader = false;
         return false;
       }
       if (this.featureBom.Ref == undefined || this.featureBom.Ref == '') {
         this.toastr.error('', this.language.ModeRef, this.commonData.toast_config);
+        this.showLookupLoader = false;
         return false;
       }
     }
@@ -412,6 +446,9 @@ export class ModelComponent implements OnInit {
           this.showLookupLoader = false;
         })
     }
+    else{
+      this.showLookupLoader = false;
+    }
   }
 
   onDeleteClick() {
@@ -436,10 +473,20 @@ export class ModelComponent implements OnInit {
     this.GetItemData = []
     this.GetItemData.push({
       CompanyDBId: this.companyName,
-      FEATUREID: this.codekey
+      FEATUREID: this.codekey,
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
     this.fms.DeleteData(this.GetItemData).subscribe(
       data => {
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+      }
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.router.navigateByUrl(this.view_route_link);
@@ -472,6 +519,15 @@ export class ModelComponent implements OnInit {
   onItemCodeChange() {
     this.fms.onItemCodeChange(this.companyName, this.featureBom.ItemName).subscribe(
       data => {
+
+        if(data != undefined && data.length > 0 ){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.invalid_itemcode, this.commonData.toast_config);
           this.featureBom.ItemName = "";
@@ -484,6 +540,15 @@ export class ModelComponent implements OnInit {
     this.fms.onRefCodeChange(this.companyName, this.featureBom.Ref).subscribe(
       data => {
         console.log(data);
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
+          } 
+       }
+
         if (data === "False") {
           this.toastr.error('', this.language.Model_RefValidate, this.commonData.toast_config);
           this.featureBom.Ref = "";
