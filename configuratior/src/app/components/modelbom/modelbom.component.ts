@@ -634,8 +634,8 @@ export class ModelbomComponent implements OnInit {
     }
     else if (this.lookupfor == 'Item_Detail_lookup') {
       this.serviceData = []
+      this.getItemDetails($event[0]);
     }
-    this.getItemDetails($event[0]);
 
 
   }
