@@ -49,7 +49,7 @@
           <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="rule_code">{{language.rule_code}}</label>
             <div class="col-sm-5">
-              <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
+              <input type="text" name="rule_code" class="form-control form-control-sm mt3" maxlength="50" id="rule_code" placeholder="{{language.name}}"
                 [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}" tabindex="1" [disabled]="code_disabled">
             </div>
 

@@ -44,7 +44,7 @@
                 <label class="col-sm-4 col-form-label" for="feature">
                     {{model_code_label}}</label>
                 <div class="col-sm-5">
-                    <input type="text" id="codeID" name="codeName" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
+                    <input type="text" id="codeID" name="codeName" maxlength="50" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
                         [(ngModel)]="featureBom.Code" title="{{featureBom.Code}}" #inputBox>
                 </div>
             </div>

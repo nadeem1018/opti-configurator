@@ -364,9 +364,14 @@ export class RulewbComponent implements OnInit {
                   type: typefromdatabase
 
                 });
+                this.rule_expression_data[current_count].output_data.filter(function(Arr) {
+                 if(Arr.price_source === "NaN") {
+                   var default_value = 0;
+                   Arr.price_source = default_value.toFixed(3);
+                   return Arr;
+                 }
+                });
               }
-             
-            
             }
           }
 
