@@ -380,8 +380,8 @@
                     <button class="btn btn-sm btn-outline-primary" type="button" (click)="collapseAll()"><i class="fa-compress fa mr-1"></i> Collapse All</button>    
                 </div>
                 <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
-                    <div *ngFor="let element of tree_data_json; let i= index;">
-                        <li *ngIf="element.level == 0 && element.parentNumber==''">
+                    <li *ngFor="let element of tree_data_json; let i= index;">
+                        <div *ngIf="element.level == 0 && element.parentNumber==''">
                             <ng-template #template>
                                 <div class="modal-body text-center image-previe-container">
                                     <img [attr.src]="element.modalImage" style="max-width:100%">
