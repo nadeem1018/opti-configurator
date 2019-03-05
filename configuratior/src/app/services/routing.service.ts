@@ -91,9 +91,14 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceList", jObject, this.common_params.httpOptions);
   }
 
+  getResourceDetail(ResourceCode): Observable<any> {
+    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, ResourceCode: ResourceCode }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceDetail", jObject, this.common_params.httpOptions);
+  }
+
   getOperationResource(OperationCode): Observable<any> {
     let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationCode: OperationCode}]) };
-    return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceDetail", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/Routing/OperationResource", jObject, this.common_params.httpOptions);
   }
 
 

@@ -491,5 +491,6 @@
     "Operationcodemissing": "Missing Operation Code at row - ",
     "invalidwccodeRow": "Invalid WC Code at row - ",
     "numberofres":"No. of Res",
-    "timeresun":"Time Res. Unit"
+    "timeresun":"Time Res. Unit",
+    "add_oper":"Add Operation"
 }

@@ -452,8 +452,8 @@ export class RoutingComponent implements OnInit {
                 move_time: '00:00',
                 qc_time: '00:00',
                 time_uom: '',
-                opn_application: false,
-                isTypeDisabled: false,
+                opn_application: true,
+                isTypeDisabled: true,
                 showOperationbtn: false,
               });
             }
@@ -523,8 +523,8 @@ export class RoutingComponent implements OnInit {
                 move_time: '00:00',
                 qc_time: '00:00',
                 time_uom: '',
-                opn_application: false,
-                isTypeDisabled: false,
+                opn_application: true,
+                isTypeDisabled: true,
                 showOperationbtn: false,
               });
             }
@@ -785,7 +785,7 @@ export class RoutingComponent implements OnInit {
   }
 
 
-  insert_new_operation() {
+  insert_new_operation(type) { // type = insert || type = add
     if (this.validate_header_info() == false) {
       return false;
     }
@@ -795,11 +795,30 @@ export class RoutingComponent implements OnInit {
     }
     this.counter++;
 
-    var temp = new Date(this.routing_header_data.EffectiveDate);
-    var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-    // var temp_effective_date = new Date(temp.getFullYear(), (temp.getMonth()), temp.getDate());
+    if (type == 'add') {
+      this.current_selected_row = [];
+      this.row_selection = [];
+    } else {
+      this.current_selected_row
+    }
 
-    this.routing_detail_data.push({
+    if (type == 'insert') {
+      var current_row_index = this.current_selected_row.rowindex;
+      this.counter = current_row_index +1; 
+      var row_shift_counter = 0;
+      for (let i = 0; i < this.routing_detail_data.length; ++i) {
+        if (this.routing_detail_data[i].rowindex > current_row_index){
+          this.routing_detail_data[i].rowindex = this.routing_detail_data[i].rowindex + 1;
+          this.routing_detail_data[i].lineno = this.routing_detail_data[i].lineno + 1;
+        }
+      }
+
+    }
+
+
+    var temp_d = new Date(this.routing_header_data.EffectiveDate);
+    var temp_effective_date = new Date((temp_d.getMonth() + 1) + '/' + temp_d.getDate() + '/' + temp_d.getFullYear());
+    var new_row = {
       lineno: this.counter,
       rowindex: this.counter,
       type: '1',
@@ -820,10 +839,20 @@ export class RoutingComponent implements OnInit {
       move_time: '00:00',
       qc_time: '00:00',
       time_uom: '',
-      opn_application: false,
+      opn_application: true,
       isTypeDisabled: true,
       showOperationbtn: true,
-    });
+    };
+
+    if (type == 'add') {
+      this.routing_detail_data.push(new_row);
+     }
+
+    if (type == 'insert') {
+      this.routing_detail_data.splice(current_row_index, 0, new_row);
+      // this.routing_detail_data[current_row_index] = new_row;
+    }
+   
   }
 
   getGridCurrentRow(rowindex) {
@@ -876,6 +905,10 @@ export class RoutingComponent implements OnInit {
               this.routing_detail_data[currentrow].oper_code = "";
               $(".row_oper_id").eq(currentrow).val("");
               $(".row_oper_code").eq(currentrow).val("");
+              this.routing_detail_data[currentrow].wc_id = "";
+              this.routing_detail_data[currentrow].wc_code = "";
+              $(".row_wc_id").eq(currentrow).val("");
+              $(".row_wc_code").eq(currentrow).val("");
               this.showLookupLoader = false;
               return;
             }
@@ -885,6 +918,10 @@ export class RoutingComponent implements OnInit {
             this.routing_detail_data[currentrow].oper_code = "";
             $(".row_oper_id").eq(currentrow).val("");
             $(".row_oper_code").eq(currentrow).val("");
+            this.routing_detail_data[currentrow].wc_id = "";
+            this.routing_detail_data[currentrow].wc_code = "";
+            $(".row_wc_id").eq(currentrow).val("");
+            $(".row_wc_code").eq(currentrow).val("");
             this.showLookupLoader = false;
             return;
           }
@@ -894,6 +931,10 @@ export class RoutingComponent implements OnInit {
           this.routing_detail_data[currentrow].oper_code = "";
           $(".row_oper_id").eq(currentrow).val("");
           $(".row_oper_code").eq(currentrow).val("");
+          this.routing_detail_data[currentrow].wc_id = "";
+          this.routing_detail_data[currentrow].wc_code = "";
+          $(".row_wc_id").eq(currentrow).val("");
+          $(".row_wc_code").eq(currentrow).val("");
           this.showLookupLoader = false;
           return;
         }
@@ -986,15 +1027,15 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'queue_time') {
-      this.routing_detail_data[currentrow].queue_time;
+      this.routing_detail_data[currentrow].queue_time = value;
     }
 
     if (grid_element == 'move_time') {
-      this.routing_detail_data[currentrow].move_time;
+      this.routing_detail_data[currentrow].move_time = value;
     }
 
     if (grid_element == 'qc_time') {
-      this.routing_detail_data[currentrow].qc_time;
+      this.routing_detail_data[currentrow].qc_time = value;
     }
 
     if (grid_element == 'time_uom') {
@@ -1002,6 +1043,19 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'opn_application') {
+      if(value == false){
+        this.routing_detail_data[currentrow].oper_id = "";
+        this.routing_detail_data[currentrow].oper_code = "";
+        this.routing_detail_data[currentrow].oper_desc = "";
+        this.routing_detail_data[currentrow].wc_id = "";
+        this.routing_detail_data[currentrow].wc_code = "";
+        this.routing_detail_data[currentrow].mtq = 1;
+        this.routing_detail_data[currentrow].auto_move = false;
+        this.routing_detail_data[currentrow].queue_time = "00:00";
+        this.routing_detail_data[currentrow].move_time = "00:00";
+        this.routing_detail_data[currentrow].qc_time = "00:00";
+        this.routing_detail_data[currentrow].time_uom = "";
+      }
       this.routing_detail_data[currentrow].opn_application = value;
     }
 

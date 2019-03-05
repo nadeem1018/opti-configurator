@@ -417,6 +417,8 @@ export class LookupComponent implements OnInit {
 
   operation_resource_update() {
     this.is_operation_popup_lookup_open == false;
+    this.lookupvalue.emit(this.resourceServiceData);
+    $("#routing_resource_modal").modal('hide');
   }
 
   log(val) {
@@ -721,12 +723,12 @@ export class LookupComponent implements OnInit {
     }
 
     if (lookup_id == "routing_resource_modal" || this.popup_lookupfor == 'routing_resource_lookup') {
+      console.log('in array cleaner');
       this.is_operation_popup_lookup_open = false;
       this.resourceServiceData = [];
       this.resourceServiceOper = "";
       this.resourceServiceWc = "";
-      this.popup_lookupfor = "";
-      console.log('in array cleaner');
+      this.lookupvalue.emit(this.resourceServiceData);
       $("#routing_resource_modal").modal('hide');
     }
 

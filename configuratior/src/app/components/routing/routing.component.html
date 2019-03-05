@@ -256,10 +256,15 @@
           <!-- header section - end  -->
           <!-- operation action  -start -->
           <div class="row col-sm-12">
-            <div class="mr-3" *ngIf="show_insert_operation_btn">
+            <div class="mr-3" *ngIf="show_insert_operation_btn" [hidden]="this.current_selected_row.length == 0">
               <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.insert_operation}} "
-                (click)="insert_new_operation()">
-                <i class="fa fa-plus"></i> {{language.insert_operation}}
+                (click)="insert_new_operation('insert')">
+                <i class="fa fa-angle-double-right"></i> {{language.insert_operation}}
+              </a>
+            </div>
+            <div class="mr-3" *ngIf="show_insert_operation_btn">
+              <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_oper}} " (click)="insert_new_operation('add')">
+                <i class="fa fa-plus"></i> {{language.add_oper}}
               </a>
             </div>
             <div class="mr-3" *ngIf="show_resequence_btn">
@@ -300,11 +305,20 @@
               <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
                 [minResizableWidth]="110">
                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
-                  <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
-                    (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
-                    <option *ngFor="let v of type_dropdown" [value]="v.value" [selected]="dataItem.type==v.value">
-                      {{v.Name}}</option>
-                  </select>
+                  <ng-container *ngIf="dataItem.showOperationbtn == false">
+                    <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
+                      (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
+                      <option *ngFor="let v of type_dropdown" [value]="v.value" [selected]="dataItem.type==v.value">
+                        {{v.Name}}</option>
+                    </select>
+                  </ng-container>
+                  <ng-container *ngIf="dataItem.showOperationbtn == true">
+                    <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
+                      (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
+                      <option value="4">{{language.operation}}</option>
+                    </select>
+                  </ng-container>
+
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="ModelBom_FeatureValue" title="{{grid_option_title}}" filter="text" [width]="155"
@@ -354,9 +368,9 @@
                     <input type="hidden" class="form-control  form-control-sm row_oper_id" id="oper_id" value={{dataItem.oper_id}}
                       #oper_id title={{dataItem.oper_id}} />
 
-                    <input type="text" class="form-control  form-control-sm row_oper_code" id="oper_code" (change)="on_input_change(oper_code.value,dataItem.rowindex, 'oper_code')"
+                    <input type="text" class="form-control  form-control-sm row_oper_code" [disabled]="dataItem.opn_application == false" id="oper_code" (change)="on_input_change(oper_code.value,dataItem.rowindex, 'oper_code')"
                       value={{dataItem.oper_code}} #oper_code title={{dataItem.oper_code}} />
-                    <div class="input-group-append" [hidden]=dataItem.hide>
+                    <div class="input-group-append" [hidden]="dataItem.opn_application == false">
                       <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="open_operation_lookup(dataItem.type, dataItem.rowindex)">
                         <i class="fa fa-bars"></i>
                       </span>
@@ -368,7 +382,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm" id="oper_desc" value={{dataItem.oper_desc}}
-                    (change)="on_input_change(oper_desc.value,dataItem.rowindex, 'oper_desc')" #oper_desc title={{dataItem.oper_desc}} />
+                    (change)="on_input_change(oper_desc.value,dataItem.rowindex, 'oper_desc')" #oper_desc title={{dataItem.oper_desc}} [disabled]="dataItem.opn_application == false" />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="wc_code" title="{{language.workcenter}}" filter="text" [width]="155"
@@ -376,11 +390,11 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="input-group">
                     <input type="hidden" class="form-control  form-control-sm row_wc_id" id="wc_id" value={{dataItem.wc_id}}
-                      #wc_id title={{dataItem.wc_id}} />
+                      #wc_id title={{dataItem.wc_id}} [disabled]="dataItem.opn_application == false" />
 
                     <input type="text" class="form-control  form-control-sm row_wc_code" id="wc_code" (change)="on_input_change(wc_code.value,dataItem.rowindex, 'wc_code')"
-                      value={{dataItem.wc_code}} #wc_code title={{dataItem.wc_code}} />
-                    <div class="input-group-append" [hidden]=dataItem.hide>
+                      value={{dataItem.wc_code}} #wc_code title={{dataItem.wc_code}} [disabled]="dataItem.opn_application == false" />
+                    <div class="input-group-append" [hidden]="dataItem.opn_application == false">
                       <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="open_wc_lookup(dataItem.type, dataItem.rowindex)">
                         <i class="fa fa-bars"></i>
                       </span>
@@ -402,7 +416,7 @@
                       id="count_point_operation_{{dataItem.rowindex}}" value={{dataItem.count_point_operation}}
                       (change)="on_input_change(count_point_operation.checked,dataItem.rowindex, 'count_point_operation')"
                       #count_point_operation [(checked)]=dataItem.count_point_operation title="{{dataItem.count_point_operation}}"
-                      style="position: relative;margin-top: 5px;" />
+                      style="position: relative;margin-top: 5px;" [disabled]="dataItem.opn_application == false" />
                     <label class="custom-control-label" for="count_point_operation_{{dataItem.rowindex}}"></label>
                   </div>
                 </ng-template>
@@ -412,8 +426,8 @@
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" class="custom-control-input auto_move_checkbox" name="auto_move_{{dataItem.rowindex}}"
                       id="auto_move_{{dataItem.rowindex}}" value={{dataItem.auto_move}} (change)="on_input_change(auto_move.checked,dataItem.rowindex, 'auto_move')"
-                      #auto_move [(checked)]=dataItem.auto_move title="{{dataItem.auto_move}}" style="position: relative;margin-top: 5px;" />
-                    <label class="custom-control-label" for="auto_move_{{dataItem.rowindex}}"></label>
+                      #auto_move [(checked)]=dataItem.auto_move title="{{dataItem.auto_move}}" style="position: relative;margin-top: 5px;"  [disabled]="dataItem.opn_application == false"/>
+                    <label class="custom-control-label" for="auto_move_{{dataItem.rowindex}}" ></label>
                   </div>
                 </ng-template>
               </kendo-grid-column>
@@ -437,7 +451,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="queue_time" value={{dataItem.queue_time}}
-                    (change)="on_input_change(queue_time.value,dataItem.rowindex, 'queue_time')" #queue_time title={{dataItem.queue_time}}
+                    (change)="on_input_change(queue_time.value,dataItem.rowindex, 'queue_time')" [disabled]="dataItem.opn_application == false" #queue_time title={{dataItem.queue_time}}
                     [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
@@ -445,7 +459,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="move_time" value={{dataItem.move_time}}
-                    (change)="on_input_change(move_time.value,dataItem.rowindex, 'move_time')" #move_time title={{dataItem.move_time}}
+                    (change)="on_input_change(move_time.value,dataItem.rowindex, 'move_time')" [disabled]="dataItem.opn_application == false" #move_time title={{dataItem.move_time}}
                     [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
@@ -453,7 +467,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm text-right" id="qc_time" value={{dataItem.qc_time}}
-                    (change)="on_input_change(qc_time.value,dataItem.rowindex, 'qc_time')" #qc_time title={{dataItem.qc_time}}
+                    (change)="on_input_change(qc_time.value,dataItem.rowindex, 'qc_time')" #qc_time [disabled]="dataItem.opn_application == false" title={{dataItem.qc_time}}
                     [patterns]="customPatterns" mask="00:00" />
                 </ng-template>
               </kendo-grid-column>
@@ -461,7 +475,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm" id="time_uom" value={{dataItem.time_uom}}
-                    (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')" #time_uom title={{dataItem.time_uom}} />
+                    (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')" [disabled]="dataItem.opn_application == false" #time_uom title={{dataItem.time_uom}} />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="opn_application" title="{{language.opn_application}}" [width]="100"
