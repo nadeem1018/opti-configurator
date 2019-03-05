@@ -18,7 +18,7 @@
                 <div class="opti_module-title"> {{language.Bom_title}} </div>
             </div>
             <div class="col-md-6 pl-0 pr-0">
-                <div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)">
+                <div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)" title="Tree View">
                     <div class="btn btn-sm btn-secondary" style="margin-top: 8px;">
                         <i class="fa fa-sitemap"></i>
                     </div>
@@ -241,10 +241,10 @@
                                 <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text"
                                     [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input" id="default_{{dataItem.rowindex}}"
+                                        <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
+                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute" id="default_{{dataItem.rowindex}}"
                                                 (change)="on_defualt_change(default,dataItem.rowindex)" value={{dataItem.default}} #default [(checked)]=dataItem.default
-                                                title="{{dataItem.default}}" style="position: relative;margin-top: 5px;" />
+                                                title="{{dataItem.default}}" style="margin-top: 5px;" />
                                             <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
                                         </div>
                                     </ng-template>
@@ -258,11 +258,11 @@
                                 <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric"
                                     [width]="120" [minResizableWidth]="120">
                                     <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input  pull-right" id="propagate_qty_{{dataItem.rowindex}}"
+                                        <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
+                                            <input type="checkbox" class="custom-control-input pull-right position-absolute" id="propagate_qty_{{dataItem.rowindex}}"
                                                 value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
                                                 [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
-                                                #propagate_qty title="{{dataItem.propagate_qty}}" style="position: relative;margin-top: 5px;" />
+                                                #propagate_qty title="{{dataItem.propagate_qty}}" style="margin-top: 5px;" />
                                             <label class="custom-control-label" for="propagate_qty_{{dataItem.rowindex}}"></label>
                                         </div>
                                     </ng-template>
