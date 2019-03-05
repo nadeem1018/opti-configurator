@@ -12,6 +12,7 @@ export interface ColumnSetting {
 
 // Example of Data as model, can be used for non updating data (exaple - names, task type and etc)
 export class CommonData {
+    public imgPath = 'assets/images';
     public project_name: string = "Optipro Configurator";
     public adminDBName: string = "OPTIPROADMIN";
     public href: any = window.location.href;

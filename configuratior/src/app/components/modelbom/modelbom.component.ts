@@ -100,7 +100,6 @@ export class ModelbomComponent implements OnInit {
   public pop;
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-    console.log("scrolling...window");
     $('body').click()
   }
 
@@ -1625,6 +1624,16 @@ export class ModelbomComponent implements OnInit {
     } else {
       id.parentNode.parentNode.childNodes[4].style.display = "none";
     }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
   }
 }
 

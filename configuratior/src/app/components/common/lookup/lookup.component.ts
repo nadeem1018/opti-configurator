@@ -1,4 +1,4 @@
-import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, setTestabilityGetter, Input, Output, EventEmitter, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
@@ -101,7 +101,10 @@ export class LookupComponent implements OnInit {
     this.dialogOpened = false;
     this.current_popup_row = "";
   }
-
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    $('body').click()
+  }
   detectDevice() {
     let getDevice = UIHelper.isDevice();
     this.isMobile = getDevice[0];

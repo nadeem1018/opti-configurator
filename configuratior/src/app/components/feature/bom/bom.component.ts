@@ -18,9 +18,9 @@ export class BomComponent implements OnInit {
   @ViewChild("featureinputbox") _el: ElementRef;
   @ViewChild("button") _ele: ElementRef;
 
-  @HostListener('window:scroll, scroll', ['$event'])
-  onScroll($event, pop:any) {
-      $('body').click()
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    $('body').click()
   }
 
   modalRef: BsModalRef;
@@ -138,7 +138,7 @@ export class BomComponent implements OnInit {
     }
     }
 
-      getFeatureBomDetail(id) {
+  getFeatureBomDetail(id) {
         this.showLoader = true;
         this.fbom.GetDataByFeatureId(id).subscribe(
         data => {
@@ -1408,11 +1408,21 @@ export class BomComponent implements OnInit {
       this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
   }
   childExpand(id: any){
-    id.classList.toggle("expanded")
-    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
-        id.parentNode.parentNode.childNodes[4].style.display = "block";
-    } else {
-        id.parentNode.parentNode.childNodes[4].style.display = "none";
-    }
-}
+      id.classList.toggle("expanded")
+      if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+          id.parentNode.parentNode.childNodes[4].style.display = "block";
+      } else {
+          id.parentNode.parentNode.childNodes[4].style.display = "none";
+      }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
+  }
 }
