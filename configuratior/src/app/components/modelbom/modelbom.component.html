@@ -20,7 +20,7 @@
         <div class="opti_module-title"> {{page_main_title}}</div>
       </div>
       <div class="col-md-6 pl-0 pr-0">
-        <div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)">
+        <div class="float-right" style="cursor: pointer;" (click)="toggleTree($event)" title="Tree View">
           <div class="btn btn-sm btn-secondary" style="margin-top: 8px;">
             <i class="fa fa-sitemap"></i>
           </div>
@@ -223,10 +223,10 @@
                 <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="115"
                   [minResizableWidth]="115">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" class="custom-control-input pull-right" id="propagate_qtye_{{dataItem.rowindex}}"
+                    <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
+                      <input type="checkbox" class="custom-control-input pull-right position-absolute" id="propagate_qtye_{{dataItem.rowindex}}"
                         value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
-                        [(checked)]=dataItem.propagate_qty #propagate_qty title="{{dataItem.propagate_qty}}" style="position: relative;margin-top: 5px;" />
+                        [(checked)]=dataItem.propagate_qty #propagate_qty title="{{dataItem.propagate_qty}}" style="margin-top: 5px;" />
                       <label class="custom-control-label" for="propagate_qtye_{{dataItem.rowindex}}"></label>
                     </div>
 
@@ -253,10 +253,10 @@
                 </kendo-grid-column>
                 <kendo-grid-column field="mandatory" title="{{language.mandatory}}" [width]="100" [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" class="custom-control-input" id="mandatory_{{dataItem.rowindex}}"
+                    <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
+                      <input type="checkbox" class="custom-control-input position-absolute" id="mandatory_{{dataItem.rowindex}}"
                         value={{dataItem.mandatory}} (change)="on_mandatory_change(mandatory,dataItem.rowindex)"
-                        #mandatory [(checked)]=dataItem.mandatory title="{{dataItem.mandatory}}" style="position: relative;margin-top: 5px;" />
+                        #mandatory [(checked)]=dataItem.mandatory title="{{dataItem.mandatory}}" style="margin-top: 5px;" />
                       <label class="custom-control-label" for="mandatory_{{dataItem.rowindex}}"></label>
                     </div>
                   </ng-template>
@@ -264,10 +264,10 @@
                 <kendo-grid-column field="unique_identifier" title="{{language.unique_identifier}}" [width]="135"
                   [minResizableWidth]="135">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" class="custom-control-input" id="unique_identifer_{{dataItem.rowindex}}"
+                    <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
+                      <input type="checkbox" class="custom-control-input position-absolute" id="unique_identifer_{{dataItem.rowindex}}"
                         value={{dataItem.unique_identifer}} [(checked)]=dataItem.unique_identifer (change)="on_unique_identifer_change(unique_identifer,dataItem.rowindex)"
-                        title="{{dataItem.unique_identifer}}" #unique_identifer style="position: relative;margin-top: 5px;" />
+                        title="{{dataItem.unique_identifer}}" #unique_identifer style="margin-top: 5px;" />
                       <label class="custom-control-label" for="unique_identifer_{{dataItem.rowindex}}"></label>
                     </div>
                   </ng-template>
