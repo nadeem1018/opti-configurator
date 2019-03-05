@@ -1120,6 +1120,13 @@ export class ModelbomComponent implements OnInit {
       return;
     }
     this.showLookupLoader = true;
+
+    if(this.rule_data.length == 0)
+    {
+      obj.save_data();
+      return;
+    }
+
     obj.onVerifyOutput(function (response) {
       console.log('in validate true ' + response);
       if (response == true) {
@@ -1332,7 +1339,8 @@ export class ModelbomComponent implements OnInit {
             success_call(false);
             return false;
           }
-          else {
+         
+          else{
             this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
             success_call(true);
             return true;
