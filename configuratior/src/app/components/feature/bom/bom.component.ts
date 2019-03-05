@@ -18,8 +18,8 @@ export class BomComponent implements OnInit {
   @ViewChild("featureinputbox") _el: ElementRef;
   @ViewChild("button") _ele: ElementRef;
 
-  @HostListener('window:scroll, scroll', ['$event'])
-  onScroll($event, pop: any) {
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
     $('body').click()
   }
 
@@ -140,15 +140,15 @@ export class BomComponent implements OnInit {
   }
 
   getFeatureBomDetail(id) {
-    this.showLoader = true;
-    this.fbom.GetDataByFeatureId(id).subscribe(
-      data => {
-        if (data != undefined && data.LICDATA != undefined) {
-          if (data.LICDATA[0].ErrorMsg == "7001") {
-            this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
-            return;
-          }
+        this.showLoader = true;
+        this.fbom.GetDataByFeatureId(id).subscribe(
+        data => {
+          if(data != undefined && data.LICDATA != undefined){
+            if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.router);
+                return;
+            } 
         }
 
         if (data.FeatureDetail.length > 0) {
@@ -1412,12 +1412,22 @@ export class BomComponent implements OnInit {
     $('body').click()
     this.modalRef = this.modalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
-  childExpand(id: any) {
-    id.classList.toggle("expanded")
-    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
-      id.parentNode.parentNode.childNodes[4].style.display = "block";
-    } else {
-      id.parentNode.parentNode.childNodes[4].style.display = "none";
-    }
+  childExpand(id: any){
+      id.classList.toggle("expanded")
+      if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+          id.parentNode.parentNode.childNodes[4].style.display = "block";
+      } else {
+          id.parentNode.parentNode.childNodes[4].style.display = "none";
+      }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
   }
 }

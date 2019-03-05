@@ -103,7 +103,7 @@
     "print_option": "Print Option",
     "summary": "Summary",
     "detail": "Detail",
-    "operation_type_required": "Print Operation Type Required",
+    "operation_type_required": "Select a Print Option",
     "choose_image": "Choose Image",
     "ModelBom": "Model",
     "Model_Bom": "Model BOM",

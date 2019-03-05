@@ -10,14 +10,14 @@ import { UIHelper } from 'src/app/helpers/ui.helpers';
 })
 export class HomeComponent implements OnInit {
 
-  imgPath = 'assets/images';
+  
 
   private baseClassObj = new CommonData();
   constructor(
     private router: Router,
   ) { }
   public commonData = new CommonData();
-
+  imgPath = this.commonData.imgPath;
   isMobile:boolean=false;
   isIpad:boolean=false;
   isDesktop:boolean=true;

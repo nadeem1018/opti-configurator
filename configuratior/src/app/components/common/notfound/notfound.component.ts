@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonData } from 'src/app/models/CommonData';
 
 @Component({
   selector: 'app-notfound',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./notfound.component.scss']
 })
 export class NotfoundComponent implements OnInit {
-
+  public commonData = new CommonData();
+  imgPath = this.commonData.imgPath;
   constructor() { }
 
   ngOnInit() {
