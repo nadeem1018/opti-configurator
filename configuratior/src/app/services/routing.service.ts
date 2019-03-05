@@ -86,4 +86,15 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/WCDetail", jObject, this.common_params.httpOptions);
   }
 
+  getResourceList(wc_code): Observable<any> {
+    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, WCCode: wc_code}]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceList", jObject, this.common_params.httpOptions);
+  }
+
+  getOperationResource(OperationCode): Observable<any> {
+    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, OperationCode: OperationCode}]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceDetail", jObject, this.common_params.httpOptions);
+  }
+
+
 }

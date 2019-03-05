@@ -275,13 +275,13 @@
                         <kendo-grid-column field="operation_no" title="{{language.operation_no}}" filter="text" [width]="140"
                             [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm text-right" id="operation_no"
+                                <input type="text" class="form-control  form-control-sm" id="operation_no"
                                     value="{{dataItem.operation_no}}" [disabled]="dataItem.is_resource_disabled"
                                     (change)="on_input_change(operation_no.value,dataItem.rowindex, 'operation_no')"
                                     #operation_no title="{{dataItem.operation_no}}" />
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="resource_name" title="{{language.resource_name}}" filter="text"
+                        <kendo-grid-column field="resource_name" title="{{language.resource_code}}" filter="text"
                             [width]="155" [minResizableWidth]="155">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="input-group">
@@ -412,7 +412,7 @@
             <div class="modal-footer">
                 <button class="btn btn-sm btn-primary mr-10" type="button" (click)="operation_resource_update()">
                     <i class="fa fa-check"></i> {{this.language.apply}}</button>
-                <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup('rule_selection')">
+                <button class="btn btn-sm btn-grey mr-10" type="button" data-dismiss="modal" (click)="close_lookup('routing_resource_modal')">
                     <i class="fa fa-close"></i> {{this.language.close}}</button>
             </div>
         </div>

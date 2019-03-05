@@ -221,7 +221,7 @@ export class OutputComponent implements OnInit {
 
     // dummy data for 2nd screen 
     this.tree_data_json = [];
-
+    this.step1_data.print_operation = "";
   }
 
 
@@ -243,6 +243,13 @@ export class OutputComponent implements OnInit {
   }
 
   clear_all_screen_data() {
+    this.lookupfor = "";
+    $("select[name='print_operation_type']").val("");
+    this.serviceData = [];
+    this.step1_data.print_operation = [];
+    this.serviceData.ref_doc_details = [];
+    this.serviceData.product_grand_details = [];
+    this.serviceData.print_types = [];
     this.final_order_status = "";
     this.final_document_number = "";
     this.final_ref_doc_entry = "";
@@ -2169,6 +2176,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: lineno
         });
+        console.log(this.feature_itm_list_table);
       }
     }
 
@@ -3437,9 +3445,9 @@ export class OutputComponent implements OnInit {
             "OPTM_LEVEL": temp_step2_final_dataset_save[itempsavefinal].OPTM_LEVEL,
             "OPTM_QUANTITY": temp_step2_final_dataset_save[itempsavefinal].OPTM_QUANTITY,
             "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
-            "OPTM_UNITPRICE": temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE,
-            "OPTM_TOTALPRICE": temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE,
-            "OPTM_DISCPERCENT": temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT,
+            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE),
+            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE),
+            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT),
             "OPTM_CREATEDBY": this.common_output_data.usernameOPTM_CREATEDBY,
             "OPTM_MODIFIEDBY": this.common_output_data.usernameOPTM_MODIFIEDBY,
             "UNIQUEIDNT": temp_step2_final_dataset_save[itempsavefinal].UNIQUEIDNT,
@@ -3719,7 +3727,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: isheadercounter
 
           });
-
+          console.log(this.feature_itm_list_table);
           isheadercounter++;
         }
       }
@@ -3851,6 +3859,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: DefaultData[idefault].HEADER_LINENO
         });
+        console.log(this.feature_itm_list_table);
       }
     }
     this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
@@ -3892,6 +3901,7 @@ export class OutputComponent implements OnInit {
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
           OPTM_ITEMTYPE: 1
         });
+        console.log(this.feature_itm_list_table);
       }
 
       var ModelItemsArray = [];
@@ -3927,7 +3937,7 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
           });
-
+          console.log(this.feature_itm_list_table);
           ItemPrice = ItemPrice + ModelItemsArray[imodelarray].Price
         }
       }
@@ -3975,6 +3985,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelItemsData[imodelarray].OPTM_LINENO,
         });
+        console.log(this.feature_itm_list_table);
       }
     }
   }
@@ -4024,6 +4035,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: DefaultData[idefault].HEADER_LINENO
         });
+        console.log(this.feature_itm_list_table);
       }
     }
     this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
@@ -4566,7 +4578,7 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: parseFloat(imodelsavedata) + 1
           });
-
+        console.log(this.feature_itm_list_table);
       }
       else if (getmodelsavedata[imodelsavedata].OPTM_ITEMTYPE == 2) {
         if (getmodelsavedata[imodelsavedata].OPTM_LEVEL == 2) {
@@ -4602,6 +4614,7 @@ export class OutputComponent implements OnInit {
               isQuantityDisabled: true,
               HEADER_LINENO: parseFloat(imodelsavedata) + 1
             });
+            console.log(this.feature_itm_list_table);
           }
         }
         else {
@@ -4641,7 +4654,7 @@ export class OutputComponent implements OnInit {
               isQuantityDisabled: true,
               HEADER_LINENO: parseFloat(imodelsavedata) + 1
             });
-
+            console.log(this.feature_itm_list_table);
           }
         }
       }
@@ -4684,6 +4697,7 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: parseFloat(imodelsavedata) + 1
           });
+          console.log(this.feature_itm_list_table);
         }
 
 

@@ -107,7 +107,7 @@ export class RoutingComponent implements OnInit {
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
       this.show_resequence_btn = false;
-      this.show_resource_btn = false;
+      this.show_resource_btn = true;
       this.routing_header_data.default_batch_size = 1;
       this.routing_header_data.default_lot_size = 1;
       this.routing_header_data.applicable_bom_unit = 1;
@@ -119,7 +119,10 @@ export class RoutingComponent implements OnInit {
       this.show_resequence_btn = true;
       this.show_resource_btn = true;
     }
+  }
 
+  ngOnChanges() {
+    console.log("in ngChange of routingTS");
   }
 
   on_operation_change() {
@@ -127,7 +130,7 @@ export class RoutingComponent implements OnInit {
     if (this.routing_header_data.routing_for == 'feature') {
       this.reset_model()
       this.show_resequence_btn = false;
-      this.show_resource_btn = false;
+      this.show_resource_btn = true;
       this.type_dropdown = this.commonData.bom_type;
 
       this.grid_option_title = this.language.Bom_FeatureValue;
@@ -236,6 +239,7 @@ export class RoutingComponent implements OnInit {
 
     var obj = this;
     setTimeout(() => {
+      console.log('in getlookupvalue on routing ts');
       obj.lookupfor = "";
     });
   }
@@ -277,7 +281,7 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
     )
@@ -304,7 +308,7 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
     )
@@ -315,7 +319,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.feature_code = '';
     this.routing_header_data.feature_description = '';
     this.routing_detail_data = [];
-    this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
+   
   }
 
   clearInvalidModel() {
@@ -323,7 +327,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.modal_code = '';
     this.routing_header_data.modal_description = "";
     this.routing_detail_data = [];
-    this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
+    
   }
 
   getFeatureDetail(feature_code) {
@@ -339,16 +343,19 @@ export class RoutingComponent implements OnInit {
             this.GetDataByFeatureId(this.routing_header_data.feature_id, 'header', 0);
           } else {
             this.clearInvalidfeature();
+            this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
             this.showLookupLoader = false;
             return;
           }
         } else {
           this.clearInvalidfeature();
+          this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
           this.showLookupLoader = false;
           return;
         }
       }, error => {
         this.clearInvalidfeature();
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
         return;
       }
@@ -369,16 +376,19 @@ export class RoutingComponent implements OnInit {
             this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0);
           } else {
             this.clearInvalidModel();
+            this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
             this.showLookupLoader = false;
             return;
           }
         } else {
           this.clearInvalidModel();
+          this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
           this.showLookupLoader = false;
           return;
         }
       }, error => {
         this.clearInvalidModel();
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
         return;
       }
@@ -454,7 +464,7 @@ export class RoutingComponent implements OnInit {
           }
         }, error => {
           this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         });
     }
@@ -522,9 +532,12 @@ export class RoutingComponent implements OnInit {
           } else {
             this.showLookupLoader = false;
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+            
           }
         }, error => {
           this.showLookupLoader = false;
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
         });
     } else {
 
@@ -557,7 +570,7 @@ export class RoutingComponent implements OnInit {
       },
       error => {
         this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
     )
@@ -673,15 +686,50 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  open_resource_lookup(flag) {
+  open_operation_resources(flag) {
     if (Object.keys(this.current_selected_row).length > 0) {
-
-      this.showLookupLoader = true;
-      // service call for operation wise resource this.current_selected_row.oper_code
-      this.serviceData = [];
-
-      this.lookupfor = 'routing_resource_lookup';
-      this.showLookupLoader = false;
+      if (this.current_selected_row.oper_code != ""){
+        this.showLookupLoader = true;
+        // service call for operation wise resource 
+        this.serviceData = [];
+        this.service.getOperationResource(this.current_selected_row.oper_code).subscribe(
+          data => {
+            this.serviceData.oper_code =  this.current_selected_row.oper_code;
+            this.serviceData.wc_code = this.current_selected_row.wc_code;
+            this.serviceData.oper_res = [];
+            if (data != null){
+              if (data.length > 0) {
+                this.serviceData.oper_res = data;
+                this.lookupfor = 'routing_resource_lookup';
+                this.showLookupLoader = false;
+              }
+              else {
+                this.lookupfor = "routing_resource_lookup";
+                this.serviceData.oper_res = [];
+                this.showLookupLoader = false;
+                /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); */
+                return;
+              } 
+            } else {
+              this.lookupfor = "routing_resource_lookup";
+              this.serviceData.oper_res = [];
+              this.showLookupLoader = false;
+              /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); */
+              return;
+            }
+          },
+          error => {
+            this.showLookupLoader = false;
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
+          }
+        )
+        this.showLookupLoader = false;
+      } else {
+        this.toastr.info('', this.language.Operationcodemissing + ' ' + this.current_selected_row.rowindex, this.commonData.toast_config);
+        return;
+      }
+      
     } else {
       this.toastr.info('', this.language.select_atleast_oper, this.commonData.toast_config);
       return;

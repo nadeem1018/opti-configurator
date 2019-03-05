@@ -10,7 +10,7 @@ export class ModelbomService {
 
   config_params: any;
   common_params = new CommonData();
-  logged_in_company = sessionStorage.selectedComp;
+  public logged_in_company = "";
   
   constructor(private httpclient: HttpClient) {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
@@ -36,6 +36,7 @@ export class ModelbomService {
     console.log('form_data');
     console.log(form_data);
     
+    this.logged_in_company = sessionStorage.selectedComp;
     // let jObject = { file_data: form_data, ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, modelbom_data: modelbom_data }]) };
     let jObject = { form_data };
     console.log(jObject);
@@ -44,12 +45,14 @@ export class ModelbomService {
   } */
 
   GetModelList(): Observable<any> {
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, GUID: sessionStorage.getItem("GUID"),
     UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetModelList", jObject, this.common_params.httpOptions);
   }
 
   getModelDetails(model_code,press_location,index): Observable<any>{
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelID: model_code ,pressLocation:press_location,rowid:index,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
@@ -57,12 +60,14 @@ export class ModelbomService {
   }
 
   getModelFeatureDetails(feature_code,press_location,index): Observable<any>{
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index,
       GUID: sessionStorage.getItem("GUID"),UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
   }
 
   getItemDetails(ItemKey): Observable<any>{
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, ItemKey: ItemKey,GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
       return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetItemList", jObject, this.common_params.httpOptions);
@@ -82,6 +87,7 @@ export class ModelbomService {
   getAllViewDataForModelBom(search:string,PageNumber:any,record_per_page:any): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, SearchString:search,PageNumber:PageNumber, PageLimit:record_per_page,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
@@ -89,6 +95,7 @@ export class ModelbomService {
   }
 
   GetPriceList(ItemKey): Observable<any> {
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { PriceList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey,GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetPriceList", jObject, this.common_params.httpOptions);
@@ -97,6 +104,7 @@ export class ModelbomService {
   GetDataByModelId(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelId:id,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
@@ -121,6 +129,7 @@ export class ModelbomService {
   getRuleLookupList(id): Observable<any>{
     let current_date = new Date();
     let formatted_date: any = (current_date.getFullYear()) + '/' + (current_date.getMonth() + 1) + '/' + current_date.getDate();
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, ModelId: id, currentDate: formatted_date ,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
@@ -129,6 +138,7 @@ export class ModelbomService {
   }
 
   getRuleOutput(rule_id, seq_id): Observable<any> {
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBId: this.logged_in_company, RuleId: rule_id, SeqId: seq_id }]) };
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetOutputDataForRule", jObject, this.common_params.httpOptions);
   }
@@ -136,6 +146,7 @@ export class ModelbomService {
   onModelIdChange(code): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelList: JSON.stringify([{ CompanyDBID: this.logged_in_company,ModelCode:code,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
@@ -146,6 +157,7 @@ export class ModelbomService {
   onFeatureIdChangeModelBom(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,FeatureId:id,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
@@ -156,6 +168,7 @@ export class ModelbomService {
   onItemIdChangeModelBom(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemCode:id,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
@@ -165,6 +178,7 @@ export class ModelbomService {
 
   CheckModelAlreadyAddedinParent(enteredModelID,parentModelID): Observable<any> {
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,parentModelID: parentModelID, enteredModelID: enteredModelID,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
@@ -184,6 +198,7 @@ export class ModelbomService {
   CheckMaxSelectedValue(id): Observable<any> {
 
     //JSON Obeject Prepared to be send as a param to API
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company,featureId:id,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
@@ -191,6 +206,7 @@ export class ModelbomService {
     return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetMaxSelectableForFeature", jObject, this.common_params.httpOptions);
   }
   CheckValidPriceListEntered(ItemKey,priceListName): Observable<any> {
+    this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company,ItemKey:ItemKey, PriceListName:priceListName ,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }

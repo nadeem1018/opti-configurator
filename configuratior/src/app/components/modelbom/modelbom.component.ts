@@ -75,7 +75,8 @@ export class ModelbomComponent implements OnInit {
     } else if(type == '3'){
       this.route.navigateByUrl("modelbom/edit/"+type_value);
       this.modelbom_data= [];
-      this.get_modelbom_details(type_value);
+      this.tree_data_json = [];
+      this.get_modelbom_details(type_value, true);
     }
   }
 
@@ -144,11 +145,11 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
-      this.get_modelbom_details(this.update_id);
+      this.get_modelbom_details(this.update_id, false);
     }
   }
 
-  get_modelbom_details(id) {
+  get_modelbom_details(id, navigat_to_header) {
     this.showLoader = true;
     this.service.GetDataByModelId(id).subscribe(
       data => {
@@ -181,7 +182,12 @@ export class ModelbomComponent implements OnInit {
 
 
         } else {
-          this.route.navigateByUrl('modelbom/view');
+          if(navigat_to_header == true){
+            this.route.navigateByUrl('feature/model/edit/' + id);
+          } else {
+            this.route.navigateByUrl('modelbom/view');
+          }
+          
         }
 
         if (data.ModelDetail.length > 0) {
@@ -1481,9 +1487,12 @@ export class ModelbomComponent implements OnInit {
 
   check_component_exist(componentNumber, level) {
     level = (parseInt(level) + 1);
-    let data = this.tree_data_json.filter(function (obj) {
-      return obj['parentNumber'] == componentNumber && obj['level'] == level;
-    });
+    let data = [];
+    if (componentNumber != "" && componentNumber != null && componentNumber!= undefined ){
+      data = this.tree_data_json.filter(function (obj) {
+        return obj['parentNumber'] == componentNumber; // && obj['level'] == level;
+      });
+    }
     return data;
   }
 

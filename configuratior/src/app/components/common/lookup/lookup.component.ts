@@ -3,6 +3,7 @@ import { CommonService } from '../../../services/common.service';
 import * as XLSX from 'ts-xlsx';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
 import { ModelbomService } from '../../../services/modelbom.service';
+import { RoutingService } from '../../../services/routing.service';
 import { CommonData, ColumnSetting } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -33,7 +34,7 @@ export class LookupComponent implements OnInit {
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   popup_title = this.language.title;
-  constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router, private mbom: ModelbomService, ) { }
+  constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router, private mbom: ModelbomService, private rs: RoutingService) { }
   public table_head_hidden_elements = [];
   public defaultCurrency = sessionStorage.defaultCurrency;
 
@@ -68,6 +69,7 @@ export class LookupComponent implements OnInit {
   public fileType = "";
   public template_path = "";
   public print_item_list_array: any = [];
+  public is_operation_popup_lookup_open: boolean = false
   //Print Data variables
   public report_type;
   public showCustDetailsSec: boolean = false;
@@ -80,7 +82,9 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
   public resourceServiceData: any = [];
-  public current_popup_row :any = "";
+  public resourceServiceOper: any = "";
+  public resourceServiceWc: any = "";
+  public current_popup_row: any = "";
   public downLoadfileName = this.language.quatation + '.pdf';
   public template_type = "";
   isMobile: boolean = false;
@@ -95,7 +99,7 @@ export class LookupComponent implements OnInit {
   public load_print_report: boolean = false;
   public popup_lookupfor = "";
   public resource_counter = 0;
-  public showLookupLoader: boolean = false; 
+  public showLookupLoader: boolean = false;
 
   public close_kendo_dialog() {
     this.dialogOpened = false;
@@ -146,13 +150,14 @@ export class LookupComponent implements OnInit {
     this.skip = 0;
     this.resource_counter = 0;
     this.dialogOpened = false;
-    this.resourceServiceData = [];
+
+
     this.current_popup_row = "";
     //this.test_model();
     console.log("this.lookupfor " + this.popup_lookupfor);
     this.search_string = "";
     if (this.popup_lookupfor == "output_invoice_print") {
-    await this.sleep(400);
+      await this.sleep(400);
     }
 
     if (this.popup_lookupfor != "") {
@@ -203,7 +208,7 @@ export class LookupComponent implements OnInit {
         this.ruleSelection();
         return;
       }
- 
+
       if (this.popup_lookupfor == "tree_view__model_bom_lookup") {
         this.showModelBOMTreeView();
         return;
@@ -247,16 +252,20 @@ export class LookupComponent implements OnInit {
         return;
       }
 
-      if(this.popup_lookupfor == 'routing_resource_lookup'){
+      if (this.popup_lookupfor == 'routing_resource_lookup') {
+        /*   this.resourceServiceData = [];
+          this.resourceServiceOper = "";
+          this.resourceServiceWc = ""; */
+        this.is_operation_popup_lookup_open = true;
         this.routing_resource_lookup();
         return;
       }
 
-      if(this.popup_lookupfor == "warehouse_lookup"){
+      if (this.popup_lookupfor == "warehouse_lookup") {
         this.warehouse_lookup_list();
       }
 
-      if(this.popup_lookupfor == 'operation_lookup'){
+      if (this.popup_lookupfor == 'operation_lookup') {
         this.operation_lookup_list();
       }
 
@@ -266,7 +275,7 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  workcenter_lookup_list(){
+  workcenter_lookup_list() {
     this.popup_title = this.language.workcenter;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -288,13 +297,13 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-     /*  {
-        field: 'WHCode',
-        title: this.language.warehouse,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      } */
+      /*  {
+         field: 'WHCode',
+         title: this.language.warehouse,
+         type: 'text',
+         width: '100',
+         attrType: 'text'
+       } */
     ];
 
     this.table_head_hidden_elements = [false, false];
@@ -311,7 +320,7 @@ export class LookupComponent implements OnInit {
 
   }
 
-  operation_lookup_list(){
+  operation_lookup_list() {
     this.popup_title = this.language.operation;
     this.LookupDataLoaded = false;
     this.showLoader = true;
@@ -369,7 +378,7 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  warehouse_lookup_list(){
+  warehouse_lookup_list() {
 
     this.popup_title = this.language.warehouse;
     this.LookupDataLoaded = false;
@@ -406,8 +415,8 @@ export class LookupComponent implements OnInit {
     }
   }
 
-  operation_resource_update(){
-
+  operation_resource_update() {
+    this.is_operation_popup_lookup_open == false;
   }
 
   log(val) {
@@ -421,44 +430,52 @@ export class LookupComponent implements OnInit {
     else if (this.template_type === "feature") {
       this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
     }
+
   }
   on_item_select(selection) {
-    const lookup_key = selection.selectedRows[0].dataItem;
+    var lookup_key = selection.selectedRows[0].dataItem;
     console.log("this.popup_lookupfor ", this.popup_lookupfor);
-    
-    console.log("lookup_key - ", lookup_key);
-    if (this.popup_lookupfor == "routing_resource_lookup"){
-      console.log("this.current_popup_row - ", this.current_popup_row);
-     
-      for (let i = 0; i <  this.resourceServiceData.length; ++i) {
-        if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
-          this.resourceServiceData[i].resource_code = "test";
-          this.resourceServiceData[i].resource_name = "test";
-          this.resourceServiceData[i].resource_uom  = "hours";
-          this.resourceServiceData[i].resource_consumption = "100";
-          this.resourceServiceData[i].resource_inverse = "100";
-          this.resourceServiceData[i].no_resource_used = "120";
-          this.resourceServiceData[i].time_uom = "hours";
-          this.resourceServiceData[i].time_consumption = "150";
-          this.resourceServiceData[i].time_inverse = "140";
 
-          this.current_popup_row = "";
+    console.log("lookup_key - ", lookup_key);
+    // if (this.popup_lookupfor == "routing_resource_lookup") {
+    if (this.is_operation_popup_lookup_open == true) {
+      console.log("this.current_popup_row - ", this.current_popup_row);
+
+      for (let i = 0; i < this.resourceServiceData.length; ++i) {
+        if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
+          this.resourceServiceData[i].resource_code = lookup_key.ResCode;
+          this.resourceServiceData[i].resource_name = lookup_key.Name;
+          this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+          this.resourceServiceData[i].resource_consumption = '0';
+          this.resourceServiceData[i].resource_inverse = '0';
+          this.resourceServiceData[i].no_resource_used = '1';
+          this.resourceServiceData[i].time_uom = '';
+          this.resourceServiceData[i].time_consumption = '0';
+          this.resourceServiceData[i].time_inverse = '0';
+
+
         }
       }
     }
-    
-    
+
     console.log(lookup_key);
+
     this.lookupvalue.emit(Object.values(lookup_key));
+    this.serviceData = [];
     //   $("#lookup_modal").modal('hide');
     console.log(selection);
     selection.selectedRows = [];
     selection.index = 0;
     selection.selected = false;
-    this.serviceData = [];
+
     this.skip = 0;
     this.dialogOpened = false;
-    this.current_popup_row = "";
+    if (this.is_operation_popup_lookup_open == false) {
+      this.current_popup_row = "";
+    }
+    setTimeout(() => {
+      this.popup_lookupfor = "";
+    }, 10);
   }
 
   configure_list_lookup() {
@@ -689,7 +706,7 @@ export class LookupComponent implements OnInit {
   }
 
   close_lookup(lookup_id) {
-   this.log("lookup id - " + lookup_id);
+    console.log("lookup id - " + lookup_id);
     $("#" + lookup_id).modal('hide');
 
     //clear arrays after close button clicked on print model 
@@ -699,8 +716,18 @@ export class LookupComponent implements OnInit {
       // popup_lookupfor  = "";
       setTimeout(() => {
         this.popup_lookupfor = "";
-        this.current_popup_row = "";
       });
+      this.current_popup_row = "";
+    }
+
+    if (lookup_id == "routing_resource_modal" || this.popup_lookupfor == 'routing_resource_lookup') {
+      this.is_operation_popup_lookup_open = false;
+      this.resourceServiceData = [];
+      this.resourceServiceOper = "";
+      this.resourceServiceWc = "";
+      this.popup_lookupfor = "";
+      console.log('in array cleaner');
+      $("#routing_resource_modal").modal('hide');
     }
 
   }
@@ -1128,23 +1155,23 @@ export class LookupComponent implements OnInit {
     this.popup_title = this.language.print_quote;
     this.load_print_report = true;
     console.log(" output_invoice_print - " + this.load_print_report);
-      this.common_service.GetCompanyDetails(this.companyName).subscribe(
-       data => {
-         if (data != null || data != undefined) {
-           if (data.length > 0) {
-             if (data[0].LogoImage != ""){
-               this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
-             }
-             this.company_name = data[0].CompanyName;
-             this.company_address = data[0].CompanyAddress;
-             
-           }
-         }
-       },
-       error => {
-         this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
-       }
-     ) 
+    this.common_service.GetCompanyDetails(this.companyName).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+          if (data.length > 0) {
+            if (data[0].LogoImage != "") {
+              this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
+            }
+            this.company_name = data[0].CompanyName;
+            this.company_address = data[0].CompanyAddress;
+
+          }
+        }
+      },
+      error => {
+        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+      }
+    )
 
     //Print Criteria
     //Summary --> Customer + COM + Qty + Acces.
@@ -1282,23 +1309,40 @@ export class LookupComponent implements OnInit {
   }
 
 
-  routing_resource_lookup(){
+  routing_resource_lookup() {
     this.popup_title = this.language.routing_resource;
     this.LookupDataLoaded = false;
-
+    this.is_operation_popup_lookup_open = true;
     this.showLoader = true;
-    this.resourceServiceData = this.serviceData;
+    console.log("this.serviceData ", this.serviceData);
+    console.log("this.serviceData.wc_code ", this.serviceData.wc_code);
+    console.log("this.serviceData.oper_code ", this.serviceData.oper_code);
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    // if (this.serviceData !== undefined) {
-    //  if (this.serviceData.length > 0) {
+    if (this.serviceData !== undefined && this.serviceData !== "") {
+      if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
+        this.resourceServiceData = this.serviceData.oper_res;
+        if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
+          this.resourceServiceOper = this.serviceData.oper_code;
+        }
+
+        if (this.serviceData.wc_code != "" && this.serviceData.wc_code != null && this.serviceData.wc_code != undefined) {
+          this.resourceServiceWc = this.serviceData.wc_code;
+        }
+
+        this.showLoader = false;
+        this.LookupDataLoaded = true;
+        console.log("routing_resource_modal show ");
         $("#routing_resource_modal").modal('show');
-   //   }
-   // }
+
+      }
+    }
   }
 
-  insert_new_resource(){
+  insert_new_resource() {
+    console.log("this.resourceServiceData - ", this.resourceServiceData);
+    if (this.resourceServiceData == undefined || this.resourceServiceData == null || this.resourceServiceData == "") {
+      this.resourceServiceData = [];
+    }
     this.resource_counter = 0;
     if (this.resourceServiceData.length > 0) {
       this.resource_counter = this.resourceServiceData.length
@@ -1308,19 +1352,19 @@ export class LookupComponent implements OnInit {
     this.resourceServiceData.push({
       lineno: this.resource_counter,
       rowindex: this.resource_counter,
-      operation_no: '',
+      operation_no: this.resourceServiceOper,
       resource_code: '',
       resource_name: '',
-      resource_uom : '',
-      resource_consumption  : "0",
-      resource_inverse  : "0", 
-      no_resource_used : "1",
-      time_uom : '',
-      time_consumption  : "0",
-      time_inverse  : "0",
-      resource_consumption_type  : '1',
-      basis : '1',
-      schedule  : '',
+      resource_uom: '',
+      resource_consumption: "0",
+      resource_inverse: "0",
+      no_resource_used: "1",
+      time_uom: '',
+      time_consumption: "0",
+      time_inverse: "0",
+      resource_consumption_type: '1',
+      basis: '1',
+      schedule: '',
       is_resource_disabled: true
 
     });
@@ -1348,71 +1392,121 @@ export class LookupComponent implements OnInit {
       }
     }
     console.log(currentrow);
-    if(grid_element == 'operation_no'){
+    if (grid_element == 'operation_no') {
 
     }
-    
-    if(grid_element == 'resource_code'){
+
+    if (grid_element == 'resource_code') {
 
     }
-    
-    if(grid_element == 'resource_name'){
+
+    if (grid_element == 'resource_name') {
 
     }
-    
-    if(grid_element == 'resource_uom'){
+
+    if (grid_element == 'resource_uom') {
 
     }
-    
-    if(grid_element == 'resource_consumption'){
+
+    if (grid_element == 'resource_consumption') {
 
     }
-    
-    if(grid_element == 'resource_inverse'){
+
+    if (grid_element == 'resource_inverse') {
 
     }
-    
-    if(grid_element == 'no_resource_used'){
+
+    if (grid_element == 'no_resource_used') {
 
     }
-    
-    if(grid_element == 'time_uom'){
+
+    if (grid_element == 'time_uom') {
 
     }
-    
-    if(grid_element == 'time_consumption'){
+
+    if (grid_element == 'time_consumption') {
 
     }
-    
-    if(grid_element == 'time_inverse'){
+
+    if (grid_element == 'time_inverse') {
 
     }
-    
-    if(grid_element == 'resource_consumption_type'){
+
+    if (grid_element == 'resource_consumption_type') {
 
     }
-    
-    if(grid_element == 'resource_basic'){
+
+    if (grid_element == 'resource_basic') {
 
     }
-    
-    if(grid_element == 'schedule'){
+
+    if (grid_element == 'schedule') {
 
     }
   }
-  
+
 
   open_resource_lookup(type, rowindex) {
     this.showLookupLoader = true;
     this.serviceData = []
-    this.mbom.GetModelList().subscribe(
+    this.rs.getResourceList(this.resourceServiceWc).subscribe(
       data => {
-        if (data.length > 0) {
-          this.dialogOpened = true;
-          this.serviceData = data;
-          this.current_popup_row = rowindex;
-        }
-        else {
+        if (data != null) {
+          if (data.length > 0) {
+            this.current_popup_row = rowindex;
+            this.table_head = [
+              {
+                field: 'ResCode',
+                title: this.language.resource_code,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              },
+              {
+                field: 'Name',
+                title: this.language.resource_name,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              },
+              {
+                field: 'NumberOfRes',
+                title: this.language.numberofres,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              },
+              /*  {
+                 field: 'TimeResUn',
+                 title: this.language.timeresun,
+                 type: 'text',
+                 width: '100',
+                 attrType: 'text'
+               },
+               {
+                 field: 'UnitOfMsr',
+                 title: this.language.resource_uom,
+                 type: 'text',
+                 width: '100',
+                 attrType: 'text'
+               }, */
+              {
+                field: 'WCCode',
+                title: this.language.workcenter_code,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              }];
+            this.serviceData = data;
+            this.dialogOpened = true;
+
+          }
+          else {
+            this.dialogOpened = false;
+            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+            return;
+          }
+        } else {
           this.dialogOpened = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
@@ -1421,6 +1515,7 @@ export class LookupComponent implements OnInit {
       error => {
         this.dialogOpened = false;
         this.showLookupLoader = false;
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
       }
     )
   }
