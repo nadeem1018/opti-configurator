@@ -71,6 +71,7 @@ export class RulewbComponent implements OnInit {
   public outputrowcounter: number = 0;
   public showLoader: boolean = true;
   public showLookupLoader:boolean = false;
+  public isExcluded:boolean =false;
   
   public code_disabled = "false";
   public isOutputTable: boolean = true;
@@ -723,7 +724,6 @@ export class RulewbComponent implements OnInit {
               type: data[i].type
 
             });
-
           }
         }
         this.showLookupLoader = false;
@@ -1324,6 +1324,16 @@ export class RulewbComponent implements OnInit {
         this.rule_feature_data.push(feature_rule_data[data]);
       }
 
+      if(this.rule_wb_data.Excluded) {
+        this.isExcluded =true;
+        this.selectall =false;
+        for(let i = 0; i< this.rule_feature_data.length;i++ ) {
+          this.rule_feature_data[i].check_child = false;
+        }
+      } else {
+          this.isExcluded =false;
+      }
+
       this.generated_expression_value = row.expression;
       this.editing_row = rowindex;
       this.seq_count = row.seq_count;
@@ -1421,8 +1431,20 @@ export class RulewbComponent implements OnInit {
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
       this.rule_feature_data[i].check_child = value
     }
+    this.selectall =true;
   }
 
+  excludeAllRowsOnCheck() {
+    if(this.rule_wb_data.Excluded) {
+      this.isExcluded =true;
+      for(var i = 0; i< this.rule_feature_data.length;i++ ) {
+        this.rule_feature_data[i].check_child = false;
+      }
+      this.selectall =false;
+    } else {
+      this.isExcluded =false;
+    }
+  }
   validation(btnpress) {
     if (btnpress == "AddRow") {
       if (this.rule_wb_data.rule_code == "" || this.rule_wb_data.rule_code == null) {
