@@ -238,7 +238,7 @@
                                             #quantity title="{{dataItem.quantity}}" />
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="Bom_Default" title="{{language.Bom_Default}}" filter="text"
+                                <kendo-grid-column field="Bom_Default" headerClass="text-center" title="{{language.Bom_Default}}" filter="text"
                                     [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
@@ -255,7 +255,7 @@
                                             value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric"
+                                <kendo-grid-column field="propagate_qty" headerClass="text-center" title="{{language.propagate_qty}}" filter="numeric"
                                     [width]="120" [minResizableWidth]="120">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
