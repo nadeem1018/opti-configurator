@@ -221,7 +221,7 @@
                       #max_selected title="{{dataItem.max_selected}}" />
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="propagate_qty" title="{{language.propagate_qty}}" filter="numeric" [width]="115"
+                <kendo-grid-column field="propagate_qty" headerClass="text-center" title="{{language.propagate_qty}}" filter="numeric" [width]="115"
                   [minResizableWidth]="115">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
@@ -252,7 +252,7 @@
                     </div>
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="mandatory" title="{{language.mandatory}}" [width]="100" [minResizableWidth]="100">
+                <kendo-grid-column field="mandatory" headerClass="text-center" title="{{language.mandatory}}" [width]="100" [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
                       <input type="checkbox" class="custom-control-input position-absolute" id="mandatory_{{dataItem.rowindex}}"
@@ -262,7 +262,7 @@
                     </div>
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="unique_identifier" title="{{language.unique_identifier}}" [width]="135"
+                <kendo-grid-column field="unique_identifier" headerClass="text-center" title="{{language.unique_identifier}}" [width]="135"
                   [minResizableWidth]="135">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
