@@ -22,7 +22,7 @@ export class ViewRoutingComponent implements OnInit {
     public selectedValue: number = Number(this.commonData.default_count);
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
-    page_main_title = this.language.Bom_title;
+    page_main_title = this.language.routing;
     add_route_link = '/routing/add';
     public showLoader: boolean = true;
     record_per_page: any;
@@ -66,6 +66,18 @@ export class ViewRoutingComponent implements OnInit {
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
 
+    button_click1(data) {
+
+        this.router.navigateByUrl('routing/edit/' + data.OPTM_MODELFEATUREID);
+        // button click function in here
+    }
+    button_click2(data) {
+        this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+        this.show_dialog = true;
+        this.row_id = data.OPTM_MODELFEATUREID;
+        // var result = confirm(this.language.DeleteConfimation);
+    }
+
     public columns: ColumnSetting[] = [
         {
             field: 'OPTM_FEATURECODE',
@@ -89,7 +101,7 @@ export class ViewRoutingComponent implements OnInit {
             attrType: 'text'
         },
         {
-            field: 'OPTM_TYPE',
+            field: 'OPTM_TYPE1',
             title: this.language.Type,
             type: 'text',
             width: '100',

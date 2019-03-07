@@ -17,16 +17,17 @@ export class RoutingService {
   }
 
   get_all_routing_data(): Observable<any> {
-
-    //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
-    //Return the response form the API  
+    let jObject = { Routing: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/GetAllRoutingData", jObject, this.common_params.httpOptions);
   }
 
-  getFeatureList(): Observable<any> {
-    console.log(' in  service');
+  get_routing_details(routing_id): Observable<any> {
+    let jObject = { Routing: JSON.stringify([{ CompanyDBID: this.logged_in_company, RoutingID: routing_id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/GetRoutingService", jObject, this.common_params.httpOptions);
+  }
 
+  getFeatureList(): Observable<any> {
+  
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company }]) }
     return this.httpclient.post(this.config_params.service_url + "/Routing/FeatureList", jObject, this.common_params.httpOptions);
   }

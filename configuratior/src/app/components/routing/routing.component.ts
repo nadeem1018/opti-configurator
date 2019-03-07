@@ -119,6 +119,9 @@ export class RoutingComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.show_resequence_btn = true;
       this.show_resource_btn = true;
+
+      this.showLoader = false; 
+      this.service.get_routing_details(this.update_id).subscribe();
     }
   }
 
@@ -1286,4 +1289,9 @@ export class RoutingComponent implements OnInit {
   }
 
 
+  // navigartion functions - start 
+  
+
+
+  // navigartion functions - end 
 }
