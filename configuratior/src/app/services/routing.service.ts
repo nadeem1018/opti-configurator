@@ -102,4 +102,10 @@ export class RoutingService {
   }
 
 
+  SaveUpdateRouting(objDataset): Observable<any> {
+    var jObject = { AddEditRouting: JSON.stringify(objDataset) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/AddEditRouting", jObject, this.common_params.httpOptions);
+  }
+
+
 }

@@ -488,6 +488,7 @@
     "selectWarehouse": "Select a Warehouse",
     "noselectWarehouse": "No Warehouse selected, Select a Warehouse first",
     "invalidOperationcodeRow": "Invalid Operation Code at row - ",
+    "invalidrescodeRow": "Invalid Resource Code at row - ",
     "Operationcodemissing": "Missing Operation Code at row - ",
     "invalidwccodeRow": "Invalid WC Code at row - ",
     "numberofres":"No. of Res",

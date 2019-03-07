@@ -20,6 +20,7 @@ export class RoutingComponent implements OnInit {
   public input_file: File = null;
   public routing_header_data: any = [];
   public routing_detail_data: any = [];
+  public routing_detail_resource_data: any = [];
   public image_data: any = [];
   public lookupfor: string = '';
   public counter = 0;
@@ -121,9 +122,7 @@ export class RoutingComponent implements OnInit {
     }
   }
 
-  ngOnChanges() {
-    console.log("in ngChange of routingTS");
-  }
+  ngOnChanges() { }
 
   on_operation_change() {
     this.current_selected_row = [];
@@ -150,6 +149,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.feature_code = "";
     this.routing_header_data.feature_description = "";
     this.routing_detail_data = [];
+    this.routing_detail_resource_data = [];
   }
 
   reset_model() {
@@ -162,6 +162,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.default_lot_size = 1;
     this.routing_header_data.applicable_bom_unit = 1;
     this.routing_detail_data = [];
+    this.routing_detail_resource_data = [];
     this.routing_header_data.use_mtq_in_planing = false;
     $("#use_mtq_in_planing").prop('checked', false);
     this.routing_header_data.opm_num_format = "";
@@ -179,7 +180,7 @@ export class RoutingComponent implements OnInit {
       this.toastr.error('', this.language.valuezerovalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
     }
     else {
-      var rgexp = /^\d+$/;
+      let rgexp = /^\d+$/;
       if (isNaN(value) == true) {
         value = 1;
         this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
@@ -226,22 +227,55 @@ export class RoutingComponent implements OnInit {
     if (this.lookupfor == 'operation_lookup') {
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
       this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
+      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[1];
+      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
       this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
       this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
-      this.current_grid_action_row = 0;
+      let obj = this;
+      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
+        // obj.current_grid_action_row = 0;
+      });
     }
 
     if (this.lookupfor == "workcenter_lookup") {
       this.routing_detail_data[this.current_grid_action_row].wc_id = $event[2];
       this.routing_detail_data[this.current_grid_action_row].wc_code = $event[2];
-      this.current_grid_action_row = 0;
+      //  this.current_grid_action_row = 0;
     }
 
-    var obj = this;
+    if (this.lookupfor == "routing_resource_lookup") {
+      let temp_array = [];
+      for (let i = 0; i < $event.length; ++i) {
+
+        temp_array.push({
+          lineno: i + 1,
+          rowindex: i + 1,
+          OPRCode: $event[i].operation_no,
+          ResCode: $event[i].resource_code,
+          ResName: $event[i].resource_name,
+          ResType: $event[i].resource_type,
+          ResUOM: $event[i].resource_uom,
+          ResCons: $event[i].resource_consumption,
+          ResInv: $event[i].resource_inverse,
+          ResUsed: $event[i].no_resource_used,
+          TimeUOM: $event[i].time_uom,
+          TimeCons: $event[i].time_consumption,
+          TimeInv: $event[i].time_inverse,
+          resource_consumption_type: '1',
+          basis: '1',
+          schedule: false,
+          is_resource_disabled: true,
+          unique_key: $event[i].unique_key,
+        });
+      }
+      this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
+    }
+
+    let obj = this;
     setTimeout(() => {
-      console.log('in getlookupvalue on routing ts');
       obj.lookupfor = "";
     });
+    console.log("this.routing_detail_resource_data - ", this.routing_detail_resource_data);
   }
 
   resequence_operation() {
@@ -319,7 +353,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.feature_code = '';
     this.routing_header_data.feature_description = '';
     this.routing_detail_data = [];
-   
+
   }
 
   clearInvalidModel() {
@@ -327,7 +361,7 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.modal_code = '';
     this.routing_header_data.modal_description = "";
     this.routing_detail_data = [];
-    
+
   }
 
   getFeatureDetail(feature_code) {
@@ -407,13 +441,13 @@ export class RoutingComponent implements OnInit {
           if (data.FeatureDetail.length > 0) {
 
 
-            var temp = new Date(this.routing_header_data.EffectiveDate);
-            var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+            let temp = new Date(this.routing_header_data.EffectiveDate);
+            let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
             for (let i = 0; i < data.FeatureDetail.length; ++i) {
-              var featuredata = data.FeatureDetail[i];
+              let featuredata = data.FeatureDetail[i];
               let value = '';
               let value_code = '';
-              var desc = '';
+              let desc = '';
               this.counter = 0;
               if (this.routing_detail_data.length > 0) {
                 this.counter = this.routing_detail_data.length
@@ -435,13 +469,14 @@ export class RoutingComponent implements OnInit {
                 lineno: this.counter,
                 rowindex: this.counter,
                 type: featuredata.OPTM_TYPE,
-                type_value: value,
-                type_value_code: value_code,
+                type_value: (value).toString(),
+                type_value_code: (value_code).toString(),
                 description: desc,
-                operation_top_level: '',
+                operation_top_level: false,
                 oper_id: '',
                 oper_code: '',
                 oper_desc: '',
+                oper_type: '',
                 wc_id: '',
                 wc_code: '',
                 mtq: '1',
@@ -455,6 +490,7 @@ export class RoutingComponent implements OnInit {
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
+                unique_key: this.commonData.random_string(55)
               });
             }
             this.showLookupLoader = false;
@@ -482,14 +518,14 @@ export class RoutingComponent implements OnInit {
               let modeldata = data.ModelDetail[i];
               let value = '';
               let value_code = '';
-              var desc = '';
+              let desc = '';
               this.counter = 0;
               if (this.routing_detail_data.length > 0) {
                 this.counter = this.routing_detail_data.length
               }
               this.counter++;
-              var temp = new Date(this.routing_header_data.EffectiveDate);
-              var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+              let temp = new Date(this.routing_header_data.EffectiveDate);
+              let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
               if (modeldata.OPTM_TYPE == 1) {
                 value = modeldata.OPTM_CHILDFEATUREID;
                 value_code = modeldata.feature_code;
@@ -506,13 +542,14 @@ export class RoutingComponent implements OnInit {
                 lineno: this.counter,
                 rowindex: this.counter,
                 type: modeldata.OPTM_TYPE,
-                type_value: value,
-                type_value_code: value_code,
+                type_value: (value).toString(),
+                type_value_code: (value_code).toString(),
                 description: desc,
                 operation_top_level: '',
                 oper_id: '',
                 oper_code: '',
                 oper_desc: '',
+                oper_type: '',
                 wc_id: '',
                 wc_code: '',
                 mtq: '1',
@@ -526,13 +563,14 @@ export class RoutingComponent implements OnInit {
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
+                unique_key: this.commonData.random_string(55)
               });
             }
             this.showLookupLoader = false;
           } else {
             this.showLookupLoader = false;
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-            
+
           }
         }, error => {
           this.showLookupLoader = false;
@@ -686,50 +724,84 @@ export class RoutingComponent implements OnInit {
     )
   }
 
+  getOperationResourceDetail(oper_code, rowindex, operation_line_unique_key, callback) {
+    this.showLookupLoader = true;
+    if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
+      this.routing_detail_resource_data[rowindex] = [];
+    }
+    this.service.getOperationResource(oper_code).subscribe(
+      data => {
+        this.showLookupLoader = false;
+        if (data.length > 0) {
+          let operData = [];
+          for (let i = 0; i < data.length; ++i) {
+            data[i].unique_key = operation_line_unique_key;
+            operData.push(data[i]);
+          }
+          this.routing_detail_resource_data[rowindex] = operData;
+        }
+        if (callback != "" || callback !== undefined) {
+          callback();
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        if (callback != "" || callback !== undefined) {
+          callback();
+        }
+        return;
+      }
+    );
+  }
+
   open_operation_resources(flag) {
     if (Object.keys(this.current_selected_row).length > 0) {
-      if (this.current_selected_row.oper_code != ""){
+      if (this.current_selected_row.oper_code != "") {
         this.showLookupLoader = true;
         // service call for operation wise resource 
         this.serviceData = [];
-        this.service.getOperationResource(this.current_selected_row.oper_code).subscribe(
-          data => {
-            this.serviceData.oper_code =  this.current_selected_row.oper_code;
-            this.serviceData.wc_code = this.current_selected_row.wc_code;
-            this.serviceData.oper_res = [];
-            if (data != null){
-              if (data.length > 0) {
-                this.serviceData.oper_res = data;
-                this.lookupfor = 'routing_resource_lookup';
-                this.showLookupLoader = false;
-              }
-              else {
-                this.lookupfor = "routing_resource_lookup";
-                this.serviceData.oper_res = [];
-                this.showLookupLoader = false;
-                /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); */
-                return;
-              } 
-            } else {
-              this.lookupfor = "routing_resource_lookup";
-              this.serviceData.oper_res = [];
-              this.showLookupLoader = false;
-              /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); */
-              return;
-            }
-          },
-          error => {
-            this.showLookupLoader = false;
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-            return;
-          }
-        )
+        /*  this.service.getOperationResource(this.current_selected_row.oper_code).subscribe(
+           data => { */
+        this.serviceData.oper_code = this.current_selected_row.oper_code;
+        this.serviceData.wc_code = this.current_selected_row.wc_code;
+        this.serviceData.unique_key = this.current_selected_row.unique_key;
+        this.serviceData.oper_res = (this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] != undefined) ? this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] : [];
+        this.lookupfor = 'routing_resource_lookup';
+        this.showLookupLoader = false;
+        /* if (data != null){  */
+
+        /* if (data.length > 0) {
+          this.serviceData.oper_res = data;
+          this.lookupfor = 'routing_resource_lookup';
+          this.showLookupLoader = false;
+        }
+        else {
+          this.lookupfor = "routing_resource_lookup";
+          this.serviceData.oper_res = [];
+          this.showLookupLoader = false;
+          return;
+        }  */
+        /*  } else {
+           this.lookupfor = "routing_resource_lookup";
+           this.serviceData.oper_res = [];
+           this.showLookupLoader = false;
+           /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); 
+           return;
+         } */
+        /*  },
+         error => {
+           this.showLookupLoader = false;
+           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+           return;
+         }
+       ) */
         this.showLookupLoader = false;
       } else {
         this.toastr.info('', this.language.Operationcodemissing + ' ' + this.current_selected_row.rowindex, this.commonData.toast_config);
         return;
       }
-      
+
     } else {
       this.toastr.info('', this.language.select_atleast_oper, this.commonData.toast_config);
       return;
@@ -737,7 +809,7 @@ export class RoutingComponent implements OnInit {
   }
 
   changeEffectiveDate(picker_date) {
-    var temp = new Date(picker_date);
+    let temp = new Date(picker_date);
     this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
   }
 
@@ -757,9 +829,9 @@ export class RoutingComponent implements OnInit {
 
   over_ride_grid_effective_date() {
     console.log('in over_ride_grid_effective_date');
-    var temp = new Date(this.routing_header_data.EffectiveDate);
-    var temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-    // var temp_effective_date = new Date(temp.getFullYear(), (temp.getMonth()), temp.getDate());
+    let temp = new Date(this.routing_header_data.EffectiveDate);
+    let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    // let temp_effective_date = new Date(temp.getFullYear(), (temp.getMonth()), temp.getDate());
     for (let i = 0; i < this.routing_detail_data.length; ++i) {
       this.routing_detail_data[i].effective_date = temp_effective_date;
     }
@@ -802,12 +874,13 @@ export class RoutingComponent implements OnInit {
       this.current_selected_row
     }
 
+    let current_row_index = 0;
     if (type == 'insert') {
-      var current_row_index = this.current_selected_row.rowindex;
-      this.counter = current_row_index +1; 
-      var row_shift_counter = 0;
+      current_row_index = this.current_selected_row.rowindex;
+      this.counter = current_row_index + 1;
+      let row_shift_counter = 0;
       for (let i = 0; i < this.routing_detail_data.length; ++i) {
-        if (this.routing_detail_data[i].rowindex > current_row_index){
+        if (this.routing_detail_data[i].rowindex > current_row_index) {
           this.routing_detail_data[i].rowindex = this.routing_detail_data[i].rowindex + 1;
           this.routing_detail_data[i].lineno = this.routing_detail_data[i].lineno + 1;
         }
@@ -816,9 +889,9 @@ export class RoutingComponent implements OnInit {
     }
 
 
-    var temp_d = new Date(this.routing_header_data.EffectiveDate);
-    var temp_effective_date = new Date((temp_d.getMonth() + 1) + '/' + temp_d.getDate() + '/' + temp_d.getFullYear());
-    var new_row = {
+    let temp_d = new Date(this.routing_header_data.EffectiveDate);
+    let temp_effective_date = new Date((temp_d.getMonth() + 1) + '/' + temp_d.getDate() + '/' + temp_d.getFullYear());
+    let new_row = {
       lineno: this.counter,
       rowindex: this.counter,
       type: '1',
@@ -829,6 +902,7 @@ export class RoutingComponent implements OnInit {
       oper_id: '',
       oper_code: '',
       oper_desc: '',
+      oper_type: '',
       wc_id: '',
       wc_code: '',
       mtq: '1',
@@ -842,21 +916,22 @@ export class RoutingComponent implements OnInit {
       opn_application: true,
       isTypeDisabled: true,
       showOperationbtn: true,
+      unique_key: this.commonData.random_string(55)
     };
 
     if (type == 'add') {
       this.routing_detail_data.push(new_row);
-     }
+    }
 
     if (type == 'insert') {
       this.routing_detail_data.splice(current_row_index, 0, new_row);
       // this.routing_detail_data[current_row_index] = new_row;
     }
-   
+
   }
 
   getGridCurrentRow(rowindex) {
-    var currentrow = 0;
+    let currentrow = 0;
     if (this.routing_detail_data.length > 0) {
       for (let i = 0; i < this.routing_detail_data.length; ++i) {
         if (this.routing_detail_data[i].rowindex === rowindex) {
@@ -867,16 +942,33 @@ export class RoutingComponent implements OnInit {
     return currentrow
   }
 
+  clearInvalidOperationData(currentrow) {
+
+    if (this.routing_detail_resource_data[currentrow] != undefined) {
+      this.routing_detail_resource_data[currentrow] = [];
+    }
+    this.routing_detail_data[currentrow].oper_id = "";
+    this.routing_detail_data[currentrow].oper_code = "";
+    this.routing_detail_data[currentrow].oper_desc = "";
+    this.routing_detail_data[currentrow].oper_type = "";
+    $(".row_oper_id").eq(currentrow).val("");
+    $(".row_oper_code").eq(currentrow).val("");
+    this.routing_detail_data[currentrow].wc_id = "";
+    this.routing_detail_data[currentrow].wc_code = "";
+    $(".row_wc_id").eq(currentrow).val("");
+    $(".row_wc_code").eq(currentrow).val("");
+  }
+
 
   on_input_change(value, rowindex, grid_element) {
-    var currentrow = 0;
+    let currentrow = 0;
     currentrow = this.getGridCurrentRow(rowindex);
     if (grid_element == 'selected_type') {
       this.routing_detail_data[currentrow].selected_type = value;
     }
 
     if (grid_element == 'type_value_code') {
-      this.routing_detail_data[currentrow].type_value_code = value;
+      this.routing_detail_data[currentrow].type_value_code = (value).toString();
     }
 
     if (grid_element == 'description') {
@@ -896,45 +988,27 @@ export class RoutingComponent implements OnInit {
             if (data.length > 0) {
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
               this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
+              this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
+
+              this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
               this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
               this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
-              this.showLookupLoader = false;
+              this.getOperationResourceDetail(data[0].OPRCode, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
-              this.routing_detail_data[currentrow].oper_id = "";
-              this.routing_detail_data[currentrow].oper_code = "";
-              $(".row_oper_id").eq(currentrow).val("");
-              $(".row_oper_code").eq(currentrow).val("");
-              this.routing_detail_data[currentrow].wc_id = "";
-              this.routing_detail_data[currentrow].wc_code = "";
-              $(".row_wc_id").eq(currentrow).val("");
-              $(".row_wc_code").eq(currentrow).val("");
+              this.clearInvalidOperationData(currentrow);
               this.showLookupLoader = false;
               return;
             }
           } else {
             this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
-            this.routing_detail_data[currentrow].oper_id = "";
-            this.routing_detail_data[currentrow].oper_code = "";
-            $(".row_oper_id").eq(currentrow).val("");
-            $(".row_oper_code").eq(currentrow).val("");
-            this.routing_detail_data[currentrow].wc_id = "";
-            this.routing_detail_data[currentrow].wc_code = "";
-            $(".row_wc_id").eq(currentrow).val("");
-            $(".row_wc_code").eq(currentrow).val("");
+            this.clearInvalidOperationData(currentrow);
             this.showLookupLoader = false;
             return;
           }
         }, error => {
           this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
-          this.routing_detail_data[currentrow].oper_id = "";
-          this.routing_detail_data[currentrow].oper_code = "";
-          $(".row_oper_id").eq(currentrow).val("");
-          $(".row_oper_code").eq(currentrow).val("");
-          this.routing_detail_data[currentrow].wc_id = "";
-          this.routing_detail_data[currentrow].wc_code = "";
-          $(".row_wc_id").eq(currentrow).val("");
-          $(".row_wc_code").eq(currentrow).val("");
+          this.clearInvalidOperationData(currentrow);
           this.showLookupLoader = false;
           return;
         }
@@ -1022,7 +1096,7 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'effective_date') {
       console.log("effective_date ", value);
-      var temp = new Date(value);
+      let temp = new Date(value);
       this.routing_detail_data[currentrow].effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
     }
 
@@ -1043,7 +1117,7 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'opn_application') {
-      if(value == false){
+      if (value == false) {
         this.routing_detail_data[currentrow].oper_id = "";
         this.routing_detail_data[currentrow].oper_code = "";
         this.routing_detail_data[currentrow].oper_desc = "";
@@ -1060,6 +1134,7 @@ export class RoutingComponent implements OnInit {
     }
 
     console.log("this.routing_detail_data ", this.routing_detail_data);
+    console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
   }
 
   onDeleteRow(rowindex) {
@@ -1079,6 +1154,130 @@ export class RoutingComponent implements OnInit {
   }
 
   onSave() {
+    let objDataset: any = {};
+    console.log(this.routing_header_data);
+    console.log(this.routing_detail_data);
+
+    // initialize
+    objDataset.Connection = [];
+    objDataset.Header = [];
+    objDataset.Detail = [];
+    objDataset.DetailResource = [];
+
+    // override above array  
+    objDataset.Connection.push({
+      "loggedInUser": sessionStorage.getItem('loggedInUser'),
+      "CompanyDBID": sessionStorage.getItem('selectedComp'),
+      "GUID": sessionStorage.getItem("GUID"),
+      "UsernameForLic": sessionStorage.getItem("loggedInUser"),
+    });
+    if (Object.keys(this.routing_header_data).length > 0) {
+      let use_mtq_in_planing = 'N';
+      if (this.routing_header_data.use_mtq_in_planing == true) {
+        use_mtq_in_planing = 'Y';
+      }
+      let use_template_routing = 'N';
+      if (this.routing_header_data.use_template_routing == true) {
+        use_template_routing = 'Y';
+      }
+      objDataset.Header.push({
+        EffectiveDate: this.routing_header_data.EffectiveDate,
+        applicable_bom_unit: this.routing_header_data.applicable_bom_unit,
+        default_batch_size: this.routing_header_data.default_batch_size,
+        default_lot_size: this.routing_header_data.default_lot_size,
+        feature_code: this.routing_header_data.feature_code,
+        feature_description: this.routing_header_data.feature_description,
+        feature_id: this.routing_header_data.feature_id,
+        modal_code: this.routing_header_data.modal_code,
+        modal_description: this.routing_header_data.modal_description,
+        modal_id: this.routing_header_data.modal_id,
+        opm_num_format: this.routing_header_data.opm_num_format,
+        routing_for: this.routing_header_data.routing_for,
+        template_routing_code: this.routing_header_data.template_routing_code,
+        template_routing_id: this.routing_header_data.template_routing_id,
+        use_mtq_in_planing: use_mtq_in_planing,
+        use_template_routing: use_template_routing,
+        warehouse_code: this.routing_header_data.warehouse_code,
+        warehouse_id: this.routing_header_data.warehouse_id,
+      });
+    }
+
+    /* if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+      objDataset.Detail = this.routing_detail_data;
+    } */
+
+    let routing_detail_tmp_arr = [];
+    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+      for (let resOper = 0; resOper < this.routing_detail_data.length; resOper++) {
+        let oper_arr_data = this.routing_detail_data[resOper];
+        console.log();
+        oper_arr_data.operation_top_level = 'N';
+        if (oper_arr_data.operation_top_level == true) {
+          oper_arr_data.operation_top_level = 'Y';
+        }
+        
+        oper_arr_data.oper_type = 'N';
+        if (oper_arr_data.oper_type == true) {
+          oper_arr_data.oper_type = 'Y';
+        }
+
+        oper_arr_data.count_point_operation = 'N';
+        if (oper_arr_data.count_point_operation == true) {
+          oper_arr_data.count_point_operation = 'Y';
+        }
+
+        oper_arr_data.auto_move = 'N';
+        if (oper_arr_data.auto_move == true) {
+          oper_arr_data.auto_move = 'Y';
+        }
+
+        /* oper_arr_data.time_uom = 'N';
+        if (oper_arr_data.use_template_routing == true) {
+          oper_arr_data.time_uom = 'Y';
+        } */
+
+        oper_arr_data.opn_application = 'N';
+        if (oper_arr_data.opn_application == true) {
+          oper_arr_data.opn_application = 'Y';
+        }
+        routing_detail_tmp_arr.push(oper_arr_data);
+      }
+    }
+
+    let routing_detail_res_tmp_arr = [];
+    if (this.routing_detail_resource_data.length > 0 && this.routing_detail_resource_data != undefined) {
+      for (let resi = 0; resi < this.routing_detail_resource_data.length; resi++) {
+        let res_arr_data = this.routing_detail_resource_data[resi];
+        for (let resd = 0; resd < res_arr_data.length; resd++) {
+          res_arr_data[resd].schedule = 0;
+          if (res_arr_data[resd].schedule == true) {
+            res_arr_data[resd].schedule = 1;
+          }
+         routing_detail_res_tmp_arr.push(res_arr_data[resd]);
+        }
+      }
+    }
+
+    this.showLookupLoader = true;
+    objDataset.Detail = routing_detail_tmp_arr;
+    objDataset.DetailResource = routing_detail_res_tmp_arr;
+    console.log("objDataset ", objDataset);
+    this.service.SaveUpdateRouting(objDataset).subscribe(
+      data => {
+        this.showLookupLoader = false;
+        if (data === "True") {
+          this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
+          this.route.navigateByUrl('routing/view');
+        } else {
+          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+          return;
+        }
+      }, error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        this.showLookupLoader = false;
+      }
+    )
+
 
   }
 

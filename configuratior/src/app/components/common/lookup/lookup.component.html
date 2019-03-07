@@ -302,7 +302,7 @@
                         <kendo-grid-column field="resource_name" title="{{language.resource_name}}" filter="text"
                             [width]="140" [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm " id="resource_name" value={{dataItem.resource_name}}
+                                <input type="text" class="form-control  form-control-sm row_resource_name" id="resource_name" value={{dataItem.resource_name}}
                                     [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(resource_name.value,dataItem.rowindex, 'resource_name')"
                                     #resource_name title={{dataItem.resource_name}} />
                             </ng-template>
@@ -310,7 +310,7 @@
                         <kendo-grid-column field="resource_uom" title="{{language.resource_uom}}" filter="text" [width]="140"
                             [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm " id="resource_uom" value={{dataItem.resource_uom}}
+                                <input type="text" class="form-control  form-control-sm row_resource_uom" id="resource_uom" value={{dataItem.resource_uom}}
                                     [disabled]="dataItem.is_resource_disabled" (change)="on_input_change(resource_uom.value,dataItem.rowindex, 'resource_uom')"
                                     #resource_uom title={{dataItem.resource_uom}} />
                             </ng-template>

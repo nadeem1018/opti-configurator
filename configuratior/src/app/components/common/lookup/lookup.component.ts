@@ -728,10 +728,10 @@ export class LookupComponent implements OnInit {
     if (lookup_id == "routing_resource_modal" || this.popup_lookupfor == 'routing_resource_lookup') {
       console.log('in array cleaner');
       this.is_operation_popup_lookup_open = false;
-      this.resourceServiceData = [];
       this.resourceServiceOper = "";
       this.resourceServiceWc = "";
       this.lookupvalue.emit(this.resourceServiceData);
+      this.resourceServiceData = [];
       $("#routing_resource_modal").modal('hide');
     }
 
@@ -1319,13 +1319,38 @@ export class LookupComponent implements OnInit {
     this.LookupDataLoaded = false;
     this.is_operation_popup_lookup_open = true;
     this.showLoader = true;
-    console.log("this.serviceData ", this.serviceData);
-    console.log("this.serviceData.wc_code ", this.serviceData.wc_code);
-    console.log("this.serviceData.oper_code ", this.serviceData.oper_code);
-
+    this.resourceServiceData = [];
     if (this.serviceData !== undefined && this.serviceData !== "") {
       if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
-        this.resourceServiceData = this.serviceData.oper_res;
+        for(var inx = 0; inx < this.serviceData.oper_res.length; inx++){
+          console.log("this.serviceData.oper_res[inx] - ", this.serviceData.oper_res[inx]);
+          this.resource_counter = 0;
+          if (this.resourceServiceData.length > 0) {
+            this.resource_counter = this.resourceServiceData.length
+          }
+          this.resource_counter++;
+          this.resourceServiceData.push({
+            lineno: this.resource_counter,
+            rowindex: this.resource_counter,
+            operation_no: this.serviceData.oper_res[inx].OPRCode,
+            resource_code: this.serviceData.oper_res[inx].ResCode,
+            resource_name: this.serviceData.oper_res[inx].ResName,
+            resource_type: this.serviceData.oper_res[inx].ResType,
+            resource_uom: this.serviceData.oper_res[inx].ResUOM,
+            resource_consumption: this.serviceData.oper_res[inx].ResCons,
+            resource_inverse: this.serviceData.oper_res[inx].ResInv,
+            no_resource_used: this.serviceData.oper_res[inx].ResUsed,
+            time_uom: this.serviceData.oper_res[inx].TimeUOM,
+            time_consumption: this.serviceData.oper_res[inx].TimeCons,
+            time_inverse:this.serviceData.oper_res[inx].TimeInv,
+            resource_consumption_type: '1',
+            basis: '1',
+            schedule: false,
+            is_resource_disabled: true,
+            unique_key: this.serviceData.unique_key
+          });
+        }
+
         if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
           this.resourceServiceOper = this.serviceData.oper_code;
         }
@@ -1361,6 +1386,7 @@ export class LookupComponent implements OnInit {
       resource_code: '',
       resource_name: '',
       resource_uom: '',
+      resource_type: '',
       resource_consumption: "0",
       resource_inverse: "0",
       no_resource_used: "1",
@@ -1369,8 +1395,9 @@ export class LookupComponent implements OnInit {
       time_inverse: "0",
       resource_consumption_type: '1',
       basis: '1',
-      schedule: '',
-      is_resource_disabled: true
+      schedule: false,
+      is_resource_disabled: true,
+      unique_key: this.serviceData.unique_key
 
     });
   }
@@ -1389,6 +1416,17 @@ export class LookupComponent implements OnInit {
     }
   }
 
+  clearInvalidRes(currentrow) {
+    this.resourceServiceData[currentrow].resource_code = "";
+    this.resourceServiceData[currentrow].resource_name = "";
+    this.resourceServiceData[currentrow].resource_uom = "";
+    this.resourceServiceData[currentrow].resource_type = "";
+
+    $(".row_resource_code").eq(currentrow).val("");
+    $(".row_resource_name").eq(currentrow).val("");
+    $(".row_resource_uom").eq(currentrow).val("");
+  }
+
   on_input_change(value, rowindex, grid_element) {
     var currentrow = 0;
     for (let i = 0; i < this.resourceServiceData.length; ++i) {
@@ -1402,6 +1440,37 @@ export class LookupComponent implements OnInit {
     }
 
     if (grid_element == 'resource_code') {
+      this.showLookupLoader = true;
+      this.rs.getResourceDetail(value).subscribe(
+        data => {
+          console.log(data);
+          if (data != null) {
+            if (data.length > 0) {
+              this.resourceServiceData[currentrow].resource_code = data[0].ResCode;
+              this.resourceServiceData[currentrow].resource_name = data[0].Name;
+              this.resourceServiceData[currentrow].resource_uom = data[0].UnitOfMsr;
+              this.resourceServiceData[currentrow].resource_type = data[0].ResType;
+              this.showLookupLoader = false;
+            } else {
+              this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+              this.clearInvalidRes(currentrow);
+              this.showLookupLoader = false;
+              return;
+            }
+          } else {
+            this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+            this.clearInvalidRes(currentrow);
+            this.showLookupLoader = false;
+            return;
+          }
+        }, error => {
+          this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+          this.clearInvalidRes(currentrow);
+          this.showLookupLoader = false;
+          return;
+        }
+      );
+
 
     }
 

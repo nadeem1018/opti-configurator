@@ -382,7 +382,7 @@
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <input type="text" class="form-control  form-control-sm" id="oper_desc" value={{dataItem.oper_desc}}
-                    (change)="on_input_change(oper_desc.value,dataItem.rowindex, 'oper_desc')" #oper_desc title={{dataItem.oper_desc}} [disabled]="dataItem.opn_application == false" />
+                    (change)="on_input_change(oper_desc.value,dataItem.rowindex, 'oper_desc')" #oper_desc title={{dataItem.oper_desc}} [disabled]="true" />
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="wc_code" title="{{language.workcenter}}" filter="text" [width]="155"
@@ -390,11 +390,11 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="input-group">
                     <input type="hidden" class="form-control  form-control-sm row_wc_id" id="wc_id" value={{dataItem.wc_id}}
-                      #wc_id title={{dataItem.wc_id}} [disabled]="dataItem.opn_application == false" />
+                      #wc_id title={{dataItem.wc_id}} [disabled]="true" />
 
                     <input type="text" class="form-control  form-control-sm row_wc_code" id="wc_code" (change)="on_input_change(wc_code.value,dataItem.rowindex, 'wc_code')"
-                      value={{dataItem.wc_code}} #wc_code title={{dataItem.wc_code}} [disabled]="dataItem.opn_application == false" />
-                    <div class="input-group-append" [hidden]="dataItem.opn_application == false">
+                      value={{dataItem.wc_code}} #wc_code title={{dataItem.wc_code}} [disabled]="true" />
+                    <div class="input-group-append" [hidden]="true">
                       <span class="input-group-text cursor_icon basic-addon2-table" id="basic-addon2" (click)="open_wc_lookup(dataItem.type, dataItem.rowindex)">
                         <i class="fa fa-bars"></i>
                       </span>
