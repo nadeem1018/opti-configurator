@@ -44,8 +44,12 @@
 
           <div class="feature_header_section" *ngIf="routing_header_data.routing_for == 'feature'">
             <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">{{language.feature}}</label>
-
+              <label class="col-sm-3 col-form-label" for="feature_id">
+                {{language.feature}}
+                <a class="common_grid_link" *ngIf="routing_header_data.feature_id && routing_header_data.feature_code">
+                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                </a>
+              </label>
               <div class="col-sm-3 input-group">
                 <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="feature_id" id="feature_id"
                   (change)="getFeatureDetail(routing_header_data.feature_id)" placeholder="{{language.Feature_Code}}"
@@ -76,7 +80,12 @@
 
           <div class="modal_header_section" *ngIf="routing_header_data.routing_for == 'model'">
             <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">{{language.model}}</label>
+              <label class="col-sm-3 col-form-label" for="feature_id">
+                {{language.model}}
+                <a class="common_grid_link" *ngIf="routing_header_data.modal_id && routing_header_data.modal_code">
+                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                </a>
+              </label>
 
               <div class="col-sm-3 input-group">
                 <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="modal_id" id="modal_id"
@@ -298,8 +307,10 @@
               <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="50"
                 [minResizableWidth]="50">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowindex"
-                    name="rowindexName" value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
+                  <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)" *ngIf="(dataItem.type == '1' || dataItem.type == '3')">
+                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                  </a>
+                  {{dataItem.rowindex}}
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"

@@ -609,6 +609,7 @@ export class RoutingComponent implements OnInit {
             this.routing_header_data.modal_description = data[0].DisplayName;
             this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0);
           } else {
+
             this.clearInvalidModel();
             this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
             this.showLookupLoader = false;
@@ -713,6 +714,19 @@ export class RoutingComponent implements OnInit {
       this.service.GetDataByModelId(modal_code).subscribe(
         data => {
           console.log(data);
+          /*if(navigate_to_header == true) {
+            data.ModelHeader =[];
+          }
+          if(data.ModelHeader.length == 0) {
+            if (navigate_to_header == true) {
+              console.log('===true=====');
+              console.log('====modal_code===',modal_code);
+              this.route.navigateByUrl('feature/model/edit/'+modal_code);
+            } else {
+              console.log('===false===');
+              this.route.navigateByUrl('modelbom/view');
+            }
+          }*/
           if (data.ModelDetail.length > 0) {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
               let modeldata = data.ModelDetail[i];
@@ -1494,9 +1508,24 @@ export class RoutingComponent implements OnInit {
   }
 
 
-  // navigartion functions - start 
+  // navigation functions - start
 
+  navigateToFeatureModelHeader(type) {
+    var type_value = type.trim();
+    if(type_value == 'feature') {
+      this.route.navigateByUrl('feature/model/edit/'+this.routing_header_data.feature_id);
+    } else if (type_value == 'model') {
+        this.route.navigateByUrl('feature/model/edit/'+this.routing_header_data.modal_id);
+    }
+  }
+  navigateToFeatureOrModelBom(type_value, type) {
+    if(type == '1') {
+      this.route.navigateByUrl("feature/bom/edit/"+type_value);
+    } else if(type == '3') {
+        this.route.navigateByUrl("modelbom/edit/"+type_value);
+        /*this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0,true);*/
+    }
+  }
 
-
-  // navigartion functions - end 
+  // navigation functions - end
 }
