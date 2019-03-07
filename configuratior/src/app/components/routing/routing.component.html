@@ -30,13 +30,13 @@
               <div class="custom-control custom-radio custom-control-inline mr-5">
                 <input type="radio" id="feature_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="feature" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5">
+                  tabindex="5" [disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="feature_check">{{language.feature}}</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="model_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="model" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5">
+                  tabindex="5" [disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="model_check">{{language.model}}</label>
               </div>
             </div>
@@ -53,9 +53,9 @@
                 <input type="text" class="form-control  form-control-sm mt3" name="feature_code" id="featuer_code"
                   [(ngModel)]="routing_header_data.feature_code" title="{{routing_header_data.feature_code}}"
                   placeholder="{{language.feature}}" (change)="getFeatureDetail(routing_header_data.feature_code)"
-                  style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
-                <div class="input-group-append">
-                  <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)">
+                  style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [disabled]="this.form_mode == 'edit'">
+                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
+                  <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)" >
                     <i class="fa fa-bars"></i>
                   </span>
                 </div>
@@ -67,7 +67,7 @@
               <div class="col-sm-3">
                 <input type="text" name="feature_description" class="form-control  form-control-sm mt3" id="feature_description"
                   placeholder="{{language.description}}" [(ngModel)]="routing_header_data.feature_description" title="{{routing_header_data.description}}"
-                  tabindex="2">
+                  tabindex="2" [disabled]="this.form_mode == 'edit'">
               </div>
 
             </div>
@@ -85,8 +85,8 @@
                 <input type="text" class="form-control  form-control-sm mt3" name="modal_code" id="modal_code"
                   [(ngModel)]="routing_header_data.modal_code" title="{{routing_header_data.modal_code}}" placeholder="{{language.model_ModelCode}}"
                   (change)="getModalDetail(routing_header_data.modal_code)" style="max-width: calc(98% - 23px) !important; width: 100%;"
-                  tabindex="6">
-                <div class="input-group-append">
+                  tabindex="6" [disabled]="this.form_mode == 'edit'">
+                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
                   <span class="input-group-text modal_code_lookup cursor_icon" id="basic-addon2" (click)="openModalLookup(true)">
                     <i class="fa fa-bars"></i>
                   </span>
@@ -99,7 +99,7 @@
               <div class="col-sm-3">
                 <input type="text" name="modal_description" class="form-control  form-control-sm mt3" id="modal_description"
                   placeholder="{{language.description}}" [(ngModel)]="routing_header_data.modal_description" title="{{routing_header_data.description}}"
-                  tabindex="2">
+                  tabindex="2" [disabled]="this.form_mode == 'edit'">
               </div>
             </div>
           </div>
