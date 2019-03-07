@@ -120,8 +120,96 @@ export class RoutingComponent implements OnInit {
       this.show_resequence_btn = true;
       this.show_resource_btn = true;
 
-      this.showLoader = false; 
-      this.service.get_routing_details(this.update_id).subscribe();
+      this.showLoader = false;
+      this.service.get_routing_details(this.update_id).subscribe(
+        data => {
+          console.log("get_routing_details ", data)
+          if (data != undefined) {
+            if (data.Header.length > 0) {
+              let data_header = data.Header[0];
+              let routing_for = '';
+              let feature_id   = '';
+              let feature_code   = '';
+              let feature_desc   = '';
+              let model_id   = '';
+              let model_code   = '';
+              let model_desc   = '';
+              if (data_header.OPTM_TYPE == 1){
+                routing_for = 'feature';
+                feature_id = data_header.OPTM_MODELFEATUREID;
+                feature_code = data_header.OPTM_MODELFEATURECODE
+                feature_desc = data_header.OPTM_DESCRIPTION;
+              } else if (data_header.OPTM_TYPE == 2) {
+                routing_for = 'model';
+                model_id = data_header.OPTM_MODELFEATUREID;
+                model_code = data_header.OPTM_MODELFEATURECODE
+                model_desc = data_header.OPTM_DESCRIPTION;
+              }
+
+              let  use_mtq_in_planing;
+              if (data_header.OPTM_USEMTQIN_PLN == 'Y'){
+                use_mtq_in_planing = true;
+              } else {
+                use_mtq_in_planing = false;
+              }
+
+              let use_template_routing;
+              if (data_header.OPTM_USETEMPLATEPRODUCT == 'Y') {
+                use_template_routing = true;
+              } else {
+                use_template_routing = false;
+              }
+
+              var eff_date_temp = new Date(data_header.OPTM_EFF_DATE);
+              let temp_effective_date = new Date((eff_date_temp.getMonth() + 1) + '/' + eff_date_temp.getDate() + '/' + eff_date_temp.getFullYear());
+              
+              this.routing_header_data = {
+                EffectiveDate: temp_effective_date,
+                applicable_bom_unit: data_header.OPTM_APCLBLBOMUNIT,
+                default_batch_size: data_header.OPTM_DFLT_BATCH_SIZE,
+                default_lot_size: data_header.OPTM_DFLT_LOT_SIZE,
+                feature_code: feature_code,
+                feature_description: feature_desc,
+                feature_id: feature_id,
+                modal_code: model_code,
+                modal_description: model_desc,
+                modal_id: model_id,
+                opm_num_format: data_header.OPTM_OPN_NUM_FORMAT,
+                routing_for: routing_for,
+                template_routing_code: data_header.OPTM_TEMPLATEPRODUCT,
+                template_routing_id: data_header.OPTM_TEMPLATEPRODUCT,
+                use_mtq_in_planing: use_mtq_in_planing,
+                use_template_routing: use_template_routing,
+                warehouse_code: data_header.OPTM_WH_ID,
+                warehouse_id: data_header.OPTM_WH_ID,
+              };
+            }
+
+            if (data.Detail.length > 0) {
+              let data_detail = data.Detail;
+              for (let d_dtli = 0; d_dtli < data_detail.length; d_dtli++ ){
+
+              }
+            }
+
+            if (data.ResourceDetail.length > 0) {
+              let data_resource_detail = data.ResourceDetail;
+            }
+
+            this.showLoader = false;
+          } else {
+            this.showLoader = false;
+            this.route.navigateByUrl('routing/view');
+            this.toastr.error('', this.language.no_routing_found, this.commonData.toast_config);
+            return;
+          }
+
+        },
+        error => {
+          this.showLoader = false;
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        });
     }
   }
 
@@ -1218,7 +1306,7 @@ export class RoutingComponent implements OnInit {
         if (oper_arr_data.operation_top_level == true) {
           oper_arr_data.operation_top_level = 'Y';
         }
-        
+
         oper_arr_data.oper_type = 'N';
         if (oper_arr_data.oper_type == true) {
           oper_arr_data.oper_type = 'Y';
@@ -1256,7 +1344,7 @@ export class RoutingComponent implements OnInit {
           if (res_arr_data[resd].schedule == true) {
             res_arr_data[resd].schedule = 1;
           }
-         routing_detail_res_tmp_arr.push(res_arr_data[resd]);
+          routing_detail_res_tmp_arr.push(res_arr_data[resd]);
         }
       }
     }
@@ -1290,7 +1378,7 @@ export class RoutingComponent implements OnInit {
 
 
   // navigartion functions - start 
-  
+
 
 
   // navigartion functions - end 
