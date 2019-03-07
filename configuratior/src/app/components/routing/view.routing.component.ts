@@ -78,6 +78,32 @@ export class ViewRoutingComponent implements OnInit {
         // var result = confirm(this.language.DeleteConfimation);
     }
 
+    get_dialog_value(userSelectionValue) {
+        if (userSelectionValue == true) {
+
+            this.showLoader = true;
+            this.rs.DeleteRouting(this.row_id).subscribe(
+                data => {
+                    this.showLoader = false;
+                    if (data === "True") {
+                        var obj = this;
+                        this.service_call(this.current_page, this.search_string);
+                        this.router.navigateByUrl('routing/view');
+                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    } else {
+                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        return;
+                    }
+                }, error => {
+                    this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                    this.showLoader = false;
+                }
+            )
+
+        }
+        this.show_dialog = false;
+    }
+
     public columns: ColumnSetting[] = [
         {
             field: 'OPTM_FEATURECODE',

@@ -51,7 +51,7 @@ export class RoutingComponent implements OnInit {
   public grid_title = this.language.bom_details;
   public username: string = "";
   serviceData: any;
-
+  public is_delete_called : boolean = false;
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -114,7 +114,7 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.default_lot_size = 1;
       this.routing_header_data.applicable_bom_unit = 1;
       this.showLoader = false;
-      this.form_mode  = 'add';
+      this.form_mode = 'add';
     } else {
       this.isSaveButtonVisible = false;
       this.isUpdateButtonVisible = true;
@@ -277,7 +277,7 @@ export class RoutingComponent implements OnInit {
                         optm_id: data_resource_detailddd.OPTM_ID,
                         lineno: data_resource_detailddd.OPTM_LINE_ID,
                         rowindex: data_resource_detailddd.OPTM_LINE_ID,
-                        OPRCode: data_resource_detailddd.OPTM_RESO_ID,
+                        OPRCode: data_resource_detailddd.OPTM_OPR_ID,
                         ResCode: data_resource_detailddd.OPTM_RESO_ID,
                         ResName: data_resource_detailddd.OPTM_RESONAME,
                         ResType: '',
@@ -655,14 +655,13 @@ export class RoutingComponent implements OnInit {
               }
               this.counter++;
               if (featuredata.OPTM_TYPE == 1) {
-                value = featuredata.OPTM_CHILDFEATUREID;
+                value = (featuredata.OPTM_CHILDFEATUREID).toString();
                 value_code = featuredata.child_code;
-
               } else if (featuredata.OPTM_TYPE == 2) {
-                value = featuredata.OPTM_ITEMKEY;
+                value = (featuredata.OPTM_ITEMKEY).toString();
                 value_code = featuredata.OPTM_ITEMKEY;
               } else if (featuredata.OPTM_TYPE == 3) {
-                value = featuredata.OPTM_VALUE;
+                value = (featuredata.OPTM_VALUE).toString();
                 value_code = featuredata.OPTM_VALUE;
               }
               desc = featuredata.OPTM_DISPLAYNAME;
@@ -670,7 +669,7 @@ export class RoutingComponent implements OnInit {
                 lineno: this.counter,
                 rowindex: this.counter,
                 type: featuredata.OPTM_TYPE,
-                type_value: (value).toString(),
+                type_value: (value),
                 type_value_code: (value_code).toString(),
                 description: desc,
                 operation_top_level: false,
@@ -741,14 +740,14 @@ export class RoutingComponent implements OnInit {
               let temp = new Date(this.routing_header_data.EffectiveDate);
               let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
               if (modeldata.OPTM_TYPE == 1) {
-                value = modeldata.OPTM_CHILDFEATUREID;
+                value = (modeldata.OPTM_FEATUREID).toString();
                 value_code = modeldata.feature_code;
 
               } else if (modeldata.OPTM_TYPE == 2) {
-                value = modeldata.OPTM_ITEMKEY;
+                value = (modeldata.OPTM_ITEMKEY).toString();
                 value_code = modeldata.OPTM_ITEMKEY;
               } else if (modeldata.OPTM_TYPE == 3) {
-                value = modeldata.OPTM_CHILDMODELID;
+                value = (modeldata.OPTM_CHILDMODELID).toString();
                 value_code = modeldata.child_code;
               }
               desc = modeldata.OPTM_DISPLAYNAME;
@@ -756,7 +755,7 @@ export class RoutingComponent implements OnInit {
                 lineno: this.counter,
                 rowindex: this.counter,
                 type: modeldata.OPTM_TYPE,
-                type_value: (value).toString(),
+                type_value: (value),
                 type_value_code: (value_code).toString(),
                 description: desc,
                 operation_top_level: '',
@@ -958,6 +957,9 @@ export class RoutingComponent implements OnInit {
             data[i].lineno = localhcounter;
             data[i].rowindex = localhcounter;
             data[i].unique_key = operation_line_unique_key;
+            data[i].resource_consumption_type = '1';
+            data[i].basis = '1';
+            data[i].schedule = false;
             operData.push(data[i]);
           }
           this.routing_detail_resource_data[rowindex] = operData;
@@ -1042,11 +1044,22 @@ export class RoutingComponent implements OnInit {
 
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
-    console.log('in get_dialog_value', userSelectionValue);
-    if (userSelectionValue == true) {
-      this.over_ride_grid_effective_date();
+
+    if(this.is_delete_called == true){
+      if (userSelectionValue == true) {
+        this.onDelete(this.update_id);
+      }
+      this.show_dialog = false;
+      this.is_delete_called = false;
+    } else {
+      console.log('in get_dialog_value', userSelectionValue);
+      if (userSelectionValue == true) {
+        this.over_ride_grid_effective_date();
+      }
+      this.show_dialog = false;
+
     }
-    this.show_dialog = false;
+
   }
 
   over_ride_grid_effective_date() {
@@ -1116,7 +1129,7 @@ export class RoutingComponent implements OnInit {
     let new_row = {
       lineno: this.counter,
       rowindex: this.counter,
-      type: '1',
+      type: '4',
       type_value: "",
       type_value_code: "",
       description: '',
@@ -1499,12 +1512,32 @@ export class RoutingComponent implements OnInit {
         this.showLookupLoader = false;
       }
     )
-
-
   }
 
-  onDelete() {
 
+  deleteConfirm(){
+    this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+    this.show_dialog = true;
+    this.is_delete_called = true;
+  }
+
+  onDelete(model_feature_id) {
+    this.showLookupLoader = true;
+    this.service.DeleteRouting(model_feature_id).subscribe(
+      data => {
+        this.showLookupLoader = false;
+        if (data === "True") {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.route.navigateByUrl('routing/view');
+        } else {
+          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+          return;
+        }
+      }, error => {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        this.showLookupLoader = false;
+      }
+    )
   }
 
 
@@ -1512,18 +1545,18 @@ export class RoutingComponent implements OnInit {
 
   navigateToFeatureModelHeader(type) {
     var type_value = type.trim();
-    if(type_value == 'feature') {
-      this.route.navigateByUrl('feature/model/edit/'+this.routing_header_data.feature_id);
+    if (type_value == 'feature') {
+      this.route.navigateByUrl('feature/model/edit/' + this.routing_header_data.feature_id);
     } else if (type_value == 'model') {
-        this.route.navigateByUrl('feature/model/edit/'+this.routing_header_data.modal_id);
+      this.route.navigateByUrl('feature/model/edit/' + this.routing_header_data.modal_id);
     }
   }
   navigateToFeatureOrModelBom(type_value, type) {
-    if(type == '1') {
-      this.route.navigateByUrl("feature/bom/edit/"+type_value);
-    } else if(type == '3') {
-        this.route.navigateByUrl("modelbom/edit/"+type_value);
-        /*this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0,true);*/
+    if (type == '1') {
+      this.route.navigateByUrl("feature/bom/edit/" + type_value);
+    } else if (type == '3') {
+      this.route.navigateByUrl("modelbom/edit/" + type_value);
+      /*this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0,true);*/
     }
   }
 
