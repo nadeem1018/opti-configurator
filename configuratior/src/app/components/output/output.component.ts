@@ -2553,7 +2553,7 @@ export class OutputComponent implements OnInit {
           }
           else {
             this.showLookupLoader = false;
-            this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+            this.toastr.error('', this.language.no_item_selected, this.commonData.toast_config);
             return;
           }
 
