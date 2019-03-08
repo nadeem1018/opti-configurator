@@ -48,6 +48,7 @@ export class ModelbomComponent implements OnInit {
   public complete_dataset: any = [];
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
+  public isAccessory:boolean = false;
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   modalRef: BsModalRef;
@@ -268,9 +269,18 @@ export class ModelbomComponent implements OnInit {
               pricehide: this.pricehide,
               isUOMDisabled: this.isUOMDisabled,
               isMinSelectedDisable: this.isMinSelectedDisable,
-              isMaxSelectedDisable: this.isMaxSelectedDisable
+              isMaxSelectedDisable: this.isMaxSelectedDisable,
+              isAccessory :false
             });
 
+          }
+        }
+        for( var i=0 ; i < data.ModelDetail.length ; i++) {
+          if(data.ModelDetail[i].Accessory == "Y") {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data.isAccessory = false;
           }
         }
 
@@ -524,6 +534,14 @@ export class ModelbomComponent implements OnInit {
           this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
+        }
+        for(var i=0; i < this.modelbom_data.length;i++) {
+          if ((data[0].OPTM_ACCESSORY == "Y") && (this.modelbom_data[i].type_value == data[0].OPTM_FEATUREID)) {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data[i].isAccessory = false;
+          }
         }
       },
       error => {
@@ -1005,8 +1023,13 @@ export class ModelbomComponent implements OnInit {
                 if (parseFloat(value) > parseFloat(data)) {
                   this.modelbom_data[i].max_selected = 1;
                   $(".max_selectable_row").eq((rowindex - 1)).val(1);
-                  this.toastr.error('', this.language.max_selected_validation + " " + data, this.commonData.toast_config);
-                  return;
+                  if(data == 0) {
+                    this.toastr.error('', this.language.max_selected_validation + " " + 1, this.commonData.toast_config);
+                    return;
+                  } else {
+                    this.toastr.error('', this.language.max_selected_validation + " " + data, this.commonData.toast_config);
+                    return;
+                  }
                 }
               }
             })

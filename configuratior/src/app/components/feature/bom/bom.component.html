@@ -383,25 +383,24 @@
                     <li *ngFor="let element of tree_data_json; let i= index;">
                         <div *ngIf="element.level == 0 && element.parentNumber==''">
                             <ng-template #template>
-                                <div class="modal-body text-center image-previe-container">
+                                <div class="modal-body text-center">
                                     <img [attr.src]="element.modalImage" style="max-width:100%">
                                 </div>
                             </ng-template>
                             <ng-template #popTemplate>
                                 <div class="text-center">
-                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100"
-                                        (click)="openModal(template)">
-                                    <div *ngIf="element.modalImage=='' || element.modalImage== undefined " class="no-img-msg">No
-                                        Image Found</div>
+                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100" (click)="openModal(template)">
+                                    <div *ngIf="element.modalImage==''" class="no-img-msg">No Image Found</div>
                                 </div>
                             </ng-template>
-                            <span [popover]="popTemplate" container="body" [outsideClick]="true" popoverTitle="{{element.component}}"
-                                placement="left" triggers="" #pop="bs-popover">
-                                <span #btn (click)="childExpand(btn)" class="expand-btn expanded"></span>
-                                <span [attr.data-branchtype]="element.branchType" (click)="pop.toggle()">{{element.component}}</span>
+                            <span class="first_level" [popover]="popTemplate" popoverTitle="{{element.component}}" placement="left"
+                                container="body" [outsideClick]="true" triggers="" #pop="bs-popover">
+                                <!-- <i class="fa fa-circle"></i>  -->
+                                <span #btn (click)="childExpand(btn)" class="expand-btn expanded" *ngIf="check_component_exist(element.componentNumber, i).length > 0"></span>
+                                <span (click)="pop.toggle()" [attr.data-branchtype]="element.branchType">{{element.component}}</span>
                             </span>
-                            <treeview #tree [tree_data_json]="check_component_exist(element.component, i)"
-                                [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.component, i).length > 0"></treeview>
+                            <treeview #tree [tree_data_json]="check_component_exist(element.componentNumber, i)" [complete_dataset]="tree_data_json"
+                                *ngIf="check_component_exist(element.componentNumber, i).length > 0"></treeview>
                         </div>
                     </li>
                 </ul>

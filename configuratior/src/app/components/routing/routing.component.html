@@ -30,13 +30,13 @@
               <div class="custom-control custom-radio custom-control-inline mr-5">
                 <input type="radio" id="feature_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="feature" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5" [disabled]="this.form_mode == 'edit'">
+                  tabindex="5" [attr.disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="feature_check">{{language.feature}}</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="model_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="model" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5" [disabled]="this.form_mode == 'edit'">
+                  tabindex="5" [attr.disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="model_check">{{language.model}}</label>
               </div>
             </div>
