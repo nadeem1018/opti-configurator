@@ -48,6 +48,7 @@ export class ModelbomComponent implements OnInit {
   public complete_dataset: any = [];
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
+  public isAccessory:boolean = false;
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   modalRef: BsModalRef;
@@ -268,9 +269,18 @@ export class ModelbomComponent implements OnInit {
               pricehide: this.pricehide,
               isUOMDisabled: this.isUOMDisabled,
               isMinSelectedDisable: this.isMinSelectedDisable,
-              isMaxSelectedDisable: this.isMaxSelectedDisable
+              isMaxSelectedDisable: this.isMaxSelectedDisable,
+              isAccessory :false
             });
 
+          }
+        }
+        for( var i=0 ; i < data.ModelDetail.length ; i++) {
+          if(data.ModelDetail[i].Accessory == "Y") {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data.isAccessory = false;
           }
         }
 
@@ -524,6 +534,14 @@ export class ModelbomComponent implements OnInit {
           this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
+        }
+        for(var i=0; i < this.modelbom_data.length;i++) {
+          if ((data[0].OPTM_ACCESSORY == "Y") && (this.modelbom_data[i].type_value == data[0].OPTM_FEATUREID)) {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data[i].isAccessory = false;
+          }
         }
       },
       error => {
