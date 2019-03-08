@@ -479,6 +479,7 @@ export class OutputComponent implements OnInit {
       this.showLookupLoader = true;
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
         data => {
+          if(data != null && data != undefined){
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
@@ -504,6 +505,11 @@ export class OutputComponent implements OnInit {
           } else {
             this.showLookupLoader = false;
           }
+        }
+        else {
+          this.showLookupLoader = false;
+        }
+
         }, error => {
           this.showLookupLoader = false;
         })
