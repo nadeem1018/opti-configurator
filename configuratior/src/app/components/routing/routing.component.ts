@@ -133,7 +133,8 @@ export class RoutingComponent implements OnInit {
                   this.commonService.signOut(this.toastr, this.route);
                   this.showLoader = false;
                   return;
-              } 
+              }
+             
             }
 
             if (data.Header.length > 0) {
@@ -1657,6 +1658,16 @@ export class RoutingComponent implements OnInit {
     this.service.DeleteRouting(model_feature_id).subscribe(
       data => {
         this.showLookupLoader = false;
+        if(data != undefined){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+          } 
+        }
+       }    
+
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
           this.route.navigateByUrl('routing/view');

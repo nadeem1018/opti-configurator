@@ -197,13 +197,15 @@ export class ViewRoutingComponent implements OnInit {
         var dataset = this.rs.get_all_routing_data().subscribe(
             data => {
                 console.log(data);               
-                if(data != undefined && data.length > 0){
+                if(data != undefined){
+                    if(data.length > 0){
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
                         this.commonservice.signOut(this.toastr, this.router);
                         this.showLoader = false;
                         return;
                     } 
+                  }
                 }
                 this.dataArray = data; 
                 this.showLoader = false;              
