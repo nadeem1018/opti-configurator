@@ -125,6 +125,15 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log("get_routing_details ", data)
           if (data != undefined) {
+            if(data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commonService.RemoveLoggedInUser().subscribe();
+                  this.commonService.signOut(this.toastr, this.route);
+                  this.showLoader = false;
+                  return;
+              } 
+            }
+
             if (data.Header.length > 0) {
               let data_header = data.Header[0];
               let routing_for = '';
@@ -392,6 +401,16 @@ export class RoutingComponent implements OnInit {
     this.lookupfor = 'feature_lookup';
     this.service.getFeatureList().subscribe(
       data => {
+        if(data != undefined){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+          }
+        } 
+      }      
         if (data.length > 0) {
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -418,6 +437,18 @@ export class RoutingComponent implements OnInit {
     this.serviceData = []
     this.service.GetModelList().subscribe(
       data => {
+
+      if(data != undefined){
+        if(data.length > 0){
+        if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route);
+            this.showLookupLoader = false;
+            return;
+        } 
+      }
+      }  
+
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
           this.showLookupLoader = false;
@@ -461,6 +492,16 @@ export class RoutingComponent implements OnInit {
       data => {
         console.log(data);
         if (data != null) {
+          if(data != undefined ){
+            if(data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                this.showLookupLoader = false;
+                return;
+            } 
+          }
+          }  
           if (data.length > 0) {
             this.routing_header_data.feature_id = data[0].FeatureId;
             this.routing_header_data.feature_code = data[0].FeatureCode;
@@ -529,8 +570,15 @@ export class RoutingComponent implements OnInit {
       this.service.GetDataByFeatureId(feature_code).subscribe(
         data => {
           console.log(data);
+          if(data != undefined && data.LICDATA != undefined){
+            if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                this.showLookupLoader = false;
+                return;
+            } 
+        }    
           if (data.FeatureDetail.length > 0) {
-
 
             let temp = new Date(this.routing_header_data.EffectiveDate);
             let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
@@ -602,7 +650,15 @@ export class RoutingComponent implements OnInit {
     if (press_location == 'header') {
       this.showLookupLoader = true;
       this.service.GetDataByModelId(modal_code).subscribe(
-        data => {
+        data => {          
+          if(data != undefined && data.LICDATA != undefined){
+            if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                this.showLookupLoader = false;
+                return;
+            } 
+          }  
           console.log(data);
           if (data.ModelDetail.length > 0) {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
@@ -683,6 +739,16 @@ export class RoutingComponent implements OnInit {
     this.serviceData = []
     this.service.getWarehouseList().subscribe(
       data => {
+        if(data != undefined){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+          } 
+        }
+       }    
         if (data.length > 0) {
           this.lookupfor = 'warehouse_lookup';
           this.showLookupLoader = false;
@@ -711,7 +777,13 @@ export class RoutingComponent implements OnInit {
       data => {
         console.log(data);
         if (data != null) {
-          if (data.length > 0) {
+          if (data.length > 0) {            
+              if (data[0].ErrorMsg == "7001") {
+                  this.commonService.RemoveLoggedInUser().subscribe();
+                  this.commonService.signOut(this.toastr, this.route);
+                  this.showLookupLoader = false;
+                  return;
+              }              
             this.routing_header_data.warehouse_code = warehouse_code;
             this.showLookupLoader = false;
           } else {
@@ -759,6 +831,16 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
       data => {
+        if(data != undefined ){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+          } 
+        }
+        }   
         if (data.length > 0) {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'operation_lookup';
@@ -793,6 +875,16 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     this.service.getWCList(this.routing_header_data.warehouse_code).subscribe(
       data => {
+        if(data != undefined){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+          } 
+        }
+        }    
         if (data.length > 0) {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'workcenter_lookup';
@@ -823,7 +915,17 @@ export class RoutingComponent implements OnInit {
     this.service.getOperationResource(oper_code).subscribe(
       data => {
         this.showLookupLoader = false;
-        if (data.length > 0) {
+        if(data != undefined){
+          if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+          } 
+        }
+       }      
+
+      if (data.length > 0) {
           let operData = [];
           for (let i = 0; i < data.length; ++i) {
             data[i].unique_key = operation_line_unique_key;
@@ -1076,6 +1178,17 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log(data);
           if (data != null) {
+            if(data != undefined ){
+              if(data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commonService.RemoveLoggedInUser().subscribe();
+                  this.commonService.signOut(this.toastr, this.route);
+                  this.showLookupLoader = false;
+                  return;
+              } 
+            }
+            }    
+
             if (data.length > 0) {
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
               this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
@@ -1118,6 +1231,17 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log(data);
           if (data != null) {
+
+            if(data != undefined){
+              if(data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                  this.commonService.RemoveLoggedInUser().subscribe();
+                  this.commonService.signOut(this.toastr, this.route);
+                  this.showLookupLoader = false;
+                  return;
+              } 
+            }
+            }    
             if (data.length > 0) {
               this.routing_detail_data[currentrow].wc_id = data[0].WCCode;
               this.routing_detail_data[currentrow].wc_code = data[0].WCCode;
@@ -1254,7 +1378,7 @@ export class RoutingComponent implements OnInit {
     objDataset.Header = [];
     objDataset.Detail = [];
     objDataset.DetailResource = [];
-
+    
     // override above array  
     objDataset.Connection.push({
       "loggedInUser": sessionStorage.getItem('loggedInUser'),
@@ -1352,10 +1476,17 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     objDataset.Detail = routing_detail_tmp_arr;
     objDataset.DetailResource = routing_detail_res_tmp_arr;
+
     console.log("objDataset ", objDataset);
     this.service.SaveUpdateRouting(objDataset).subscribe(
       data => {
         this.showLookupLoader = false;
+        if (data == "7001") {
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route);
+          return;
+        }
+
         if (data === "True") {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('routing/view');
