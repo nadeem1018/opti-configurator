@@ -49,7 +49,7 @@
           <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="rule_code">{{language.rule_code}}</label>
             <div class="col-sm-5">
-              <input type="text" name="rule_code" class="form-control  form-control-sm mt3" id="rule_code" placeholder="{{language.name}}"
+              <input type="text" name="rule_code" class="form-control form-control-sm mt3" maxlength="50" id="rule_code" placeholder="{{language.name}}"
                 [(ngModel)]="rule_wb_data.rule_code" #rulecode title="{{rule_wb_data.rule_code}}" tabindex="1" [disabled]="code_disabled">
             </div>
 
@@ -306,7 +306,7 @@
                     <div class="text-left mt-3px pl-1">
                       <div class="custom-control custom-checkbox">
                         <input type="checkbox" id="yess" name="Excluded" [(ngModel)]="rule_wb_data.Excluded" title="{{rule_wb_data.Excluded}}" class="custom-control-input"
-                          value="1">
+                          value="1" (change)="excludeAllRowsOnCheck()">
                         <label class="custom-control-label" for="yess"></label>
                       </div>
                     </div>
@@ -333,14 +333,14 @@
                       <kendo-grid-column field="checkboxoutput" title="{{language.checkbox_output}}" filter="text" [width]="50" [minResizableWidth]="50">
                         <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                           <div class="custom-control custom-checkbox">
-                            <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)" class="custom-control-input"
+                            <input type="checkbox" id="check_all" name="check_all" #outputcheckbox (click)="check_all(outputcheckbox.checked)" class="custom-control-input" [disabled]=isExcluded
                               [(checked)]=selectall value="1">
                             <label class="custom-control-label" for="check_all"></label>
                           </div>
                         </ng-template>
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="child_check_{{dataItem.rowindex}}" name="check_child" #checkboxvalue
+                            <input type="checkbox" class="custom-control-input" id="child_check_{{dataItem.rowindex}}" name="check_child" #checkboxvalue [disabled]=isExcluded
                               (change)="output_change_event('check_child',checkboxvalue.checked,dataItem.rowindex)" value={{dataItem.check_child}}
                               [(checked)]=dataItem.check_child>
                             <label class="custom-control-label" for="child_check_{{dataItem.rowindex}}"></label>

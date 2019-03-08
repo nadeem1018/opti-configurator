@@ -18,9 +18,9 @@ export class BomComponent implements OnInit {
   @ViewChild("featureinputbox") _el: ElementRef;
   @ViewChild("button") _ele: ElementRef;
 
-  @HostListener('window:scroll, scroll', ['$event'])
-  onScroll($event, pop:any) {
-      $('body').click()
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    $('body').click()
   }
 
   modalRef: BsModalRef;
@@ -93,14 +93,15 @@ export class BomComponent implements OnInit {
       this.isPerfectSCrollBar = false;
     }
   }
-  navigateToFeatureOrModelBom (id) {
-    this.route.navigateByUrl("feature/bom/edit/"+id);
-    this.feature_bom_data =[];
+  navigateToFeatureOrModelBom(id) {
+    this.route.navigateByUrl("feature/bom/edit/" + id);
+    this.feature_bom_data = [];
     this.feature_bom_table = [];
+    this.tree_data_json = [];
     this.getFeatureBomDetail(id);
   }
   navigateToMasterHeader(feature_id) {
-    this.route.navigateByUrl('feature/model/edit/'+feature_id)
+    this.route.navigateByUrl('feature/model/edit/' + feature_id)
   }
   ngOnInit() {
     const element = document.getElementsByTagName('body')[0];
@@ -136,9 +137,9 @@ export class BomComponent implements OnInit {
       this.FeatureLookupBtnhide = true;
       this.getFeatureBomDetail(this.update_id)
     }
-    }
+  }
 
-      getFeatureBomDetail(id) {
+  getFeatureBomDetail(id) {
         this.showLoader = true;
         this.fbom.GetDataByFeatureId(id).subscribe(
         data => {
@@ -150,150 +151,151 @@ export class BomComponent implements OnInit {
             } 
         }
 
-          if (data.FeatureDetail.length > 0) {
-            for (let i = 0; i < data.FeatureDetail.length; ++i) {
-              if (data.FeatureDetail[i].OPTM_TYPE == 1) {
-                this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
-                this.typevaluecodefromdatabase = data.FeatureDetail[i].child_code.toString()
-                this.isDisplayNameDisabled = false
-                this.isTypeDisabled = false
-                this.ishide = false
-                this.isQuanityDisabled = false
-                this.isPriceDisabled = true
-                this.pricehide = true
-                this.isPropagateQtyDisable = false
-                data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
-              }
-              else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
-                this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
-                this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
-                this.isDisplayNameDisabled = false
-                this.isTypeDisabled = false
-                this.ishide = false
-                this.pricehide = false
-                this.isQuanityDisabled = false
-                this.isPriceDisabled = false
-                this.isPropagateQtyDisable = false
-                data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
-                this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
-              }
-              else {
-                this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
-                this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
-                // this.isDisplayNameDisabled = false
-                this.isDisplayNameDisabled = false
-                //  this.isTypeDisabled = false
-                this.isTypeDisabled = false
-                this.isPropagateQtyDisable = true
-                this.ishide = true
-                this.pricehide = true
-                this.isQuanityDisabled = true
-                this.isPriceDisabled = true
-                this.isQuanity = 0
-              }
-              if (data.FeatureDetail[i].OPTM_DEFAULT == "Y") {
-                this.defaultcheckbox = true
-              }
-              else {
-                this.defaultcheckbox = false
-              }
-              if (data.FeatureDetail[i].OPTM_PROPOGATEQTY == "Y") {
-                data.FeatureDetail[i].OPTM_PROPOGATEQTY = true
-              }
-              else {
-                data.FeatureDetail[i].OPTM_PROPOGATEQTY = false
-              }
-
-              this.row_image_data = this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
-              this.counter = 0;
-              if (this.feature_bom_table.length > 0) {
-                this.counter = this.feature_bom_table.length
-              }
-              this.counter++;
-
-              this.feature_bom_table.push({
-                rowindex: this.counter,
-                FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
-                type: data.FeatureDetail[i].OPTM_TYPE,
-                type_value: this.typevaluefromdatabase,
-                type_value_code: this.typevaluecodefromdatabase,
-                display_name: data.FeatureDetail[i].OPTM_DISPLAYNAME,
-                quantity: this.isQuanity,
-                default: this.defaultcheckbox,
-                remark: data.FeatureDetail[i].OPTM_REMARKS,
-                attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
-                preview: this.row_image_data,
-                propagate_qty: data.FeatureDetail[i].OPTM_PROPOGATEQTY,
-                price_source_id: data.FeatureDetail[i].OPTM_PRICESOURCE,
-                price_source: data.FeatureDetail[i].ListName,
-                isDisplayNameDisabled: this.isDisplayNameDisabled,
-                isTypeDisabled: this.isTypeDisabled,
-                isQuanityDisabled: this.isQuanityDisabled,
-                hide: this.ishide,
-                pricehide: this.pricehide,
-                isPropagateQtyDisable: this.isPropagateQtyDisable,
-                isPriceDisabled: this.isPriceDisabled,
-                CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
-                CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
-              });
+        if (data.FeatureDetail.length > 0) {
+          for (let i = 0; i < data.FeatureDetail.length; ++i) {
+            if (data.FeatureDetail[i].OPTM_TYPE == 1) {
+              this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
+              this.typevaluecodefromdatabase = data.FeatureDetail[i].child_code.toString()
+              this.isDisplayNameDisabled = false
+              this.isTypeDisabled = false
+              this.ishide = false
+              this.isQuanityDisabled = false
+              this.isPriceDisabled = true
+              this.pricehide = true
+              this.isPropagateQtyDisable = false
+              data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
+              this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
             }
+            else if (data.FeatureDetail[i].OPTM_TYPE == 2) {
+              this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
+              this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_ITEMKEY.toString()
+              this.isDisplayNameDisabled = false
+              this.isTypeDisabled = false
+              this.ishide = false
+              this.pricehide = false
+              this.isQuanityDisabled = false
+              this.isPriceDisabled = false
+              this.isPropagateQtyDisable = false
+              data.FeatureDetail[i].OPTM_QUANTITY = (data.FeatureDetail[i].OPTM_QUANTITY)
+              this.isQuanity = data.FeatureDetail[i].OPTM_QUANTITY.toString()
+            }
+            else {
+              this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
+              this.typevaluecodefromdatabase = data.FeatureDetail[i].OPTM_VALUE.toString()
+              // this.isDisplayNameDisabled = false
+              this.isDisplayNameDisabled = false
+              //  this.isTypeDisabled = false
+              this.isTypeDisabled = false
+              this.isPropagateQtyDisable = true
+              this.ishide = true
+              this.pricehide = true
+              this.isQuanityDisabled = true
+              this.isPriceDisabled = true
+              this.isQuanity = 0
+            }
+            if (data.FeatureDetail[i].OPTM_DEFAULT == "Y") {
+              this.defaultcheckbox = true
+            }
+            else {
+              this.defaultcheckbox = false
+            }
+            if (data.FeatureDetail[i].OPTM_PROPOGATEQTY == "Y") {
+              data.FeatureDetail[i].OPTM_PROPOGATEQTY = true
+            }
+            else {
+              data.FeatureDetail[i].OPTM_PROPOGATEQTY = false
+            }
+
+            this.row_image_data = this.commonData.get_current_url() + data.FeatureDetail[i].OPTM_ATTACHMENT
+            this.counter = 0;
+            if (this.feature_bom_table.length > 0) {
+              this.counter = this.feature_bom_table.length
+            }
+            this.counter++;
+
+            this.feature_bom_table.push({
+              rowindex: this.counter,
+              FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
+              type: data.FeatureDetail[i].OPTM_TYPE,
+              type_value: this.typevaluefromdatabase,
+              type_value_code: this.typevaluecodefromdatabase,
+              display_name: data.FeatureDetail[i].OPTM_DISPLAYNAME,
+              quantity: this.isQuanity,
+              default: this.defaultcheckbox,
+              remark: data.FeatureDetail[i].OPTM_REMARKS,
+              attachment: data.FeatureDetail[i].OPTM_ATTACHMENT,
+              preview: this.row_image_data,
+              propagate_qty: data.FeatureDetail[i].OPTM_PROPOGATEQTY,
+              price_source_id: data.FeatureDetail[i].OPTM_PRICESOURCE,
+              price_source: data.FeatureDetail[i].ListName,
+              isDisplayNameDisabled: this.isDisplayNameDisabled,
+              isTypeDisabled: this.isTypeDisabled,
+              isQuanityDisabled: this.isQuanityDisabled,
+              hide: this.ishide,
+              pricehide: this.pricehide,
+              isPropagateQtyDisable: this.isPropagateQtyDisable,
+              isPriceDisabled: this.isPriceDisabled,
+              CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
+              CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
+            });
+          }
+        } else {
+          // this.route.navigateByUrl('feature/bom/view');
+          this.route.navigateByUrl('feature/model/edit/' + id);
+          // this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+          return;
+        }
+        if (data.FeatureHeader.length > 0) {
+          this.feature_bom_data.feature_code = data.FeatureHeader[0].OPTM_FEATURECODE;
+          this.feature_bom_data.feature_id = data.FeatureDetail[0].OPTM_FEATUREID;
+          this.feature_bom_data.feature_name = data.FeatureHeader[0].OPTM_DISPLAYNAME;
+          this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
+          this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
+          this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
+
+          if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
+            this.detail_select_options = this.commonData.less_bom_type;
+
           } else {
-            this.route.navigateByUrl('feature/bom/view');
-            this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
-            return;
+            this.detail_select_options = this.commonData.bom_type;
           }
-          if (data.FeatureHeader.length > 0) {
-            this.feature_bom_data.feature_code = data.FeatureHeader[0].OPTM_FEATURECODE;
-            this.feature_bom_data.feature_id = data.FeatureDetail[0].OPTM_FEATUREID;
-            this.feature_bom_data.feature_name = data.FeatureHeader[0].OPTM_DISPLAYNAME;
-            this.feature_bom_data.feature_desc = data.FeatureHeader[0].OPTM_FEATUREDESC;
-            this.feature_bom_data.image_path = data.FeatureHeader[0].OPTM_PHOTO;
-            this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
-            if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
-              this.detail_select_options = this.commonData.less_bom_type;
-
-            } else {
-              this.detail_select_options = this.commonData.bom_type;
-            }
-
-            if (data.FeatureHeader[0].OPTM_ISMULTISELECT == 'y' || data.FeatureHeader[0].OPTM_ISMULTISELECT == 'Y') {
-              this.feature_bom_data.multi_select = true;
-              this.feature_bom_data.multi_select_disabled = false;
-            } else {
-              this.feature_bom_data.multi_select = false;
-              this.feature_bom_data.multi_select_disabled = true;
-            }
-            this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
-            if (this.feature_bom_data.feature_min_selectable == null || this.feature_bom_data.feature_min_selectable == "" || this.feature_bom_data.feature_min_selectable == undefined || this.feature_bom_data.feature_min_selectable == 0){
-              this.feature_bom_data.feature_min_selectable = 1;
-            }
-
-            this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
-            if (this.feature_bom_data.feature_max_selectable == null || this.feature_bom_data.feature_max_selectable == "" || this.feature_bom_data.feature_max_selectable == undefined || this.feature_bom_data.feature_max_selectable == 0) {
-              this.feature_bom_data.feature_max_selectable = 1;
-            }
-
-            if (this.feature_bom_data.image_path != "") {
-              if (this.feature_bom_data.image_path != null) {
-                this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path
-                this.showImageBlock = true;
-              }
-            }
-            this.onExplodeClick('auto');
+          if (data.FeatureHeader[0].OPTM_ISMULTISELECT == 'y' || data.FeatureHeader[0].OPTM_ISMULTISELECT == 'Y') {
+            this.feature_bom_data.multi_select = true;
+            this.feature_bom_data.multi_select_disabled = false;
+          } else {
+            this.feature_bom_data.multi_select = false;
+            this.feature_bom_data.multi_select_disabled = true;
           }
-          this.showLoader = false;
-          console.log(this.feature_bom_table);
-        },
-          error => {
-           this.showLoader = false;
-       }
-      )
+          this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
+          if (this.feature_bom_data.feature_min_selectable == null || this.feature_bom_data.feature_min_selectable == "" || this.feature_bom_data.feature_min_selectable == undefined || this.feature_bom_data.feature_min_selectable == 0) {
+            this.feature_bom_data.feature_min_selectable = 1;
+          }
+
+          this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
+          if (this.feature_bom_data.feature_max_selectable == null || this.feature_bom_data.feature_max_selectable == "" || this.feature_bom_data.feature_max_selectable == undefined || this.feature_bom_data.feature_max_selectable == 0) {
+            this.feature_bom_data.feature_max_selectable = 1;
+          }
+
+          if (this.feature_bom_data.image_path != "") {
+            if (this.feature_bom_data.image_path != null) {
+              this.header_image_data = this.commonData.get_current_url() + this.feature_bom_data.image_path
+              this.showImageBlock = true;
+            }
+          }
+          this.onExplodeClick('auto');
+        }
+        this.showLoader = false;
+        console.log(this.feature_bom_table);
+      },
+      error => {
+        this.showLoader = false;
+      }
+    )
 
     $('[data-toggle="popover"]').popover({
-        container: 'body',
-        trigger:'hover'
+      container: 'body',
+      trigger: 'hover'
     })
   }
 
@@ -306,9 +308,9 @@ export class BomComponent implements OnInit {
     }
   }
 
-  on_multiple_model_change(current_value, current_state){
+  on_multiple_model_change(current_value, current_state) {
     this.feature_bom_data.multi_select = current_state;
-    if (current_state == false){
+    if (current_state == false) {
       this.feature_bom_data.multi_select_disabled = true;
       this.feature_bom_data.feature_min_selectable = 1;
       this.feature_bom_data.feature_max_selectable = 1;
@@ -317,7 +319,7 @@ export class BomComponent implements OnInit {
     }
   }
 
-  validate_min_values(value, input_id){
+  validate_min_values(value, input_id) {
     if (value == 0) {
       value = 1;
       this.feature_bom_data[input_id] = (value);
@@ -343,7 +345,7 @@ export class BomComponent implements OnInit {
       }
       this.feature_bom_data[input_id] = (value);
     }
-    
+
     $('#' + input_id).val(value);
   }
 
@@ -367,7 +369,7 @@ export class BomComponent implements OnInit {
       } else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
-      } else if (this.feature_bom_data.feature_max_selectable < this.feature_bom_data.feature_min_selectable ) {
+      } else if (this.feature_bom_data.feature_max_selectable < this.feature_bom_data.feature_min_selectable) {
         value = 1;
         this.toastr.error('', this.language.max_selectable_less_than_min, this.commonData.toast_config);
       }
@@ -407,7 +409,7 @@ export class BomComponent implements OnInit {
       remark: "",
       attachment: "",
       preview: "",
-      propagate_qty: false,
+      propagate_qty: true,
       price_source: "",
       price_source_id: "",
       isDisplayNameDisabled: false,
@@ -415,7 +417,7 @@ export class BomComponent implements OnInit {
       hide: false,
       isQuanityDisabled: false,
       isPriceDisabled: this.isPriceDisabled,
-      isPropagateQtyDisable: this.isPropagateQtyDisable,
+      isPropagateQtyDisable: false,
       pricehide: this.pricehide,
       CompanyDBId: this.companyName,
       CreatedUser: this.username,
@@ -516,7 +518,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].multi_select = "Y"
         }
 
-        this.feature_bom_table[i].feature_min_selectable =  this.feature_bom_data.feature_min_selectable;
+        this.feature_bom_table[i].feature_min_selectable = this.feature_bom_data.feature_min_selectable;
         this.feature_bom_table[i].feature_max_selectable = this.feature_bom_data.feature_max_selectable;
         if (this.feature_bom_table[i].default === false) {
           this.feature_bom_table[i].default = "N"
@@ -672,11 +674,11 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-        if (this.feature_bom_data.feature_name == value) {
-          this.feature_bom_table[i].display_name = "";
-          this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
-          return false;
-        }
+        /*  if (this.feature_bom_data.feature_name == value) {
+           this.feature_bom_table[i].display_name = "";
+           this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
+           return false;
+         } */
         this.feature_bom_table[i].display_name = value
         this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
       }
@@ -726,13 +728,13 @@ export class BomComponent implements OnInit {
           this.fbom.onItemIdChange(this.feature_bom_table[i].type_value_code).subscribe(
             data => {
 
-              if(data != undefined && data.length > 0){
+              if (data != undefined && data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
-                    this.commanService.RemoveLoggedInUser().subscribe();
-                    this.commanService.signOut(this.toastr, this.route);
-                    return;
-                } 
-             }
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.route);
+                  return;
+                }
+              }
 
               if (data === "False") {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
@@ -839,14 +841,14 @@ export class BomComponent implements OnInit {
     this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureList().subscribe(
       data => {
-      if(data != undefined && data.length > 0){
-        if (data[0].ErrorMsg == "7001") {
+        if (data != undefined && data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router);
             return;
-        } 
-    }
+          }
+        }
         if (data.length > 0) {
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -869,13 +871,13 @@ export class BomComponent implements OnInit {
   getItemDetails(ItemKey) {
     this.fbom.getItemDetails(ItemKey).subscribe(
       data => {
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
-          } 
-      }
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
         if (data.length > 0) {
           for (let i = 0; i < this.feature_bom_table.length; ++i) {
             if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -897,14 +899,14 @@ export class BomComponent implements OnInit {
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
 
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
-          } 
-      }
+            this.showLookupLoader = false;
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
         if (data.length > 0) {
           this.showLookupLoader = false;
           if (press_location == "Header") {
@@ -986,14 +988,14 @@ export class BomComponent implements OnInit {
     this.currentrowindex = rowindex;
     this.fbom.GetPriceList(ItemKey).subscribe(
       data => {
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
-          } 
-      }
+            this.showLookupLoader = false;
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
         if (data.length > 0) {
           this.lookupfor = 'Price_lookup';
           this.showLookupLoader = false;
@@ -1032,14 +1034,14 @@ export class BomComponent implements OnInit {
       }
       else {
         var total_detail_elements = this.feature_bom_table.length;
-        if (this.feature_bom_data.multi_select_disabled == false ){
+        if (this.feature_bom_data.multi_select_disabled == false) {
           console.log("total_detail_elements " + total_detail_elements);
           if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
             this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
             return false;
           }
 
-          if (total_detail_elements < this.feature_bom_data.feature_max_selectable  ){
+          if (total_detail_elements < this.feature_bom_data.feature_max_selectable) {
             this.toastr.error('', this.language.max_selectable_greater_total, this.commonData.toast_config);
             return false;
           }
@@ -1098,13 +1100,13 @@ export class BomComponent implements OnInit {
         this.fbom.CheckValidPriceListEntered(this.feature_bom_table[i].type_value, value).subscribe(
           data => {
 
-            if(data != undefined && data.length > 0){
+            if (data != undefined && data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
-                  this.commanService.RemoveLoggedInUser().subscribe();
-                  this.commanService.signOut(this.toastr, this.route);
-                  return;
-              } 
-           }
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.route);
+                return;
+              }
+            }
 
             if (data === "False") {
               $(actualValue).val("");
@@ -1141,13 +1143,13 @@ export class BomComponent implements OnInit {
     });
     this.fbom.DeleteData(this.GetItemData).subscribe(
       data => {
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
-          } 
-      }
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
         console.log(data);
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
@@ -1180,13 +1182,13 @@ export class BomComponent implements OnInit {
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
           if (data != null && data != undefined) {
-            if(data.length > 0){
+            if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
-                  this.commanService.RemoveLoggedInUser().subscribe();
-                  this.commanService.signOut(this.toastr, this.router);
-                  return;
-              } 
-          }
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.router);
+                return;
+              }
+            }
 
             if (data.length > 0) {
               this.serviceData = data;
@@ -1225,14 +1227,14 @@ export class BomComponent implements OnInit {
           data => {
             if (data != null && data != undefined) {
 
-              if(data.length > 0){
+              if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
-                    this.commanService.RemoveLoggedInUser().subscribe();
-                    this.commanService.signOut(this.toastr, this.router);
-                    return;
-                } 
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.router);
+                  return;
+                }
               }
-            
+
               //Earlier we were opening this in lookup
               // this.serviceData = data;
               // this.lookupfor = 'tree_view_lookup';
@@ -1259,15 +1261,15 @@ export class BomComponent implements OnInit {
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         if (this.live_tree_view_data.length > 0) {
           for (var key in this.live_tree_view_data) {
-            var update_index ="";
-            if (this.live_tree_view_data[key].tree_index !== undefined){
+            var update_index = "";
+            if (this.live_tree_view_data[key].tree_index !== undefined) {
               let local_tree_index = this.live_tree_view_data[key].tree_index;
               update_index = this.tree_data_json.findIndex(function (tree_el) {
                 return tree_el.tree_index == local_tree_index
               });
             }
             let temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
-            if (update_index == "-1"){
+            if (update_index == "-1") {
               this.tree_data_json.push(temp_seq);
             } else {
               this.tree_data_json[update_index] = (temp_seq);
@@ -1290,13 +1292,13 @@ export class BomComponent implements OnInit {
       data => {
         console.log(data);
 
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.route);
-              return;
-          } 
-       }
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.route);
+            return;
+          }
+        }
 
         if (data === "False") {
           this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
@@ -1320,13 +1322,13 @@ export class BomComponent implements OnInit {
 
     this.fbom.checkFeaturesAlreadyAddedinParent(enteredFeatureID, this.feature_bom_data.feature_id).subscribe(
       data => {
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
-          } 
-       }
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
         if (data.length > 0) {
           //If exists then will restrict user 
           if (data == "Exist") {
@@ -1363,18 +1365,21 @@ export class BomComponent implements OnInit {
 
 
   //This will recurse the tree
-  get_childrens(component) {
+  get_childrens(componentNumber) {
     let data = this.complete_dataset.filter(function (obj) {
-      return obj['parentId'] == component;
+      return obj['parentNumber'] == componentNumber;
     });
     return data;
   }
 
-  check_component_exist(component, level) {
+  check_component_exist(componentNumber, level) {
     level = (parseInt(level) + 1);
-    let data = this.tree_data_json.filter(function (obj) {
-      return obj['parentId'] == component && obj['level'] == level;
-    });
+    let data = [];
+    if (componentNumber != "" && componentNumber != null && componentNumber != undefined) {
+      data = this.tree_data_json.filter(function (obj) {
+        return obj['parentNumber'] == componentNumber; //  && obj['level'] == level;
+      });
+    }
     return data;
   }
 
@@ -1404,15 +1409,25 @@ export class BomComponent implements OnInit {
     }
   }
   openModal(template: TemplateRef<any>) {
-      $('body').click()
-      this.modalRef = this.modalService.show(template, {class: 'modal-sm modal-dialog-centered'});
+    $('body').click()
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
   childExpand(id: any){
-    id.classList.toggle("expanded")
-    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
-        id.parentNode.parentNode.childNodes[4].style.display = "block";
-    } else {
-        id.parentNode.parentNode.childNodes[4].style.display = "none";
-    }
-}
+      id.classList.toggle("expanded")
+      if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+          id.parentNode.parentNode.childNodes[4].style.display = "block";
+      } else {
+          id.parentNode.parentNode.childNodes[4].style.display = "none";
+      }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
+  }
 }

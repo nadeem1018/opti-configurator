@@ -30,7 +30,7 @@
           <div class="form-group">
             <label style="padding-left:15px;" class="control-label col-sm-2 float-left" for="feature">{{language.code}}</label>
             <div class="col-sm-5 float-left">
-              <input type="text" [disabled]="!isCodeDisabled" class="form-control form-control-sm" placeholder="{{language.code}}" id="usrID"
+              <input type="text" [disabled]="!isCodeDisabled" class="form-control form-control-sm" placeholder="{{language.code}}" id="usrID" maxlength="50"
                 name="code" (change)="CheckDuplicateCode()" [(ngModel)]="codekey" #inputBox title="{{codekey}}" (blur)="onCodeStrBlur(codekey)">
             </div>
           </div>

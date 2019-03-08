@@ -12,6 +12,7 @@ export interface ColumnSetting {
 
 // Example of Data as model, can be used for non updating data (exaple - names, task type and etc)
 export class CommonData {
+    public imgPath = 'assets/images';
     public project_name: string = "Optipro Configurator";
     public adminDBName: string = "OPTIPROADMIN";
     public href: any = window.location.href;
@@ -154,6 +155,13 @@ export class CommonData {
         if (sessionStorage.getItem('isLoggedIn') == null) {
             window.location.href = login_page;
         }
+    }
+
+    random_string(length) {
+        let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let result = '';
+        for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        return result;
     }
 
     public excludeSpecialCharRegex = /[{}*!^=<>?|]/;

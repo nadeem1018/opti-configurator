@@ -99,7 +99,7 @@ export class CommonService {
 
   signOut(toastr: ToastrService, router: Router){
     let language:any = JSON.parse(sessionStorage.getItem('current_lang'));  
-    toastr.success('', language.session_stopped, this.common_params.toast_config);
+    toastr.error('', language.session_stopped, this.common_params.toast_config);
     /* sessionStorage.clear();
     localStorage.clear(); */
     let login_page = this.common_params.application_path + '/index.html#login';

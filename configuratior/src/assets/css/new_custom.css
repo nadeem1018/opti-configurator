@@ -54,7 +54,13 @@
 .lookup_data table.k-grid-table {
   width: 100% !important;
 }
-
+.k-grid table{
+  min-width:100% !important;
+}
+col:not(:first-child) {
+  min-width: 90px !important;
+  display: block;
+}
 .k-grid-table tr td {
   width: 50% !important;
 }
@@ -377,7 +383,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  min-width: 400px;
+  /* min-width: 400px; */
   height: 100%;
 }
 
@@ -632,11 +638,14 @@ hr {
   flex: 1;
   height: 100%;
   overflow: auto;
+  flex-direction: column;
 }
 
 .tree li [data-branchtype]:not([data-branchtype=""]) {
   padding-left: 30px;
   position: relative;
+  white-space: nowrap;
+  padding-right: 10px;
 }
 
 .tree li [data-branchtype]:not([data-branchtype=""]):before {
@@ -722,4 +731,8 @@ a.common_grid_link {
 
 .width-90per {
   width: 90% !important;
+}
+/*css for selection*/
+.k-widget ::selection, .k-block ::selection, .k-panel ::selection {
+  background-color: #338fff !important;
 }

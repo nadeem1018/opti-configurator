@@ -48,6 +48,7 @@ export class ModelbomComponent implements OnInit {
   public complete_dataset: any = [];
   public isMinSelectedDisable = false;
   public isMaxSelectedDisable = false;
+  public isAccessory:boolean = false;
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   modalRef: BsModalRef;
@@ -75,7 +76,8 @@ export class ModelbomComponent implements OnInit {
     } else if(type == '3'){
       this.route.navigateByUrl("modelbom/edit/"+type_value);
       this.modelbom_data= [];
-      this.get_modelbom_details(type_value);
+      this.tree_data_json = [];
+      this.get_modelbom_details(type_value, true);
     }
   }
 
@@ -100,7 +102,6 @@ export class ModelbomComponent implements OnInit {
   public pop;
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-    console.log("scrolling...window");
     $('body').click()
   }
 
@@ -144,11 +145,11 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
-      this.get_modelbom_details(this.update_id);
+      this.get_modelbom_details(this.update_id, false);
     }
   }
 
-  get_modelbom_details(id) {
+  get_modelbom_details(id, navigat_to_header) {
     this.showLoader = true;
     this.service.GetDataByModelId(id).subscribe(
       data => {
@@ -181,7 +182,12 @@ export class ModelbomComponent implements OnInit {
 
 
         } else {
-          this.route.navigateByUrl('modelbom/view');
+          if(navigat_to_header == true){
+            this.route.navigateByUrl('feature/model/edit/' + id);
+          } else {
+            this.route.navigateByUrl('modelbom/view');
+          }
+          
         }
 
         if (data.ModelDetail.length > 0) {
@@ -263,9 +269,18 @@ export class ModelbomComponent implements OnInit {
               pricehide: this.pricehide,
               isUOMDisabled: this.isUOMDisabled,
               isMinSelectedDisable: this.isMinSelectedDisable,
-              isMaxSelectedDisable: this.isMaxSelectedDisable
+              isMaxSelectedDisable: this.isMaxSelectedDisable,
+              isAccessory :false
             });
 
+          }
+        }
+        for( var i=0 ; i < data.ModelDetail.length ; i++) {
+          if(data.ModelDetail[i].Accessory == "Y") {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data.isAccessory = false;
           }
         }
 
@@ -519,6 +534,14 @@ export class ModelbomComponent implements OnInit {
           this.showLookupLoader = false;
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
+        }
+        for(var i=0; i < this.modelbom_data.length;i++) {
+          if ((data[0].OPTM_ACCESSORY == "Y") && (this.modelbom_data[i].type_value == data[0].OPTM_FEATUREID)) {
+            this.modelbom_data[i].isAccessory = true;
+            this.modelbom_data[i].unique_identifer = false;
+          } else {
+            this.modelbom_data[i].isAccessory = false;
+          }
         }
       },
       error => {
@@ -1120,6 +1143,13 @@ export class ModelbomComponent implements OnInit {
       return;
     }
     this.showLookupLoader = true;
+
+    if(this.rule_data.length == 0)
+    {
+      obj.save_data();
+      return;
+    }
+
     obj.onVerifyOutput(function (response) {
       console.log('in validate true ' + response);
       if (response == true) {
@@ -1332,7 +1362,8 @@ export class ModelbomComponent implements OnInit {
             success_call(false);
             return false;
           }
-          else {
+         
+          else{
             this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
             success_call(true);
             return true;
@@ -1472,18 +1503,21 @@ export class ModelbomComponent implements OnInit {
 
 
   //This will recurse the tree
-  get_childrens(component) {
+  get_childrens(componentNumber) {
     let data = this.complete_dataset.filter(function (obj) {
-      return obj['parentId'] == component;
+      return obj['parentNumber'] == componentNumber;
     });
     return data;
   }
 
-  check_component_exist(component, level) {
+  check_component_exist(componentNumber, level) {
     level = (parseInt(level) + 1);
-    let data = this.tree_data_json.filter(function (obj) {
-      return obj['parentId'] == component && obj['level'] == level;
-    });
+    let data = [];
+    if (componentNumber != "" && componentNumber != null && componentNumber!= undefined ){
+      data = this.tree_data_json.filter(function (obj) {
+        return obj['parentNumber'] == componentNumber; // && obj['level'] == level;
+      });
+    }
     return data;
   }
 
@@ -1617,6 +1651,16 @@ export class ModelbomComponent implements OnInit {
     } else {
       id.parentNode.parentNode.childNodes[4].style.display = "none";
     }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
   }
 }
 
