@@ -100,7 +100,8 @@ export class LookupComponent implements OnInit {
   public popup_lookupfor = "";
   public resource_counter = 0;
   public showLookupLoader: boolean = false;
-
+  public popup_resource: boolean = false;
+  
   public close_kendo_dialog() {
     this.dialogOpened = false;
     this.current_popup_row = "";
@@ -446,26 +447,33 @@ export class LookupComponent implements OnInit {
     if (this.is_operation_popup_lookup_open == true) {
       console.log("this.current_popup_row - ", this.current_popup_row);
 
-      for (let i = 0; i < this.resourceServiceData.length; ++i) {
-        if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
-          this.resourceServiceData[i].resource_code = lookup_key.ResCode;
-          this.resourceServiceData[i].resource_name = lookup_key.Name;
-          this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
-          this.resourceServiceData[i].resource_consumption = '0';
-          this.resourceServiceData[i].resource_inverse = '0';
-          this.resourceServiceData[i].no_resource_used = '1';
-          this.resourceServiceData[i].time_uom = '';
-          this.resourceServiceData[i].time_consumption = '0';
-          this.resourceServiceData[i].time_inverse = '0';
+      if (lookup_key.ResCode != undefined && lookup_key.Name!= undefined) {
+        for (let i = 0; i < this.resourceServiceData.length; ++i) {
+          if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
+            this.resourceServiceData[i].resource_code = lookup_key.ResCode;
+            this.resourceServiceData[i].resource_name = lookup_key.Name;
+            this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+            this.resourceServiceData[i].resource_consumption = '0';
+            this.resourceServiceData[i].resource_inverse = '0';
+            this.resourceServiceData[i].no_resource_used = '1';
+            this.resourceServiceData[i].time_uom = '';
+            this.resourceServiceData[i].time_consumption = '0';
+            this.resourceServiceData[i].time_inverse = '0';
 
 
+          }
         }
       }
     }
 
     console.log(lookup_key);
+    if (this.popup_resource == false ){
+      this.lookupvalue.emit(Object.values(lookup_key));
+    }
 
-    this.lookupvalue.emit(Object.values(lookup_key));
+    if (this.popup_resource == true) {
+      this.popup_resource = false;
+    }
     this.serviceData = [];
     //   $("#lookup_modal").modal('hide');
     console.log(selection);
@@ -1322,33 +1330,35 @@ export class LookupComponent implements OnInit {
     this.resourceServiceData = [];
     if (this.serviceData !== undefined && this.serviceData !== "") {
       if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
-        for(var inx = 0; inx < this.serviceData.oper_res.length; inx++){
+        for (var inx = 0; inx < this.serviceData.oper_res.length; inx++) {
           console.log("this.serviceData.oper_res[inx] - ", this.serviceData.oper_res[inx]);
           this.resource_counter = 0;
           if (this.resourceServiceData.length > 0) {
             this.resource_counter = this.resourceServiceData.length
           }
           this.resource_counter++;
-          this.resourceServiceData.push({
-            lineno: this.resource_counter,
-            rowindex: this.resource_counter,
-            operation_no: this.serviceData.oper_res[inx].OPRCode,
-            resource_code: this.serviceData.oper_res[inx].ResCode,
-            resource_name: this.serviceData.oper_res[inx].ResName,
-            resource_type: this.serviceData.oper_res[inx].ResType,
-            resource_uom: this.serviceData.oper_res[inx].ResUOM,
-            resource_consumption: this.serviceData.oper_res[inx].ResCons,
-            resource_inverse: this.serviceData.oper_res[inx].ResInv,
-            no_resource_used: this.serviceData.oper_res[inx].ResUsed,
-            time_uom: this.serviceData.oper_res[inx].TimeUOM,
-            time_consumption: this.serviceData.oper_res[inx].TimeCons,
-            time_inverse:this.serviceData.oper_res[inx].TimeInv,
-            resource_consumption_type: '1',
-            basis: '1',
-            schedule: false,
-            is_resource_disabled: true,
-            unique_key: this.serviceData.unique_key
-          });
+          if (this.serviceData.oper_res[inx].OPRCode != undefined) {
+            this.resourceServiceData.push({
+              lineno: this.resource_counter,
+              rowindex: this.resource_counter,
+              operation_no: this.serviceData.oper_res[inx].OPRCode,
+              resource_code: this.serviceData.oper_res[inx].ResCode,
+              resource_name: this.serviceData.oper_res[inx].ResName,
+              resource_type: this.serviceData.oper_res[inx].ResType,
+              resource_uom: this.serviceData.oper_res[inx].ResUOM,
+              resource_consumption: this.serviceData.oper_res[inx].ResCons,
+              resource_inverse: this.serviceData.oper_res[inx].ResInv,
+              no_resource_used: this.serviceData.oper_res[inx].ResUsed,
+              time_uom: this.serviceData.oper_res[inx].TimeUOM,
+              time_consumption: this.serviceData.oper_res[inx].TimeCons,
+              time_inverse: this.serviceData.oper_res[inx].TimeInv,
+              resource_consumption_type: '1',
+              basis: '1',
+              schedule: false,
+              is_resource_disabled: true,
+              unique_key: this.serviceData.unique_key
+            });
+          }
         }
 
         if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
@@ -1573,7 +1583,7 @@ export class LookupComponent implements OnInit {
               }];
             this.serviceData = data;
             this.dialogOpened = true;
-
+             this.popup_resource = true; 
           }
           else {
             this.dialogOpened = false;

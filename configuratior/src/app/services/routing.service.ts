@@ -123,5 +123,10 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/AddEditRouting", jObject, this.common_params.httpOptions);
   }
 
+  DeleteRouting(routing_id): Observable<any> {
+    let jObject = { Routing: JSON.stringify([{ CompanyDBID: this.logged_in_company, RoutingId: routing_id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/DeleteRouting", jObject, this.common_params.httpOptions);
+  }
+
 
 }

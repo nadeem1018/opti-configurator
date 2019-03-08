@@ -30,13 +30,13 @@
               <div class="custom-control custom-radio custom-control-inline mr-5">
                 <input type="radio" id="feature_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="feature" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5">
+                  tabindex="5" [disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="feature_check">{{language.feature}}</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="model_check" name="routing_for" (change)="on_operation_change()" [(ngModel)]="routing_header_data.routing_for"
                   class="custom-control-input" value="model" style="position: relative;margin-top: 5px;" title="{{routing_header_data.routing_for}}"
-                  tabindex="5">
+                  tabindex="5" [disabled]="this.form_mode == 'edit'">
                 <label class="custom-control-label" for="model_check">{{language.model}}</label>
               </div>
             </div>
@@ -44,8 +44,12 @@
 
           <div class="feature_header_section" *ngIf="routing_header_data.routing_for == 'feature'">
             <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">{{language.feature}}</label>
-
+              <label class="col-sm-3 col-form-label" for="feature_id">
+                {{language.feature}}
+                <a class="common_grid_link" *ngIf="routing_header_data.feature_id && routing_header_data.feature_code">
+                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                </a>
+              </label>
               <div class="col-sm-3 input-group">
                 <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="feature_id" id="feature_id"
                   (change)="getFeatureDetail(routing_header_data.feature_id)" placeholder="{{language.Feature_Code}}"
@@ -53,9 +57,9 @@
                 <input type="text" class="form-control  form-control-sm mt3" name="feature_code" id="featuer_code"
                   [(ngModel)]="routing_header_data.feature_code" title="{{routing_header_data.feature_code}}"
                   placeholder="{{language.feature}}" (change)="getFeatureDetail(routing_header_data.feature_code)"
-                  style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
-                <div class="input-group-append">
-                  <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)">
+                  style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [disabled]="this.form_mode == 'edit'">
+                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
+                  <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)" >
                     <i class="fa fa-bars"></i>
                   </span>
                 </div>
@@ -67,7 +71,7 @@
               <div class="col-sm-3">
                 <input type="text" name="feature_description" class="form-control  form-control-sm mt3" id="feature_description"
                   placeholder="{{language.description}}" [(ngModel)]="routing_header_data.feature_description" title="{{routing_header_data.description}}"
-                  tabindex="2">
+                  tabindex="2" [disabled]="this.form_mode == 'edit'">
               </div>
 
             </div>
@@ -76,7 +80,12 @@
 
           <div class="modal_header_section" *ngIf="routing_header_data.routing_for == 'model'">
             <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">{{language.model}}</label>
+              <label class="col-sm-3 col-form-label" for="feature_id">
+                {{language.model}}
+                <a class="common_grid_link" *ngIf="routing_header_data.modal_id && routing_header_data.modal_code">
+                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                </a>
+              </label>
 
               <div class="col-sm-3 input-group">
                 <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="modal_id" id="modal_id"
@@ -85,8 +94,8 @@
                 <input type="text" class="form-control  form-control-sm mt3" name="modal_code" id="modal_code"
                   [(ngModel)]="routing_header_data.modal_code" title="{{routing_header_data.modal_code}}" placeholder="{{language.model_ModelCode}}"
                   (change)="getModalDetail(routing_header_data.modal_code)" style="max-width: calc(98% - 23px) !important; width: 100%;"
-                  tabindex="6">
-                <div class="input-group-append">
+                  tabindex="6" [disabled]="this.form_mode == 'edit'">
+                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
                   <span class="input-group-text modal_code_lookup cursor_icon" id="basic-addon2" (click)="openModalLookup(true)">
                     <i class="fa fa-bars"></i>
                   </span>
@@ -99,7 +108,7 @@
               <div class="col-sm-3">
                 <input type="text" name="modal_description" class="form-control  form-control-sm mt3" id="modal_description"
                   placeholder="{{language.description}}" [(ngModel)]="routing_header_data.modal_description" title="{{routing_header_data.description}}"
-                  tabindex="2">
+                  tabindex="2" [disabled]="this.form_mode == 'edit'">
               </div>
             </div>
           </div>
@@ -298,8 +307,10 @@
               <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="50"
                 [minResizableWidth]="50">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowindex"
-                    name="rowindexName" value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
+                  <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)" *ngIf="(dataItem.type == '1' || dataItem.type == '3')">
+                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                  </a>
+                  {{dataItem.rowindex}}
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
@@ -526,7 +537,7 @@
                 <span>{{language.cancel}}</span>
               </button>
 
-              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
+              <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="deleteConfirm()">
                 <i class="fa fa-trash fa-fw"></i>
                 <span>{{language.delete}}</span>
               </button>
