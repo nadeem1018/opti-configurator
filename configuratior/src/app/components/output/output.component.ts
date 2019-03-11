@@ -373,7 +373,7 @@ export class OutputComponent implements OnInit {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
-        } 
+          }
 
           this.serviceData = data;
         }
@@ -394,13 +394,13 @@ export class OutputComponent implements OnInit {
     this.OutputService.GetAllOutputData(operationType, logid, description).subscribe(
       data => {
 
-        if(data != undefined && data.length >0 ){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
-              return;
-          } 
-       }
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          }
+        }
 
         console.log(data);
         if (this.step1_data.main_operation_type == "3") {
@@ -479,13 +479,14 @@ export class OutputComponent implements OnInit {
       this.showLookupLoader = true;
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
         data => {
+          if(data != null && data != undefined){
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route);
               return;
-          } 
+            }
             this.setModelDataFlag = true;
             for (var isavedmultimodel in data) {
               this.onclearselection(1);
@@ -504,6 +505,11 @@ export class OutputComponent implements OnInit {
           } else {
             this.showLookupLoader = false;
           }
+        }
+        else {
+          this.showLookupLoader = false;
+        }
+
         }, error => {
           this.showLookupLoader = false;
         })
@@ -521,6 +527,14 @@ export class OutputComponent implements OnInit {
 
       data.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
         obj['OPTM_LEVEL'] = 0;
+        return data.ModelHeaderData
+      })
+
+      data.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
+        if (obj['OPTM_MAXSELECTABLE'] > 1) {
+          obj['element_type'] = "checkbox"
+          obj['element_class'] = "custom-control custom-checkbox"
+        }
         return data.ModelHeaderData
       })
 
@@ -588,6 +602,9 @@ export class OutputComponent implements OnInit {
         return obj['ACCESSORY'] == "Y";
       });
       this.getAccessoryData(this.AccessModel)
+      if (this.Accessoryarray.length == 0 && this.AccessModel.length > 0) {
+        this.Accessoryarray = this.AccessModel
+      }
 
       var ModelArray = [];
       ModelArray = data.ModelHeaderData.filter(function (obj) {
@@ -660,7 +677,7 @@ export class OutputComponent implements OnInit {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
-         } 
+          }
           this.serviceData = data;
         }
         else {
@@ -686,7 +703,7 @@ export class OutputComponent implements OnInit {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
-          } 
+          }
           this.lookupfor = 'output_customer';
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -728,7 +745,7 @@ export class OutputComponent implements OnInit {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
-         } 
+          }
           this.lookupfor = 'ModelBomForWizard_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -1169,26 +1186,26 @@ export class OutputComponent implements OnInit {
       ModelDisplayName: this.step2_data.model_name,
       currentDate: this.submit_date
     })
-    
+
     // AllDataForModelBomOutput.apidata.push({
     //   GUID: sessionStorage.getItem("GUID"),
     //   UsernameForLic: sessionStorage.getItem("loggedInUser")
     // })
 
-    AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata    
+    AllDataForModelBomOutput.getmodelsavedata = getmodelsavedata
 
     this.OutputService.GetDataByModelIDForFirstLevel(AllDataForModelBomOutput).subscribe(
       //this.OutputService.GetDataByModelIDForFirstLevel(this.step2_data.model_id, this.step2_data.model_name).subscribe(
       data => {
         if (data != null && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-            this.showLookupLoader = false;
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
-          } 
-        }
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
           console.log(data);
           if (data.SubModelReadyToUse !== undefined) {
             if (data.SubModelReadyToUse.length > 0) {
@@ -1279,6 +1296,9 @@ export class OutputComponent implements OnInit {
           });
           this.getAccessoryData(this.AccessModel)
 
+          if (this.Accessoryarray.length == 0 && this.AccessModel.length > 0) {
+            this.Accessoryarray = this.AccessModel
+          }
           var ModelArray = [];
           ModelArray = data.ModelHeaderData.filter(function (obj) {
             return obj['OPTM_TYPE'] == "3"
@@ -1498,7 +1518,7 @@ export class OutputComponent implements OnInit {
 
     GetDataForSelectedFeatureModelItemData.apidata.push({
       GUID: sessionStorage.getItem("GUID"),
-      UsernameForLic: sessionStorage.getItem("loggedInUser") 
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
 
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
@@ -1506,13 +1526,13 @@ export class OutputComponent implements OnInit {
       data => {
 
         if (data != null && data != undefined) {
-         if(data.length > 0){
-         if (data[0].ErrorMsg == "7001") {
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
-        } 
-      }
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
 
           if (value == true) {
             if (data.DataForSelectedFeatureModelItem.length > 0) {
@@ -1597,7 +1617,7 @@ export class OutputComponent implements OnInit {
                       OPTM_FEATUREID: feature_model_data.OPTM_CHILDFEATUREID,
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: this.ModelHeaderData.length + 1,
-                      OPTM_MANDATORY:"N",
+                      OPTM_MANDATORY: "N",
                       OPTM_MAXSELECTABLE: psMaxSelect,
                       OPTM_MINSELECTABLE: psMinSelect,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -2007,7 +2027,7 @@ export class OutputComponent implements OnInit {
       }
       else {
         psFeatureMax = dtFeatureDataWithDefault[idtfeature].OPTM_MAX_SELECTABLE
-        if(parseFloat(psFeatureMax)>1){
+        if (parseFloat(psFeatureMax) > 1) {
           psFeatureelement_class = "custom-control custom-checkbox"
           psFeatureelement_type = "checkbox"
         }
@@ -2048,7 +2068,7 @@ export class OutputComponent implements OnInit {
         checked: checkeddefault,
         OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
         is_second_level: 1,
-        element_class:psFeatureelement_class,
+        element_class: psFeatureelement_class,
         element_type: psFeatureelement_type,
         parentfeatureid: DataForSelectedFeatureModelItem.OPTM_CHILDFEATUREID,
         parentmodelid: parentmodelid,
@@ -2268,14 +2288,14 @@ export class OutputComponent implements OnInit {
     this.OutputService.fillShipAddress(this.ship_data).subscribe(
       data => {
         if (data != null && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-            this.showLookupLoader = false;
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
           }
-        }   
           this.showLookupLoader = false;
           this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
         }
@@ -2297,20 +2317,20 @@ export class OutputComponent implements OnInit {
       ShipTo: SelectedBillTo,
       currentDate: this.submit_date,
       GUID: sessionStorage.getItem("GUID"),
-      UsernameForLic: sessionStorage.getItem("loggedInUser") 
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
     this.showLookupLoader = true;
     this.OutputService.fillBillAddress(this.bill_data).subscribe(
       data => {
         if (data != null && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-            this.showLookupLoader = false;
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
           }
-        } 
           if (data.BillingAdress[0] != undefined) {
             this.showLookupLoader = false;
             this.step1_data.bill_to_address = data.BillingAdress[0].BillingAdress;
@@ -2329,16 +2349,16 @@ export class OutputComponent implements OnInit {
     this.OutputService.validateInputCustomer(this.common_output_data.companyName, this.step1_data.customer).subscribe(
       data => {
 
-        if(data != undefined && data != null){
-         if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined && data != null) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route);
               return;
-          } 
+            }
+          }
         }
-       }
 
         if (data === "False") {
           this.showLookupLoader = false;
@@ -2375,7 +2395,7 @@ export class OutputComponent implements OnInit {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
-        } 
+          }
           this.step1_data.customer_name = data[0].Name;
         }
         else {
@@ -2522,10 +2542,10 @@ export class OutputComponent implements OnInit {
       currentDate: this.submit_date
       //ConfigType: this.step1_data.main_operation_type
     })
-    
+
     final_dataset_to_save.apidata.push({
       GUID: sessionStorage.getItem("GUID"),
-      UsernameForLic: sessionStorage.getItem("loggedInUser") 
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
     })
 
     console.log(final_dataset_to_save);
@@ -2533,14 +2553,14 @@ export class OutputComponent implements OnInit {
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-            this.showLookupLoader = false;
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
-        }
-      }
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
           if (data[0].Status == "True") {
             this.showLookupLoader = false;
             this.iLogID = data[0].LogId;
@@ -2553,7 +2573,7 @@ export class OutputComponent implements OnInit {
           }
           else {
             this.showLookupLoader = false;
-            this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+            this.toastr.error('', this.language.no_item_selected, this.commonData.toast_config);
             return;
           }
 
@@ -3256,33 +3276,33 @@ export class OutputComponent implements OnInit {
               }
 
             }
-            var modelfeatureitemkey = "";
-            if (imodelfilterfeatures.length > 0) {
-              for (var ifeaitem in imodelfilterfeatures) {
-                var filterfeatureitems = step3_data_row.feature.filter(function (obj) {
-                  return obj['FeatureId'] == imodelfilterfeatures[ifeaitem].OPTM_FEATUREID
-                })
+            // var modelfeatureitemkey = "";
+            // if (imodelfilterfeatures.length > 0) {
+            //   for (var ifeaitem in imodelfilterfeatures) {
+            //     var filterfeatureitems = step3_data_row.feature.filter(function (obj) {
+            //       return obj['FeatureId'] == imodelfilterfeatures[ifeaitem].OPTM_FEATUREID
+            //     })
 
-                if (filterfeatureitems.length > 0) {
-                  for (var ifeafilteritem in filterfeatureitems) {
-                    if (imodelfilterfeatures[ifeaitem].OPTM_UNIQUEIDNT == "Y") {
-                      if (modelfeatureitemkey.length == 0) {
-                        modelfeatureitemkey = filterfeatureitems[ifeafilteritem].ItemNumber
-                      } else {
-                        modelfeatureitemkey = modelfeatureitemkey + "-" + filterfeatureitems[ifeafilteritem].ItemNumber
-                      }
-                    }
-                  }
-                }
+            //     if (filterfeatureitems.length > 0) {
+            //       for (var ifeafilteritem in filterfeatureitems) {
+            //         if (imodelfilterfeatures[ifeaitem].OPTM_UNIQUEIDNT == "Y") {
+            //           if (modelfeatureitemkey.length == 0) {
+            //             modelfeatureitemkey = filterfeatureitems[ifeafilteritem].ItemNumber
+            //           } else {
+            //             modelfeatureitemkey = modelfeatureitemkey + "-" + filterfeatureitems[ifeafilteritem].ItemNumber
+            //           }
+            //         }
+            //       }
+            //     }
 
 
-              }
-              for (var isavedataset in temp_step2_final_dataset_save) {
-                if (temp_step2_final_dataset_save[isavedataset].OPTM_ITEMTYPE == "1" && modelfeatureitemkey != "") {
-                  temp_step2_final_dataset_save[isavedataset].OPTM_KEY = modelfeatureitemkey.toString()
-                }
-              }
-            }
+            //   }
+            //   for (var isavedataset in temp_step2_final_dataset_save) {
+            //     if (temp_step2_final_dataset_save[isavedataset].OPTM_ITEMTYPE == "1" && modelfeatureitemkey != "") {
+            //       temp_step2_final_dataset_save[isavedataset].OPTM_KEY = modelfeatureitemkey.toString()
+            //     }
+            //   }
+            // }
           }
           else {
             var ifeatureData = [];
@@ -3309,10 +3329,10 @@ export class OutputComponent implements OnInit {
                 }
                 if (ifeatureHeaderData.length == 0) {
                   ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
-                    return obj['OPTM_ITEMKEY'] == step3_data_row.ModelHeaderItemsArray[ifeature].Item
+                    return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
                   })
                 }
-                var itemcode = step3_data_row.feature[ifeature].OPTM_ITEMKEY
+                var itemcode = step3_data_row.feature[ifeature].Item
                 if (step3_data_row.feature[ifeature].is_accessory == "Y") {
                   itemtype = 3;
                 }
@@ -3427,9 +3447,9 @@ export class OutputComponent implements OnInit {
           if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1) {
             if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
               if (itemkey.length == 0) {
-                itemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
+                // itemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
               } else {
-                itemkey = itemkey + "-" + temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
+                // itemkey = itemkey + "-" + temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
               }
             }
 
@@ -3454,6 +3474,8 @@ export class OutputComponent implements OnInit {
 
           temp_step2_final_dataset_save[0].OPTM_KEY = itemkey.toString()
         }
+
+
         var sortitemkey = "";
         var sortitemkeyarray = temp_step2_final_dataset_save[0].OPTM_KEY.split("-").sort((a, b) => a - b)
 
@@ -3465,7 +3487,21 @@ export class OutputComponent implements OnInit {
           }
         }
 
+        for (var isave in temp_step2_final_dataset_save) {
+          if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1) {
+            if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
+              if (sortitemkey.length == 0) {
+                sortitemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
+              } else {
+                sortitemkey = sortitemkey + "-" + temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
+              }
+            }
+
+          }
+        }
+
         temp_step2_final_dataset_save[0].OPTM_KEY = sortitemkey.toString()
+
         itemkey = sortitemkey
 
         for (var isave in temp_step2_final_dataset_save) {
@@ -3491,6 +3527,44 @@ export class OutputComponent implements OnInit {
             }
           }
         }
+
+        var iValueData = [];
+        iValueData = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
+          return obj['OPTM_TYPE'] == "3" && obj['checked'] == true
+        })
+        if (iValueData.length > 0) {
+          for (let itempsavefinal = 0; itempsavefinal < iValueData.length; itempsavefinal++) {
+            temp_step2_final_dataset_save.push({
+              "OPTM_OUTPUTID": "",
+              "OPTM_OUTPUTDTLID": "",
+              "OPTM_ITEMNUMBER": "",
+              "OPTM_ITEMCODE": iValueData[itempsavefinal].OPTM_VALUE,
+              "OPTM_KEY": "",
+              "OPTM_PARENTKEY": "",
+              "OPTM_TEMPLATEID": "",
+              "OPTM_ITMCODEGENKEY": "",
+              "OPTM_ITEMTYPE": 4,
+              "OPTM_WHSE": this.warehouse,
+              "OPTM_LEVEL": iValueData[itempsavefinal].OPTM_LEVEL,
+              "OPTM_QUANTITY": parseFloat(iValueData[itempsavefinal].OPTM_QUANTITY).toFixed(3),
+              "OPTM_PRICELIST": Number(0),
+              "OPTM_UNITPRICE": parseFloat("0").toFixed(3),
+              "OPTM_TOTALPRICE": 0,
+              "OPTM_DISCPERCENT": parseFloat("0").toFixed(3),
+              "OPTM_CREATEDBY": this.common_output_data.username,
+              "OPTM_MODIFIEDBY": this.common_output_data.username,
+              "UNIQUEIDNT": "N",
+              "PARENTID": iValueData[itempsavefinal].OPTM_FEATUREID,
+              "OPTM_FGCREATEDATE": "",
+              "OPTM_REFITEMCODE": "",
+              "OPTM_PARENTID": iValueData[itempsavefinal].OPTM_FEATUREID,
+              "OPTM_PARENTTYPE": 1
+            })
+          }
+        }
+
+
+
         // key generation array iteration - end 
         //  this.step2_final_dataset_to_save.push(temp_step2_final_dataset_save);
         for (let itempsavefinal = 0; itempsavefinal < temp_step2_final_dataset_save.length; itempsavefinal++) {
@@ -3536,13 +3610,13 @@ export class OutputComponent implements OnInit {
       data => {
         this.showLookupLoader = false;
         if (data != null && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
-         } 
-        }
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
 
           else if (data.FinalStatus[0].OPTM_STATUS == "P") {
             this.final_order_status = this.language.process_status;
@@ -3615,16 +3689,23 @@ export class OutputComponent implements OnInit {
 
   getAccessoryData(Accarray) {
     let checkedacc = false;
+    var isAccExist;
     for (let iaccss = 0; iaccss < Accarray.length; iaccss++) {
-      this.feature_accessory_list.push({
-        id: Accarray[iaccss].OPTM_FEATUREID,
-        key: Accarray[iaccss].feature_code,
-        name: Accarray[iaccss].OPTM_DISPLAYNAME,
-        model_id: Accarray[iaccss].OPTM_MODELID,
-        checked: checkedacc,
-        parentfeatureid: Accarray[iaccss].OPTM_FEATUREID,
-        parentmodelid: Accarray[iaccss].OPTM_MODELID
-      });
+      isAccExist = this.feature_accessory_list.filter(function (obj) {
+        return obj['id'] == Accarray[iaccss].OPTM_FEATUREID && obj['key'] == Accarray[iaccss].feature_code && obj['model_id'] == Accarray[iaccss].OPTM_MODELID
+      })
+      if (isAccExist.length == 0) {
+        this.feature_accessory_list.push({
+          id: Accarray[iaccss].OPTM_FEATUREID,
+          key: Accarray[iaccss].feature_code,
+          name: Accarray[iaccss].OPTM_DISPLAYNAME,
+          model_id: Accarray[iaccss].OPTM_MODELID,
+          checked: checkedacc,
+          parentfeatureid: Accarray[iaccss].OPTM_FEATUREID,
+          parentmodelid: Accarray[iaccss].OPTM_MODELID
+        });
+      }
+
     }
   }
 
@@ -3662,21 +3743,21 @@ export class OutputComponent implements OnInit {
 
       GetDataForSelectedFeatureModelItemData.apidata.push({
         GUID: sessionStorage.getItem("GUID"),
-        UsernameForLic: sessionStorage.getItem("loggedInUser") 
+        UsernameForLic: sessionStorage.getItem("loggedInUser")
       });
 
       this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
         data => {
 
           if (data != null && data != undefined) {
-            if(data.length > 0){
-            if (data[0].ErrorMsg == "7001") {
-               this.CommonService.RemoveLoggedInUser().subscribe();
-               this.CommonService.signOut(this.toastr, this.route);
-               return;
-           } 
-         }
-        }
+            if (data.length > 0) {
+              if (data[0].ErrorMsg == "7001") {
+                this.CommonService.RemoveLoggedInUser().subscribe();
+                this.CommonService.signOut(this.toastr, this.route);
+                return;
+              }
+            }
+          }
           let parentarray = this.Accessoryarray.filter(function (obj) {
             return obj['OPTM_FEATUREID'] == parentfeatureid
           });
@@ -3834,21 +3915,21 @@ export class OutputComponent implements OnInit {
 
           GetDataForSelectedFeatureModelItemData.apidata.push({
             GUID: sessionStorage.getItem("GUID"),
-            UsernameForLic: sessionStorage.getItem("loggedInUser") 
-          });  
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
+          });
 
           this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
             data => {
               this.showLookupLoader = false;
               if (data != null && data != undefined) {
-                if(data.length > 0){
-                if (data[0].ErrorMsg == "7001") {
-                   this.CommonService.RemoveLoggedInUser().subscribe();
-                   this.CommonService.signOut(this.toastr, this.route);
-                   return;
-               } 
-             }
-            }
+                if (data.length > 0) {
+                  if (data[0].ErrorMsg == "7001") {
+                    this.CommonService.RemoveLoggedInUser().subscribe();
+                    this.CommonService.signOut(this.toastr, this.route);
+                    return;
+                  }
+                }
+              }
               let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
               let parentarray = this.Accessoryarray.filter(function (obj) {
                 return obj['OPTM_FEATUREID'] == parentfeatureid
@@ -4591,14 +4672,14 @@ export class OutputComponent implements OnInit {
     this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
       data => {
 
-        if(data != undefined && data.length > 0){
+        if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
-              return;
-          } 
-       }
+            this.showLookupLoader = false;
+            this.CommonService.RemoveLoggedInUser().subscribe();
+            this.CommonService.signOut(this.toastr, this.route);
+            return;
+          }
+        }
 
         if (data === "False") {
           this.showLookupLoader = false;
@@ -4805,9 +4886,9 @@ export class OutputComponent implements OnInit {
                     if (modeldataitemfilter[imodeldataitemfilter].OPTM_ITEMCODE == this.FeatureBOMDataForSecondLevel[ifeatureBomData].OPTM_ITEMKEY) {
                       this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = true
                     }
-                    else {
-                      this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = false
-                    }
+                    // else {
+                    //   this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = false
+                    // }
                   }
                 }
               }
@@ -4856,6 +4937,7 @@ export class OutputComponent implements OnInit {
 
       }
     }
+    this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
     this.feature_price_calculate();
 
   }//end function
@@ -5118,15 +5200,15 @@ export class OutputComponent implements OnInit {
       data => {
         if (data != null && data != undefined) {
           this.console.log("ALL CUSTOMER INFO-->", data)
-        
+
           if (data.length > 0) {
-          if (data[0].ErrorMsg == "7001") {
-            this.showLookupLoader = false;
-            this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
-            return;
-        } 
-      }
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.CommonService.RemoveLoggedInUser().subscribe();
+              this.CommonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
           //Fill Contact Person
           if (data.ContactPerson != undefined) {
             if (data.ContactPerson.length > 0) {
@@ -5235,15 +5317,15 @@ export class OutputComponent implements OnInit {
     this.OutputService.fillShipAddress(ship_data).subscribe(
       data => {
         this.showLookupLoader = false;
-        
+
         if (data != null && data != undefined) {
-          if(data.length > 0){
+          if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route);
               return;
             }
-          }   
+          }
           if (data.ShippingAdress != undefined) {
             this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
           }

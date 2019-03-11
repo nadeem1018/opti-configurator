@@ -1227,7 +1227,7 @@ export class LookupComponent implements OnInit {
     if (this.serviceData.customer_and_doc_details != undefined) {
       this.showCustDetailsSec = true;
       this.showGeneralDetails = true;
-      this.customer_details.order_type = (this.serviceData.customer_and_doc_details.document == "sales_quote") ? this.language.SalesQuote : this.language.SalesOrder;
+      this.customer_details.order_type = (this.serviceData.customer_and_doc_details.document == "sales_quote") ? this.language.SalesQuote : ((this.serviceData.customer_and_doc_details.document == "sales_order") ? this.language.SalesOrder : this.language.draft) ;
       this.customer_details.customer_name = this.serviceData.customer_and_doc_details.customer_name;
       this.customer_details.person_name = this.serviceData.customer_and_doc_details.person_name;
       this.customer_details.ship_to = this.serviceData.customer_and_doc_details.ship_to;
