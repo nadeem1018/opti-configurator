@@ -40,6 +40,7 @@ export class RoutingComponent implements OnInit {
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public showLoader: boolean = true;
+  public routing_type = ""
   public selectedImage = "";
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
@@ -155,13 +156,16 @@ export class RoutingComponent implements OnInit {
                 feature_code = data_header.OPTM_MODELFEATURECODE
                 feature_desc = data_header.OPTM_DESCRIPTION;
                 this.type_dropdown = this.commonData.bom_type;
+                this.routing_type = 'feature';
               } else if (data_header.OPTM_TYPE == 2) {
                 routing_for = 'model';
                 model_id = data_header.OPTM_MODELFEATUREID;
                 model_code = data_header.OPTM_MODELFEATURECODE
                 model_desc = data_header.OPTM_DESCRIPTION;
                 this.type_dropdown = this.commonData.model_bom_type;
+                this.routing_type = 'model'
               }
+
 
               let use_mtq_in_planing;
               if (data_header.OPTM_USEMTQIN_PLN == 'Y') {
@@ -203,6 +207,7 @@ export class RoutingComponent implements OnInit {
             }
 
             if (data.Detail.length > 0) {
+
               for (let d_dtli = 0; d_dtli < data.Detail.length; d_dtli++) {
                 let data_detail = data.Detail[d_dtli];
 
@@ -321,6 +326,7 @@ export class RoutingComponent implements OnInit {
             this.route.navigateByUrl('routing/view');
             this.toastr.error('', this.language.no_routing_found, this.commonData.toast_config);
             return;
+
           }
 
         },
@@ -341,6 +347,7 @@ export class RoutingComponent implements OnInit {
       this.show_resequence_btn = false;
       this.show_resource_btn = true;
       this.type_dropdown = this.commonData.bom_type;
+      this.routing_type = 'feature';
 
       this.grid_option_title = this.language.Bom_FeatureValue;
     } else if (this.routing_header_data.routing_for == 'model') {
@@ -349,9 +356,11 @@ export class RoutingComponent implements OnInit {
       this.show_resource_btn = true;
       this.type_dropdown = this.commonData.model_bom_type;
       this.grid_option_title = this.language.ModelBom_FeatureValue;
+      this.routing_type = 'model';
     }
     this.current_selected_row = [];
     this.row_selection = [];
+
   }
 
   reset_feature() {

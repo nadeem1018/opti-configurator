@@ -310,10 +310,18 @@
               <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="50"
                 [minResizableWidth]="50">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)"
-                    *ngIf="(dataItem.type == '1' || dataItem.type == '3')">
-                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
-                  </a>
+                  <span *ngIf="routing_type == 'feature'">
+                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)"
+                      *ngIf="dataItem.type == '1'">
+                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                    </a>
+                  </span>
+                  <span *ngIf="routing_type == 'model'">
+                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)"
+                      *ngIf="(dataItem.type == '1' || dataItem.type == '3')">
+                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                    </a>
+                  </span>
                   {{dataItem.rowindex}}
                 </ng-template>
               </kendo-grid-column>
