@@ -375,6 +375,8 @@
     "error_occured": "Error Occurred",
     "expand_this_branch": "Expand this branch",
     "collapse_this_branch": "Collapse this branch",
+    "expand_all":"Expand All",
+    "collapse_all":"Collapse All",
     "DuplicateId": "Duplicate ID",
     "incorrectfile": "Incorrect file attached",
     "nofileattach": "No file attached",
@@ -494,5 +496,6 @@
     "numberofres":"No. of Res",
     "timeresun":"Time Res. Unit",
     "add_oper":"Add Operation",
-    "no_routing_found": "No Routing Found"
+    "no_routing_found": "No Routing Found",
+    "please_select_template_routing":"Please Select A Template Routing"
 }
