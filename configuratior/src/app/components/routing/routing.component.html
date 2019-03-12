@@ -307,8 +307,8 @@
                   <b> <i class="fa fa-"></i> {{grid_title}}</b>
                 </span>
               </ng-template>
-              <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="50"
-                [minResizableWidth]="50">
+              <kendo-grid-column field="rowindex" title="{{language.hash}}" filter="text" [width]="80"
+                [minResizableWidth]="80">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <span *ngIf="routing_type == 'feature'">
                     <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value,dataItem.type)"
@@ -329,7 +329,7 @@
                 [minResizableWidth]="110">
                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                   <ng-container *ngIf="dataItem.showOperationbtn == false">
-                    <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
+                    <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm routing_disabled_selected" #selected_type
                       (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
                       <option *ngFor="let v of type_dropdown" [value]="v.value" [selected]="dataItem.type==v.value">
                         {{v.Name}}</option>
@@ -376,7 +376,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <div class="custom-control custom-checkbox custom-control-inline">
 
-                    <input type="checkbox" [disabled]="dataItem.isTypeDisabled" class="custom-control-input" id="oper_top_level_{{dataItem.rowindex}}"
+                    <input type="checkbox" [disabled]="dataItem.opn_application == false"  class="custom-control-input" id="oper_top_level_{{dataItem.rowindex}}"
                       value={{dataItem.operation_top_level}} (change)="on_input_change(oper_top_level,dataItem.rowindex, 'oper_top_level')"
                       #oper_top_level [(checked)]=dataItem.operation_top_level title="{{dataItem.operation_top_level}}"
                       style="position: relative;margin-top: 5px;" />
@@ -429,7 +429,7 @@
               </kendo-grid-column>
               <kendo-grid-column field="mtq" title="{{language.mtq}}" filter="text" [width]="140" [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <input type="text" class="form-control  form-control-sm text-right" id="mtq" value={{dataItem.mtq}}
+                  <input type="text" class="form-control  form-control-sm text-right mtq_grid_level" id="mtq" value={{dataItem.mtq}}
                     (change)="on_input_change(mtq.value,dataItem.rowindex, 'mtq')" #mtq title={{dataItem.mtq}} />
                 </ng-template>
               </kendo-grid-column>
@@ -500,9 +500,14 @@
               <kendo-grid-column field="time_uom" title="{{language.time_uom}}" filter="text" [width]="140"
                 [minResizableWidth]="140">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                  <input type="text" class="form-control  form-control-sm" id="time_uom" value={{dataItem.time_uom}}
+                 <!--  <input type="text" class="form-control  form-control-sm" id="time_uom" value={{dataItem.time_uom}}
                     (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')" [disabled]="dataItem.opn_application == false"
-                    #time_uom title={{dataItem.time_uom}} />
+                    #time_uom title={{dataItem.time_uom}} /> -->
+                    <select [disabled]="dataItem.opn_application == false" class="form-control form-control-sm"
+                      #time_uom (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')">
+                      <option *ngFor="let v of commonData.time_uom_type" [value]="v.value" [selected]="dataItem.time_uom==v.value">
+                        {{v.Name}}</option>
+                    </select>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-column field="opn_application" title="{{language.opn_application}}" [width]="100"

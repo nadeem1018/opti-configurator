@@ -52,7 +52,7 @@ export class RoutingComponent implements OnInit {
   public grid_title = this.language.bom_details;
   public username: string = "";
   serviceData: any;
-  public is_delete_called : boolean = false;
+  public is_delete_called: boolean = false;
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
@@ -117,7 +117,7 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.applicable_bom_unit = 1;
       this.showLoader = false;
       this.form_mode = 'add';
-      this.isOperationDisabled= false;
+      this.isOperationDisabled = false;
     } else {
       this.isSaveButtonVisible = false;
       this.isUpdateButtonVisible = true;
@@ -133,10 +133,10 @@ export class RoutingComponent implements OnInit {
           if (data != undefined) {
             if (data.LICDATA != undefined) {
               if (data.LICDATA[0].ErrorMsg == "7001") {
-                  this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route);
-                  this.showLoader = false;
-                  return;
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route);
+                this.showLoader = false;
+                return;
               }
             }
 
@@ -155,6 +155,7 @@ export class RoutingComponent implements OnInit {
                 feature_id = data_header.OPTM_MODELFEATUREID;
                 feature_code = data_header.OPTM_MODELFEATURECODE
                 feature_desc = data_header.OPTM_DESCRIPTION;
+                this.grid_option_title = this.language.Bom_FeatureValue;
                 this.type_dropdown = this.commonData.bom_type;
                 this.routing_type = 'feature';
               } else if (data_header.OPTM_TYPE == 2) {
@@ -162,6 +163,7 @@ export class RoutingComponent implements OnInit {
                 model_id = data_header.OPTM_MODELFEATUREID;
                 model_code = data_header.OPTM_MODELFEATURECODE
                 model_desc = data_header.OPTM_DESCRIPTION;
+                this.grid_option_title = this.language.ModelBom_FeatureValue;
                 this.type_dropdown = this.commonData.model_bom_type;
                 this.routing_type = 'model'
               }
@@ -197,8 +199,8 @@ export class RoutingComponent implements OnInit {
                 modal_id: model_id,
                 opm_num_format: data_header.OPTM_OPN_NUM_FORMAT,
                 routing_for: routing_for,
-                template_routing_code: data_header.OPTM_TEMPLATEPRODUCT,
                 template_routing_id: data_header.OPTM_TEMPLATEPRODUCT,
+                template_routing_code: data_header.OPTM_TEMPLATEPRODUCT_CODE,
                 use_mtq_in_planing: use_mtq_in_planing,
                 use_template_routing: use_template_routing,
                 warehouse_code: data_header.OPTM_WH_ID,
@@ -492,6 +494,11 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
     }
 
+    if (this.lookupfor == "template_routing_lookup"){
+      this.routing_header_data.template_routing_id  = $event[0];
+      this.routing_header_data.template_routing_code = $event[1];
+    }
+
     let obj = this;
     setTimeout(() => {
       obj.lookupfor = "";
@@ -522,16 +529,16 @@ export class RoutingComponent implements OnInit {
     this.lookupfor = 'feature_lookup';
     this.service.getFeatureList().subscribe(
       data => {
-        if(data != undefined){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               this.showLookupLoader = false;
               return;
+            }
           }
-        } 
-      }      
+        }
         if (data.length > 0) {
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -540,12 +547,16 @@ export class RoutingComponent implements OnInit {
         else {
           this.lookupfor = "";
           this.serviceData = [];
+          this.clearInvalidfeature();
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
       },
       error => {
         this.showLookupLoader = false;
+        this.serviceData = [];
+        this.lookupfor = "";
+        this.clearInvalidfeature();
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -559,16 +570,16 @@ export class RoutingComponent implements OnInit {
     this.service.GetModelList().subscribe(
       data => {
 
-      if(data != undefined){
-        if(data.length > 0){
-        if (data[0].ErrorMsg == "7001") {
-            this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
-            this.showLookupLoader = false;
-            return;
-        } 
-      }
-      }  
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
+          }
+        }
 
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';
@@ -579,12 +590,14 @@ export class RoutingComponent implements OnInit {
           this.lookupfor = "";
           this.serviceData = [];
           this.showLookupLoader = false;
+          this.clearInvalidModel();
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
       },
       error => {
         this.showLookupLoader = false;
+        this.clearInvalidModel();
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
@@ -613,16 +626,16 @@ export class RoutingComponent implements OnInit {
       data => {
         console.log(data);
         if (data != null) {
-          if(data != undefined ){
-            if(data.length > 0){
-            if (data[0].ErrorMsg == "7001") {
+          if (data != undefined) {
+            if (data.length > 0) {
+              if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
                 this.commonService.signOut(this.toastr, this.route);
                 this.showLookupLoader = false;
                 return;
-            } 
+              }
+            }
           }
-          }  
           if (data.length > 0) {
             this.routing_header_data.feature_id = data[0].FeatureId;
             this.routing_header_data.feature_code = data[0].FeatureCode;
@@ -692,14 +705,14 @@ export class RoutingComponent implements OnInit {
       this.service.GetDataByFeatureId(feature_code).subscribe(
         data => {
           console.log(data);
-          if(data != undefined && data.LICDATA != undefined){
+          if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
-                this.showLookupLoader = false;
-                return;
-            } 
-        }    
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
+          }
           if (data.FeatureDetail.length > 0) {
 
             let temp = new Date(this.routing_header_data.EffectiveDate);
@@ -746,7 +759,7 @@ export class RoutingComponent implements OnInit {
                 queue_time: '00:00',
                 move_time: '00:00',
                 qc_time: '00:00',
-                time_uom: '',
+                time_uom: '1',
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
@@ -756,10 +769,12 @@ export class RoutingComponent implements OnInit {
             this.showLookupLoader = false;
           } else {
             this.showLookupLoader = false;
+            this.clearInvalidfeature();
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           }
         }, error => {
           this.showLookupLoader = false;
+          this.clearInvalidfeature();
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         });
@@ -771,15 +786,15 @@ export class RoutingComponent implements OnInit {
     if (press_location == 'header') {
       this.showLookupLoader = true;
       this.service.GetDataByModelId(modal_code).subscribe(
-        data => {          
-          if(data != undefined && data.LICDATA != undefined){
+        data => {
+          if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
-                this.showLookupLoader = false;
-                return;
-            } 
-          }  
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
+          }
           console.log(data);
           /*if(navigate_to_header == true) {
             data.ModelHeader =[];
@@ -840,7 +855,7 @@ export class RoutingComponent implements OnInit {
                 queue_time: '00:00',
                 move_time: '00:00',
                 qc_time: '00:00',
-                time_uom: '',
+                time_uom: '1',
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
@@ -850,11 +865,13 @@ export class RoutingComponent implements OnInit {
             this.showLookupLoader = false;
           } else {
             this.showLookupLoader = false;
+            this.clearInvalidModel();
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
 
           }
         }, error => {
           this.showLookupLoader = false;
+          this.clearInvalidModel();
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         });
@@ -873,16 +890,16 @@ export class RoutingComponent implements OnInit {
     this.serviceData = []
     this.service.getWarehouseList().subscribe(
       data => {
-        if(data != undefined){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               this.showLookupLoader = false;
               return;
-          } 
+            }
+          }
         }
-       }    
         if (data.length > 0) {
           this.lookupfor = 'warehouse_lookup';
           this.showLookupLoader = false;
@@ -911,13 +928,13 @@ export class RoutingComponent implements OnInit {
       data => {
         console.log(data);
         if (data != null) {
-          if (data.length > 0) {            
-              if (data[0].ErrorMsg == "7001") {
-                  this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route);
-                  this.showLookupLoader = false;
-                  return;
-              }              
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
             this.routing_header_data.warehouse_code = warehouse_code;
             this.showLookupLoader = false;
           } else {
@@ -944,16 +961,16 @@ export class RoutingComponent implements OnInit {
     this.serviceData = []
     this.service.TemplateRoutingList().subscribe(
       data => {
-       /*  if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        } */
+        /*  if (data != undefined) {
+           if (data.length > 0) {
+             if (data[0].ErrorMsg == "7001") {
+               this.commonService.RemoveLoggedInUser().subscribe();
+               this.commonService.signOut(this.toastr, this.route);
+               this.showLookupLoader = false;
+               return;
+             }
+           }
+         } */
         if (data.length > 0) {
           this.lookupfor = 'template_routing_lookup';
           this.showLookupLoader = false;
@@ -998,16 +1015,16 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
       data => {
-        if(data != undefined ){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               this.showLookupLoader = false;
               return;
-          } 
+            }
+          }
         }
-        }   
         if (data.length > 0) {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'operation_lookup';
@@ -1042,16 +1059,16 @@ export class RoutingComponent implements OnInit {
     this.showLookupLoader = true;
     this.service.getWCList(this.routing_header_data.warehouse_code).subscribe(
       data => {
-        if(data != undefined){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               this.showLookupLoader = false;
               return;
-          } 
+            }
+          }
         }
-        }    
         if (data.length > 0) {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'workcenter_lookup';
@@ -1082,17 +1099,17 @@ export class RoutingComponent implements OnInit {
     this.service.getOperationResource(oper_code).subscribe(
       data => {
         this.showLookupLoader = false;
-        if(data != undefined){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               return;
-          } 
+            }
+          }
         }
-       }      
 
-      if (data.length > 0) {
+        if (data.length > 0) {
           let operData = [];
           let localhcounter;
           for (let i = 0; i < data.length; ++i) {
@@ -1140,7 +1157,7 @@ export class RoutingComponent implements OnInit {
         this.serviceData.oper_res = (this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] != undefined) ? this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] : [];
         this.lookupfor = 'routing_resource_lookup';
         this.showLookupLoader = false;
-       
+
 
         this.showLookupLoader = false;
       } else {
@@ -1167,7 +1184,7 @@ export class RoutingComponent implements OnInit {
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
 
-    if(this.is_delete_called == true){
+    if (this.is_delete_called == true) {
       if (userSelectionValue == true) {
         this.onDelete(this.update_id);
       }
@@ -1195,27 +1212,29 @@ export class RoutingComponent implements OnInit {
   }
 
   validate_header_info() {
+    var output: any = '1';
     if (this.routing_header_data.routing_for == 'feature') {
-      if (this.routing_header_data.feature_code == "") {
+      if (this.routing_header_data.feature_code == "" || this.routing_header_data.feature_code == undefined || this.routing_header_data.feature_code == null) {
         this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
-        return false;
+        output = '0';
       }
     } else if (this.routing_header_data.routing_for == 'model') {
-      if (this.routing_header_data.modal_code == "") {
+      if (this.routing_header_data.modal_code == "" || this.routing_header_data.modal_code == undefined || this.routing_header_data.modal_code == null) {
         this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-        return false;
-      }
-
-      if (this.routing_header_data.wc_code == "") {
-        this.toastr.error('', this.language.warehouseCodeBlank, this.commonData.toast_config);
-        return false;
+        output = '0';
+      } else {
+        if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == undefined || this.routing_header_data.warehouse_code == null) {
+          this.toastr.error('', this.language.warehouseCodeBlank, this.commonData.toast_config);
+          output = '0';
+        }
       }
     }
+    return output;
   }
 
 
   insert_new_operation(type) { // type = insert || type = add
-    if (this.validate_header_info() == false) {
+    if (this.validate_header_info() == '0') {
       return false;
     }
     this.counter = 0;
@@ -1269,7 +1288,7 @@ export class RoutingComponent implements OnInit {
       queue_time: '00:00',
       move_time: '00:00',
       qc_time: '00:00',
-      time_uom: '',
+      time_uom: '1',
       opn_application: true,
       isTypeDisabled: true,
       showOperationbtn: true,
@@ -1342,16 +1361,16 @@ export class RoutingComponent implements OnInit {
         data => {
           console.log(data);
           if (data != null) {
-            if(data != undefined ){
-              if(data.length > 0){
-              if (data[0].ErrorMsg == "7001") {
+            if (data != undefined) {
+              if (data.length > 0) {
+                if (data[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
                   this.commonService.signOut(this.toastr, this.route);
                   this.showLookupLoader = false;
                   return;
-              } 
+                }
+              }
             }
-            }    
 
             if (data.length > 0) {
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
@@ -1396,16 +1415,16 @@ export class RoutingComponent implements OnInit {
           console.log(data);
           if (data != null) {
 
-            if(data != undefined){
-              if(data.length > 0){
-              if (data[0].ErrorMsg == "7001") {
+            if (data != undefined) {
+              if (data.length > 0) {
+                if (data[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
                   this.commonService.signOut(this.toastr, this.route);
                   this.showLookupLoader = false;
                   return;
-              } 
+                }
+              }
             }
-            }    
             if (data.length > 0) {
               this.routing_detail_data[currentrow].wc_id = data[0].WCCode;
               this.routing_detail_data[currentrow].wc_code = data[0].WCCode;
@@ -1443,7 +1462,28 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'mtq') {
+      if (value == 0 && value != '') {
+        value = 1;
+        this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.mtq_cannot_be_blank_zero + ' ' + rowindex, this.commonData.toast_config);
+      }
+      else {
+        let rgexp = /^\d+$/;
+        if (isNaN(value) == true) {
+          value = 1;
+          this.toastr.error('', this.language.mtq_valid_number, this.commonData.toast_config);
+        } else if (value == 0 || value == '' || value == null || value == undefined) {
+          value = 1;
+          this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
+        } else if (value < 0) {
+          value = 1;
+          this.toastr.error('', this.language.mtq_value_nagative + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
+        } else if (rgexp.test(value) == false) {
+          value = 1;
+          this.toastr.error('', this.language.mtq_value_decimal + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
+        }
+      }
       this.routing_detail_data[currentrow].mtq = value;
+      $(".mtq_grid_level").eq(currentrow).val(value);
     }
 
     if (grid_element == 'count_point_operation') {
@@ -1533,7 +1573,11 @@ export class RoutingComponent implements OnInit {
   }
 
   onSave() {
-    if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)){
+    if (this.validate_header_info() == '0') {
+      return false;
+    }
+
+    if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
       this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
       return;
     }
@@ -1547,25 +1591,26 @@ export class RoutingComponent implements OnInit {
     objDataset.Header = [];
     objDataset.Detail = [];
     objDataset.DetailResource = [];
-    
+
     // override above array  
     objDataset.Connection.push({
       "loggedInUser": sessionStorage.getItem('loggedInUser'),
       "CompanyDBID": sessionStorage.getItem('selectedComp'),
       "GUID": sessionStorage.getItem("GUID"),
       "UsernameForLic": sessionStorage.getItem("loggedInUser"),
+      "mode": this.form_mode
     });
     if (Object.keys(this.routing_header_data).length > 0) {
-      let use_mtq_in_planing ;
+      let use_mtq_in_planing;
       if (this.routing_header_data.use_mtq_in_planing == true) {
-          use_mtq_in_planing = 'Y';
+        use_mtq_in_planing = 'Y';
       } else {
-         use_mtq_in_planing = 'N';
+        use_mtq_in_planing = 'N';
       }
       let use_template_routing;
       if (this.routing_header_data.use_template_routing == true) {
         use_template_routing = 'Y';
-      } else{
+      } else {
         use_template_routing = 'N';
       }
       objDataset.Header.push({
@@ -1608,14 +1653,14 @@ export class RoutingComponent implements OnInit {
 
         if (oper_arr_data.count_point_operation == true) {
           oper_arr_data.count_point_operation = 'Y';
-        } else{
-          oper_arr_data.count_point_operation = 'N';          
+        } else {
+          oper_arr_data.count_point_operation = 'N';
         }
 
         if (oper_arr_data.auto_move == true) {
           oper_arr_data.auto_move = 'Y';
-        } else{
-          oper_arr_data.auto_move = 'N';          
+        } else {
+          oper_arr_data.auto_move = 'N';
         }
         /*
         if (oper_arr_data.use_template_routing == true) {
@@ -1626,8 +1671,8 @@ export class RoutingComponent implements OnInit {
 
         if (oper_arr_data.opn_application == true) {
           oper_arr_data.opn_application = 'Y';
-        } else{
-          oper_arr_data.opn_application = 'N';          
+        } else {
+          oper_arr_data.opn_application = 'N';
         }
         routing_detail_tmp_arr.push(oper_arr_data);
       }
@@ -1636,7 +1681,7 @@ export class RoutingComponent implements OnInit {
     let routing_detail_res_tmp_arr = [];
     if (this.routing_detail_resource_data.length > 0 && this.routing_detail_resource_data != undefined) {
       for (let resi = 0; resi < this.routing_detail_resource_data.length; resi++) {
-        if (this.routing_detail_resource_data[resi] !== undefined && this.routing_detail_resource_data[resi]!== ""){
+        if (this.routing_detail_resource_data[resi] !== undefined && this.routing_detail_resource_data[resi] !== "") {
           let res_arr_data = this.routing_detail_resource_data[resi];
           for (let resd = 0; resd < res_arr_data.length; resd++) {
             res_arr_data[resd].schedule = 0;
@@ -1678,7 +1723,7 @@ export class RoutingComponent implements OnInit {
   }
 
 
-  deleteConfirm(){
+  deleteConfirm() {
     this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
     this.show_dialog = true;
     this.is_delete_called = true;
@@ -1689,15 +1734,15 @@ export class RoutingComponent implements OnInit {
     this.service.DeleteRouting(model_feature_id).subscribe(
       data => {
         this.showLookupLoader = false;
-        if(data != undefined){
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               return;
-          } 
+            }
+          }
         }
-       }    
 
         if (data === "True") {
           this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);

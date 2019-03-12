@@ -607,6 +607,7 @@ export class ModelbomComponent implements OnInit {
     this.serviceData = []
     this.showLookupLoader = true;
     this.currentrowindex = rowindex;
+    console.log(this.modelbom_data);
     this.service.GetPriceList(ItemKey).subscribe(
       data => {
         if(data != undefined && data.length > 0){
@@ -1377,7 +1378,7 @@ export class ModelbomComponent implements OnInit {
 
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
-        if (data !== undefined && data != "") {
+        if (data !== undefined && data != "" && data != null) {
           if(data.length > 0){
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
