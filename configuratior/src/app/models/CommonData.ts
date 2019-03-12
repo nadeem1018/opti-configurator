@@ -138,6 +138,12 @@ export class CommonData {
         { "value": 'sales_order', "Name": "Sales Order", "selected":"0" }
     ];
 
+    public time_uom_type: any = [
+        { "value": 1, "Name": "Hours" },
+        { "value": 2, "Name": "Minutes" }
+    ];
+
+
 
     // for common view
     public default_limits = ["10", "25", "50", "100"];

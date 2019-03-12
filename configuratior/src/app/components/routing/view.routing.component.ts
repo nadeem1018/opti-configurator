@@ -129,7 +129,7 @@ export class ViewRoutingComponent implements OnInit {
             attrType: 'text'
         },
         {
-            field: 'OPTM_TYPE1',
+            field: 'OPTM_TYPE',
             title: this.language.Type,
             type: 'text',
             width: '100',

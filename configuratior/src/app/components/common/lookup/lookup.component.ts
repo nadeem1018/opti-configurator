@@ -284,7 +284,7 @@ export class LookupComponent implements OnInit {
   }
 
   template_routing_list() {
-    this.popup_title = this.language.workcenter;
+    this.popup_title = this.language.template_routing;
     this.LookupDataLoaded = false;
     this.showLoader = true;
     this.fill_input_id = 'template_routing';
@@ -292,8 +292,8 @@ export class LookupComponent implements OnInit {
 
     this.table_head = [
       {
-        field: 'WCCode',
-        title: this.language.workcenter,
+        field: 'ITEMCODE',
+        title: this.language.item_code,
         type: 'text',
         width: '100',
         attrType: 'text'
