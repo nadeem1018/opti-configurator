@@ -1034,6 +1034,30 @@ export class ModelbomComponent implements OnInit {
                 }
               }
             })
+        } else if(this.modelbom_data[i].type == "3") {
+            this.service.CheckMaxSelectedValueForModel(this.modelbom_data[i].type_value).subscribe(
+              data => {
+                if(data != undefined && data != null && data.length > 0){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commonService.RemoveLoggedInUser().subscribe();
+                      this.commonService.signOut(this.toastr, this.route);
+                      return;
+                  }
+               }
+              if (data != null) {
+                if (parseFloat(value) > parseFloat(data)) {
+                  this.modelbom_data[i].max_selected = 1;
+                  $(".max_selectable_row").eq((rowindex - 1)).val(1);
+                  if(data == 0) {
+                    this.toastr.error('', this.language.max_selected_validation + " " + 1, this.commonData.toast_config);
+                    return;
+                  } else {
+                    this.toastr.error('', this.language.max_selected_validation + " " + data, this.commonData.toast_config);
+                    return;
+                  }
+                }
+              }
+            })
         }
 
         if (this.modelbom_data[i].min_selected != "") {

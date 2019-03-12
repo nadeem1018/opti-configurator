@@ -129,5 +129,10 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/DeleteRouting", jObject, this.common_params.httpOptions);
   }
 
+  TemplateRoutingList(): Observable<any> {
+    let jObject = { TemplateRouting: JSON.stringify([{ CompanyDBID: this.logged_in_company, GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }])};
+    return this.httpclient.post(this.config_params.service_url + "/Routing/TeamplateRoutingList", jObject, this.common_params.httpOptions);
+  }
+
 
 }

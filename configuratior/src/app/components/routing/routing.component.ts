@@ -40,6 +40,7 @@ export class RoutingComponent implements OnInit {
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public showLoader: boolean = true;
+  public routing_type = ""
   public selectedImage = "";
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
@@ -61,6 +62,7 @@ export class RoutingComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
   public form_mode = '';
+  isOperationDisabled: boolean = false;
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -115,6 +117,7 @@ export class RoutingComponent implements OnInit {
       this.routing_header_data.applicable_bom_unit = 1;
       this.showLoader = false;
       this.form_mode = 'add';
+      this.isOperationDisabled= false;
     } else {
       this.isSaveButtonVisible = false;
       this.isUpdateButtonVisible = true;
@@ -122,19 +125,19 @@ export class RoutingComponent implements OnInit {
       this.show_resequence_btn = true;
       this.show_resource_btn = true;
       this.form_mode = 'edit';
+      this.isOperationDisabled = true;
       this.showLoader = true;
       this.service.get_routing_details(this.update_id).subscribe(
         data => {
           console.log("get_routing_details ", data)
           if (data != undefined) {
-            if(data.length > 0){
-              if (data[0].ErrorMsg == "7001") {
+            if (data.LICDATA != undefined) {
+              if (data.LICDATA[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
                   this.commonService.signOut(this.toastr, this.route);
                   this.showLoader = false;
                   return;
               }
-             
             }
 
             if (data.Header.length > 0) {
@@ -153,13 +156,16 @@ export class RoutingComponent implements OnInit {
                 feature_code = data_header.OPTM_MODELFEATURECODE
                 feature_desc = data_header.OPTM_DESCRIPTION;
                 this.type_dropdown = this.commonData.bom_type;
+                this.routing_type = 'feature';
               } else if (data_header.OPTM_TYPE == 2) {
                 routing_for = 'model';
                 model_id = data_header.OPTM_MODELFEATUREID;
                 model_code = data_header.OPTM_MODELFEATURECODE
                 model_desc = data_header.OPTM_DESCRIPTION;
                 this.type_dropdown = this.commonData.model_bom_type;
+                this.routing_type = 'model'
               }
+
 
               let use_mtq_in_planing;
               if (data_header.OPTM_USEMTQIN_PLN == 'Y') {
@@ -201,6 +207,7 @@ export class RoutingComponent implements OnInit {
             }
 
             if (data.Detail.length > 0) {
+
               for (let d_dtli = 0; d_dtli < data.Detail.length; d_dtli++) {
                 let data_detail = data.Detail[d_dtli];
 
@@ -319,6 +326,7 @@ export class RoutingComponent implements OnInit {
             this.route.navigateByUrl('routing/view');
             this.toastr.error('', this.language.no_routing_found, this.commonData.toast_config);
             return;
+
           }
 
         },
@@ -339,6 +347,7 @@ export class RoutingComponent implements OnInit {
       this.show_resequence_btn = false;
       this.show_resource_btn = true;
       this.type_dropdown = this.commonData.bom_type;
+      this.routing_type = 'feature';
 
       this.grid_option_title = this.language.Bom_FeatureValue;
     } else if (this.routing_header_data.routing_for == 'model') {
@@ -347,9 +356,11 @@ export class RoutingComponent implements OnInit {
       this.show_resource_btn = true;
       this.type_dropdown = this.commonData.model_bom_type;
       this.grid_option_title = this.language.ModelBom_FeatureValue;
+      this.routing_type = 'model';
     }
     this.current_selected_row = [];
     this.row_selection = [];
+
   }
 
   reset_feature() {
@@ -928,9 +939,42 @@ export class RoutingComponent implements OnInit {
   }
 
   openTemplateRoutingLookup(flag) {
+
     this.showLookupLoader = true;
-    this.serviceData = [];
-    this.showLookupLoader = false;
+    this.serviceData = []
+    this.service.TemplateRoutingList().subscribe(
+      data => {
+       /*  if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
+          }
+        } */
+        if (data.length > 0) {
+          this.lookupfor = 'template_routing_lookup';
+          this.showLookupLoader = false;
+          this.serviceData = data;
+
+        }
+        else {
+          this.lookupfor = "";
+          this.serviceData = [];
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      }
+    )
+
   }
 
   getTemplateRoutingDetails(template_code) {
@@ -1096,33 +1140,8 @@ export class RoutingComponent implements OnInit {
         this.serviceData.oper_res = (this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] != undefined) ? this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] : [];
         this.lookupfor = 'routing_resource_lookup';
         this.showLookupLoader = false;
-        /* if (data != null){  */
+       
 
-        /* if (data.length > 0) {
-          this.serviceData.oper_res = data;
-          this.lookupfor = 'routing_resource_lookup';
-          this.showLookupLoader = false;
-        }
-        else {
-          this.lookupfor = "routing_resource_lookup";
-          this.serviceData.oper_res = [];
-          this.showLookupLoader = false;
-          return;
-        }  */
-        /*  } else {
-           this.lookupfor = "routing_resource_lookup";
-           this.serviceData.oper_res = [];
-           this.showLookupLoader = false;
-           /* this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config); 
-           return;
-         } */
-        /*  },
-         error => {
-           this.showLookupLoader = false;
-           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-           return;
-         }
-       ) */
         this.showLookupLoader = false;
       } else {
         this.toastr.info('', this.language.Operationcodemissing + ' ' + this.current_selected_row.rowindex, this.commonData.toast_config);
@@ -1514,6 +1533,11 @@ export class RoutingComponent implements OnInit {
   }
 
   onSave() {
+    if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)){
+      this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
+      return;
+    }
+
     let objDataset: any = {};
     console.log(this.routing_header_data);
     console.log(this.routing_detail_data);
@@ -1532,13 +1556,17 @@ export class RoutingComponent implements OnInit {
       "UsernameForLic": sessionStorage.getItem("loggedInUser"),
     });
     if (Object.keys(this.routing_header_data).length > 0) {
-      let use_mtq_in_planing = 'N';
+      let use_mtq_in_planing ;
       if (this.routing_header_data.use_mtq_in_planing == true) {
-        use_mtq_in_planing = 'Y';
+          use_mtq_in_planing = 'Y';
+      } else {
+         use_mtq_in_planing = 'N';
       }
-      let use_template_routing = 'N';
+      let use_template_routing;
       if (this.routing_header_data.use_template_routing == true) {
         use_template_routing = 'Y';
+      } else{
+        use_template_routing = 'N';
       }
       objDataset.Header.push({
         EffectiveDate: this.routing_header_data.EffectiveDate,
@@ -1562,43 +1590,44 @@ export class RoutingComponent implements OnInit {
       });
     }
 
-    /* if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
-      objDataset.Detail = this.routing_detail_data;
-    } */
-
     let routing_detail_tmp_arr = [];
     if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
       for (let resOper = 0; resOper < this.routing_detail_data.length; resOper++) {
         let oper_arr_data = this.routing_detail_data[resOper];
-        console.log();
-        oper_arr_data.operation_top_level = 'N';
         if (oper_arr_data.operation_top_level == true) {
           oper_arr_data.operation_top_level = 'Y';
+        } else {
+          oper_arr_data.operation_top_level = 'N';
         }
 
-        oper_arr_data.oper_type = 'N';
         if (oper_arr_data.oper_type == true) {
+          oper_arr_data.oper_type = 'N';
+        } else {
           oper_arr_data.oper_type = 'Y';
         }
 
-        oper_arr_data.count_point_operation = 'N';
         if (oper_arr_data.count_point_operation == true) {
           oper_arr_data.count_point_operation = 'Y';
+        } else{
+          oper_arr_data.count_point_operation = 'N';          
         }
 
-        oper_arr_data.auto_move = 'N';
         if (oper_arr_data.auto_move == true) {
           oper_arr_data.auto_move = 'Y';
+        } else{
+          oper_arr_data.auto_move = 'N';          
         }
-
-        /* oper_arr_data.time_uom = 'N';
+        /*
         if (oper_arr_data.use_template_routing == true) {
           oper_arr_data.time_uom = 'Y';
+        } else{
+          oper_arr_data.time_uom = 'N';          
         } */
 
-        oper_arr_data.opn_application = 'N';
         if (oper_arr_data.opn_application == true) {
           oper_arr_data.opn_application = 'Y';
+        } else{
+          oper_arr_data.opn_application = 'N';          
         }
         routing_detail_tmp_arr.push(oper_arr_data);
       }
@@ -1607,13 +1636,15 @@ export class RoutingComponent implements OnInit {
     let routing_detail_res_tmp_arr = [];
     if (this.routing_detail_resource_data.length > 0 && this.routing_detail_resource_data != undefined) {
       for (let resi = 0; resi < this.routing_detail_resource_data.length; resi++) {
-        let res_arr_data = this.routing_detail_resource_data[resi];
-        for (let resd = 0; resd < res_arr_data.length; resd++) {
-          res_arr_data[resd].schedule = 0;
-          if (res_arr_data[resd].schedule == true) {
-            res_arr_data[resd].schedule = 1;
+        if (this.routing_detail_resource_data[resi] !== undefined && this.routing_detail_resource_data[resi]!== ""){
+          let res_arr_data = this.routing_detail_resource_data[resi];
+          for (let resd = 0; resd < res_arr_data.length; resd++) {
+            res_arr_data[resd].schedule = 0;
+            if (res_arr_data[resd].schedule == true) {
+              res_arr_data[resd].schedule = 1;
+            }
+            routing_detail_res_tmp_arr.push(res_arr_data[resd]);
           }
-          routing_detail_res_tmp_arr.push(res_arr_data[resd]);
         }
       }
     }
