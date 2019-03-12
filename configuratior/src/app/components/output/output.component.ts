@@ -407,20 +407,20 @@ export class OutputComponent implements OnInit {
           this.iLogID = "";
         }
 
-
         if (data.CustomerOutput.length > 0) {
-          if (data.CustomerOutput[0].OPTM_DOCTYPE = "23") {
+          if ((data.CustomerOutput[0].OPTM_DOCTYPE = "23") && (data.CustomerOutput[0].OPTM_STATUS != "D")) {
             this.step1_data.document = "sales_quote"
             this.step1_data.document_name = this.language.SalesQuote;
-          } else {
+          } else if( ((data.CustomerOutput[0].OPTM_DOCTYPE = "23") && (data.CustomerOutput[0].OPTM_STATUS == "D")) || ((data.CustomerOutput[0].OPTM_DOCTYPE = "17") && (data.CustomerOutput[0].OPTM_STATUS == "D")) ){
+              this.step1_data.document = 'draft';
+              this.step1_data.document_name = this.language.draft;
+          }
+           else {
             this.step1_data.document = "sales_order"
             this.step1_data.document_name = this.language.SalesOrder;
           }
-          //Bug no. 18436..Draft status was not showing...Ashish Devade
-          if (data.CustomerOutput[0].OPTM_STATUS == "D" && data.CustomerOutput[0].OPTM_DELIVERYDATE == null) {
-            this.step1_data.document = 'draft';
-            this.step1_data.document_name = this.language.draft;
-          }
+
+
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
             this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
