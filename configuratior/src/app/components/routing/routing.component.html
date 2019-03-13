@@ -209,7 +209,7 @@
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" id="use_mtq_in_planing" name="use_mtq_in_planing" [(ngModel)]="routing_header_data.use_mtq_in_planing"
                         class="custom-control-input" value="1" style="position: relative;margin-top: 5px;" title="{{routing_header_data.use_mtq_in_planing}}"
-                        tabindex="5">
+                        tabindex="7">
                       <label class="custom-control-label" for="use_mtq_in_planing"></label>
                     </div>
                   </div>
@@ -217,10 +217,11 @@
               </div>
               <div class="col-sm-6">
                 <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label" for="modal_opm_num_format">{{language.opm_num_format}}</label>
+                  <label class="col-sm-6 col-form-label" for="opm_num_format">{{language.opm_num_format}}</label>
                   <div class="col-sm-6">
-                    <input type="text" name="modal_opm_num_format" class="form-control  form-control-sm mt3" id="modal_opm_num_format"
-                      placeholder="{{language.opm_num_format}}" [(ngModel)]="routing_header_data.opm_num_format" title="{{routing_header_data.opm_num_format}}"
+                    <input type="text" name="opm_num_format" class="form-control  form-control-sm mt3  text-right" id="opm_num_format"
+                      placeholder="{{language.opm_num_format}}" (change)="header_numeric_input_change(routing_header_data.opm_num_format,'opm_num_format')"
+                      [(ngModel)]="routing_header_data.opm_num_format" title="{{routing_header_data.opm_num_format}}"
                       tabindex="2">
                   </div>
                 </div>
@@ -375,7 +376,9 @@
                 <kendo-grid-column field="oper_top_level" title="{{language.oper_top_level}}" [width]="100"
                   [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                    <ng-container *ngIf="dataItem.type!=2 || (this.routing_header_data.routing_for == 'feature' && dataItem.type!=3)">
+
+                    <ng-container *ngIf="((this.routing_header_data.routing_for == 'feature') && (dataItem.type!=2 && dataItem.type!=3 )) || (this.routing_header_data.routing_for == 'model' && dataItem.type!=2)">
+                    
                       <div class="custom-control custom-checkbox custom-control-inline">
                         <input type="checkbox" [disabled]="dataItem.opn_application == false" class="custom-control-input"
                           id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}} (change)="on_input_change(oper_top_level.checked,dataItem.rowindex, 'oper_top_level')"
@@ -515,13 +518,16 @@
                 <kendo-grid-column field="opn_application" title="{{language.opn_application}}" [width]="100"
                   [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" class="custom-control-input" id="opn_application_{{dataItem.rowindex}}"
-                        value={{dataItem.opn_application}} (change)="on_input_change(opn_application.checked,dataItem.rowindex, 'opn_application')"
-                        #opn_application [(checked)]=dataItem.opn_application title="{{dataItem.opn_application}}"
-                        style="position: relative;margin-top: 5px;" />
-                      <label class="custom-control-label" for="opn_application_{{dataItem.rowindex}}"></label>
-                    </div>
+                    <ng-container *ngIf="dataItem.isOpenApplicableVisible">
+
+                      <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="opn_application_{{dataItem.rowindex}}"
+                          value={{dataItem.opn_application}} (change)="on_input_change(opn_application.checked,dataItem.rowindex, 'opn_application')"
+                          #opn_application [(checked)]=dataItem.opn_application title="{{dataItem.opn_application}}"
+                          style="position: relative;margin-top: 5px;" />
+                        <label class="custom-control-label" for="opn_application_{{dataItem.rowindex}}"></label>
+                      </div>
+                    </ng-container>
                   </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column field="delete" title="delete" template="" [width]="60" [minResizableWidth]="60">

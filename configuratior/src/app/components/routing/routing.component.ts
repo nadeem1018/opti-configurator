@@ -245,8 +245,10 @@ export class RoutingComponent implements OnInit {
                 }
 
                 let showOperationbtn = false;
+                let isOpenApplicableVisible = true;
                 if (data_detail.OPTM_TYPE == 4 || data_detail.OPTM_TYPE == '4') {
-                  showOperationbtn = true
+                  showOperationbtn = true;
+                  isOpenApplicableVisible = false;
                 }
 
                 this.routing_detail_data.push({
@@ -274,6 +276,7 @@ export class RoutingComponent implements OnInit {
                   time_uom: data_detail.OPTM_TIME_UOM,
                   opn_application: opn_application,
                   isTypeDisabled: true,
+                  isOpenApplicableVisible: isOpenApplicableVisible,
                   showOperationbtn: showOperationbtn,
                   unique_key: data_detail.OPTM_UNIQUE_KEY
                 });
@@ -763,6 +766,7 @@ export class RoutingComponent implements OnInit {
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
+                isOpenApplicableVisible: true,
                 unique_key: this.commonData.random_string(55)
               });
             }
@@ -859,6 +863,7 @@ export class RoutingComponent implements OnInit {
                 opn_application: true,
                 isTypeDisabled: true,
                 showOperationbtn: false,
+                isOpenApplicableVisible : true,
                 unique_key: this.commonData.random_string(55)
               });
             }
@@ -1292,6 +1297,7 @@ export class RoutingComponent implements OnInit {
       opn_application: true,
       isTypeDisabled: true,
       showOperationbtn: true,
+      isOpenApplicableVisible : false,
       unique_key: this.commonData.random_string(55)
     };
 
@@ -1727,7 +1733,7 @@ export class RoutingComponent implements OnInit {
           this.route.navigateByUrl('routing/view');
         } else {
           if (data == "AlreadyExist") {
-            this.toastr.error('', this.language.routing_for + ' ' + this.routing_header_data.routing_for + ' ' + this.language.alreadyExist, this.commonData.toast_config);
+            this.toastr.error('', this.language.routing_for + ' ' + this.routing_header_data.this + ' ' + this.routing_header_data.routing_for + ' ' + this.language.alreadyExist, this.commonData.toast_config);
             return;
           } else {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
