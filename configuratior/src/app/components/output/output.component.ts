@@ -309,7 +309,6 @@ export class OutputComponent implements OnInit {
   }
 
   onStep0NextPress() {
-    console.log(this.step1_data.main_operation_type);
 
     this.CommonService.GetServerDate().subscribe(
       data => {
@@ -331,7 +330,6 @@ export class OutputComponent implements OnInit {
     )
 
     if (this.step1_data.main_operation_type == 1) {
-      console.log(this.step1_data.description);
       if (this.step1_data.description == "" || this.step1_data.description == undefined) {
         this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
         return;
@@ -727,7 +725,6 @@ export class OutputComponent implements OnInit {
   openTaxCodes() { }
 
   onContactPersonChange(contact) {
-    console.log(contact);
     this.person = contact;
     this.step1_data.person_name = this.person;
   }
@@ -1206,7 +1203,6 @@ export class OutputComponent implements OnInit {
               return;
             }
           }
-          console.log(data);
           if (data.SubModelReadyToUse !== undefined) {
             if (data.SubModelReadyToUse.length > 0) {
               if (data.SubModelReadyToUse[0].ReadyToUse !== undefined) {
@@ -2584,6 +2580,7 @@ export class OutputComponent implements OnInit {
           return;
         }
       },
+
       error => {
         this.showLookupLoader = false;
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -3320,8 +3317,7 @@ export class OutputComponent implements OnInit {
                     ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
                       return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
                     })
-                  }
-                  else {
+                  } else {
                     ifeatureHeaderData = step3_data_row.Accessoryarray.filter(function (obj) {
                       return obj['OPTM_FEATUREID'] == fid
                     })
@@ -3335,14 +3331,15 @@ export class OutputComponent implements OnInit {
                 var itemcode = step3_data_row.feature[ifeature].Item
                 if (step3_data_row.feature[ifeature].is_accessory == "Y") {
                   itemtype = 3;
-                }
-                else {
+                } else {
                   itemtype = 2;
                 }
 
                 var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
                 formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
-                // if (ifeatureData.length > 0) {
+                if (ifeatureHeaderData.length > 0) {
+                  var uniqueIdentifier = ifeatureHeaderData[0].OPTM_UNIQUEIDNT;
+                }
                 temp_step2_final_dataset_save.push({
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
@@ -3362,7 +3359,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
                   "OPTM_CREATEDBY": this.common_output_data.username,
                   "OPTM_MODIFIEDBY": this.common_output_data.username,
-                  "UNIQUEIDNT": ifeatureHeaderData[0].OPTM_UNIQUEIDNT,
+                  "UNIQUEIDNT": uniqueIdentifier,
                   "PARENTID": step3_data_row.feature[ifeature].FeatureId,
                   "OPTM_FGCREATEDATE": "",
                   "OPTM_REFITEMCODE": "",
