@@ -456,7 +456,7 @@
                                 <td>
                                   <span *ngIf="feature_model_data['OPTM_TYPE']=='1'">{{feature_model_data.feature_code}}</span>
                                   <span *ngIf="feature_model_data['OPTM_TYPE']=='2'">{{feature_model_data.OPTM_ITEMKEY}}</span>
-                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.OPTM_VALUE}}</span>
+                                  <span *ngIf="feature_model_data['OPTM_TYPE']=='3'">{{feature_model_data.OPTM_DISPLAYNAME}}</span>
                                 </td>
                                 <td>{{feature_model_data.OPTM_DISPLAYNAME}}</td>
                                 <td>
@@ -481,7 +481,6 @@
                                     </label>
                                   </div>
                                 </td>
-                                <!-- <td>{{header_data.OPTM_DISPLAYNAME}}</td> -->
                                 <td>
                                   <span *ngIf="header_data['OPTM_TYPE']=='1'">{{header_data.feature_code}}</span>
                                   <span *ngIf="header_data['OPTM_TYPE']=='2'">{{header_data.OPTM_ITEMKEY}}</span>
