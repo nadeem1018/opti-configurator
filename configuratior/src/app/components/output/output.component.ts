@@ -309,7 +309,6 @@ export class OutputComponent implements OnInit {
   }
 
   onStep0NextPress() {
-    console.log(this.step1_data.main_operation_type);
 
     this.CommonService.GetServerDate().subscribe(
       data => {
@@ -331,7 +330,6 @@ export class OutputComponent implements OnInit {
     )
 
     if (this.step1_data.main_operation_type == 1) {
-      console.log(this.step1_data.description);
       if (this.step1_data.description == "" || this.step1_data.description == undefined) {
         this.toastr.error('', this.language.description_blank, this.commonData.toast_config);
         return;
@@ -727,7 +725,6 @@ export class OutputComponent implements OnInit {
   openTaxCodes() { }
 
   onContactPersonChange(contact) {
-    console.log(contact);
     this.person = contact;
     this.step1_data.person_name = this.person;
   }
@@ -1206,7 +1203,6 @@ export class OutputComponent implements OnInit {
               return;
             }
           }
-          console.log(data);
           if (data.SubModelReadyToUse !== undefined) {
             if (data.SubModelReadyToUse.length > 0) {
               if (data.SubModelReadyToUse[0].ReadyToUse !== undefined) {
