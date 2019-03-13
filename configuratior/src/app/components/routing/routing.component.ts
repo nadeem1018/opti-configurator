@@ -494,8 +494,8 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
     }
 
-    if (this.lookupfor == "template_routing_lookup"){
-      this.routing_header_data.template_routing_id  = $event[0];
+    if (this.lookupfor == "template_routing_lookup") {
+      this.routing_header_data.template_routing_id = $event[0];
       this.routing_header_data.template_routing_code = $event[1];
     }
 
@@ -1532,6 +1532,9 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'time_uom') {
+      this.routing_detail_data[currentrow].queue_time = "00:00";
+      this.routing_detail_data[currentrow].move_time = "00:00";
+      this.routing_detail_data[currentrow].qc_time = "00:00";
       this.routing_detail_data[currentrow].time_uom = value;
     }
 
@@ -1580,6 +1583,17 @@ export class RoutingComponent implements OnInit {
     if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
       this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
       return;
+    }
+
+    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+      for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
+        if (this.routing_detail_data[DetailIndex].oper_top_level == true ){
+          if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == ''){
+             this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex+1), this.commonData.toast_config);
+            return;
+          }
+        }
+      }
     }
 
     let objDataset: any = {};
@@ -1712,8 +1726,14 @@ export class RoutingComponent implements OnInit {
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('routing/view');
         } else {
-          this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
-          return;
+          if (data == "AlreadyExist") {
+            this.toastr.error('', this.language.routing_for + ' ' + this.routing_header_data.routing_for + ' ' + this.language.alreadyExist, this.commonData.toast_config);
+            return;
+          } else {
+            this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
+            return;
+          }
+
         }
       }, error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);

@@ -226,7 +226,7 @@
                     </kendo-grid-column>
                     <kendo-grid-column field="condition" title="{{language.condition}}" filter="text" [width]="115" [minResizableWidth]="115">
                       <ng-template kendoGridCellTemplate let-dataItem>
-                        <select [disabled]="dataItem.isTypeDisabled" class="form-control  form-control-sm " #selected_condition (change)="on_input_change(dataItem.rowindex, 'condition', selected_condition.value )">
+                        <select [disabled]="dataItem.isTypeDisabled || dataItem.type == '2'" class="form-control  form-control-sm " #selected_condition (change)="on_input_change(dataItem.rowindex, 'condition', selected_condition.value )">
                           <option value=""></option>
                           <option *ngFor="let v of commonData.express_conditions " [value]="v.value" [selected]="dataItem.condition==v.value"> {{v.value}}</option>
                         </select>
