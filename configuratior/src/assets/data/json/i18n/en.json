@@ -135,6 +135,7 @@
     "FeatureLookupTitle": "Feature Master",
     "ItemLookupTitle": "Item",
     "DuplicateCode": "Code already exists",
+    "alreadyExist": " already exists",
     "explode": "Explode",
     "verify_output": "Verify Output",
     "associated_BOM": "Associated BOM",
@@ -502,5 +503,6 @@
     "mtq_cannot_be_blank_zero":"MTQ cannot be blank or zero",
     "mtq_valid_number": "MTQ should be a valid number",
     "mtq_value_nagative": "MTQ Cannot be a negative value",
-    "mtq_value_decimal": "MTQ Cannot be a decimal value"
+    "mtq_value_decimal": "MTQ Cannot be a decimal value",
+    "operationmandatoryTopLevel":"Operation code mandatory when operation at top level checked at row - "
 }

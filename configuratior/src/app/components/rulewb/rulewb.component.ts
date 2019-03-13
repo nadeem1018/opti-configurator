@@ -50,14 +50,14 @@ export class RulewbComponent implements OnInit {
   public add_sequence_mode: boolean = false;
   public update_sequence_mode: boolean = false;
   public is_applicable_for_disabled: boolean = false;
-  
+
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
   public defaultCurrency = sessionStorage.defaultCurrency;
   public isModelIdEnable: boolean = true;
   public ModelLookupBtnhide: boolean = true;
-  public editeffectivefrom:any=""; 
-  public editeffectiveto:any="";
+  public editeffectivefrom: any = "";
+  public editeffectiveto: any = "";
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService, private commonService: CommonService) { }
 
   page_main_title = this.language.rule_workbench
@@ -70,9 +70,9 @@ export class RulewbComponent implements OnInit {
   public editing_row = 0;
   public outputrowcounter: number = 0;
   public showLoader: boolean = true;
-  public showLookupLoader:boolean = false;
-  public isExcluded:boolean =false;
-  
+  public showLookupLoader: boolean = false;
+  public isExcluded: boolean = false;
+
   public code_disabled = "false";
   public isOutputTable: boolean = true;
 
@@ -136,7 +136,7 @@ export class RulewbComponent implements OnInit {
       this._el.nativeElement.focus();
       var current_date = new Date();
       this.rule_wb_data.effective_from = new Date((current_date.getMonth() + 1) + '/' + current_date.getDate() + '/' + current_date.getFullYear());
-      this.showLoader  = false;
+      this.showLoader = false;
       this.is_applicable_for_disabled = false;
     } else {
       this.isUpdateButtonVisible = true;
@@ -149,13 +149,13 @@ export class RulewbComponent implements OnInit {
       var obj = this;
       this.service.GetDataByRuleID(this.update_id).subscribe(
         data => {
-          if(data != undefined && data.LICDATA != undefined){
+          if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
-                return;
-            } 
-         }  
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              return;
+            }
+          }
           console.log(data.RuleWorkBenchHeader);
           if (data.RuleWorkBenchHeader.length > 0) {
             if (data.RuleWorkBenchHeader[0].OPTM_DISCONTINUE === "False") {
@@ -209,7 +209,7 @@ export class RulewbComponent implements OnInit {
             let current_exp;
             let forlineno = 0;
             let lineno;
-            
+
             let input_loop_counter = 0;
             for (let i = 0; i < data.RuleWorkBenchInput.length; ++i) {
               this.counter++;
@@ -235,7 +235,7 @@ export class RulewbComponent implements OnInit {
               let current_count = (this.seq_count - 1);
               seq_counter_array[this.seq_count] = input_loop_counter;
               // changed current_count for sequence number not in direct sequence 
-              current_count = input_loop_counter ;
+              current_count = input_loop_counter;
 
               if (this.rule_expression_data[current_count] == undefined) {
                 this.rule_expression_data[current_count] = {};
@@ -318,7 +318,7 @@ export class RulewbComponent implements OnInit {
           }
           console.log("seq_counter_array - ");
           console.log(seq_counter_array);
-            
+
           if (data.RuleWorkBenchOutput.length > 0) {
             let typefromdatabase: any;
             for (let i = 0; i < data.RuleWorkBenchOutput.length; ++i) {
@@ -334,18 +334,18 @@ export class RulewbComponent implements OnInit {
               var fetch_data = data.RuleWorkBenchOutput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
-             // current counter for sequence not in a direct sequence 
+              // current counter for sequence not in a direct sequence 
               current_count = seq_counter_array[this.seq_count];
               let checked_child = (fetch_data.OPTM_ISINCLUDED.trim().toLowerCase() == 'true');
               let default_checked = (fetch_data.OPTM_DEFAULT.trim().toLowerCase() == 'true');
 
-              if (fetch_data.OPTM_PRICESOURCE==null||fetch_data.OPTM_PRICESOURCE==undefined||fetch_data.OPTM_PRICESOURCE=="NaN"){
-                fetch_data.OPTM_PRICESOURCE=""
+              if (fetch_data.OPTM_PRICESOURCE == null || fetch_data.OPTM_PRICESOURCE == undefined || fetch_data.OPTM_PRICESOURCE == "NaN") {
+                fetch_data.OPTM_PRICESOURCE = ""
               }
-              else{
-                fetch_data.OPTM_PRICESOURCE=  parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3)
+              else {
+                fetch_data.OPTM_PRICESOURCE = parseFloat(fetch_data.OPTM_PRICESOURCE).toFixed(3)
               }
-            
+
               if (this.rule_expression_data[current_count] != undefined) {
                 this.rule_expression_data[current_count].output_data.push({
                   rowindex: i,
@@ -358,26 +358,26 @@ export class RulewbComponent implements OnInit {
                   uom: fetch_data.OPTM_UOM,
                   quantity: parseFloat(fetch_data.OPTM_QUANTITY).toFixed(3),
                   edit_quantity: fetch_data.OPTM_ISQTYEDIT,
-                  price_source:  fetch_data.OPTM_PRICESOURCE,
+                  price_source: fetch_data.OPTM_PRICESOURCE,
                   edit_price: fetch_data.OPTM_ISPRICEEDIT,
                   default: default_checked,
                   is_default: default_checked,
                   type: typefromdatabase
 
                 });
-                this.rule_expression_data[current_count].output_data.filter(function(Arr) {
-                 if(Arr.price_source === "NaN") {
-                   var default_value = 0;
-                   Arr.price_source = default_value.toFixed(3);
-                   return Arr;
-                 }
+                this.rule_expression_data[current_count].output_data.filter(function (Arr) {
+                  if (Arr.price_source === "NaN") {
+                    var default_value = 0;
+                    Arr.price_source = default_value.toFixed(3);
+                    return Arr;
+                  }
                 });
               }
             }
           }
 
           console.log(this.rule_expression_data);
-          this.showLoader  = false;
+          this.showLoader = false;
           setTimeout(function () {
             obj.getFeatureDetailsForOutput();
           }, 300)
@@ -390,7 +390,7 @@ export class RulewbComponent implements OnInit {
   }
 
   navigateToFeatureOrModelBom(type_value) {
-      this.route.navigateByUrl("feature/bom/edit/" + type_value);
+    this.route.navigateByUrl("feature/bom/edit/" + type_value);
   }
 
   ngAfterViewInit() {
@@ -409,7 +409,7 @@ export class RulewbComponent implements OnInit {
       if (this.rule_wb_data.effective_to != "") {
         if (this.rule_wb_data.effective_from > this.rule_wb_data.effective_to) {
           this.toastr.error('', this.language.effective_to_greater_effective_from, this.commonData.toast_config);
-          this.rule_wb_data.effective_from =  this.editeffectivefrom;
+          this.rule_wb_data.effective_from = this.editeffectivefrom;
           return;
         }
       }
@@ -450,9 +450,9 @@ export class RulewbComponent implements OnInit {
       return;
     if (this.rule_expression_data.length > 0) {
       var seq_array = [];
-      this.rule_expression_data.filter(function(object){
-       seq_array.push(object.seq_count);
-       return object.seq_count;
+      this.rule_expression_data.filter(function (object) {
+        seq_array.push(object.seq_count);
+        return object.seq_count;
       })
       this.seq_count = Math.max.apply(null, seq_array);
     } else {
@@ -543,7 +543,7 @@ export class RulewbComponent implements OnInit {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-          } 
+          }
 
           this.serviceData = data;
           this.showLookupLoader = false;
@@ -557,7 +557,7 @@ export class RulewbComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      }, 
+      },
       error => {
         this.showLookupLoader = false;
       }
@@ -567,12 +567,12 @@ export class RulewbComponent implements OnInit {
   getLookupValue($event) {
     for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
-        if (this.lookupfor == 'feature_Detail_lookup' || this.lookupfor == 'ModelBom_lookup'){
+        if (this.lookupfor == 'feature_Detail_lookup' || this.lookupfor == 'ModelBom_lookup') {
           this.rule_sequence_data[i]['operand_1'] = '';
           this.rule_sequence_data[i]['operand_1_code'] = '';
           this.rule_sequence_data[i]['operand_2'] = '';
           this.rule_sequence_data[i]['operand_2_code'] = '';
-        }  
+        }
 
         if (this.rule_sequence_data[i]['type'] == 1) {
           //   this.rule_sequence_data[i]['condition'] = '';
@@ -587,7 +587,7 @@ export class RulewbComponent implements OnInit {
       }
     }
 
-   
+
 
     if (this.lookupfor == 'feature_lookup') {
       this.rule_wb_data.applicable_for_feature_id = $event[0];
@@ -635,13 +635,13 @@ export class RulewbComponent implements OnInit {
     //this.lookupfor = 'feature_lookup';
     this.service.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
-      this.showLookupLoader = false;
+        this.showLookupLoader = false;
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-        } 
+          }
           if (press_location == "Detail") {
             if (index == 1) {
               this.lookupfor = 'feature_Detail_lookup';
@@ -655,7 +655,7 @@ export class RulewbComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
-      } , error => {
+      }, error => {
         this.showLookupLoader = false;
       }
     )
@@ -684,25 +684,25 @@ export class RulewbComponent implements OnInit {
     this.service.getFeatureDetailsForOutput(this.rule_wb_data.applicable_for_feature_id).subscribe(
       data => {
         if (data != null && data != "" && data != undefined) {
-          if(data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               return;
-          } 
-        }
+            }
+          }
           for (let i = 0; i < data.length; ++i) {
             this.outputrowcounter++;
-            if(data[i].PriceSource==null||data[i].PriceSource==undefined||data[i].PriceSource=="NaN"||data[i].PriceSource==""){
-              data[i].PriceSource=""
+            if (data[i].PriceSource == null || data[i].PriceSource == undefined || data[i].PriceSource == "NaN" || data[i].PriceSource == "") {
+              data[i].PriceSource = ""
             }
-            else{
-              data[i].PriceSource= parseFloat(data[i].PriceSource).toFixed(3)
+            else {
+              data[i].PriceSource = parseFloat(data[i].PriceSource).toFixed(3)
             }
             var default_value;
 
-            if(i == 0){
+            if (i == 0) {
               default_value = true;
             } else {
               default_value = false;
@@ -717,7 +717,7 @@ export class RulewbComponent implements OnInit {
               uom: data[i].UOM,
               quantity: parseFloat(data[i].Quantity).toFixed(3),
               edit_quantity: "n",
-              price_source:data[i].PriceSource,
+              price_source: data[i].PriceSource,
               edit_price: "n",
               default: default_value,
               is_default: default_value,
@@ -727,7 +727,7 @@ export class RulewbComponent implements OnInit {
           }
         }
         this.showLookupLoader = false;
-      }, error =>{
+      }, error => {
         this.showLookupLoader = false;
       }
 
@@ -790,7 +790,7 @@ export class RulewbComponent implements OnInit {
 
 
       if (index != "0") {
-        if (type != "" && operator == ""){
+        if (type != "" && operator == "") {
           this.generated_expression_value = "";
           this.toastr.error('', this.language.operator_cannotbe_blank_with_type + (parseInt(index) + 1), this.commonData.toast_config);
           this.showAddSequenceBtn = false;
@@ -973,12 +973,13 @@ export class RulewbComponent implements OnInit {
           this.rule_sequence_data[i]['condition'] = '';
           this.rule_sequence_data[i]['type_value'] = '';
           this.rule_sequence_data[i]['type_value_code'] = '';
-        //  $("#type_value_code").val("");
-        //  $("#type_value").val("");
+          //  $("#type_value_code").val("");
+          //  $("#type_value").val("");
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
           if (value == 2) {
             this.rule_sequence_data[i]['is_operand1_disable'] = true;
             this.rule_sequence_data[i]['isTypeDisabled'] = false;
+            this.rule_sequence_data[i]['condition'] = '=';
           } else if (value == 1) {
             this.rule_sequence_data[i]['is_operand1_disable'] = false;
             this.rule_sequence_data[i]['isTypeDisabled'] = false;
@@ -1005,31 +1006,32 @@ export class RulewbComponent implements OnInit {
           this.rule_sequence_data[i]['operand_1_code'] = '';
           this.rule_sequence_data[i]['operand_2'] = '';
           this.rule_sequence_data[i]['operand_2_code'] = '';
-          this.rule_sequence_data[i]['condition'] = '';
+
           this.rule_sequence_data[i]['is_operand2_disable'] = true;
           console.log("type - " + this.rule_sequence_data[i].type);
           if (this.rule_sequence_data[i].type == 1) {
+            this.rule_sequence_data[i]['condition'] = '';
             this.rule_sequence_data[i]['is_operand1_disable'] = false;
             this.service.onFeatureIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
 
-                if(data != undefined && data.length > 0 ){
+                if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
-                      this.commonService.RemoveLoggedInUser().subscribe();
-                      this.commonService.signOut(this.toastr, this.route);
-                      return;
-                  } 
-               }
-        
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                  }
+                }
+
 
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                 // $(actualvalue).val("");
+                  // $(actualvalue).val("");
                   return;
                 }
                 else {
                   this.rule_sequence_data[i].type_value = data;
-                  this.rule_sequence_data[i].type_value_code = value; 
+                  this.rule_sequence_data[i].type_value_code = value;
                 }
               });
           } else if (this.rule_sequence_data[i].type == 2) {
@@ -1037,13 +1039,13 @@ export class RulewbComponent implements OnInit {
             this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
               data => {
 
-                if(data != undefined && data.length > 0 ){
+                if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
-                      this.commonService.RemoveLoggedInUser().subscribe();
-                      this.commonService.signOut(this.toastr, this.route);
-                      return;
-                  } 
-               }
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                  }
+                }
 
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
@@ -1052,7 +1054,7 @@ export class RulewbComponent implements OnInit {
                 }
                 else {
                   this.rule_sequence_data[i].type_value = data;
-                  this.rule_sequence_data[i].type_value_code = value; 
+                  this.rule_sequence_data[i].type_value_code = value;
                 }
               });
           }
@@ -1063,13 +1065,13 @@ export class RulewbComponent implements OnInit {
             this.service.onChildFeatureIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
 
-                if(data != undefined && data.length > 0){
+                if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
-                      this.commonService.RemoveLoggedInUser().subscribe();
-                      this.commonService.signOut(this.toastr, this.route);
-                      return;
-                  } 
-               }
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                  }
+                }
 
                 if (data === "False") {
                   if (key == "operand_1_code") {
@@ -1095,7 +1097,7 @@ export class RulewbComponent implements OnInit {
                     this.rule_sequence_data[i]['operand_2'] = data;
                     this.rule_sequence_data[i]['operand_2_code'] = value;
                   }
-                  
+
                 }
               });
           }
@@ -1104,13 +1106,13 @@ export class RulewbComponent implements OnInit {
             this.service.onChildModelIdChange(this.rule_sequence_data[i].type, this.rule_sequence_data[i].type_value, value).subscribe(
               data => {
 
-                if(data != undefined && data.length > 0){
+                if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
-                      this.commonService.RemoveLoggedInUser().subscribe();
-                      this.commonService.signOut(this.toastr, this.route);
-                      return;
-                  } 
-               }
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route);
+                    return;
+                  }
+                }
 
                 if (data === "False") {
                   this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
@@ -1140,11 +1142,11 @@ export class RulewbComponent implements OnInit {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-        } 
+          }
           this.serviceData = data;
         }
-      }, 
-      error => { 
+      },
+      error => {
         this.showLookupLoader = false;
       }
     )
@@ -1155,15 +1157,15 @@ export class RulewbComponent implements OnInit {
     this.service.get_model_feature_options(type_value, type).subscribe(
       data => {
         this.showLookupLoader = false;
-        
-        
+
+
         if (data.length > 0) {
           console.log(data);
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-          } 
+          }
           this.currentrowindex = rowindex;
           if (type == 1) {
             this.lookupfor = "operand_feature_lookup";
@@ -1174,7 +1176,7 @@ export class RulewbComponent implements OnInit {
           this.operand_type = operand_value;
 
           this.serviceData = data;
-        
+
         } else {
           this.lookupfor = "";
           this.serviceData = [];
@@ -1188,7 +1190,7 @@ export class RulewbComponent implements OnInit {
   }
 
   show_input_lookup(selected_type, rowindex) {
-     this.currentrowindex = rowindex
+    this.currentrowindex = rowindex
     /*for (let i = 0; i < this.rule_sequence_data.length; ++i) {
       if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
         if (selected_type == 1) {
@@ -1207,7 +1209,7 @@ export class RulewbComponent implements OnInit {
         }
       }
     } */
-   
+
     if (selected_type == 1) {
       this.getFeatureDetails(this.rule_wb_data.applicable_for_feature_id, "Detail", selected_type);
     }
@@ -1229,12 +1231,12 @@ export class RulewbComponent implements OnInit {
       }
 
       // additional validation for atleast 1 option selected as default in output
-      var feature_data_default_value = this.rule_feature_data.filter(function(obj){
+      var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
         return obj.is_default;
       });
       console.log("feature_data_default_value");
       console.log(feature_data_default_value);
-      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined){
+      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
         this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
         return false;
       }
@@ -1324,14 +1326,14 @@ export class RulewbComponent implements OnInit {
         this.rule_feature_data.push(feature_rule_data[data]);
       }
 
-      if(this.rule_wb_data.Excluded) {
-        this.isExcluded =true;
-        this.selectall =false;
-        for(let i = 0; i< this.rule_feature_data.length;i++ ) {
+      if (this.rule_wb_data.Excluded) {
+        this.isExcluded = true;
+        this.selectall = false;
+        for (let i = 0; i < this.rule_feature_data.length; i++) {
           this.rule_feature_data[i].check_child = false;
         }
       } else {
-          this.isExcluded =false;
+        this.isExcluded = false;
       }
 
       this.generated_expression_value = row.expression;
@@ -1384,7 +1386,7 @@ export class RulewbComponent implements OnInit {
       if (this.rule_feature_data[i].rowindex == rowindex) {
         if (name == "check_child") {
           this.rule_feature_data[i].check_child = value
-          if (value == false){
+          if (value == false) {
             this.rule_feature_data[i].default = value
             this.rule_feature_data[i].is_default = value
           }
@@ -1402,7 +1404,7 @@ export class RulewbComponent implements OnInit {
           this.rule_feature_data[i].uom = value
         }
         else if (name == "quantity") {
-          this.rule_feature_data[i].quantity =parseFloat(value).toFixed(3)
+          this.rule_feature_data[i].quantity = parseFloat(value).toFixed(3)
         }
         else if (name == "edit_quanity") {
           this.rule_feature_data[i].edit_quantity = value
@@ -1413,10 +1415,10 @@ export class RulewbComponent implements OnInit {
         else if (name == "edit_price") {
           this.rule_feature_data[i].edit_price = value
         }
-        else if (name == "default" ) {
-          this.rule_feature_data.forEach(function(data){
-            data.default = false;  
-            data.is_default = false;  
+        else if (name == "default") {
+          this.rule_feature_data.forEach(function (data) {
+            data.default = false;
+            data.is_default = false;
           });
           this.rule_feature_data[i].default = value
           this.rule_feature_data[i].is_default = value
@@ -1431,18 +1433,18 @@ export class RulewbComponent implements OnInit {
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
       this.rule_feature_data[i].check_child = value
     }
-    this.selectall =true;
+    this.selectall = true;
   }
 
   excludeAllRowsOnCheck() {
-    if(this.rule_wb_data.Excluded) {
-      this.isExcluded =true;
-      for(var i = 0; i< this.rule_feature_data.length;i++ ) {
+    if (this.rule_wb_data.Excluded) {
+      this.isExcluded = true;
+      for (var i = 0; i < this.rule_feature_data.length; i++) {
         this.rule_feature_data[i].check_child = false;
       }
-      this.selectall =false;
+      this.selectall = false;
     } else {
-      this.isExcluded =false;
+      this.isExcluded = false;
     }
   }
   validation(btnpress) {
@@ -1451,10 +1453,10 @@ export class RulewbComponent implements OnInit {
         this.toastr.error('', this.language.selectrulecode, this.commonData.toast_config);
         return false;
       }
-     /*  if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
-        this.toastr.error('', this.language.description_field_not_blank, this.commonData.toast_config);
-        return false;
-      } */
+      /*  if (this.rule_wb_data.description == "" || this.rule_wb_data.description == null) {
+         this.toastr.error('', this.language.description_field_not_blank, this.commonData.toast_config);
+         return false;
+       } */
       if (this.rule_wb_data.effective_from == "" || this.rule_wb_data.effective_from == null) {
         this.toastr.error('', this.language.selecteffromdate, this.commonData.toast_config);
         return false;
@@ -1567,7 +1569,7 @@ export class RulewbComponent implements OnInit {
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route);
             return;
-          } 
+          }
 
           if (data === "True") {
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
@@ -1582,7 +1584,7 @@ export class RulewbComponent implements OnInit {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
-        }, 
+        },
         error => {
           this.showLookupLoader = false;
         }
