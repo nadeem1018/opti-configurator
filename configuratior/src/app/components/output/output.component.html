@@ -362,7 +362,8 @@
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
-                <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}} </div>
+                <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}}
+              </div>
               <div class="col-md-2 pull-right text-right"> {{language.step_3_5}} </div>
             </div>
             <hr>
@@ -414,7 +415,7 @@
                           <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}"
                             attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
                             {{header_data.OPTM_DISPLAYNAME}}
-                            <span class="text-right pull-right custom_panel_icon_section">
+                            <span class="text-right pull-right custom_panel_icon_section" *ngIf="ModelHeaderData.length > 0">
                               <i class="fa fa-plus"></i>
                             </span>
                           </a>
@@ -424,7 +425,7 @@
                         role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
                         <div class="panel-body">
                           <table class="parent_table inner-table table table-bordered table-strip table-sm">
-                            <thead class="thead-dark">
+                            <thead class="thead-dark" *ngIf="ModelHeaderData.length > 0">
                               <tr>
                                 <th>#</th>
                                 <th>{{language.code}}</th>
