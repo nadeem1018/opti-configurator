@@ -575,13 +575,15 @@ export class ModelbomComponent implements OnInit {
     this.serviceData = []
     this.service.GetModelList().subscribe(
       data => {
-        if(data != undefined && data.length > 0){
+        if(data != undefined && data != null){
+         if(data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route);
               return;
           } 
+        }
        }
         if (data.length > 0) {
           this.lookupfor = 'ModelBom_lookup';

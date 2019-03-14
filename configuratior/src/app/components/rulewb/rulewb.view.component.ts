@@ -281,6 +281,12 @@ export class RuleWbViewComponent implements OnInit {
                     this.router.navigateByUrl('rulewb/view');
                     return;
                 }
+                else if(data === "Rule Used"){
+                    this.toastr.error('', this.language.RuleIsUsed, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
+                    return
+                }
                 else {
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);

@@ -576,7 +576,7 @@
                         <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.Model_FeatureName}}
+                            {{this.language.Output_FeatureName}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             <span>
@@ -589,7 +589,7 @@
                         <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.item}}
+                            {{this.language.item_code}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             {{featurerow.Item}}
@@ -598,7 +598,7 @@
                         <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.description}}
+                            {{this.language.Output_ItemDescription}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             {{featurerow.Description}}
