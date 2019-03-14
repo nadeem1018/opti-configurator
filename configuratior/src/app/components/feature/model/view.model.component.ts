@@ -184,16 +184,18 @@ export class ViewFeatureModelComponent implements OnInit {
         var dataset = this.fms.getAllViewData(this.CompanyDBId, search, page_number, this.record_per_page).subscribe(
             data => {
                 
-                console.log(data);
+            console.log(data);
                 
-                this.showLoader = false;
-                if(data.length > 0){
+            this.showLoader = false;
+            if(data != undefined && data != null){
+             if(data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonservice.RemoveLoggedInUser().subscribe();
                     this.commonservice.signOut(this.toastr, this.router);
                     return;
                 } 
             }
+        }
                 this.dataArray = data;
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
