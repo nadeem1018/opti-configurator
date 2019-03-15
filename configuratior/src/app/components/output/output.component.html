@@ -346,7 +346,7 @@
             </span>
 
 
-            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="this.showPrintOptions = false;"
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="previousButtonPress()"
               data-previous-block="choose_operation">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-sm " (click)="step2_next_click_validation()">

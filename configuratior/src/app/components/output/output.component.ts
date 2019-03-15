@@ -58,6 +58,8 @@ export class OutputComponent implements OnInit {
   //Outputlog
   public prod_discount_log: any = 0;
   public access_dis_amount_log: any = 0;
+  public isPreviousPressed:boolean = false;
+  public isDuplicate:boolean = false;
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -352,6 +354,11 @@ export class OutputComponent implements OnInit {
     $("#step0_next_click_id").trigger('click');
     this.showPrintOptions = true;
   }
+  previousButtonPress() {
+    this.isPreviousPressed = true;
+    this.showPrintOptions = false;
+
+  }
   onSavePress() {
     // this.onValidateNextPress();
     this.onFinishPress("step1_data", "savePress");
@@ -495,7 +502,13 @@ export class OutputComponent implements OnInit {
               this.step2_data.templateid = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_MODELTEMPLATEITEM
               this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
               this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel]);
-              this.add_fg_multiple_model();
+
+              if(this.isDuplicate) {
+                this.step3_data_final = [];
+                this.add_fg_multiple_model();
+              } else {
+                this.add_fg_multiple_model();
+              }
               this.showLookupLoader = false;
             }
             console.log("this.step3_data_final");
@@ -507,7 +520,6 @@ export class OutputComponent implements OnInit {
         else {
           this.showLookupLoader = false;
         }
-
         }, error => {
           this.showLookupLoader = false;
         })
@@ -817,6 +829,9 @@ export class OutputComponent implements OnInit {
     //   this.lookupfor = "";
     // }, 200)
     // this.getItemDetails($event[0]);
+    if(this.isPreviousPressed) {
+      this.isDuplicate = true;
+    }
   }
 
 
@@ -3078,7 +3093,7 @@ export class OutputComponent implements OnInit {
 
     this.navigatenextbtn = true;
     // this.validnextbtn=false;
-    if (navigte == true) {
+    if (navigte == true ) {
       $("#modelbom_next_click_id").trigger('click');
       // this.onModelBillNextPress(); // method commented 
       if (this.step3_data_final.length == 0) {
