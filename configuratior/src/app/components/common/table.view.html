@@ -40,7 +40,7 @@
 
         <div class="opti_grid-table-outer">
             <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
-            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="selectedValue" [pageable]="true" [resizable]="true"  (selectionChange)="on_selection($event)" >
+            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true"  (selectionChange)="on_selection($event)">
                 <ng-template kendoGridToolbarTemplate>
                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
                         <div class="custom-control custom-checkbox float-left">

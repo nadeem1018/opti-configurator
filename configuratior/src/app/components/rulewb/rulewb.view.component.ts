@@ -24,7 +24,7 @@ export class RuleWbViewComponent implements OnInit {
     public commonData = new CommonData();
     pageSizeNumber:any = this.commonData.default_count;
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = 0;
+    public selectedValue: number = 10;
     
 
     public companyName: string = ""; 
@@ -159,11 +159,11 @@ export class RuleWbViewComponent implements OnInit {
         } else {
           this.selectedValue = Number(this.commonData.default_count);
         }
-        if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
-        } else {
-          this.isColumnFilter = false;
-        }
+        // if(sessionStorage.isFilterEnabled == "true" ) {
+        //   this.isColumnFilter = true;
+        // } else {
+        //   this.isColumnFilter = false;
+        // }
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
@@ -172,6 +172,13 @@ export class RuleWbViewComponent implements OnInit {
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+    }
+
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
     }
 
     search_results() {
@@ -280,6 +287,12 @@ export class RuleWbViewComponent implements OnInit {
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('rulewb/view');
                     return;
+                }
+                else if(data === "Rule Used"){
+                    this.toastr.error('', this.language.RuleIsUsed, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
+                    return
                 }
                 else {
                     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);

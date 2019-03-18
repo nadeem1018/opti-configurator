@@ -346,7 +346,7 @@
             </span>
 
 
-            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="this.showPrintOptions = false;"
+            <button type="button" class="btn btn-sm btn-dark  mr-10 btn-previous" (click)="previousButtonPress()"
               data-previous-block="choose_operation">
               <i class="fa fa-arrow-left fa-fw"></i> {{language.previous}}</button>
             <button type="button" *ngIf="isNextButtonVisible" class="btn btn-sm btn-primary  mr-10 btn-sm " (click)="step2_next_click_validation()">
@@ -362,7 +362,8 @@
           <div class="wizard_heading_section">
             <div class="row bg-primary pb-1 pt-1 wizard_font">
               <div class="col-md-10 pull-left">
-                <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}} </div>
+                <i class="fa fa-sitemap fa-fw"></i> {{language.model_bill_ofm}}
+              </div>
               <div class="col-md-2 pull-right text-right"> {{language.step_3_5}} </div>
             </div>
             <hr>
@@ -414,7 +415,7 @@
                           <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}"
                             attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
                             {{header_data.OPTM_DISPLAYNAME}}
-                            <span class="text-right pull-right custom_panel_icon_section">
+                            <span class="text-right pull-right custom_panel_icon_section" *ngIf="ModelHeaderData.length > 0">
                               <i class="fa fa-plus"></i>
                             </span>
                           </a>
@@ -424,7 +425,7 @@
                         role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
                         <div class="panel-body">
                           <table class="parent_table inner-table table table-bordered table-strip table-sm">
-                            <thead class="thead-dark">
+                            <thead class="thead-dark" *ngIf="ModelHeaderData.length > 0">
                               <tr>
                                 <th>#</th>
                                 <th>{{language.code}}</th>
@@ -575,7 +576,7 @@
                         <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.Model_FeatureName}}
+                            {{this.language.Output_FeatureName}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             <span>
@@ -588,7 +589,7 @@
                         <kendo-grid-column field="step_2_right_grid_item" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.item}}
+                            {{this.language.item_code}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             {{featurerow.Item}}
@@ -597,7 +598,7 @@
                         <kendo-grid-column field="step_2_right_grid_description" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                            {{this.language.description}}
+                            {{this.language.Output_ItemDescription}}
                           </ng-template>
                           <ng-template kendoGridCellTemplate let-featurerow>
                             {{featurerow.Description}}

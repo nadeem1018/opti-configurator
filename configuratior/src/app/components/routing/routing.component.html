@@ -291,7 +291,7 @@
 
       <div [hidden]="routing_header_data.use_template_routing">
         <!-- operation action  -start -->
-        <div class="row col-sm-12">
+        <div class="w-100 d-flex">
           <div class="mr-3" *ngIf="show_insert_operation_btn" [hidden]="this.current_selected_row.length == 0">
             <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.insert_operation}} "
               (click)="insert_new_operation('insert')">

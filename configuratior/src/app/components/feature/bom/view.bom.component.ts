@@ -24,7 +24,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     common_params = new CommonData();
 
     public listItems: Array<string> = this.common_params.default_limits;
-    public selectedValue: number = 0;
+    public selectedValue: number = 10;
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
@@ -127,11 +127,11 @@ export class ViewFeatureBOMComponent implements OnInit {
         } else {
           this.selectedValue = Number(this.commonData.default_count);
         }
-        if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
-        } else {
-          this.isColumnFilter = false;
-        }
+        // if(sessionStorage.isFilterEnabled == "true" ) {
+        //   this.isColumnFilter = true;
+        // } else {
+        //   this.isColumnFilter = false;
+        // }
         this.service_call(this.current_page, this.search_string);
 
     }
@@ -146,6 +146,13 @@ export class ViewFeatureBOMComponent implements OnInit {
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+    }
+
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
     }
 
     search_results() {

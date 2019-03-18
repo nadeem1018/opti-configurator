@@ -21,7 +21,7 @@ export class ViewModelBomComponent implements OnInit {
     @ViewChild("searchinput") _el: ElementRef;
     public commonData = new CommonData();
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = 0;
+    public selectedValue: number = 10;
 
     public companyName: string = "";
     public username: string = "";
@@ -131,11 +131,11 @@ export class ViewModelBomComponent implements OnInit {
         } else {
           this.selectedValue = Number(this.commonData.default_count);
         }
-        if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
-        } else {
-          this.isColumnFilter = false;
-        }
+        // if(sessionStorage.isFilterEnabled == "true" ) {
+        //   this.isColumnFilter = true;
+        // } else {
+        //   this.isColumnFilter = false;
+        // }
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
@@ -144,6 +144,13 @@ export class ViewModelBomComponent implements OnInit {
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+    }
+
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
     }
 
     search_results() {
@@ -165,13 +172,15 @@ export class ViewModelBomComponent implements OnInit {
                 
                 console.log(data);
                 this.showLoader = false;
-                if(data != undefined && data.length > 0){
+                if(data != undefined && data !=null){
+                   if(data.length > 0){
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
                         this.commonservice.signOut(this.toastr, this.router);
                         return;
                     } 
                 }
+            }
                                 
                 this.dataArray = data;
                
