@@ -527,6 +527,8 @@
     "at_row":"at row",
     "firstOperationInspectionQC":"Operation at first row cannot be of inspection qc type",
     "lastOperSetup":"Operation at last row cannot be of setup type",
-    "res_consumption_method":"Res Consumption Method"
+    "res_consumption_method":"Res Consumption Method",
+    "opn_num_format_blank": "Operation number format cannot be blank",
+    "opn_num_format_zero":"Operation number format cannot be zero"
 
 }
