@@ -7,8 +7,8 @@ export interface ColumnSetting {
     format?: string;
     type: 'text' | 'numeric' | 'boolean' | 'date';
     width?: string;
-    attrType:string;
-  }
+    attrType: string;
+}
 
 // Example of Data as model, can be used for non updating data (exaple - names, task type and etc)
 export class CommonData {
@@ -25,7 +25,7 @@ export class CommonData {
         }
         let sanitized = temp.replace(/^http\:\/\//, '').replace(/\/+/g, '/').replace(/\/+$/, '');
         temp = (window.location.protocol + '//' + sanitized);
-        
+
         return temp;
     }
 
@@ -71,7 +71,7 @@ export class CommonData {
 
     public less_bom_type: any = [
         { "value": 2, "Name": "Item" }
-       /*  , { "value": 3, "Name": "Value" } */
+        /*  , { "value": 3, "Name": "Value" } */
     ];
 
     public model_bom_type: any = [
@@ -133,9 +133,9 @@ export class CommonData {
 
     public document_type = [
         //{ "value": '', "Name": "" },
-        { "value": 'draft', "Name": "Draft", "selected":"1" },
-        { "value": 'sales_quote', "Name": "Sales Quote", "selected":"0" },
-        { "value": 'sales_order', "Name": "Sales Order", "selected":"0" }
+        { "value": 'draft', "Name": "Draft", "selected": "1" },
+        { "value": 'sales_quote', "Name": "Sales Quote", "selected": "0" },
+        { "value": 'sales_order', "Name": "Sales Order", "selected": "0" }
     ];
 
     public time_uom_type: any = [
@@ -143,11 +143,18 @@ export class CommonData {
         { "value": 2, "Name": "Minutes" }
     ];
 
-
+    public operation_type: any = {
+        "1" : "Set Up",
+        "2" : "Tear Down",
+        "3" : "Manufacturing",
+        "4" : "Inspection QC",
+        "5" : "Sub Contracting",
+        "6" : "Others",
+    };
 
     // for common view
     public default_limits = ["10", "25", "50", "100"];
-    public default_count:number = 10;
+    public default_count: number = 10;
 
     blobToFile = (theBlob: Blob, fileName: string): File => {
         var b: any = theBlob;

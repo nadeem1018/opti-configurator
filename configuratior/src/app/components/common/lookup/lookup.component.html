@@ -246,7 +246,7 @@
     <div class="modal-dialog modal-xlg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="routing_resource_modal_title">{{popup_title}}</h5>
+                <h5 class="modal-title" id="routing_resource_modal_title">{{resource_popup_title}}</h5>
                 <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('routing_resource_modal')"
                     aria-label="Close">
                     <span aria-hidden="true">
@@ -318,7 +318,7 @@
                         <kendo-grid-column field="resource_consumption" title="{{language.consumption}}" filter="text"
                             [width]="140" [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm text-right" id="resource_consumption"
+                                <input type="text" class="form-control  form-control-sm text-right row_resource_consumption" id="resource_consumption"
                                     value={{dataItem.resource_consumption}} (change)="on_input_change(resource_consumption.value,dataItem.rowindex, 'resource_consumption')"
                                     #resource_consumption title={{dataItem.resource_consumption}} />
                             </ng-template>
@@ -326,7 +326,7 @@
                         <kendo-grid-column field="resource_inverse" title="{{language.inverse}}" filter="text" [width]="140"
                             [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm text-right" id="resource_inverse"
+                                <input type="text" class="form-control  form-control-sm text-right row_resource_inverse" id="resource_inverse"
                                     value={{dataItem.resource_inverse}} (change)="on_input_change(resource_inverse.value,dataItem.rowindex, 'resource_inverse')"
                                     #resource_inverse title={{dataItem.resource_inverse}} />
                             </ng-template>
@@ -334,7 +334,7 @@
                         <kendo-grid-column field="no_resource_used" title="{{language.no_resource_used}}" filter="text"
                             [width]="140" [minResizableWidth]="140">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <input type="text" class="form-control  form-control-sm text-right" id="no_resource_used"
+                                <input type="text" class="form-control  form-control-sm text-right row_no_resource_used" id="no_resource_used"
                                     value={{dataItem.no_resource_used}} (change)="on_input_change(no_resource_used.value,dataItem.rowindex, 'no_resource_used')"
                                     #no_resource_used title={{dataItem.no_resource_used}} />
                             </ng-template>

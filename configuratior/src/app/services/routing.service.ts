@@ -134,5 +134,10 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/TeamplateRoutingList", jObject, this.common_params.httpOptions);
   }
 
+  getResConversionInverse(type, value, resource_id): Observable<any>{
+    let jObject = { GetData: JSON.stringify([{ CompanyDBID: this.logged_in_company, GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser"), type: type, value: value, resource_id: resource_id }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/CalculateResourceData", jObject, this.common_params.httpOptions);
+  }
+
 
 }

@@ -251,6 +251,23 @@ export class RoutingComponent implements OnInit {
                   isOpenApplicableVisible = false;
                 }
 
+
+                if(this.routing_header_data.routing_for == "feature"){
+                  if (data_detail.OPTM_TYPE == 3 || data_detail.OPTM_TYPE == '3') {
+                    opn_application = false;
+                    isOpenApplicableVisible = false;
+                  }
+                }
+
+                if(data_detail.OPTM_TYPE == 1) {
+                  if (data_detail.OPTM_ACCESSORY == 'Y' || data_detail.OPTM_ACCESSORY == 'y') {
+                    opn_application = false;
+                    isOpenApplicableVisible = false;
+                  }
+                }
+
+                // here goes oper type check at time of edit 
+
                 this.routing_detail_data.push({
                   optm_id: data_detail.OPTM_ID,
                   lineno: data_detail.OPTM_LINE_NO,
@@ -278,6 +295,7 @@ export class RoutingComponent implements OnInit {
                   isTypeDisabled: true,
                   isOpenApplicableVisible: isOpenApplicableVisible,
                   showOperationbtn: showOperationbtn,
+                  count_point_operation_disabled: false,
                   unique_key: data_detail.OPTM_UNIQUE_KEY
                 });
 
@@ -456,6 +474,14 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
       this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
       let obj = this;
+
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+      if ($event[2] == '4' || $event[2] == '5'){
+        this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
+        this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
+      }
+
       this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
         // obj.current_grid_action_row = 0;
       });
@@ -494,7 +520,10 @@ export class RoutingComponent implements OnInit {
           });
         }
       }
-      this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
+      console.log("temp_array- ", temp_array);
+      if (temp_array.length > 0){
+        this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
+      }
     }
 
     if (this.lookupfor == "template_routing_lookup") {
@@ -716,6 +745,7 @@ export class RoutingComponent implements OnInit {
               return;
             }
           }
+          
           if (data.FeatureDetail.length > 0) {
 
             let temp = new Date(this.routing_header_data.EffectiveDate);
@@ -730,15 +760,24 @@ export class RoutingComponent implements OnInit {
                 this.counter = this.routing_detail_data.length
               }
               this.counter++;
+             
+              let open_allow = true;
+              let open_allow_show = true;
               if (featuredata.OPTM_TYPE == 1) {
                 value = (featuredata.OPTM_CHILDFEATUREID).toString();
                 value_code = featuredata.child_code;
+                if (featuredata.OPTM_ACCESSORY == 'Y' || featuredata.OPTM_ACCESSORY == 'y'){
+                  open_allow = false;
+                  open_allow_show = false
+                }
               } else if (featuredata.OPTM_TYPE == 2) {
                 value = (featuredata.OPTM_ITEMKEY).toString();
                 value_code = featuredata.OPTM_ITEMKEY;
               } else if (featuredata.OPTM_TYPE == 3) {
                 value = (featuredata.OPTM_VALUE).toString();
                 value_code = featuredata.OPTM_VALUE;
+                open_allow = false;
+                open_allow_show = false;
               }
               desc = featuredata.OPTM_DISPLAYNAME;
               this.routing_detail_data.push({
@@ -763,10 +802,11 @@ export class RoutingComponent implements OnInit {
                 move_time: '00:00',
                 qc_time: '00:00',
                 time_uom: '1',
-                opn_application: true,
+                opn_application: open_allow,
                 isTypeDisabled: true,
                 showOperationbtn: false,
-                isOpenApplicableVisible: true,
+                count_point_operation_disabled : false,
+                isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
             }
@@ -826,9 +866,17 @@ export class RoutingComponent implements OnInit {
               this.counter++;
               let temp = new Date(this.routing_header_data.EffectiveDate);
               let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+              let open_allow = true;
+              let open_allow_show = true;
+             
               if (modeldata.OPTM_TYPE == 1) {
                 value = (modeldata.OPTM_FEATUREID).toString();
                 value_code = modeldata.feature_code;
+                console.log('in here ', modeldata.OPTM_TYPE, 'vlaue ', value_code,  ' accessory ', modeldata.Accessory);
+                 if (modeldata.Accessory == 'Y' || modeldata.Accessory == 'y') {
+                open_allow = false;
+                open_allow_show = false;
+              }
 
               } else if (modeldata.OPTM_TYPE == 2) {
                 value = (modeldata.OPTM_ITEMKEY).toString();
@@ -860,10 +908,11 @@ export class RoutingComponent implements OnInit {
                 move_time: '00:00',
                 qc_time: '00:00',
                 time_uom: '1',
-                opn_application: true,
+                opn_application: open_allow,
                 isTypeDisabled: true,
                 showOperationbtn: false,
-                isOpenApplicableVisible : true,
+                count_point_operation_disabled: false,
+                isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
             }
@@ -1034,7 +1083,15 @@ export class RoutingComponent implements OnInit {
           this.current_grid_action_row = this.getGridCurrentRow(rowindex);
           this.lookupfor = 'operation_lookup';
           this.showLookupLoader = false;
-          this.serviceData = data;
+          let temp_data_arr = [];
+          console.log("commonData - ", this.commonData.operation_type);
+          for(var ii=0; ii<data.length; ii++){
+            data[ii].operTypeStr = this.commonData.operation_type[data[ii].OPRType];
+            temp_data_arr.push(data[ii]);
+
+          }
+          console.log(temp_data_arr);
+          this.serviceData = temp_data_arr;
 
         }
         else {
@@ -1297,7 +1354,8 @@ export class RoutingComponent implements OnInit {
       opn_application: true,
       isTypeDisabled: true,
       showOperationbtn: true,
-      isOpenApplicableVisible : false,
+      isOpenApplicableVisible: false,
+      count_point_operation_disabled: false,
       unique_key: this.commonData.random_string(55)
     };
 
@@ -1333,6 +1391,8 @@ export class RoutingComponent implements OnInit {
     this.routing_detail_data[currentrow].oper_code = "";
     this.routing_detail_data[currentrow].oper_desc = "";
     this.routing_detail_data[currentrow].oper_type = "";
+    this.routing_detail_data[currentrow].count_point_operation = false;
+    this.routing_detail_data[currentrow].count_point_operation_disabled = false;
     $(".row_oper_id").eq(currentrow).val("");
     $(".row_oper_code").eq(currentrow).val("");
     this.routing_detail_data[currentrow].wc_id = "";
@@ -1386,6 +1446,15 @@ export class RoutingComponent implements OnInit {
               this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
               this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
               this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
+             
+              this.routing_detail_data[currentrow].count_point_operation = false;
+              this.routing_detail_data[currentrow].count_point_operation_disabled = false;
+
+              if (data[0].OPRType == '4' || data[0].OPRType == '5') {
+
+                this.routing_detail_data[currentrow].count_point_operation = true;
+                this.routing_detail_data[currentrow].count_point_operation_disabled = true;
+              }
               this.getOperationResourceDetail(data[0].OPRCode, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
@@ -1526,15 +1595,16 @@ export class RoutingComponent implements OnInit {
     }
 
     if (grid_element == 'queue_time') {
-      this.routing_detail_data[currentrow].queue_time = value;
+
+      this.routing_detail_data[currentrow].queue_time = this.format_time_in_hh_mm(value);
     }
 
     if (grid_element == 'move_time') {
-      this.routing_detail_data[currentrow].move_time = value;
+      this.routing_detail_data[currentrow].move_time = this.format_time_in_hh_mm(value);
     }
 
     if (grid_element == 'qc_time') {
-      this.routing_detail_data[currentrow].qc_time = value;
+      this.routing_detail_data[currentrow].qc_time = this.format_time_in_hh_mm(value);
     }
 
     if (grid_element == 'time_uom') {
@@ -1546,7 +1616,8 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'opn_application') {
       if (value == false) {
-        this.routing_detail_data[currentrow].oper_id = "";
+        this.routing_detail_data[currentrow].oper_top_level = false;
+         this.routing_detail_data[currentrow].oper_id = "";
         this.routing_detail_data[currentrow].oper_code = "";
         this.routing_detail_data[currentrow].oper_desc = "";
         this.routing_detail_data[currentrow].wc_id = "";
@@ -1563,6 +1634,14 @@ export class RoutingComponent implements OnInit {
 
     console.log("this.routing_detail_data ", this.routing_detail_data);
     console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
+  }
+
+  format_time_in_hh_mm(value) {
+    if (value == "") {
+      return "00:00";
+    } 
+    if (!/:/.test(value)) { value += ':00'; }
+    return value.replace(/^\d{1}:/, '0$&').replace(/:\d{1}$/, '$&0');
   }
 
   onDeleteRow(rowindex) {
@@ -1593,9 +1672,9 @@ export class RoutingComponent implements OnInit {
 
     if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
       for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
-        if (this.routing_detail_data[DetailIndex].oper_top_level == true ){
-          if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == ''){
-             this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex+1), this.commonData.toast_config);
+        if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
+          if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
+            this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
             return;
           }
         }
@@ -1665,11 +1744,11 @@ export class RoutingComponent implements OnInit {
           oper_arr_data.operation_top_level = 'N';
         }
 
-        if (oper_arr_data.oper_type == true) {
+        /* if (oper_arr_data.oper_type == true) {
           oper_arr_data.oper_type = 'N';
         } else {
           oper_arr_data.oper_type = 'Y';
-        }
+        } */
 
         if (oper_arr_data.count_point_operation == true) {
           oper_arr_data.count_point_operation = 'Y';

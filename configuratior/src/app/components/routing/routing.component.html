@@ -46,94 +46,138 @@
           </div>
 
           <div class="feature_header_section" *ngIf="routing_header_data.routing_for == 'feature'">
-            <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">
-                {{language.feature}}
-                <a class="common_grid_link" *ngIf="routing_header_data.feature_id && routing_header_data.feature_code">
-                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
-                </a>
-              </label>
-              <div class="col-sm-3 input-group">
-                <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="feature_id" id="feature_id"
-                  (change)="getFeatureDetail(routing_header_data.feature_id)" placeholder="{{language.Feature_Code}}"
-                  [(ngModel)]="routing_header_data.feature_id" title="{{routing_header_data.feature_id}}">
-                <input type="text" class="form-control  form-control-sm mt3" name="feature_code" id="featuer_code"
-                  [(ngModel)]="routing_header_data.feature_code" title="{{routing_header_data.feature_code}}"
-                  placeholder="{{language.feature}}" (change)="getFeatureDetail(routing_header_data.feature_code)"
-                  style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [disabled]="this.form_mode == 'edit'">
-                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
-                  <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)">
-                    <i class="fa fa-bars"></i>
-                  </span>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label" for="feature_id">
+                    {{language.feature}}
+                    <a class="common_grid_link" *ngIf="routing_header_data.feature_id && routing_header_data.feature_code">
+                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                    </a>
+                  </label>
+                  <div class="col-sm-6 input-group">
+                    <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="feature_id" id="feature_id"
+                      (change)="getFeatureDetail(routing_header_data.feature_id)" placeholder="{{language.Feature_Code}}"
+                      [(ngModel)]="routing_header_data.feature_id" title="{{routing_header_data.feature_id}}">
+                    <input type="text" class="form-control  form-control-sm mt3" name="feature_code" id="featuer_code"
+                      [(ngModel)]="routing_header_data.feature_code" title="{{routing_header_data.feature_code}}"
+                      placeholder="{{language.feature}}" (change)="getFeatureDetail(routing_header_data.feature_code)"
+                      style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [disabled]="this.form_mode == 'edit'">
+                    <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
+                      <span class="input-group-text featuer_code_lookup cursor_icon" id="basic-addon2" (click)="openFeatureLookup(true)">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label" for="feature_description">{{language.description}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="feature_description" class="form-control  form-control-sm mt3" id="feature_description"
+                      placeholder="{{language.description}}" [(ngModel)]="routing_header_data.feature_description"
+                      title="{{routing_header_data.description}}" tabindex="2" [disabled]="this.form_mode == 'edit'">
+                  </div>
+
                 </div>
               </div>
             </div>
 
-            <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_description">{{language.description}}</label>
-              <div class="col-sm-3">
-                <input type="text" name="feature_description" class="form-control  form-control-sm mt3" id="feature_description"
-                  placeholder="{{language.description}}" [(ngModel)]="routing_header_data.feature_description" title="{{routing_header_data.description}}"
-                  tabindex="2" [disabled]="this.form_mode == 'edit'">
-              </div>
 
-            </div>
+
 
           </div> <!-- feature header - end -->
 
           <div class="modal_header_section" *ngIf="routing_header_data.routing_for == 'model'">
-            <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="feature_id">
-                {{language.model}}
-                <a class="common_grid_link" *ngIf="routing_header_data.modal_id && routing_header_data.modal_code">
-                  <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
-                </a>
-              </label>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label" for="feature_id">
+                    {{language.model}}
+                    <a class="common_grid_link" *ngIf="routing_header_data.modal_id && routing_header_data.modal_code">
+                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true" (click)="navigateToFeatureModelHeader(routing_header_data.routing_for)"></i>
+                    </a>
+                  </label>
 
-              <div class="col-sm-3 input-group">
-                <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="modal_id" id="modal_id"
-                  (change)="getModalDetail(routing_header_data.modal_id)" placeholder="{{language.modal}}" [(ngModel)]="routing_header_data.modal_id"
-                  title="{{routing_header_data.modal_id}}">
-                <input type="text" class="form-control  form-control-sm mt3" name="modal_code" id="modal_code"
-                  [(ngModel)]="routing_header_data.modal_code" title="{{routing_header_data.modal_code}}" placeholder="{{language.model_ModelCode}}"
-                  (change)="getModalDetail(routing_header_data.modal_code)" style="max-width: calc(98% - 23px) !important; width: 100%;"
-                  tabindex="6" [disabled]="this.form_mode == 'edit'">
-                <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
-                  <span class="input-group-text modal_code_lookup cursor_icon" id="basic-addon2" (click)="openModalLookup(true)">
-                    <i class="fa fa-bars"></i>
-                  </span>
+                  <div class="col-sm-6 input-group">
+                    <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="modal_id" id="modal_id"
+                      (change)="getModalDetail(routing_header_data.modal_id)" placeholder="{{language.modal}}"
+                      [(ngModel)]="routing_header_data.modal_id" title="{{routing_header_data.modal_id}}">
+                    <input type="text" class="form-control  form-control-sm mt3" name="modal_code" id="modal_code"
+                      [(ngModel)]="routing_header_data.modal_code" title="{{routing_header_data.modal_code}}"
+                      placeholder="{{language.model_ModelCode}}" (change)="getModalDetail(routing_header_data.modal_code)"
+                      style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6" [disabled]="this.form_mode == 'edit'">
+                    <div class="input-group-append" [hidden]="this.form_mode == 'edit'">
+                      <span class="input-group-text modal_code_lookup cursor_icon" id="basic-addon2" (click)="openModalLookup(true)">
+                        <i class="fa fa-bars"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label" for="modal_description">{{language.description}}</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="modal_description" class="form-control  form-control-sm mt3" id="modal_description"
+                      placeholder="{{language.description}}" [(ngModel)]="routing_header_data.modal_description" title="{{routing_header_data.description}}"
+                      tabindex="2" [disabled]="this.form_mode == 'edit'">
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="form-group row clearfix">
-              <label class="col-sm-3 col-form-label" for="modal_description">{{language.description}}</label>
-              <div class="col-sm-3">
-                <input type="text" name="modal_description" class="form-control  form-control-sm mt3" id="modal_description"
-                  placeholder="{{language.description}}" [(ngModel)]="routing_header_data.modal_description" title="{{routing_header_data.description}}"
-                  tabindex="2" [disabled]="this.form_mode == 'edit'">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row clearfix">
+                <label class="col-sm-6 col-form-label" for="warehouse">{{language.warehouse}}</label>
+
+                <div class="col-sm-6 input-group">
+                  <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="warehouse_id"
+                    (change)="getWarehouseDetails(routing_header_data.warehouse_id)" placeholder="{{language.warehouse}}"
+                    [(ngModel)]="routing_header_data.warehouse_id" title="{{routing_header_data.warehouse_id}}">
+                  <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="warehouse_code"
+                    [(ngModel)]="routing_header_data.warehouse_code" title="{{routing_header_data.warehouse_code}}"
+                    placeholder="{{language.warehouse}}" (change)="getWarehouseDetails(routing_header_data.warehouse_code)"
+                    style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
+                  <div class="input-group-append">
+                    <span class="input-group-text warehouse_code_lookup cursor_icon" id="basic-addon2" (click)="openWarehouseLook(true)">
+                      <i class="fa fa-bars"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group row clearfic">
+                <label class="col-sm-6 col-form-label" for="EffectiveDate">{{language.EffectiveDate}}</label>
+                <div class="col-sm-6">
+                  <div class="input-group-append float-left">
+                    <span class="input-group-text cursor_icon" (click)="confirm_override_grid_effective_date()" title="{{this.language.OverrideEffectiveDate}}">
+                      <i class="fa fa-list fa-fw"></i>
+                    </span>
+                  </div>
+                  <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left "
+                    name='EffectiveDate' type="text" value="{{routing_header_data.EffectiveDate}}" id="EffectiveDate"
+                    readonly placeholder="{{language.EffectiveDate}}" [(ngModel)]="routing_header_data.EffectiveDate"
+                    title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 26px) !important; width: 75%;"
+                    tabindex="3">
+                  <div class="input-group-append float-left">
+                    <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt11" id="date_time_icon">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <owl-date-time #dt11 [pickerType]="'calendar'" (afterPickerClosed)="changeEffectiveDate(routing_header_data.EffectiveDate)"></owl-date-time>
+                </div>
+
+
               </div>
             </div>
           </div>
 
-          <div class="form-group row clearfix">
-            <label class="col-sm-3 col-form-label" for="warehouse">{{language.warehouse}}</label>
-
-            <div class="col-sm-3 input-group">
-              <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="warehouse_id"
-                (change)="getWarehouseDetails(routing_header_data.warehouse_id)" placeholder="{{language.warehouse}}"
-                [(ngModel)]="routing_header_data.warehouse_id" title="{{routing_header_data.warehouse_id}}">
-              <input type="text" class="form-control  form-control-sm mt3" name="itemCodelookup" id="warehouse_code"
-                [(ngModel)]="routing_header_data.warehouse_code" title="{{routing_header_data.warehouse_code}}"
-                placeholder="{{language.warehouse}}" (change)="getWarehouseDetails(routing_header_data.warehouse_code)"
-                style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
-              <div class="input-group-append">
-                <span class="input-group-text warehouse_code_lookup cursor_icon" id="basic-addon2" (click)="openWarehouseLook(true)">
-                  <i class="fa fa-bars"></i>
-                </span>
-              </div>
-            </div>
-          </div>
 
 
           <div class="modal_header_section" *ngIf="routing_header_data.routing_for == 'model'">
@@ -175,28 +219,14 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="form-group row clearfic">
-                  <label class="col-sm-6 col-form-label" for="EffectiveDate">{{language.EffectiveDate}}</label>
+                <div class="form-group row clearfix">
+                  <label class="col-sm-6 col-form-label" for="opm_num_format">{{language.opm_num_format}}</label>
                   <div class="col-sm-6">
-                    <div class="input-group-append float-left">
-                      <span class="input-group-text cursor_icon" (click)="confirm_override_grid_effective_date()" title="{{this.language.OverrideEffectiveDate}}">
-                        <i class="fa fa-list fa-fw"></i>
-                      </span>
-                    </div>
-                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-                      name='EffectiveDate' type="text" value="{{routing_header_data.EffectiveDate}}" id="EffectiveDate"
-                      readonly placeholder="{{language.EffectiveDate}}" [(ngModel)]="routing_header_data.EffectiveDate"
-                      title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 26px) !important; width: 79%;"
-                      tabindex="3">
-                    <div class="input-group-append float-left">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt11" id="date_time_icon">
-                        <i class="fa fa-calendar"></i>
-                      </span>
-                    </div>
-                    <owl-date-time #dt11 [pickerType]="'calendar'" (afterPickerClosed)="changeEffectiveDate(routing_header_data.EffectiveDate)"></owl-date-time>
+                    <input type="text" name="opm_num_format" class="form-control  form-control-sm mt3  text-right" id="opm_num_format"
+                      placeholder="{{language.opm_num_format}}" (change)="header_numeric_input_change(routing_header_data.opm_num_format,'opm_num_format')"
+                      [(ngModel)]="routing_header_data.opm_num_format" title="{{routing_header_data.opm_num_format}}"
+                      tabindex="2">
                   </div>
-
-
                 </div>
               </div>
             </div>
@@ -215,17 +245,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group row clearfix">
-                  <label class="col-sm-6 col-form-label" for="opm_num_format">{{language.opm_num_format}}</label>
-                  <div class="col-sm-6">
-                    <input type="text" name="opm_num_format" class="form-control  form-control-sm mt3  text-right" id="opm_num_format"
-                      placeholder="{{language.opm_num_format}}" (change)="header_numeric_input_change(routing_header_data.opm_num_format,'opm_num_format')"
-                      [(ngModel)]="routing_header_data.opm_num_format" title="{{routing_header_data.opm_num_format}}"
-                      tabindex="2">
-                  </div>
-                </div>
-              </div>
+              <div class="col-sm-6"></div>
             </div>
 
 
@@ -378,7 +398,7 @@
                   <ng-template kendoGridCellTemplate let-dataItem>
 
                     <ng-container *ngIf="((this.routing_header_data.routing_for == 'feature') && (dataItem.type!=2 && dataItem.type!=3 )) || (this.routing_header_data.routing_for == 'model' && dataItem.type!=2)">
-                    
+
                       <div class="custom-control custom-checkbox custom-control-inline">
                         <input type="checkbox" [disabled]="dataItem.opn_application == false" class="custom-control-input"
                           id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}} (change)="on_input_change(oper_top_level.checked,dataItem.rowindex, 'oper_top_level')"
@@ -396,7 +416,7 @@
                       <input type="hidden" class="form-control  form-control-sm row_oper_id" id="oper_id" value={{dataItem.oper_id}}
                         #oper_id title={{dataItem.oper_id}} />
 
-                      <input type="text" class="form-control  form-control-sm row_oper_code" [disabled]="dataItem.opn_application == false"
+                      <input type="text" class="form-control  form-control-sm row_oper_code" [disabled]="dataItem.opn_application == false || (this.routing_header_data.routing_for == 'feature' && dataItem.type==3)"
                         id="oper_code" (change)="on_input_change(oper_code.value,dataItem.rowindex, 'oper_code')" value={{dataItem.oper_code}}
                         #oper_code title={{dataItem.oper_code}} />
                       <div class="input-group-append" [hidden]="dataItem.opn_application == false">
@@ -446,7 +466,7 @@
                         id="count_point_operation_{{dataItem.rowindex}}" value={{dataItem.count_point_operation}}
                         (change)="on_input_change(count_point_operation.checked,dataItem.rowindex, 'count_point_operation')"
                         #count_point_operation [(checked)]=dataItem.count_point_operation title="{{dataItem.count_point_operation}}"
-                        style="position: relative;margin-top: 5px;" [disabled]="dataItem.opn_application == false" />
+                        style="position: relative;margin-top: 5px;" [disabled]="dataItem.opn_application == false || dataItem.count_point_operation_disabled == true" />
                       <label class="custom-control-label" for="count_point_operation_{{dataItem.rowindex}}"></label>
                     </div>
                   </ng-template>
