@@ -82,7 +82,9 @@ export class LookupComponent implements OnInit {
   public verify_final_data_sel_details: any = [];
   public product_grand_details: any = [];
   public resourceServiceData: any = [];
+  public resource_basisdd: any[];
   public resourceServiceOper: any = "";
+  public resourceServiceOperCM: any = "";
   public resourceServiceWc: any = "";
   public current_popup_row: any = "";
   public downLoadfileName = this.language.quatation + '.pdf';
@@ -785,6 +787,7 @@ export class LookupComponent implements OnInit {
       console.log('in array cleaner');
       this.is_operation_popup_lookup_open = false;
       this.resourceServiceOper = "";
+      this.resourceServiceOperCM = "";
       this.resourceServiceWc = "";
       this.lookupvalue.emit('');
       this.resourceServiceData = [];
@@ -1376,6 +1379,7 @@ export class LookupComponent implements OnInit {
     this.is_operation_popup_lookup_open = true;
     this.showLoader = true;
     this.resourceServiceData = [];
+    this.resource_basisdd = this.commonData.resource_basic;
     if (this.serviceData !== undefined && this.serviceData !== "") {
       if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
         for (var inx = 0; inx < this.serviceData.oper_res.length; inx++) {
@@ -1384,12 +1388,44 @@ export class LookupComponent implements OnInit {
           if (this.resourceServiceData.length > 0) {
             this.resource_counter = this.resourceServiceData.length
           }
+
+          let basis = '1';
+          let is_basis_disabled = false;
+          if (this.serviceData.oper_res[inx].oper_consumption_method == '1' || this.serviceData.oper_res[inx].oper_consumption_method == 1) { // setup 
+            is_basis_disabled = true;
+            basis = '4';
+            this.resource_basisdd = [
+              { "value": '4', "Name": "Setup" }
+            ]
+          }
+
+          if (this.serviceData.oper_res[inx].oper_consumption_method == '2' || this.serviceData.oper_res[inx].oper_consumption_method == 2) { // variable
+            is_basis_disabled = false;
+            basis = '1';
+            this.resource_basisdd = [
+              { "value": '1', "Name": "Item" },
+              { "value": '4', "Name": "Setup" }
+            ]
+          }
+
+          if (this.serviceData.oper_res[inx].oper_consumption_method == '3' || this.serviceData.oper_res[inx].oper_consumption_method == 3) { // Fixed
+            is_basis_disabled = false;
+            basis = '1';
+            this.resource_basisdd = [
+              { "value": '1', "Name": "Item" },
+              { "value": '2', "Name": "Batch" },
+              { "value": '4', "Name": "Setup" }
+            ]
+          }
+
           this.resource_counter++;
           if (this.serviceData.oper_res[inx].OPRCode != undefined) {
             this.resourceServiceData.push({
               lineno: this.resource_counter,
               rowindex: this.resource_counter,
               operation_no: this.serviceData.oper_res[inx].OPRCode,
+              oper_type: this.serviceData.oper_res[inx].oper_type,
+              oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
               resource_code: this.serviceData.oper_res[inx].ResCode,
               resource_name: this.serviceData.oper_res[inx].ResName,
               resource_type: this.serviceData.oper_res[inx].ResType,
@@ -1401,12 +1437,15 @@ export class LookupComponent implements OnInit {
               time_consumption: parseFloat(this.serviceData.oper_res[inx].TimeCons).toFixed(3),
               time_inverse: parseFloat(this.serviceData.oper_res[inx].TimeInv).toFixed(3),
               resource_consumption_type: '1',
-              basis: '1',
+              basis: basis,
+              is_basis_disabled: is_basis_disabled,
               schedule: false,
               is_resource_disabled: true,
               unique_key: this.serviceData.unique_key
             });
           }
+
+          this.resourceServiceOperCM = this.serviceData.oper_res[inx].oper_consumption_method;
         }
 
         if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
@@ -1453,6 +1492,7 @@ export class LookupComponent implements OnInit {
       time_inverse: "0",
       resource_consumption_type: '1',
       basis: '1',
+      is_basis_disabled: false,
       schedule: false,
       is_resource_disabled: true,
       unique_key: this.serviceData.unique_key
@@ -1544,7 +1584,7 @@ export class LookupComponent implements OnInit {
 
       if (value == 0 && value != '') {
         value = 1;
-      
+
         this.toastr.error('', this.language.consumption_type_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
       }
       else {
@@ -1580,7 +1620,7 @@ export class LookupComponent implements OnInit {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         }
       )
-    
+
     }
 
     if (grid_element == 'resource_inverse') {
@@ -1620,7 +1660,7 @@ export class LookupComponent implements OnInit {
         }
       )
 
-     
+
     }
 
     if (grid_element == 'no_resource_used') {

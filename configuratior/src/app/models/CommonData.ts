@@ -152,6 +152,12 @@ export class CommonData {
         "6" : "Others",
     };
 
+    public res_consumption_method: any = {
+        "1": "Set Up",
+        "2": "Variable",
+        "3": "Fixed",
+    };
+
     // for common view
     public default_limits = ["10", "25", "50", "100"];
     public default_count: number = 10;
