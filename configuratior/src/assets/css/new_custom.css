@@ -43,7 +43,7 @@
   padding-left: 2px !important;
 }
 
-.lookup_data .k-grid-header-wrap table {
+/* .lookup_data .k-grid-header-wrap table {
   width: 100% !important;
 }
 
@@ -66,8 +66,11 @@ col:not(:first-child) {
 
 .k-grid-table tr td {
   width: 50% !important;
-}
+} */
 
+body .k-grid-header {
+  background-color: #1ba0f1;
+}
 .display_none {
   display: none !important;
 }
