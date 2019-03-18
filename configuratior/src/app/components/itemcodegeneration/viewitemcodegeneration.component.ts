@@ -29,7 +29,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = 0;
+    public selectedValue: number = 10;
 
 
     record_per_page: any;
@@ -130,11 +130,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         } else {
           this.selectedValue = Number(this.commonData.default_count);
         }
-        if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
-        } else {
-          this.isColumnFilter = false;
-        }
+        // if(sessionStorage.isFilterEnabled == "true" ) {
+        //   this.isColumnFilter = true;
+        // } else {
+        //   this.isColumnFilter = false;
+        // }
         this.service_call(this.current_page, this.search_string);
 
         //this.CheckedData.CheckedRow=[];
@@ -152,6 +152,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     on_page_limit_change() {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
+    }
+
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
     }
 
     search_results() {

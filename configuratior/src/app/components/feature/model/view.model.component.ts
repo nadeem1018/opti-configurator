@@ -25,7 +25,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public commonData = new CommonData();
 
     public listItems: Array<string> = this.commonData.default_limits;
-    public selectedValue: number = 0;
+    public selectedValue: number = 10;
 
     public isColumnFilter: boolean = false;
     // generate table default constants
@@ -115,7 +115,13 @@ export class ViewFeatureModelComponent implements OnInit {
         
     }
 
-  
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
+    }
+
     on_selection(grid_event) {
         grid_event.selectedRows = [];
     }
@@ -134,7 +140,7 @@ export class ViewFeatureModelComponent implements OnInit {
         }
     }
     saveFilterState() {
-       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());       
     }
 
     ngOnInit() {
