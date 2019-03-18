@@ -1980,6 +1980,24 @@ export class OutputComponent implements OnInit {
             this.feature_price_calculate();
             this.showLookupLoader = false;
           }
+          if(data.DataForSelectedFeatureModelItem.length == 1) {
+            var currentSelectedFeatureId = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
+            var ModelBOMDataForSelectedFeature = this.ModelBOMDataForSecondLevel.filter(function (array) {
+              return array.OPTM_FEATUREID == currentSelectedFeatureId;
+            });
+            if(ModelBOMDataForSelectedFeature.length > 0) {
+              for (var i = 0; i < this.ModelBOMDataForSecondLevel.length; i++) {
+                if (this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID != 'undefined' || ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID != 'undefined') {
+                  if (ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID) {
+                    this.ModelBOMDataForSecondLevel[i].checked = true;
+                  } else {
+                    this.ModelBOMDataForSecondLevel[i].checked = false;
+                  }
+                }
+              }
+            }
+          }
+
         }//end data null
         this.showLookupLoader = false;
       },//end data
