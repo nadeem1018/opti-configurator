@@ -435,6 +435,12 @@
                       [disabled]="true" />
                   </ng-template>
                 </kendo-grid-column>
+                <kendo-grid-column field="res_consumption_method" title="{{language.res_consumption_method}}" filter="text" [width]="140" [minResizableWidth]="140">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="text" class="form-control  form-control-sm" id="res_consumption_method" value={{dataItem.oper_consumption_method_str}} (change)="on_input_change(res_consumption_method.value,dataItem.rowindex, 'res_consumption_method')"
+                      #res_consumption_method title={{dataItem.res_consumption_method}} [disabled]="true" />
+                  </ng-template>
+                </kendo-grid-column>
                 <kendo-grid-column field="wc_code" title="{{language.workcenter}}" filter="text" [width]="155"
                   [minResizableWidth]="155">
                   <ng-template kendoGridCellTemplate let-dataItem>

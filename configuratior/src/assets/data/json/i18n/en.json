@@ -337,7 +337,7 @@
     "SalesOrder": "Sales Order",
     "Between": "Between",
     "In": "In",
-    "at_row": "on row",
+    "on_row": "on row",
     "delivery_date": "Delivery Date",
     "serial": "Sl#",
     "ReadyToUse": "Ready To Use",
@@ -524,5 +524,9 @@
     "this":"this",
     "cannot_submit_empty_resource":"Cannot apply empty resource to a operation",
     "resource_code_cannot_beblack":"Resource code cannot blank at row - ",
-    "at_row":"at row"
+    "at_row":"at row",
+    "firstOperationInspectionQC":"Operation at first row cannot be of inspection qc type",
+    "lastOperSetup":"Operation at last row cannot be of setup type",
+    "res_consumption_method":"Res Consumption Method"
+
 }

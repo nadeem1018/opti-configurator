@@ -267,6 +267,10 @@ export class RoutingComponent implements OnInit {
                 }
 
                 // here goes oper type check at time of edit 
+                let count_point_operation_disabled = false;
+                if (data_detail.OPTM_OPR_TYPE == '4' || data_detail.OPTM_OPR_TYPE == '5'){
+                  count_point_operation_disabled = true;
+                }
 
                 this.routing_detail_data.push({
                   optm_id: data_detail.OPTM_ID,
@@ -295,8 +299,10 @@ export class RoutingComponent implements OnInit {
                   isTypeDisabled: true,
                   isOpenApplicableVisible: isOpenApplicableVisible,
                   showOperationbtn: showOperationbtn,
-                  count_point_operation_disabled: false,
-                  unique_key: data_detail.OPTM_UNIQUE_KEY
+                  count_point_operation_disabled: count_point_operation_disabled,
+                  unique_key: data_detail.OPTM_UNIQUE_KEY,
+                  oper_consumption_method: data_detail.OPTM_OPER_CONSUM_METHOD,
+                  oper_consumption_method_str: this.commonData.res_consumption_method[data_detail.OPTM_OPER_CONSUM_METHOD],
                 });
 
                 if (data.ResourceDetail.length > 0) {
@@ -467,22 +473,41 @@ export class RoutingComponent implements OnInit {
     }
 
     if (this.lookupfor == 'operation_lookup') {
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+
+      if (this.current_grid_action_row == 0 && $event[2] == '4'){
+        this.clearInvalidOperationData(this.current_grid_action_row);
+        this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
+        return;
+      }
+
+      let lastRowIndex = (this.routing_detail_data.length - 1);
+      if (lastRowIndex == this.current_grid_action_row){ // last row 
+        if ($event[2] == '1'){
+          this.clearInvalidOperationData(this.current_grid_action_row);
+          this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+          return;
+        }
+      }
+
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
       this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
       this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[1];
       this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
       this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
       this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[7];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[7]];
       let obj = this;
 
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+      
       if ($event[2] == '4' || $event[2] == '5'){
         this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
         this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
       }
 
-      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
+      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
         // obj.current_grid_action_row = 0;
       });
     }
@@ -792,6 +817,8 @@ export class RoutingComponent implements OnInit {
                 oper_code: '',
                 oper_desc: '',
                 oper_type: '',
+                oper_consumption_method: '',
+                oper_consumption_method_str : '',
                 wc_id: '',
                 wc_code: '',
                 mtq: '1',
@@ -898,6 +925,8 @@ export class RoutingComponent implements OnInit {
                 oper_code: '',
                 oper_desc: '',
                 oper_type: '',
+                oper_consumption_method: '',
+                oper_consumption_method_str: '',
                 wc_id: '',
                 wc_code: '',
                 mtq: '1',
@@ -1153,7 +1182,7 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  getOperationResourceDetail(oper_code, rowindex, operation_line_unique_key, callback) {
+  getOperationResourceDetail(oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
     this.showLookupLoader = true;
     if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
       this.routing_detail_resource_data[rowindex] = [];
@@ -1186,6 +1215,8 @@ export class RoutingComponent implements OnInit {
             data[i].resource_consumption_type = '1';
             data[i].basis = '1';
             data[i].schedule = false;
+            data[i].oper_consumption_method = oper_consumption_type;
+            data[i].oper_type = oper_type;
             operData.push(data[i]);
           }
           this.routing_detail_resource_data[rowindex] = operData;
@@ -1341,6 +1372,7 @@ export class RoutingComponent implements OnInit {
       oper_code: '',
       oper_desc: '',
       oper_type: '',
+      oper_consumption_method : '',
       wc_id: '',
       wc_code: '',
       mtq: '1',
@@ -1391,6 +1423,7 @@ export class RoutingComponent implements OnInit {
     this.routing_detail_data[currentrow].oper_code = "";
     this.routing_detail_data[currentrow].oper_desc = "";
     this.routing_detail_data[currentrow].oper_type = "";
+    this.routing_detail_data[currentrow].oper_consumption_method = "";
     this.routing_detail_data[currentrow].count_point_operation = false;
     this.routing_detail_data[currentrow].count_point_operation_disabled = false;
     $(".row_oper_id").eq(currentrow).val("");
@@ -1439,9 +1472,28 @@ export class RoutingComponent implements OnInit {
             }
 
             if (data.length > 0) {
+              if (currentrow == 0 && data[0].OPRType == '4') {
+                this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
+                this.clearInvalidOperationData(currentrow);
+                this.showLookupLoader = false;
+                return;
+              }
+
+              let lastRowIndex = (this.routing_detail_data.length - 1);
+              if (lastRowIndex == currentrow) { // last row 
+                if (data[0].OPRType == '1') {
+                  this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+                  this.clearInvalidOperationData(currentrow);
+                  this.showLookupLoader = false;
+                  return;
+                }
+              }
+
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
               this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
               this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
+              this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
+              this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
 
               this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
               this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
@@ -1455,7 +1507,7 @@ export class RoutingComponent implements OnInit {
                 this.routing_detail_data[currentrow].count_point_operation = true;
                 this.routing_detail_data[currentrow].count_point_operation_disabled = true;
               }
-              this.getOperationResourceDetail(data[0].OPRCode, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
+              this.getOperationResourceDetail(data[0].OPRCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
               this.clearInvalidOperationData(currentrow);
@@ -1539,7 +1591,7 @@ export class RoutingComponent implements OnInit {
     if (grid_element == 'mtq') {
       if (value == 0 && value != '') {
         value = 1;
-        this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.mtq_cannot_be_blank_zero + ' ' + rowindex, this.commonData.toast_config);
+        this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
       }
       else {
         let rgexp = /^\d+$/;
@@ -1616,14 +1668,15 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'opn_application') {
       if (value == false) {
-        this.routing_detail_data[currentrow].oper_top_level = false;
+        this.routing_detail_data[currentrow].oper_top_level = value;
          this.routing_detail_data[currentrow].oper_id = "";
         this.routing_detail_data[currentrow].oper_code = "";
         this.routing_detail_data[currentrow].oper_desc = "";
         this.routing_detail_data[currentrow].wc_id = "";
         this.routing_detail_data[currentrow].wc_code = "";
         this.routing_detail_data[currentrow].mtq = 1;
-        this.routing_detail_data[currentrow].auto_move = false;
+        this.routing_detail_data[currentrow].auto_move = value;
+        this.routing_detail_data[currentrow].count_point_operation_disabled = value;
         this.routing_detail_data[currentrow].queue_time = "00:00";
         this.routing_detail_data[currentrow].move_time = "00:00";
         this.routing_detail_data[currentrow].qc_time = "00:00";
@@ -1812,7 +1865,7 @@ export class RoutingComponent implements OnInit {
           this.route.navigateByUrl('routing/view');
         } else {
           if (data == "AlreadyExist") {
-            this.toastr.error('', this.language.routing_for + ' ' + this.routing_header_data.this + ' ' + this.routing_header_data.routing_for + ' ' + this.language.alreadyExist, this.commonData.toast_config);
+            this.toastr.error('', this.language.routing_for + ' ' + this.language.this + ' ' + this.routing_header_data.routing_for + ' ' + this.language.alreadyExist, this.commonData.toast_config);
             return;
           } else {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
