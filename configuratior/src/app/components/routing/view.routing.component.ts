@@ -152,6 +152,12 @@ export class ViewRoutingComponent implements OnInit {
 
     }
 
+    getPageValue() {
+        if(this.selectedValue == null){
+            this.selectedValue = 10;
+        }  
+        return this.selectedValue;
+    }
     
     on_selection(grid_event) {
         grid_event.selectedRows = [];

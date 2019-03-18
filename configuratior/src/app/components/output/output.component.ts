@@ -3696,6 +3696,7 @@ export class OutputComponent implements OnInit {
 
 
     return array;
+    console.log(array);  
 
   }
 
