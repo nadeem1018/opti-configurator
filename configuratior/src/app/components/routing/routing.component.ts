@@ -1734,13 +1734,15 @@ export class RoutingComponent implements OnInit {
       }
     }
 
-    if (this.routing_header_data.opm_num_format == '' || this.routing_header_data.opm_num_format == null || this.routing_header_data.opm_num_format == undefined) {
-      this.toastr.error('', this.language.opn_num_format_blank, this.commonData.toast_config);
-      return;
-    } else {
-      if (this.routing_header_data.opm_num_format == 0) {
-        this.toastr.error('', this.language.opn_num_format_zero, this.commonData.toast_config);
+    if(this.routing_header_data.routing_for == 'model'){
+      if (this.routing_header_data.opm_num_format == '' || this.routing_header_data.opm_num_format == null || this.routing_header_data.opm_num_format == undefined) {
+        this.toastr.error('', this.language.opn_num_format_blank, this.commonData.toast_config);
         return;
+      } else {
+        if (this.routing_header_data.opm_num_format == 0) {
+          this.toastr.error('', this.language.opn_num_format_zero, this.commonData.toast_config);
+          return;
+        }
       }
     }
 

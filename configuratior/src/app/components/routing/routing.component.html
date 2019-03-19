@@ -358,7 +358,7 @@
                       </select>
                     </ng-container>
                     <ng-container *ngIf="dataItem.showOperationbtn == true">
-                      <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
+                      <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm routing_disabled_selected" #selected_type
                         (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
                         <option value="4">{{language.operation}}</option>
                       </select>
