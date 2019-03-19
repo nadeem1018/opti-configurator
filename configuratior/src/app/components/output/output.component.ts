@@ -2613,7 +2613,7 @@ export class OutputComponent implements OnInit {
             FeatureId: step3_temp_row.feature[us_indexx].FeatureId,
             HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
             Item: step3_temp_row.feature[us_indexx].Item,
-            ItemNumber: step3_temp_row.feature[us_indexx].ItemNumber,
+            ItemNumber: (step3_temp_row.feature[us_indexx].ItemNumber).toString(),
             ModelId: step3_temp_row.feature[us_indexx].ModelId,
             OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
             dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
