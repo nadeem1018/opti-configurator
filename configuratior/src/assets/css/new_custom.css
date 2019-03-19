@@ -748,3 +748,9 @@ a.common_grid_link {
 .routing_disabled_selected {
   -webkit-appearance: none;
 }
+.opti_grid-table-outer .opti_pagelimit-container{
+  max-width:50px;
+}
+.opti_grid-table-outer .opti_pagelimit-container kendo-dropdownlist {
+  max-width:100%;
+}
