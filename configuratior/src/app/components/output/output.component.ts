@@ -2464,6 +2464,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.OPConfig_OUTPUTLOG = [];
     final_dataset_to_save.ConnectionDetails = [];
     final_dataset_to_save.apidata = [];
+    final_dataset_to_save.routing_data = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
 
     //Creating OutputLog table
@@ -2556,6 +2557,16 @@ export class OutputComponent implements OnInit {
     //creating details table array
     if (this.step3_data_final.length > 0 && this.step3_data_final !== undefined) {
       final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
+      // populate routing data array - start
+      for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
+        let step3_temp_row = this.step3_data_final[indexx];
+        final_dataset_to_save.routing_data.push({
+          model: step3_temp_row.ModelHeaderItemsArray,
+          model_feature_list: step3_temp_row.ModelHeaderData,
+          user_selection: step3_temp_row.feature
+        });
+      }
+      // populate routing data array - end
     }
 
     // final_dataset_to_save.OPConfig_OUTPUTDTL=this.step4_final_DetailModelData
@@ -2579,6 +2590,7 @@ export class OutputComponent implements OnInit {
 
     console.log(final_dataset_to_save);
     var obj = this;
+    // final data submission 
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null && data != undefined) {
