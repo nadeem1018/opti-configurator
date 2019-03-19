@@ -1212,6 +1212,16 @@ export class RoutingComponent implements OnInit {
             data[i].lineno = localhcounter;
             data[i].rowindex = localhcounter;
             data[i].unique_key = operation_line_unique_key;
+            data[i].ResCode = data[i].ResCode,
+            data[i].ResName = data[i].ResName,
+            data[i].ResType = data[i].ResType,
+            data[i].ResUOM = data[i].ResUOM,
+            data[i].ResCons = (data[i].ResCons).toString(),
+            data[i].ResInv = (data[i].ResInv).toString(),
+            data[i].ResUsed = data[i].ResUsed,
+            data[i].TimeUOM = data[i].TimeUOM,
+            data[i].TimeCons = (data[i].TimeCons).toString(),
+            data[i].TimeInv = (data[i].TimeInv).toString(),
             data[i].resource_consumption_type = '1';
             data[i].basis = '1';
             data[i].schedule = false;

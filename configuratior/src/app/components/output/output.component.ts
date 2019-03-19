@@ -58,8 +58,8 @@ export class OutputComponent implements OnInit {
   //Outputlog
   public prod_discount_log: any = 0;
   public access_dis_amount_log: any = 0;
-  public isPreviousPressed:boolean = false;
-  public isDuplicate:boolean = false;
+  public isPreviousPressed: boolean = false;
+  public isDuplicate: boolean = false;
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -416,11 +416,11 @@ export class OutputComponent implements OnInit {
           if ((data.CustomerOutput[0].OPTM_DOCTYPE = "23") && (data.CustomerOutput[0].OPTM_STATUS != "D")) {
             this.step1_data.document = "sales_quote"
             this.step1_data.document_name = this.language.SalesQuote;
-          } else if( ((data.CustomerOutput[0].OPTM_DOCTYPE = "23") && (data.CustomerOutput[0].OPTM_STATUS == "D")) || ((data.CustomerOutput[0].OPTM_DOCTYPE = "17") && (data.CustomerOutput[0].OPTM_STATUS == "D")) ){
-              this.step1_data.document = 'draft';
-              this.step1_data.document_name = this.language.draft;
+          } else if (((data.CustomerOutput[0].OPTM_DOCTYPE = "23") && (data.CustomerOutput[0].OPTM_STATUS == "D")) || ((data.CustomerOutput[0].OPTM_DOCTYPE = "17") && (data.CustomerOutput[0].OPTM_STATUS == "D"))) {
+            this.step1_data.document = 'draft';
+            this.step1_data.document_name = this.language.draft;
           }
-           else {
+          else {
             this.step1_data.document = "sales_order"
             this.step1_data.document_name = this.language.SalesOrder;
           }
@@ -484,42 +484,42 @@ export class OutputComponent implements OnInit {
       this.showLookupLoader = true;
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
         data => {
-          if(data != null && data != undefined){
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
-              return;
-            }
-            this.setModelDataFlag = true;
-            for (var isavedmultimodel in data) {
-              this.onclearselection(1);
-              this.step2_data.quantity = parseFloat(data[isavedmultimodel].AddedModelHeaderData[0].quantity);
-              this.step2_data.model_id = data[isavedmultimodel].AddedModelHeaderData[0].ModelID
-              this.step2_data.model_code = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_FEATURECODE
-              this.step2_data.model_name = data[isavedmultimodel].AddedModelHeaderData[0].ModelDisplayName
-              this.step2_data.templateid = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_MODELTEMPLATEITEM
-              this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
-              this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel]);
-
-              if(this.isDuplicate) {
-                this.step3_data_final = [];
-                this.add_fg_multiple_model();
-              } else {
-                this.add_fg_multiple_model();
+          if (data != null && data != undefined) {
+            if (data.length > 0) {
+              if (data[0].ErrorMsg == "7001") {
+                this.showLookupLoader = false;
+                this.CommonService.RemoveLoggedInUser().subscribe();
+                this.CommonService.signOut(this.toastr, this.route);
+                return;
               }
+              this.setModelDataFlag = true;
+              for (var isavedmultimodel in data) {
+                this.onclearselection(1);
+                this.step2_data.quantity = parseFloat(data[isavedmultimodel].AddedModelHeaderData[0].quantity);
+                this.step2_data.model_id = data[isavedmultimodel].AddedModelHeaderData[0].ModelID
+                this.step2_data.model_code = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_FEATURECODE
+                this.step2_data.model_name = data[isavedmultimodel].AddedModelHeaderData[0].ModelDisplayName
+                this.step2_data.templateid = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_MODELTEMPLATEITEM
+                this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
+                this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel]);
+
+                if (this.isDuplicate) {
+                  this.step3_data_final = [];
+                  this.add_fg_multiple_model();
+                } else {
+                  this.add_fg_multiple_model();
+                }
+                this.showLookupLoader = false;
+              }
+              console.log("this.step3_data_final");
+              console.log(this.step3_data_final);
+            } else {
               this.showLookupLoader = false;
             }
-            console.log("this.step3_data_final");
-            console.log(this.step3_data_final);
-          } else {
+          }
+          else {
             this.showLookupLoader = false;
           }
-        }
-        else {
-          this.showLookupLoader = false;
-        }
         }, error => {
           this.showLookupLoader = false;
         })
@@ -829,7 +829,7 @@ export class OutputComponent implements OnInit {
     //   this.lookupfor = "";
     // }, 200)
     // this.getItemDetails($event[0]);
-    if(this.isPreviousPressed) {
+    if (this.isPreviousPressed) {
       this.isDuplicate = true;
     }
   }
@@ -1980,12 +1980,12 @@ export class OutputComponent implements OnInit {
             this.feature_price_calculate();
             this.showLookupLoader = false;
           }
-          if(data.DataForSelectedFeatureModelItem.length == 1) {
+          if (data.DataForSelectedFeatureModelItem.length == 1) {
             var currentSelectedFeatureId = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
             var ModelBOMDataForSelectedFeature = this.ModelBOMDataForSecondLevel.filter(function (array) {
               return array.OPTM_FEATUREID == currentSelectedFeatureId;
             });
-            if(ModelBOMDataForSelectedFeature.length > 0) {
+            if (ModelBOMDataForSelectedFeature.length > 0) {
               for (var i = 0; i < this.ModelBOMDataForSecondLevel.length; i++) {
                 if (this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID != 'undefined' || ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID != 'undefined') {
                   if (ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID) {
@@ -2560,10 +2560,79 @@ export class OutputComponent implements OnInit {
       // populate routing data array - start
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
+
+        let model_temp_data = [];
+        model_temp_data.push({
+          DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
+          OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
+          OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
+          OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
+          OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
+          OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
+          OPTM_UNIQUEIDNT : step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
+          Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
+          feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
+          child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
+          OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
+          ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
+        });
+
+        let temp_model_feature_list_arr  = [];
+        for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
+          temp_model_feature_list_arr.push({
+            ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
+            ITEMCODEGENREF:step3_temp_row.ModelHeaderData[f_indexx].ITEMCODEGENREF,
+            MODELTEMPLATEITEM:step3_temp_row.ModelHeaderData[f_indexx].MODELTEMPLATEITEM,
+            OPTM_CHILDMODELID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_CHILDMODELID,
+            OPTM_DISPLAYNAME:step3_temp_row.ModelHeaderData[f_indexx].OPTM_DISPLAYNAME,
+            OPTM_FEATUREID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_FEATUREID,
+            OPTM_ITEMKEY:step3_temp_row.ModelHeaderData[f_indexx].OPTM_ITEMKEY,
+            OPTM_LEVEL:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LEVEL,
+            OPTM_LINENO:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LINENO,
+            OPTM_MANDATORY:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MANDATORY,
+            OPTM_MODELID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID,
+            OPTM_TYPE:step3_temp_row.ModelHeaderData[f_indexx].OPTM_TYPE,
+            OPTM_UNIQUEIDNT:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UNIQUEIDNT,
+            OPTM_UOM:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UOM,
+            Price:step3_temp_row.ModelHeaderData[f_indexx].Price,
+            child_code:step3_temp_row.ModelHeaderData[f_indexx].child_code,
+            feature_code:step3_temp_row.ModelHeaderData[f_indexx].feature_code,
+            parentfeatureid:step3_temp_row.ModelHeaderData[f_indexx].parentfeatureid,
+            parentmodelid:step3_temp_row.ModelHeaderData[f_indexx].parentmodelid,
+          });
+        }
+
+        let user_select_temp_arr = [];
+        for (let us_indexx = 0; us_indexx < step3_temp_row.feature.length; us_indexx++) {
+          user_select_temp_arr.push({
+            Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
+            Description: step3_temp_row.feature[us_indexx].Description,
+            FeatureId: step3_temp_row.feature[us_indexx].FeatureId,
+            HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
+            Item: step3_temp_row.feature[us_indexx].Item,
+            ItemNumber: step3_temp_row.feature[us_indexx].ItemNumber,
+            ModelId: step3_temp_row.feature[us_indexx].ModelId,
+            OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
+            dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
+            discount: step3_temp_row.feature[us_indexx].discount,
+            featureName: step3_temp_row.feature[us_indexx].featureName,
+            gross: step3_temp_row.feature[us_indexx].gross,
+            isPriceDisabled: step3_temp_row.feature[us_indexx].isPriceDisabled,
+            isQuantityDisabled: step3_temp_row.feature[us_indexx].isQuantityDisabled,
+            is_accessory: step3_temp_row.feature[us_indexx].is_accessory,
+            ispropogateqty: step3_temp_row.feature[us_indexx].ispropogateqty,
+            price: step3_temp_row.feature[us_indexx].price,
+            pricehide: step3_temp_row.feature[us_indexx].pricehide,
+            pricextn: step3_temp_row.feature[us_indexx].pricextn,
+            quantity: step3_temp_row.feature[us_indexx].quantity,
+          });
+        }
+
+
         final_dataset_to_save.routing_data.push({
-          model: step3_temp_row.ModelHeaderItemsArray,
-          model_feature_list: step3_temp_row.ModelHeaderData,
-          user_selection: step3_temp_row.feature
+          model: model_temp_data,
+          model_feature_list: temp_model_feature_list_arr,
+          user_selection: user_select_temp_arr
         });
       }
       // populate routing data array - end
@@ -2591,6 +2660,7 @@ export class OutputComponent implements OnInit {
     console.log(final_dataset_to_save);
     var obj = this;
     // final data submission 
+    
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null && data != undefined) {
@@ -3123,7 +3193,7 @@ export class OutputComponent implements OnInit {
 
     this.navigatenextbtn = true;
     // this.validnextbtn=false;
-    if (navigte == true ) {
+    if (navigte == true) {
       $("#modelbom_next_click_id").trigger('click');
       // this.onModelBillNextPress(); // method commented 
       if (this.step3_data_final.length == 0) {
