@@ -2464,7 +2464,9 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.OPConfig_OUTPUTLOG = [];
     final_dataset_to_save.ConnectionDetails = [];
     final_dataset_to_save.apidata = [];
-    final_dataset_to_save.routing_data = [];
+    final_dataset_to_save.routing_model = [];
+    final_dataset_to_save.routing_model_feature_data = [];
+    final_dataset_to_save.routing_user_selection = [];
     let total_discount = (Number(this.feature_discount_percent) + Number(this.accessory_discount_percent));
 
     //Creating OutputLog table
@@ -2558,11 +2560,12 @@ export class OutputComponent implements OnInit {
     if (this.step3_data_final.length > 0 && this.step3_data_final !== undefined) {
       final_dataset_to_save.OPConfig_OUTPUTDTL = this.step2_final_dataset_to_save;
       // populate routing data array - start
+
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
 
-        let model_temp_data = [];
-        model_temp_data.push({
+     //   let model_temp_data = [];
+        final_dataset_to_save.routing_model.push({
           DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
           OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
           OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
@@ -2577,9 +2580,9 @@ export class OutputComponent implements OnInit {
           ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
         });
 
-        let temp_model_feature_list_arr  = [];
+       // let temp_model_feature_list_arr  = [];
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
-          temp_model_feature_list_arr.push({
+          final_dataset_to_save.routing_model_feature_data.push({
             ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
             ITEMCODEGENREF:step3_temp_row.ModelHeaderData[f_indexx].ITEMCODEGENREF,
             MODELTEMPLATEITEM:step3_temp_row.ModelHeaderData[f_indexx].MODELTEMPLATEITEM,
@@ -2602,9 +2605,9 @@ export class OutputComponent implements OnInit {
           });
         }
 
-        let user_select_temp_arr = [];
+      //  let user_select_temp_arr = [];
         for (let us_indexx = 0; us_indexx < step3_temp_row.feature.length; us_indexx++) {
-          user_select_temp_arr.push({
+          final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
             Description: step3_temp_row.feature[us_indexx].Description,
             FeatureId: step3_temp_row.feature[us_indexx].FeatureId,
@@ -2629,11 +2632,11 @@ export class OutputComponent implements OnInit {
         }
 
 
-        final_dataset_to_save.routing_data.push({
+        /* final_dataset_to_save.routing_data.push({
           model: model_temp_data,
           model_feature_list: temp_model_feature_list_arr,
           user_selection: user_select_temp_arr
-        });
+        }); */
       }
       // populate routing data array - end
     }
