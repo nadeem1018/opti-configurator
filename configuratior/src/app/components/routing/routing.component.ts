@@ -272,6 +272,11 @@ export class RoutingComponent implements OnInit {
                   count_point_operation_disabled = true;
                 }
 
+                let inc_lead_time_calc = false;
+                if (data_detail.OPTM_INC_LEAD_TIM_CAL == 'Y' || data_detail.OPTM_INC_LEAD_TIM_CAL == 'y') {
+                  inc_lead_time_calc = true;
+                }
+
                 this.routing_detail_data.push({
                   optm_id: data_detail.OPTM_ID,
                   lineno: data_detail.OPTM_LINE_NO,
@@ -302,6 +307,7 @@ export class RoutingComponent implements OnInit {
                   count_point_operation_disabled: count_point_operation_disabled,
                   unique_key: data_detail.OPTM_UNIQUE_KEY,
                   oper_consumption_method: data_detail.OPTM_OPER_CONSUM_METHOD,
+                  inc_lead_time_calc: inc_lead_time_calc,
                   oper_consumption_method_str: this.commonData.res_consumption_method[data_detail.OPTM_OPER_CONSUM_METHOD],
                 });
 
@@ -849,6 +855,7 @@ export class RoutingComponent implements OnInit {
                 isTypeDisabled: true,
                 showOperationbtn: false,
                 count_point_operation_disabled: false,
+                inc_lead_time_calc: false,
                 isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
@@ -957,6 +964,7 @@ export class RoutingComponent implements OnInit {
                 isTypeDisabled: true,
                 showOperationbtn: false,
                 count_point_operation_disabled: false,
+                inc_lead_time_calc: false,
                 isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
@@ -1429,6 +1437,7 @@ export class RoutingComponent implements OnInit {
       showOperationbtn: true,
       isOpenApplicableVisible: false,
       count_point_operation_disabled: false,
+      inc_lead_time_calc : false,
       unique_key: this.commonData.random_string(55)
     };
 
@@ -1687,6 +1696,10 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[currentrow].effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
     }
 
+    if (grid_element == 'inc_lead_time_calc') {
+      this.routing_detail_data[currentrow].inc_lead_time_calc = value;
+    }
+
     if (grid_element == 'queue_time') {
 
       this.routing_detail_data[currentrow].queue_time = this.format_time_in_hh_mm(value);
@@ -1694,10 +1707,6 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'move_time') {
       this.routing_detail_data[currentrow].move_time = this.format_time_in_hh_mm(value);
-    }
-
-    if (grid_element == 'qc_time') {
-      this.routing_detail_data[currentrow].qc_time = this.format_time_in_hh_mm(value);
     }
 
     if (grid_element == 'time_uom') {
@@ -1852,6 +1861,13 @@ export class RoutingComponent implements OnInit {
         } else {
           oper_arr_data.operation_top_level = 'N';
           oper_arr_data.oper_top_level = 'N';
+        }
+
+        
+        if (oper_arr_data.inc_lead_time_calc == true) {
+          oper_arr_data.inc_lead_time_calc = 'Y';
+        } else {
+          oper_arr_data.inc_lead_time_calc = 'N';
         }
 
         /* if (oper_arr_data.oper_type == true) {

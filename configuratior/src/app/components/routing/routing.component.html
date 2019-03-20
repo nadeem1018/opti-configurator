@@ -504,6 +504,17 @@
                       (afterPickerClosed)="on_input_change(gridEffectiveDate.value, dataItem.rowindex, 'effective_date')"></owl-date-time>
                   </ng-template>
                 </kendo-grid-column>
+                <kendo-grid-column field="inc_lead_time_calc" title="{{language.inc_lead_time_calc}}" [width]="100" [minResizableWidth]="100">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input inc_lead_time_calc_checkbox" name="inc_lead_time_calc_{{dataItem.rowindex}}" id="inc_lead_time_calc_{{dataItem.rowindex}}"
+                        value={{dataItem.inc_lead_time_calc}} (change)="on_input_change(inc_lead_time_calc.checked,dataItem.rowindex, 'inc_lead_time_calc')"
+                        #inc_lead_time_calc [(checked)]=dataItem.inc_lead_time_calc title="{{dataItem.inc_lead_time_calc}}" style="position: relative;margin-top: 5px;"
+                        [disabled]="dataItem.opn_application == false" />
+                      <label class="custom-control-label" for="inc_lead_time_calc_{{dataItem.rowindex}}"></label>
+                    </div>
+                  </ng-template>
+                </kendo-grid-column>
                 <kendo-grid-column field="queue_time" title="{{language.queue_time}}" filter="text" [width]="140"
                   [minResizableWidth]="140">
                   <ng-template kendoGridCellTemplate let-dataItem>
