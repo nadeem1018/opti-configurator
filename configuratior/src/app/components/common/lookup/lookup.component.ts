@@ -503,6 +503,9 @@ export class LookupComponent implements OnInit {
             this.resourceServiceData[i].resource_code = lookup_key.ResCode;
             this.resourceServiceData[i].resource_name = lookup_key.Name;
             this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+            this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+            this.resourceServiceData[i].DCNum = lookup_key.DCNum; 
+            
             this.resourceServiceData[i].resource_consumption = '1';
             this.resourceServiceData[i].resource_inverse = '0';
             this.resourceServiceData[i].no_resource_used = '1';
@@ -1423,6 +1426,9 @@ export class LookupComponent implements OnInit {
             this.resourceServiceData.push({
               lineno: this.resource_counter,
               rowindex: this.resource_counter,
+              ChrgBasis:this.serviceData.oper_res[inx].ChrgBasis,
+              DCNum:this.serviceData.oper_res[inx].DCNum,
+              LineID:this.serviceData.oper_res[inx].LineID,
               operation_no: this.serviceData.oper_res[inx].OPRCode,
               oper_type: this.serviceData.oper_res[inx].oper_type,
               oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
@@ -1439,7 +1445,7 @@ export class LookupComponent implements OnInit {
               resource_consumption_type: '1',
               basis: basis,
               is_basis_disabled: is_basis_disabled,
-              schedule: false,
+              schedule: this.serviceData.oper_res[inx].schedule,
               is_resource_disabled: true,
               unique_key: this.serviceData.unique_key
             });
@@ -1484,9 +1490,9 @@ export class LookupComponent implements OnInit {
       resource_name: '',
       resource_uom: '',
       resource_type: '',
-      resource_consumption: "1",
+      resource_consumption: parseFloat("1").toFixed(3),
       resource_inverse: "0",
-      no_resource_used: "1",
+      no_resource_used: parseFloat("1").toFixed(3),
       time_uom: '',
       time_consumption: "0",
       time_inverse: "0",
@@ -1496,7 +1502,6 @@ export class LookupComponent implements OnInit {
       schedule: false,
       is_resource_disabled: true,
       unique_key: this.serviceData.unique_key
-
     });
   }
 

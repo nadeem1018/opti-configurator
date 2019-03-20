@@ -2564,7 +2564,6 @@ export class OutputComponent implements OnInit {
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
 
-     //   let model_temp_data = [];
         final_dataset_to_save.routing_model.push({
           DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
           OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
@@ -2580,7 +2579,7 @@ export class OutputComponent implements OnInit {
           ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
         });
 
-       // let temp_model_feature_list_arr  = [];
+       
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
           final_dataset_to_save.routing_model_feature_data.push({
             ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
@@ -2605,7 +2604,7 @@ export class OutputComponent implements OnInit {
           });
         }
 
-      //  let user_select_temp_arr = [];
+      
         for (let us_indexx = 0; us_indexx < step3_temp_row.feature.length; us_indexx++) {
           final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
@@ -2631,12 +2630,6 @@ export class OutputComponent implements OnInit {
           });
         }
 
-
-        /* final_dataset_to_save.routing_data.push({
-          model: model_temp_data,
-          model_feature_list: temp_model_feature_list_arr,
-          user_selection: user_select_temp_arr
-        }); */
       }
       // populate routing data array - end
     }

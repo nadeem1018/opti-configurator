@@ -319,6 +319,11 @@ export class RoutingComponent implements OnInit {
                         this.routing_detail_resource_data[(data_detail.OPTM_LINE_NO - 1)] = [];
                       }
 
+                      let let_res_schedule = false;
+                      if (data_detail.OPTM_SCHEDULE == '1' || data_detail.OPTM_SCHEDULE == 1) {
+                        let_res_schedule = true;
+                      }
+
                       temp_array.push({
                         optm_id: data_resource_detailddd.OPTM_ID,
                         lineno: data_resource_detailddd.OPTM_LINE_ID,
@@ -336,7 +341,7 @@ export class RoutingComponent implements OnInit {
                         TimeInv: data_resource_detailddd.OPTM_RINVERSE,
                         resource_consumption_type: data_resource_detailddd.OPTM_CONSTYPE,
                         basis: data_resource_detailddd.OPTM_BASIS,
-                        schedule: false,
+                        schedule: let_res_schedule,
                         is_resource_disabled: true,
                         unique_key: data_resource_detailddd.OPTM_UNIQUE_KEY,
                       });
@@ -520,12 +525,22 @@ export class RoutingComponent implements OnInit {
 
     if (this.lookupfor == "routing_resource_lookup") {
       let temp_array = [];
+      let pollcounter = 1;
       for (let i = 0; i < $event.length; ++i) {
         console.log("$event[i] ", $event[i]);
         if ($event[i].resource_code != undefined) {
+          let Lineid;
+          if ($event[i].LineID == undefined || $event[i].LineID == ''){
+            Lineid = pollcounter;
+          } else {
+            Lineid = $event[i].LineID;
+          }
           temp_array.push({
-            lineno: i + 1,
-            rowindex: i + 1,
+            lineno: pollcounter,
+            rowindex: pollcounter,
+            ChrgBasis: $event[i].ChrgBasis,
+            DCNum: $event[i].DCNum,
+            LineID: Lineid,
             OPRCode: $event[i].operation_no,
             ResCode: $event[i].resource_code,
             ResName: $event[i].resource_name,
@@ -544,6 +559,7 @@ export class RoutingComponent implements OnInit {
             unique_key: $event[i].unique_key,
           });
         }
+        pollcounter++;
       }
       console.log("temp_array- ", temp_array);
       if (temp_array.length > 0) {
@@ -1222,9 +1238,9 @@ export class RoutingComponent implements OnInit {
             data[i].TimeUOM = data[i].TimeUOM,
             data[i].TimeCons = (data[i].TimeCons).toString(),
             data[i].TimeInv = (data[i].TimeInv).toString(),
-            data[i].resource_consumption_type = '1';
-            data[i].basis = '1';
-            data[i].schedule = false;
+            data[i].resource_consumption_type = data[i].resource_consumption_type;
+            data[i].basis = data[i].ChrgBasis;
+            data[i].schedule = false,
             data[i].oper_consumption_method = oper_consumption_type;
             data[i].oper_type = oper_type;
             operData.push(data[i]);
@@ -1744,7 +1760,7 @@ export class RoutingComponent implements OnInit {
       }
     }
 
-    if(this.routing_header_data.routing_for == 'model'){
+    if (this.routing_header_data.routing_for == 'model') {
       if (this.routing_header_data.opm_num_format == '' || this.routing_header_data.opm_num_format == null || this.routing_header_data.opm_num_format == undefined) {
         this.toastr.error('', this.language.opn_num_format_blank, this.commonData.toast_config);
         return;
@@ -1858,9 +1874,10 @@ export class RoutingComponent implements OnInit {
         if (this.routing_detail_resource_data[resi] !== undefined && this.routing_detail_resource_data[resi] !== "") {
           let res_arr_data = this.routing_detail_resource_data[resi];
           for (let resd = 0; resd < res_arr_data.length; resd++) {
-            res_arr_data[resd].schedule = 0;
             if (res_arr_data[resd].schedule == true) {
               res_arr_data[resd].schedule = 1;
+            } else {
+              res_arr_data[resd].schedule = 0;
             }
             routing_detail_res_tmp_arr.push(res_arr_data[resd]);
           }
