@@ -314,13 +314,13 @@ export class RoutingComponent implements OnInit {
                     let temp_array = [];
                     for (let dr_dtli = 0; dr_dtli < data_resource_detail.length; dr_dtli++) {
                       let data_resource_detailddd = data_resource_detail[dr_dtli];
-
+                  
                       if (this.routing_detail_resource_data[(data_detail.OPTM_LINE_NO - 1)] == undefined || this.routing_detail_resource_data[(data_detail.OPTM_LINE_NO - 1)].length == 0) {
                         this.routing_detail_resource_data[(data_detail.OPTM_LINE_NO - 1)] = [];
                       }
 
                       let let_res_schedule = false;
-                      if (data_detail.OPTM_SCHEDULE == '1' || data_detail.OPTM_SCHEDULE == 1) {
+                      if (data_resource_detailddd.OPTM_SCHEDULE == '1' || data_resource_detailddd.OPTM_SCHEDULE == 1) {
                         let_res_schedule = true;
                       }
 
@@ -530,7 +530,7 @@ export class RoutingComponent implements OnInit {
         console.log("$event[i] ", $event[i]);
         if ($event[i].resource_code != undefined) {
           let Lineid;
-          if ($event[i].LineID == undefined || $event[i].LineID == ''){
+          if ($event[i].LineID == undefined || $event[i].LineID == '') {
             Lineid = pollcounter;
           } else {
             Lineid = $event[i].LineID;
@@ -554,7 +554,7 @@ export class RoutingComponent implements OnInit {
             TimeInv: ($event[i].time_inverse).toString(),
             resource_consumption_type: '1',
             basis: '1',
-            schedule: false,
+            schedule: ($event[i].schedule),
             is_resource_disabled: true,
             unique_key: $event[i].unique_key,
           });
@@ -1218,32 +1218,47 @@ export class RoutingComponent implements OnInit {
 
         if (data.length > 0) {
           let operData = [];
-          let localhcounter;
+          let localhcounter =1;
+          let basis = '1';
+          let is_basis_disabled = false;
+          if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
+            basis = '4';
+            is_basis_disabled = true;
+          }
+
+          if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
+            basis = '1';
+            is_basis_disabled = false;
+          }
+
+          if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
+            basis = '1';
+            is_basis_disabled = false;
+          }
           for (let i = 0; i < data.length; ++i) {
-            localhcounter = 0;
-            if (this.routing_detail_resource_data.length > 0) {
-              localhcounter = this.routing_detail_resource_data.length
-            }
-            localhcounter++;
+           
+            
             data[i].lineno = localhcounter;
             data[i].rowindex = localhcounter;
             data[i].unique_key = operation_line_unique_key;
             data[i].ResCode = data[i].ResCode,
-            data[i].ResName = data[i].ResName,
-            data[i].ResType = data[i].ResType,
-            data[i].ResUOM = data[i].ResUOM,
-            data[i].ResCons = (data[i].ResCons).toString(),
-            data[i].ResInv = (data[i].ResInv).toString(),
-            data[i].ResUsed = data[i].ResUsed,
-            data[i].TimeUOM = data[i].TimeUOM,
-            data[i].TimeCons = (data[i].TimeCons).toString(),
-            data[i].TimeInv = (data[i].TimeInv).toString(),
-            data[i].resource_consumption_type = data[i].resource_consumption_type;
+              data[i].ResName = data[i].ResName,
+              data[i].ResType = data[i].ResType,
+              data[i].ResUOM = data[i].ResUOM,
+              data[i].ResCons = (data[i].ResCons).toString(),
+              data[i].ResInv = (data[i].ResInv).toString(),
+              data[i].ResUsed = data[i].ResUsed,
+              data[i].TimeUOM = data[i].TimeUOM,
+              data[i].TimeCons = (data[i].TimeCons).toString(),
+              data[i].TimeInv = (data[i].TimeInv).toString(),
+              data[i].resource_consumption_type = 1;
             data[i].basis = data[i].ChrgBasis;
             data[i].schedule = false,
-            data[i].oper_consumption_method = oper_consumption_type;
+              data[i].oper_consumption_method = oper_consumption_type;
             data[i].oper_type = oper_type;
+            
             operData.push(data[i]);
+            localhcounter++;
           }
           this.routing_detail_resource_data[rowindex] = operData;
         }
@@ -1829,10 +1844,14 @@ export class RoutingComponent implements OnInit {
     if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
       for (let resOper = 0; resOper < this.routing_detail_data.length; resOper++) {
         let oper_arr_data = this.routing_detail_data[resOper];
-        if (oper_arr_data.operation_top_level == true) {
+        console.log("oper_arr_data", oper_arr_data);
+
+        if (oper_arr_data.operation_top_level == true || oper_arr_data.oper_top_level == true) {
           oper_arr_data.operation_top_level = 'Y';
+          oper_arr_data.oper_top_level = 'Y';
         } else {
           oper_arr_data.operation_top_level = 'N';
+          oper_arr_data.oper_top_level = 'N';
         }
 
         /* if (oper_arr_data.oper_type == true) {

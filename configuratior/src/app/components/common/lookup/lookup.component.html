@@ -389,7 +389,7 @@
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" class="custom-control-input" id="schedule_{{dataItem.rowindex}}"
-                                        value={{dataItem.schedule}} (change)="on_input_change(schedule,dataItem.rowindex, 'schedule')"
+                                        value={{dataItem.schedule}} (change)="on_input_change(schedule.checked,dataItem.rowindex, 'schedule')"
                                         #schedule [(checked)]=dataItem.schedule title="{{dataItem.schedule}}" style="position: relative;margin-top: 5px;" />
                                     <label class="custom-control-label" for="schedule_{{dataItem.rowindex}}"></label>
                                 </div>

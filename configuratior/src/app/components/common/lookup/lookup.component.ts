@@ -504,8 +504,8 @@ export class LookupComponent implements OnInit {
             this.resourceServiceData[i].resource_name = lookup_key.Name;
             this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
             this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
-            this.resourceServiceData[i].DCNum = lookup_key.DCNum; 
-            
+            this.resourceServiceData[i].DCNum = lookup_key.DCNum;
+
             this.resourceServiceData[i].resource_consumption = '1';
             this.resourceServiceData[i].resource_inverse = '0';
             this.resourceServiceData[i].no_resource_used = '1';
@@ -1426,9 +1426,9 @@ export class LookupComponent implements OnInit {
             this.resourceServiceData.push({
               lineno: this.resource_counter,
               rowindex: this.resource_counter,
-              ChrgBasis:this.serviceData.oper_res[inx].ChrgBasis,
-              DCNum:this.serviceData.oper_res[inx].DCNum,
-              LineID:this.serviceData.oper_res[inx].LineID,
+              ChrgBasis: this.serviceData.oper_res[inx].ChrgBasis,
+              DCNum: this.serviceData.oper_res[inx].DCNum,
+              LineID: this.serviceData.oper_res[inx].LineID,
               operation_no: this.serviceData.oper_res[inx].OPRCode,
               oper_type: this.serviceData.oper_res[inx].oper_type,
               oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
@@ -1492,7 +1492,7 @@ export class LookupComponent implements OnInit {
       resource_type: '',
       resource_consumption: parseFloat("1").toFixed(3),
       resource_inverse: "0",
-      no_resource_used: parseFloat("1").toFixed(3),
+      no_resource_used: parseInt("1"),
       time_uom: '',
       time_consumption: "0",
       time_inverse: "0",
@@ -1696,27 +1696,27 @@ export class LookupComponent implements OnInit {
     }
 
     if (grid_element == 'time_uom') {
-
+      this.resourceServiceData[currentrow].time_uom = (value);
     }
 
     if (grid_element == 'time_consumption') {
-
+      this.resourceServiceData[currentrow].time_consumption = (value);
     }
 
     if (grid_element == 'time_inverse') {
-
+      this.resourceServiceData[currentrow].time_inverse = (value);
     }
 
     if (grid_element == 'resource_consumption_type') {
-
+      this.resourceServiceData[currentrow].resource_consumption_type = (value);
     }
 
     if (grid_element == 'resource_basic') {
-
+      this.resourceServiceData[currentrow].resource_basic = (value);
     }
 
     if (grid_element == 'schedule') {
-
+      this.resourceServiceData[currentrow].schedule = (value);
     }
   }
 
