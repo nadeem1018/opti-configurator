@@ -759,6 +759,7 @@ a.common_grid_link {
   display: flex !important;
   align-items: center;
 }
+
 .k-dialog-wrapper{
   min-height:100vh
 }
