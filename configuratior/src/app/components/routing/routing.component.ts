@@ -460,7 +460,7 @@ export class RoutingComponent implements OnInit {
     $('#' + input_id).val(value);
   }
 
-  ClearOperLineOnWarehouse(){
+  ClearOperLineOnWarehouse() {
     if (this.routing_detail_data.length > 0) {
       for (let lookup_change_index = 0; lookup_change_index < this.routing_detail_data.length; lookup_change_index++) {
         this.routing_detail_data[lookup_change_index].oper_id = '';
@@ -509,21 +509,6 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
       this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
       this.routing_detail_data[this.current_grid_action_row].auto_move = false;
-
-      if (this.current_grid_action_row == 0 && $event[2] == '4') {
-        this.clearInvalidOperationData(this.current_grid_action_row);
-        this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
-        return;
-      }
-
-      let lastRowIndex = (this.routing_detail_data.length - 1);
-      if (lastRowIndex == this.current_grid_action_row) { // last row 
-        if ($event[2] == '1') {
-          this.clearInvalidOperationData(this.current_grid_action_row);
-          this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
-          return;
-        }
-      }
 
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
       this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
@@ -609,8 +594,42 @@ export class RoutingComponent implements OnInit {
     console.log("this.routing_detail_resource_data - ", this.routing_detail_resource_data);
   }
 
-  resequence_operation() {
+  resequence_operation(type) {  // type = 1 : up & type = 2 : down
+    let current_row_line_no = this.current_selected_row.rowindex;
+    let current_row_index = this.current_selected_row.rowindex - 1;
+    let next_row_index = current_row_index + 1;
+    let prev_row_index = current_row_index - 1;
+    console.log('current row ', this.current_selected_row);
+    console.log('routing_detail_data row ', this.routing_detail_data);
+    console.log('routing_detail_data row ', this.routing_detail_data);
+    if (type == '1') {
+      if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
+        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex - 1;
+        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno - 1;
 
+        this.routing_detail_data[prev_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex + 1;
+        this.routing_detail_data[prev_row_index].lineno = this.routing_detail_data[prev_row_index].lineno + 1;
+
+        var temp_swap = this.routing_detail_data[current_row_index];
+        this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
+        this.routing_detail_data[prev_row_index] = temp_swap;
+        this.current_selected_row = this.routing_detail_data[prev_row_index];
+      }
+    } else if (type == '2') {
+      if (this.routing_detail_data[next_row_index] != undefined){ // && this.routing_detail_data[next_row_index].length > 0
+        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex + 1;
+        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno + 1;
+
+        this.routing_detail_data[next_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex - 1;
+        this.routing_detail_data[next_row_index].lineno = this.routing_detail_data[next_row_index].lineno - 1;
+        
+        var temp_swap = this.routing_detail_data[current_row_index];
+        this.routing_detail_data[current_row_index] = this.routing_detail_data[next_row_index];
+        this.routing_detail_data[next_row_index] = temp_swap;
+        this.current_selected_row = this.routing_detail_data[next_row_index];
+      }
+
+    }
   }
 
   getSelectedRowDetail(event) {
@@ -1413,8 +1432,6 @@ export class RoutingComponent implements OnInit {
     if (type == 'add') {
       this.current_selected_row = [];
       this.row_selection = [];
-    } else {
-      this.current_selected_row
     }
 
     let current_row_index = 0;
@@ -1428,7 +1445,6 @@ export class RoutingComponent implements OnInit {
           this.routing_detail_data[i].lineno = this.routing_detail_data[i].lineno + 1;
         }
       }
-
     }
 
 
@@ -1499,6 +1515,7 @@ export class RoutingComponent implements OnInit {
     this.routing_detail_data[currentrow].oper_desc = "";
     this.routing_detail_data[currentrow].oper_type = "";
     this.routing_detail_data[currentrow].oper_consumption_method = "";
+    this.routing_detail_data[currentrow].oper_consumption_method_str = "";
     this.routing_detail_data[currentrow].count_point_operation = false;
     this.routing_detail_data[currentrow].count_point_operation_disabled = false;
     $(".row_oper_id").eq(currentrow).val("");
@@ -1550,22 +1567,7 @@ export class RoutingComponent implements OnInit {
             }
 
             if (data.length > 0) {
-              if (currentrow == 0 && data[0].OPRType == '4') {
-                this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
-                this.clearInvalidOperationData(currentrow);
-                this.showLookupLoader = false;
-                return;
-              }
 
-              let lastRowIndex = (this.routing_detail_data.length - 1);
-              if (lastRowIndex == currentrow) { // last row 
-                if (data[0].OPRType == '1') {
-                  this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
-                  this.clearInvalidOperationData(currentrow);
-                  this.showLookupLoader = false;
-                  return;
-                }
-              }
 
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
               this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
@@ -1809,6 +1811,33 @@ export class RoutingComponent implements OnInit {
             this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
             return;
           }
+        }
+      }
+    }
+
+    // validate Grid line for operation setup type & inspection QC type 
+    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+      let tmp_dtl_tble = this.routing_detail_data.filter(function (obj) {
+        return (obj.oper_code != "" && obj.oper_code != undefined) ? obj : "";
+      });
+      if (tmp_dtl_tble.length > 0) {
+        let temp__dtl_line_counter = 0;
+        for (let temp_index_line = 0; temp_index_line < tmp_dtl_tble.length; temp_index_line++) {
+          if (temp__dtl_line_counter == 0 && tmp_dtl_tble[temp_index_line].oper_type == '4') {
+            this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
+            //  this.clearInvalidOperationData(temp__dtl_line_counter);
+            return;
+          }
+
+          let lastRowIndex = (tmp_dtl_tble.length - 1);
+          if (lastRowIndex == temp__dtl_line_counter) { // last row 
+            if (tmp_dtl_tble[temp_index_line].oper_type == '1') {
+              this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+              //  this.clearInvalidOperationData(temp__dtl_line_counter);
+              return;
+            }
+          }
+          temp__dtl_line_counter++;
         }
       }
     }
