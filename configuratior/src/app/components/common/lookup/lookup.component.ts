@@ -1422,6 +1422,10 @@ export class LookupComponent implements OnInit {
           }
 
           this.resource_counter++;
+          var res_consum_type  = 1; 
+          if (this.serviceData.oper_res[inx].resource_consumption_type != undefined && this.serviceData.oper_res[inx].resource_consumption_type!= ""){
+            res_consum_type = this.serviceData.oper_res[inx].resource_consumption_type;
+          }
           if (this.serviceData.oper_res[inx].OPRCode != undefined) {
             this.resourceServiceData.push({
               lineno: this.resource_counter,
@@ -1442,7 +1446,7 @@ export class LookupComponent implements OnInit {
               time_uom: this.serviceData.oper_res[inx].TimeUOM,
               time_consumption: parseFloat(this.serviceData.oper_res[inx].TimeCons).toFixed(3),
               time_inverse: parseFloat(this.serviceData.oper_res[inx].TimeInv).toFixed(3),
-              resource_consumption_type: '1',
+              resource_consumption_type: res_consum_type,
               basis: basis,
               is_basis_disabled: is_basis_disabled,
               schedule: this.serviceData.oper_res[inx].schedule,
@@ -1491,11 +1495,11 @@ export class LookupComponent implements OnInit {
       resource_uom: '',
       resource_type: '',
       resource_consumption: parseFloat("1").toFixed(3),
-      resource_inverse: "0",
+      resource_inverse: parseFloat("0").toFixed(3),
       no_resource_used: parseInt("1"),
       time_uom: '',
-      time_consumption: "0",
-      time_inverse: "0",
+      time_consumption: parseFloat("0").toFixed(3),
+      time_inverse: parseFloat("0").toFixed(3),
       resource_consumption_type: '1',
       basis: '1',
       is_basis_disabled: false,
@@ -1608,23 +1612,29 @@ export class LookupComponent implements OnInit {
       this.resourceServiceData[currentrow].resource_consumption = parseFloat(value).toFixed(3);;
       $('.row_resource_consumption').eq(currentrow).val(parseFloat(value).toFixed(3));
 
-      this.rs.getResConversionInverse('consumption', value, this.resourceServiceData[currentrow].resource_code).subscribe(
-        data => {
-          console.log(data);
-          if (data != undefined) {
-            if (data.length > 0) {
-              this.resourceServiceData[currentrow].resource_inverse = parseFloat(data[0].Inverse).toFixed(3);
-              this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
-              this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
-              this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+      if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
+        this.rs.getResConversionInverse('consumption', value, this.resourceServiceData[currentrow].resource_code).subscribe(
+          data => {
+            console.log(data);
+            if (data != undefined) {
+              if (data.length > 0) {
+                this.resourceServiceData[currentrow].resource_inverse = parseFloat(data[0].Inverse).toFixed(3);
+                this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
+                this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
+                this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+              }
+            } error => {
+              this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
             }
-          } error => {
-            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          }, error => {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           }
-        }, error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        }
-      )
+        )
+
+      } else {
+        this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
+        this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
+      }
 
     }
 
@@ -1647,23 +1657,29 @@ export class LookupComponent implements OnInit {
       }
       this.resourceServiceData[currentrow].resource_inverse = parseFloat(value).toFixed(3);
       $('.row_resource_inverse').eq(currentrow).val(parseFloat(value).toFixed(3));
-      this.rs.getResConversionInverse('inverse', value, this.resourceServiceData[currentrow].resource_code).subscribe(
-        data => {
-          console.log(data);
-          if (data != undefined) {
-            if (data.length > 0) {
-              this.resourceServiceData[currentrow].resource_consumption = parseFloat(data[0].Consumption).toFixed(3);
-              this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
-              this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
-              this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+      if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
+
+        this.rs.getResConversionInverse('inverse', value, this.resourceServiceData[currentrow].resource_code).subscribe(
+          data => {
+            console.log(data);
+            if (data != undefined) {
+              if (data.length > 0) {
+                this.resourceServiceData[currentrow].resource_consumption = parseFloat(data[0].Consumption).toFixed(3);
+                this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
+                this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
+                this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+              }
+            } error => {
+              this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
             }
-          } error => {
-            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+          }, error => {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           }
-        }, error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        }
-      )
+        )
+      } else {
+        this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
+        this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
+      }
 
 
     }
@@ -1700,11 +1716,11 @@ export class LookupComponent implements OnInit {
     }
 
     if (grid_element == 'time_consumption') {
-      this.resourceServiceData[currentrow].time_consumption = (value);
+      this.resourceServiceData[currentrow].time_consumption = parseFloat(value).toFixed(3);
     }
 
     if (grid_element == 'time_inverse') {
-      this.resourceServiceData[currentrow].time_inverse = (value);
+      this.resourceServiceData[currentrow].time_inverse = parseFloat(value).toFixed(3);
     }
 
     if (grid_element == 'resource_consumption_type') {

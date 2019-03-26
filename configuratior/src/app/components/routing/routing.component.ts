@@ -339,17 +339,18 @@ export class RoutingComponent implements OnInit {
                         ResName: data_resource_detailddd.OPTM_RESONAME,
                         ResType: '',
                         ResUOM: data_resource_detailddd.OPTM_UOM,
-                        ResCons: data_resource_detailddd.OPTM_CONSUMPTION,
-                        ResInv: data_resource_detailddd.OPTM_INVERSE,
+                        ResCons: (data_resource_detailddd.OPTM_CONSUMPTION).toString(),
+                        ResInv: (data_resource_detailddd.OPTM_INVERSE).toString(),
                         ResUsed: data_resource_detailddd.OPTM_NOF_RESO_USED,
                         TimeUOM: data_resource_detailddd.OPTM_TIMEUOM,
-                        TimeCons: data_resource_detailddd.OPTM_CONSU,
-                        TimeInv: data_resource_detailddd.OPTM_RINVERSE,
+                        TimeCons: (data_resource_detailddd.OPTM_CONSU).toString(),
+                        TimeInv: (data_resource_detailddd.OPTM_RINVERSE).toString(),
                         resource_consumption_type: data_resource_detailddd.OPTM_CONSTYPE,
                         basis: data_resource_detailddd.OPTM_BASIS,
                         schedule: let_res_schedule,
                         is_resource_disabled: true,
                         unique_key: data_resource_detailddd.OPTM_UNIQUE_KEY,
+                        oper_consumption_method: data_detail.OPTM_OPER_CONSUM_METHOD
                       });
 
                       this.routing_detail_resource_data[(data_detail.OPTM_LINE_NO - 1)] = temp_array;
@@ -558,8 +559,8 @@ export class RoutingComponent implements OnInit {
             TimeUOM: $event[i].time_uom,
             TimeCons: ($event[i].time_consumption).toString(),
             TimeInv: ($event[i].time_inverse).toString(),
-            resource_consumption_type: '1',
-            basis: '1',
+            resource_consumption_type: $event[i].resource_consumption_type,
+            basis: $event[i].resource_basic,
             schedule: ($event[i].schedule),
             is_resource_disabled: true,
             unique_key: $event[i].unique_key,

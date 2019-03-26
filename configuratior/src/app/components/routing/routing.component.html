@@ -303,14 +303,14 @@
               <i class="fa fa-plus"></i> {{language.add_oper}}
             </a>
           </div>
-          <div class="mr-3" *ngIf="show_resequence_btn">
-            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.resequence}} " (click)="resequence_operation()">
-              <i class="fa fa-bars"></i> {{language.resequence}}
-            </a>
-          </div>
           <div class="mr-3" *ngIf="show_resource_btn" [hidden]="routing_detail_data.length  == 0">
             <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.resource}} " (click)="open_operation_resources(true)">
               <i class="fa fa-tasks"></i> {{language.resource}}
+            </a>
+          </div>
+           <div class="mr-3" *ngIf="show_resequence_btn">
+            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.resequence}} " (click)="resequence_operation()">
+              <i class="fa fa-bars"></i> {{language.resequence}}
             </a>
           </div>
         </div>
