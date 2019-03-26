@@ -460,7 +460,27 @@ export class RoutingComponent implements OnInit {
     $('#' + input_id).val(value);
   }
 
-
+  ClearOperLineOnWarehouse(){
+    if (this.routing_detail_data.length > 0) {
+      for (let lookup_change_index = 0; lookup_change_index < this.routing_detail_data.length; lookup_change_index++) {
+        this.routing_detail_data[lookup_change_index].oper_id = '';
+        this.routing_detail_data[lookup_change_index].oper_code = '';
+        this.routing_detail_data[lookup_change_index].oper_desc = '';
+        this.routing_detail_data[lookup_change_index].oper_type = '';
+        this.routing_detail_data[lookup_change_index].oper_consumption_method = '';
+        this.routing_detail_data[lookup_change_index].oper_consumption_method_str = '';
+        this.routing_detail_data[lookup_change_index].wc_id = '';
+        this.routing_detail_data[lookup_change_index].wc_code = '';
+        this.routing_detail_data[lookup_change_index].mtq = '1';
+        this.routing_detail_data[lookup_change_index].count_point_operation = false;
+        this.routing_detail_data[lookup_change_index].auto_move = false;
+        this.routing_detail_data[lookup_change_index].queue_time = '00:00';
+        this.routing_detail_data[lookup_change_index].move_time = '00:00';
+        this.routing_detail_data[lookup_change_index].qc_time = '00:00';
+        this.routing_detail_data[lookup_change_index].time_uom = '1';
+      }
+    }
+  }
 
   getLookupValue($event) {
 
@@ -482,25 +502,7 @@ export class RoutingComponent implements OnInit {
     if (this.lookupfor == 'warehouse_lookup') {
       this.routing_header_data.warehouse_id = $event[0];
       this.routing_header_data.warehouse_code = $event[0];
-      if (this.routing_detail_data.length > 0) {
-        for (let lookup_change_index = 0; lookup_change_index < this.routing_detail_data.length; lookup_change_index++) {
-          this.routing_detail_data[lookup_change_index].oper_id = '';
-          this.routing_detail_data[lookup_change_index].oper_code = '';
-          this.routing_detail_data[lookup_change_index].oper_desc = '';
-          this.routing_detail_data[lookup_change_index].oper_type = '';
-          this.routing_detail_data[lookup_change_index].oper_consumption_method = '';
-          this.routing_detail_data[lookup_change_index].oper_consumption_method_str = '';
-          this.routing_detail_data[lookup_change_index].wc_id = '';
-          this.routing_detail_data[lookup_change_index].wc_code = '';
-          this.routing_detail_data[lookup_change_index].mtq = '1';
-          this.routing_detail_data[lookup_change_index].count_point_operation = false;
-          this.routing_detail_data[lookup_change_index].auto_move = false;
-          this.routing_detail_data[lookup_change_index].queue_time = '00:00';
-          this.routing_detail_data[lookup_change_index].move_time = '00:00';
-          this.routing_detail_data[lookup_change_index].qc_time = '00:00';
-          this.routing_detail_data[lookup_change_index].time_uom = '1';
-        }
-      }
+      this.ClearOperLineOnWarehouse();
     }
 
     if (this.lookupfor == 'operation_lookup') {
@@ -529,6 +531,7 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
       this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
       this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
+      this.routing_detail_data[this.current_grid_action_row].mtq = $event[8];
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[7];
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[7]];
       let obj = this;
@@ -1052,6 +1055,7 @@ export class RoutingComponent implements OnInit {
 
   getWarehouseDetails(warehouse_code) {
     this.showLookupLoader = true;
+    this.ClearOperLineOnWarehouse();
     this.service.getWarehouseDetail(warehouse_code).subscribe(
       data => {
         console.log(data);
@@ -1527,6 +1531,9 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'oper_code') {
       this.showLookupLoader = true;
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+      this.routing_detail_data[this.current_grid_action_row].auto_move = false;
       this.service.getOperationDetail(value, 'detail', rowindex).subscribe(
         data => {
           console.log(data);
@@ -1569,6 +1576,7 @@ export class RoutingComponent implements OnInit {
               this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
               this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
               this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
+              this.routing_detail_data[currentrow].mtq = data[0].MTQ;
 
               this.routing_detail_data[currentrow].count_point_operation = false;
               this.routing_detail_data[currentrow].count_point_operation_disabled = false;
