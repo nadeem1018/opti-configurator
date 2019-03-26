@@ -754,12 +754,3 @@ a.common_grid_link {
 .opti_grid-table-outer .opti_pagelimit-container kendo-dropdownlist {
   max-width:100%;
 }
-
-.modal-open .modal[style*="display: block"] {
-  display: flex !important;
-  align-items: center;
-}
-
-.k-dialog-wrapper{
-  min-height:100vh
-}
