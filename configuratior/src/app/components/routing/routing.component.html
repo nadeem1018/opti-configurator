@@ -76,7 +76,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label" for="feature_description">{{language.description}}</label>
                   <div class="col-sm-6">
-                    <input type="text" name="feature_description" class="form-control  form-control-sm mt3" id="feature_description"
+                    <input type="text" name="feature_description" maxlength="50" class="form-control  form-control-sm mt3" id="feature_description"
                       placeholder="{{language.description}}" [(ngModel)]="routing_header_data.feature_description"
                       title="{{routing_header_data.description}}" tabindex="2" [disabled]="this.form_mode == 'edit'">
                   </div>
@@ -121,7 +121,7 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-6 col-form-label" for="modal_description">{{language.description}}</label>
                   <div class="col-sm-6">
-                    <input type="text" name="modal_description" class="form-control  form-control-sm mt3" id="modal_description"
+                    <input type="text" name="modal_description" maxlength="50" class="form-control  form-control-sm mt3" id="modal_description"
                       placeholder="{{language.description}}" [(ngModel)]="routing_header_data.modal_description" title="{{routing_header_data.description}}"
                       tabindex="2" [disabled]="this.form_mode == 'edit'">
                   </div>
