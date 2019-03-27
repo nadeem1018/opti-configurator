@@ -3058,8 +3058,8 @@ export class OutputComponent implements OnInit {
         "ModelHeaderData": this.ModelHeaderData,
         "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
         "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
-        "feature_discount_percent": feature_discount,
-        "accessory_discount_percent": accessory_discount,
+        "feature_discount_percent": (feature_discount).toFixed(3),
+        "accessory_discount_percent": (accessory_discount).toFixed(3),
         "accesory_final_price": (this.accessory_item_total).toFixed(3),
         "templateid": this.step2_data.templateid,
         "itemcodegenkey": this.step2_data.itemcodegenkey,
@@ -3083,8 +3083,8 @@ export class OutputComponent implements OnInit {
       this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
       this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
       this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"] = this.ModelBOMDataForSecondLevel;
-      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
-      this.step3_data_final[row_id]["accessory_discount_percent"] = accessory_discount;
+      this.step3_data_final[row_id]["feature_discount_percent"] = (feature_discount).toFixed(3);
+      this.step3_data_final[row_id]["accessory_discount_percent"] = (accessory_discount).toFixed(3);
       this.step3_data_final[row_id]["accesory_final_price"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["accessory_item_total"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["templateid"] = this.step2_data.templateid;
@@ -3106,7 +3106,7 @@ export class OutputComponent implements OnInit {
     this.validnextbtn = true;
     if (navigte == true && this.step3_data_final.length > 0) {
       $("#modelbom_next_click_id").trigger('click');
-      return;
+    return;
     }
 
     if (this.feature_itm_list_table.length == 0) {
@@ -3690,9 +3690,9 @@ export class OutputComponent implements OnInit {
             "OPTM_LEVEL": temp_step2_final_dataset_save[itempsavefinal].OPTM_LEVEL,
             "OPTM_QUANTITY": temp_step2_final_dataset_save[itempsavefinal].OPTM_QUANTITY,
             "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
-            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE),
-            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE),
-            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT),
+            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE).toFixed(3),
+            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE).toFixed(3),
+            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT).toFixed(3),
             "OPTM_CREATEDBY": this.common_output_data.usernameOPTM_CREATEDBY,
             "OPTM_MODIFIEDBY": this.common_output_data.usernameOPTM_MODIFIEDBY,
             "UNIQUEIDNT": temp_step2_final_dataset_save[itempsavefinal].UNIQUEIDNT,
