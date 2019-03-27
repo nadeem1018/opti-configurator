@@ -303,14 +303,19 @@
               <i class="fa fa-plus"></i> {{language.add_oper}}
             </a>
           </div>
-          <div class="mr-3" *ngIf="show_resequence_btn">
-            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.resequence}} " (click)="resequence_operation()">
-              <i class="fa fa-bars"></i> {{language.resequence}}
-            </a>
-          </div>
           <div class="mr-3" *ngIf="show_resource_btn" [hidden]="routing_detail_data.length  == 0">
             <a href="javascript:;" class="btn btn-outline-success btn-sm mt-1" title="{{language.resource}} " (click)="open_operation_resources(true)">
               <i class="fa fa-tasks"></i> {{language.resource}}
+            </a>
+          </div>
+           <div class="mr-3"  [hidden]="this.current_selected_row.length == 0">
+            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.move_oper_up}} " (click)="resequence_operation('1')">
+              <b><i class="fa fa-arrow-up"></i> </b>
+            </a>
+          </div>
+          <div class="mr-3"  [hidden]="this.current_selected_row.length == 0">
+            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.move_oper_down}} " (click)="resequence_operation('2')">
+              <b><i class="fa fa-arrow-down"></i></b> 
             </a>
           </div>
         </div>
@@ -358,7 +363,7 @@
                       </select>
                     </ng-container>
                     <ng-container *ngIf="dataItem.showOperationbtn == true">
-                      <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm" #selected_type
+                      <select [disabled]="dataItem.isTypeDisabled" class="form-control form-control-sm routing_disabled_selected" #selected_type
                         (change)="on_input_change(selected_type.value,dataItem.rowindex, 'selected_type')">
                         <option value="4">{{language.operation}}</option>
                       </select>
@@ -502,6 +507,17 @@
                     </div>
                     <owl-date-time #dt12 [pickerType]="'calendar'" [startAt]="dataItem.effective_date"
                       (afterPickerClosed)="on_input_change(gridEffectiveDate.value, dataItem.rowindex, 'effective_date')"></owl-date-time>
+                  </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="inc_lead_time_calc" title="{{language.inc_lead_time_calc}}" [width]="100" [minResizableWidth]="100">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input inc_lead_time_calc_checkbox" name="inc_lead_time_calc_{{dataItem.rowindex}}" id="inc_lead_time_calc_{{dataItem.rowindex}}"
+                        value={{dataItem.inc_lead_time_calc}} (change)="on_input_change(inc_lead_time_calc.checked,dataItem.rowindex, 'inc_lead_time_calc')"
+                        #inc_lead_time_calc [(checked)]=dataItem.inc_lead_time_calc title="{{dataItem.inc_lead_time_calc}}" style="position: relative;margin-top: 5px;"
+                        [disabled]="dataItem.opn_application == false" />
+                      <label class="custom-control-label" for="inc_lead_time_calc_{{dataItem.rowindex}}"></label>
+                    </div>
                   </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column field="queue_time" title="{{language.queue_time}}" filter="text" [width]="140"
