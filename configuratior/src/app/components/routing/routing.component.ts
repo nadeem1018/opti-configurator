@@ -597,25 +597,23 @@ export class RoutingComponent implements OnInit {
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
     let current_row_line_no = this.current_selected_row.rowindex;
     let current_row_index = this.current_selected_row.rowindex - 1;
-    let next_row_index = current_row_index + 1;
-    let prev_row_index = current_row_index - 1;
-    console.log('current row ', this.current_selected_row);
-    console.log('routing_detail_data row ', this.routing_detail_data);
-    console.log('routing_detail_data row ', this.routing_detail_data);
+    
     if (type == '1') {
+      let prev_row_index = current_row_index - 1;
       if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex - 1;
         this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno - 1;
-
+        
         this.routing_detail_data[prev_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex + 1;
         this.routing_detail_data[prev_row_index].lineno = this.routing_detail_data[prev_row_index].lineno + 1;
-
+        
         var temp_swap = this.routing_detail_data[current_row_index];
         this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
         this.routing_detail_data[prev_row_index] = temp_swap;
         this.current_selected_row = this.routing_detail_data[prev_row_index];
       }
     } else if (type == '2') {
+      let next_row_index = current_row_index + 1;
       if (this.routing_detail_data[next_row_index] != undefined){ // && this.routing_detail_data[next_row_index].length > 0
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex + 1;
         this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno + 1;
