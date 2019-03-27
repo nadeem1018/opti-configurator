@@ -61,14 +61,14 @@
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featurename">{{model_name_label}}</label>
                 <div class="col-sm-5">
-                    <input type="text" id="modelID" name="modelID" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
+                    <input type="text" id="modelID" name="modelID" maxlength="50" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
                         [(ngModel)]="featureBom.Name" title="{{featureBom.Name}}">
                 </div>
             </div>
             <div class="form-group row clearfix">
                 <label class="col-sm-4 col-form-label" for="featureDesc">{{model_desc_label}}</label>
                 <div class="col-sm-5">
-                    <input type="text" name="descName" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
+                    <input type="text" name="descName" maxlength="50" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
                         [(ngModel)]="featureBom.Desc" title="{{featureBom.Desc}}">
                 </div>
             </div>

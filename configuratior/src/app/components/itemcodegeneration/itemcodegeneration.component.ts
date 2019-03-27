@@ -329,7 +329,7 @@ export class ItemcodegenerationComponent implements OnInit {
       for (let i = 0; i < this.itemcodetable.length; ++i) {
         if (this.itemcodetable[i].rowindex === rowindex) {
           this.itemcodetable[i].string = selectedvalue.trim();
-          this.itemcodetable[i].codekey = this.codekey;
+          this.itemcodetable[i].codekey = this.codekey.trim(); //bug:18908
         }
         this.finalstring = this.finalstring + this.itemcodetable[i].string
       }
@@ -359,9 +359,10 @@ export class ItemcodegenerationComponent implements OnInit {
               return false;
             }
           }
-          if(this.itemcodetable[i].codekey==""||this.itemcodetable[i].codekey==null){
+          if(this.itemcodetable[i].codekey =="" || this.itemcodetable[i].codekey ==null){
             this.itemcodetable[i].codekey=this.codekey
           }
+          
         }
       }
     }
@@ -374,10 +375,15 @@ export class ItemcodegenerationComponent implements OnInit {
         else {
           this.countnumberrow = 0;
           for (let i = 0; i < this.itemcodetable.length; ++i) {
-            if (this.codekey == "" || this.codekey == null) {
+            if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
               this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
               return false;
-            } else if(this.commonData.excludeSpecialCharRegex.test(this.codekey) === true) {
+            } 
+            else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
+              this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+              return false;
+            }
+            else if(this.commonData.excludeSpecialCharRegex.test(this.codekey) === true) {
               this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
               return false;
             }
@@ -458,7 +464,11 @@ export class ItemcodegenerationComponent implements OnInit {
       }
 
     }
-    if (this.codekey == "" || this.codekey == null) {
+    if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
+      this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+      return false;
+    }
+    else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
       this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
       return false;
     }

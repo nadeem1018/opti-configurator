@@ -137,7 +137,7 @@
           <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="rule_description">{{language.description}}</label>
             <div class="col-sm-5">
-              <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+              <input type="text" name="description" class="form-control  form-control-sm mt3" maxlength="50" id="rule_description" placeholder="{{language.description}}"
                 [(ngModel)]="rule_wb_data.description" title="{{rule_wb_data.description}}" tabindex="2">
             </div>
 
