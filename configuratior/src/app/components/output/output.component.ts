@@ -2581,6 +2581,12 @@ export class OutputComponent implements OnInit {
 
        
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
+          let modelid_val = '';
+          if (step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != "" && step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != null){
+            modelid_val = step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID;
+          } else {
+            modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+          }
           final_dataset_to_save.routing_model_feature_data.push({
             ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
             ITEMCODEGENREF:step3_temp_row.ModelHeaderData[f_indexx].ITEMCODEGENREF,
@@ -2592,7 +2598,7 @@ export class OutputComponent implements OnInit {
             OPTM_LEVEL:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LEVEL,
             OPTM_LINENO:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LINENO,
             OPTM_MANDATORY:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MANDATORY,
-            OPTM_MODELID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID,
+            OPTM_MODELID: modelid_val,
             OPTM_TYPE:step3_temp_row.ModelHeaderData[f_indexx].OPTM_TYPE,
             OPTM_UNIQUEIDNT:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UNIQUEIDNT,
             OPTM_UOM:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UOM,
@@ -2606,6 +2612,12 @@ export class OutputComponent implements OnInit {
 
       
         for (let us_indexx = 0; us_indexx < step3_temp_row.feature.length; us_indexx++) {
+          let modelid_val = '';
+          if (step3_temp_row.feature[us_indexx].ModelId && step3_temp_row.feature[us_indexx].ModelId != null) {
+            modelid_val = step3_temp_row.feature[us_indexx].ModelId
+          } else {
+            modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+          }
           final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
             Description: step3_temp_row.feature[us_indexx].Description,
@@ -2613,7 +2625,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
             Item: step3_temp_row.feature[us_indexx].Item,
             ItemNumber: (step3_temp_row.feature[us_indexx].ItemNumber).toString(),
-            ModelId: step3_temp_row.feature[us_indexx].ModelId,
+            ModelId: modelid_val,
             OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
             dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
             discount: step3_temp_row.feature[us_indexx].discount,

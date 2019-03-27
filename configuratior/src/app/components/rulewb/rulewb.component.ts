@@ -233,7 +233,15 @@ export class RulewbComponent implements OnInit {
               let fetch_data = data.RuleWorkBenchInput[i];
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
-              seq_counter_array[this.seq_count] = input_loop_counter;
+              let c_boj_seq_count = this.seq_count;
+             
+              console.log("seq_counter_array ", seq_counter_array, 'this.seq_count ', this.seq_count, 'current_count ', current_count);
+              if (seq_counter_array[this.seq_count] == "" || seq_counter_array[this.seq_count] == undefined || seq_counter_array[this.seq_count] == null){
+                seq_counter_array[this.seq_count] = input_loop_counter;
+             } else {
+               input_loop_counter = seq_counter_array[this.seq_count];
+              }
+              console.log("input_loop_counter ", input_loop_counter, 'filter_counter ', input_loop_counter);
               // changed current_count for sequence number not in direct sequence 
               current_count = input_loop_counter;
 
@@ -278,7 +286,6 @@ export class RulewbComponent implements OnInit {
                 } else {
                   operand2_disabled = true;
                 }
-
               }
 
               let operand1_disabled = false;
@@ -291,9 +298,7 @@ export class RulewbComponent implements OnInit {
               if (data.RuleWorkBenchInput[i].OPTM_TYPE != "") {
                 type_disabled = false;
               }
-
-
-
+              console.log("current_count ", current_count);
               this.rule_expression_data[current_count].row_data.push({
                 lineno: lineno,
                 rowindex: fetch_data.OPTM_ROWID,

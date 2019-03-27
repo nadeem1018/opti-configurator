@@ -532,6 +532,8 @@
     "opn_num_format_zero":"Operation number format cannot be zero",
     "inc_lead_time_calc":"Include Lead Time Calculation",
     "move_oper_up":"Move Operation Up",
-    "move_oper_down":"Move Operation Down"
+    "move_oper_down":"Move Operation Down",
+    "operationatitemmandatory":"Operation code is mandatory when opn applicable is checked for type item at row - ",
+    "invalid_template_routing_code":"Invalid template routing code"
 
 }

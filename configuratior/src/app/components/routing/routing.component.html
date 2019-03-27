@@ -269,11 +269,11 @@
 
                   <div class="col-sm-6 input-group">
                     <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="template_routing_id"
-                      (change)="getTemplateRoutingDetails(routing_header_data.template_routing_code)" placeholder="{{language.template_routing}}"
+                      (change)="getTemplateRoutingDetails(routing_header_data.template_routing_id)" placeholder="{{language.template_routing}}"
                       [(ngModel)]="routing_header_data.template_routing_id" title="{{routing_header_data.template_routing_id}}">
                     <input type="text" class="form-control  form-control-sm mt3" name="template_routing" id="template_routing_code"
                       [(ngModel)]="routing_header_data.template_routing_code" title="{{routing_header_data.template_routing_code}}"
-                      placeholder="{{language.template_routing}}" (change)="getTemplateRoutingDetails(routing_header_data.template_routing_id)"
+                      placeholder="{{language.template_routing}}" (change)="getTemplateRoutingDetails(routing_header_data.template_routing_code)"
                       style="max-width: calc(98% - 23px) !important; width: 100%;" tabindex="6">
                     <div class="input-group-append">
                       <span class="input-group-text template_routing_code_lookup cursor_icon" id="basic-addon2" (click)="openTemplateRoutingLookup(true)">

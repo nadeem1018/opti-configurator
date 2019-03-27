@@ -139,5 +139,10 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/CalculateResourceData", jObject, this.common_params.httpOptions);
   }
 
+  TemplateRoutingDetail(template_product_code): Observable<any> {
+    let jObject = { TemplateRouting: JSON.stringify([{ CompanyDBID: this.logged_in_company, template_product_code: template_product_code, GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
+    return this.httpclient.post(this.config_params.service_url + "/Routing/TemplateRoutingDetail", jObject, this.common_params.httpOptions);
+  }
+
 
 }
