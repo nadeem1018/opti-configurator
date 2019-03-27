@@ -1297,52 +1297,53 @@ export class RoutingComponent implements OnInit {
             }
           }
         }
+        if (data != undefined && data != '') {
+          if (data.length > 0) {
+            let operData = [];
+            let localhcounter = 1;
+            let basis = '1';
+            let is_basis_disabled = false;
+            if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
+              basis = '4';
+              is_basis_disabled = true;
+            }
 
-        if (data.length > 0) {
-          let operData = [];
-          let localhcounter = 1;
-          let basis = '1';
-          let is_basis_disabled = false;
-          if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
-            basis = '4';
-            is_basis_disabled = true;
+            if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
+              basis = '1';
+              is_basis_disabled = false;
+            }
+
+            if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
+              basis = '1';
+              is_basis_disabled = false;
+            }
+            for (let i = 0; i < data.length; ++i) {
+
+
+              data[i].lineno = localhcounter;
+              data[i].rowindex = localhcounter;
+              data[i].unique_key = operation_line_unique_key;
+              data[i].ResCode = data[i].ResCode,
+                data[i].ResName = data[i].ResName,
+                data[i].ResType = data[i].ResType,
+                data[i].ResUOM = data[i].ResUOM,
+                data[i].ResCons = (data[i].ResCons).toString(),
+                data[i].ResInv = (data[i].ResInv).toString(),
+                data[i].ResUsed = data[i].ResUsed,
+                data[i].TimeUOM = data[i].TimeUOM,
+                data[i].TimeCons = (data[i].TimeCons).toString(),
+                data[i].TimeInv = (data[i].TimeInv).toString(),
+                data[i].resource_consumption_type = 1;
+              data[i].basis = data[i].ChrgBasis;
+              data[i].schedule = false,
+                data[i].oper_consumption_method = oper_consumption_type;
+              data[i].oper_type = oper_type;
+
+              operData.push(data[i]);
+              localhcounter++;
+            }
+            this.routing_detail_resource_data[rowindex] = operData;
           }
-
-          if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
-            basis = '1';
-            is_basis_disabled = false;
-          }
-
-          if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
-            basis = '1';
-            is_basis_disabled = false;
-          }
-          for (let i = 0; i < data.length; ++i) {
-
-
-            data[i].lineno = localhcounter;
-            data[i].rowindex = localhcounter;
-            data[i].unique_key = operation_line_unique_key;
-            data[i].ResCode = data[i].ResCode,
-              data[i].ResName = data[i].ResName,
-              data[i].ResType = data[i].ResType,
-              data[i].ResUOM = data[i].ResUOM,
-              data[i].ResCons = (data[i].ResCons).toString(),
-              data[i].ResInv = (data[i].ResInv).toString(),
-              data[i].ResUsed = data[i].ResUsed,
-              data[i].TimeUOM = data[i].TimeUOM,
-              data[i].TimeCons = (data[i].TimeCons).toString(),
-              data[i].TimeInv = (data[i].TimeInv).toString(),
-              data[i].resource_consumption_type = 1;
-            data[i].basis = data[i].ChrgBasis;
-            data[i].schedule = false,
-              data[i].oper_consumption_method = oper_consumption_type;
-            data[i].oper_type = oper_type;
-
-            operData.push(data[i]);
-            localhcounter++;
-          }
-          this.routing_detail_resource_data[rowindex] = operData;
         }
         if (callback != "" || callback !== undefined) {
           callback();
