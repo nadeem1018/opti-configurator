@@ -2564,22 +2564,23 @@ export class OutputComponent implements OnInit {
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
 
-        final_dataset_to_save.routing_model.push({
-          DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
-          OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
-          OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
-          OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
-          OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
-          OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
-          OPTM_UNIQUEIDNT : step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
-          Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
-          feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
-          child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
-          OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
-          ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
-        });
+        if(step3_temp_row.ModelHeaderItemsArray[0] != undefined) {
+          final_dataset_to_save.routing_model.push({
+            DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
+            OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
+            OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
+            OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
+            OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
+            OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
+            OPTM_UNIQUEIDNT: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
+            Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
+            feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
+            child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
+            OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
+            ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
+          });
+        }
 
-       
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
           final_dataset_to_save.routing_model_feature_data.push({
             ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
@@ -2625,7 +2626,7 @@ export class OutputComponent implements OnInit {
             ispropogateqty: step3_temp_row.feature[us_indexx].ispropogateqty,
             price: step3_temp_row.feature[us_indexx].price,
             pricehide: step3_temp_row.feature[us_indexx].pricehide,
-            pricextn: step3_temp_row.feature[us_indexx].pricextn,
+            pricextn: parseFloat(step3_temp_row.feature[us_indexx].pricextn).toFixed(3),
             quantity: step3_temp_row.feature[us_indexx].quantity,
           });
         }
