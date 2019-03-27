@@ -2564,22 +2564,23 @@ export class OutputComponent implements OnInit {
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
 
-        final_dataset_to_save.routing_model.push({
-          DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
-          OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
-          OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
-          OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
-          OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
-          OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
-          OPTM_UNIQUEIDNT : step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
-          Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
-          feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
-          child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
-          OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
-          ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
-        });
+        if(step3_temp_row.ModelHeaderItemsArray[0] != undefined) {
+          final_dataset_to_save.routing_model.push({
+            DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
+            OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
+            OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
+            OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
+            OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
+            OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
+            OPTM_UNIQUEIDNT: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
+            Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
+            feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
+            child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
+            OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
+            ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
+          });
+        }
 
-       
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
           let modelid_val = '';
           if (step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != "" && step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != null){
@@ -2637,7 +2638,7 @@ export class OutputComponent implements OnInit {
             ispropogateqty: step3_temp_row.feature[us_indexx].ispropogateqty,
             price: step3_temp_row.feature[us_indexx].price,
             pricehide: step3_temp_row.feature[us_indexx].pricehide,
-            pricextn: step3_temp_row.feature[us_indexx].pricextn,
+            pricextn: parseFloat(step3_temp_row.feature[us_indexx].pricextn).toFixed(3),
             quantity: step3_temp_row.feature[us_indexx].quantity,
           });
         }
@@ -3070,8 +3071,8 @@ export class OutputComponent implements OnInit {
         "ModelHeaderData": this.ModelHeaderData,
         "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
         "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
-        "feature_discount_percent": feature_discount,
-        "accessory_discount_percent": accessory_discount,
+        "feature_discount_percent": (feature_discount).toFixed(3),
+        "accessory_discount_percent": (accessory_discount).toFixed(3),
         "accesory_final_price": (this.accessory_item_total).toFixed(3),
         "templateid": this.step2_data.templateid,
         "itemcodegenkey": this.step2_data.itemcodegenkey,
@@ -3095,8 +3096,8 @@ export class OutputComponent implements OnInit {
       this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
       this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
       this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"] = this.ModelBOMDataForSecondLevel;
-      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
-      this.step3_data_final[row_id]["accessory_discount_percent"] = accessory_discount;
+      this.step3_data_final[row_id]["feature_discount_percent"] = (feature_discount).toFixed(3);
+      this.step3_data_final[row_id]["accessory_discount_percent"] = (accessory_discount).toFixed(3);
       this.step3_data_final[row_id]["accesory_final_price"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["accessory_item_total"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["templateid"] = this.step2_data.templateid;
@@ -3118,7 +3119,7 @@ export class OutputComponent implements OnInit {
     this.validnextbtn = true;
     if (navigte == true && this.step3_data_final.length > 0) {
       $("#modelbom_next_click_id").trigger('click');
-      return;
+    return;
     }
 
     if (this.feature_itm_list_table.length == 0) {
@@ -3702,9 +3703,9 @@ export class OutputComponent implements OnInit {
             "OPTM_LEVEL": temp_step2_final_dataset_save[itempsavefinal].OPTM_LEVEL,
             "OPTM_QUANTITY": temp_step2_final_dataset_save[itempsavefinal].OPTM_QUANTITY,
             "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
-            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE),
-            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE),
-            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT),
+            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE).toFixed(3),
+            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE).toFixed(3),
+            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT).toFixed(3),
             "OPTM_CREATEDBY": this.common_output_data.usernameOPTM_CREATEDBY,
             "OPTM_MODIFIEDBY": this.common_output_data.usernameOPTM_MODIFIEDBY,
             "UNIQUEIDNT": temp_step2_final_dataset_save[itempsavefinal].UNIQUEIDNT,
