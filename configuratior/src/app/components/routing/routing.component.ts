@@ -511,23 +511,23 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].auto_move = false;
 
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[1];
-      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
-      this.routing_detail_data[this.current_grid_action_row].mtq = $event[8];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[7];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[7]];
+      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
+      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[2];
+      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[3];
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[5];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
+      this.routing_detail_data[this.current_grid_action_row].mtq = $event[9];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
       let obj = this;
 
 
-      if ($event[2] == '4' || $event[2] == '5') {
+      if ($event[3] == '4' || $event[3] == '5') {
         this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
         this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
       }
 
-      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
+      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_id, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
         // obj.current_grid_action_row = 0;
       });
     }
@@ -584,7 +584,7 @@ export class RoutingComponent implements OnInit {
 
     if (this.lookupfor == "template_routing_lookup") {
       this.routing_header_data.template_routing_id = $event[0];
-      this.routing_header_data.template_routing_code = $event[1];
+      this.routing_header_data.template_routing_code = $event[0];
     }
 
     let obj = this;
@@ -1158,8 +1158,8 @@ export class RoutingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
-            this.routing_header_data.template_routing_id = "";
-            this.routing_header_data.template_routing_code = "";
+            this.routing_header_data.template_routing_id = data[0].ITEMCODE;
+            this.routing_header_data.template_routing_code = data[0].ITEMCODE;
             this.showLookupLoader = false;
           } else {
             this.clearInvalidTemplateRouting();
@@ -1280,12 +1280,12 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  getOperationResourceDetail(oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
+  getOperationResourceDetail(oper_id, oper_code,oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
     this.showLookupLoader = true;
     if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
       this.routing_detail_resource_data[rowindex] = [];
     }
-    this.service.getOperationResource(oper_code).subscribe(
+    this.service.getOperationResource(oper_id).subscribe(
       data => {
         this.showLookupLoader = false;
         if (data != undefined) {
@@ -1320,19 +1320,22 @@ export class RoutingComponent implements OnInit {
             for (let i = 0; i < data.length; ++i) {
 
 
+              
+              data[i].OPRCode = oper_code;
               data[i].lineno = localhcounter;
               data[i].rowindex = localhcounter;
               data[i].unique_key = operation_line_unique_key;
-              data[i].ResCode = data[i].ResCode,
-                data[i].ResName = data[i].ResName,
-                data[i].ResType = data[i].ResType,
-                data[i].ResUOM = data[i].ResUOM,
-                data[i].ResCons = (data[i].ResCons).toString(),
-                data[i].ResInv = (data[i].ResInv).toString(),
-                data[i].ResUsed = data[i].ResUsed,
-                data[i].TimeUOM = data[i].TimeUOM,
-                data[i].TimeCons = (data[i].TimeCons).toString(),
-                data[i].TimeInv = (data[i].TimeInv).toString(),
+              data[i].ResCode = data[i].ResCode;
+              
+                data[i].ResName = data[i].ResName;
+                data[i].ResType = data[i].ResType;
+                data[i].ResUOM = data[i].ResUOM;
+                data[i].ResCons = (data[i].ResCons).toString();
+                data[i].ResInv = (data[i].ResInv).toString();
+                data[i].ResUsed = data[i].ResUsed;
+                data[i].TimeUOM = data[i].TimeUOM
+                data[i].TimeCons = (data[i].TimeCons).toString();
+                data[i].TimeInv = (data[i].TimeInv).toString();
                 data[i].resource_consumption_type = 1;
               data[i].basis = data[i].ChrgBasis;
               data[i].schedule = false,
@@ -1601,7 +1604,7 @@ export class RoutingComponent implements OnInit {
 
 
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
-              this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
+              this.routing_detail_data[currentrow].oper_code = data[0].OperationCode;
               this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
               this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
               this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
@@ -1619,7 +1622,7 @@ export class RoutingComponent implements OnInit {
                 this.routing_detail_data[currentrow].count_point_operation = true;
                 this.routing_detail_data[currentrow].count_point_operation_disabled = true;
               }
-              this.getOperationResourceDetail(data[0].OPRCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
+              this.getOperationResourceDetail(data[0].OPRCode, data[0].OperationCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
               this.clearInvalidOperationData(currentrow);

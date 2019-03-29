@@ -264,7 +264,7 @@ export class LookupComponent implements OnInit {
           this.resourceServiceOper = "";
           this.resourceServiceWc = ""; */
         this.is_operation_popup_lookup_open = true;
-        this.routing_resource_lookup();
+        this.routing_resource_lookup(); 
         return;
       }
 
@@ -302,7 +302,7 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
       {
-        field: 'Description',
+        field: 'ItemName',
         title: this.language.description,
         type: 'text',
         width: '100',
@@ -373,6 +373,13 @@ export class LookupComponent implements OnInit {
       {
         field: 'OPRCode',
         title: this.language.operation_no,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+      },
+      {
+        field: 'OperationCode',
+        title: this.language.operation_code,
         type: 'text',
         width: '100',
         attrType: 'text'
@@ -506,12 +513,12 @@ export class LookupComponent implements OnInit {
             this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
             this.resourceServiceData[i].DCNum = lookup_key.DCNum;
 
-            this.resourceServiceData[i].resource_consumption = '1';
-            this.resourceServiceData[i].resource_inverse = '0';
+            this.resourceServiceData[i].resource_consumption = parseFloat('1').toFixed(3);
+            this.resourceServiceData[i].resource_inverse = parseFloat('0').toFixed(3);
             this.resourceServiceData[i].no_resource_used = '1';
             this.resourceServiceData[i].time_uom = '';
-            this.resourceServiceData[i].time_consumption = '0';
-            this.resourceServiceData[i].time_inverse = '0';
+            this.resourceServiceData[i].time_consumption = parseFloat('0').toFixed(3);
+            this.resourceServiceData[i].time_inverse = parseFloat('0').toFixed(3);
 
 
           }
@@ -1484,6 +1491,36 @@ export class LookupComponent implements OnInit {
     if (this.resourceServiceData.length > 0) {
       this.resource_counter = this.resourceServiceData.length
     }
+
+    let basis = '1';
+    let is_basis_disabled = false;
+    if (this.resourceServiceOperCM == '1' || this.resourceServiceOperCM == 1) { // setup 
+      is_basis_disabled = true;
+      basis = '4';
+      this.resource_basisdd = [
+        { "value": '4', "Name": "Setup" }
+      ]
+    }
+
+    if (this.resourceServiceOperCM == '2' || this.resourceServiceOperCM == 2) { // variable
+      is_basis_disabled = false;
+      basis = '1';
+      this.resource_basisdd = [
+        { "value": '1', "Name": "Item" },
+        { "value": '4', "Name": "Setup" }
+      ]
+    }
+
+    if (this.resourceServiceOperCM == '3' || this.resourceServiceOperCM == 3) { // Fixed
+      is_basis_disabled = false;
+      basis = '1';
+      this.resource_basisdd = [
+        { "value": '1', "Name": "Item" },
+        { "value": '2', "Name": "Batch" },
+        { "value": '4', "Name": "Setup" }
+      ]
+    }
+
     this.resource_counter++;
 
     this.resourceServiceData.push({
@@ -1501,8 +1538,8 @@ export class LookupComponent implements OnInit {
       time_consumption: parseFloat("0").toFixed(3),
       time_inverse: parseFloat("0").toFixed(3),
       resource_consumption_type: '1',
-      basis: '1',
-      is_basis_disabled: false,
+      basis: basis,
+      is_basis_disabled: is_basis_disabled,
       schedule: false,
       is_resource_disabled: true,
       unique_key: this.serviceData.unique_key
@@ -1619,9 +1656,23 @@ export class LookupComponent implements OnInit {
             if (data != undefined) {
               if (data.length > 0) {
                 this.resourceServiceData[currentrow].resource_inverse = parseFloat(data[0].Inverse).toFixed(3);
-                this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
-                this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
-                this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+                if (data[0].TimeUOM != null && data[0].TimeUOM != undefined && data[0].TimeUOM != "") {
+                  this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
+                } else {
+                  this.resourceServiceData[currentrow].time_uom = "";
+                }
+               
+                if(data[0].TimeConsumption != null && data[0].TimeConsumption != undefined){
+                    this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
+                } else {
+                    this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
+                }
+                
+                if (data[0].TimeInverse != null && data[0].TimeInverse != undefined) {
+                  this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+                } else {
+                  this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
+                }
               }
             } error => {
               this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
