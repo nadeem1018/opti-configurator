@@ -1071,8 +1071,9 @@ export class OutputComponent implements OnInit {
         }
         else {
           if (value < 0) {
+            let pricextn0 = 0;
             this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-            this.feature_itm_list_table[i].pricextn = 0;
+            this.feature_itm_list_table[i].pricextn = pricextn0.toFixed(3); 
             return;
           }
           this.feature_itm_list_table[i].pricextn = value
@@ -4136,6 +4137,7 @@ export class OutputComponent implements OnInit {
       ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
       var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
 
+      let pricextn0 = 0;
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
@@ -4145,8 +4147,8 @@ export class OutputComponent implements OnInit {
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
           price: ModelData[imodelarray].ListName,
-          Actualprice: 0,
-          pricextn: 0,
+          Actualprice: pricextn0.toFixed(3),
+          pricextn: pricextn0.toFixed(3), 
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
