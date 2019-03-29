@@ -40,6 +40,8 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_temp_table = [];
   public parentfeatureid: string = "";
   public feature_discount_percent: number = 0;
+  public discount_price: number = 0;
+
   public accessory_discount_percent: number = 0;
   public step2_final_dataset_to_save = [];
   public tree_accessory_json = [];
@@ -455,6 +457,7 @@ export class OutputComponent implements OnInit {
           this.step1_data.remark = data.CustomerOutput[0].OPTM_REMARKS
 
           this.feature_discount_percent = data.CustomerOutput[0].OPTM_TOTALDISCOUNT
+          this.discount_price = data.CustomerOutput[0].OPTM_PRODDISCOUNT
           this.accessory_discount_percent = data.CustomerOutput[0].OPTM_ACCESSORYDIS
           this.getSavedModelDatabyModelCodeAndId(data);
         }
@@ -888,13 +891,13 @@ export class OutputComponent implements OnInit {
                   })
                   if (featurepropagatecheck.length > 0) {
                     if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
-                      this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                      this.feature_itm_list_table[i].quantity = this.step2_data.quantity
                     }
                   }
                 }
                 else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
                   if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[i].Item) {
-                    this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                    this.feature_itm_list_table[i].quantity = this.step2_data.quantity
                   }
                 }
                 else {
@@ -904,7 +907,7 @@ export class OutputComponent implements OnInit {
                   //  })
                   //  if (modelfeaturepropagatecheck.length > 0) {
                   // if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
-                  this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                  this.feature_itm_list_table[i].quantity = this.step2_data.quantity
                   // }
                   // }
                 }
@@ -920,14 +923,13 @@ export class OutputComponent implements OnInit {
             if (modelheaderpropagatechecked.length > 0) {
               if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                 if (this.feature_itm_list_table[i].ispropogateqty == "Y") {
-                  this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                  this.feature_itm_list_table[i].quantity = this.step2_data.quantity
                 }
 
               }
 
             }
           }
-
 
           this.feature_itm_list_table[i].pricextn = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
           this.feature_itm_list_table[i].quantity = parseFloat(this.feature_itm_list_table[i].quantity).toFixed(3)
@@ -1071,8 +1073,9 @@ export class OutputComponent implements OnInit {
         }
         else {
           if (value < 0) {
+            let pricextn0 = 0;
             this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-            this.feature_itm_list_table[i].pricextn = 0;
+            this.feature_itm_list_table[i].pricextn = pricextn0.toFixed(3); 
             return;
           }
           this.feature_itm_list_table[i].pricextn = value
@@ -1531,6 +1534,7 @@ export class OutputComponent implements OnInit {
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
+
 
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
@@ -2985,8 +2989,8 @@ export class OutputComponent implements OnInit {
     $(".multiple_model_click_btn").attr("disabled", "true");
     let feature_discount: any = 0;
     let fg_discount_amount: any = 0;
-    if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0) {
-      feature_discount = Number(this.feature_discount_percent);
+    if (this.discount_price !== undefined && this.discount_price != 0) {
+      feature_discount = Number(this.discount_price);
     }
 
     let accessory_discount: any = 0;
@@ -4148,6 +4152,7 @@ export class OutputComponent implements OnInit {
       ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
       var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
 
+      let pricextn0 = 0;
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
@@ -4157,8 +4162,8 @@ export class OutputComponent implements OnInit {
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
           price: ModelData[imodelarray].ListName,
-          Actualprice: 0,
-          pricextn: 0,
+          Actualprice: pricextn0.toFixed(3),
+          pricextn: pricextn0.toFixed(3), 
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
@@ -4904,7 +4909,7 @@ export class OutputComponent implements OnInit {
             });
           }
 
-          var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE
+          var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_UNITPRICE
 
           if (ItemsArray.length > 0) {
             this.feature_itm_list_table.push({
@@ -4915,7 +4920,7 @@ export class OutputComponent implements OnInit {
               Description: ItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
-              Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
+              Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_UNITPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
               is_accessory: "N",
               isPriceDisabled: isPriceDisabled,
@@ -4947,7 +4952,7 @@ export class OutputComponent implements OnInit {
           return obj['OPTM_ITEMKEY'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE
         })
 
-        var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE
+        var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_UNITPRICE
 
         if (tempSelectedAccessoryArray.length > 0) {
           this.feature_itm_list_table.push({
@@ -4958,11 +4963,12 @@ export class OutputComponent implements OnInit {
             Description: tempSelectedAccessoryArray[0].OPTM_DISPLAYNAME,
             quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
             price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
-            Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
+            Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_UNITPRICE).toFixed(3),
             pricextn: parseFloat(priceextn).toFixed(3),
             is_accessory: "Y",
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
+            ispropogateqty:tempSelectedAccessoryArray[0].OPTM_PROPOGATEQTY,
             ModelId: this.step2_data.model_id,
             OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
             isQuantityDisabled: true,
