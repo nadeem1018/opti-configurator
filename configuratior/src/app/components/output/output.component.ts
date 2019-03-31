@@ -2590,7 +2590,12 @@ export class OutputComponent implements OnInit {
           if (step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != "" && step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != null){
             modelid_val = step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID;
           } else {
-            modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+            if (step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != "" && step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != null) {
+              modelid_val = step3_temp_row.ModelHeaderData[f_indexx].parentmodelid;
+            } else {
+              modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+            }
+            
           }
           final_dataset_to_save.routing_model_feature_data.push({
             ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
@@ -2714,7 +2719,7 @@ export class OutputComponent implements OnInit {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
-    )
+    ) 
   }
 
   colSpanValue(e) {
@@ -2991,6 +2996,10 @@ export class OutputComponent implements OnInit {
     let fg_discount_amount: any = 0;
     if (this.discount_price !== undefined && this.discount_price != 0) {
       feature_discount = Number(this.discount_price);
+    }
+
+    if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0) {
+      feature_discount = Number(this.feature_discount_percent);
     }
 
     let accessory_discount: any = 0;

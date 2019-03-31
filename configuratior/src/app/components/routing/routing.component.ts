@@ -1578,6 +1578,7 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'oper_top_level') {
       this.routing_detail_data[currentrow].oper_top_level = value;
+      this.routing_detail_data[currentrow].operation_top_level = value;
     }
 
     if (grid_element == 'oper_code') {
