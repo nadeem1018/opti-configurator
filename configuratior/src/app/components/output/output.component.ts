@@ -363,6 +363,7 @@ export class OutputComponent implements OnInit {
   }
   onSavePress() {
     // this.onValidateNextPress();
+    this.add_fg_multiple_model();
     this.onFinishPress("step1_data", "savePress");
 
   }
@@ -507,7 +508,6 @@ export class OutputComponent implements OnInit {
                 this.step2_data.templateid = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_MODELTEMPLATEITEM
                 this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
                 this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel], saveddata);
-
                 if (this.isDuplicate) {
                   this.step3_data_final = [];
                   this.add_fg_multiple_model();
