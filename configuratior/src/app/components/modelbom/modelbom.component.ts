@@ -1613,13 +1613,12 @@ export class ModelbomComponent implements OnInit {
   }
 
   validate_unique_identifier(){
-    console.log("is_ready_to_use - " + this.modelbom_data.is_ready_to_use);
+  
     if (this.modelbom_data.is_ready_to_use == true) {
       var unique_item_array = this.modelbom_data.filter(function (obj) {
         return (obj.unique_identifer == true) ? obj : ""
       });
-      console.log("unique_item_array");
-      console.log(unique_item_array);
+  
       if (unique_item_array.length == 0) {
         this.toastr.error('', this.language.atleast_one_unique_required, this.commonData.toast_config);
         this.showLookupLoader = false;

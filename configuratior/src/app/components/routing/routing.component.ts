@@ -1280,7 +1280,7 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  getOperationResourceDetail(oper_id, oper_code,oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
+  getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
     this.showLookupLoader = true;
     if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
       this.routing_detail_resource_data[rowindex] = [];
@@ -1320,23 +1320,23 @@ export class RoutingComponent implements OnInit {
             for (let i = 0; i < data.length; ++i) {
 
 
-              
+
               data[i].OPRCode = oper_code;
               data[i].lineno = localhcounter;
               data[i].rowindex = localhcounter;
               data[i].unique_key = operation_line_unique_key;
               data[i].ResCode = data[i].ResCode;
-              
-                data[i].ResName = data[i].ResName;
-                data[i].ResType = data[i].ResType;
-                data[i].ResUOM = data[i].ResUOM;
-                data[i].ResCons = (data[i].ResCons).toString();
-                data[i].ResInv = (data[i].ResInv).toString();
-                data[i].ResUsed = data[i].ResUsed;
-                data[i].TimeUOM = data[i].TimeUOM
-                data[i].TimeCons = (data[i].TimeCons).toString();
-                data[i].TimeInv = (data[i].TimeInv).toString();
-                data[i].resource_consumption_type = 1;
+
+              data[i].ResName = data[i].ResName;
+              data[i].ResType = data[i].ResType;
+              data[i].ResUOM = data[i].ResUOM;
+              data[i].ResCons = (data[i].ResCons).toString();
+              data[i].ResInv = (data[i].ResInv).toString();
+              data[i].ResUsed = data[i].ResUsed;
+              data[i].TimeUOM = data[i].TimeUOM
+              data[i].TimeCons = (data[i].TimeCons).toString();
+              data[i].TimeInv = (data[i].TimeInv).toString();
+              data[i].resource_consumption_type = 1;
               data[i].basis = data[i].ChrgBasis;
               data[i].schedule = false,
                 data[i].oper_consumption_method = oper_consumption_type;
@@ -1833,52 +1833,52 @@ export class RoutingComponent implements OnInit {
     if (this.validate_header_info() == '0') {
       return false;
     }
-
-    if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
-      this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
-      return;
-    }
-
-    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
-      for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
-        if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
-          if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
-            this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
-            return;
-          }
-        }
-
-        if (this.routing_detail_data[DetailIndex].type == 2 && this.routing_detail_data[DetailIndex].opn_application == true && (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '')) {
-          this.toastr.error('', this.language.operationatitemmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
-          return;
-
-        }
-      }
-    }
-
-    // validate Grid line for operation setup type & inspection QC type 
-    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
-      let tmp_dtl_tble = this.routing_detail_data.filter(function (obj) {
-        return (obj.oper_code != "" && obj.oper_code != undefined) ? obj : "";
-      });
-      if (tmp_dtl_tble.length > 0) {
-        let temp__dtl_line_counter = 0;
-        for (let temp_index_line = 0; temp_index_line < tmp_dtl_tble.length; temp_index_line++) {
-          if (temp__dtl_line_counter == 0 && tmp_dtl_tble[temp_index_line].oper_type == '4') {
-            this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
-            //  this.clearInvalidOperationData(temp__dtl_line_counter);
-            return;
-          }
-
-          let lastRowIndex = (tmp_dtl_tble.length - 1);
-          if (lastRowIndex == temp__dtl_line_counter) { // last row 
-            if (tmp_dtl_tble[temp_index_line].oper_type == '1') {
-              this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
-              //  this.clearInvalidOperationData(temp__dtl_line_counter);
+    if (this.routing_header_data.use_template_routing == false) {
+      if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+        for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
+          if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
+            if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
+              this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
               return;
             }
           }
-          temp__dtl_line_counter++;
+
+          if (this.routing_detail_data[DetailIndex].type == 2 && this.routing_detail_data[DetailIndex].opn_application == true && (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '')) {
+            this.toastr.error('', this.language.operationatitemmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
+            return;
+          }
+
+          if (this.routing_detail_data[DetailIndex].type == 4 && (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '')) {
+            this.toastr.error('', this.language.operationatOprmmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
+            return;
+          }
+        }
+      }
+
+      // validate Grid line for operation setup type & inspection QC type 
+      if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+        let tmp_dtl_tble = this.routing_detail_data.filter(function (obj) {
+          return (obj.oper_code != "" && obj.oper_code != undefined) ? obj : "";
+        });
+        if (tmp_dtl_tble.length > 0) {
+          let temp__dtl_line_counter = 0;
+          for (let temp_index_line = 0; temp_index_line < tmp_dtl_tble.length; temp_index_line++) {
+            if (temp__dtl_line_counter == 0 && tmp_dtl_tble[temp_index_line].oper_type == '4') {
+              this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
+              //  this.clearInvalidOperationData(temp__dtl_line_counter);
+              return;
+            }
+
+            let lastRowIndex = (tmp_dtl_tble.length - 1);
+            if (lastRowIndex == temp__dtl_line_counter) { // last row 
+              if (tmp_dtl_tble[temp_index_line].oper_type == '1') {
+                this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+                //  this.clearInvalidOperationData(temp__dtl_line_counter);
+                return;
+              }
+            }
+            temp__dtl_line_counter++;
+          }
         }
       }
     }
@@ -1893,6 +1893,12 @@ export class RoutingComponent implements OnInit {
           return;
         }
       }
+
+      if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
+        this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
+        return;
+      }
+
     }
 
     let objDataset: any = {};

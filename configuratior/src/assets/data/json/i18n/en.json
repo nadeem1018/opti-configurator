@@ -525,8 +525,8 @@
     "cannot_submit_empty_resource":"Cannot apply empty resource to a operation",
     "resource_code_cannot_beblack":"Resource code cannot blank at row - ",
     "at_row":"at row",
-    "firstOperationInspectionQC":"Operation at first row cannot be of inspection qc type",
-    "lastOperSetup":"Operation at last row cannot be of setup type",
+    "firstOperationInspectionQC":"First operation cannot be of inspection QC type",
+    "lastOperSetup":"Last operation cannot be of Setup type",
     "res_consumption_method":"Res Consumption Method",
     "opn_num_format_blank": "Operation number format cannot be blank",
     "opn_num_format_zero":"Operation number format cannot be zero",
@@ -534,6 +534,7 @@
     "move_oper_up":"Move Operation Up",
     "move_oper_down":"Move Operation Down",
     "operationatitemmandatory":"Operation code is mandatory when opn applicable is checked for type item at row - ",
+    "operationatOprmmandatory":"Operation code is mandatory for type operation at row - ",
     "invalid_template_routing_code":"Invalid template routing code",
     "operation_code":"Operation Code"
 
