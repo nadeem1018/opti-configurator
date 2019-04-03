@@ -40,6 +40,8 @@ export class OutputComponent implements OnInit {
   public feature_itm_list_temp_table = [];
   public parentfeatureid: string = "";
   public feature_discount_percent: number = 0;
+  public discount_price: number = 0;
+
   public accessory_discount_percent: number = 0;
   public step2_final_dataset_to_save = [];
   public tree_accessory_json = [];
@@ -361,6 +363,7 @@ export class OutputComponent implements OnInit {
   }
   onSavePress() {
     // this.onValidateNextPress();
+    this.add_fg_multiple_model();
     this.onFinishPress("step1_data", "savePress");
 
   }
@@ -454,7 +457,9 @@ export class OutputComponent implements OnInit {
 
           this.step1_data.remark = data.CustomerOutput[0].OPTM_REMARKS
 
-          this.feature_discount_percent = data.CustomerOutput[0].OPTM_TOTALDISCOUNT
+          // this.feature_discount_percent = data.CustomerOutput[0].OPTM_TOTALDISCOUNT
+          this.discount_price = data.CustomerOutput[0].OPTM_PRODDISCOUNT
+          this.feature_discount_percent = data.CustomerOutput[0].OPTM_PRODDISCOUNT
           this.accessory_discount_percent = data.CustomerOutput[0].OPTM_ACCESSORYDIS
           this.getSavedModelDatabyModelCodeAndId(data);
         }
@@ -480,6 +485,7 @@ export class OutputComponent implements OnInit {
         UsernameForLic: sessionStorage.getItem("loggedInUser")
       });
 
+      console.log(saveddata.ModelBOMData);
       AllDataForModelBomOutput.getmodelsavedata = saveddata.ModelBOMData
       this.showLookupLoader = true;
       this.OutputService.GetSavedDataMultiModel(AllDataForModelBomOutput).subscribe(
@@ -501,8 +507,7 @@ export class OutputComponent implements OnInit {
                 this.step2_data.model_name = data[isavedmultimodel].AddedModelHeaderData[0].ModelDisplayName
                 this.step2_data.templateid = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_MODELTEMPLATEITEM
                 this.step2_data.itemcodegenkey = data[isavedmultimodel].AddedModelHeaderData[0].OPTM_ITEMCODEGENREF
-                this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel]);
-
+                this.GetAllDataForSavedMultiModelBomOutput(data[isavedmultimodel], saveddata);
                 if (this.isDuplicate) {
                   this.step3_data_final = [];
                   this.add_fg_multiple_model();
@@ -526,7 +531,8 @@ export class OutputComponent implements OnInit {
     }
   }
 
-  GetAllDataForSavedMultiModelBomOutput(data) {
+  GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
+    
     this.showLookupLoader = true;
     if (data != null && data != undefined) {
       if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
@@ -637,13 +643,13 @@ export class OutputComponent implements OnInit {
 
       if (this.setModelDataFlag == true) {
         var temp_obj = this;
-        var feature_list = data.Savedgetmodelsavedata.filter(function (obj) {
+        var feature_list =saveddata.ModelBOMData.filter(function (obj) {
           if (obj['OPTM_ITEMTYPE'] == 2) {
             return obj
           }
         });
 
-        var accessory_list = data.Savedgetmodelsavedata.filter(function (obj) {
+        var accessory_list =saveddata.ModelBOMData.filter(function (obj) {
           if (obj['OPTM_ITEMTYPE'] == 3) {
             return obj
           }
@@ -657,7 +663,7 @@ export class OutputComponent implements OnInit {
           this.accessory_discount_percent = accessory_list[0]['OPTM_DISCPERCENT'];
         }
 
-        this.setModelDataInOutputBom(data.Savedgetmodelsavedata, data.SelectedAccessory);
+        this.setModelDataInOutputBom(data.Savedgetmodelsavedata, data.SelectedAccessory, data.ModelHeaderData);
         var Modelfeaturesaveditems = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['checked'] == true && obj['OPTM_TYPE'] == 2
         })
@@ -888,25 +894,20 @@ export class OutputComponent implements OnInit {
                   })
                   if (featurepropagatecheck.length > 0) {
                     if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
-                      this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                      // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                      this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
                     }
                   }
                 }
                 else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
                   if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[i].Item) {
-                    this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                    // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                    this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
                   }
                 }
                 else {
-                  // var itemkey = this.feature_itm_list_table[i].Item
-                  // var modelfeaturepropagatecheck = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-                  //   return obj['OPTM_ITEMKEY'] == itemkey
-                  //  })
-                  //  if (modelfeaturepropagatecheck.length > 0) {
-                  // if (modelfeaturepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
-                  this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
-                  // }
-                  // }
+                  // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
                 }
 
               }
@@ -920,14 +921,14 @@ export class OutputComponent implements OnInit {
             if (modelheaderpropagatechecked.length > 0) {
               if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                 if (this.feature_itm_list_table[i].ispropogateqty == "Y") {
-                  this.feature_itm_list_table[i].quantity = (this.feature_itm_list_table[i].quantity / this.previousquantity) * this.step2_data.quantity
+                  // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
                 }
 
               }
 
             }
           }
-
 
           this.feature_itm_list_table[i].pricextn = this.feature_itm_list_table[i].quantity * this.feature_itm_list_table[i].Actualprice
           this.feature_itm_list_table[i].quantity = parseFloat(this.feature_itm_list_table[i].quantity).toFixed(3)
@@ -1071,8 +1072,9 @@ export class OutputComponent implements OnInit {
         }
         else {
           if (value < 0) {
+            let pricextn0 = 0;
             this.toastr.error('', this.language.pricevalidextn, this.commonData.toast_config);
-            this.feature_itm_list_table[i].pricextn = 0;
+            this.feature_itm_list_table[i].pricextn = pricextn0.toFixed(3);
             return;
           }
           this.feature_itm_list_table[i].pricextn = value
@@ -1330,7 +1332,7 @@ export class OutputComponent implements OnInit {
           this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
 
           if (this.setModelDataFlag == true) {
-            this.setModelDataInOutputBom(getmodelsavedata, "");
+            this.setModelDataInOutputBom(getmodelsavedata, "", data.ModelHeaderData);
             var Modelfeaturesaveditems = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
               return obj['checked'] == true && obj['OPTM_TYPE'] == 2
             })
@@ -1473,25 +1475,6 @@ export class OutputComponent implements OnInit {
         $("#" + id).prop("checked", false)
         return;
       }
-      //    }
-      // else if(feature_model_data.OPTM_FEATUREID==1){
-      //   var isExistForItemMax = this.feature_itm_list_table.filter(function (obj) {
-      //     return obj['FeatureId'] == feature_model_data.OPTM_FEATUREID
-      //   })
-
-      //   var isExistForFeatureMax = this.ModelHeaderData.filter(function (obj) {
-      //     return obj['parentfeatureid'] == feature_model_data.OPTM_FEATUREID
-      //   })
-
-      //   var totalSelect=isExistForItemMax.length + isExistForFeatureMax.length
-
-      //   if (isExistForMax.length == parentarray[0].OPTM_MAXSELECTABLE) {
-      //     this.toastr.error('', this.language.select_max_selectable, this.commonData.toast_config);
-      //     $("#" + id).prop("checked", false)
-      //     return;
-      //   }
-      // }
-
     }
 
     var elementtypeforcheckedfunction = parentarray[0].element_type
@@ -1531,6 +1514,7 @@ export class OutputComponent implements OnInit {
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
+
 
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
@@ -2276,6 +2260,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: ItemData[0].DocEntry,
           Description: ItemData[0].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
+          original_quantity: parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3),
           price: ItemData[0].ListName,
           Actualprice: parseFloat(ItemData[0].Price).toFixed(3),
           pricextn: parseFloat(priceextn).toFixed(3),
@@ -2288,7 +2273,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: lineno
         });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
 
@@ -2564,48 +2549,66 @@ export class OutputComponent implements OnInit {
       for (let indexx = 0; indexx < this.step3_data_final.length; indexx++) {
         let step3_temp_row = this.step3_data_final[indexx];
 
-        final_dataset_to_save.routing_model.push({
-          DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
-          OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
-          OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
-          OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
-          OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
-          OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
-          OPTM_UNIQUEIDNT : step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
-          Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
-          feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
-          child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
-          OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
-          ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
-        });
-
-       
-        for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
-          final_dataset_to_save.routing_model_feature_data.push({
-            ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY, 
-            ITEMCODEGENREF:step3_temp_row.ModelHeaderData[f_indexx].ITEMCODEGENREF,
-            MODELTEMPLATEITEM:step3_temp_row.ModelHeaderData[f_indexx].MODELTEMPLATEITEM,
-            OPTM_CHILDMODELID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_CHILDMODELID,
-            OPTM_DISPLAYNAME:step3_temp_row.ModelHeaderData[f_indexx].OPTM_DISPLAYNAME,
-            OPTM_FEATUREID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_FEATUREID,
-            OPTM_ITEMKEY:step3_temp_row.ModelHeaderData[f_indexx].OPTM_ITEMKEY,
-            OPTM_LEVEL:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LEVEL,
-            OPTM_LINENO:step3_temp_row.ModelHeaderData[f_indexx].OPTM_LINENO,
-            OPTM_MANDATORY:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MANDATORY,
-            OPTM_MODELID:step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID,
-            OPTM_TYPE:step3_temp_row.ModelHeaderData[f_indexx].OPTM_TYPE,
-            OPTM_UNIQUEIDNT:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UNIQUEIDNT,
-            OPTM_UOM:step3_temp_row.ModelHeaderData[f_indexx].OPTM_UOM,
-            Price:step3_temp_row.ModelHeaderData[f_indexx].Price,
-            child_code:step3_temp_row.ModelHeaderData[f_indexx].child_code,
-            feature_code:step3_temp_row.ModelHeaderData[f_indexx].feature_code,
-            parentfeatureid:step3_temp_row.ModelHeaderData[f_indexx].parentfeatureid,
-            parentmodelid:step3_temp_row.ModelHeaderData[f_indexx].parentmodelid,
+        if (step3_temp_row.ModelHeaderItemsArray[0] != undefined) {
+          final_dataset_to_save.routing_model.push({
+            DocEntry: step3_temp_row.ModelHeaderItemsArray[0].DocEntry,
+            OPTM_LINENO: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LINENO,
+            OPTM_MODELID: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID,
+            OPTM_TYPE: step3_temp_row.ModelHeaderItemsArray[0].OPTM_TYPE,
+            OPTM_MANDATORY: step3_temp_row.ModelHeaderItemsArray[0].OPTM_MANDATORY,
+            OPTM_UOM: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UOM,
+            OPTM_UNIQUEIDNT: step3_temp_row.ModelHeaderItemsArray[0].OPTM_UNIQUEIDNT,
+            Price: step3_temp_row.ModelHeaderItemsArray[0].Price,
+            feature_code: step3_temp_row.ModelHeaderItemsArray[0].feature_code,
+            child_code: step3_temp_row.ModelHeaderItemsArray[0].child_code,
+            OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
+            ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
           });
         }
 
-      
+        for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
+          let modelid_val = '';
+          if (step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != "" && step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID != null) {
+            modelid_val = step3_temp_row.ModelHeaderData[f_indexx].OPTM_MODELID;
+          } else {
+            if (step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != "" && step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != null) {
+              modelid_val = step3_temp_row.ModelHeaderData[f_indexx].parentmodelid;
+            } else {
+              modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+            }
+
+          }
+          final_dataset_to_save.routing_model_feature_data.push({
+            ACCESSORY: step3_temp_row.ModelHeaderData[f_indexx].ACCESSORY,
+            ITEMCODEGENREF: step3_temp_row.ModelHeaderData[f_indexx].ITEMCODEGENREF,
+            MODELTEMPLATEITEM: step3_temp_row.ModelHeaderData[f_indexx].MODELTEMPLATEITEM,
+            OPTM_CHILDMODELID: step3_temp_row.ModelHeaderData[f_indexx].OPTM_CHILDMODELID,
+            OPTM_DISPLAYNAME: step3_temp_row.ModelHeaderData[f_indexx].OPTM_DISPLAYNAME,
+            OPTM_FEATUREID: step3_temp_row.ModelHeaderData[f_indexx].OPTM_FEATUREID,
+            OPTM_ITEMKEY: step3_temp_row.ModelHeaderData[f_indexx].OPTM_ITEMKEY,
+            OPTM_LEVEL: step3_temp_row.ModelHeaderData[f_indexx].OPTM_LEVEL,
+            OPTM_LINENO: step3_temp_row.ModelHeaderData[f_indexx].OPTM_LINENO,
+            OPTM_MANDATORY: step3_temp_row.ModelHeaderData[f_indexx].OPTM_MANDATORY,
+            OPTM_MODELID: modelid_val,
+            OPTM_TYPE: step3_temp_row.ModelHeaderData[f_indexx].OPTM_TYPE,
+            OPTM_UNIQUEIDNT: step3_temp_row.ModelHeaderData[f_indexx].OPTM_UNIQUEIDNT,
+            OPTM_UOM: step3_temp_row.ModelHeaderData[f_indexx].OPTM_UOM,
+            Price: step3_temp_row.ModelHeaderData[f_indexx].Price,
+            child_code: step3_temp_row.ModelHeaderData[f_indexx].child_code,
+            feature_code: step3_temp_row.ModelHeaderData[f_indexx].feature_code,
+            parentfeatureid: step3_temp_row.ModelHeaderData[f_indexx].parentfeatureid,
+            parentmodelid: step3_temp_row.ModelHeaderData[f_indexx].parentmodelid,
+          });
+        }
+
+
         for (let us_indexx = 0; us_indexx < step3_temp_row.feature.length; us_indexx++) {
+          let modelid_val = '';
+          if (step3_temp_row.feature[us_indexx].ModelId && step3_temp_row.feature[us_indexx].ModelId != null) {
+            modelid_val = step3_temp_row.feature[us_indexx].ModelId
+          } else {
+            modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+          }
           final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
             Description: step3_temp_row.feature[us_indexx].Description,
@@ -2613,7 +2616,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
             Item: step3_temp_row.feature[us_indexx].Item,
             ItemNumber: (step3_temp_row.feature[us_indexx].ItemNumber).toString(),
-            ModelId: step3_temp_row.feature[us_indexx].ModelId,
+            ModelId: modelid_val,
             OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
             dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
             discount: step3_temp_row.feature[us_indexx].discount,
@@ -2625,7 +2628,7 @@ export class OutputComponent implements OnInit {
             ispropogateqty: step3_temp_row.feature[us_indexx].ispropogateqty,
             price: step3_temp_row.feature[us_indexx].price,
             pricehide: step3_temp_row.feature[us_indexx].pricehide,
-            pricextn: step3_temp_row.feature[us_indexx].pricextn,
+            pricextn: parseFloat(step3_temp_row.feature[us_indexx].pricextn).toFixed(3),
             quantity: step3_temp_row.feature[us_indexx].quantity,
           });
         }
@@ -2656,7 +2659,7 @@ export class OutputComponent implements OnInit {
     console.log(final_dataset_to_save);
     var obj = this;
     // final data submission 
-    
+
     this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
       data => {
         if (data != null && data != undefined) {
@@ -2972,6 +2975,10 @@ export class OutputComponent implements OnInit {
     $(".multiple_model_click_btn").attr("disabled", "true");
     let feature_discount: any = 0;
     let fg_discount_amount: any = 0;
+    if (this.discount_price !== undefined && this.discount_price != 0) {
+      feature_discount = Number(this.discount_price);
+    }
+
     if (this.feature_discount_percent !== undefined && this.feature_discount_percent != 0) {
       feature_discount = Number(this.feature_discount_percent);
     }
@@ -3058,8 +3065,8 @@ export class OutputComponent implements OnInit {
         "ModelHeaderData": this.ModelHeaderData,
         "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
         "ModelBOMDataForSecondLevel": this.ModelBOMDataForSecondLevel,
-        "feature_discount_percent": feature_discount,
-        "accessory_discount_percent": accessory_discount,
+        "feature_discount_percent": (feature_discount).toFixed(3),
+        "accessory_discount_percent": (accessory_discount).toFixed(3),
         "accesory_final_price": (this.accessory_item_total).toFixed(3),
         "templateid": this.step2_data.templateid,
         "itemcodegenkey": this.step2_data.itemcodegenkey,
@@ -3083,8 +3090,8 @@ export class OutputComponent implements OnInit {
       this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
       this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
       this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"] = this.ModelBOMDataForSecondLevel;
-      this.step3_data_final[row_id]["feature_discount_percent"] = feature_discount;
-      this.step3_data_final[row_id]["accessory_discount_percent"] = accessory_discount;
+      this.step3_data_final[row_id]["feature_discount_percent"] = (feature_discount).toFixed(3);
+      this.step3_data_final[row_id]["accessory_discount_percent"] = (accessory_discount).toFixed(3);
       this.step3_data_final[row_id]["accesory_final_price"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["accessory_item_total"] = (this.accessory_item_total).toFixed(3);
       this.step3_data_final[row_id]["templateid"] = this.step2_data.templateid;
@@ -3690,9 +3697,9 @@ export class OutputComponent implements OnInit {
             "OPTM_LEVEL": temp_step2_final_dataset_save[itempsavefinal].OPTM_LEVEL,
             "OPTM_QUANTITY": temp_step2_final_dataset_save[itempsavefinal].OPTM_QUANTITY,
             "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
-            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE),
-            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE),
-            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT),
+            "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE).toFixed(3),
+            "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE).toFixed(3),
+            "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT).toFixed(3),
             "OPTM_CREATEDBY": this.common_output_data.usernameOPTM_CREATEDBY,
             "OPTM_MODIFIEDBY": this.common_output_data.usernameOPTM_MODIFIEDBY,
             "UNIQUEIDNT": temp_step2_final_dataset_save[itempsavefinal].UNIQUEIDNT,
@@ -3964,6 +3971,7 @@ export class OutputComponent implements OnInit {
             ItemNumber: ItemData[i].DocEntry,
             Description: ItemData[i].OPTM_DISPLAYNAME,
             quantity: parseFloat(formatequantity).toFixed(3),
+            original_quantity: parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3),
             price: ItemData[i].ListName,
             Actualprice: parseFloat(ItemData[i].Price).toFixed(3),
             pricextn: parseFloat(priceextn).toFixed(3),
@@ -3978,7 +3986,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: isheadercounter
 
           });
-          console.log(this.feature_itm_list_table);
+          console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           isheadercounter++;
         }
       }
@@ -4102,6 +4110,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
+          original_quantity: parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3),
           price: DefaultData[idefault].ListName,
           Actualprice: parseFloat(DefaultData[idefault].Price).toFixed(3),
           pricextn: parseFloat(priceextn).toFixed(3),
@@ -4113,7 +4122,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: DefaultData[idefault].HEADER_LINENO
         });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
     this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
@@ -4135,6 +4144,7 @@ export class OutputComponent implements OnInit {
       ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
       var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
 
+      let pricextn0 = 0;
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
@@ -4143,9 +4153,10 @@ export class OutputComponent implements OnInit {
           ItemNumber: "",
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
+          original_quantity: parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3),
           price: ModelData[imodelarray].ListName,
-          Actualprice: 0,
-          pricextn: 0,
+          Actualprice: pricextn0.toFixed(3),
+          pricextn: pricextn0.toFixed(3),
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
@@ -4155,7 +4166,7 @@ export class OutputComponent implements OnInit {
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
           OPTM_ITEMTYPE: 1
         });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
 
       var ModelItemsArray = [];
@@ -4180,6 +4191,7 @@ export class OutputComponent implements OnInit {
             ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
             Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
             quantity: parseFloat(formatequantity).toFixed(3),
+            original_quantity: parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3),
             price: ModelItemsArray[imodelItemsarray].ListName,
             Actualprice: parseFloat(ModelItemsArray[imodelItemsarray].Price).toFixed(3),
             pricextn: parseFloat(priceextn).toFixed(3),
@@ -4191,7 +4203,7 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
           });
-          console.log(this.feature_itm_list_table);
+          console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           ItemPrice = ItemPrice + ModelItemsArray[imodelarray].Price
         }
       }
@@ -4232,6 +4244,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: ModelItemsData[imodelarray].DocEntry,
           Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
+          original_quantity: parseFloat(ModelItemsData[imodelarray].OPTM_QUANTITY).toFixed(3),
           price: ModelItemsData[imodelarray].ListName,
           Actualprice: parseFloat(ModelItemsData[imodelarray].Price).toFixed(3),
           pricextn: parseFloat(priceextn).toFixed(3),
@@ -4243,7 +4256,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelItemsData[imodelarray].OPTM_LINENO,
         });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
   }
@@ -4282,6 +4295,7 @@ export class OutputComponent implements OnInit {
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
           quantity: parseFloat(formatequantity).toFixed(3),
+          original_quantity: parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3),
           price: DefaultData[idefault].ListName,
           Actualprice: parseFloat(DefaultData[idefault].Price).toFixed(3),
           pricextn: parseFloat(priceextn).toFixed(3),
@@ -4293,7 +4307,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: DefaultData[idefault].HEADER_LINENO
         });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
     this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
@@ -4649,6 +4663,7 @@ export class OutputComponent implements OnInit {
 
 
               this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(this.feature_itm_list_table[iFeatureItemaddedTable].quantity).toFixed(3)
+              this.feature_itm_list_table[iFeatureItemaddedTable].original_quantity = parseFloat(RuleOutputData[iItemRule].OPTM_QUANTITY).toFixed(3)
 
               if (RuleOutputData[iItemRule].OPTM_ISPRICEEDIT == "y") {
                 this.feature_itm_list_table[iFeatureItemaddedTable].isPriceDisabled = false
@@ -4804,7 +4819,7 @@ export class OutputComponent implements OnInit {
         this.showLookupLoader = false;
       })
   }
-  setModelDataInOutputBom(getmodelsavedata, SelectedAccessory) {
+  setModelDataInOutputBom(getmodelsavedata, SelectedAccessory, modelHeaderdata) {
     this.feature_itm_list_table = [];
     let isPriceDisabled: boolean = true;
     let isPricehide: boolean = true;
@@ -4825,6 +4840,7 @@ export class OutputComponent implements OnInit {
             ItemNumber: "",
             Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
             quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
+            original_quantity: parseFloat(filtemodeldataheader[0].OPTM_QUANTITY).toFixed(3),
             price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
             Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
             pricextn: parseFloat(priceextn).toFixed(3),
@@ -4836,7 +4852,7 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: parseFloat(imodelsavedata) + 1
           });
-        console.log(this.feature_itm_list_table);
+        console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
       else if (getmodelsavedata[imodelsavedata].OPTM_ITEMTYPE == 2) {
         if (getmodelsavedata[imodelsavedata].OPTM_LEVEL == 2) {
@@ -4845,15 +4861,13 @@ export class OutputComponent implements OnInit {
             return obj['OPTM_ITEMKEY'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE && obj['OPTM_TYPE'] == 2;
           });
 
-          // if(ModelItemsArray.length==0){
-          //   ModelItemsArray.push({
-          //     OPTM_FEATUREID
-          //   })
-          // }
-
           var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE
 
           if (ModelItemsArray.length > 0) {
+
+            let data_from_mbom = this.ModelHeaderData.filter(function (obj) {
+              return obj['OPTM_FEATUREID'] == ModelItemsArray[0].OPTM_FEATUREID
+            })
             this.feature_itm_list_table.push({
               FeatureId: ModelItemsArray[0].OPTM_FEATUREID,
               featureName: ModelItemsArray[0].feature_code,
@@ -4861,6 +4875,7 @@ export class OutputComponent implements OnInit {
               ItemNumber: ModelItemsArray[0].DocEntry,
               Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
+              original_quantity: parseFloat(data_from_mbom[0].OPTM_QUANTITY).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
               Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
@@ -4872,7 +4887,7 @@ export class OutputComponent implements OnInit {
               isQuantityDisabled: true,
               HEADER_LINENO: parseFloat(imodelsavedata) + 1
             });
-            console.log(this.feature_itm_list_table);
+            console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           }
         }
         else {
@@ -4891,8 +4906,15 @@ export class OutputComponent implements OnInit {
             });
           }
 
-          var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE
-
+          var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_UNITPRICE
+          let data_from_mbom = modelHeaderdata.filter(function (obj) {
+            return obj['OPTM_ITEMKEY'] == ItemsArray[0].OPTM_ITEMKEY
+          })
+          if (data_from_mbom.length == 0) {
+            data_from_mbom = modelHeaderdata.filter(function (obj) {
+              return obj['OPTM_FEATUREID'] == ItemsArray[0].OPTM_FEATUREID
+            })
+          }
           if (ItemsArray.length > 0) {
             this.feature_itm_list_table.push({
               FeatureId: ItemsArray[0].OPTM_FEATUREID,
@@ -4901,8 +4923,9 @@ export class OutputComponent implements OnInit {
               ItemNumber: ItemsArray[0].DocEntry,
               Description: ItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
+              original_quantity: parseFloat(data_from_mbom[0].OPTM_QUANTITY).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
-              Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
+              Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_UNITPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
               is_accessory: "N",
               isPriceDisabled: isPriceDisabled,
@@ -4912,7 +4935,7 @@ export class OutputComponent implements OnInit {
               isQuantityDisabled: true,
               HEADER_LINENO: parseFloat(imodelsavedata) + 1
             });
-            console.log(this.feature_itm_list_table);
+            console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           }
         }
       }
@@ -4934,28 +4957,35 @@ export class OutputComponent implements OnInit {
           return obj['OPTM_ITEMKEY'] == getmodelsavedata[imodelsavedata].OPTM_ITEMCODE
         })
 
-        var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE
+     
+        var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_UNITPRICE
 
         if (tempSelectedAccessoryArray.length > 0) {
+          let head_acc_data = modelHeaderdata.filter(function (obj) {
+            return obj['OPTM_FEATUREID'] == tempSelectedAccessoryArray[0].OPTM_FEATUREID
+          });
+
           this.feature_itm_list_table.push({
             FeatureId: parentfeatureid,
-            featureName: tempSelectedAccessoryArray[0].OPTM_DISPLAYNAME,
+            featureName: head_acc_data[0].feature_code,
             Item: tempSelectedAccessoryArray[0].OPTM_ITEMKEY,
             ItemNumber: getmodelsavedata[imodelsavedata].OPTM_ITEMNUMBER,
             Description: tempSelectedAccessoryArray[0].OPTM_DISPLAYNAME,
             quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
+            original_quantity: parseFloat(head_acc_data[0].OPTM_QUANTITY).toFixed(3),
             price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
-            Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
+            Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_UNITPRICE).toFixed(3),
             pricextn: parseFloat(priceextn).toFixed(3),
             is_accessory: "Y",
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
+            ispropogateqty: tempSelectedAccessoryArray[0].OPTM_PROPOGATEQTY,
             ModelId: this.step2_data.model_id,
             OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
             isQuantityDisabled: true,
             HEADER_LINENO: parseFloat(imodelsavedata) + 1
           });
-          console.log(this.feature_itm_list_table);
+          console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
         }
 
 

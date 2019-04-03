@@ -203,7 +203,7 @@
                                     </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="Bom_FeatureValue" title="{{language.Bom_FeatureValue}}"
-                                    filter="text">
+                                    filter="text" [minResizableWidth]="145">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="input-group">
                                             <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm"
@@ -222,8 +222,8 @@
                                     </ng-template>
                                 </kendo-grid-column>
 
-                                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text" [minResizableWidth]="145">
+                                    <ng-template kendoGridCellTemplate let-dataItem >
                                         <input [disabled]="dataItem.isDisplayNameDisabled" type="text" class="form-control  form-control-sm"
                                             id="display_name" (change)="on_displayname_change(display_name.value,dataItem.rowindex)"
                                             value={{dataItem.display_name}} #display_name title="{{dataItem.display_name}}" />
@@ -249,7 +249,7 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text">
+                                <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text" [minResizableWidth]="113">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,dataItem.rowindex)"
                                             value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />

@@ -137,7 +137,7 @@
           <div class="form-group row clearfix">
             <label class="col-sm-3 col-form-label" for="rule_description">{{language.description}}</label>
             <div class="col-sm-5">
-              <input type="text" name="description" class="form-control  form-control-sm mt3" id="rule_description" placeholder="{{language.description}}"
+              <input type="text" name="description" class="form-control  form-control-sm mt3" maxlength="50" id="rule_description" placeholder="{{language.description}}"
                 [(ngModel)]="rule_wb_data.description" title="{{rule_wb_data.description}}" tabindex="2">
             </div>
 
@@ -175,13 +175,13 @@
                       <span class="text-center">
                         <img src="{{imgPath}}/ruleweb/input.svg" width="15px" height="15px"> {{language.input}}</span>
                     </ng-template>
-                    <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
+                    <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="60">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.rowindex}} title="{{dataItem.rowindex}}" />
                       </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="70">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}} title="{{dataItem.seq_count}}" />
@@ -208,7 +208,7 @@
                         </select>
                       </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="modelfeature" title="{{language.model_feature}}" filter="text" [width]="115" [minResizableWidth]="115">
+                    <kendo-grid-column field="modelfeature" title="{{language.model_feature}}" filter="text" [width]="115" [minResizableWidth]="120">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <div class="input-group">
                           <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm " id="type_value_code" (change)="on_typevalue_change(type_value_code.value,dataItem.rowindex,type_value_code)"
@@ -456,13 +456,13 @@
                         <img src="{{imgPath}}/ruleweb/expression.svg" width="15px" height="15px"> {{language.expression}}
                       </span>
                     </ng-template>
-                    <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="50">
+                    <kendo-grid-column field="seqrowno" title="{{language.seq_row_no}}" filter="text" [width]="50" [minResizableWidth]="60">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.rowindex}} />
                       </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="50">
+                    <kendo-grid-column field="seqrowno" title="{{language.exp_id}}" filter="text" [width]="50" [minResizableWidth]="70">
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <input [disabled]="true" type="text" class="form-control  form-control-sm  field-nobg-noborder" id="rowNOID" name="rowNONamr"
                           value={{dataItem.seq_count}}/>
@@ -473,7 +473,7 @@
                         <span> {{dataItem.expression}} </span>
                       </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="action" title="{{language.action}}" filter="text" [width]="100" [minResizableWidth]="100">
+                    <kendo-grid-column field="action" title="{{language.action}}" filter="text" [width]="100" [minResizableWidth]="120">
                       <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                         {{language.action}}
                       </ng-template>

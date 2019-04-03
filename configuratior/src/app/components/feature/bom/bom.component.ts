@@ -60,6 +60,7 @@ export class BomComponent implements OnInit {
   public live_tree_view_data = [];
   public tree_data_json: any = [];
   public complete_dataset: any = [];
+  public allItemDataDetails: any = [];
   public row_image_data: any;
   public detail_select_options = '';
   public isPriceDisabled: boolean = false
@@ -587,6 +588,8 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
           this.feature_bom_table[i].isPropagateQtyDisable = true
+          this.feature_bom_table[i].price_source = "" 
+          this.feature_bom_table[i].price_source_id = "" 
         }
         else {
           this.feature_bom_table[i].isDisplayNameDisabled = false
@@ -606,6 +609,8 @@ export class BomComponent implements OnInit {
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = true
             this.feature_bom_table[i].pricehide = true
+            this.feature_bom_table[i].price_source = "" 
+            this.feature_bom_table[i].price_source_id = "" 
           }
         }
 
@@ -741,13 +746,16 @@ export class BomComponent implements OnInit {
                 this.feature_bom_table[iIndex].type_value = "";
                 this.feature_bom_table[iIndex].type_value_code = "";
                 this.feature_bom_table[iIndex].display_name = "";
+                this.feature_bom_table[iIndex].price_source = ""; 
+                this.feature_bom_table[iIndex].price_source_id = ""; 
                 $(type_value_code).val("");
                 return;
               }
               else {
                 this.lookupfor = "";
                 this.feature_bom_table[iIndex].type_value = data;
-                this.getItemDetails(this.feature_bom_table[iIndex].type_value);
+               // this.getItemDetails(this.feature_bom_table[iIndex].type_value);
+               this.getItemDetailsOnChange(this.feature_bom_table[iIndex].type_value); 
               }
             })
         }
@@ -868,36 +876,91 @@ export class BomComponent implements OnInit {
     )
   }
 
-  getItemDetails(ItemKey) {
+  getItemDetailsOnChange(ItemKey){
+
     this.fbom.getItemDetails(ItemKey).subscribe(
-      data => {
-        if (data != undefined && data.length > 0) {
-          if (data[0].ErrorMsg == "7001") {
-            this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
-            return;
-          }
-        }
-        if (data.length > 0) {
-          for (let i = 0; i < this.feature_bom_table.length; ++i) {
-            if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-              this.feature_bom_table[i].type_value = data[0].ItemKey;
-              this.feature_bom_table[i].type = 2
-              this.feature_bom_table[i].type_value_code = data[0].ItemKey;
-              this.feature_bom_table[i].display_name = data[0].Description;
-              this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+        data => {
+          if (data != undefined && data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commanService.RemoveLoggedInUser().subscribe();
+              this.commanService.signOut(this.toastr, this.router);
+              return;
             }
           }
+          if (data.length > 0) {
+            for (let i = 0; i < this.feature_bom_table.length; ++i) {
+              if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+                this.feature_bom_table[i].type_value = data[0].ItemKey;
+                this.feature_bom_table[i].type = 2
+                this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+                this.feature_bom_table[i].display_name = data[0].Description;
+                this.feature_bom_table[i].price_source = data[0].ListName;
+                this.feature_bom_table[i].price_source_id = data[0].PriceListID;
+                this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+              }
+            }
+          }
+        })
+  }
+
+  getSelectedItemDetails(ItemKey){
+    let data = this.allItemDataDetails.filter(function (obj) {
+      return obj.ItemKey == ItemKey;
+      });
+      return data;
+  }
+
+  getItemDetails(ItemKey) {
+
+   let selectedDataDetails:any = [];
+   selectedDataDetails = this.getSelectedItemDetails(ItemKey);
+
+    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+        if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+          this.feature_bom_table[i].type_value = selectedDataDetails[0].ItemKey;
+          this.feature_bom_table[i].type = 2
+          this.feature_bom_table[i].type_value_code = selectedDataDetails[0].ItemKey;
+          this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
+          this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
+          this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
+          this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex });
         }
-      })
+    }
+
+    // this.fbom.getItemDetails(ItemKey).subscribe(
+    //   data => {
+    //     if (data != undefined && data.length > 0) {
+    //       if (data[0].ErrorMsg == "7001") {
+    //         this.commanService.RemoveLoggedInUser().subscribe();
+    //         this.commanService.signOut(this.toastr, this.router);
+    //         return;
+    //       }
+    //     }
+    //     if (data.length > 0) {
+    //       for (let i = 0; i < this.feature_bom_table.length; ++i) {
+    //         if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+    //           this.feature_bom_table[i].type_value = data[0].ItemKey;
+    //           this.feature_bom_table[i].type = 2
+    //           this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+    //           this.feature_bom_table[i].display_name = data[0].Description;
+    //           this.feature_bom_table[i].price_source = data[0].ListName;
+    //           this.feature_bom_table[i].price_source_id = data[0].PriceListID;
+    //           this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+    //         }
+    //       }
+    //     }
+    //   })
   }
 
   getFeatureDetails(feature_code, press_location, index) {
     console.log('inopen feature');
     this.serviceData = []
+    this.allItemDataDetails = [];
     //this.lookupfor = 'feature_lookup';
     this.fbom.getFeatureDetails(feature_code, press_location, index).subscribe(
       data => {
+
+        this.allItemDataDetails = data;
 
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {

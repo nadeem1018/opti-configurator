@@ -901,17 +901,17 @@
                 <!-- new table with detail -->
                 <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-top" [data]="step3_data_final"   [selectable]="false" [resizable]="true">
                   <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
-                  <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [headerStyle]="{'width': '100px'}">
+                  <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [width]="50" [minResizableWidth]="50">
                     <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                       {{rowIndex+1}}
                     </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.item}}" field="item" [headerStyle]="{'width': '100px'}">
+                  <kendo-grid-column title="{{this.language.item}}" field="item" [width]="100" [minResizableWidth]="100">
                     <ng-template kendoGridCellTemplate let-dataItem>
                       {{dataItem.item}}
                     </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.quantity}}" field="quantity" [headerStyle]="{'width': '100px'}">
+                  <kendo-grid-column title="{{this.language.quantity}}" field="quantity" [width]="100" [minResizableWidth]="100">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       <span class="text-right pull-right">{{this.language.quantity}}</span>
                     </ng-template>
@@ -920,7 +920,7 @@
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price"
-                    [headerStyle]="{'width': '100px'}">
+                    [width]="100" [minResizableWidth]="100">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       <span class="text-right pull-right">{{this.language.price}} ({{this.defaultCurrency}})</span>
                     </ng-template>
@@ -928,7 +928,7 @@
                     <span class="text-right pull-right"> {{dataItem.price}}</span>
                     </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.extension}}" field="price_ext" [headerStyle]="{'width': '100px'}">
+                  <kendo-grid-column title="{{this.language.extension}}" field="price_ext" [width]="100" [minResizableWidth]="100">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       <span class="text-right pull-right">{{this.language.extension}} ({{this.defaultCurrency}})</span>
                     </ng-template>
@@ -937,7 +937,7 @@
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column title="{{this.language.discount_per}}" field="feature_discount_percent"
-                    [headerStyle]="{'width': '100px'}">
+                    [width]="100" [minResizableWidth]="100">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       <span class="text-right pull-right">{{this.language.discount_per}}</span>
                     </ng-template>
@@ -946,7 +946,7 @@
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price"
-                    [headerStyle]="{'width': '100px'}">
+                    [width]="167" [minResizableWidth]="167">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       <span class="text-right pull-right">{{this.language.discounted_amount}} ({{this.defaultCurrency}})</span>
                     </ng-template>
@@ -954,15 +954,15 @@
                       <span class="text-right pull-right"> {{dataItem.discount_amount}} </span>
                     </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column title="{{this.language.gross}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
-                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                  <kendo-grid-column title="{{this.language.gross}}  ({{this.defaultCurrency}})" field="discounted_price" [width]="100" [minResizableWidth]="100">
+                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" >
                       <span class="text-right pull-right">{{this.language.gross}} ({{this.defaultCurrency}})</span>
                     </ng-template>
                     <ng-template kendoGridCellTemplate let-row let-dataItem>
                       <span class="text-right pull-right"> {{dataItem.discounted_price}} </span>
                     </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column field="step_4_right_grid_item" title="" template="" [headerStyle]="{'width': '130px !important'}"
+                  <kendo-grid-column field="step_4_right_grid_item" title="" template="" [width]="130"
                     [minResizableWidth]="120">
                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                       {{this.language.action}}
@@ -979,44 +979,44 @@
                   <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                     <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                       [selectable]="false" [resizable]="true">
-                      <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
-                      <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [width]="31" [minResizableWidth]="31"></kendo-grid-column>
+                      <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [width]="50" [minResizableWidth]="50">
                         <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                           {{rowIndex+1}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="Item" title="{{this.language.item}}" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column field="Item" title="{{this.language.item}}" [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-childDataItem>
                           {{childDataItem.Item}}
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="quantity" title="{{this.language.quantity}}" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column field="quantity" title="{{this.language.quantity}}" [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-childDataItem>
                          <span class="text-right pull-right"> {{childDataItem.quantity}}</span>
                         </ng-template>
                       </kendo-grid-column>
                       <kendo-grid-column field="price" title="{{this.language.price}} ({{this.defaultCurrency}})"
-                        [headerStyle]="{'width': '100px'}">
+                        [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-childDataItem>
                           <span class="text-right pull-right"> {{childDataItem.Actualprice}} </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column field="pricextn" title="{{this.language.extension}}" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column field="pricextn" title="{{this.language.extension}}" [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-childDataItem>
                           <span class="text-right pull-right"> {{childDataItem.pricextn}} </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-row let-childDataItem>
                           <span class="text-right pull-right"> {{childDataItem.discount}} </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column title="{{this.language.discounted_amount}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column title="{{this.language.discounted_amount}}" field="discounted_price" [width]="167"  [minResizableWidth]="167"> 
                         <ng-template kendoGridCellTemplate let-row let-childDataItem>
                           <span class="text-right pull-right"> {{childDataItem.dicount_amount}} </span>
                         </ng-template>
                       </kendo-grid-column>
-                      <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                      <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [width]="100" [minResizableWidth]="100">
                         <ng-template kendoGridCellTemplate let-row let-childDataItem>
                         <span class="text-right pull-right">{{childDataItem.gross}} </span>
                         </ng-template>
@@ -1282,17 +1282,17 @@
                         class="opti_screen4-detail-row opti_screen4-detail-row-top opti_screen4-detail-row-lastchildTable" [data]="step3_data_final"  [resizable]="true"
                           [selectable]="false">
                           <!-- <kendo-grid-column title="#" field="rowIndex"></kendo-grid-column> -->
-                          <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.serial}}" field="sl_no" [width]="50" [minResizableWidth]="50">
                             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                               {{rowIndex+1}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.item}}" field="item" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.item}}" field="item" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridCellTemplate let-dataItem>
                               {{dataItem.item}}
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.quantity}}" field="quantity" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.quantity}}" field="quantity" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.quantity}}</span>
                             </ng-template>
@@ -1300,7 +1300,7 @@
                               <span class="text-right pull-right"> {{dataItem.quantity}}</span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.price}} ({{this.defaultCurrency}})" field="price" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.price}} ({{this.defaultCurrency}})</span>
                             </ng-template>
@@ -1308,7 +1308,7 @@
                               <span class="text-right pull-right"> {{dataItem.price}}</span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.extension}}" field="price_ext" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.extension}}" field="price_ext" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.extension}} ({{this.defaultCurrency}})</span>
                             </ng-template>
@@ -1316,7 +1316,7 @@
                               <span class="text-right pull-right"> {{dataItem.price_ext}}</span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.discount_per}}" field="feature_discount_percent" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.discount_per}}" field="feature_discount_percent" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.discount_per}}</span>
                             </ng-template>
@@ -1325,7 +1325,7 @@
                             </ng-template>
                           </kendo-grid-column>
                           <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price"
-                            [headerStyle]="{'width': '100px'}">
+                            [width]="167" [minResizableWidth]="167">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.discounted_amount}} ({{this.defaultCurrency}})</span>
                             </ng-template>
@@ -1333,7 +1333,7 @@
                               <span class="text-right pull-right"> {{dataItem.discount_amount}} </span>
                             </ng-template>
                           </kendo-grid-column>
-                          <kendo-grid-column title="{{this.language.gross}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                          <kendo-grid-column title="{{this.language.gross}}  ({{this.defaultCurrency}})" field="discounted_price" [width]="100" [minResizableWidth]="100">
                             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                               <span class="text-right pull-right">{{this.language.gross}} ({{this.defaultCurrency}})</span>
                             </ng-template>
@@ -1344,43 +1344,43 @@
                           <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                             <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                               [selectable]="false" [resizable]="true">
-                              <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [headerStyle]="{'width': '100px'}"></kendo-grid-column>
-                              <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [width]="50" [minResizableWidth]="50"></kendo-grid-column>
+                              <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [width]="50" [minResizableWidth]="50">
                                 <ng-template kendoGridCellTemplate let-childDataItem let-row let-rowIndex="rowIndex">
                                   {{rowIndex+1}}
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column field="Item" title="{{this.language.item}}" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column field="Item" title="{{this.language.item}}" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-childDataItem>
                                   {{childDataItem.Item}}
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column field="quantity" title="{{this.language.quantity}}" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column field="quantity" title="{{this.language.quantity}}" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-childDataItem>
                                   <span class="text-right pull-right"> {{childDataItem.quantity}}</span>
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column field="price" title="{{this.language.price}} ({{this.defaultCurrency}})" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column field="price" title="{{this.language.price}} ({{this.defaultCurrency}})" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-childDataItem>
                                   <span class="text-right pull-right"> {{childDataItem.Actualprice}} </span>
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column field="pricextn" title="{{this.language.extension}}" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column field="pricextn" title="{{this.language.extension}}" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-childDataItem>
                                   <span class="text-right pull-right"> {{childDataItem.pricextn}} </span>
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column title="{{this.language.discount_per}}" field="discount_per" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-row let-childDataItem>
                                   <span class="text-right pull-right"> {{childDataItem.discount}} </span>
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column title="{{this.language.discounted_amount}}  ({{this.defaultCurrency}})" field="discounted_price" [width]="167" [minResizableWidth]="167">
                                 <ng-template kendoGridCellTemplate let-row let-childDataItem>
                                   <span class="text-right pull-right">{{childDataItem.dicount_amount}}</span>
                                 </ng-template>
                               </kendo-grid-column>
-                              <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [headerStyle]="{'width': '100px'}">
+                              <kendo-grid-column title="{{this.language.gross}}" field="discounted_price" [width]="100" [minResizableWidth]="100">
                                 <ng-template kendoGridCellTemplate let-row let-childDataItem>
                               <span class="text-right pull-right">   {{childDataItem.gross}} </span>
                                 </ng-template>
