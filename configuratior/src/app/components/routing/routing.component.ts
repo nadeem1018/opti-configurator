@@ -511,23 +511,23 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].auto_move = false;
 
       this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[1];
-      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
-      this.routing_detail_data[this.current_grid_action_row].mtq = $event[8];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[7];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[7]];
+      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
+      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[2];
+      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[3];
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[5];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
+      this.routing_detail_data[this.current_grid_action_row].mtq = $event[9];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
+      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
       let obj = this;
 
 
-      if ($event[2] == '4' || $event[2] == '5') {
+      if ($event[3] == '4' || $event[3] == '5') {
         this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
         this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
       }
 
-      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
+      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_id, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
         // obj.current_grid_action_row = 0;
       });
     }
@@ -584,7 +584,7 @@ export class RoutingComponent implements OnInit {
 
     if (this.lookupfor == "template_routing_lookup") {
       this.routing_header_data.template_routing_id = $event[0];
-      this.routing_header_data.template_routing_code = $event[1];
+      this.routing_header_data.template_routing_code = $event[0];
     }
 
     let obj = this;
@@ -597,12 +597,10 @@ export class RoutingComponent implements OnInit {
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
     let current_row_line_no = this.current_selected_row.rowindex;
     let current_row_index = this.current_selected_row.rowindex - 1;
-    let next_row_index = current_row_index + 1;
-    let prev_row_index = current_row_index - 1;
-    console.log('current row ', this.current_selected_row);
-    console.log('routing_detail_data row ', this.routing_detail_data);
-    console.log('routing_detail_data row ', this.routing_detail_data);
+    this.row_selection = [];
+    console.log("this.row_selection start  - ", this.row_selection);
     if (type == '1') {
+      let prev_row_index = current_row_index - 1;
       if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex - 1;
         this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno - 1;
@@ -613,22 +611,24 @@ export class RoutingComponent implements OnInit {
         var temp_swap = this.routing_detail_data[current_row_index];
         this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
         this.routing_detail_data[prev_row_index] = temp_swap;
+        this.row_selection = [this.routing_detail_data[prev_row_index].rowindex];
         this.current_selected_row = this.routing_detail_data[prev_row_index];
       }
     } else if (type == '2') {
-      if (this.routing_detail_data[next_row_index] != undefined){ // && this.routing_detail_data[next_row_index].length > 0
+      let next_row_index = current_row_index + 1;
+      if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex + 1;
         this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno + 1;
 
         this.routing_detail_data[next_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex - 1;
         this.routing_detail_data[next_row_index].lineno = this.routing_detail_data[next_row_index].lineno - 1;
-        
+
         var temp_swap = this.routing_detail_data[current_row_index];
         this.routing_detail_data[current_row_index] = this.routing_detail_data[next_row_index];
         this.routing_detail_data[next_row_index] = temp_swap;
+        this.row_selection = [this.routing_detail_data[next_row_index].rowindex];
         this.current_selected_row = this.routing_detail_data[next_row_index];
       }
-
     }
   }
 
@@ -1145,8 +1145,38 @@ export class RoutingComponent implements OnInit {
 
   }
 
-  getTemplateRoutingDetails(template_code) {
+  clearInvalidTemplateRouting() {
+    this.routing_header_data.template_routing_id = "";
+    this.routing_header_data.template_routing_code = "";
+    this.toastr.error('', this.language.invalid_template_routing_code, this.commonData.toast_config);
+  }
 
+  getTemplateRoutingDetails(template_code) {
+    this.showLookupLoader = true;
+    this.service.TemplateRoutingDetail(template_code).subscribe(
+      data => {
+        console.log(data);
+        if (data != null) {
+          if (data.length > 0) {
+            this.routing_header_data.template_routing_id = data[0].ITEMCODE;
+            this.routing_header_data.template_routing_code = data[0].ITEMCODE;
+            this.showLookupLoader = false;
+          } else {
+            this.clearInvalidTemplateRouting();
+            this.showLookupLoader = false;
+            return;
+          }
+        } else {
+          this.clearInvalidTemplateRouting();
+          this.showLookupLoader = false;
+          return;
+        }
+      },
+      error => {
+        this.showLookupLoader = false;
+        this.clearInvalidTemplateRouting();
+        return;
+      });
   }
 
   on_type_click_lookup(type, rowindex) {
@@ -1250,12 +1280,12 @@ export class RoutingComponent implements OnInit {
     )
   }
 
-  getOperationResourceDetail(oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
+  getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
     this.showLookupLoader = true;
     if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
       this.routing_detail_resource_data[rowindex] = [];
     }
-    this.service.getOperationResource(oper_code).subscribe(
+    this.service.getOperationResource(oper_id).subscribe(
       data => {
         this.showLookupLoader = false;
         if (data != undefined) {
@@ -1267,52 +1297,56 @@ export class RoutingComponent implements OnInit {
             }
           }
         }
+        if (data != undefined && data != '') {
+          if (data.length > 0) {
+            let operData = [];
+            let localhcounter = 1;
+            let basis = '1';
+            let is_basis_disabled = false;
+            if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
+              basis = '4';
+              is_basis_disabled = true;
+            }
 
-        if (data.length > 0) {
-          let operData = [];
-          let localhcounter = 1;
-          let basis = '1';
-          let is_basis_disabled = false;
-          if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
-            basis = '4';
-            is_basis_disabled = true;
-          }
+            if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
+              basis = '1';
+              is_basis_disabled = false;
+            }
 
-          if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
-            basis = '1';
-            is_basis_disabled = false;
-          }
-
-          if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
-            basis = '1';
-            is_basis_disabled = false;
-          }
-          for (let i = 0; i < data.length; ++i) {
+            if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
+              basis = '1';
+              is_basis_disabled = false;
+            }
+            for (let i = 0; i < data.length; ++i) {
 
 
-            data[i].lineno = localhcounter;
-            data[i].rowindex = localhcounter;
-            data[i].unique_key = operation_line_unique_key;
-            data[i].ResCode = data[i].ResCode,
-              data[i].ResName = data[i].ResName,
-              data[i].ResType = data[i].ResType,
-              data[i].ResUOM = data[i].ResUOM,
-              data[i].ResCons = (data[i].ResCons).toString(),
-              data[i].ResInv = (data[i].ResInv).toString(),
-              data[i].ResUsed = data[i].ResUsed,
-              data[i].TimeUOM = data[i].TimeUOM,
-              data[i].TimeCons = (data[i].TimeCons).toString(),
-              data[i].TimeInv = (data[i].TimeInv).toString(),
+
+              data[i].OPRCode = oper_code;
+              data[i].lineno = localhcounter;
+              data[i].rowindex = localhcounter;
+              data[i].unique_key = operation_line_unique_key;
+              data[i].ResCode = data[i].ResCode;
+
+              data[i].ResName = data[i].ResName;
+              data[i].ResType = data[i].ResType;
+              data[i].ResUOM = data[i].ResUOM;
+              data[i].ResCons = (data[i].ResCons).toString();
+              data[i].ResInv = (data[i].ResInv).toString();
+              data[i].ResUsed = data[i].ResUsed;
+              data[i].TimeUOM = data[i].TimeUOM
+              data[i].TimeCons = (data[i].TimeCons).toString();
+              data[i].TimeInv = (data[i].TimeInv).toString();
               data[i].resource_consumption_type = 1;
-            data[i].basis = data[i].ChrgBasis;
-            data[i].schedule = false,
-              data[i].oper_consumption_method = oper_consumption_type;
-            data[i].oper_type = oper_type;
+              data[i].basis = data[i].ChrgBasis;
+              data[i].schedule = false,
+                data[i].oper_consumption_method = oper_consumption_type;
+              data[i].oper_type = oper_type;
 
-            operData.push(data[i]);
-            localhcounter++;
+              operData.push(data[i]);
+              localhcounter++;
+            }
+            this.routing_detail_resource_data[rowindex] = operData;
           }
-          this.routing_detail_resource_data[rowindex] = operData;
         }
         if (callback != "" || callback !== undefined) {
           callback();
@@ -1544,6 +1578,7 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'oper_top_level') {
       this.routing_detail_data[currentrow].oper_top_level = value;
+      this.routing_detail_data[currentrow].operation_top_level = value;
     }
 
     if (grid_element == 'oper_code') {
@@ -1570,7 +1605,7 @@ export class RoutingComponent implements OnInit {
 
 
               this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
-              this.routing_detail_data[currentrow].oper_code = data[0].OPRCode;
+              this.routing_detail_data[currentrow].oper_code = data[0].OperationCode;
               this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
               this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
               this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
@@ -1588,7 +1623,7 @@ export class RoutingComponent implements OnInit {
                 this.routing_detail_data[currentrow].count_point_operation = true;
                 this.routing_detail_data[currentrow].count_point_operation_disabled = true;
               }
-              this.getOperationResourceDetail(data[0].OPRCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
+              this.getOperationResourceDetail(data[0].OPRCode, data[0].OperationCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
               this.clearInvalidOperationData(currentrow);
@@ -1798,46 +1833,52 @@ export class RoutingComponent implements OnInit {
     if (this.validate_header_info() == '0') {
       return false;
     }
+    if (this.routing_header_data.use_template_routing == false) {
+      if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+        for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
+          if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
+            if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
+              this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
+              return;
+            }
+          }
 
-    if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
-      this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
-      return;
-    }
+          if (this.routing_detail_data[DetailIndex].type == 2 && this.routing_detail_data[DetailIndex].opn_application == true && (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '')) {
+            this.toastr.error('', this.language.operationatitemmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
+            return;
+          }
 
-    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
-      for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
-        if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
-          if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
-            this.toastr.error('', this.language.operationmandatoryTopLevel + ' ' + (DetailIndex + 1), this.commonData.toast_config);
+          if (this.routing_detail_data[DetailIndex].type == 4 && (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '')) {
+            this.toastr.error('', this.language.operationatOprmmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
             return;
           }
         }
       }
-    }
 
-    // validate Grid line for operation setup type & inspection QC type 
-    if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
-      let tmp_dtl_tble = this.routing_detail_data.filter(function (obj) {
-        return (obj.oper_code != "" && obj.oper_code != undefined) ? obj : "";
-      });
-      if (tmp_dtl_tble.length > 0) {
-        let temp__dtl_line_counter = 0;
-        for (let temp_index_line = 0; temp_index_line < tmp_dtl_tble.length; temp_index_line++) {
-          if (temp__dtl_line_counter == 0 && tmp_dtl_tble[temp_index_line].oper_type == '4') {
-            this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
-            //  this.clearInvalidOperationData(temp__dtl_line_counter);
-            return;
-          }
-
-          let lastRowIndex = (tmp_dtl_tble.length - 1);
-          if (lastRowIndex == temp__dtl_line_counter) { // last row 
-            if (tmp_dtl_tble[temp_index_line].oper_type == '1') {
-              this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+      // validate Grid line for operation setup type & inspection QC type 
+      if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+        let tmp_dtl_tble = this.routing_detail_data.filter(function (obj) {
+          return (obj.oper_code != "" && obj.oper_code != undefined) ? obj : "";
+        });
+        if (tmp_dtl_tble.length > 0) {
+          let temp__dtl_line_counter = 0;
+          for (let temp_index_line = 0; temp_index_line < tmp_dtl_tble.length; temp_index_line++) {
+            if (temp__dtl_line_counter == 0 && tmp_dtl_tble[temp_index_line].oper_type == '4') {
+              this.toastr.error('', this.language.firstOperationInspectionQC, this.commonData.toast_config);
               //  this.clearInvalidOperationData(temp__dtl_line_counter);
               return;
             }
+
+            let lastRowIndex = (tmp_dtl_tble.length - 1);
+            if (lastRowIndex == temp__dtl_line_counter) { // last row 
+              if (tmp_dtl_tble[temp_index_line].oper_type == '1') {
+                this.toastr.error('', this.language.lastOperSetup, this.commonData.toast_config);
+                //  this.clearInvalidOperationData(temp__dtl_line_counter);
+                return;
+              }
+            }
+            temp__dtl_line_counter++;
           }
-          temp__dtl_line_counter++;
         }
       }
     }
@@ -1852,6 +1893,12 @@ export class RoutingComponent implements OnInit {
           return;
         }
       }
+
+      if (this.routing_header_data.use_template_routing == true && (this.routing_header_data.template_routing_code == "" || this.routing_header_data.template_routing_code == undefined)) {
+        this.toastr.error('', this.language.please_select_template_routing, this.commonData.toast_config);
+        return;
+      }
+
     }
 
     let objDataset: any = {};
