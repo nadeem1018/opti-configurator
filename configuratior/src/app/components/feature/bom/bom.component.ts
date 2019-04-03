@@ -69,8 +69,7 @@ export class BomComponent implements OnInit {
   public GetItemData = [];
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
-
-  //custom dialoag params
+   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService) { }
@@ -99,6 +98,7 @@ export class BomComponent implements OnInit {
     this.feature_bom_data = [];
     this.feature_bom_table = [];
     this.tree_data_json = [];
+    
     this.getFeatureBomDetail(id);
   }
   navigateToMasterHeader(feature_id) {
@@ -683,8 +683,10 @@ export class BomComponent implements OnInit {
            this.feature_bom_table[i].display_name = "";
            this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
            return false;
-         } */
+          } */
+          
         this.feature_bom_table[i].display_name = value
+
         this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
       }
     }
@@ -762,6 +764,8 @@ export class BomComponent implements OnInit {
         else {
           this.feature_bom_table[i].type_value = code;
           this.feature_bom_table[i].type_value_code = code;
+          this.live_tree_view_data.push({ "display_name": code, "tree_index": this.currentrowindex, "branchType": 'value', "icon": 'value'});          
+          
         }
       }
     }
@@ -896,7 +900,7 @@ export class BomComponent implements OnInit {
                 this.feature_bom_table[i].display_name = data[0].Description;
                 this.feature_bom_table[i].price_source = data[0].ListName;
                 this.feature_bom_table[i].price_source_id = data[0].PriceListID;
-                this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex });
+                this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon": 'item'});
               }
             }
           }
@@ -923,7 +927,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
           this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
           this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
-          this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex });
+          this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon":'item' });
         }
     }
 
@@ -1018,7 +1022,7 @@ export class BomComponent implements OnInit {
                 }
               }
             }
-            this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex });
+            this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex ,"branchType": 'feature', "icon":'feature'});
           }
           else {
             if (index == 1) {
@@ -1322,22 +1326,40 @@ export class BomComponent implements OnInit {
         );
       } else {
         let sequence_count = parseInt(this.tree_data_json.length + 1);
+        console.log(this.live_tree_view_data);
         if (this.live_tree_view_data.length > 0) {
-          for (var key in this.live_tree_view_data) {
+
+          //for (var key in this.live_tree_view_data) {
+            for (var key = 0 ; this.live_tree_view_data.length ; key++) {
             var update_index = "";
+            if(this.live_tree_view_data[key] == undefined){
+              return;
+            }
+            else {
+           
             if (this.live_tree_view_data[key].tree_index !== undefined) {
               let local_tree_index = this.live_tree_view_data[key].tree_index;
               update_index = this.tree_data_json.findIndex(function (tree_el) {
                 return tree_el.tree_index == local_tree_index
               });
             }
-            let temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
+
+           let temp_seq = {};
+           
             if (update_index == "-1") {
+              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
               this.tree_data_json.push(temp_seq);
             } else {
+              
+              let TempBranchType = this.tree_data_json[update_index].branchType;
+              let TempIcon = this.tree_data_json[update_index].icon;
+              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon, "modalImage": ""};
               this.tree_data_json[update_index] = (temp_seq);
             }
+            
           }
+        }
+        console.log(this.tree_data_json);
           this.live_tree_view_data = [];
         }
       }
