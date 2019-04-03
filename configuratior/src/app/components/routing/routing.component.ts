@@ -506,8 +506,8 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].oper_code = $event[0];
       this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[1];
       this.routing_detail_data[this.current_grid_action_row].oper_type = $event[2];
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[4];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[4];
+      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[5];
+      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[7];
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[7]];
       let obj = this;
