@@ -428,6 +428,8 @@ export class OutputComponent implements OnInit {
             this.step1_data.document_name = this.language.SalesOrder;
           }
 
+          this.final_reference_number = data.CustomerOutput[0].OPTM_REFDOCNO;
+          this.final_ref_doc_entry = data.CustomerOutput[0].OPTM_REFDOCENTRY;
 
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
