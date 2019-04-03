@@ -926,7 +926,14 @@ export class OutputComponent implements OnInit {
                 }
 
               }
-
+            } else {
+              // no accessory in main array, but accessory found in sub model 
+              if (this.feature_itm_list_table[i].is_accessory == 'Y'){
+                if (this.feature_itm_list_table[i].ispropogateqty == 'Y') {
+                  // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
+                } 
+              }
             }
           }
 
