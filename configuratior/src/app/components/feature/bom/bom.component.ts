@@ -508,8 +508,19 @@ export class BomComponent implements OnInit {
     if (this.validation("Save") == false) {
       return;
     }
+
     if (this.feature_bom_table.length > 0) {
       this.feature_bom_table[0].id = this.update_id;
+      for (let i = 0; i < this.feature_bom_table.length; ++i) {
+        if (this.feature_bom_table[i].display_name == "" || this.feature_bom_table[i].display_name == " ") {
+          let currentrow = i + 1;
+          this.toastr.error('',this.language.DisplayNameRequired + currentrow, this.commonData.toast_config);
+          this.showLookupLoader = false;
+          return;
+        }
+      }
+      
+
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
 
         if (this.feature_bom_data.multi_select === false) {
@@ -1325,6 +1336,14 @@ export class BomComponent implements OnInit {
           }
         );
       } else {
+
+        for (let i = 0; i < this.feature_bom_table.length; ++i) {
+          if(this.feature_bom_table[i].display_name == ''){
+           let currentrowindx = i+1;
+            this.toastr.error('', this.language.DisplayNameRequired + currentrowindx, this.commonData.toast_config);
+          }
+        }
+
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         console.log(this.live_tree_view_data);
         if (this.live_tree_view_data.length > 0) {
