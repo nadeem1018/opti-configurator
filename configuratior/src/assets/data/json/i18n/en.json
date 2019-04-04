@@ -52,6 +52,7 @@
     "close": "Close",
     "total_before_discount": "Total Before Discount",
     "subtotal": "Subtotal",
+    "DisplayNameRequired":"Enter display name at row index: ",
     "DataSaved": "Data saved successfully",
     "DataNotSaved": "Failed to save data",
     "DataDeleteSuccesfully": "Data deleted successfully",
