@@ -54,7 +54,6 @@ export class ModelbomComponent implements OnInit {
   public showLookupLoader: boolean = false;
   modalRef: BsModalRef;
 
-
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
 
   companyName: string;
@@ -653,7 +652,6 @@ export class ModelbomComponent implements OnInit {
           this.lookupfor = 'Price_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
-
         }
         else {
           this.lookupfor = "";
@@ -722,10 +720,7 @@ export class ModelbomComponent implements OnInit {
       this.serviceData = []
       this.getItemDetails($event[0]);
     }
-
-
   }
-
 
   getPriceDetails(price_list_name, price, index) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
@@ -764,7 +759,6 @@ export class ModelbomComponent implements OnInit {
               for (let i = 0; i < this.modelbom_data.length; ++i) {
                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
                   console.log(data[0]);
-
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID;
                   this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE;
                   this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
@@ -779,8 +773,6 @@ export class ModelbomComponent implements OnInit {
             }
             this.serviceData = data;
           }
-
-
         }
         else {
           this.lookupfor = "";
@@ -802,7 +794,6 @@ export class ModelbomComponent implements OnInit {
           
           if (data != null) {
             if (data.length > 0) {
-             
               if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
                 this.commonService.signOut(this.toastr, this.route);
@@ -919,7 +910,6 @@ export class ModelbomComponent implements OnInit {
                 this.modelbom_data[iIndex].type_value = data;
                 this.getModelFeatureDetails(this.modelbom_data[iIndex].type_value, "Header", iIndex)
               }
-
             })
         }
         else if (this.modelbom_data[i].type == 2) {
@@ -953,7 +943,6 @@ export class ModelbomComponent implements OnInit {
         else {
           //First we will check the conflicts
           this.checkModelAlreadyAddedinParent(value, code, i, "change");
-
         }
       }
     }
@@ -962,7 +951,6 @@ export class ModelbomComponent implements OnInit {
   on_display_name_change(value, rowindex) {
     console.log("value - " + value);
     console.log(" modelbom_data.feature_name " + this.modelbom_data.feature_name);
-
     this.currentrowindex = rowindex
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
@@ -1005,10 +993,8 @@ export class ModelbomComponent implements OnInit {
         }
 
         $('input[name="bom_quantity"]').eq((rowindex - 1)).val((value));
-
       }
     }
-
   }
 
   on_uom_change(value, rowindex) {
@@ -1016,11 +1002,8 @@ export class ModelbomComponent implements OnInit {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.modelbom_data[i].uom = value
-
-
       }
     }
-
   }
 
   on_min_selected_change(value, rowindex, actualvalue) {
@@ -1060,11 +1043,8 @@ export class ModelbomComponent implements OnInit {
             return;
           }
         }
-
       }
-
     }
-
   }
 
   on_max_selected_change(value, rowindex, actualvalue) {
@@ -1158,7 +1138,6 @@ export class ModelbomComponent implements OnInit {
 
       }
     }
-
   }
 
   on_propagate_qty_change(value, rowindex) {
@@ -1173,7 +1152,6 @@ export class ModelbomComponent implements OnInit {
         }
       }
     }
-
   }
 
   on_price_source_change(id, value, rowindex, actualValue) {
@@ -1182,7 +1160,6 @@ export class ModelbomComponent implements OnInit {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
           data => {
-            
           if(data != undefined && data.length > 0){
             if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
@@ -1204,7 +1181,6 @@ export class ModelbomComponent implements OnInit {
           })
       }
     }
-
   }
 
   on_mandatory_change(value, rowindex) {
@@ -1219,7 +1195,6 @@ export class ModelbomComponent implements OnInit {
         }
       }
     }
-
   }
 
   on_unique_identifer_change(value, rowindex) {
@@ -1234,7 +1209,6 @@ export class ModelbomComponent implements OnInit {
         }
       }
     }
-
   }
 
   on_isready_change(value) {
@@ -1247,8 +1221,6 @@ export class ModelbomComponent implements OnInit {
       }
     }
   }
-
-
 
   onSave() {
     var obj = this;
@@ -1274,8 +1246,6 @@ export class ModelbomComponent implements OnInit {
         this.showLookupLoader = false;
       }
     });
-
-
   }
 
   validation(btnpress) {
@@ -1312,10 +1282,7 @@ export class ModelbomComponent implements OnInit {
       }
 
     }
-
-
   }
-
 
   onDelete() {
     // var result = confirm(this.language.DeleteConfimation);
@@ -1368,15 +1335,13 @@ export class ModelbomComponent implements OnInit {
     this.show_dialog = false;
   }
 
-
   onExplodeClick(type) {
     if (type == "manual") {
       this.showtree();
     }
     console.log('onExplodeClick');
     this.lookupfor = 'tree_view__model_bom_lookup"';
-
-
+    console.log(this.tree_data_json);
     if (this.modelbom_data.modal_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
@@ -1400,7 +1365,6 @@ export class ModelbomComponent implements OnInit {
               });
               this.tree_data_json = temp_data;
 
-
             }
             else {
               this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -1415,6 +1379,14 @@ export class ModelbomComponent implements OnInit {
         );
       }
       else {
+        
+        for (let i = 0; i < this.modelbom_data.length; ++i) {
+            if(this.modelbom_data[i].display_name == ''){
+             let currentrowindx = i+1;
+              this.toastr.error('', this.language.DisplayNameRequired + currentrowindx, this.commonData.toast_config);
+            }
+        }
+
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         console.log(this.live_tree_view_data);
         if (this.live_tree_view_data.length > 0) {
@@ -1445,12 +1417,11 @@ export class ModelbomComponent implements OnInit {
               temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.modal_code, "parentNumber": this.modelbom_data.modal_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon,"modalImage": ""};
               this.tree_data_json[update_index] = (temp_seq);
             }
+            //this.live_tree_view_data.splice(key, 1);
           }
         }
           console.log(this.tree_data_json);
-
           this.live_tree_view_data = [];
-
         }
       }
     } else {
@@ -1458,7 +1429,6 @@ export class ModelbomComponent implements OnInit {
       return;
     }
   }
-
 
   onVerifyOutput(success_call): any {
     let objDataset: any = {};
@@ -1474,7 +1444,6 @@ export class ModelbomComponent implements OnInit {
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
-
 
     this.service.onVerifyOutput(objDataset).subscribe(
       data => {
@@ -1502,13 +1471,10 @@ export class ModelbomComponent implements OnInit {
       })
   }
 
-
   enlage_image(image) {
     this.lookupfor = 'large_image_view';
     this.selectedImage = image;
   }
-
-
 
   onModelIdChange() {
     this.service.onModelIdChange(this.modelbom_data.modal_code).subscribe(
@@ -1584,7 +1550,6 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data.modal_id = data;
           this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
         }
-
       })
   }
 
@@ -1603,7 +1568,6 @@ export class ModelbomComponent implements OnInit {
             this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
             this.modelbom_data[rowindex].type_value = "";
             this.modelbom_data[rowindex].display_name = "";
-
             return;
           }
           else if (data == "True") {
@@ -1614,7 +1578,6 @@ export class ModelbomComponent implements OnInit {
             else if (fromEvent == "change") {
               this.getModelItemDetails(rowindex);
             }
-
           }
         }
         else {
@@ -1630,8 +1593,6 @@ export class ModelbomComponent implements OnInit {
     )
   }
 
-
-
   //This will recurse the tree
   get_childrens(componentNumber) {
     let data = this.complete_dataset.filter(function (obj) {
@@ -1645,7 +1606,7 @@ export class ModelbomComponent implements OnInit {
     let data = [];
     if (componentNumber != "" && componentNumber != null && componentNumber!= undefined ){
       data = this.tree_data_json.filter(function (obj) {
-        return obj['parentNumber'] == componentNumber; // && obj['level'] == level;
+        return obj['parentNumber'] == componentNumber; // && obj['level'] == level
       });
     }
     return data;
@@ -1671,12 +1632,22 @@ export class ModelbomComponent implements OnInit {
   save_data() {
     if (this.modelbom_data.length > 0) {
       this.modelbom_data[0].id = this.update_id;
+
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if (this.modelbom_data[i].display_name == "" || this.modelbom_data[i].display_name == " ") {
+          let currentrow = i + 1;
+          this.toastr.error('',this.language.DisplayNameRequired + currentrow, this.commonData.toast_config);
+          this.showLookupLoader = false;
+          return;
+        }
+      }
       
       if(this.validate_unique_identifier() == false){
         return;
       }
 
       for (let i = 0; i < this.modelbom_data.length; ++i) {
+
         if (this.modelbom_data[i].unique_identifer == false) {
           this.modelbom_data[i].unique_identifer = "N"
         }
