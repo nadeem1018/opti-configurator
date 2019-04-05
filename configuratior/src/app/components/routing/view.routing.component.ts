@@ -268,7 +268,6 @@ export class ViewRoutingComponent implements OnInit {
             this.selectall = false
         }
     }
-<<<<<<< HEAD
 
     on_checkbox_checked(checkedvalue, row_data) {
         var isExist = 0;
@@ -310,6 +309,3 @@ export class ViewRoutingComponent implements OnInit {
 
     }
 }
-=======
-}
->>>>>>> ff8cac5da5c3f6fb9256ccc45975f312227a0305
