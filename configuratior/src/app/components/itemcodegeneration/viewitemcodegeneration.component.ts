@@ -112,6 +112,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
     ngOnInit() {
 
+
         const element = document.getElementsByTagName("body")[0];
         element.className = "";
         this.showLoader = true;
@@ -130,11 +131,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         } else {
           this.selectedValue = Number(this.commonData.default_count);
         }
-        // if(sessionStorage.isFilterEnabled == "true" ) {
-        //   this.isColumnFilter = true;
-        // } else {
-        //   this.isColumnFilter = false;
-        // }
+         if(sessionStorage.isFilterEnabled == "true" ) {
+           this.isColumnFilter = true;
+         } else {
+           this.isColumnFilter = false;
+         }
         this.service_call(this.current_page, this.search_string);
 
         //this.CheckedData.CheckedRow=[];

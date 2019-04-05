@@ -163,6 +163,10 @@ export class ViewRoutingComponent implements OnInit {
         grid_event.selectedRows = [];
     }
 
+    saveFilterState() {
+       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    }
+
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
@@ -177,7 +181,11 @@ export class ViewRoutingComponent implements OnInit {
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.service_call(this.current_page, this.search_string);
 
-        
+        if(sessionStorage.isFilterEnabled == "true" ) {
+          this.isColumnFilter = true;
+        } else {
+          this.isColumnFilter = false;
+        }
 
     }
     ngAfterViewInit() {
@@ -229,4 +237,27 @@ export class ViewRoutingComponent implements OnInit {
         }
     }
 
+    on_Selectall_checkbox_checked(checkedvalue) {
+        var isExist = 0;
+        this.CheckedData = []
+        this.selectall = false
+
+        if (checkedvalue == true) {
+            if (this.dataArray.length > 0) {
+                this.selectall = true
+                for (let i = 0; i < this.dataArray.length; ++i) {
+
+                    this.CheckedData.push({
+                        ModelId: this.dataArray[i].OPTM_MODELFEATUREID,
+                        CompanyDBId: this.companyName,
+                        GUID: sessionStorage.getItem("GUID"),
+                        UsernameForLic: sessionStorage.getItem("loggedInUser")
+                    })
+                }
+            }
+        }
+        else {
+            this.selectall = false
+        }
+    }
 }
