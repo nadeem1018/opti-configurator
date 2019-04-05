@@ -234,6 +234,7 @@ export class BomComponent implements OnInit {
               isQuanityDisabled: this.isQuanityDisabled,
               hide: this.ishide,
               pricehide: this.pricehide,
+              is_accessory: data.FeatureDetail[i].OPTM_ACCESSORY,
               isPropagateQtyDisable: this.isPropagateQtyDisable,
               isPriceDisabled: this.isPriceDisabled,
               CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
@@ -416,6 +417,7 @@ export class BomComponent implements OnInit {
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
+      is_accessory : 'N',
       isQuanityDisabled: false,
       isPriceDisabled: this.isPriceDisabled,
       isPropagateQtyDisable: false,
@@ -730,6 +732,7 @@ export class BomComponent implements OnInit {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
                 this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].is_accessory = "N";
                 this.feature_bom_table[iIndex].display_name = "";
                 $(type_value_code).val("");
                 return;
@@ -758,6 +761,7 @@ export class BomComponent implements OnInit {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
                 this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].is_accessory = "N";
                 this.feature_bom_table[iIndex].display_name = "";
                 this.feature_bom_table[iIndex].price_source = ""; 
                 this.feature_bom_table[iIndex].price_source_id = ""; 
@@ -908,6 +912,7 @@ export class BomComponent implements OnInit {
                 this.feature_bom_table[i].type_value = data[0].ItemKey;
                 this.feature_bom_table[i].type = 2
                 this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+                this.feature_bom_table[i].is_accessory = 'N';
                 this.feature_bom_table[i].display_name = data[0].Description;
                 this.feature_bom_table[i].price_source = data[0].ListName;
                 this.feature_bom_table[i].price_source_id = data[0].PriceListID;
@@ -935,6 +940,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].type_value = selectedDataDetails[0].ItemKey;
           this.feature_bom_table[i].type = 2
           this.feature_bom_table[i].type_value_code = selectedDataDetails[0].ItemKey;
+          this.feature_bom_table[i].is_accessory = 'N';
           this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
           this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
           this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
@@ -1023,6 +1029,7 @@ export class BomComponent implements OnInit {
                 if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
+                  this.feature_bom_table[i].is_accessory = data[0].OPTM_ACCESSORY; 
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
                   if (data[0].OPTM_PHOTO != null && data[0].OPTM_PHOTO != "") {
                     this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
@@ -1111,9 +1118,13 @@ export class BomComponent implements OnInit {
         return false;
       }
       else {
-        var total_detail_elements = this.feature_bom_table.length;
+        //let total_detail_elements = this.feature_bom_table.length;
+        let filtered_bom_data = this.feature_bom_table.filter(function (obj) {
+          return (obj.is_accessory == 'N' || obj.is_accessory == undefined || obj.is_accessory == null) ? obj : "";
+        });
+        let  total_detail_elements = filtered_bom_data.length;
         if (this.feature_bom_data.multi_select_disabled == false) {
-          console.log("total_detail_elements " + total_detail_elements);
+          
           if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
             this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
             return false;
