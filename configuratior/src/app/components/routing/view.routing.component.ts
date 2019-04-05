@@ -84,7 +84,15 @@ export class ViewRoutingComponent implements OnInit {
         if (userSelectionValue == true) {
 
             this.showLoader = true;
-            this.rs.DeleteRouting(this.row_id).subscribe(
+            let row_data;
+            if(this.CheckedData.length > 0){
+                row_data = this.CheckedData;
+            } else {
+                row_data = [{ CompanyDBID: sessionStorage.selectedComp, RoutingId: this.row_id,
+                    GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]
+            }
+          
+            this.rs.DeleteRouting(row_data).subscribe(
                 data => {
                     this.showLoader = false;
                     if (data === "True") {
@@ -248,7 +256,7 @@ export class ViewRoutingComponent implements OnInit {
                 for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        ModelId: this.dataArray[i].OPTM_MODELFEATUREID,
+                        RoutingId: this.dataArray[i].OPTM_MODELFEATUREID,
                         CompanyDBId: this.companyName,
                         GUID: sessionStorage.getItem("GUID"),
                         UsernameForLic: sessionStorage.getItem("loggedInUser")
@@ -259,5 +267,45 @@ export class ViewRoutingComponent implements OnInit {
         else {
             this.selectall = false
         }
+    }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i].RoutingId == row_data.OPTM_MODELFEATUREID) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            RoutingId: row_data.OPTM_MODELFEATUREID,
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    RoutingId: row_data.OPTM_MODELFEATUREID,
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                RoutingId: row_data.OPTM_MODELFEATUREID,
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
+            })
+        }
+
+
     }
 }

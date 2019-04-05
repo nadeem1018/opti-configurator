@@ -2074,7 +2074,9 @@ export class RoutingComponent implements OnInit {
 
   onDelete(model_feature_id) {
     this.showLookupLoader = true;
-    this.service.DeleteRouting(model_feature_id).subscribe(
+    let row_data = [{ CompanyDBID: sessionStorage.selectedComp, RoutingId: model_feature_id,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]
+    this.service.DeleteRouting(row_data).subscribe(
       data => {
         this.showLookupLoader = false;
         if (data != undefined) {
