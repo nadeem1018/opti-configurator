@@ -102,12 +102,14 @@ export class RoutingService {
   }
 
   getResourceList(wc_code): Observable<any> {
-    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, WCCode: wc_code }]) };
+    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, WCCode: wc_code,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceList", jObject, this.common_params.httpOptions);
   }
 
   getResourceDetail(ResourceCode): Observable<any> {
-    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, ResourceCode: ResourceCode }]) };
+    let jObject = { Resource: JSON.stringify([{ CompanyDBID: this.logged_in_company, ResourceCode: ResourceCode,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/ResourceDetail", jObject, this.common_params.httpOptions);
   }
 

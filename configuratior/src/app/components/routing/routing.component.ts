@@ -1112,7 +1112,7 @@ export class RoutingComponent implements OnInit {
     this.serviceData = []
     this.service.TemplateRoutingList().subscribe(
       data => {
-        /*  if (data != undefined) {
+         if (data != undefined) {
            if (data.length > 0) {
              if (data[0].ErrorMsg == "7001") {
                this.commonService.RemoveLoggedInUser().subscribe();
@@ -1121,7 +1121,7 @@ export class RoutingComponent implements OnInit {
                return;
              }
            }
-         } */
+         } 
         if (data.length > 0) {
           this.lookupfor = 'template_routing_lookup';
           this.showLookupLoader = false;
@@ -1158,6 +1158,12 @@ export class RoutingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route);
+              this.showLookupLoader = false;
+              return;
+            }
             this.routing_header_data.template_routing_id = data[0].ITEMCODE;
             this.routing_header_data.template_routing_code = data[0].ITEMCODE;
             this.showLookupLoader = false;
