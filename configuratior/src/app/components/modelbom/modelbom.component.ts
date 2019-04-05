@@ -509,12 +509,19 @@ export class ModelbomComponent implements OnInit {
               // this.feature_bom_table=data;
               for (let i = 0; i < this.modelbom_data.length; ++i) {
                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+                  this.modelbom_data[i].isAccessory = false;
+                  this.modelbom_data[i].unique_identifer = true;
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
                   this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME;
+                  if (this.modelbom_data[i].type == 1){
+                    if (data[0].OPTM_ACCESSORY == 'Y'){
+                      this.modelbom_data[i].isAccessory = true;
+                      this.modelbom_data[i].unique_identifer = false;
+                    }  
+                  }
+                  
                   this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex,"branchType": 'feature', "icon":'feature' });
-
-
                 }
               }
             }
@@ -537,6 +544,7 @@ export class ModelbomComponent implements OnInit {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+
         if(press_location == "Header" && this.lookupfor == 'feature_Detail_lookup'){
         // for(var i=0; i < this.modelbom_data.length;i++) {
         //   if ((data[0].OPTM_ACCESSORY == "Y") && (this.modelbom_data[i].type_value == data[0].OPTM_FEATUREID)) {
@@ -546,7 +554,7 @@ export class ModelbomComponent implements OnInit {
         //     this.modelbom_data[i].isAccessory = false;
         //   }
         // }
-          let featureId = data[0].OPTM_FEATUREID;
+         /*  let featureId = data[0].OPTM_FEATUREID;
           let update_index = this.modelbom_data.findIndex(function (obj) {
             return obj.type_value == featureId
           });
@@ -560,7 +568,7 @@ export class ModelbomComponent implements OnInit {
             else{
               this.modelbom_data[update_index].isAccessory = false;
             }
-          }
+          } */
       }
       },
       error => {

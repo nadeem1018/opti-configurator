@@ -2573,6 +2573,21 @@ export class OutputComponent implements OnInit {
             OPTM_LEVEL: step3_temp_row.ModelHeaderItemsArray[0].OPTM_LEVEL,
             ITEMCODEGENREF: step3_temp_row.ModelHeaderItemsArray[0].ITEMCODEGENREF,
           });
+        } else {
+          final_dataset_to_save.routing_model.push({
+            DocEntry: step3_temp_row.model_id,
+            OPTM_LINENO: step3_temp_row.rowIndex,
+            OPTM_MODELID: step3_temp_row.model_id,
+            OPTM_TYPE: '2',
+            OPTM_MANDATORY: 'N',
+            OPTM_UOM: 'each',
+            OPTM_UNIQUEIDNT: 'Y',
+            Price: step3_temp_row.price,
+            feature_code: "",
+            child_code: "",
+            OPTM_LEVEL: 0,
+            ITEMCODEGENREF: step3_temp_row.itemcodegenkey,
+          });
         }
 
         for (let f_indexx = 0; f_indexx < step3_temp_row.ModelHeaderData.length; f_indexx++) {
@@ -2616,7 +2631,13 @@ export class OutputComponent implements OnInit {
           if (step3_temp_row.feature[us_indexx].ModelId && step3_temp_row.feature[us_indexx].ModelId != null) {
             modelid_val = step3_temp_row.feature[us_indexx].ModelId
           } else {
-            modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+            if (step3_temp_row.ModelHeaderItemsArray[0]!= undefined && step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID != "" && step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID != null) {
+              modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+            } else {
+              if(step3_temp_row.model_id!="" && step3_temp_row.model_id != null) {
+                modelid_val = step3_temp_row.model_id;
+              }
+            }
           }
           final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,

@@ -6,7 +6,7 @@ import * as $ from 'jquery';
     selector: 'treeview',
     template: `
      <ul>
-        <li *ngFor="let inner_element of tree_data_json; let i= index;">  
+        <li class="treeview_li" *ngFor="let inner_element of tree_data_json; let i= index;">  
             <ng-template #template>
                 <div class="modal-body text-center image-previe-container">
                     <img [attr.src]="inner_element.modalImage"  style="max-width:100%">
