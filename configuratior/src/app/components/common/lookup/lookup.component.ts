@@ -1579,6 +1579,12 @@ export class LookupComponent implements OnInit {
         console.log(data);
         if (data != undefined) {
           if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.common_service.RemoveLoggedInUser().subscribe();
+              this.common_service.signOut(this.toastr, this.router);
+              this.showLookupLoader = false;
+              return;
+            }
             if (type == 'inverse') {
               this.resourceServiceData[currentrow].resource_consumption = parseFloat(data[0].Consumption).toFixed(3)
             }
@@ -1627,8 +1633,14 @@ export class LookupComponent implements OnInit {
       this.rs.getResourceDetail(value).subscribe(
         data => {
           console.log(data);
-          if (data != null) {
+          if (data != null && data != undefined) {
             if (data.length > 0) {
+              if (data[0].ErrorMsg == "7001") {
+                this.common_service.RemoveLoggedInUser().subscribe();
+                this.common_service.signOut(this.toastr, this.router);
+                this.showLookupLoader = false;
+                return;
+              }
               this.resourceServiceData[currentrow].resource_code = data[0].ResCode;
               this.resourceServiceData[currentrow].resource_name = data[0].Name;
               this.resourceServiceData[currentrow].resource_uom = data[0].UnitOfMsr;
@@ -1783,8 +1795,15 @@ export class LookupComponent implements OnInit {
     this.serviceData = []
     this.rs.getResourceList(this.resourceServiceWc).subscribe(
       data => {
-        if (data != null) {
+        if (data != null && data != undefined) {
           if (data.length > 0) {
+              if (data[0].ErrorMsg == "7001") {
+                this.common_service.RemoveLoggedInUser().subscribe();
+                this.common_service.signOut(this.toastr, this.router);
+                this.showLookupLoader = false;
+                return;
+              }
+
             this.current_popup_row = rowindex;
             this.table_head = [
               {
