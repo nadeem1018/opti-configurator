@@ -458,7 +458,7 @@
                                     <h3 class="text-center">{{language.quatation}}</h3>
                                 </div>
                                 <hr>
-                                <div class="col-md-6 col-sm-12 text-left text-md-left">
+                                <div class="col-md-7 col-sm-12 text-left text-md-left">
                                     <div class="media">
                                         <img src="{{logo_path}}" alt="configurator logo" class="" height="128" />
                                         <div class="media-body">
@@ -469,7 +469,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12 text-left text-md-right">
+                                <div class="col-md-5 col-sm-12 text-left text-md-right">
                                     <span *ngIf="showCustDetailsSec">
                                         <!-- <h2>DOC NO</h2> -->
                                         <div class="row align-items-center">
@@ -518,21 +518,25 @@
                                                            
                                                         </p>
                                                     </div> -->
-                                <div class="col-md-6 text-left text-md-left">
-                                    <div class="row align-items-center">
-                                        <span class=" col-sm-4 col-md-5 col-lg-4 col-xl-4">
-                                            <b>{{language.customer}}:</b>
-                                        </span> 
-                                        <div class="col-sm-8 col-md-7 col-lg-8 col-xl-8">
-                                            {{customer_details.customer_name | blankhandler}}
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center">
-                                        <span class=" col-sm-4 col-md-5 col-lg-4 col-xl-4">
-                                            <b>{{language.contact_person}}:</b>
-                                        </span> 
-                                        <div class="col-sm-8 col-md-7 col-lg-8 col-xl-8">
-                                            {{customer_details.person_name | blankhandler}}
+                                <div class="col-md-7 text-left text-md-left">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="row align-items-center">
+                                                <span class=" col-sm-4 col-md-5 col-lg-4 col-xl-4">
+                                                    <b>{{language.customer}}:</b>
+                                                </span> 
+                                                <div class="col-sm-8 col-md-7 col-lg-8 col-xl-8">
+                                                    {{customer_details.customer_name | blankhandler}}
+                                                </div>
+                                            </div>
+                                            <div class="row align-items-center">
+                                                <span class=" col-sm-4 col-md-5 col-lg-4 col-xl-4">
+                                                    <b>{{language.contact_person}}:</b>
+                                                </span> 
+                                                <div class="col-sm-8 col-md-7 col-lg-8 col-xl-8">
+                                                    {{customer_details.person_name | blankhandler}}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row align-items-top">
@@ -581,7 +585,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-sm-12 text-left text-md-right">
+                                <div class="col-md-5 col-sm-12 text-left text-md-right">
                                     
                                     <!-- <span *ngIf="showPaymentDetails"> -->
                                     <!-- <span>
@@ -597,7 +601,7 @@
                                             </p>
                                     </span> -->
                                     <div class="row align-items-center" *ngIf="showPaymentDetails">
-                                        <span class="col-sm-4 col-md-7 col-lg-8 col-xl-8">
+                                        <span class="col-sm-4 col-md-8 col-lg-8 col-xl-9">
                                             <b>{{language.pay_terms}} :</b>
                                         </span> 
                                         <div class="col-sm-8 col-md-5 col-lg-4 col-xl-4">
@@ -605,34 +609,34 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-center" *ngIf="showPaymentDetails">
-                                        <span class="col-sm-4 col-md-7 col-lg-8 col-xl-8">
+                                        <span class="col-sm-4 col-md-8 col-lg-8 col-xl-9">
                                             <b>{{language.payment_method}} :</b>
                                         </span> 
-                                        <div class="col-sm-8 col-md-5 col-lg-4 col-xl-4">
+                                        <div class="col-sm-8 col-md-4 col-lg-4 col-xl-3">
                                             By Card
                                         </div>
                                     </div>
                                     <div class="row align-items-center" *ngIf="showGeneralDetails">
-                                        <span class="col-sm-4 col-md-7 col-lg-8 col-xl-8">
+                                        <span class="col-sm-4 col-md-8 col-lg-8 col-xl-9">
                                             <b>{{customer_details.doc_type_date_label}}:</b>
                                         </span> 
-                                        <div class="col-sm-8 col-md-5 col-lg-4 col-xl-4">
+                                        <div class="col-sm-8 col-md-4 col-lg-4 col-xl-3">
                                             {{customer_details.delivery_until | date: 'MM/dd/yyyy' | blankhandler}}
                                         </div>
                                     </div>
                                     <div class="row align-items-center" *ngIf="showGeneralDetails">
-                                        <span class="col-sm-4 col-md-7 col-lg-8 col-xl-8">
+                                        <span class="col-sm-4 col-md-8 col-lg-8 col-xl-9">
                                             <b>{{language.posting_date}} :</b>
                                         </span> 
-                                        <div class="col-sm-8 col-md-5 col-lg-4 col-xl-4">
+                                        <div class="col-sm-8 col-md-4 col-lg-4 col-xl-3">
                                             {{customer_details.posting_date | date: 'MM/dd/yyyy' | blankhandler}}
                                         </div>
                                     </div>
                                     <div class="row align-items-center" *ngIf="showGeneralDetails">
-                                        <span class="col-sm-4 col-md-7 col-lg-8 col-xl-8">
+                                        <span class="col-sm-4 col-md-8 col-lg-8 col-xl-9">
                                             <b>{{language.Bom_Remarks}} :</b>
                                         </span> 
-                                        <div class="col-sm-8 col-md-5 col-lg-4 col-xl-4">
+                                        <div class="col-sm-8 col-md-4 col-lg-4 col-xl-3">
                                             {{customer_details.remark | blankhandler}}
                                         </div>
                                     </div>
