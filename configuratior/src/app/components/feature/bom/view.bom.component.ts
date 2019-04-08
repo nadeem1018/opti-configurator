@@ -259,18 +259,31 @@ export class ViewFeatureBOMComponent implements OnInit {
                         return;
                     } 
                 }
-                if (data === "True") {
-                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    this.service_call(this.current_page, this.search_string);
-                    this.router.navigateByUrl('feature/bom/view');
-                    return;
-                } else if (data == "ReferenceExists") {
-                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-                    return;
-                } else {
-                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                    return;
+
+                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
+                  }
+                  else if(data[0].IsDeleted == "1"){
+                      this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                      this.service_call(this.current_page, this.search_string);
+                      this.router.navigateByUrl('feature/bom/view');
+                  }
+                  else{
+                      this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
                 }
+
+                // if (data === "True") {
+                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                //     this.service_call(this.current_page, this.search_string);
+                //     this.router.navigateByUrl('feature/bom/view');
+                //     return;
+                // } else if (data == "ReferenceExists") {
+                //     this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+                //     return;
+                // } else {
+                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                //     return;
+                // }
             }
         )
     }
@@ -366,17 +379,33 @@ export class ViewFeatureBOMComponent implements OnInit {
                             this.commonservice.signOut(this.toastr, this.router);
                             return;
                         } 
-                    }                    
-                    if (data === "True") {
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('feature/bom/view');
-                        return;
+                    }  
+                    
+                    for(var i=0;  i < data.length ; i++){
+                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].FeatureId , this.commonData.toast_config);
+                        }
+                        else if(data[i].IsDeleted == "1"){
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].FeatureId , this.commonData.toast_config);
+                            this.CheckedData = [];
+                            this.service_call(this.current_page, this.search_string);
+                            this.router.navigateByUrl('feature/bom/view');
+                        }
+                        else{
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].FeatureId , this.commonData.toast_config);
+                        }
                     }
-                    else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
-                    }
+                    
+                    // if (data === "True") {
+                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    //     this.service_call(this.current_page, this.search_string);
+                    //     this.router.navigateByUrl('feature/bom/view');
+                    //     return;
+                    // }
+                    // else {
+                    //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    //     return;
+                    // }
                 }
             )
 
