@@ -370,9 +370,11 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     delete_multi_row() {
+        this.showLoader = true
         if (this.CheckedData.length > 0) {
             this.fbs.DeleteData(this.CheckedData).subscribe(
                 data => {
+                    this.showLoader = false
                     if(data != undefined && data.length > 0){
                         if (data[0].ErrorMsg == "7001") {
                             this.commonservice.RemoveLoggedInUser().subscribe();
