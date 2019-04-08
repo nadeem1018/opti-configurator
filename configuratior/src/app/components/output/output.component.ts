@@ -428,8 +428,9 @@ export class OutputComponent implements OnInit {
             this.step1_data.document_name = this.language.SalesOrder;
           }
 
-          this.final_reference_number = data.CustomerOutput[0].LogRefDocEntry;
-          this.final_ref_doc_entry = data.CustomerOutput[0].LogRefDocNo;
+          this.final_reference_number = data.CustomerOutput[0].LogRefDocNo;
+          this.final_ref_doc_entry =  data.CustomerOutput[0].LogRefDocEntry;
+          this.final_document_number = data.CustomerOutput[0].LogRefDocNo;
 
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
@@ -3771,6 +3772,7 @@ export class OutputComponent implements OnInit {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
+            this.final_reference_number = data.FinalStatus[0].OPTM_REFDOCNO;
           } else if (data.FinalStatus[0].OPTM_STATUS == "E") {
             this.final_order_status = this.language.error_status;
             this.toastr.error('', this.language.error_occured + ': ' + data.FinalStatus[0].OPTM_ERRDESC, this.commonData.toast_config);
