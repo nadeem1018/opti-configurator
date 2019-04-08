@@ -567,7 +567,9 @@ export class RoutingComponent implements OnInit {
             TimeUOM: $event[i].time_uom,
             TimeCons: ($event[i].time_consumption).toString(),
             TimeInv: ($event[i].time_inverse).toString(),
-            resource_consumption_type: $event[i].resource_consumption_type,
+            oper_consumption_method: ($event[i].oper_consumption_method),
+            oper_consumption_type: ($event[i].oper_consumption_method),
+            resource_consumption_type: ($event[i].resource_consumption_type),
             basis: $event[i].resource_basic,
             schedule: ($event[i].schedule),
             is_resource_disabled: true,
@@ -1342,10 +1344,10 @@ export class RoutingComponent implements OnInit {
               data[i].TimeUOM = data[i].TimeUOM
               data[i].TimeCons = (data[i].TimeCons).toString();
               data[i].TimeInv = (data[i].TimeInv).toString();
-              data[i].resource_consumption_type = 1;
+              data[i].resource_consumption_type = oper_consumption_type;
               data[i].basis = data[i].ChrgBasis;
               data[i].schedule = false,
-                data[i].oper_consumption_method = oper_consumption_type;
+              data[i].oper_consumption_method = oper_consumption_type;
               data[i].oper_type = oper_type;
 
               operData.push(data[i]);
