@@ -247,37 +247,65 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             GUID: sessionStorage.getItem("GUID"),
             UsernameForLic: sessionStorage.getItem("loggedInUser")
         })
-        this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+
+            this.itemgen.DeleteData(this.GetItemData).subscribe(
             data => {
-                if (data == "True") {
-                    this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-                    return false;
+                if(data != undefined && data.length > 0){
+                    if (data[0].ErrorMsg == "7001") {
+                        this.commonservice.RemoveLoggedInUser().subscribe();
+                        this.commonservice.signOut(this.toastr, this.router);
+                        return;
+                    } 
                 }
-                else {
-                    this.itemgen.DeleteData(this.GetItemData).subscribe(
-                        data => {
-                            if(data != undefined && data.length > 0){
-                                if (data[0].ErrorMsg == "7001") {
-                                    this.commonservice.RemoveLoggedInUser().subscribe();
-                                    this.commonservice.signOut(this.toastr, this.router);
-                                    return;
-                                } 
-                             }
-                            if (data === "True") {
-                                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                this.service_call(this.current_page, this.search_string);
-                                this.router.navigateByUrl('item-code-generation/view');
-                                return;
-                            }
-                            else {
-                                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                return;
-                            }
-                        }
-                    )
-                }
+
+                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ItemCode , this.commonData.toast_config);
+                  }
+                  else if(data[0].IsDeleted == "1"){
+                      this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                      this.service_call(this.current_page, this.search_string);
+                      this.router.navigateByUrl('item-code-generation/view');
+                  }
+                  else{
+                      this.toastr.error('', this.language.DataNotDelete + ' : ' , this.commonData.toast_config);
+                 }
+                  
             }
         )
+
+    //    this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+         
+    //         data => {
+    //             if (data == "True") {
+    //                 this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+    //                 return false;
+    //             }
+    //             else {
+    //                 this.itemgen.DeleteData(this.GetItemData).subscribe(
+    //                     data => {
+    //                         if(data != undefined && data.length > 0){
+    //                             if (data[0].ErrorMsg == "7001") {
+    //                                 this.commonservice.RemoveLoggedInUser().subscribe();
+    //                                 this.commonservice.signOut(this.toastr, this.router);
+    //                                 return;
+    //                             } 
+    //                          }
+
+    //                         if (data === "True") {
+    //                             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+    //                             this.service_call(this.current_page, this.search_string);
+    //                             this.router.navigateByUrl('item-code-generation/view');
+    //                             return;
+    //                         }
+    //                         else {
+    //                             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+    //                             return;
+    //                         }
+    //                     }
+    //                 )
+    //             }
+    //         }
+    //     )
     }
 
     on_checkbox_checked(checkedvalue, row_data) {
@@ -356,38 +384,65 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
 
     delete_multi_row() {
-        //for (let i = 0; i < this.CheckedData.length; ++i) {
-        this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
-            data => {
-                if (data == "True") {
-                    this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+
+        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+        data => {
+            if(data != undefined && data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                    this.commonservice.RemoveLoggedInUser().subscribe();
+                    this.commonservice.signOut(this.toastr, this.router);
                     return;
-                }
-                else {
-                    this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
-                        data => {
-                            if(data != undefined && data.length > 0){
-                                if (data[0].ErrorMsg == "7001") {
-                                    this.commonservice.RemoveLoggedInUser().subscribe();
-                                    this.commonservice.signOut(this.toastr, this.router);
-                                    return;
-                                } 
-                             }
-                            if (data === "True") {
-                                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                                this.service_call(this.current_page, this.search_string);
-                                this.router.navigateByUrl('item-code-generation/view');
-                                return;
-                            }
-                            else {
-                                this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                                return;
-                            }
-                        }
-                    )
-                }
+                } 
             }
-        )
+        
+           for(var i=0;  i < data.length ; i++){
+            if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                this.toastr.error('', this.language.Refrence + ' at: ' + data[i].ItemCode , this.commonData.toast_config);
+              }
+              else if(data[i].IsDeleted == "1"){
+                  this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Item Id : ' + data[i].ItemCode , this.commonData.toast_config);
+                  this.CheckedData = [];
+                  this.service_call(this.current_page, this.search_string);
+                  this.router.navigateByUrl('item-code-generation/view');
+              }
+              else{
+                  this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].ItemCode , this.commonData.toast_config);
+             }
+           }
+        }
+      )
+        //for (let i = 0; i < this.CheckedData.length; ++i) {
+        // this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
+        //     data => {
+        //         if (data == "True") {
+        //             this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+        //             return;
+        //         }
+        //         else {
+        //             this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+        //                 data => {
+        //                     if(data != undefined && data.length > 0){
+        //                         if (data[0].ErrorMsg == "7001") {
+        //                             this.commonservice.RemoveLoggedInUser().subscribe();
+        //                             this.commonservice.signOut(this.toastr, this.router);
+        //                             return;
+        //                         } 
+        //                      }
+        //                     if (data === "True") {
+        //                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+        //                         this.service_call(this.current_page, this.search_string);
+        //                         this.router.navigateByUrl('item-code-generation/view');
+        //                         return;
+        //                     }
+        //                     else {
+        //                         this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+        //                         return;
+        //                     }
+        //                 }
+        //             )
+        //         }
+        //     }
+        // )
         // }
     }
 

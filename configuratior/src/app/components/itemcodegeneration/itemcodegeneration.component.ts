@@ -430,37 +430,62 @@ export class ItemcodegenerationComponent implements OnInit {
           GUID: sessionStorage.getItem("GUID"),
           UsernameForLic: sessionStorage.getItem("loggedInUser")
         })
-        this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-          data => {
-            
-            if (data == "True") {
-              this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-              return false;
-            }
-            else {
-              this.itemgen.DeleteData(this.GetItemData).subscribe(
-                data => {
-                  if(data != undefined && data.length > 0){
-                    if (data[0].ErrorMsg == "7001") {
-                        this.commanService.RemoveLoggedInUser().subscribe();
-                        this.commanService.signOut(this.toastr, this.route);
-                        return;
-                    } 
-                 }
-                  if (data === "True") {
+
+        this.itemgen.DeleteData(this.GetItemData).subscribe(
+            data => {
+                if(data != undefined && data.length > 0){
+                  if (data[0].ErrorMsg == "7001") {
+                      this.commanService.RemoveLoggedInUser().subscribe();
+                      this.commanService.signOut(this.toastr, this.route);
+                      return;
+                  } 
+                }
+               
+                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+                  this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ItemCode , this.commonData.toast_config);
+                }
+                else if(data[0].IsDeleted == "1"){
                     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     this.route.navigateByUrl('item-code-generation/view');
-                    return;
-                  }
-                  else {
-                    this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                    return;
-                  }
                 }
-              )
-            }
-          }
-        )
+                else{
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' , this.commonData.toast_config);
+                }
+
+              }
+            )
+
+        // this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+        //   data => {
+            
+        //     if (data == "True") {
+        //       this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+        //       return false;
+        //     }
+        //     else {
+        //       this.itemgen.DeleteData(this.GetItemData).subscribe(
+        //         data => {
+        //           if(data != undefined && data.length > 0){
+        //             if (data[0].ErrorMsg == "7001") {
+        //                 this.commanService.RemoveLoggedInUser().subscribe();
+        //                 this.commanService.signOut(this.toastr, this.route);
+        //                 return;
+        //             } 
+        //          }
+        //           if (data === "True") {
+        //             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+        //             this.route.navigateByUrl('item-code-generation/view');
+        //             return;
+        //           }
+        //           else {
+        //             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+        //             return;
+        //           }
+        //         }
+        //       )
+        //     }
+        //   }
+        //)
       }
 
     }

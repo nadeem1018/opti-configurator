@@ -87,15 +87,31 @@ export class ViewRoutingComponent implements OnInit {
             this.rs.DeleteRouting(this.row_id).subscribe(
                 data => {
                     this.showLoader = false;
-                    if (data === "True") {
-                        var obj = this;
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('routing/view');
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    } else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
+                    // if (data === "True") {
+                    //     var obj = this;
+                    //     this.service_call(this.current_page, this.search_string);
+                    //     this.router.navigateByUrl('routing/view');
+                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    // } else {
+                    //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    //     return;
+                    // }
+
+                    for(var i=0;  i < data.length ; i++){
+                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].RoutingId , this.commonData.toast_config);
+                        }
+                        else if(data[i].IsDeleted == "1"){
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Routing Id : ' + data[i].RoutingId , this.commonData.toast_config);
+                            this.CheckedData = [];
+                            this.service_call(this.current_page, this.search_string);
+                            this.router.navigateByUrl('routing/view');
+                        }
+                        else{
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RoutingId , this.commonData.toast_config);
+                        }
                     }
+
                 }, error => {
                     this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                     this.showLoader = false;

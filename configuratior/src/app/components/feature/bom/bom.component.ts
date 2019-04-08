@@ -1229,17 +1229,27 @@ export class BomComponent implements OnInit {
           }
         }
         console.log(data);
-        if (data === "True") {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-          this.router.navigateByUrl('feature/bom/view');
-          return;
-        } else if (data == "ReferenceExists") {
-          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-          return;
-        } else {
-          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-          return;
+        if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
         }
+        else if(data[0].IsDeleted == "1"){
+            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.router.navigateByUrl('feature/bom/view');
+        }
+        else{
+            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
+       }
+        // if (data === "True") {
+        //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+        //   this.router.navigateByUrl('feature/bom/view');
+        //   return;
+        // } else if (data == "ReferenceExists") {
+        //   this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+        //   return;
+        // } else {
+        //   this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+        //   return;
+        // }
       }
     )
   }
@@ -1344,21 +1354,21 @@ export class BomComponent implements OnInit {
           }
         }
 
+        let temp_data_level = this.tree_data_json.filter(function (obj) {
+          return obj.level == "0" || obj.level == "1";
+        });
+
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         console.log(this.live_tree_view_data);
         if (this.live_tree_view_data.length > 0) {
 
           //for (var key in this.live_tree_view_data) {
-            for (var key = 0 ; this.live_tree_view_data.length ; key++) {
-            var update_index = "";
-            if(this.live_tree_view_data[key] == undefined){
-              return;
-            }
-            else {
-           
+             for (var key = 0 ; key < this.live_tree_view_data.length ; key++) {
+             var update_index = "";
+                       
             if (this.live_tree_view_data[key].tree_index !== undefined) {
               let local_tree_index = this.live_tree_view_data[key].tree_index;
-              update_index = this.tree_data_json.findIndex(function (tree_el) {
+              update_index = temp_data_level.findIndex(function (tree_el) {
                 return tree_el.tree_index == local_tree_index
               });
             }
@@ -1368,17 +1378,21 @@ export class BomComponent implements OnInit {
             if (update_index == "-1") {
               temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
               this.tree_data_json.push(temp_seq);
+              temp_data_level.push(temp_seq);
             } else {
               
-              let TempBranchType = this.tree_data_json[update_index].branchType;
-              let TempIcon = this.tree_data_json[update_index].icon;
+              let TempBranchType = temp_data_level[update_index].branchType;
+              let TempIcon = temp_data_level[update_index].icon;
               temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon, "modalImage": ""};
-              this.tree_data_json[update_index] = (temp_seq);
+              
+              let up_index = this.tree_data_json.findIndex(function (tree_el) {
+                return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
+              });
+              this.tree_data_json[up_index] = (temp_seq);
+              temp_data_level[update_index] = (temp_seq);
             }
-            
-          }
         }
-        console.log(this.tree_data_json);
+         console.log(this.tree_data_json);
           this.live_tree_view_data = [];
         }
       }
