@@ -384,9 +384,10 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
 
     delete_multi_row() {
-
+this.showLoader = true
         this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
         data => {
+            this.showLoader = false
             if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonservice.RemoveLoggedInUser().subscribe();
