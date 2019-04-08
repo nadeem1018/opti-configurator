@@ -4904,6 +4904,9 @@ export class OutputComponent implements OnInit {
             let data_from_mbom = this.ModelHeaderData.filter(function (obj) {
               return obj['OPTM_FEATUREID'] == ModelItemsArray[0].OPTM_FEATUREID
             })
+            if(data_from_mbom.length > 0) {
+              var mbom_quantity = data_from_mbom[0].OPTM_QUANTITY;
+            }
             this.feature_itm_list_table.push({
               FeatureId: ModelItemsArray[0].OPTM_FEATUREID,
               featureName: ModelItemsArray[0].feature_code,
@@ -4911,7 +4914,7 @@ export class OutputComponent implements OnInit {
               ItemNumber: ModelItemsArray[0].DocEntry,
               Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
-              original_quantity: parseFloat(data_from_mbom[0].OPTM_QUANTITY).toFixed(3),
+              original_quantity: parseFloat(mbom_quantity).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
               Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
