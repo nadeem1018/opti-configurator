@@ -1433,6 +1433,8 @@ export class LookupComponent implements OnInit {
           var res_consum_type = 1;
           if (this.serviceData.oper_res[inx].resource_consumption_type != undefined && this.serviceData.oper_res[inx].resource_consumption_type != "") {
             res_consum_type = this.serviceData.oper_res[inx].resource_consumption_type;
+          } else {
+            res_consum_type  = this.serviceData.oper_res[inx].oper_consumption_method;
           }
           if (this.serviceData.oper_res[inx].OPRCode != undefined) {
             this.resourceServiceData.push({
@@ -1444,6 +1446,7 @@ export class LookupComponent implements OnInit {
               operation_no: this.serviceData.oper_res[inx].OPRCode,
               oper_type: this.serviceData.oper_res[inx].oper_type,
               oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
+              oper_consumption_method: this.serviceData.oper_res[inx].oper_consumption_method,
               resource_code: this.serviceData.oper_res[inx].ResCode,
               resource_name: this.serviceData.oper_res[inx].ResName,
               resource_type: this.serviceData.oper_res[inx].ResType,
@@ -1538,7 +1541,9 @@ export class LookupComponent implements OnInit {
       time_uom: '',
       time_consumption: parseFloat("0").toFixed(3),
       time_inverse: parseFloat("0").toFixed(3),
-      resource_consumption_type: '1',
+      resource_consumption_type: this.resourceServiceOperCM,
+      oper_consumption_method: this.resourceServiceOperCM,
+      oper_consumption_type: this.resourceServiceOperCM,
       basis: basis,
       is_basis_disabled: is_basis_disabled,
       schedule: false,
