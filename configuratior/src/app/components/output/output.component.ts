@@ -1368,7 +1368,7 @@ export class OutputComponent implements OnInit {
     );
   }
 
-  onselectionchange(feature_model_data, value, id) {
+  onselectionchange(feature_model_data, value, id,isSecondLevel) {
     let type = feature_model_data.OPTM_TYPE
     let modelid;
     let featureid;
@@ -1489,7 +1489,7 @@ export class OutputComponent implements OnInit {
 
     var elementtypeforcheckedfunction = parentarray[0].element_type
 
-    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value);
+    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
 
     this.showLookupLoader = true;
     let GetDataForSelectedFeatureModelItemData: any = {};
@@ -1529,7 +1529,6 @@ export class OutputComponent implements OnInit {
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
       data => {
-
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
@@ -1942,7 +1941,12 @@ export class OutputComponent implements OnInit {
             }//end data length
             this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
-            this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value);
+            if(isSecondLevel) {
+              this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,true);
+            } else {
+              this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
+            }
+
             this.showLookupLoader = false;
           } //end value
           else {
@@ -4750,7 +4754,7 @@ export class OutputComponent implements OnInit {
     this.defaultitemflagid = "";
   }
 
-  checkedFunction(feature_model_data, elementtypeforcheckedfunction, value) {
+  checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,enabled) {
 
     for (var ifeaturechecked in this.FeatureBOMDataForSecondLevel) {
       if (feature_model_data.OPTM_TYPE == 2) {
@@ -4765,15 +4769,17 @@ export class OutputComponent implements OnInit {
         if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID == feature_model_data.OPTM_CHILDFEATUREID) {
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = value
         }
-        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
-          this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
-          var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
-          this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-            if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
-              obj['checked'] = false
-            }
-            return obj
-          })
+        if(enabled) {
+          if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
+            this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
+            var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
+            this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+              if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
+                obj['checked'] = false
+              }
+              return obj
+            })
+          }
         }
       }
       else {
