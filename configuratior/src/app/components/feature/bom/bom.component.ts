@@ -234,6 +234,7 @@ export class BomComponent implements OnInit {
               isQuanityDisabled: this.isQuanityDisabled,
               hide: this.ishide,
               pricehide: this.pricehide,
+              is_accessory: data.FeatureDetail[i].OPTM_ACCESSORY,
               isPropagateQtyDisable: this.isPropagateQtyDisable,
               isPriceDisabled: this.isPriceDisabled,
               CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
@@ -416,6 +417,7 @@ export class BomComponent implements OnInit {
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
+      is_accessory : 'N',
       isQuanityDisabled: false,
       isPriceDisabled: this.isPriceDisabled,
       isPropagateQtyDisable: false,
@@ -730,6 +732,7 @@ export class BomComponent implements OnInit {
                 this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
                 this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].is_accessory = "N";
                 this.feature_bom_table[iIndex].display_name = "";
                 $(type_value_code).val("");
                 return;
@@ -758,6 +761,7 @@ export class BomComponent implements OnInit {
                 this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
                 this.feature_bom_table[iIndex].type_value = "";
                 this.feature_bom_table[iIndex].type_value_code = "";
+                this.feature_bom_table[iIndex].is_accessory = "N";
                 this.feature_bom_table[iIndex].display_name = "";
                 this.feature_bom_table[iIndex].price_source = ""; 
                 this.feature_bom_table[iIndex].price_source_id = ""; 
@@ -908,6 +912,7 @@ export class BomComponent implements OnInit {
                 this.feature_bom_table[i].type_value = data[0].ItemKey;
                 this.feature_bom_table[i].type = 2
                 this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+                this.feature_bom_table[i].is_accessory = 'N';
                 this.feature_bom_table[i].display_name = data[0].Description;
                 this.feature_bom_table[i].price_source = data[0].ListName;
                 this.feature_bom_table[i].price_source_id = data[0].PriceListID;
@@ -935,6 +940,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].type_value = selectedDataDetails[0].ItemKey;
           this.feature_bom_table[i].type = 2
           this.feature_bom_table[i].type_value_code = selectedDataDetails[0].ItemKey;
+          this.feature_bom_table[i].is_accessory = 'N';
           this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
           this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
           this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
@@ -1023,6 +1029,7 @@ export class BomComponent implements OnInit {
                 if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
+                  this.feature_bom_table[i].is_accessory = data[0].OPTM_ACCESSORY; 
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
                   if (data[0].OPTM_PHOTO != null && data[0].OPTM_PHOTO != "") {
                     this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
@@ -1111,9 +1118,13 @@ export class BomComponent implements OnInit {
         return false;
       }
       else {
-        var total_detail_elements = this.feature_bom_table.length;
+        //let total_detail_elements = this.feature_bom_table.length;
+        let filtered_bom_data = this.feature_bom_table.filter(function (obj) {
+          return (obj.is_accessory == 'N' || obj.is_accessory == undefined || obj.is_accessory == null) ? obj : "";
+        });
+        let  total_detail_elements = filtered_bom_data.length;
         if (this.feature_bom_data.multi_select_disabled == false) {
-          console.log("total_detail_elements " + total_detail_elements);
+          
           if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
             this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
             return false;
@@ -1229,17 +1240,27 @@ export class BomComponent implements OnInit {
           }
         }
         console.log(data);
-        if (data === "True") {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-          this.router.navigateByUrl('feature/bom/view');
-          return;
-        } else if (data == "ReferenceExists") {
-          this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-          return;
-        } else {
-          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-          return;
+        if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
         }
+        else if(data[0].IsDeleted == "1"){
+            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.router.navigateByUrl('feature/bom/view');
+        }
+        else{
+            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
+       }
+        // if (data === "True") {
+        //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+        //   this.router.navigateByUrl('feature/bom/view');
+        //   return;
+        // } else if (data == "ReferenceExists") {
+        //   this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+        //   return;
+        // } else {
+        //   this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+        //   return;
+        // }
       }
     )
   }
@@ -1344,21 +1365,21 @@ export class BomComponent implements OnInit {
           }
         }
 
+        let temp_data_level = this.tree_data_json.filter(function (obj) {
+          return obj.level == "0" || obj.level == "1";
+        });
+
         let sequence_count = parseInt(this.tree_data_json.length + 1);
         console.log(this.live_tree_view_data);
         if (this.live_tree_view_data.length > 0) {
 
           //for (var key in this.live_tree_view_data) {
-            for (var key = 0 ; this.live_tree_view_data.length ; key++) {
-            var update_index = "";
-            if(this.live_tree_view_data[key] == undefined){
-              return;
-            }
-            else {
-           
+             for (var key = 0 ; key < this.live_tree_view_data.length ; key++) {
+             var update_index = "";
+                       
             if (this.live_tree_view_data[key].tree_index !== undefined) {
               let local_tree_index = this.live_tree_view_data[key].tree_index;
-              update_index = this.tree_data_json.findIndex(function (tree_el) {
+              update_index = temp_data_level.findIndex(function (tree_el) {
                 return tree_el.tree_index == local_tree_index
               });
             }
@@ -1368,17 +1389,21 @@ export class BomComponent implements OnInit {
             if (update_index == "-1") {
               temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
               this.tree_data_json.push(temp_seq);
+              temp_data_level.push(temp_seq);
             } else {
               
-              let TempBranchType = this.tree_data_json[update_index].branchType;
-              let TempIcon = this.tree_data_json[update_index].icon;
+              let TempBranchType = temp_data_level[update_index].branchType;
+              let TempIcon = temp_data_level[update_index].icon;
               temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon, "modalImage": ""};
-              this.tree_data_json[update_index] = (temp_seq);
+              
+              let up_index = this.tree_data_json.findIndex(function (tree_el) {
+                return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
+              });
+              this.tree_data_json[up_index] = (temp_seq);
+              temp_data_level[update_index] = (temp_seq);
             }
-            
-          }
         }
-        console.log(this.tree_data_json);
+         console.log(this.tree_data_json);
           this.live_tree_view_data = [];
         }
       }

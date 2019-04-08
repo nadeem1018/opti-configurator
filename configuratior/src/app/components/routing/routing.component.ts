@@ -567,7 +567,9 @@ export class RoutingComponent implements OnInit {
             TimeUOM: $event[i].time_uom,
             TimeCons: ($event[i].time_consumption).toString(),
             TimeInv: ($event[i].time_inverse).toString(),
-            resource_consumption_type: $event[i].resource_consumption_type,
+            oper_consumption_method: ($event[i].oper_consumption_method),
+            oper_consumption_type: ($event[i].oper_consumption_method),
+            resource_consumption_type: ($event[i].resource_consumption_type),
             basis: $event[i].resource_basic,
             schedule: ($event[i].schedule),
             is_resource_disabled: true,
@@ -1342,10 +1344,10 @@ export class RoutingComponent implements OnInit {
               data[i].TimeUOM = data[i].TimeUOM
               data[i].TimeCons = (data[i].TimeCons).toString();
               data[i].TimeInv = (data[i].TimeInv).toString();
-              data[i].resource_consumption_type = 1;
+              data[i].resource_consumption_type = oper_consumption_type;
               data[i].basis = data[i].ChrgBasis;
               data[i].schedule = false,
-                data[i].oper_consumption_method = oper_consumption_type;
+              data[i].oper_consumption_method = oper_consumption_type;
               data[i].oper_type = oper_type;
 
               operData.push(data[i]);
@@ -2074,7 +2076,9 @@ export class RoutingComponent implements OnInit {
 
   onDelete(model_feature_id) {
     this.showLookupLoader = true;
-    this.service.DeleteRouting(model_feature_id).subscribe(
+    let row_data = [{ CompanyDBID: sessionStorage.selectedComp, RoutingId: model_feature_id,
+      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]
+    this.service.DeleteRouting(row_data).subscribe(
       data => {
         this.showLookupLoader = false;
         if (data != undefined) {
@@ -2087,13 +2091,24 @@ export class RoutingComponent implements OnInit {
           }
         }
 
-        if (data === "True") {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-          this.route.navigateByUrl('routing/view');
-        } else {
-          this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-          return;
+        if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].RoutingId , this.commonData.toast_config);
         }
+        else if(data[0].IsDeleted == "1"){
+            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.route.navigateByUrl('routing/view');
+        }
+        else{
+            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RoutingId , this.commonData.toast_config);
+        }
+
+        // if (data === "True") {
+        //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+        //   this.route.navigateByUrl('routing/view');
+        // } else {
+        //   this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+        //   return;
+        // }
       }, error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;

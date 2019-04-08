@@ -84,18 +84,42 @@ export class ViewRoutingComponent implements OnInit {
         if (userSelectionValue == true) {
 
             this.showLoader = true;
-            this.rs.DeleteRouting(this.row_id).subscribe(
+            let row_data;
+            if(this.CheckedData.length > 0){
+                row_data = this.CheckedData;
+            } else {
+                row_data = [{ CompanyDBID: sessionStorage.selectedComp, RoutingId: this.row_id,
+                    GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]
+            }
+          
+            this.rs.DeleteRouting(row_data).subscribe(
                 data => {
                     this.showLoader = false;
-                    if (data === "True") {
-                        var obj = this;
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('routing/view');
-                        this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    } else {
-                        this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        return;
+                    // if (data === "True") {
+                    //     var obj = this;
+                    //     this.service_call(this.current_page, this.search_string);
+                    //     this.router.navigateByUrl('routing/view');
+                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    // } else {
+                    //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                    //     return;
+                    // }
+
+                    for(var i=0;  i < data.length ; i++){
+                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].RoutingId , this.commonData.toast_config);
+                        }
+                        else if(data[i].IsDeleted == "1"){
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Routing Id : ' + data[i].RoutingId , this.commonData.toast_config);
+                            this.CheckedData = [];
+                            this.service_call(this.current_page, this.search_string);
+                            this.router.navigateByUrl('routing/view');
+                        }
+                        else{
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RoutingId , this.commonData.toast_config);
+                        }
                     }
+
                 }, error => {
                     this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                     this.showLoader = false;
@@ -248,7 +272,7 @@ export class ViewRoutingComponent implements OnInit {
                 for (let i = 0; i < this.dataArray.length; ++i) {
 
                     this.CheckedData.push({
-                        ModelId: this.dataArray[i].OPTM_MODELFEATUREID,
+                        RoutingId: this.dataArray[i].OPTM_MODELFEATUREID,
                         CompanyDBId: this.companyName,
                         GUID: sessionStorage.getItem("GUID"),
                         UsernameForLic: sessionStorage.getItem("loggedInUser")
@@ -259,5 +283,45 @@ export class ViewRoutingComponent implements OnInit {
         else {
             this.selectall = false
         }
+    }
+
+    on_checkbox_checked(checkedvalue, row_data) {
+        var isExist = 0;
+        if (this.CheckedData.length > 0) {
+            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                if (this.CheckedData[i].RoutingId == row_data.OPTM_MODELFEATUREID) {
+                    isExist = 1;
+                    if (checkedvalue == true) {
+                        this.CheckedData.push({
+                            RoutingId: row_data.OPTM_MODELFEATUREID,
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
+                        })
+                    }
+                    else {
+                        this.CheckedData.splice(i, 1)
+                    }
+                }
+            }
+            if (isExist == 0) {
+                this.CheckedData.push({
+                    RoutingId: row_data.OPTM_MODELFEATUREID,
+                    CompanyDBId: this.companyName,
+                    GUID: sessionStorage.getItem("GUID"),
+                    UsernameForLic: sessionStorage.getItem("loggedInUser")
+                })
+            }
+        }
+        else {
+            this.CheckedData.push({
+                RoutingId: row_data.OPTM_MODELFEATUREID,
+                CompanyDBId: this.companyName,
+                GUID: sessionStorage.getItem("GUID"),
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
+            })
+        }
+
+
     }
 }
