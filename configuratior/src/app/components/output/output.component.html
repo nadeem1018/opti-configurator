@@ -410,7 +410,7 @@
                   <div class="panel-group opti_optiLeftTopAccordion" id="step_default_{{step2_data.model_code}}" role="tablist"
                     aria-multiselectable="true">
                     <div class="panel panel-default custom_panel_box" *ngFor="let header_data of ModelHeaderData; let i = index;">
-                      <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}">
+                      <div class="panel-heading custom_panel_header" role="tab" id="feature_id_{{header_data.OPTM_FEATUREID}}" [ngClass]="{'tr-hide' :countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID)}">
                         <h4 class="panel-title">
                           <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}"
                             attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
@@ -422,7 +422,7 @@
                         </h4>
                       </div>
                       <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section"
-                        role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}">
+                        role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}" [ngClass]="{'tr-hide' :countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID)}">
                         <div class="panel-body">
                           <table class="parent_table inner-table table table-bordered table-strip table-sm">
                             <thead class="thead-dark" *ngIf="ModelHeaderData.length > 0">
