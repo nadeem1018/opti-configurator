@@ -136,7 +136,8 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                    
+                        <div class="col-md-6" [hidden]="feature_bom_data.is_accessory=='Y'" >
                             <div class="form-group row clearfix">
                                 <div class="col-sm-6 row">
                                     <label class="col-sm-6 col-form-label" for="featureDisplay">{{language.multi_select}}</label>

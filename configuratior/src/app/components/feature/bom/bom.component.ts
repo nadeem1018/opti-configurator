@@ -1000,17 +1000,19 @@ export class BomComponent implements OnInit {
               this.feature_bom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
               this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
-              console.log('accesory - ' + this.feature_bom_data.is_accessory);
               if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
                 this.detail_select_options = this.commonData.less_bom_type;
                 this.pricehide = false
-                this.isPriceDisabled = false
-                console.log('in if  ');
+                this.isPriceDisabled = false;
+                
+                this.feature_bom_data.multi_select = false;
+                this.feature_bom_data.multi_select_disabled = true;
+                this.feature_bom_data.feature_min_selectable = 1;
+                this.feature_bom_data.feature_max_selectable = 1;
               } else {
                 this.detail_select_options = this.commonData.bom_type;
                 this.pricehide = true
-                this.isPriceDisabled = true
-                console.log('in else ');
+                this.isPriceDisabled = true;
               }
               this.showImageBlock = false;
               if (this.feature_bom_data.image_path != null) {
@@ -1436,6 +1438,10 @@ export class BomComponent implements OnInit {
           this.feature_bom_data.feature_name = "";
           this.feature_bom_data.feature_desc = "";
           this.feature_bom_data.is_accessory = "";
+          this.feature_bom_data.multi_select = false;
+          this.feature_bom_data.multi_select_disabled = true;
+          this.feature_bom_data.feature_min_selectable = 1;
+          this.feature_bom_data.feature_max_selectable = 1;
           return;
         }
         else {
