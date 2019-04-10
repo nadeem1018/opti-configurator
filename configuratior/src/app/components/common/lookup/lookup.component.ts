@@ -1896,15 +1896,15 @@ export class LookupComponent implements OnInit {
     this.table_head = [
 
       {
-        field: 'OPTM_DISPLAYNAME',
-        title: this.language.Model_ModelName,
+        field: 'DisplayName',
+        title: this.language.Model_Name,
         type: 'text',
         width: '100',
         attrType: 'text'
       },
       {
-        field: 'OPTM_FEATUREDESC',
-        title: this.language.Model_ModelDesc,
+        field: 'Description',
+        title: this.language.Model_Desc,
         type: 'text',
         width: '100',
         attrType: 'text'

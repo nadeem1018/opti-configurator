@@ -428,8 +428,9 @@ export class OutputComponent implements OnInit {
             this.step1_data.document_name = this.language.SalesOrder;
           }
 
-          this.final_reference_number = data.CustomerOutput[0].LogRefDocEntry;
-          this.final_ref_doc_entry = data.CustomerOutput[0].LogRefDocNo;
+          this.final_reference_number = data.CustomerOutput[0].LogRefDocNo;
+          this.final_ref_doc_entry =  data.CustomerOutput[0].LogRefDocEntry;
+          this.final_document_number = data.CustomerOutput[0].LogRefDocNo;
 
           this.step1_data.customer = data.CustomerOutput[0].OPTM_BPCODE,
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
@@ -1367,7 +1368,7 @@ export class OutputComponent implements OnInit {
     );
   }
 
-  onselectionchange(feature_model_data, value, id) {
+  onselectionchange(feature_model_data, value, id,isSecondLevel) {
     let type = feature_model_data.OPTM_TYPE
     let modelid;
     let featureid;
@@ -1488,7 +1489,7 @@ export class OutputComponent implements OnInit {
 
     var elementtypeforcheckedfunction = parentarray[0].element_type
 
-    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value);
+    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
 
     this.showLookupLoader = true;
     let GetDataForSelectedFeatureModelItemData: any = {};
@@ -1528,7 +1529,6 @@ export class OutputComponent implements OnInit {
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
       data => {
-
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
@@ -1941,7 +1941,12 @@ export class OutputComponent implements OnInit {
             }//end data length
             this.enableFeatureModelsItems();
             this.RuleIntegration(data.RuleOutputData, value);
-            this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value);
+            if(isSecondLevel) {
+              this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,true);
+            } else {
+              this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
+            }
+
             this.showLookupLoader = false;
           } //end value
           else {
@@ -3767,6 +3772,7 @@ export class OutputComponent implements OnInit {
             this.final_order_status = this.language.process_status;
             this.final_ref_doc_entry = data.FinalStatus[0].OPTM_REFDOCENTRY;
             this.final_document_number = data.FinalStatus[0].OPTM_REFDOCNO;
+            this.final_reference_number = data.FinalStatus[0].OPTM_REFDOCNO;
           } else if (data.FinalStatus[0].OPTM_STATUS == "E") {
             this.final_order_status = this.language.error_status;
             this.toastr.error('', this.language.error_occured + ': ' + data.FinalStatus[0].OPTM_ERRDESC, this.commonData.toast_config);
@@ -4345,6 +4351,24 @@ export class OutputComponent implements OnInit {
 
   }
 
+  countFeatureBOMChildsByFeatureId(featureId) {
+    var featureBOMDataByFeatureId = this.FeatureBOMDataForSecondLevel.filter( function(array) {
+      return array.OPTM_FEATUREID == featureId;
+    });
+    var featureBOMChildsCount = featureBOMDataByFeatureId.length;
+
+    var featureChildsDataWithDisabledTrue = featureBOMDataByFeatureId.filter( function(array) {
+      return array.disable == true;
+    });
+    var featureChildsCountWithDisabledTrue = featureChildsDataWithDisabledTrue.length;
+
+    if(featureBOMChildsCount == featureChildsCountWithDisabledTrue) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   RuleIntegration(RuleOutputData, value) {
     if (RuleOutputData.length > 0) {
       for (var iItemFeatureTable in this.FeatureBOMDataForSecondLevel) {
@@ -4748,7 +4772,7 @@ export class OutputComponent implements OnInit {
     this.defaultitemflagid = "";
   }
 
-  checkedFunction(feature_model_data, elementtypeforcheckedfunction, value) {
+  checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,enabled) {
 
     for (var ifeaturechecked in this.FeatureBOMDataForSecondLevel) {
       if (feature_model_data.OPTM_TYPE == 2) {
@@ -4763,15 +4787,17 @@ export class OutputComponent implements OnInit {
         if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID == feature_model_data.OPTM_CHILDFEATUREID) {
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = value
         }
-        if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
-          this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
-          var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
-          this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-            if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
-              obj['checked'] = false
-            }
-            return obj
-          })
+        if(enabled) {
+          if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
+            this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
+            var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
+            this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+              if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
+                obj['checked'] = false
+              }
+              return obj
+            })
+          }
         }
       }
       else {
@@ -4898,6 +4924,9 @@ export class OutputComponent implements OnInit {
             let data_from_mbom = this.ModelHeaderData.filter(function (obj) {
               return obj['OPTM_FEATUREID'] == ModelItemsArray[0].OPTM_FEATUREID
             })
+            if(data_from_mbom.length > 0) {
+              var mbom_quantity = data_from_mbom[0].OPTM_QUANTITY;
+            }
             this.feature_itm_list_table.push({
               FeatureId: ModelItemsArray[0].OPTM_FEATUREID,
               featureName: ModelItemsArray[0].feature_code,
@@ -4905,7 +4934,7 @@ export class OutputComponent implements OnInit {
               ItemNumber: ModelItemsArray[0].DocEntry,
               Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
-              original_quantity: parseFloat(data_from_mbom[0].OPTM_QUANTITY).toFixed(3),
+              original_quantity: parseFloat(mbom_quantity).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
               Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_TOTALPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
