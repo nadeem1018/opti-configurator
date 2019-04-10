@@ -4352,18 +4352,22 @@ export class OutputComponent implements OnInit {
   }
 
   countFeatureBOMChildsByFeatureId(featureId) {
-    var featureBOMDataByFeatureId = this.FeatureBOMDataForSecondLevel.filter( function(array) {
-      return array.OPTM_FEATUREID == featureId;
-    });
-    var featureBOMChildsCount = featureBOMDataByFeatureId.length;
+    if(featureId != 0 && featureId != null && featureId != undefined && featureId != "") {
+      var featureBOMDataByFeatureId = this.FeatureBOMDataForSecondLevel.filter(function (array) {
+        return array.OPTM_FEATUREID == featureId;
+      });
+      var featureBOMChildsCount = featureBOMDataByFeatureId.length;
 
-    var featureChildsDataWithDisabledTrue = featureBOMDataByFeatureId.filter( function(array) {
-      return array.disable == true;
-    });
-    var featureChildsCountWithDisabledTrue = featureChildsDataWithDisabledTrue.length;
+      var featureChildsDataWithDisabledTrue = featureBOMDataByFeatureId.filter(function (array) {
+        return array.disable == true;
+      });
+      var featureChildsCountWithDisabledTrue = featureChildsDataWithDisabledTrue.length;
 
-    if(featureBOMChildsCount == featureChildsCountWithDisabledTrue) {
-      return true;
+      if (featureBOMChildsCount == featureChildsCountWithDisabledTrue) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
