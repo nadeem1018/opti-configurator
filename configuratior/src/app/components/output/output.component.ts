@@ -1929,6 +1929,9 @@ export class OutputComponent implements OnInit {
                   this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                 }
               }
+              else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
+                this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO);
+              }
               else if (type == 2) {
                 if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                   if (data.DataForSelectedFeatureModelItem[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2271,7 +2274,7 @@ export class OutputComponent implements OnInit {
       }
 
 
-      if (isExist.length == 0) {
+      if ((isExist.length == 0) && ItemData[0].OPTM_TYPE != 3) {
         this.feature_itm_list_table.push({
           FeatureId: ItemData[0].OPTM_FEATUREID,
           featureName: tempfeaturecode,
