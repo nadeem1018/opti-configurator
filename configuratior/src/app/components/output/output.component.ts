@@ -1744,6 +1744,11 @@ export class OutputComponent implements OnInit {
                               // if(parentarray[0].parentmodelid!=this.step2_data.model_id){
                               //   parentarray[0].OPTM_MODELID=parentarray[0].parentmodelid
                               // }
+                              if(parentarray[0].OPTM_ISMULTISELECT == "N") {
+                                parentarray[0].element_type = "radio"
+                              } else {
+                                parentarray[0].element_type = "checkbox"
+                              }
                               this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO);
                             }
                             else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
@@ -2212,7 +2217,7 @@ export class OutputComponent implements OnInit {
       if (parentarray[0].element_type == "radio") {
         for (let i = 0; i < this.feature_itm_list_table.length; i++) {
           if (parentarray[0].OPTM_TYPE == 1) {
-            if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID) {
+            if (this.feature_itm_list_table[i].FeatureId == parentarray[0].OPTM_FEATUREID) {
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
             }
@@ -2332,6 +2337,7 @@ export class OutputComponent implements OnInit {
           this.showLookupLoader = false;
         }
       }, error => {
+
         this.showLookupLoader = false;
       })
   }
