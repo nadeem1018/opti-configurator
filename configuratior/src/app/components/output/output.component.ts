@@ -4979,13 +4979,19 @@ export class OutputComponent implements OnInit {
           }
 
           var priceextn: any = getmodelsavedata[imodelsavedata].OPTM_QUANTITY * getmodelsavedata[imodelsavedata].OPTM_UNITPRICE
-          let data_from_mbom = modelHeaderdata.filter(function (obj) {
-            return obj['OPTM_ITEMKEY'] == ItemsArray[0].OPTM_ITEMKEY
-          })
-          if (data_from_mbom.length == 0) {
+          let data_from_mbom;
+          if(modelHeaderdata.OPTM_ITEMKEY != null) {
             data_from_mbom = modelHeaderdata.filter(function (obj) {
-              return obj['OPTM_FEATUREID'] == ItemsArray[0].OPTM_FEATUREID
+              return obj['OPTM_ITEMKEY'] == ItemsArray[0].OPTM_ITEMKEY
             })
+          }
+          if(data_from_mbom != undefined) {
+            if (data_from_mbom.length == 0) {
+              data_from_mbom = modelHeaderdata.filter(function (obj) {
+                return obj['OPTM_FEATUREID'] == ItemsArray[0].OPTM_FEATUREID
+              })
+            }
+            var mbomQuantity = data_from_mbom[0].OPTM_QUANTITY;
           }
           if (ItemsArray.length > 0) {
             this.feature_itm_list_table.push({
@@ -4995,7 +5001,7 @@ export class OutputComponent implements OnInit {
               ItemNumber: ItemsArray[0].DocEntry,
               Description: ItemsArray[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
-              original_quantity: parseFloat(data_from_mbom[0].OPTM_QUANTITY).toFixed(3),
+              original_quantity: parseFloat(mbomQuantity).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
               Actualprice: parseFloat(getmodelsavedata[imodelsavedata].OPTM_UNITPRICE).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
