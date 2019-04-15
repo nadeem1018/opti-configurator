@@ -403,7 +403,9 @@ export class OutputComponent implements OnInit {
       data => {
 
         if (data != undefined && data.length > 0) {
+          // test
           if (data[0].ErrorMsg == "7001") {
+
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route);
             return;
