@@ -183,6 +183,6 @@ export class CommonData {
         return result;
     }
 
-    public excludeSpecialCharRegex = /[{}*!^=<>?|]/;
+    public excludeSpecialCharRegex = /[{}*!^=<>?|/(\\)&#@%]/;
 
 }
