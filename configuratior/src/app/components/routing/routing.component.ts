@@ -375,7 +375,7 @@ export class RoutingComponent implements OnInit {
             return;
 
           }
-
+          this.onExplodeClick('auto');
         },
         error => {
           this.showLoader = false;
@@ -2164,6 +2164,24 @@ export class RoutingComponent implements OnInit {
     return data;
   }
 
+  childExpand(id: any) {
+    id.classList.toggle("expanded")
+    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+      id.parentNode.parentNode.childNodes[4].style.display = "block";
+    } else {
+      id.parentNode.parentNode.childNodes[4].style.display = "none";
+    }
+  }
+  expandAll(){
+    console.log("expandAll")
+    $(document).find('treeview').show()    
+    $(document).find('.expand-btn').addClass("expanded")
+  }
+  collapseAll(){
+    console.log("collapseAll")
+    $(document).find('treeview').hide()
+    $(document).find('.expand-btn').removeClass("expanded")
+  }
 
   toggleTree(e) {
     let element = document.getElementById('right-tree-section');
@@ -2207,6 +2225,8 @@ export class RoutingComponent implements OnInit {
     if (routing_for_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+        
+               
         this.service.getTreeData(this.companyName, routing_for_id).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -2219,9 +2239,6 @@ export class RoutingComponent implements OnInit {
                 }
               }
 
-              //Earlier we were opening this in lookup
-              // this.serviceData = data;
-              // this.lookupfor = 'tree_view_lookup';
               let counter_temp = 0;
               let temp_data = data.filter(function (obj) {
                 obj['tree_index'] = (counter_temp);
