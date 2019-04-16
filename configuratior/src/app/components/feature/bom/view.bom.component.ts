@@ -25,6 +25,7 @@ export class ViewFeatureBOMComponent implements OnInit {
 
     public listItems: Array<string> = this.common_params.default_limits;
     public selectedValue: number = 10;
+    public skip:number = 0;
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
@@ -92,6 +93,9 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
     getcurrentPageSize(grid_value){
       sessionStorage.setItem('defaultRecords', grid_value);
+      this.skip = 0;
+      this.selectedValue = grid_value;
+      this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     detectDevice() {
@@ -138,6 +142,14 @@ export class ViewFeatureBOMComponent implements OnInit {
     ngAfterViewInit() {
       //  this._el.nativeElement.focus();
     }
+
+    dataStateChanged(event){
+        // console.log(event);
+         event.filter = [];
+         this.record_per_page = sessionStorage.getItem('defaultRecords');
+         this.selectedValue = event.take;
+         this.skip = event.skip;
+     }
 
     on_selection(grid_event){
         grid_event.selectedRows = [];
