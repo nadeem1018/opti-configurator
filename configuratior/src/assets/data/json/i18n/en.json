@@ -534,6 +534,8 @@
     "inc_lead_time_calc":"Include Lead Time Calculation",
     "move_oper_up":"Move Operation Up",
     "move_oper_down":"Move Operation Down",
+    "move_row_up": "Move Row Up",
+    "move_row_down": "Move Row Down",
     "operationatitemmandatory":"Operation code is mandatory when opn applicable is checked for type item at row - ",
     "operationatOprmmandatory":"Operation code is mandatory for type operation at row - ",
     "invalid_template_routing_code":"Invalid template routing code",

@@ -603,7 +603,6 @@ export class RoutingComponent implements OnInit {
   }
 
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    let current_row_line_no = this.current_selected_row.rowindex;
     let current_row_index = this.current_selected_row.rowindex - 1;
     this.row_selection = [];
     console.log("this.row_selection start  - ", this.row_selection);
@@ -646,9 +645,6 @@ export class RoutingComponent implements OnInit {
     } else {
       this.current_selected_row = [];
     }
-
-    console.log('this.current_selected_row');
-    console.log(this.current_selected_row);
   }
 
 
@@ -2198,10 +2194,10 @@ export class RoutingComponent implements OnInit {
     let routing_for_id;
     let display_name;
     if (this.routing_header_data.routing_for == 'feature') {
-      routing_for_id =  this.routing_header_data.feature_id;
+      routing_for_id = this.routing_header_data.feature_id;
       display_name = this.routing_header_data.feature_code;
     } else if (this.routing_header_data.routing_for == 'model') {
-      routing_for_id =  this.routing_header_data.modal_id;
+      routing_for_id = this.routing_header_data.modal_id;
       display_name = this.routing_header_data.modal_code
     }
     if (routing_for_id != undefined) {

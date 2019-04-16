@@ -126,10 +126,18 @@
             </div>
           </div>
 
-          <div class="col-sm-1 p-0">
+          <div class="col-sm-12 p-0">
             <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()"
               #button>
               <i class="fa fa-plus"></i> {{language.add_row}}
+            </a>
+            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1 ml-3 mr-3" [hidden]="this.current_selected_row.length == 0"
+              title="{{language.move_row_up}} " (click)="resequence_operation('1')">
+              <b><i class="fa fa-arrow-up"></i> </b>
+            </a>
+            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" [hidden]="this.current_selected_row.length == 0" title="{{language.move_row_down}} "
+              (click)="resequence_operation('2')">
+              <b><i class="fa fa-arrow-down"></i></b>
             </a>
           </div>
           <hr>
@@ -144,7 +152,8 @@
           <div class="col-sm-12 p-0">
             <div class="">
               <kendo-grid [kendoGridBinding]="modelbom_data" [resizable]="true" [sortable]="false" [groupable]="false"
-                [filterable]="false">
+                [filterable]="false" [selectable]="selectableSettings"
+                                [kendoGridSelectBy]="'rowindex'" [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
                 <kendo-grid-column field="rowindex" title="#" width="60" [minResizableWidth]="60" filter="numeric">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value, dataItem.type)"
