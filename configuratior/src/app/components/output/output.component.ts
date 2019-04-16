@@ -1878,7 +1878,7 @@ export class OutputComponent implements OnInit {
                     if (data.DataForSelectedFeatureModelItem.length > 0) {
                       if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                         isExist = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-                          return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID;
+                          return ((obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID) && obj['OPTM_CHILDFEATUREID'] != undefined);
                         });
                       }
                       else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 3) {
@@ -3824,13 +3824,18 @@ export class OutputComponent implements OnInit {
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
     var array = [];
     if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
-
       array = feature_child_datatable.filter(function (obj) {
         return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
       });
     } else if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['ACCESSORY'] != "Y") {
       array = model_child_datatable.filter(function (obj) {
         return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['OPTM_TYPE'] != "2";
+      });
+    }
+
+    if(header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['is_second_level'] == 1 ) {
+      array = model_child_datatable.filter(function (obj) {
+        return obj['OPTM_LEVEL'] == 3 && obj['is_second_level'] == 1;
       });
     }
     if (header_feature_table['OPTM_MAXSELECTABLE'] > 1) {
@@ -3841,8 +3846,6 @@ export class OutputComponent implements OnInit {
       header_feature_table['element_type'] = "radio";
       header_feature_table['element_class'] = "custom-control custom-radio";
     }
-
-
     return array;
   }
 
