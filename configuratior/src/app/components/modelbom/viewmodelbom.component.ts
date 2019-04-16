@@ -22,6 +22,7 @@ export class ViewModelBomComponent implements OnInit {
     public commonData = new CommonData();
     public listItems: Array<string> = this.commonData.default_limits;
     public selectedValue: number = 10;
+    public skip:number = 0;
 
     public companyName: string = "";
     public username: string = "";
@@ -88,11 +89,22 @@ export class ViewModelBomComponent implements OnInit {
     getcurrentPageSize(grid_value){
       sessionStorage.setItem('defaultRecords', grid_value);
       console.log('=sessionStorage=======',sessionStorage.defaultRecords);
+      this.skip = 0;
+      this.selectedValue = grid_value;
+      this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     getLookupValue($event) {
         
     }  
+
+    dataStateChanged(event){
+        // console.log(event);
+         event.filter = [];
+         this.record_per_page = sessionStorage.getItem('defaultRecords');
+         this.selectedValue = event.take;
+         this.skip = event.skip;
+     }
 
     on_selection(grid_event) {
         grid_event.selectedRows = [];

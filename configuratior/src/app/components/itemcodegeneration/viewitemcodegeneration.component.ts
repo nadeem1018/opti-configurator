@@ -30,7 +30,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
     public listItems: Array<string> = this.commonData.default_limits;
     public selectedValue: number = 10;
-
+    public skip:number = 0;
 
     record_per_page: any;
     search_string: any = "";
@@ -92,6 +92,9 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
     getcurrentPageSize(grid_value) {
         sessionStorage.setItem('defaultRecords', grid_value);
+        this.skip = 0;
+        this.selectedValue = grid_value;
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     detectDevice() {
@@ -146,6 +149,14 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         //  this._el.nativeElement.focus();
     }
 
+    dataStateChanged(event){
+       // console.log(event);
+        event.filter = [];
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
+        this.selectedValue = event.take;
+        this.skip = event.skip;
+    }
+
     on_selection(grid_event) {
         grid_event.selectedRows = [];
     }
@@ -154,6 +165,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.current_page = 1;
         this.service_call(this.current_page, this.search_string);
     }
+    
 
     getPageValue() {
         if (this.selectedValue == null) {
