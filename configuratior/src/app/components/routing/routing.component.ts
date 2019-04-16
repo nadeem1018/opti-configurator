@@ -42,6 +42,7 @@ export class RoutingComponent implements OnInit {
   public selectableSettings: any = [];
   public live_tree_view_data = [];
   public tree_data_json: any = [];
+  public complete_dataset: any = [];
   public showLoader: boolean = true;
   public routing_type = ""
   public selectedImage = "";
