@@ -270,7 +270,8 @@
                   <div class="col-sm-6 input-group">
                     <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="template_routing_id"
                       (change)="getTemplateRoutingDetails(routing_header_data.template_routing_id)" placeholder="{{language.template_routing}}"
-                      [(ngModel)]="routing_header_data.template_routing_id" title="{{routing_header_data.template_routing_id}}" [disabled]="this.routing_header_data.use_template_routing == false">
+                      [(ngModel)]="routing_header_data.template_routing_id" title="{{routing_header_data.template_routing_id}}"
+                      [disabled]="this.routing_header_data.use_template_routing == false">
                     <input type="text" class="form-control  form-control-sm mt3" name="template_routing" id="template_routing_code"
                       [(ngModel)]="routing_header_data.template_routing_code" title="{{routing_header_data.template_routing_code}}"
                       placeholder="{{language.template_routing}}" (change)="getTemplateRoutingDetails(routing_header_data.template_routing_code)"
@@ -403,13 +404,13 @@
                   [minResizableWidth]="100">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <ng-container *ngIf="((this.routing_header_data.routing_for == 'feature') && (dataItem.type!=2 && dataItem.type!=3 && dataItem.type!=4)) || (this.routing_header_data.routing_for == 'model' && dataItem.type!=2 && dataItem.type!=4)">
-                        <div class="custom-control custom-checkbox custom-control-inline">
-                          <input type="checkbox" [disabled]="dataItem.opn_application == false" class="custom-control-input"
-                            id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}} (change)="on_input_change(oper_top_level.checked,dataItem.rowindex, 'oper_top_level')"
-                            #oper_top_level [(checked)]=dataItem.operation_top_level title="{{dataItem.operation_top_level}}"
-                            style="position: relative;margin-top: 5px;" />
-                          <label class="custom-control-label" for="oper_top_level_{{dataItem.rowindex}}"></label>
-                        </div>
+                      <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" [disabled]="dataItem.opn_application == false" class="custom-control-input"
+                          id="oper_top_level_{{dataItem.rowindex}}" value={{dataItem.operation_top_level}} (change)="on_input_change(oper_top_level.checked,dataItem.rowindex, 'oper_top_level')"
+                          #oper_top_level [(checked)]=dataItem.operation_top_level title="{{dataItem.operation_top_level}}"
+                          style="position: relative;margin-top: 5px;" />
+                        <label class="custom-control-label" for="oper_top_level_{{dataItem.rowindex}}"></label>
+                      </div>
                     </ng-container>
                   </ng-template>
                 </kendo-grid-column>
@@ -602,7 +603,9 @@
                 <i class="fa fa-save"></i> {{language.save}}</button>
               <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-primary mr-10">
                 <i class="fa fa-save"></i> {{language.update}}</button>
-
+              <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick('manual')" class="btn btn-sm btn-secondary  mr-10">
+                <i class="fa fa-window-maximize"></i> {{language.explode}}
+              </button>
             </div>
           </div>
           <div class="col-md-4 pr-0">
