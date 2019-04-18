@@ -1718,6 +1718,7 @@ export class OutputComponent implements OnInit {
                           HEADER_LINENO: this.ModelHeaderData.length + 1
                         });
 
+
                         if (checkeddefault == true) {
                           var itemData = [];
                           parentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -4483,7 +4484,11 @@ export class OutputComponent implements OnInit {
 
               }
               else {
-                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                } else {
+                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                }
                 if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                   defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
