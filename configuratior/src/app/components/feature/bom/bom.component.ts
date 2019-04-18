@@ -497,16 +497,11 @@ export class BomComponent implements OnInit {
                 return obj['parentId'] == remove_tree_data[0]['component'];
               });
 
-              /*  if (tree_element_child.length > 0) {
-                 this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
-                 return false;
-               } else { */
               for (let j = 0; j < this.tree_data_json.length; j++) {
                 if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
                   this.tree_data_json.splice(j, 1);
                 }
               }
-              /* } */
             }
           }
           this.feature_bom_table.splice(i, 1);
