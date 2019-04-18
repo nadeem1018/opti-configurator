@@ -69,7 +69,10 @@ export class BomComponent implements OnInit {
   public GetItemData = [];
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
-   //custom dialoag params
+  public row_selection: number[] = [];
+  public current_selected_row: any = [];
+  public selectableSettings: any = [];
+  //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService) { }
@@ -79,6 +82,13 @@ export class BomComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
 
+  getSelectedRowDetail(event) {
+    if (event.selectedRows.length > 0) {
+      this.current_selected_row = event.selectedRows[0].dataItem;
+    } else {
+      this.current_selected_row = [];
+    }
+  }
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -98,7 +108,7 @@ export class BomComponent implements OnInit {
     this.feature_bom_data = [];
     this.feature_bom_table = [];
     this.tree_data_json = [];
-    
+
     this.getFeatureBomDetail(id);
   }
   navigateToMasterHeader(feature_id) {
@@ -107,6 +117,9 @@ export class BomComponent implements OnInit {
   ngOnInit() {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
+    this.selectableSettings = {
+      mode: 'single'
+    };
     this.detectDevice();
     element.classList.add('add-feature-bom');
     element.classList.add('sidebar-toggled');
@@ -141,15 +154,15 @@ export class BomComponent implements OnInit {
   }
 
   getFeatureBomDetail(id) {
-        this.showLoader = true;
-        this.fbom.GetDataByFeatureId(id).subscribe(
-        data => {
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.commanService.RemoveLoggedInUser().subscribe();
-                this.commanService.signOut(this.toastr, this.router);
-                return;
-            } 
+    this.showLoader = true;
+    this.fbom.GetDataByFeatureId(id).subscribe(
+      data => {
+        if (data != undefined && data.LICDATA != undefined) {
+          if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
         }
 
         if (data.FeatureDetail.length > 0) {
@@ -417,7 +430,7 @@ export class BomComponent implements OnInit {
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
       hide: false,
-      is_accessory : 'N',
+      is_accessory: 'N',
       isQuanityDisabled: false,
       isPriceDisabled: this.isPriceDisabled,
       isPropagateQtyDisable: false,
@@ -516,12 +529,12 @@ export class BomComponent implements OnInit {
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].display_name == "" || this.feature_bom_table[i].display_name == " ") {
           let currentrow = i + 1;
-          this.toastr.error('',this.language.DisplayNameRequired + currentrow, this.commonData.toast_config);
+          this.toastr.error('', this.language.DisplayNameRequired + currentrow, this.commonData.toast_config);
           this.showLookupLoader = false;
           return;
         }
       }
-      
+
 
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
 
@@ -601,8 +614,8 @@ export class BomComponent implements OnInit {
           this.feature_bom_table[i].isPriceDisabled = true
           this.feature_bom_table[i].pricehide = true
           this.feature_bom_table[i].isPropagateQtyDisable = true
-          this.feature_bom_table[i].price_source = "" 
-          this.feature_bom_table[i].price_source_id = "" 
+          this.feature_bom_table[i].price_source = ""
+          this.feature_bom_table[i].price_source_id = ""
         }
         else {
           this.feature_bom_table[i].isDisplayNameDisabled = false
@@ -622,8 +635,8 @@ export class BomComponent implements OnInit {
             this.feature_bom_table[i].isQuanityDisabled = false
             this.feature_bom_table[i].isPriceDisabled = true
             this.feature_bom_table[i].pricehide = true
-            this.feature_bom_table[i].price_source = "" 
-            this.feature_bom_table[i].price_source_id = "" 
+            this.feature_bom_table[i].price_source = ""
+            this.feature_bom_table[i].price_source_id = ""
           }
         }
 
@@ -697,7 +710,7 @@ export class BomComponent implements OnInit {
            this.toastr.error('', this.language.feature_child_name_no_same, this.commonData.toast_config);
            return false;
           } */
-          
+
         this.feature_bom_table[i].display_name = value
 
         this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
@@ -763,24 +776,24 @@ export class BomComponent implements OnInit {
                 this.feature_bom_table[iIndex].type_value_code = "";
                 this.feature_bom_table[iIndex].is_accessory = "N";
                 this.feature_bom_table[iIndex].display_name = "";
-                this.feature_bom_table[iIndex].price_source = ""; 
-                this.feature_bom_table[iIndex].price_source_id = ""; 
+                this.feature_bom_table[iIndex].price_source = "";
+                this.feature_bom_table[iIndex].price_source_id = "";
                 $(type_value_code).val("");
                 return;
               }
               else {
                 this.lookupfor = "";
                 this.feature_bom_table[iIndex].type_value = data;
-               // this.getItemDetails(this.feature_bom_table[iIndex].type_value);
-               this.getItemDetailsOnChange(this.feature_bom_table[iIndex].type_value); 
+                // this.getItemDetails(this.feature_bom_table[iIndex].type_value);
+                this.getItemDetailsOnChange(this.feature_bom_table[iIndex].type_value);
               }
             })
         }
         else {
           this.feature_bom_table[i].type_value = code;
           this.feature_bom_table[i].type_value_code = code;
-          this.live_tree_view_data.push({ "display_name": code, "tree_index": this.currentrowindex, "branchType": 'value', "icon": 'value'});          
-          
+          this.live_tree_view_data.push({ "display_name": code, "tree_index": this.currentrowindex, "branchType": 'value', "icon": 'value' });
+
         }
       }
     }
@@ -895,57 +908,57 @@ export class BomComponent implements OnInit {
     )
   }
 
-  getItemDetailsOnChange(ItemKey){
+  getItemDetailsOnChange(ItemKey) {
 
     this.fbom.getItemDetails(ItemKey).subscribe(
-        data => {
-          if (data != undefined && data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.router);
-              return;
+      data => {
+        if (data != undefined && data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commanService.RemoveLoggedInUser().subscribe();
+            this.commanService.signOut(this.toastr, this.router);
+            return;
+          }
+        }
+        if (data.length > 0) {
+          for (let i = 0; i < this.feature_bom_table.length; ++i) {
+            if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+              this.feature_bom_table[i].type_value = data[0].ItemKey;
+              this.feature_bom_table[i].type = 2
+              this.feature_bom_table[i].type_value_code = data[0].ItemKey;
+              this.feature_bom_table[i].is_accessory = 'N';
+              this.feature_bom_table[i].display_name = data[0].Description;
+              this.feature_bom_table[i].price_source = data[0].ListName;
+              this.feature_bom_table[i].price_source_id = data[0].PriceListID;
+              this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon": 'item' });
             }
           }
-          if (data.length > 0) {
-            for (let i = 0; i < this.feature_bom_table.length; ++i) {
-              if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-                this.feature_bom_table[i].type_value = data[0].ItemKey;
-                this.feature_bom_table[i].type = 2
-                this.feature_bom_table[i].type_value_code = data[0].ItemKey;
-                this.feature_bom_table[i].is_accessory = 'N';
-                this.feature_bom_table[i].display_name = data[0].Description;
-                this.feature_bom_table[i].price_source = data[0].ListName;
-                this.feature_bom_table[i].price_source_id = data[0].PriceListID;
-                this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon": 'item'});
-              }
-            }
-          }
-        })
+        }
+      })
   }
 
-  getSelectedItemDetails(ItemKey){
+  getSelectedItemDetails(ItemKey) {
     let data = this.allItemDataDetails.filter(function (obj) {
       return obj.ItemKey == ItemKey;
-      });
-      return data;
+    });
+    return data;
   }
 
   getItemDetails(ItemKey) {
 
-   let selectedDataDetails:any = [];
-   selectedDataDetails = this.getSelectedItemDetails(ItemKey);
+    let selectedDataDetails: any = [];
+    selectedDataDetails = this.getSelectedItemDetails(ItemKey);
 
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
-        if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
-          this.feature_bom_table[i].type_value = selectedDataDetails[0].ItemKey;
-          this.feature_bom_table[i].type = 2
-          this.feature_bom_table[i].type_value_code = selectedDataDetails[0].ItemKey;
-          this.feature_bom_table[i].is_accessory = 'N';
-          this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
-          this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
-          this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
-          this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon":'item' });
-        }
+      if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        this.feature_bom_table[i].type_value = selectedDataDetails[0].ItemKey;
+        this.feature_bom_table[i].type = 2
+        this.feature_bom_table[i].type_value_code = selectedDataDetails[0].ItemKey;
+        this.feature_bom_table[i].is_accessory = 'N';
+        this.feature_bom_table[i].display_name = selectedDataDetails[0].Description;
+        this.feature_bom_table[i].price_source = selectedDataDetails[0].ListName;
+        this.feature_bom_table[i].price_source_id = selectedDataDetails[0].PriceListID;
+        this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex, "branchType": 'item', "icon": 'item' });
+      }
     }
 
     // this.fbom.getItemDetails(ItemKey).subscribe(
@@ -1004,7 +1017,7 @@ export class BomComponent implements OnInit {
                 this.detail_select_options = this.commonData.less_bom_type;
                 this.pricehide = false
                 this.isPriceDisabled = false;
-                
+
                 this.feature_bom_data.multi_select = false;
                 this.feature_bom_data.multi_select_disabled = true;
                 this.feature_bom_data.feature_min_selectable = 1;
@@ -1031,7 +1044,7 @@ export class BomComponent implements OnInit {
                 if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
                   this.feature_bom_table[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.feature_bom_table[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
-                  this.feature_bom_table[i].is_accessory = data[0].OPTM_ACCESSORY; 
+                  this.feature_bom_table[i].is_accessory = data[0].OPTM_ACCESSORY;
                   this.feature_bom_table[i].display_name = data[0].OPTM_DISPLAYNAME;
                   if (data[0].OPTM_PHOTO != null && data[0].OPTM_PHOTO != "") {
                     this.feature_bom_table[i].preview = this.commonData.get_current_url() + data[0].OPTM_PHOTO;
@@ -1042,7 +1055,7 @@ export class BomComponent implements OnInit {
                 }
               }
             }
-            this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex ,"branchType": 'feature', "icon":'feature'});
+            this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex, "branchType": 'feature', "icon": 'feature' });
           }
           else {
             if (index == 1) {
@@ -1124,9 +1137,9 @@ export class BomComponent implements OnInit {
         let filtered_bom_data = this.feature_bom_table.filter(function (obj) {
           return (obj.is_accessory == 'N' || obj.is_accessory == undefined || obj.is_accessory == null) ? obj : "";
         });
-        let  total_detail_elements = filtered_bom_data.length;
+        let total_detail_elements = filtered_bom_data.length;
         if (this.feature_bom_data.multi_select_disabled == false) {
-          
+
           if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
             this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
             return false;
@@ -1242,16 +1255,16 @@ export class BomComponent implements OnInit {
           }
         }
         console.log(data);
-        if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
+        if (data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists") {
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId, this.commonData.toast_config);
         }
-        else if(data[0].IsDeleted == "1"){
-            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-            this.router.navigateByUrl('feature/bom/view');
+        else if (data[0].IsDeleted == "1") {
+          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.router.navigateByUrl('feature/bom/view');
         }
-        else{
-            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
-       }
+        else {
+          this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId, this.commonData.toast_config);
+        }
         // if (data === "True") {
         //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
         //   this.router.navigateByUrl('feature/bom/view');
@@ -1361,8 +1374,8 @@ export class BomComponent implements OnInit {
       } else {
 
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
-          if(this.feature_bom_table[i].display_name == ''){
-           let currentrowindx = i+1;
+          if (this.feature_bom_table[i].display_name == '') {
+            let currentrowindx = i + 1;
             this.toastr.error('', this.language.DisplayNameRequired + currentrowindx, this.commonData.toast_config);
           }
         }
@@ -1376,9 +1389,9 @@ export class BomComponent implements OnInit {
         if (this.live_tree_view_data.length > 0) {
 
           //for (var key in this.live_tree_view_data) {
-             for (var key = 0 ; key < this.live_tree_view_data.length ; key++) {
-             var update_index = "";
-                       
+          for (var key = 0; key < this.live_tree_view_data.length; key++) {
+            var update_index = "";
+
             if (this.live_tree_view_data[key].tree_index !== undefined) {
               let local_tree_index = this.live_tree_view_data[key].tree_index;
               update_index = temp_data_level.findIndex(function (tree_el) {
@@ -1386,26 +1399,26 @@ export class BomComponent implements OnInit {
               });
             }
 
-           let temp_seq = {};
-           
+            let temp_seq = {};
+
             if (update_index == "-1") {
-              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
+              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType, "icon": this.live_tree_view_data[key].icon, "modalImage": "" };
               this.tree_data_json.push(temp_seq);
               temp_data_level.push(temp_seq);
             } else {
-              
+
               let TempBranchType = temp_data_level[update_index].branchType;
               let TempIcon = temp_data_level[update_index].icon;
-              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon, "modalImage": ""};
-              
+              temp_seq = { "sequence": sequence_count, "parentId": this.feature_bom_data.feature_name, "parentNumber": this.feature_bom_data.feature_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType, "icon": TempIcon, "modalImage": "" };
+
               let up_index = this.tree_data_json.findIndex(function (tree_el) {
                 return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
               });
               this.tree_data_json[up_index] = (temp_seq);
               temp_data_level[update_index] = (temp_seq);
             }
-        }
-         console.log(this.tree_data_json);
+          }
+          console.log(this.tree_data_json);
           this.live_tree_view_data = [];
         }
       }
@@ -1547,22 +1560,54 @@ export class BomComponent implements OnInit {
     $('body').click()
     this.modalRef = this.modalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
-  childExpand(id: any){
-      id.classList.toggle("expanded")
-      if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
-          id.parentNode.parentNode.childNodes[4].style.display = "block";
-      } else {
-          id.parentNode.parentNode.childNodes[4].style.display = "none";
-      }
+  childExpand(id: any) {
+    id.classList.toggle("expanded")
+    if (id.parentNode.parentNode.childNodes[4].style.display === "none") {
+      id.parentNode.parentNode.childNodes[4].style.display = "block";
+    } else {
+      id.parentNode.parentNode.childNodes[4].style.display = "none";
+    }
   }
-  expandAll(){
+  expandAll() {
     console.log("expandAll")
-    $(document).find('treeview').show()    
+    $(document).find('treeview').show()
     $(document).find('.expand-btn').addClass("expanded")
   }
-  collapseAll(){
+  collapseAll() {
     console.log("collapseAll")
     $(document).find('treeview').hide()
     $(document).find('.expand-btn').removeClass("expanded")
+  }
+
+  resequence_operation(type) {  // type = 1 : up & type = 2 : down
+    let current_row_index = this.current_selected_row.rowindex - 1;
+    this.row_selection = [];
+    console.log("this.row_selection start  - ", this.row_selection);
+    if (type == '1') {
+      let prev_row_index = current_row_index - 1;
+      if (this.feature_bom_table[prev_row_index] != undefined) { // && this.feature_bom_table[prev_row_index].length > 0
+        this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex - 1;
+        this.feature_bom_table[prev_row_index].rowindex = this.feature_bom_table[prev_row_index].rowindex + 1;
+
+        var temp_swap = this.feature_bom_table[current_row_index];
+        this.feature_bom_table[current_row_index] = this.feature_bom_table[prev_row_index];
+        this.feature_bom_table[prev_row_index] = temp_swap;
+        this.row_selection = [this.feature_bom_table[prev_row_index].rowindex];
+        this.current_selected_row = this.feature_bom_table[prev_row_index];
+      }
+    } else if (type == '2') {
+      let next_row_index = current_row_index + 1;
+      if (this.feature_bom_table[next_row_index] != undefined) { // && this.feature_bom_table[next_row_index].length > 0
+        this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex + 1;
+        this.feature_bom_table[next_row_index].rowindex = this.feature_bom_table[next_row_index].rowindex - 1;
+
+
+        var temp_swap = this.feature_bom_table[current_row_index];
+        this.feature_bom_table[current_row_index] = this.feature_bom_table[next_row_index];
+        this.feature_bom_table[next_row_index] = temp_swap;
+        this.row_selection = [this.feature_bom_table[next_row_index].rowindex];
+        this.current_selected_row = this.feature_bom_table[next_row_index];
+      }
+    }
   }
 }

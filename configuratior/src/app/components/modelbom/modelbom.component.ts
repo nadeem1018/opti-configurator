@@ -52,6 +52,9 @@ export class ModelbomComponent implements OnInit {
   public isAccessory:boolean = false;
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
+  public row_selection: number[] = [];
+  public current_selected_row: any = [];
+  public selectableSettings: any = [];
   modalRef: BsModalRef;
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
@@ -69,6 +72,14 @@ export class ModelbomComponent implements OnInit {
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
+
+  getSelectedRowDetail(event) {
+    if (event.selectedRows.length > 0) {
+      this.current_selected_row = event.selectedRows[0].dataItem;
+    } else {
+      this.current_selected_row = [];
+    }
+  }
 
   navigateToFeatureOrModelBom(type_value, type ) {
     if(type == '1'){
@@ -1781,6 +1792,38 @@ export class ModelbomComponent implements OnInit {
     console.log("collapseAll")
     $(document).find('treeview').hide()
     $(document).find('.expand-btn').removeClass("expanded")
+  }
+
+  resequence_operation(type) {  // type = 1 : up & type = 2 : down
+    let current_row_index = this.current_selected_row.rowindex - 1;
+    this.row_selection = [];
+    console.log("this.row_selection start  - ", this.row_selection);
+    if (type == '1') {
+      let prev_row_index = current_row_index - 1;
+      if (this.modelbom_data[prev_row_index] != undefined) { // && this.modelbom_data[prev_row_index].length > 0
+        this.modelbom_data[current_row_index].rowindex = this.modelbom_data[current_row_index].rowindex - 1;
+        this.modelbom_data[prev_row_index].rowindex = this.modelbom_data[prev_row_index].rowindex + 1;
+
+        var temp_swap = this.modelbom_data[current_row_index];
+        this.modelbom_data[current_row_index] = this.modelbom_data[prev_row_index];
+        this.modelbom_data[prev_row_index] = temp_swap;
+        this.row_selection = [this.modelbom_data[prev_row_index].rowindex];
+        this.current_selected_row = this.modelbom_data[prev_row_index];
+      }
+    } else if (type == '2') {
+      let next_row_index = current_row_index + 1;
+      if (this.modelbom_data[next_row_index] != undefined) { // && this.modelbom_data[next_row_index].length > 0
+        this.modelbom_data[current_row_index].rowindex = this.modelbom_data[current_row_index].rowindex + 1;
+        this.modelbom_data[next_row_index].rowindex = this.modelbom_data[next_row_index].rowindex - 1;
+
+
+        var temp_swap = this.modelbom_data[current_row_index];
+        this.modelbom_data[current_row_index] = this.modelbom_data[next_row_index];
+        this.modelbom_data[next_row_index] = temp_swap;
+        this.row_selection = [this.modelbom_data[next_row_index].rowindex];
+        this.current_selected_row = this.modelbom_data[next_row_index];
+      }
+    }
   }
 }
 

@@ -56,10 +56,11 @@
                         <div class="col-md-6">
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="featureItemCode">
-                                  {{language.Feature_Code}}
-                                  <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)" *ngIf="feature_bom_data.feature_id && feature_bom_data.feature_code">
-                                    <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
-                                  </a>
+                                    {{language.Feature_Code}}
+                                    <a class="common_grid_link" (click)="navigateToMasterHeader(feature_bom_data.feature_id)"
+                                        *ngIf="feature_bom_data.feature_id && feature_bom_data.feature_code">
+                                        <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                    </a>
                                 </label>
                                 <div class="col-sm-5 input-group">
                                     <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
@@ -132,12 +133,20 @@
                                         (click)="onAddRow()" #button>
                                         <i class="fa fa-plus"></i> {{language.add_row}}
                                     </a>
+                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1 ml-3 mr-3" [hidden]="this.current_selected_row.length == 0"
+                                        title="{{language.move_row_up}} " (click)="resequence_operation('1')">
+                                        <b><i class="fa fa-arrow-up"></i> </b>
+                                    </a>
+                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" [hidden]="this.current_selected_row.length == 0"
+                                        title="{{language.move_row_down}} " (click)="resequence_operation('2')">
+                                        <b><i class="fa fa-arrow-down"></i></b>
+                                    </a>
                                 </div>
                             </div>
 
                         </div>
-                    
-                        <div class="col-md-6" [hidden]="feature_bom_data.is_accessory=='Y'" >
+
+                        <div class="col-md-6" [hidden]="feature_bom_data.is_accessory=='Y'">
                             <div class="form-group row clearfix">
                                 <div class="col-sm-6 row">
                                     <label class="col-sm-6 col-form-label" for="featureDisplay">{{language.multi_select}}</label>
@@ -184,15 +193,17 @@
                     <div class="col-sm-12 p-0">
                         <div class="">
                             <kendo-grid [kendoGridBinding]="feature_bom_table" [resizable]="true" [sortable]="false"
-                                [groupable]="false" [filterable]="false">
+                                [groupable]="false" [filterable]="false" [selectable]="selectableSettings"
+                                [kendoGridSelectBy]="'rowindex'" [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
                                 <kendo-grid-column field="rowindex" title="#" [width]="60" [minResizableWidth]="60"
                                     filter="numeric">
-                                  <ng-template kendoGridCellTemplate let-dataItem>
-                                    <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value)" *ngIf="dataItem.type_value && dataItem.type == '1'">
-                                      <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
-                                    </a>
-                                    {{dataItem.rowindex}}
-                                  </ng-template>
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value)"
+                                            *ngIf="dataItem.type_value && dataItem.type == '1'">
+                                            <i class="fa fa-arrow-circle-right fa-fw" aria-hidden="true"></i>
+                                        </a>
+                                        {{dataItem.rowindex}}
+                                    </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="detail_select_options" title="{{language.Model_Type}}"
                                     [width]="110" [minResizableWidth]="110">
@@ -223,8 +234,9 @@
                                     </ng-template>
                                 </kendo-grid-column>
 
-                                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text" [minResizableWidth]="145">
-                                    <ng-template kendoGridCellTemplate let-dataItem >
+                                <kendo-grid-column field="Bom_Displayname" title="{{language.Bom_Displayname}}" filter="text"
+                                    [minResizableWidth]="145">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
                                         <input [disabled]="dataItem.isDisplayNameDisabled" type="text" class="form-control  form-control-sm"
                                             id="display_name" (change)="on_displayname_change(display_name.value,dataItem.rowindex)"
                                             value={{dataItem.display_name}} #display_name title="{{dataItem.display_name}}" />
@@ -239,29 +251,32 @@
                                             #quantity title="{{dataItem.quantity}}" />
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="Bom_Default" headerClass="text-center" title="{{language.Bom_Default}}" filter="text"
-                                    [width]="80" [minResizableWidth]="80">
+                                <kendo-grid-column field="Bom_Default" headerClass="text-center" title="{{language.Bom_Default}}"
+                                    filter="text" [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
-                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute" id="default_{{dataItem.rowindex}}"
-                                                (change)="on_defualt_change(default,dataItem.rowindex)" value={{dataItem.default}} #default [(checked)]=dataItem.default
-                                                title="{{dataItem.default}}" style="margin-top: 5px;" />
+                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute"
+                                                id="default_{{dataItem.rowindex}}" (change)="on_defualt_change(default,dataItem.rowindex)"
+                                                value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}"
+                                                style="margin-top: 5px;" />
                                             <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text" [minResizableWidth]="113">
+                                <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text"
+                                    [minResizableWidth]="113">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <input type="text" class="form-control  form-control-sm" id="remark" (change)="on_remark_change(remark.value,dataItem.rowindex)"
                                             value={{dataItem.remark}} #remark title="{{dataItem.remark}}" />
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="propagate_qty" headerClass="text-center" title="{{language.propagate_qty}}" filter="numeric"
-                                    [width]="120" [minResizableWidth]="120">
+                                <kendo-grid-column field="propagate_qty" headerClass="text-center" title="{{language.propagate_qty}}"
+                                    filter="numeric" [width]="120" [minResizableWidth]="120">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
-                                            <input type="checkbox" class="custom-control-input pull-right position-absolute" id="propagate_qty_{{dataItem.rowindex}}"
-                                                value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
+                                            <input type="checkbox" class="custom-control-input pull-right position-absolute"
+                                                id="propagate_qty_{{dataItem.rowindex}}" value={{dataItem.propagate_qty}}
+                                                (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
                                                 [(checked)]=dataItem.propagate_qty [disabled]="dataItem.isPropagateQtyDisable"
                                                 #propagate_qty title="{{dataItem.propagate_qty}}" style="margin-top: 5px;" />
                                             <label class="custom-control-label" for="propagate_qty_{{dataItem.rowindex}}"></label>
@@ -377,11 +392,13 @@
         <div class="opti_overflow-auto tree-wrapper">
             <div class="tree well">
                 <div class="collaps-control">
-                    <button class="btn btn-sm btn-outline-primary mr-10" type="button" (click)="expandAll()"><i class="fa-expand fa mr-1"></i> {{this.language.expand_all}}</button>
-                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="collapseAll()"><i class="fa-compress fa mr-1"></i> {{this.language.collapse_all}}</button>    
+                    <button class="btn btn-sm btn-outline-primary mr-10" type="button" (click)="expandAll()"><i class="fa-expand fa mr-1"></i>
+                        {{this.language.expand_all}}</button>
+                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="collapseAll()"><i class="fa-compress fa mr-1"></i>
+                        {{this.language.collapse_all}}</button>
                 </div>
                 <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
-                    <li class="first_level_li" *ngFor="let element of tree_data_json; let i= index;" [hidden]="element.level != 0 && element.parentNumber!=''" >
+                    <li class="first_level_li" *ngFor="let element of tree_data_json; let i= index;" [hidden]="element.level != 0 && element.parentNumber!=''">
                         <div *ngIf="element.level == 0 && element.parentNumber==''">
                             <ng-template #template>
                                 <div class="modal-body text-center">
@@ -390,18 +407,19 @@
                             </ng-template>
                             <ng-template #popTemplate>
                                 <div class="text-center">
-                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100" (click)="openModal(template)">
+                                    <img *ngIf="!element.modalImage==''" [attr.src]="element.modalImage" height="100"
+                                        (click)="openModal(template)">
                                     <div *ngIf="element.modalImage==''" class="no-img-msg">No Image Found</div>
                                 </div>
                             </ng-template>
-                            <span class="first_level" [popover]="popTemplate" popoverTitle="{{element.component}}" placement="left"
-                                container="body" [outsideClick]="true" triggers="" #pop="bs-popover">
+                            <span class="first_level" [popover]="popTemplate" popoverTitle="{{element.component}}"
+                                placement="left" container="body" [outsideClick]="true" triggers="" #pop="bs-popover">
                                 <!-- <i class="fa fa-circle"></i>  -->
                                 <span #btn (click)="childExpand(btn)" class="expand-btn expanded" *ngIf="check_component_exist(element.componentNumber, i).length > 0"></span>
                                 <span (click)="pop.toggle()" [attr.data-branchtype]="element.branchType">{{element.component}}</span>
                             </span>
-                            <treeview #tree [tree_data_json]="check_component_exist(element.componentNumber, i)" [complete_dataset]="tree_data_json"
-                                *ngIf="check_component_exist(element.componentNumber, i).length > 0"></treeview>
+                            <treeview #tree [tree_data_json]="check_component_exist(element.componentNumber, i)"
+                                [complete_dataset]="tree_data_json" *ngIf="check_component_exist(element.componentNumber, i).length > 0"></treeview>
                         </div>
                     </li>
                 </ul>

@@ -25,7 +25,7 @@ export class RuleWbViewComponent implements OnInit {
     pageSizeNumber:any = this.commonData.default_count;
     public listItems: Array<string> = this.commonData.default_limits;
     public selectedValue: number = 10;
-    
+    public skip:number = 0;    
 
     public companyName: string = ""; 
     public isColumnFilter: boolean = false;
@@ -119,7 +119,18 @@ export class RuleWbViewComponent implements OnInit {
 
     getcurrentPageSize(grid_value){
       sessionStorage.setItem('defaultRecords', grid_value);
+      this.skip = 0;
+      this.selectedValue = grid_value;
+      this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
+
+    dataStateChanged(event){
+        // console.log(event);
+         event.filter = [];
+         this.record_per_page = sessionStorage.getItem('defaultRecords');
+         this.selectedValue = event.take;
+         this.skip = event.skip;
+     }
     
     on_selection(grid_event) {
         grid_event.selectedRows = [];

@@ -126,8 +126,6 @@ export class RoutingService {
   }
 
   DeleteRouting(routing_data ): Observable<any> {
-/*    let jObject = { Routing: JSON.stringify([{ CompanyDBID: this.logged_in_company, RoutingId: routing_id,
-      GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };*/
       let jObject = { Routing: JSON.stringify(routing_data) };
     return this.httpclient.post(this.config_params.service_url + "/Routing/DeleteRouting", jObject, this.common_params.httpOptions);
   }
@@ -148,5 +146,16 @@ export class RoutingService {
     return this.httpclient.post(this.config_params.service_url + "/Routing/TemplateRoutingDetail", jObject, this.common_params.httpOptions);
   }
 
+  getTreeData(CompanyDBID, routing_id): Observable<any> {
+    let jObject = {
+      Routing: JSON.stringify([{
+        CompanyDBID: CompanyDBID, 
+        RoutingID: routing_id,
+        GUID: sessionStorage.getItem("GUID"),
+        UsernameForLic: sessionStorage.getItem("loggedInUser")
+      }])
+    }
+    return this.httpclient.post(this.config_params.service_url + "/Routing/getTreeData", jObject, this.common_params.httpOptions);
+  }
 
 }

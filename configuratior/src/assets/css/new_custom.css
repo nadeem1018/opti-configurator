@@ -700,6 +700,7 @@ hr {
   justify-content: center;
   height: 18px;
   cursor: pointer;
+  min-width:18px;
 }
 
 .expand-btn:before {
@@ -713,6 +714,16 @@ hr {
   content: "\f068";
 }
 
+.opration-type {
+  font-size: 12px;
+  font-style: italic;
+  color: #007bff;
+  border: 1px solid #d8d7d7;
+  border-radius: 3px;
+  padding: 1px 3px 3px;
+  white-space: nowrap;
+  line-height: 1;
+}
 /*css for popover*/
 
 .popover {
