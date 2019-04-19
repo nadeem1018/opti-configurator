@@ -245,7 +245,7 @@ export class ItemcodegenerationComponent implements OnInit {
       
         if (data == "7001") {
           this.commanService.RemoveLoggedInUser().subscribe();
-          this.commanService.signOut(this.toastr, this.route);
+          this.commanService.signOut(this.toastr, this.route, 'Sessionout');
           return;
         } 
 
@@ -436,7 +436,7 @@ export class ItemcodegenerationComponent implements OnInit {
                 if(data != undefined && data.length > 0){
                   if (data[0].ErrorMsg == "7001") {
                       this.commanService.RemoveLoggedInUser().subscribe();
-                      this.commanService.signOut(this.toastr, this.route);
+                      this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                       return;
                   } 
                 }
@@ -510,7 +510,7 @@ export class ItemcodegenerationComponent implements OnInit {
         if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.route);
+              this.commanService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
        }

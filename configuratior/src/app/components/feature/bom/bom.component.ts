@@ -160,7 +160,7 @@ export class BomComponent implements OnInit {
         if (data != undefined && data.LICDATA != undefined) {
           if (data.LICDATA[0].ErrorMsg == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -570,7 +570,7 @@ export class BomComponent implements OnInit {
         this.showLookupLoader = false;
         if (data == "7001") {
           this.commanService.RemoveLoggedInUser().subscribe();
-          this.commanService.signOut(this.toastr, this.router);
+          this.commanService.signOut(this.toastr, this.router, 'Sessionout');
           return;
         }
 
@@ -765,7 +765,7 @@ export class BomComponent implements OnInit {
               if (data != undefined && data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
                   this.commanService.RemoveLoggedInUser().subscribe();
-                  this.commanService.signOut(this.toastr, this.route);
+                  this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                   return;
                 }
               }
@@ -885,7 +885,7 @@ export class BomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -915,7 +915,7 @@ export class BomComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -1000,7 +1000,7 @@ export class BomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -1092,7 +1092,7 @@ export class BomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -1207,7 +1207,7 @@ export class BomComponent implements OnInit {
             if (data != undefined && data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.commanService.RemoveLoggedInUser().subscribe();
-                this.commanService.signOut(this.toastr, this.route);
+                this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
               }
             }
@@ -1250,7 +1250,7 @@ export class BomComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }
@@ -1299,7 +1299,7 @@ export class BomComponent implements OnInit {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.commanService.RemoveLoggedInUser().subscribe();
-                this.commanService.signOut(this.toastr, this.router);
+                this.commanService.signOut(this.toastr, this.router, 'Sessionout');
                 return;
               }
             }
@@ -1344,7 +1344,7 @@ export class BomComponent implements OnInit {
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
                   this.commanService.RemoveLoggedInUser().subscribe();
-                  this.commanService.signOut(this.toastr, this.router);
+                  this.commanService.signOut(this.toastr, this.router, 'Sessionout');
                   return;
                 }
               }
@@ -1439,7 +1439,7 @@ export class BomComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.route);
+            this.commanService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
         }
@@ -1473,7 +1473,7 @@ export class BomComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commanService.RemoveLoggedInUser().subscribe();
-            this.commanService.signOut(this.toastr, this.router);
+            this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
         }

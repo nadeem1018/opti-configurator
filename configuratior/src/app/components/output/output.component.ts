@@ -379,7 +379,7 @@ export class OutputComponent implements OnInit {
 
           if (data[0].ErrorMsg == "7001") {
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
 
@@ -407,7 +407,7 @@ export class OutputComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
 
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
         }
@@ -500,7 +500,7 @@ export class OutputComponent implements OnInit {
               if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
-                this.CommonService.signOut(this.toastr, this.route);
+                this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
               }
               this.setModelDataFlag = true;
@@ -696,7 +696,7 @@ export class OutputComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.serviceData = data;
@@ -722,7 +722,7 @@ export class OutputComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.lookupfor = 'output_customer';
@@ -763,7 +763,7 @@ export class OutputComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.lookupfor = 'ModelBomForWizard_lookup';
@@ -1228,7 +1228,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -1535,7 +1535,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -2330,7 +2330,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -2366,7 +2366,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -2393,7 +2393,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -2432,7 +2432,7 @@ export class OutputComponent implements OnInit {
 
           if (data[0].ErrorMsg == "7001") {
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.step1_data.customer_name = data[0].Name;
@@ -2713,7 +2713,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -3774,7 +3774,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -3917,7 +3917,7 @@ export class OutputComponent implements OnInit {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.CommonService.RemoveLoggedInUser().subscribe();
-                this.CommonService.signOut(this.toastr, this.route);
+                this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
               }
             }
@@ -4090,7 +4090,7 @@ export class OutputComponent implements OnInit {
                 if (data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
                     this.CommonService.RemoveLoggedInUser().subscribe();
-                    this.CommonService.signOut(this.toastr, this.route);
+                    this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   }
                 }
@@ -4872,7 +4872,7 @@ export class OutputComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
-            this.CommonService.signOut(this.toastr, this.route);
+            this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
         }
@@ -5425,7 +5425,7 @@ export class OutputComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -5542,7 +5542,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route);
+              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }

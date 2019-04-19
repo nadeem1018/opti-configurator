@@ -1586,7 +1586,7 @@ export class LookupComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.common_service.RemoveLoggedInUser().subscribe();
-              this.common_service.signOut(this.toastr, this.router);
+              this.common_service.signOut(this.toastr, this.router, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1642,7 +1642,7 @@ export class LookupComponent implements OnInit {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.common_service.RemoveLoggedInUser().subscribe();
-                this.common_service.signOut(this.toastr, this.router);
+                this.common_service.signOut(this.toastr, this.router, 'Sessionout');
                 this.showLookupLoader = false;
                 return;
               }
@@ -1804,7 +1804,7 @@ export class LookupComponent implements OnInit {
           if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.common_service.RemoveLoggedInUser().subscribe();
-                this.common_service.signOut(this.toastr, this.router);
+                this.common_service.signOut(this.toastr, this.router, 'Sessionout');
                 this.showLookupLoader = false;
                 return;
               }

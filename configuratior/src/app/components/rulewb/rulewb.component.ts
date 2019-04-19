@@ -152,7 +152,7 @@ export class RulewbComponent implements OnInit {
           if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -544,7 +544,7 @@ export class RulewbComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
 
@@ -642,7 +642,7 @@ export class RulewbComponent implements OnInit {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           if (press_location == "Detail") {
@@ -691,7 +691,7 @@ export class RulewbComponent implements OnInit {
             if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -1021,7 +1021,7 @@ export class RulewbComponent implements OnInit {
                 if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   }
                 }
@@ -1045,7 +1045,7 @@ export class RulewbComponent implements OnInit {
                 if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   }
                 }
@@ -1071,7 +1071,7 @@ export class RulewbComponent implements OnInit {
                 if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   }
                 }
@@ -1112,7 +1112,7 @@ export class RulewbComponent implements OnInit {
                 if (data != undefined && data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   }
                 }
@@ -1143,7 +1143,7 @@ export class RulewbComponent implements OnInit {
           this.showLookupLoader = false;
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.serviceData = data;
@@ -1166,7 +1166,7 @@ export class RulewbComponent implements OnInit {
           console.log(data);
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
           this.currentrowindex = rowindex;
@@ -1570,7 +1570,7 @@ export class RulewbComponent implements OnInit {
           this.showLookupLoader = false;
           if (data == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           }
 

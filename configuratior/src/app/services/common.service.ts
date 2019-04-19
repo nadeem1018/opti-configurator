@@ -97,9 +97,16 @@ export class CommonService {
     return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
   } 
 
-  signOut(toastr: ToastrService, router: Router){
+  signOut(toastr: ToastrService, router: Router, Logoutvar){
     let language:any = JSON.parse(sessionStorage.getItem('current_lang'));  
-    toastr.error('', language.session_stopped, this.common_params.toast_config);
+
+    if(Logoutvar == 'Logout'){
+      toastr.error('', language.session_logout, this.common_params.toast_config);
+    }
+    else {
+      toastr.error('', language.session_stopped, this.common_params.toast_config);
+    }
+    
     /* sessionStorage.clear();
     localStorage.clear(); */
     let login_page = this.common_params.application_path + '/index.html#login';

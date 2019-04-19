@@ -66,7 +66,7 @@ export class HeaderComponent implements OnInit {
 
     this.CommonService.RemoveLoggedInUser().subscribe();
 
-    this.CommonService.signOut(this.toastr, this.router);
+    this.CommonService.signOut(this.toastr, this.router, 'Logout');
 
 
     // this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);

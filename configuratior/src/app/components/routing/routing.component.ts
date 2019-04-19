@@ -140,7 +140,7 @@ export class RoutingComponent implements OnInit {
             if (data.LICDATA != undefined) {
               if (data.LICDATA[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 this.showLoader = false;
                 return;
               }
@@ -659,7 +659,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -700,7 +700,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -756,7 +756,7 @@ export class RoutingComponent implements OnInit {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 this.showLookupLoader = false;
                 return;
               }
@@ -834,7 +834,7 @@ export class RoutingComponent implements OnInit {
           if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -931,7 +931,7 @@ export class RoutingComponent implements OnInit {
           if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1048,7 +1048,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1086,7 +1086,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1120,7 +1120,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1164,7 +1164,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1210,7 +1210,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1262,7 +1262,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
               return;
             }
@@ -1302,7 +1302,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -1604,7 +1604,7 @@ export class RoutingComponent implements OnInit {
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route);
+                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                   this.showLookupLoader = false;
                   return;
                 }
@@ -1672,7 +1672,7 @@ export class RoutingComponent implements OnInit {
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route);
+                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                   this.showLookupLoader = false;
                   return;
                 }
@@ -2045,7 +2045,7 @@ export class RoutingComponent implements OnInit {
         this.showLookupLoader = false;
         if (data == "7001") {
           this.commonService.RemoveLoggedInUser().subscribe();
-          this.commonService.signOut(this.toastr, this.route);
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
           return;
         }
 
@@ -2089,7 +2089,7 @@ export class RoutingComponent implements OnInit {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }
           }
@@ -2230,7 +2230,7 @@ export class RoutingComponent implements OnInit {
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
                   this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route);
+                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                   return;
                 }
               }
