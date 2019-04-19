@@ -55,6 +55,7 @@ export class ModelbomComponent implements OnInit {
   public row_selection: number[] = [];
   public current_selected_row: any = [];
   public selectableSettings: any = [];
+  public mandatory_disabled: boolean = false;
   modalRef: BsModalRef;
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
@@ -167,7 +168,7 @@ export class ModelbomComponent implements OnInit {
         if(data != undefined && data.LICDATA != undefined){
           if (data.LICDATA[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
        }
@@ -211,6 +212,7 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = true
               this.isMinSelectedDisable = false;
               this.isMaxSelectedDisable = false;
+              this.mandatory_disabled = false;
             } else if (data.ModelDetail[i].OPTM_TYPE == 2) {
               this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
               this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
@@ -219,6 +221,7 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = false
               this.isMinSelectedDisable = true;
               this.isMaxSelectedDisable = true;
+              this.mandatory_disabled = true;
             } else {
               this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
               this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
@@ -227,6 +230,7 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = true
               this.isMinSelectedDisable = false;
               this.isMaxSelectedDisable = false;
+              this.mandatory_disabled = false;
             }
             // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
             //   data.ModelDetail[i].OPTM_READYTOUSE = false
@@ -415,6 +419,7 @@ export class ModelbomComponent implements OnInit {
   }
 
   on_bom_type_change(selectedvalue, rowindex) {
+    
     if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
       this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
       return false;
@@ -440,6 +445,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].propagate_qty = true;
           this.modelbom_data[i].mandatory = false;
           this.modelbom_data[i].unique_identifer = false;
+          this.mandatory_disabled = false;
         }
         else {
           this.modelbom_data[i].isDisplayNameDisabled = false
@@ -455,7 +461,8 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isMinSelectedDisable = true;
             this.modelbom_data[i].isMaxSelectedDisable = true;
             this.modelbom_data[i].propagate_qty = true;
-            this.modelbom_data[i].mandatory = false;
+            this.modelbom_data[i].mandatory = true;
+            this.mandatory_disabled = true;
             this.modelbom_data[i].unique_identifer = false;
           }
           else {
@@ -469,6 +476,7 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].propagate_qty = true;
             this.modelbom_data[i].mandatory = false;
             this.modelbom_data[i].unique_identifer = false;
+            this.mandatory_disabled = false;
           }
 
         }
@@ -507,7 +515,7 @@ export class ModelbomComponent implements OnInit {
           this.showLookupLoader = false;
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
          } 
           if (press_location == "Header") {
@@ -619,7 +627,7 @@ export class ModelbomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
         }
@@ -655,7 +663,7 @@ export class ModelbomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
        }
@@ -753,7 +761,7 @@ export class ModelbomComponent implements OnInit {
           this.showLookupLoader = false;  
             if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             }                   
 
@@ -808,7 +816,7 @@ export class ModelbomComponent implements OnInit {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
               } 
   
@@ -906,7 +914,7 @@ export class ModelbomComponent implements OnInit {
               if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                 } 
              }
@@ -931,7 +939,7 @@ export class ModelbomComponent implements OnInit {
               if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                 } 
              }
@@ -1093,7 +1101,7 @@ export class ModelbomComponent implements OnInit {
               if(data != undefined && data != null && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
                     this.commonService.RemoveLoggedInUser().subscribe();
-                    this.commonService.signOut(this.toastr, this.route);
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                 } 
              }
@@ -1118,7 +1126,7 @@ export class ModelbomComponent implements OnInit {
                 if(data != undefined && data != null && data.length > 0){
                   if (data[0].ErrorMsg == "7001") {
                       this.commonService.RemoveLoggedInUser().subscribe();
-                      this.commonService.signOut(this.toastr, this.route);
+                      this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                       return;
                   }
                }
@@ -1175,7 +1183,7 @@ export class ModelbomComponent implements OnInit {
           if(data != undefined && data.length > 0){
             if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
             } 
           }
@@ -1319,7 +1327,7 @@ export class ModelbomComponent implements OnInit {
           if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
       }
@@ -1375,7 +1383,7 @@ export class ModelbomComponent implements OnInit {
               if(data.length > 0){
               if (data[0].ErrorMsg == "7001") {
                 this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route);
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
              } 
             }
@@ -1483,7 +1491,7 @@ export class ModelbomComponent implements OnInit {
           if(data.length > 0){
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
          }
         } 
@@ -1541,7 +1549,7 @@ export class ModelbomComponent implements OnInit {
         if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
        }
@@ -1565,7 +1573,7 @@ export class ModelbomComponent implements OnInit {
         if(data != undefined && data.length > 0){
           if (data[0].ErrorMsg == "7001") {
               this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route);
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
           } 
        }
@@ -1592,7 +1600,7 @@ export class ModelbomComponent implements OnInit {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
             this.commonService.RemoveLoggedInUser().subscribe();
-            this.commonService.signOut(this.toastr, this.route);
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
          } 
           //If exists then will restrict user 
@@ -1719,7 +1727,7 @@ export class ModelbomComponent implements OnInit {
         this.showLookupLoader = false;
         if (data == "7001") {
           this.commonService.RemoveLoggedInUser().subscribe();
-          this.commonService.signOut(this.toastr, this.route);
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
           return;
         }
 

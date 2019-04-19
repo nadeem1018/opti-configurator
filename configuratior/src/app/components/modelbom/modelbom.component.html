@@ -265,7 +265,7 @@
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
                       <input type="checkbox" class="custom-control-input position-absolute" id="mandatory_{{dataItem.rowindex}}"
-                        value={{dataItem.mandatory}} (change)="on_mandatory_change(mandatory,dataItem.rowindex)"
+                        [disabled]=dataItem.isAccessory||mandatory_disabled value={{dataItem.mandatory}} (change)="on_mandatory_change(mandatory,dataItem.rowindex)"
                         #mandatory [(checked)]=dataItem.mandatory title="{{dataItem.mandatory}}" style="margin-top: 5px;" />
                       <label class="custom-control-label" for="mandatory_{{dataItem.rowindex}}"></label>
                     </div>
