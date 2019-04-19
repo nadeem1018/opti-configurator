@@ -416,6 +416,8 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.feature_description = "";
     this.routing_detail_data = [];
     this.routing_detail_resource_data = [];
+    this.tree_data_json = [];
+    this.live_tree_view_data = [];
   }
 
   reset_model() {
@@ -436,7 +438,8 @@ export class RoutingComponent implements OnInit {
     $("#use_template_routing").prop('checked', false);
     this.routing_header_data.template_routing_id = "";
     this.routing_header_data.template_routing_code = "";
-
+    this.tree_data_json = [];
+    this.live_tree_view_data = [];
   }
 
   header_numeric_input_change(value, input_id) {
@@ -526,6 +529,8 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
       this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
       let obj = this;
+
+      this.new_tree_item(this.routing_detail_data[this.current_grid_action_row].type, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row], this.routing_detail_data[this.current_grid_action_row].rowindex);
 
 
       if ($event[3] == '4' || $event[3] == '5') {
@@ -735,6 +740,8 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.feature_code = '';
     this.routing_header_data.feature_description = '';
     this.routing_detail_data = [];
+    this.live_tree_view_data = [];
+    this.tree_data_json = [];
 
   }
 
@@ -743,7 +750,9 @@ export class RoutingComponent implements OnInit {
     this.routing_header_data.modal_code = '';
     this.routing_header_data.modal_description = "";
     this.routing_detail_data = [];
-
+    this.live_tree_view_data = [];
+    this.tree_data_json = [];
+    
   }
 
   getFeatureDetail(feature_code) {
@@ -826,6 +835,8 @@ export class RoutingComponent implements OnInit {
 
   GetDataByFeatureId(feature_code, press_location, index) {
     this.routing_detail_data = [];
+    this.tree_data_json = [];
+    this.live_tree_view_data = [];
     if (press_location == 'header') {
       this.showLookupLoader = true;
       this.service.GetDataByFeatureId(feature_code).subscribe(
@@ -924,6 +935,8 @@ export class RoutingComponent implements OnInit {
 
   GetDataByModelId(modal_code, press_location, index) {
     this.routing_detail_data = [];
+    this.tree_data_json = [];
+    this.live_tree_view_data = [];
     if (press_location == 'header') {
       this.showLookupLoader = true;
       this.service.GetDataByModelId(modal_code).subscribe(
@@ -937,19 +950,6 @@ export class RoutingComponent implements OnInit {
             }
           }
           console.log(data);
-          /*if(navigate_to_header == true) {
-            data.ModelHeader =[];
-          }
-          if(data.ModelHeader.length == 0) {
-            if (navigate_to_header == true) {
-              console.log('===true=====');
-              console.log('====modal_code===',modal_code);
-              this.route.navigateByUrl('feature/model/edit/'+modal_code);
-            } else {
-              console.log('===false===');
-              this.route.navigateByUrl('modelbom/view');
-            }
-          }*/
           if (data.ModelDetail.length > 0) {
             for (let i = 0; i < data.ModelDetail.length; ++i) {
               let modeldata = data.ModelDetail[i];
@@ -1015,6 +1015,17 @@ export class RoutingComponent implements OnInit {
                 isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
+            
+              /*  let icon_type = { "2": "item", "1": "feature", "3": "modal", "4": "operation" };
+              if (this.live_tree_view_data.length == 0){
+                this.live_tree_view_data.push({
+                  "parentId": this.routing_header_data.modal_id, "parentNumber": this.routing_header_data.modal_code,  "tree_index": this.tree_data_json.length, "icon": icon_type[modeldata.OPTM_TYPE], "branchType": icon_type[modeldata.OPTM_TYPE], "component": "", "componentNumber": "", "operation_no": "", "current_row_index": this.counter
+                });
+              }
+              this.live_tree_view_data.push({
+                "parentId": this.routing_header_data.modal_id, "parentNumber": this.routing_header_data.modal_code, "tree_index": this.tree_data_json.length, "icon": icon_type[modeldata.OPTM_TYPE], "branchType": icon_type[modeldata.OPTM_TYPE], "component": value_code, "componentNumber": value, "operation_no": "", "current_row_index": this.counter
+              }); */
+
             }
             this.showLookupLoader = false;
           } else {
@@ -1570,6 +1581,42 @@ export class RoutingComponent implements OnInit {
     $(".row_wc_code").eq(currentrow).val("");
   }
 
+  new_tree_item(type, operation_code, currentrow_data, rowindex) {
+    let icon_type = { "item": "item", "feature": "feature", "model": "modal", "operation": "operation" };
+    if (type == '4') {
+      let update_data: any = this.tree_data_json.filter(function (obj) {
+        return (obj.current_row_index == rowindex) ? obj : "";
+      });
+
+      if (update_data == "-1" || update_data == "") {
+        this.live_tree_view_data.push({
+          "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
+        });
+      } else {
+        this.live_tree_view_data.push({
+          "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
+        });
+      }
+    } else {
+      let update_data: any = this.tree_data_json.filter(function (obj) {
+        return (obj.componentNumber == currentrow_data.type_value) ? obj : "";
+      });
+
+
+      if (update_data == "-1" || update_data == "") {
+        this.live_tree_view_data.push({
+          "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
+        });
+      } else {
+        this.live_tree_view_data.push({
+          "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
+        });
+      }
+
+    }
+
+
+  }
 
   on_input_change(value, rowindex, grid_element) {
     let currentrow = 0;
@@ -1633,6 +1680,10 @@ export class RoutingComponent implements OnInit {
                 this.routing_detail_data[currentrow].count_point_operation = true;
                 this.routing_detail_data[currentrow].count_point_operation_disabled = true;
               }
+
+              this.new_tree_item(this.routing_detail_data[currentrow].type, this.routing_detail_data[currentrow].oper_code, this.routing_detail_data[currentrow], this.routing_detail_data[currentrow].rowindex);
+
+
               this.getOperationResourceDetail(data[0].OPRCode, data[0].OperationCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
@@ -1827,6 +1878,23 @@ export class RoutingComponent implements OnInit {
     if (this.routing_detail_data.length > 0) {
       for (let i = 0; i < this.routing_detail_data.length; ++i) {
         if (this.routing_detail_data[i].rowindex === rowindex) {
+          if (this.tree_data_json.length > 0) {
+            let temp_row_index = this.routing_detail_data[i].rowindex;
+            let temp_type_value = this.routing_detail_data[i].type_value;
+            let temp_type = this.routing_detail_data[i].type;
+            let remove_tree_data = this.tree_data_json.findIndex(function (obj) {
+              if (temp_type == '4') {
+                return (obj['current_row_index'] == temp_row_index);
+              } else {
+                return (obj['componentNumber'] == temp_type_value);
+              }
+            });
+            if (remove_tree_data != '-1') {
+              // delete this.tree_data_json[remove_tree_data];
+              this.tree_data_json.splice(remove_tree_data, 1);
+            }
+          }
+
           this.routing_detail_data.splice(i, 1);
           i = i - 1;
         }
@@ -2126,6 +2194,7 @@ export class RoutingComponent implements OnInit {
   navigateToFeatureModelHeader(type) {
     var type_value = type.trim();
     if (type_value == 'feature') {
+      this.tree_data_json = [];
       this.route.navigateByUrl('feature/model/edit/' + this.routing_header_data.feature_id);
     } else if (type_value == 'model') {
       this.route.navigateByUrl('feature/model/edit/' + this.routing_header_data.modal_id);
@@ -2135,8 +2204,10 @@ export class RoutingComponent implements OnInit {
 
   navigateToFeatureOrModelBom(type_value, type) {
     if (type == '1') {
+      this.tree_data_json = [];
       this.route.navigateByUrl("feature/bom/edit/" + type_value);
     } else if (type == '3') {
+      this.tree_data_json = [];
       this.route.navigateByUrl("modelbom/edit/" + type_value);
       /*this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0,true);*/
     }
@@ -2168,12 +2239,12 @@ export class RoutingComponent implements OnInit {
       id.parentNode.parentNode.childNodes[4].style.display = "none";
     }
   }
-  expandAll(){
+  expandAll() {
     console.log("expandAll")
-    $(document).find('treeview').show()    
+    $(document).find('treeview').show()
     $(document).find('.expand-btn').addClass("expanded")
   }
-  collapseAll(){
+  collapseAll() {
     console.log("collapseAll")
     $(document).find('treeview').hide()
     $(document).find('.expand-btn').removeClass("expanded")
@@ -2221,8 +2292,8 @@ export class RoutingComponent implements OnInit {
     if (routing_for_id != undefined) {
       //now call bom id
       if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-        
-               
+
+
         this.service.getTreeData(this.companyName, routing_for_id).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -2234,11 +2305,21 @@ export class RoutingComponent implements OnInit {
                   return;
                 }
               }
-
+            
+              let routing_grid = this.routing_detail_data;
               let counter_temp = 0;
               let temp_data = data.filter(function (obj) {
                 obj['tree_index'] = (counter_temp);
                 obj['live_row_id'] = (counter_temp++);
+                let c_obj = obj;
+                let routing_grid_index = routing_grid.findIndex(function (obj) {
+                  if(obj.type == '4'){
+                    return (obj.oper_code == c_obj.operation_no || obj.oper_id == c_obj.operation_no);
+                  } else { 
+                    return obj.type_value == c_obj.componentNumber;
+                   }
+                })
+                obj['current_row_index'] = (routing_grid_index+1);
                 return obj;
               });
               this.tree_data_json = temp_data;
@@ -2272,34 +2353,39 @@ export class RoutingComponent implements OnInit {
         if (this.live_tree_view_data.length > 0) {
 
           //for (var key in this.live_tree_view_data) {
-          for (var key = 0; key < this.live_tree_view_data.length; key++) {
-            var update_index = "";
-
-            if (this.live_tree_view_data[key].tree_index !== undefined) {
-              let local_tree_index = this.live_tree_view_data[key].tree_index;
-              update_index = temp_data_level.findIndex(function (tree_el) {
-                return tree_el.tree_index == local_tree_index
+          for (let key = 0; key < this.live_tree_view_data.length; key++) {
+            let update_data: any = "";
+            let update_index: any;
+            let temp_current_row_index = this.live_tree_view_data[key].current_row_index;
+            let temp_seq = {};
+            if (this.live_tree_view_data[key].branchType == 'operation') {
+              update_data = this.tree_data_json.filter(function (obj) {
+                return (obj.current_row_index == temp_current_row_index) ? obj : "";
+              });
+              update_index = this.tree_data_json.findIndex(function (tree_el) {
+                return (tree_el.current_row_index == temp_current_row_index) ? tree_el : "";
+              });
+            } else {
+              let temp_component_nmber = this.live_tree_view_data[key].componentNumber;
+              update_data = this.tree_data_json.filter(function (obj) {
+                return (obj.componentNumber == temp_component_nmber) ? obj : "";
+              });
+              update_index = this.tree_data_json.findIndex(function (tree_el) {
+                return (tree_el.componentNumber == temp_component_nmber) ? tree_el : "";
               });
             }
 
-            let temp_seq = {};
-
-            if (update_index == "-1") {
-              temp_seq = { "sequence": sequence_count, "parentId": display_name, "parentNumber": routing_for_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType, "icon": this.live_tree_view_data[key].icon, "modalImage": "" };
+            if (update_data == "-1" || update_data == "") {
+              temp_seq = { "sequence": sequence_count, "parentId": display_name, "parentNumber": routing_for_id, "component": "", "componentNumber": "", "level": "0", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType, "icon": this.live_tree_view_data[key].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": this.live_tree_view_data[key].current_row_index };
               this.tree_data_json.push(temp_seq);
               temp_data_level.push(temp_seq);
             } else {
 
-              let TempBranchType = temp_data_level[update_index].branchType;
-              let TempIcon = temp_data_level[update_index].icon;
-              temp_seq = { "sequence": sequence_count, "parentId": display_name, "parentNumber": routing_for_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType, "icon": TempIcon, "modalImage": "" };
+              temp_seq = { "sequence": update_data[0].sequence, "parentId": display_name, "parentNumber": routing_for_id, "component": this.live_tree_view_data[key].component, "componentNumber": this.live_tree_view_data[key].componentNumber, "level": "0", "live_row_id": update_data[0].live_row_id, "is_local": "1", "tree_index": update_data[0].tree_index, "branchType": update_data[0].branchType, "icon": update_data[0].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": update_data[0].current_row_index };
 
-              let up_index = this.tree_data_json.findIndex(function (tree_el) {
-                return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
-              });
-              this.tree_data_json[up_index] = (temp_seq);
-              temp_data_level[update_index] = (temp_seq);
+              this.tree_data_json[update_index] = (temp_seq);
             }
+
           }
           console.log(this.tree_data_json);
           this.live_tree_view_data = [];

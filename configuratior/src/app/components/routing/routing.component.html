@@ -647,7 +647,7 @@
           </div>
           <ul class="parent_ul" *ngIf="tree_data_json.length > 0">
             <li class="first_level_li" *ngFor="let element of tree_data_json; let i= index;" [hidden]="element.level != 0 && element.parentNumber!=''" >
-              <div *ngIf="element.level == 0 && element.parentNumber==''">
+              <div *ngIf="element.parentNumber==''">
                 <ng-template #template>
                   <div class="modal-body text-center">
                     <img [attr.src]="element.modalImage" style="max-width:100%">
@@ -666,7 +666,10 @@
                   <span (click)="pop.toggle()" [attr.data-branchtype]="element.branchType">{{element.component}}</span>
 
                   <!-- opration type span -->
-                  <span class="opration-type"  *ngIf="element.branchType !='value' && element.branchType !='modal'">{{element.component}}</span>
+                  <ng-container *ngIf="element.branchType !='operation' && element.component!=''">
+                    <span class="opration-type"  *ngIf="element.branchType !='value' && element.branchType !='modal' && element.branchType !='operation' && element.operation_no != ''">{{element.operation_no}}</span>
+                  </ng-container>
+                  <span class="opration-type" *ngIf="element.branchType =='operation' && element.operation_no != ''">{{element.operation_no}}</span>
                 </span>
                 <treeview #tree [tree_data_json]="check_component_exist(element.componentNumber, i)" [complete_dataset]="tree_data_json"
                   *ngIf="check_component_exist(element.componentNumber, i).length > 0"></treeview>
