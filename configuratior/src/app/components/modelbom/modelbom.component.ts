@@ -396,7 +396,8 @@ export class ModelbomComponent implements OnInit {
     }
     // remove data from exploded view tree
     //this.live_tree_view_data
-
+    this.current_selected_row = [];
+    this.row_selection = [];
   }
 
   clearData(rowindex) {

@@ -512,6 +512,9 @@ export class BomComponent implements OnInit {
         }
       }
     }
+
+    this.current_selected_row = [];
+    this.row_selection = [];
   }
 
   onSaveClick() {
