@@ -2219,6 +2219,7 @@ export class OutputComponent implements OnInit {
   setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno) {
     let isPriceDisabled: boolean = true;
     let isPricehide: boolean = true;
+    let currentfeaturerow:any = [];
     if (ItemData.length > 0) {
       if (parentarray[0].element_type == "radio") {
         for (let i = 0; i < this.feature_itm_list_table.length; i++) {
@@ -2226,12 +2227,14 @@ export class OutputComponent implements OnInit {
             if (this.feature_itm_list_table[i].FeatureId == parentarray[0].OPTM_FEATUREID) {
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
+              currentfeaturerow = this.feature_itm_list_table[i];
             }
           }
           else if (parentarray[0].OPTM_TYPE == 3) {
             if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
+              currentfeaturerow = this.feature_itm_list_table[i];
             }
           }
 
@@ -2270,10 +2273,27 @@ export class OutputComponent implements OnInit {
       var priceextn: any = formatequantity * ItemData[0].Price
       var tempModelID
       if (parentarray[0].parentmodelid != this.step2_data.model_id) {
-        tempModelID = parentarray[0].parentmodelid
+        if (parentarray[0].parentmodelid !== undefined && parentarray[0].parentmodelid !== null){
+          tempModelID = parentarray[0].parentmodelid;
+        } else {
+          if(currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId!= null){
+            tempModelID = currentfeaturerow.ModelId;
+          } else {
+            tempModelID = this.step2_data.model_id;
+          }
+        }
       }
       else {
-        tempModelID = parentarray[0].OPTM_MODELID
+        if (parentarray[0].OPTM_MODELID != undefined && parentarray[0].OPTM_MODELID != null){
+          tempModelID = parentarray[0].OPTM_MODELID;
+        } else {
+          if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
+            tempModelID = currentfeaturerow.ModelId;
+          } else {
+            tempModelID = this.step2_data.model_id;
+          }
+        }
+        
       }
 
 
@@ -2307,7 +2327,6 @@ export class OutputComponent implements OnInit {
     this.feature_price_calculate();
 
   }
-
 
 
   onShipToChange(SelectedShipTo) {
