@@ -3650,7 +3650,7 @@ export class OutputComponent implements OnInit {
         }
 
         for (var isave in temp_step2_final_dataset_save) {
-          if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1) {
+          if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1  && temp_step2_final_dataset_save[isave].OPTM_KEY != "") {
             if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
               if (sortitemkey.length == 0) {
                 sortitemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
@@ -5115,8 +5115,8 @@ export class OutputComponent implements OnInit {
                     //   this.FeatureBOMDataForSecondLevel[ifeatureBomData].checked = false
                     // }
                   }
-                }
               }
+                }
 
             }
 
