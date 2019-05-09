@@ -463,10 +463,18 @@ export class RoutingComponent implements OnInit {
         value = 1;
         this.toastr.error('', this.language.decimalvalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
       }
-      this.routing_header_data[input_id] = (value);
-
+      if(input_id == "default_batch_size" ){
+        this.routing_header_data['default_lot_size'] = (value);
+      } else {
+        this.routing_header_data[input_id] = (value);
+      }
     }
-    $('#' + input_id).val(value);
+
+     if(input_id == "default_batch_size" ){
+       $('#default_lot_size').val(value);
+     } else {
+       $('#' + input_id).val(value);
+     }
   }
 
   ClearOperLineOnWarehouse() {
@@ -608,17 +616,31 @@ export class RoutingComponent implements OnInit {
   }
 
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    let current_row_index = this.current_selected_row.rowindex - 1;
+    console.log("this.current_selected_row", this.current_selected_row);
+    // let current_row_index = this.current_selected_row.rowindex - 1;
+    let row_c_select = this.current_selected_row.rowindex;
+    let current_row_index = this.routing_detail_data.findIndex(function (obj) {
+      return obj.rowindex == row_c_select;
+    });
     this.row_selection = [];
-    console.log("this.row_selection start  - ", this.row_selection);
     if (type == '1') {
+      console.log("current_row_index  - ", current_row_index);
+      console.log("let row_index = this.routing_detail_data[current_row_index]", this.routing_detail_data[current_row_index]);
+     
       let prev_row_index = current_row_index - 1;
+      console.log("prev_row_index  - ", prev_row_index);
+     
       if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
-        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex - 1;
-        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno - 1;
+        console.log("this.routing_detail_data[prev_row_index] ", this.routing_detail_data[prev_row_index]);
 
-        this.routing_detail_data[prev_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex + 1;
-        this.routing_detail_data[prev_row_index].lineno = this.routing_detail_data[prev_row_index].lineno + 1;
+        let row_index = this.routing_detail_data[current_row_index].rowindex;
+        let lineno = this.routing_detail_data[current_row_index].lineno;
+
+        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex;
+        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[prev_row_index].lineno;
+
+        this.routing_detail_data[prev_row_index].rowindex = row_index;
+        this.routing_detail_data[prev_row_index].lineno = lineno;
 
         var temp_swap = this.routing_detail_data[current_row_index];
         this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
@@ -627,13 +649,23 @@ export class RoutingComponent implements OnInit {
         this.current_selected_row = this.routing_detail_data[prev_row_index];
       }
     } else if (type == '2') {
+      console.log("current_row_index  - ", current_row_index);
+      console.log("let row_index = this.routing_detail_data[current_row_index]", this.routing_detail_data[current_row_index]);
+    
       let next_row_index = current_row_index + 1;
-      if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
-        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[current_row_index].rowindex + 1;
-        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[current_row_index].lineno + 1;
+      console.log("next_row_index  - ", next_row_index);
 
-        this.routing_detail_data[next_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex - 1;
-        this.routing_detail_data[next_row_index].lineno = this.routing_detail_data[next_row_index].lineno - 1;
+      if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
+        console.log("this.routing_detail_data[next_row_index] ", this.routing_detail_data[next_row_index]);
+
+        let row_index = this.routing_detail_data[current_row_index].rowindex;
+        let lineno = this.routing_detail_data[current_row_index].lineno;
+
+        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex; // this.routing_detail_data[current_row_index].rowindex + 1;
+        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[next_row_index].lineno;
+
+        this.routing_detail_data[next_row_index].rowindex = row_index;
+        this.routing_detail_data[next_row_index].lineno =lineno;
 
         var temp_swap = this.routing_detail_data[current_row_index];
         this.routing_detail_data[current_row_index] = this.routing_detail_data[next_row_index];
@@ -641,6 +673,9 @@ export class RoutingComponent implements OnInit {
         this.row_selection = [this.routing_detail_data[next_row_index].rowindex];
         this.current_selected_row = this.routing_detail_data[next_row_index];
       }
+      
+      console.log("this.row_selection", this.row_selection);
+      console.log("this.current_selected_row", this.current_selected_row);
     }
   }
 
@@ -752,7 +787,7 @@ export class RoutingComponent implements OnInit {
     this.routing_detail_data = [];
     this.live_tree_view_data = [];
     this.tree_data_json = [];
-    
+
   }
 
   getFeatureDetail(feature_code) {
@@ -1015,7 +1050,7 @@ export class RoutingComponent implements OnInit {
                 isOpenApplicableVisible: open_allow_show,
                 unique_key: this.commonData.random_string(55)
               });
-            
+
               /*  let icon_type = { "2": "item", "1": "feature", "3": "modal", "4": "operation" };
               if (this.live_tree_view_data.length == 0){
                 this.live_tree_view_data.push({
@@ -1836,6 +1871,10 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[currentrow].move_time = this.format_time_in_hh_mm(value);
     }
 
+    if (grid_element == 'qc_time') {
+      this.routing_detail_data[currentrow].qc_time = this.format_time_in_hh_mm(value);
+    }
+
     if (grid_element == 'time_uom') {
       this.routing_detail_data[currentrow].queue_time = "00:00";
       this.routing_detail_data[currentrow].move_time = "00:00";
@@ -2305,7 +2344,7 @@ export class RoutingComponent implements OnInit {
                   return;
                 }
               }
-            
+
               let routing_grid = this.routing_detail_data;
               let counter_temp = 0;
               let temp_data = data.filter(function (obj) {
@@ -2313,13 +2352,13 @@ export class RoutingComponent implements OnInit {
                 obj['live_row_id'] = (counter_temp++);
                 let c_obj = obj;
                 let routing_grid_index = routing_grid.findIndex(function (obj) {
-                  if(obj.type == '4'){
+                  if (obj.type == '4') {
                     return (obj.oper_code == c_obj.operation_no || obj.oper_id == c_obj.operation_no);
-                  } else { 
+                  } else {
                     return obj.type_value == c_obj.componentNumber;
-                   }
+                  }
                 })
-                obj['current_row_index'] = (routing_grid_index+1);
+                obj['current_row_index'] = (routing_grid_index + 1);
                 return obj;
               });
               this.tree_data_json = temp_data;

@@ -170,7 +170,7 @@
                       <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left "
                         name='EffectiveDate' type="text" value="{{routing_header_data.EffectiveDate}}" id="EffectiveDate"
                         readonly placeholder="{{language.EffectiveDate}}" [(ngModel)]="routing_header_data.EffectiveDate"
-                        title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 26px) !important; width: 75%;"
+                        title="{{routing_header_data.EffectiveDate}}" style="max-width: calc(100% - 30px) !important; width: 69%;"
                         tabindex="3">
                       <div class="input-group-append float-left">
                         <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt11" id="date_time_icon">
@@ -189,7 +189,7 @@
 
               <div class="modal_header_section" *ngIf="routing_header_data.routing_for == 'model'">
                 <div class="row">
-                  <div class="col-sm-6">
+                 <!--  <div class="col-sm-6">
                     <div class="form-group row clearfix">
                       <label class="col-sm-6 col-form-label" for="default_batch_size">{{language.default_batch_size}}</label>
                       <div class="col-sm-6">
@@ -199,13 +199,13 @@
                           tabindex="2">
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-sm-6">
                     <div class="form-group row clearfix">
-                      <label class="col-sm-6 col-form-label" for="default_lot_size">{{language.default_lot_size}}</label>
+                      <label class="col-sm-6 col-form-label" for="default_lot_size">{{language.default_batch_size}}</label>
                       <div class="col-sm-6">
                         <input type="text" name="default_lot_size" class="form-control  form-control-sm mt3 text-right" id="default_lot_size"
-                          placeholder="{{language.default_lot_size}}" (change)="header_numeric_input_change(routing_header_data.default_lot_size,'default_lot_size')"
+                          placeholder="{{language.default_lot_size}}" (change)="header_numeric_input_change(routing_header_data.default_lot_size,'default_batch_size')"
                           [(ngModel)]="routing_header_data.default_lot_size" title="{{routing_header_data.default_lot_size}}"
                           tabindex="2">
                       </div>
