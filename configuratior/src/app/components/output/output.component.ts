@@ -2242,16 +2242,16 @@ export class OutputComponent implements OnInit {
         for (let i = 0; i < this.feature_itm_list_table.length; i++) {
           if (parentarray[0].OPTM_TYPE == 1) {
             if (this.feature_itm_list_table[i].FeatureId == parentarray[0].OPTM_FEATUREID) {
+              currentfeaturerow = this.feature_itm_list_table[i];
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
-              currentfeaturerow = this.feature_itm_list_table[i];
             }
           }
           else if (parentarray[0].OPTM_TYPE == 3) {
             if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
+              currentfeaturerow = this.feature_itm_list_table[i];
               this.feature_itm_list_table.splice(i, 1);
               i = i - 1;
-              currentfeaturerow = this.feature_itm_list_table[i];
             }
           }
 
