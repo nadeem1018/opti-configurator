@@ -104,6 +104,8 @@ export class RulewbComponent implements OnInit {
   public show_dialog: boolean = false;
   public dialog_box_value: any;
   public row_id: any;
+  public menu_auth_index = '204';
+
 
   public min;
   ngOnInit() {
@@ -124,6 +126,25 @@ export class RulewbComponent implements OnInit {
     this.rule_wb_data.RuleId = "";
     this.rule_wb_data.discontinued = false;
     this.rule_wb_data.Excluded = false;
+    
+    // check screen authorisation - start
+    this.commonService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.route.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
+
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {

@@ -105,7 +105,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
     public showImportButton:boolean = true;
-
+    public menu_auth_index = '201';
 
     isMobile:boolean=false;
     isIpad:boolean=false;
@@ -172,6 +172,25 @@ export class ViewFeatureModelComponent implements OnInit {
         } else {
           this.isColumnFilter = false;
         }
+        
+        // check screen authorisation - start
+        this.commonservice.menuItem.subscribe(
+            menu_item => {
+                let menu_auth_index = this.menu_auth_index
+                let is_authorised = menu_item.filter(function (obj) {
+                    return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+                });
+
+                if (is_authorised.length == 0) {
+                    let objcc = this;
+                    setTimeout(function () {
+                        objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+                        objcc.router.navigateByUrl('home');
+                    }, 200);
+                }
+            });
+        // check screen authorisation - end
+
         this.service_call(this.current_page, this.search_string);
         this.showLoader = true;
     }

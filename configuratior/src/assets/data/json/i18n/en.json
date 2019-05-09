@@ -540,6 +540,7 @@
     "operationatitemmandatory":"Operation code is mandatory when opn applicable is checked for type item at row - ",
     "operationatOprmmandatory":"Operation code is mandatory for type operation at row - ",
     "invalid_template_routing_code":"Invalid template routing code",
-    "operation_code":"Operation Code"
+    "operation_code":"Operation Code",
+    "notAuthorisedScreen":"You are not authorised to access this screen."
 
 }

@@ -48,6 +48,7 @@ export class RoutingComponent implements OnInit {
   public selectedImage = "";
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
+  public menu_auth_index = '206';
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RoutingService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
 
@@ -107,6 +108,24 @@ export class RoutingComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
+
+    // check screen authorisation - start
+    this.commonService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.route.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
 
     if (this.update_id === "" || this.update_id === null) {
       this.routing_header_data.routing_for = 'feature';
@@ -624,16 +643,9 @@ export class RoutingComponent implements OnInit {
     });
     this.row_selection = [];
     if (type == '1') {
-      console.log("current_row_index  - ", current_row_index);
-      console.log("let row_index = this.routing_detail_data[current_row_index]", this.routing_detail_data[current_row_index]);
-     
-      let prev_row_index = current_row_index - 1;
-      console.log("prev_row_index  - ", prev_row_index);
-     
-      if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
-        console.log("this.routing_detail_data[prev_row_index] ", this.routing_detail_data[prev_row_index]);
-
-        let row_index = this.routing_detail_data[current_row_index].rowindex;
+       let prev_row_index = current_row_index - 1;
+     if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
+          let row_index = this.routing_detail_data[current_row_index].rowindex;
         let lineno = this.routing_detail_data[current_row_index].lineno;
 
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex;
@@ -649,16 +661,10 @@ export class RoutingComponent implements OnInit {
         this.current_selected_row = this.routing_detail_data[prev_row_index];
       }
     } else if (type == '2') {
-      console.log("current_row_index  - ", current_row_index);
-      console.log("let row_index = this.routing_detail_data[current_row_index]", this.routing_detail_data[current_row_index]);
-    
-      let next_row_index = current_row_index + 1;
-      console.log("next_row_index  - ", next_row_index);
-
+        let next_row_index = current_row_index + 1;
+       
       if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
-        console.log("this.routing_detail_data[next_row_index] ", this.routing_detail_data[next_row_index]);
-
-        let row_index = this.routing_detail_data[current_row_index].rowindex;
+          let row_index = this.routing_detail_data[current_row_index].rowindex;
         let lineno = this.routing_detail_data[current_row_index].lineno;
 
         this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex; // this.routing_detail_data[current_row_index].rowindex + 1;

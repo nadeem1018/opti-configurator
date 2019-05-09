@@ -63,7 +63,7 @@ export class ItemcodegenerationComponent implements OnInit {
   isIpad:boolean=false;
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
-  
+  public menu_auth_index = '200';
 
   detectDevice(){
     let getDevice = UIHelper.isDevice();
@@ -95,6 +95,24 @@ export class ItemcodegenerationComponent implements OnInit {
     
     this.stringtypevalue = this.commonData.stringtypevalue
     this.opertions = this.commonData.opertions
+    // check screen authorisation - start
+    this.commanService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.route.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
+
     this.codekey = "";
     this.codekey = this.router.snapshot.paramMap.get('id');
     if (this.codekey === "" || this.codekey === null) {

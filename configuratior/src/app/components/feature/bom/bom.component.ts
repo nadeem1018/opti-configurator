@@ -9,6 +9,7 @@ import { jaLocale, BsModalRef, BsModalService } from 'ngx-bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
+
 @Component({
   selector: 'app-bom',
   templateUrl: './bom.component.html',
@@ -81,6 +82,7 @@ export class BomComponent implements OnInit {
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
+  public menu_auth_index: string = "202";
 
   getSelectedRowDetail(event) {
     if (event.selectedRows.length > 0) {
@@ -115,6 +117,7 @@ export class BomComponent implements OnInit {
     this.route.navigateByUrl('feature/model/edit/' + feature_id)
   }
   ngOnInit() {
+    
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.selectableSettings = {
@@ -129,6 +132,24 @@ export class BomComponent implements OnInit {
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
+    // check screen authorisation - start
+    this.commanService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.router.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
+
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
@@ -151,6 +172,7 @@ export class BomComponent implements OnInit {
       this.FeatureLookupBtnhide = true;
       this.getFeatureBomDetail(this.update_id)
     }
+   
   }
 
   getFeatureBomDetail(id) {
@@ -312,6 +334,7 @@ export class BomComponent implements OnInit {
       container: 'body',
       trigger: 'hover'
     })
+    
   }
 
   ngAfterViewInit() {
@@ -321,6 +344,8 @@ export class BomComponent implements OnInit {
     else {
       this._ele.nativeElement.focus();
     }
+
+   
   }
 
   on_multiple_model_change(current_value, current_state) {
@@ -1578,7 +1603,12 @@ export class BomComponent implements OnInit {
   }
 
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    let current_row_index = this.current_selected_row.rowindex - 1;
+    /* let current_row_index = this.current_selected_row.rowindex - 1;
+    this.row_selection = []; */
+    let row_c_select = this.current_selected_row.rowindex;
+    let current_row_index = this.feature_bom_table.findIndex(function (obj) {
+      return obj.rowindex == row_c_select;
+    });
     this.row_selection = [];
     console.log("this.row_selection start  - ", this.row_selection);
     if (type == '1') {

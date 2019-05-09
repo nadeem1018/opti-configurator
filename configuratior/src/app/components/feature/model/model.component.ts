@@ -71,6 +71,7 @@ export class ModelComponent implements OnInit {
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   public isUsedAccesoriesDisabled = false;
+  public menu_auth_index = '201';
 
   ngOnInit() {
 
@@ -86,7 +87,23 @@ export class ModelComponent implements OnInit {
     this.codekey = "";
     this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
     this.showImageBlock = false;
+    // check screen authorisation - start
+    this.commanService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
 
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.router.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
 
     if (this.codekey === "" || this.codekey === null) {
       this.button = "save";

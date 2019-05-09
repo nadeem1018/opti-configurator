@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
+  
 })
 export class SidebarComponent implements OnInit {
 
@@ -84,6 +85,9 @@ export class SidebarComponent implements OnInit {
       data => {
         if (data != null) {
           this.menu_obj = data;
+          console.log("this.menu_obj", this.menu_obj);
+          
+          this.commonService.setMenuItem(this.menu_obj);
         }
       },
       error =>{

@@ -19,13 +19,13 @@ export class ViewFeatureBOMComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
 
-    
+
     @ViewChild("searchinput") _el: ElementRef;
     common_params = new CommonData();
 
     public listItems: Array<string> = this.common_params.default_limits;
     public selectedValue: number = 10;
-    public skip:number = 0;
+    public skip: number = 0;
 
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Bom_title;
@@ -64,7 +64,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     public selectall: boolean = false;
     public isMultiDelete: boolean = false;
     public isColumnFilter: boolean = false;
-
+    public menu_auth_index: string = "202";
 
     isMobile: boolean = false;
     isIpad: boolean = false;
@@ -77,25 +77,25 @@ export class ViewFeatureBOMComponent implements OnInit {
             title: this.language.Feature_Code,
             type: 'text',
             width: '500',
-            attrType:'link'
+            attrType: 'link'
         },
         {
             field: 'OPTM_DISPLAYNAME',
             title: this.language.Bom_Displayname,
             type: 'text',
             width: '500',
-            attrType:'text'
+            attrType: 'text'
         },
     ];
 
     getLookupValue($event) {
-        
+
     }
-    getcurrentPageSize(grid_value){
-      sessionStorage.setItem('defaultRecords', grid_value);
-      this.skip = 0;
-      this.selectedValue = grid_value;
-      this.record_per_page = sessionStorage.getItem('defaultRecords');
+    getcurrentPageSize(grid_value) {
+        sessionStorage.setItem('defaultRecords', grid_value);
+        this.skip = 0;
+        this.selectedValue = grid_value;
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     detectDevice() {
@@ -111,8 +111,8 @@ export class ViewFeatureBOMComponent implements OnInit {
             this.isPerfectSCrollBar = false;
         }
     }
-     saveFilterState() {
-         sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+    saveFilterState() {
+        sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
     }
     ngOnInit() {
         this.showLoader = true;
@@ -126,32 +126,51 @@ export class ViewFeatureBOMComponent implements OnInit {
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
-        if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
-          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+        if (sessionStorage.getItem('defaultRecords') !== undefined && sessionStorage.getItem('defaultRecords') != "") {
+            this.selectedValue = Number(sessionStorage.getItem('defaultRecords'));
         } else {
-          this.selectedValue = Number(this.commonData.default_count);
+            this.selectedValue = Number(this.commonData.default_count);
         }
-        if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
+        if (sessionStorage.isFilterEnabled == "true") {
+            this.isColumnFilter = true;
         } else {
-          this.isColumnFilter = false;
+            this.isColumnFilter = false;
         }
+
+        // check screen authorisation - start
+        this.commonservice.menuItem.subscribe(
+            menu_item => {
+                let menu_auth_index = this.menu_auth_index
+                let is_authorised = menu_item.filter(function (obj) {
+                    return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+                });
+
+                if (is_authorised.length == 0) {
+                    let objcc = this;
+                    setTimeout(function () {
+                        objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+                        objcc.router.navigateByUrl('home');
+                    }, 200);
+                }
+            });
+            // check screen authorisation - end
+
         this.service_call(this.current_page, this.search_string);
 
     }
     ngAfterViewInit() {
-      //  this._el.nativeElement.focus();
+        //  this._el.nativeElement.focus();
     }
 
-    dataStateChanged(event){
+    dataStateChanged(event) {
         // console.log(event);
-         event.filter = [];
-         this.record_per_page = sessionStorage.getItem('defaultRecords');
-         this.selectedValue = event.take;
-         this.skip = event.skip;
-     }
+        event.filter = [];
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
+        this.selectedValue = event.take;
+        this.skip = event.skip;
+    }
 
-    on_selection(grid_event){
+    on_selection(grid_event) {
         grid_event.selectedRows = [];
     }
 
@@ -161,9 +180,9 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     getPageValue() {
-        if(this.selectedValue == null){
+        if (this.selectedValue == null) {
             this.selectedValue = 10;
-        }  
+        }
         return this.selectedValue;
     }
 
@@ -185,15 +204,15 @@ export class ViewFeatureBOMComponent implements OnInit {
             data => {
                 console.log(data);
                 this.showLoader = false;
-                if(data != undefined && data.length > 0){
+                if (data != undefined && data.length > 0) {
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
                         this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
                         return;
-                    } 
+                    }
                 }
                 this.dataArray = data;
-                
+
                 // dataset = JSON.parse(data);
                 // console.log(dataset);
                 // this.rows = dataset[0];
@@ -264,24 +283,24 @@ export class ViewFeatureBOMComponent implements OnInit {
         });
         this.fbs.DeleteData(this.GetItemData).subscribe(
             data => {
-                if(data != undefined && data.length > 0){
+                if (data != undefined && data.length > 0) {
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
                         this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
                         return;
-                    } 
+                    }
                 }
 
-                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
-                  }
-                  else if(data[0].IsDeleted == "1"){
-                      this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                      this.service_call(this.current_page, this.search_string);
-                      this.router.navigateByUrl('feature/bom/view');
-                  }
-                  else{
-                      this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
+                if (data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists") {
+                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId, this.commonData.toast_config);
+                }
+                else if (data[0].IsDeleted == "1") {
+                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('feature/bom/view');
+                }
+                else {
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId, this.commonData.toast_config);
                 }
 
                 // if (data === "True") {
@@ -333,7 +352,7 @@ export class ViewFeatureBOMComponent implements OnInit {
                 FeatureId: row_data.OPTM_FEATUREID,
                 CompanyDBId: this.companyName,
                 GUID: sessionStorage.getItem("GUID"),
-               UsernameForLic: sessionStorage.getItem("loggedInUser")
+                UsernameForLic: sessionStorage.getItem("loggedInUser")
             })
         }
 
@@ -387,29 +406,29 @@ export class ViewFeatureBOMComponent implements OnInit {
             this.fbs.DeleteData(this.CheckedData).subscribe(
                 data => {
                     this.showLoader = false
-                    if(data != undefined && data.length > 0){
+                    if (data != undefined && data.length > 0) {
                         if (data[0].ErrorMsg == "7001") {
                             this.commonservice.RemoveLoggedInUser().subscribe();
                             this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
                             return;
-                        } 
-                    }  
-                    
-                    for(var i=0;  i < data.length ; i++){
-                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
-                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].FeatureId , this.commonData.toast_config);
                         }
-                        else if(data[i].IsDeleted == "1"){
-                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].FeatureId , this.commonData.toast_config);
+                    }
+
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists") {
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].FeatureId, this.commonData.toast_config);
+                        }
+                        else if (data[i].IsDeleted == "1") {
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].FeatureId, this.commonData.toast_config);
                             this.CheckedData = [];
                             this.service_call(this.current_page, this.search_string);
                             this.router.navigateByUrl('feature/bom/view');
                         }
-                        else{
-                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].FeatureId , this.commonData.toast_config);
+                        else {
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].FeatureId, this.commonData.toast_config);
                         }
                     }
-                    
+
                     // if (data === "True") {
                     //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
                     //     this.service_call(this.current_page, this.search_string);
