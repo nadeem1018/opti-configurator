@@ -41,6 +41,21 @@ function calculate_progress(progress_block) {
     $('.custom_panel_icon_section i').removeClass("fa-minus").addClass('fa-plus');
   });
 
+
+  $(document).on("click", "#showAccordionAcc", function (e) {
+    $(".compress_accessory").removeClass("ecselect");
+    $(".expand_accessory").addClass("ecselect");
+    $(".AccessoryAccordion .panel-default .panel-collapse").removeClass('collapse');
+    $('.custom_acc_panel_icon_section i').addClass("fa-minus").removeClass('fa-plus');
+  });
+
+  $(document).on("click", "#hideAccordionAcc", function (e) {
+    $(".compress_accessory").addClass("ecselect");
+    $(".expand_accessory").removeClass("ecselect");
+    $(".AccessoryAccordion .panel-default .panel-collapse").addClass('collapse');
+    $('.custom_acc_panel_icon_section i').removeClass("fa-minus").addClass('fa-plus');
+  });
+
   // Toggle the side navigation
   $(document).on("click","#sidebarToggle", function(e) {
     e.preventDefault();

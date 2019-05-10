@@ -3860,6 +3860,11 @@ export class OutputComponent implements OnInit {
 
   }
 
+  get_accessory_element(accessory_header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel){
+    let array = [];
+    return array;
+  }
+
   get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
     var array = [];
     if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {

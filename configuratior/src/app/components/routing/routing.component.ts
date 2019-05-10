@@ -83,6 +83,10 @@ export class RoutingComponent implements OnInit {
     }
   }
 
+  bodyClick() {
+    $('body').click()
+  }
+
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
     console.log("scrolling...window");
