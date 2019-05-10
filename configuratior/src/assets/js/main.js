@@ -83,14 +83,21 @@ function calculate_progress(progress_block) {
     }
   });
 
-  // Smooth scrolling using jQuery easing
+  $(document).ready(function(){
+    $("a.scroll-to-top").click(function(){
+      $("body").scrollTop(0);
+    });
+  });
+
+
+  /*// Smooth scrolling using jQuery easing
   $(document).on('click', 'a.scroll-to-top', function(event) {
     var $anchor = $(this);
     $('html, body').stop().animate({
       scrollTop: ($($anchor.attr('href')).offset().top)
     }, 1000, 'easeInOutExpo');
     event.preventDefault();
-  });
+  });*/
 
   $(document).on('click', 'a.drpdown_menu', function (event) {
     var cobj = $(this);
