@@ -400,10 +400,10 @@
                 <!-- <button (click)="toggleAccordion('true');">Show</button><button (click)="toggleAccordion('false');">Hide</button> -->
                 <hr>
 
-                <div *ngIf="ModelHeaderData.length > 0">
+                <div class="form-group" *ngIf="ModelHeaderData.length > 0">
                   <label class="col-form-label mr-3" for="features">{{language.features}}</label>
-                  <i id="showAccordion" class="fa fa-expand" aria-hidden="true" title="Expand"></i> <i id="hideAccordion"
-                    class="fa fa-compress ecselect" aria-hidden="true" title="Collapse"></i>
+                  <i id="hideAccordion" class ="fa fa-compress ecselect pull-right" aria-hidden="true" title="Collapse"></i>
+                  <i id="showAccordion" class="fa fa-expand pull-right" aria-hidden="true" title="Expand"></i> 
                 </div>
 
                 <div class="new_tree_structure_area" *ngIf="ModelHeaderData.length > 0">
@@ -562,16 +562,16 @@
                 </div> -->
                 <!-- current accesory section close  -->
                 <!-- new acsessory section - start -->
-                <div class="form-group row clearfix" style="padding-right: 15px;">
+                <div class="form-group row clearfix" >
                   <div class="col-sm-12">
                     <label class="col-form-label mr-3" for="accessory">{{language.accessories}}</label>
                     <span *ngIf="feature_accessory_list.length > 0">
-                      <i id="showAccordionAcc" class="fa fa-expand expand_accessory" aria-hidden="true" title="Expand"></i>
-                      <i id="hideAccordionAcc" class="fa fa-compress compress_accessory ecselect" aria-hidden="true" title="Collapse"></i>
+                      <i id="hideAccordionAcc" class="fa fa-compress compress_accessory ecselect pull-right" aria-hidden="true" title="Collapse"></i>
+                      <i id="showAccordionAcc" class="fa fa-expand expand_accessory pull-right" aria-hidden="true" title="Expand"></i>
                     </span>
                   </div>
                 </div> 
-                <hr>
+                <!-- <hr> -->
                   <div class="new_tree_structure_area_accessory pr-0">
                     <div class="new_tree_structure_area" *ngIf="feature_accessory_list.length > 0">
                       <div class="panel-group AccessoryAccordion" id="step_default_{{feature_accessory_list[0].name}}"
