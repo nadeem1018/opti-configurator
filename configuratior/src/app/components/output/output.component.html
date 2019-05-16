@@ -600,15 +600,12 @@
                                     <th>{{language.description}}</th>
                                   </tr>
                                 </thead>
-                                <tbody *ngIf="get_accessory_element(accessory_header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
-                                  <tr *ngFor="let accessory_item_data of get_accessory_element(accessory_header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"
-                                    [ngClass]="{'tr-hide' :accessory_item_data.disable}">
+                                <tbody *ngIf="get_accessory_element(accessory_header_data,selectedAccessoryBOM).length > 0">
+                                  <tr *ngFor="let accessory_item_data of get_accessory_element(accessory_header_data,selectedAccessoryBOM); let i= index;">
                                     <td>
-                                      <div class="{{header_data.element_class}}">
-                                        <input type="checkbox" id="checkbox_{{accessory_item_data.name}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}"
-                                          #accessory_checkbox name="checkbox_{{accessory_item_data.name}}"
-                                          class="custom-control-input" (change)="onAccessorySelectionChange(accessory_item_data,accessory_checkbox.checked,accessory_checkbox.id,false)"
-                                          [(checked)]="accessory_item_data.checked" [disabled]="accessory_item_data.disable">
+                                      <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" id="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" #accessory_checkbox name="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" (change)="onAccessorySelectionChange(accessory_checkbox.checked,accessory_item_data,accessory_header_data)"
+                                          class="custom-control-input custom-control custom-checkbox" >
                                         <label class="custom-control-label" for="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}"></label>
                                       </div>
                                     </td>
