@@ -230,6 +230,16 @@ export class OutputComponent implements OnInit {
     this.tree_data_json = [];
     this.step1_data.print_operation = "";
     // check screen authorisation - start
+  
+   this.check_authorisation()
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async check_authorisation(){
+    await this.sleep(1200);
     this.CommonService.menuItem.subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
