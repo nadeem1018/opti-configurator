@@ -3962,7 +3962,6 @@ export class OutputComponent implements OnInit {
   }
 
   onAccessorySelectionChange(value, rowData,accessory_header_data) {
-    if (value == true) {
       this.showLookupLoader = true;
       let parentfeatureid = rowData.parentfeatureid
       let GetDataForSelectedFeatureModelItemData: any = {};
@@ -3997,18 +3996,23 @@ export class OutputComponent implements OnInit {
                 return;
               }
             }
+            if (value == true) {
+              if (data.AccessoryFeatureData.length > 0) {
+                this.setItemDataForFeatureAccessory(data.AccessoryFeatureData,accessory_header_data);
+              }
+              this.showLookupLoader = false;
+            }
+            else {
+              for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+                if (this.feature_itm_list_table[i].FeatureId == rowData.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == rowData.OPTM_ITEMKEY) {
+                  this.feature_itm_list_table.splice(i, 1);
+                  i = i - 1;
+                }
+              }
+              this.showLookupLoader = false;
+            }
           }
-          let parentarray = this.Accessoryarray.filter(function (obj) {
-            return obj['OPTM_FEATUREID'] == parentfeatureid
-          });
-          if (parentarray.length == 0) {
-            parentarray = this.AccessModel.filter(function (obj) {
-              return obj['OPTM_FEATUREID'] == parentfeatureid
-            });
-          }
-          if (data.AccessoryFeatureData.length > 0)
-            this.setItemDataForFeatureAccessory(data.AccessoryFeatureData,accessory_header_data);
-          this.showLookupLoader = false;
+
         },
         error => {
           this.showLookupLoader = false;
@@ -4018,15 +4022,7 @@ export class OutputComponent implements OnInit {
         });
 
 
-    }
-    else {
-      for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-        if (this.feature_itm_list_table[i].FeatureId == rowData.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == rowData.OPTM_ITEMKEY) {
-          this.feature_itm_list_table.splice(i, 1);
-          i = i - 1;
-        }
-      }
-    }
+
     this.feature_price_calculate();
     this.updateCheckedStatus(value, rowData);
 
