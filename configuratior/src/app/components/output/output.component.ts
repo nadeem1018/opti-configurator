@@ -3007,8 +3007,9 @@ export class OutputComponent implements OnInit {
 
   step4_edit_model(model_data) {
     this.onAddedModelChange(model_data.rowIndex, function () {
-      $("fieldset").hide();
-      $("fieldset").eq(2).show();
+     // $("fieldset").hide();
+     // $("fieldset").eq(2).show();
+     $(document).find('button[data-previous-block="model_bom_config"]').trigger("click");
     });
 
   }

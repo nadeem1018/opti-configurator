@@ -116,8 +116,9 @@ export class BomComponent implements OnInit {
   navigateToMasterHeader(feature_id) {
     this.route.navigateByUrl('feature/model/edit/' + feature_id)
   }
+
   ngOnInit() {
-    
+
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     this.selectableSettings = {
@@ -148,7 +149,7 @@ export class BomComponent implements OnInit {
           }, 200);
         }
       });
-      // check screen authorisation - end
+    // check screen authorisation - end
 
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
@@ -159,7 +160,7 @@ export class BomComponent implements OnInit {
       this.FeatureLookupBtnhide = false;
       this._el.nativeElement.focus();
       this.showLoader = false;
-      this.feature_bom_data.multi_select = false;
+      this.feature_bom_data.multi_select = 'false';
       this.feature_bom_data.multi_select_disabled = true;
       this.feature_bom_data.feature_min_selectable = 1;
       this.feature_bom_data.feature_max_selectable = 1;
@@ -172,7 +173,7 @@ export class BomComponent implements OnInit {
       this.FeatureLookupBtnhide = true;
       this.getFeatureBomDetail(this.update_id)
     }
-   
+
   }
 
   getFeatureBomDetail(id) {
@@ -298,19 +299,22 @@ export class BomComponent implements OnInit {
           }
 
           if (data.FeatureHeader[0].OPTM_ISMULTISELECT == 'y' || data.FeatureHeader[0].OPTM_ISMULTISELECT == 'Y') {
-            this.feature_bom_data.multi_select = true;
+            this.feature_bom_data.multi_select = 'true';
             this.feature_bom_data.multi_select_disabled = false;
           } else {
-            this.feature_bom_data.multi_select = false;
+            this.feature_bom_data.multi_select = 'false';
             this.feature_bom_data.multi_select_disabled = true;
           }
+
           this.feature_bom_data.feature_min_selectable = data.FeatureHeader[0].OPTM_MIN_SELECTABLE;
-          if (this.feature_bom_data.feature_min_selectable == null || this.feature_bom_data.feature_min_selectable == "" || this.feature_bom_data.feature_min_selectable == undefined || this.feature_bom_data.feature_min_selectable == 0) {
+          //console.log("this.feature_bom_data.feature_min_selectable before", this.feature_bom_data.feature_min_selectable);
+          if (this.feature_bom_data.feature_min_selectable == null && this.feature_bom_data.feature_min_selectable == undefined) {
             this.feature_bom_data.feature_min_selectable = 1;
           }
+          //console.log("this.feature_bom_data.feature_min_selectable after", this.feature_bom_data.feature_min_selectable);
 
           this.feature_bom_data.feature_max_selectable = data.FeatureHeader[0].OPTM_MAX_SELECTABLE;
-          if (this.feature_bom_data.feature_max_selectable == null || this.feature_bom_data.feature_max_selectable == "" || this.feature_bom_data.feature_max_selectable == undefined || this.feature_bom_data.feature_max_selectable == 0) {
+          if (this.feature_bom_data.feature_max_selectable == null && this.feature_bom_data.feature_max_selectable == undefined && this.feature_bom_data.feature_max_selectable == 0) {
             this.feature_bom_data.feature_max_selectable = 1;
           }
 
@@ -334,7 +338,7 @@ export class BomComponent implements OnInit {
       container: 'body',
       trigger: 'hover'
     })
-    
+
   }
 
   ngAfterViewInit() {
@@ -344,49 +348,64 @@ export class BomComponent implements OnInit {
     else {
       this._ele.nativeElement.focus();
     }
-
-   
   }
 
-  on_multiple_model_change(current_value, current_state) {
-    this.feature_bom_data.multi_select = current_state;
-    if (current_state == false) {
+  on_multiple_model_change() {
+    if (this.feature_bom_data.multi_select == 'false') {
       this.feature_bom_data.multi_select_disabled = true;
-      this.feature_bom_data.feature_min_selectable = 1;
-      this.feature_bom_data.feature_max_selectable = 1;
-    } else {
+    } else if (this.feature_bom_data.multi_select == 'true') {
       this.feature_bom_data.multi_select_disabled = false;
     }
+    this.feature_bom_data.feature_min_selectable = 1;
+    if (this.feature_bom_table.length > 0) {
+      this.feature_bom_table[0].default = true;
+    }
+    this.feature_bom_data.feature_max_selectable = 1;
   }
 
   validate_min_values(value, input_id) {
-    if (value == 0) {
-      value = 1;
-      this.feature_bom_data[input_id] = (value);
-      this.toastr.error('', this.language.min_selectable_quantityvalid, this.commonData.toast_config);
-    }
-    else {
-      var rgexp = /^\d+$/;
-      if (isNaN(value) == true) {
+    if (this.feature_bom_data.multi_select == 'true') {
+      /* if (value == 0) {
         value = 1;
-        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-      } else if (value == 0 || value == '' || value == null || value == undefined) {
-        value = 1;
-        this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
-      } else if (value < 0) {
-        value = 1;
-        this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
-      } else if (rgexp.test(value) == false) {
-        value = 1;
-        this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
-      } else if (this.feature_bom_data.feature_min_selectable > this.feature_bom_data.feature_max_selectable) {
-        value = 1;
-        this.toastr.error('', this.language.min_selectable_greater_than_max, this.commonData.toast_config);
+        this.feature_bom_data[input_id] = (value);
+        this.toastr.error('', this.language.min_selectable_quantityvalid, this.commonData.toast_config);
       }
+      else { */
+        var rgexp = /^\d+$/;
+        if (isNaN(value) == true) {
+          value = 1;
+          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        } else if (/* value == 0 || */ value == '' || value == null || value == undefined) {
+          value = 1;
+          this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
+        } else if (value < 0) {
+          value = 1;
+          this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
+        } else if (rgexp.test(value) == false) {
+          value = 1;
+          this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+        } else if (this.feature_bom_data.feature_min_selectable > this.feature_bom_data.feature_max_selectable) {
+          value = 1;
+          this.toastr.error('', this.language.min_selectable_greater_than_max, this.commonData.toast_config);
+        }
+        this.feature_bom_data[input_id] = (value);
+     /*  } */
+      $('#' + input_id).val(value);
+    } else if (this.feature_bom_data.multi_select == 'false') {
       this.feature_bom_data[input_id] = (value);
-    }
+      if (value == 0) {
+        if (this.feature_bom_table.length > 0) {
+          for (let i = 0; i < this.feature_bom_table.length; ++i) {
+            this.feature_bom_table[i].default = false;
+          }
+        }
+      } else {
+        if (this.feature_bom_table.length > 0) {
+          this.feature_bom_table[0].default = true;
+        }
+      }
 
-    $('#' + input_id).val(value);
+    }
   }
 
   validate_max_values(value, input_id) {
@@ -429,9 +448,14 @@ export class BomComponent implements OnInit {
     }
     this.counter++;
     let first_default = false;
-    if (this.feature_bom_table.length == 0) {
-      first_default = true;
+
+    if (this.feature_bom_data.multi_select == 'true' || this.feature_bom_data.feature_min_selectable == '1') {
+      if (this.feature_bom_table.length == 0) {
+        first_default = true;
+      }
     }
+
+
     let table_default_type = 1;
     if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
       table_default_type = 2;
@@ -558,10 +582,9 @@ export class BomComponent implements OnInit {
         }
       }
 
-
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
 
-        if (this.feature_bom_data.multi_select === false) {
+        if (this.feature_bom_data.multi_select == 'false') {
           this.feature_bom_table[i].multi_select = "N"
         }
         else {
@@ -836,7 +859,9 @@ export class BomComponent implements OnInit {
         }
       }
       else {
-        this.feature_bom_table[i].default = false
+        if (this.feature_bom_data.multi_select == 'false') {
+          this.feature_bom_table[i].default = false
+        }
       }
     }
 
@@ -1173,8 +1198,15 @@ export class BomComponent implements OnInit {
             return false;
           }
 
-          this.feature_bom_data.feature_max_selectable
-          this.feature_bom_data.feature_min_selectable
+          let default_rows  = this.feature_bom_table.filter(function (obj) {
+            return ((obj.is_accessory == 'N' || obj.is_accessory == undefined || obj.is_accessory == null) && obj.default == true) ? obj : "";
+          });
+          
+          if (default_rows.length > this.feature_bom_data.feature_max_selectable){
+            this.toastr.error('', this.language.default_more_than_max_sel, this.commonData.toast_config);
+            return false;
+          }
+
         }
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
           let currentrow = i + 1;

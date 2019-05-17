@@ -11,7 +11,7 @@
   <!-- Navbar Search -->
   <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
     <div class="input-group">
-      <input type="hidden" class="form-control form-control-sm header_input_field"  aria-label="Search" aria-describedby="basic-addon2">
+      <input type="hidden" class="form-control form-control-sm header_input_field" aria-label="Search" aria-describedby="basic-addon2">
       <div class="input-group-append">
         <button class="btn btn-primary search_button " style="display:none;" type="button">
           <i class="fa fa-search"></i>
@@ -21,9 +21,9 @@
   </form>
 
   <!-- Navbar -->
- 
+
   <ul class="navbar-nav ml-auto ml-md-0  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-   <!--  <li class="nav-item dropdown no-arrow mx-1">
+    <!--  <li class="nav-item dropdown no-arrow mx-1">
       <a class="nav-link dropdown-toggle" href="javascript:;" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa fa-bell fa-fw"></i>
@@ -55,13 +55,90 @@
         <i class="fa fa-user-circle fa-fw" style="color: white;"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right custom_menu_click_option" aria-labelledby="userDropdown">
-     <!--    <a class="dropdown-item" href="javascript:;"><i class="fa fa-user fa-fw"></i> {{this.user_profile}}</a>
+        <!--    <a class="dropdown-item" href="javascript:;"><i class="fa fa-user fa-fw"></i> {{this.user_profile}}</a>
         <a class="dropdown-item" href="javascript:;"><i class="fa fa-cogs fa-fw"></i> {{this.preferences}}</a> 
         <div class="dropdown-divider"></div>
       -->
-        <a class="dropdown-item" href="javascript:;" (click)="logout()"> <i class="fa fa-sign-out fa-fw"></i> {{this.signout}}</a>
+        <a class="dropdown-item" href="javascript:;" (click)="open_info_popup()"><i class="fa fa-info-circle fa-fw"></i>
+          {{this.about}}</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="javascript:;" (click)="logout()"> <i class="fa fa-sign-out fa-fw"></i>
+          {{this.signout}}</a>
       </div>
     </li>
   </ul>
 
 </nav>
+
+<div class="modal fade" id="about_info" tabindex="-1" role="dialog" aria-labelledby="about_info" aria-hidden="true"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog  modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="about_info_title">{{about}}</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close" (click)="close_about_modal()">
+          <i class="k-icon k-i-x"></i>
+        </button>
+      </div>
+      <div class="modal-body pt-4 pb-4">
+        <div class="lookup_data px-sm-5">
+          <div class="row">
+            <div class="col-12">
+              <img alt="logo" class="d-flex mb-4 ml-auto mr-auto w-50" src="assets/images/logo_configurator/logo/logo1.png">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12"> 
+              <div class="row align-items-center">
+                <div class="col-sm-4 col-md-6">
+                  <b>{{language.app_name}}</b>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                  {{this.project_name | blankhandler}}
+                </div>
+              </div> 
+              <hr>
+              <div class="row align-items-center">
+                <div class="col-sm-4 col-md-6">
+                  <b>{{language.version}}</b>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                  {{ this.version | blankhandler}}
+                </div>
+              </div> 
+              <hr>
+              <div class="row align-items-center">
+                <div class="col-sm-4 col-md-6">
+                  <b>{{language.username}}</b>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                  {{ this.username | blankhandler}}
+                </div>
+              </div>
+              <hr>
+              <div class="row align-items-center">
+                <div class="col-sm-4 col-md-6">
+                  <b>{{language.company}}</b>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                  {{ this.company | blankhandler}}
+                </div>
+              </div> 
+              <hr>
+              <div class="row align-items-center">
+                <div class="col-sm-4 col-md-6">
+                  <b>{{language.language}}</b>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                  {{ this.language_current | blankhandler}}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

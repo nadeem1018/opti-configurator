@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {CommonData} from "../../../models/CommonData";
-import {CommonService} from "../../../services/common.service";
-import {ToastrService} from 'ngx-toastr';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonData } from "../../../models/CommonData";
+import { CommonService } from "../../../services/common.service";
+import { ToastrService } from 'ngx-toastr';
+import * as $ from 'jquery';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import 'bootstrap';
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,15 +16,21 @@ export class HeaderComponent implements OnInit {
   config_data: any = "";
   language: any = "";
   project_name: any = 'OptiPro Product Configurator';
+  username = "";
+  version = "";
+  company = "";
+  language_current = "";
 
-  constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService) { }
+  constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService, private modalService: BsModalService) { }
 
   showHeader: boolean;
   imgPath = 'assets/images';
   search_for = "Search for...";
-  user_profile = "User Profile";
-  preferences = "Preferences";
+  // user_profile = "User Profile";
+  // preferences = "Preferences";
   signout = "Sign-out";
+  about = "System Info";
+
 
   ngOnInit() {
 
@@ -60,6 +67,8 @@ export class HeaderComponent implements OnInit {
       this.user_profile = this.language.user_profile;
       this.preferences = this.language.preferences;
       this.signout = this.language.signout;
+      this.about = this.language.system_info;
+
     }, 2000);
   }
   logout() {
@@ -92,6 +101,20 @@ export class HeaderComponent implements OnInit {
       window.location.href = login_page;
     }  
   } */
+
+  open_info_popup() {
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+    this.project_name = this.config_data['app_title'];
+    this.username = sessionStorage.getItem('loggedInUser');
+    this.version = this.config_data['system_version'];
+    this.company = sessionStorage.getItem('selectedComp');
+    this.language_current = this.config_data['locale_name'];
+    $("#about_info").modal("show");
+  }
+
+  close_about_modal() {
+    $("#about_info").modal("hide");
+  }
 
 
 }

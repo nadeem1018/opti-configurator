@@ -126,15 +126,21 @@ function calculate_progress(progress_block) {
 
   });
   
-  $(document).on("click", ".custom_menu_click", function(){
-    var obj = $(this);
-    if (obj.parents("li.li_with_dd").find(".custom_menu_click_option").is(":visible") == false){
+  
 
-      obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:block !important;");
-    } else if (obj.parents("li.li_with_dd").find(".custom_menu_click_option").is(":visible") == true) {
-      obj.parents("li.li_with_dd").find(".custom_menu_click_option").attr("style", "display:none !important;");
-    }
+  $('html').click(function () {
+    $(document).find('.custom_menu_click_option').hide();
+  })
+
+  $(document).on("click", '.li_with_dd', function (e) {
+    e.stopPropagation();
   });
+
+  $(document).on("click", '.custom_menu_click', function (e) {
+    $(document).find('.custom_menu_click_option').toggle();
+  });
+
+
 
   // wizard JS 
 
@@ -200,9 +206,6 @@ function calculate_progress(progress_block) {
     } else {
       $(document).find(".output_final_screen_save_button").removeClass('display_none');
     }
-  });
-  
-
-  
+  });  
 
 })(jQuery); // End of use strict

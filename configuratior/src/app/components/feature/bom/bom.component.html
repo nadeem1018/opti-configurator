@@ -133,12 +133,14 @@
                                         (click)="onAddRow()" #button>
                                         <i class="fa fa-plus"></i> {{language.add_row}}
                                     </a>
-                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1 ml-3 mr-3" [hidden]="this.current_selected_row.length == 0"  *ngIf="this.feature_bom_table.length > 1"
-                                        title="{{language.move_row_up}} " (click)="resequence_operation('1')">
+                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1 ml-3 mr-3" [hidden]="this.current_selected_row.length == 0"
+                                        *ngIf="this.feature_bom_table.length > 1" title="{{language.move_row_up}} "
+                                        (click)="resequence_operation('1')">
                                         <b><i class="fa fa-arrow-up"></i> </b>
                                     </a>
-                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" [hidden]="this.current_selected_row.length == 0"  *ngIf="this.feature_bom_table.length > 1"
-                                        title="{{language.move_row_down}} " (click)="resequence_operation('2')">
+                                    <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" [hidden]="this.current_selected_row.length == 0"
+                                        *ngIf="this.feature_bom_table.length > 1" title="{{language.move_row_down}} "
+                                        (click)="resequence_operation('2')">
                                         <b><i class="fa fa-arrow-down"></i></b>
                                     </a>
                                 </div>
@@ -151,12 +153,26 @@
                                 <div class="col-sm-6 row">
                                     <label class="col-sm-6 col-form-label" for="featureDisplay">{{language.multi_select}}</label>
                                     <div class="col-sm-6 mt-3px">
-                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                        <!-- <div class="custom-control custom-checkbox custom-control-inline">
                                             <input type="checkbox" id="multiple_select_yes" name="multi_select"
                                                 #multipleselectcheck [(ngModel)]="feature_bom_data.multi_select" class="custom-control-input "
                                                 style="position: relative;margin-top: 5px;" title="{{feature_bom_data.multi_select}}"
                                                 tabindex="5" (click)="on_multiple_model_change(multipleselectcheck.value, multipleselectcheck.checked)">
                                             <label class="custom-control-label" for="multiple_select_yes"></label>
+                                        </div> -->
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="multiple_select_yes" name="accessory" class="custom-control-input"
+                                                value="true" #multipleselectcheck tabindex="5" [(ngModel)]="feature_bom_data.multi_select"
+                                                title="{{this.language.YES}}" [checked]="feature_bom_data.multi_select == 'true'"
+                                                (change)="on_multiple_model_change()">
+                                            <label class="custom-control-label ml-2" for="multiple_select_yes">{{this.language.YES}}</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline ml-2">
+                                            <input type="radio" id="multiple_select_no" name="accessory" class="custom-control-input"
+                                                value="false" #multipleselectcheck tabindex="5" [(ngModel)]="feature_bom_data.multi_select"
+                                                title="{{this.language.NO}}" [checked]="feature_bom_data.multi_select == 'false'"
+                                                (change)="on_multiple_model_change()">
+                                            <label class="custom-control-label ml-2" for="multiple_select_no">{{this.language.NO}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -166,14 +182,24 @@
                                 <div class="col-sm-6 row">
                                     <label class="col-sm-6 col-form-label" for="feature_min_selectable">{{language.min_selectable}}</label>
                                     <div class="col-sm-6">
+                                        <ng-container *ngIf="feature_bom_data.multi_select == 'false'">
+                                        <select class="form-control  form-control-sm mt3" name="feature_min_selectable"
+                                            #feature_min (change)="validate_min_values(feature_min.value, 'feature_min_selectable')"
+                                            [(ngModel)]="feature_bom_data.feature_min_selectable" title="{{feature_bom_data.feature_min_selectable}}">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                        </ng-container>
+                                        <ng-container *ngIf="feature_bom_data.multi_select == 'true'">
                                         <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_min_selectable"
                                             name="feature_min_selectable" placeholder="{{language.min_selectable}}"
                                             #feature_min (change)="validate_min_values(feature_min.value, 'feature_min_selectable')"
                                             [readonly]="feature_bom_data.multi_select_disabled" [(ngModel)]="feature_bom_data.feature_min_selectable"
                                             title="{{feature_bom_data.feature_min_selectable}}">
+                                        </ng-container>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 row">
+                                <div class="col-sm-6 row" [hidden]="feature_bom_data.multi_select == 'false'">
                                     <label class="col-sm-6 col-form-label" for="feature_max_selectable">{{language.max_selectable}}</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control  form-control-sm mt3 text-right" id="feature_max_selectable"
@@ -254,13 +280,23 @@
                                 <kendo-grid-column field="Bom_Default" headerClass="text-center" title="{{language.Bom_Default}}"
                                     filter="text" [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
-                                            <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute"
-                                                id="default_{{dataItem.rowindex}}" (change)="on_defualt_change(default,dataItem.rowindex)"
-                                                value={{dataItem.default}} #default [(checked)]=dataItem.default title="{{dataItem.default}}"
-                                                style="margin-top: 5px;" />
-                                            <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
-                                        </div>
+                                        <ng-container *ngIf="this.feature_bom_data.multi_select == 'false'">
+                                            <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
+                                                <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute"
+                                                    id="default_{{dataItem.rowindex}}" [disabled]="this.feature_bom_data.feature_min_selectable == '0'" (change)="on_defualt_change(default,dataItem.rowindex)"
+                                                    value={{dataItem.default}} #default [(checked)]=dataItem.default
+                                                    title="{{dataItem.default}}" style="margin-top: 5px;" />
+                                                <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="this.feature_bom_data.multi_select == 'true'">
+                                            <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
+                                                <input type="checkbox" value="1" name="default_value_selection" class="custom-control-input position-absolute" id="default_{{dataItem.rowindex}}"
+                                                    (change)="on_defualt_change(default,dataItem.rowindex)" value={{dataItem.default}} #default [(checked)]=dataItem.default
+                                                    title="{{dataItem.default}}" style="margin-top: 5px;" />
+                                                <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
+                                            </div>
+                                        </ng-container>
                                     </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="Bom_Remarks" title="{{language.Bom_Remarks}}" filter="text"
