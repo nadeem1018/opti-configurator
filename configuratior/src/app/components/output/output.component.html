@@ -563,7 +563,7 @@
                 <!-- current accesory section close  -->
                 <!-- new acsessory section - start -->
                 <div class="form-group row clearfix" >
-                  <div class="col-sm-12">
+                  <div class="col-sm-12" *ngIf="feature_accessory_list.length > 0">
                     <label class="col-form-label mr-3" for="accessory">{{language.accessories}}</label>
                     <span *ngIf="feature_accessory_list.length > 0">
                       <i id="hideAccordionAcc" class="fa fa-compress compress_accessory ecselect pull-right" aria-hidden="true" title="Collapse"></i>
@@ -605,7 +605,7 @@
                                     <td>
                                       <div class="custom-control custom-checkbox">
                                         <input type="checkbox" id="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" #accessory_checkbox name="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" (change)="onAccessorySelectionChange(accessory_checkbox.checked,accessory_item_data,accessory_header_data)"
-                                          class="custom-control-input custom-control custom-checkbox" >
+                                          class="custom-control-input custom-control custom-checkbox" [(checked)]="accessory_item_data.checked" >
                                         <label class="custom-control-label" for="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}"></label>
                                       </div>
                                     </td>
@@ -767,8 +767,7 @@
                             <tr>
                               <td width="70%">{{language.product_discount}}</td>
                               <td width="30%">
-                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
-      text-align: right;     padding-right: 1.5px !important;"
+                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;  text-align: right;     padding-right: 1.5px !important;"
                                   id="product_discount" name="product_discount" #product_discount (change)="on_calculation_change('product_discount',product_discount.value)"
                                   [(ngModel)]="this.feature_discount_percent" />
                               </td>
@@ -778,8 +777,7 @@
                                 {{this.language.accessories_discount}}
                               </td>
                               <td class="text-right" width="30%">
-                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;
-    text-align: right; padding-right: 1.5px !important;"
+                                <input type="text" class="form-control  form-control-sm mt3 text-right" style="height: 25px;     float: right;  text-align: right; padding-right: 1.5px !important;"
                                   id="accessory_item_discount" name="accessory_item_discount" #accessory_item_discount
                                   (change)="on_calculation_change('accesory_discount',accessory_item_discount.value)"
                                   [(ngModel)]="this.accessory_discount_percent" />
