@@ -472,7 +472,7 @@ export class RoutingComponent implements OnInit {
       this.toastr.error('', this.language.valuezerovalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
     }
     else {
-      let rgexp = /^\d+$/;
+     //  let rgexp = /^\d+$/;
       if (isNaN(value) == true) {
         value = 1;
         this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
@@ -482,10 +482,11 @@ export class RoutingComponent implements OnInit {
       } else if (value < 0) {
         value = 1;
         this.toastr.error('', this.language.negativevalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-      } else if (rgexp.test(value) == false) {
+      } /* else if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimalvalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-      }
+      } */
+      
       if(input_id == "default_batch_size" ){
         this.routing_header_data['default_lot_size'] = (value);
       } else {

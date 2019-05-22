@@ -1203,6 +1203,7 @@ export class OutputComponent implements OnInit {
     this.tree_data_json = [];
     this.feature_child_data = [];
     this.feature_accessory_list = [];
+    this.selectedAccessoryBOM= [];
     this.feature_itm_list_table = [];
     this.feature_item_tax = 0;
     this.feature_item_total = 0;
@@ -2908,6 +2909,8 @@ export class OutputComponent implements OnInit {
     this.step2_data.modal_id = '';
     this.step2_data.model_code = '';
     this.feature_itm_list_table = [];
+    this.selectedAccessoryBOM = [];
+    this.feature_accessory_list = [];
     $(".accesory_check_for_second_screen").prop('checked', false);
     this.step2_selected_model_id = '';
     this.step2_selected_model = '';
@@ -3007,6 +3010,7 @@ export class OutputComponent implements OnInit {
       this.step2_data.templateid = this.step2_selected_model.templateid;
       this.step2_data.itemcodegenkey = this.step2_selected_model.itemcodegenkey;
       this.Accessoryarray = this.step2_selected_model.Accessoryarray;
+      this.selectedAccessoryBOM = this.step2_selected_model.selectedAccessoryBOM;
       this.feature_price_calculate();
       this.showLookupLoader = false;
 
@@ -3175,6 +3179,7 @@ export class OutputComponent implements OnInit {
         "accessory_total_before_dis": parseFloat(acc_total_before_dis).toFixed(3),
         "feature": this.feature_itm_list_table,
         "accesories": this.feature_accessory_list,
+        "selectedAccessoryBOM": this.selectedAccessoryBOM,
         "accessory_item_total": (this.accessory_item_total).toFixed(3),
         "model_id": this.step2_data.model_id,
         "desc": this.step2_data.model_name,
@@ -3201,6 +3206,7 @@ export class OutputComponent implements OnInit {
       this.step3_data_final[row_id]["accessory_total_before_dis"] = parseFloat(acc_total_before_dis).toFixed(3);
       this.step3_data_final[row_id]["feature"] = this.feature_itm_list_table;
       this.step3_data_final[row_id]["accesories"] = this.feature_accessory_list;
+      this.step3_data_final[row_id]["selectedAccessoryBOM"] = this.selectedAccessoryBOM;
       this.step3_data_final[row_id]["model_id"] = this.step2_data.model_id;
       this.step3_data_final[row_id]["desc"] = this.step2_data.model_name;
       this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
@@ -3989,6 +3995,13 @@ export class OutputComponent implements OnInit {
         currentDate: this.submit_date,
         superfeatureid: superfeatureid
       });
+    
+    let cobj = this;
+    let accessoryIndex = this.selectedAccessoryBOM.findIndex(function(obj){
+      return (obj.OPTM_ITEMKEY == rowData.OPTM_ITEMKEY && obj.OPTM_FEATUREID == rowData.OPTM_FEATUREID) ? obj : "";
+    });
+
+    this.selectedAccessoryBOM[accessoryIndex].checked = value;
 
       GetDataForSelectedFeatureModelItemData.apidata.push({
         GUID: sessionStorage.getItem("GUID"),
