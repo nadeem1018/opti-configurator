@@ -2676,7 +2676,13 @@ export class OutputComponent implements OnInit {
             if (step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != "" && step3_temp_row.ModelHeaderData[f_indexx].parentmodelid != null) {
               modelid_val = step3_temp_row.ModelHeaderData[f_indexx].parentmodelid;
             } else {
-              modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+              if (step3_temp_row.ModelHeaderItemsArray[0] != undefined && step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID != "" && step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID != null) {
+                modelid_val = step3_temp_row.ModelHeaderItemsArray[0].OPTM_MODELID;
+              } else {
+                if (step3_temp_row.model_id != "" && step3_temp_row.model_id != null) {
+                  modelid_val = step3_temp_row.model_id;
+                }
+              }
             }
 
           }
@@ -2717,13 +2723,21 @@ export class OutputComponent implements OnInit {
               }
             }
           }
+
+          let ItemNo = "";
+          if (step3_temp_row.feature[us_indexx].ItemNumber != undefined || step3_temp_row.feature[us_indexx].ItemNumber != ""){
+            ItemNo = step3_temp_row.feature[us_indexx].ItemNumber;
+          } else {
+            ItemNo = "";
+          }
+
           final_dataset_to_save.routing_user_selection.push({
             Actualprice: step3_temp_row.feature[us_indexx].Actualprice,
             Description: step3_temp_row.feature[us_indexx].Description,
             FeatureId: step3_temp_row.feature[us_indexx].FeatureId,
             HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
             Item: step3_temp_row.feature[us_indexx].Item,
-            ItemNumber: (step3_temp_row.feature[us_indexx].ItemNumber).toString(),
+            ItemNumber: (ItemNo).toString(),
             ModelId: modelid_val,
             OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
             dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
