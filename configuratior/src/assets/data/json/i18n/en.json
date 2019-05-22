@@ -545,10 +545,12 @@
     "notAuthorisedScreen":"You are not authorised to access this screen.",
     "about":"About",
     "system_info":"System Info.",
+    "system": "System",
     "version":"Version",
     "language":"Language",
     "app_title":"App. Title",
     "app_name":"App. Name",
-    "default_more_than_max_sel":"Default items cannot be more than 'Max Selectable'"
+    "default_more_than_max_sel":"Default items cannot be more than 'Max Selectable'",
+    "user":"User"
 
 }
