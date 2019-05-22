@@ -1415,6 +1415,7 @@ export class OutputComponent implements OnInit {
     let parentfeatureid;
     let parentmodelid;
     let item;
+    let superfeatureid;
     let propagateqtychecked = "N";
     let propagateqty = 1;
     let selectedvalue = "";
@@ -1451,8 +1452,7 @@ export class OutputComponent implements OnInit {
     }
     if (feature_model_data.OPTM_MODELID == undefined || feature_model_data.OPTM_MODELID == null) {
       parentmodelid = "";
-    }
-    else {
+    } else {
       parentmodelid = feature_model_data.OPTM_MODELID
       if (parentmodelid != this.step2_data.model_id) {
         featureid = parentfeatureid
@@ -1530,6 +1530,7 @@ export class OutputComponent implements OnInit {
     var elementtypeforcheckedfunction = parentarray[0].element_type
 
     this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
+     /* superfeatureid = feature_model_data.parentfeatureid;*/
 
     this.showLookupLoader = true;
     let GetDataForSelectedFeatureModelItemData: any = {};
@@ -1543,6 +1544,7 @@ export class OutputComponent implements OnInit {
       featureid: featureid,
       item: item,
       parentfeatureid: parentfeatureid,
+      superfeatureid: feature_model_data.parentfeatureid,
       parentmodelid: parentmodelid,
       selectedvalue: selectedvalue,
       CompanyDBID: this.common_output_data.companyName,
@@ -1632,7 +1634,7 @@ export class OutputComponent implements OnInit {
                 var pselementtype = "radio"
                 if (data.DataForSelectedFeatureModelItem.length > 0) {
                   isExist = this.ModelHeaderData.filter(function (obj) {
-                    return obj['OPTM_FEATUREID'] == feature_model_data.OPTM_CHILDFEATUREID;
+                    return obj['OPTM_FEATUREID'] == feature_model_data.OPTM_CHILDFEATUREID && obj['parentfeatureid'] == feature_model_data.OPTM_FEATUREID;
                   });
 
                   if (data.DataForMinMaxForFeatureId != null) {
@@ -2354,7 +2356,8 @@ export class OutputComponent implements OnInit {
           ModelId: tempModelID,
           OPTM_LEVEL: parentarray[0].OPTM_LEVEL,
           isQuantityDisabled: true,
-          HEADER_LINENO: lineno
+          HEADER_LINENO: lineno,
+          parent_featureid: ItemData[0].parent_featureid
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
@@ -3894,7 +3897,11 @@ export class OutputComponent implements OnInit {
     var array = [];
     if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
       array = feature_child_datatable.filter(function (obj) {
-        return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+        if(obj['parentfeatureid'] != "" && obj['parentfeatureid'] != null && obj['OPTM_CHILDFEATUREID'] != null) {
+          return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'] && obj['parentfeatureid'] == header_feature_table['parentfeatureid']; }
+        else {
+          return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+        }
       });
     } else if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['ACCESSORY'] != "Y") {
       array = model_child_datatable.filter(function (obj) {
@@ -3964,7 +3971,8 @@ export class OutputComponent implements OnInit {
 
   onAccessorySelectionChange(value, rowData,accessory_header_data) {
       this.showLookupLoader = true;
-      let parentfeatureid = rowData.parentfeatureid
+      let parentfeatureid = rowData.parentfeatureid;
+      let superfeatureid = "";
       let GetDataForSelectedFeatureModelItemData: any = {};
       GetDataForSelectedFeatureModelItemData.selecteddata = [];
       GetDataForSelectedFeatureModelItemData.apidata = [];
@@ -3978,7 +3986,8 @@ export class OutputComponent implements OnInit {
         selectedvalue: "",
         CompanyDBID: this.common_output_data.companyName,
         SuperModelId: this.step2_data.model_id,
-        currentDate: this.submit_date
+        currentDate: this.submit_date,
+        superfeatureid: superfeatureid
       });
 
       GetDataForSelectedFeatureModelItemData.apidata.push({
@@ -4188,7 +4197,12 @@ export class OutputComponent implements OnInit {
     for (var idefault in DefaultData) {
       var isExist;
       isExist = this.feature_itm_list_table.filter(function (obj) {
-        return obj['FeatureId'] == DefaultData[idefault].OPTM_FEATUREID && obj['Item'] == DefaultData[idefault].OPTM_ITEMKEY;
+        if(obj['parent_featureid'] != null && obj['parent_featureid'] != "") {
+          return obj['FeatureId'] == DefaultData[idefault].OPTM_FEATUREID && obj['Item'] == DefaultData[idefault].OPTM_ITEMKEY && obj['parent_featureid'] == DefaultData[idefault].parent_featureid;
+        } else {
+          return obj['FeatureId'] == DefaultData[idefault].OPTM_FEATUREID && obj['Item'] == DefaultData[idefault].OPTM_ITEMKEY;
+        }
+
       });
 
       if (DefaultData[idefault].Price == null || DefaultData[idefault].Price == undefined || DefaultData[idefault].Price == "") {
@@ -4217,7 +4231,8 @@ export class OutputComponent implements OnInit {
           ModelId: this.step2_data.model_id,
           OPTM_LEVEL: 1,
           isQuantityDisabled: true,
-          HEADER_LINENO: DefaultData[idefault].HEADER_LINENO
+          HEADER_LINENO: DefaultData[idefault].HEADER_LINENO,
+          parent_featureid:DefaultData[idefault].parent_featureid
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
