@@ -2725,8 +2725,8 @@ export class OutputComponent implements OnInit {
           }
 
           let ItemNo = "";
-          if (step3_temp_row.feature[us_indexx].ItemNumber != undefined || step3_temp_row.feature[us_indexx].ItemNumber != ""){
-            ItemNo = step3_temp_row.feature[us_indexx].ItemNumber;
+          if (step3_temp_row.feature[us_indexx].ItemNumber != undefined && step3_temp_row.feature[us_indexx].ItemNumber != ""){
+            ItemNo = (step3_temp_row.feature[us_indexx].ItemNumber).toString();
           } else {
             ItemNo = "";
           }
@@ -2737,7 +2737,7 @@ export class OutputComponent implements OnInit {
             FeatureId: step3_temp_row.feature[us_indexx].FeatureId,
             HEADER_LINENO: step3_temp_row.feature[us_indexx].HEADER_LINENO,
             Item: step3_temp_row.feature[us_indexx].Item,
-            ItemNumber: (ItemNo).toString(),
+            ItemNumber: (ItemNo),
             ModelId: modelid_val,
             OPTM_LEVEL: step3_temp_row.feature[us_indexx].OPTM_LEVEL,
             dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
@@ -3977,6 +3977,7 @@ export class OutputComponent implements OnInit {
           name:Accarray[iaccss].OPTM_DISPLAYNAME,
           OPTM_FEATUREID: Accarray[iaccss].OPTM_FEATUREID,
           OPTM_ITEMKEY: Accarray[iaccss].OPTM_ITEMKEY,
+          DocEntry: Accarray[iaccss].DocEntry,
           OPTM_LINENO:Accarray[iaccss].OPTM_LINENO,
           OPTM_PRICESOURCE: Accarray[iaccss].OPTM_PRICESOURCE,
           OPTM_PROPOGATEQTY: Accarray[iaccss].OPTM_PROPOGATEQTY,
@@ -4105,6 +4106,7 @@ export class OutputComponent implements OnInit {
             FeatureId: ItemData[i].OPTM_FEATUREID,
             featureName: parentArray.name,
             Item: ItemData[i].OPTM_ITEMKEY,
+            ItemNumber: ItemData[i].DocEntry,
             Description: ItemData[i].OPTM_DISPLAYNAME,
             quantity: parseFloat(formatequantity).toFixed(3),
             original_quantity: parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3),
@@ -5004,7 +5006,7 @@ export class OutputComponent implements OnInit {
             FeatureId: filtemodeldataheader[0].OPTM_CHILDMODELID,
             featureName: filtemodeldataheader[0].child_code,
             Item: filtemodeldataheader[0].OPTM_ITEMKEY,
-            ItemNumber: "",
+            ItemNumber: filtemodeldataheader[0].DocEntry,
             Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
             quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
             original_quantity: parseFloat(filtemodeldataheader[0].OPTM_QUANTITY).toFixed(3),
