@@ -234,10 +234,10 @@ export class RulewbComponent implements OnInit {
               this.seq_count = fetch_data.OPTM_SEQID;
               let current_count = (this.seq_count - 1);
               let c_boj_seq_count = this.seq_count;
-             
-              if (seq_counter_array[c_boj_seq_count] == undefined){
+
+              if (seq_counter_array[c_boj_seq_count] == undefined) {
                 seq_counter_array[c_boj_seq_count] = input_loop_counter;
-             } else {
+              } else {
                 input_loop_counter = seq_counter_array[c_boj_seq_count];
               }
               // changed current_count for sequence number not in direct sequence 
@@ -705,7 +705,12 @@ export class RulewbComponent implements OnInit {
             }
             var default_value;
 
-            if (i == 0) {
+            /*  if (i == 0) {
+               default_value = true;
+             } else {
+               default_value = false;
+             } */
+            if (data[i].Default == 'Y') {
               default_value = true;
             } else {
               default_value = false;

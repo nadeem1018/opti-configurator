@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
-import { TypeaheadOptions } from 'ngx-bootstrap';
+
 
 @Component({
   selector: 'app-routing',
@@ -53,7 +53,7 @@ export class RoutingComponent implements OnInit {
 
   companyName: string;
   page_main_title = this.language.routing
-  public grid_title = this.language.bom_details;
+  public grid_title = this.language.routing_details;
   public username: string = "";
   serviceData: any;
   public is_delete_called: boolean = false;
@@ -1836,6 +1836,10 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[currentrow].move_time = this.format_time_in_hh_mm(value);
     }
 
+    if (grid_element == 'qc_time') {
+      this.routing_detail_data[currentrow].qc_time = this.format_time_in_hh_mm(value);
+    }
+
     if (grid_element == 'time_uom') {
       this.routing_detail_data[currentrow].queue_time = "00:00";
       this.routing_detail_data[currentrow].move_time = "00:00";
@@ -1846,6 +1850,7 @@ export class RoutingComponent implements OnInit {
     if (grid_element == 'opn_application') {
       if (value == false) {
         this.routing_detail_data[currentrow].oper_top_level = value;
+        this.routing_detail_data[currentrow].operation_top_level = value;
         this.routing_detail_data[currentrow].oper_id = "";
         this.routing_detail_data[currentrow].oper_code = "";
         this.routing_detail_data[currentrow].oper_desc = "";
@@ -1853,17 +1858,19 @@ export class RoutingComponent implements OnInit {
         this.routing_detail_data[currentrow].wc_code = "";
         this.routing_detail_data[currentrow].mtq = 1;
         this.routing_detail_data[currentrow].auto_move = value;
+        this.routing_detail_data[currentrow].count_point_operation = value;
         this.routing_detail_data[currentrow].count_point_operation_disabled = value;
+        this.routing_detail_data[currentrow].inc_lead_time_calc = value;
         this.routing_detail_data[currentrow].queue_time = "00:00";
         this.routing_detail_data[currentrow].move_time = "00:00";
         this.routing_detail_data[currentrow].qc_time = "00:00";
-        this.routing_detail_data[currentrow].time_uom = "";
+        this.routing_detail_data[currentrow].time_uom = "1";
       }
       this.routing_detail_data[currentrow].opn_application = value;
     }
 
-    console.log("this.routing_detail_data ", this.routing_detail_data);
-    console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
+  //  console.log("this.routing_detail_data ", this.routing_detail_data);
+   // console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
   }
 
   format_time_in_hh_mm(value) {
@@ -1913,6 +1920,7 @@ export class RoutingComponent implements OnInit {
     }
     if (this.routing_header_data.use_template_routing == false) {
       if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
+        let count_opn_appli_top_lvl = 0;
         for (let DetailIndex = 0; DetailIndex < this.routing_detail_data.length; DetailIndex++) {
           if (this.routing_detail_data[DetailIndex].oper_top_level == true) {
             if (this.routing_detail_data[DetailIndex].oper_code == undefined || this.routing_detail_data[DetailIndex].oper_code == null || this.routing_detail_data[DetailIndex].oper_code == '') {
@@ -1930,6 +1938,15 @@ export class RoutingComponent implements OnInit {
             this.toastr.error('', this.language.operationatOprmmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
             return;
           }
+       
+          if (this.routing_detail_data[DetailIndex].oper_top_level == true || this.routing_detail_data[DetailIndex].opn_application == true){
+            count_opn_appli_top_lvl++;
+          }
+        }
+
+        if (count_opn_appli_top_lvl == 0){
+          this.toastr.error('', this.language.one_oper_required, this.commonData.toast_config);
+          return;
         }
       }
 
@@ -1980,8 +1997,8 @@ export class RoutingComponent implements OnInit {
     }
 
     let objDataset: any = {};
-    console.log(this.routing_header_data);
-    console.log(this.routing_detail_data);
+    //console.log(this.routing_header_data);
+    //console.log(this.routing_detail_data);
 
     // initialize
     objDataset.Connection = [];
@@ -2036,7 +2053,7 @@ export class RoutingComponent implements OnInit {
     if (this.routing_detail_data.length > 0 && this.routing_detail_data != undefined) {
       for (let resOper = 0; resOper < this.routing_detail_data.length; resOper++) {
         let oper_arr_data = this.routing_detail_data[resOper];
-        console.log("oper_arr_data", oper_arr_data);
+        //console.log("oper_arr_data", oper_arr_data);
 
         if (oper_arr_data.operation_top_level == true || oper_arr_data.oper_top_level == true) {
           oper_arr_data.operation_top_level = 'Y';
@@ -2107,7 +2124,7 @@ export class RoutingComponent implements OnInit {
     objDataset.Detail = routing_detail_tmp_arr;
     objDataset.DetailResource = routing_detail_res_tmp_arr;
 
-    console.log("objDataset ", objDataset);
+    // console.log("objDataset ", objDataset);
     this.service.SaveUpdateRouting(objDataset).subscribe(
       data => {
         this.showLookupLoader = false;
@@ -2240,12 +2257,12 @@ export class RoutingComponent implements OnInit {
     }
   }
   expandAll() {
-    console.log("expandAll")
+    
     $(document).find('treeview').show()
     $(document).find('.expand-btn').addClass("expanded")
   }
   collapseAll() {
-    console.log("collapseAll")
+    
     $(document).find('treeview').hide()
     $(document).find('.expand-btn').removeClass("expanded")
   }
