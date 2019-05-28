@@ -28,6 +28,15 @@ export class RulewbService {
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetAllFeatureForRuleWorkBench", jObject, this.common_params.httpOptions);
   }
 
+  getFeatureBOMHeader(feature_code): Observable<any> {
+    let jObject = {
+      GetData: JSON.stringify([{
+        CompanyDBID: this.logged_in_company, FeatureId: feature_code,  GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")
+      }])
+    }
+    return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/GetFOMbyFID", jObject, this.common_params.httpOptions);
+  }
+
   getFeatureDetails(feature_code, press_location, index): Observable<any> {
     let jObject = { FeatureList: JSON.stringify([{ CompanyDBID: this.logged_in_company, FeatureId: feature_code, pressLocation: press_location, rowid: index,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }

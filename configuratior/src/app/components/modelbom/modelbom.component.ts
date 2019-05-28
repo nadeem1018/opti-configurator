@@ -56,6 +56,7 @@ export class ModelbomComponent implements OnInit {
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public mandatory_disabled: boolean = false;
+  public menu_auth_index = '203'; 
   modalRef: BsModalRef;
 
   constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
@@ -130,19 +131,29 @@ export class ModelbomComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
-    /*  this.image_data = [
-       "../../../assets/images/test/1.jpg",
-       "../../../assets/images/test/2.jpg",
-       "../../../assets/images/test/3.jpg",
-       "../../../assets/images/test/4.jpg",
-       "../../../assets/images/test/5.jpg",
-       "../../../assets/images/test/6.jpg",
-       "../../../assets/images/test/7.jpg",
-       "../../../assets/images/test/8.jpg",
-     ]; */
+    
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
     }
+
+    // check screen authorisation - start
+    this.commonService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.route.navigateByUrl('home');
+          }, 200);
+        }
+      });
+      // check screen authorisation - end
+
     if (this.update_id === "" || this.update_id === null) {
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
@@ -1804,7 +1815,12 @@ export class ModelbomComponent implements OnInit {
   }
 
   resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    let current_row_index = this.current_selected_row.rowindex - 1;
+    /* let current_row_index = this.current_selected_row.rowindex - 1;
+    this.row_selection = []; */
+    let row_c_select = this.current_selected_row.rowindex;
+    let current_row_index = this.modelbom_data.findIndex(function (obj) {
+      return obj.rowindex == row_c_select;
+    });
     this.row_selection = [];
     console.log("this.row_selection start  - ", this.row_selection);
     if (type == '1') {

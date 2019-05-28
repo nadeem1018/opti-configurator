@@ -26,6 +26,7 @@ export class RulewbComponent implements OnInit {
   public rule_feature_data = new Array();
   public rule_expression_data: any = new Array();
   public image_data: any = new Array();
+  public feature_bom_header_details: any = new Array();
   public lookupfor: string = '';
   public counter = 0;
   public expression_counter = 0;
@@ -76,6 +77,7 @@ export class RulewbComponent implements OnInit {
   public code_disabled = "false";
   public isOutputTable: boolean = true;
 
+
   imgPath = 'assets/images';
 
 
@@ -104,6 +106,8 @@ export class RulewbComponent implements OnInit {
   public show_dialog: boolean = false;
   public dialog_box_value: any;
   public row_id: any;
+  public menu_auth_index = '204';
+
 
   public min;
   ngOnInit() {
@@ -124,6 +128,25 @@ export class RulewbComponent implements OnInit {
     this.rule_wb_data.RuleId = "";
     this.rule_wb_data.discontinued = false;
     this.rule_wb_data.Excluded = false;
+
+    // check screen authorisation - start
+    this.commonService.menuItem.subscribe(
+      menu_item => {
+        let menu_auth_index = this.menu_auth_index
+        let is_authorised = menu_item.filter(function (obj) {
+          return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        });
+
+        if (is_authorised.length == 0) {
+          let objcc = this;
+          setTimeout(function () {
+            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+            objcc.route.navigateByUrl('home');
+          }, 200);
+        }
+      });
+    // check screen authorisation - end
+
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
@@ -382,7 +405,8 @@ export class RulewbComponent implements OnInit {
           console.log(this.rule_expression_data);
           this.showLoader = false;
           setTimeout(function () {
-            obj.getFeatureDetailsForOutput();
+            obj.getFBOMHeader();
+            // obj.getFeatureDetailsForOutput();
           }, 300)
         }
 
@@ -595,7 +619,8 @@ export class RulewbComponent implements OnInit {
     if (this.lookupfor == 'feature_lookup') {
       this.rule_wb_data.applicable_for_feature_id = $event[0];
       this.rule_wb_data.applicable_for_feature_code = $event[1];
-      this.getFeatureDetailsForOutput();
+      this.getFBOMHeader();
+      // this.getFeatureDetailsForOutput();
     }
     if (this.lookupfor == 'feature_Detail_lookup') {
       for (let i = 0; i < this.rule_sequence_data.length; ++i) {
@@ -678,6 +703,36 @@ export class RulewbComponent implements OnInit {
     }
   }
 
+  getFBOMHeader() {
+    this.showLookupLoader = true;
+    this.feature_bom_header_details = [];
+    this.service.getFeatureBOMHeader(this.rule_wb_data.applicable_for_feature_id).subscribe(
+      data => {
+        if (data != null && data != "" && data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
+          }
+          if (data.FBOMDTL.length > 0) {
+            this.feature_bom_header_details = data.FBOMDTL[0];
+            this.getFeatureDetailsForOutput();
+          } else {
+            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+            return;
+          }
+        }
+      }, error => {
+        this.feature_bom_header_details = [];
+        this.showLookupLoader = false;
+      }
+
+    )
+  }
+
   getFeatureDetailsForOutput() {
     this.close_rule_sequence();
     this.rule_feature_data = new Array();
@@ -703,18 +758,33 @@ export class RulewbComponent implements OnInit {
             else {
               data[i].PriceSource = parseFloat(data[i].PriceSource).toFixed(3)
             }
-            var default_value;
 
-            /*  if (i == 0) {
-               default_value = true;
-             } else {
-               default_value = false;
-             } */
-            if (data[i].Default == 'Y') {
-              default_value = true;
-            } else {
-              default_value = false;
+            let default_value = false;
+            console.log(" this.feature_bom_header_details  ", this.feature_bom_header_details);
+            if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'N') {
+              if (this.feature_bom_header_details.OPTM_MIN_SELECTABLE == 0) {
+                default_value = false;
+              } else if (this.feature_bom_header_details.OPTM_MIN_SELECTABLE == 1) {
+                if (data[i].Default == 'Y') {
+                  default_value = true;
+                } else {
+                  default_value = false;
+                }
+              }
+            } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'Y') {
+              if (data[i].Default == 'Y') {
+                default_value = true;
+              } else {
+                default_value = false;
+              }
+            } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == null) {
+              if (data[i].Default == 'Y') {
+                default_value = true;
+              } else {
+                default_value = false;
+              }
             }
+
             this.global_rule_feature_data.push({
               rowindex: i,
               check_child: true,
@@ -1244,9 +1314,17 @@ export class RulewbComponent implements OnInit {
       });
       console.log("feature_data_default_value");
       console.log(feature_data_default_value);
-      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
-        this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
-        return false;
+
+      if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'N' && this.feature_bom_header_details.OPTM_MIN_SELECTABLE != '0') {
+        if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
+          this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
+          return false;
+        }
+      } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'Y') {
+        if (feature_data_default_value.length > this.feature_bom_header_details.OPTM_MAX_SELECTABLE ){
+          this.toastr.error('', this.language.default_more_than_max_sel + ' - ' + this.feature_bom_header_details.OPTM_MAX_SELECTABLE, this.commonData.toast_config);
+          return false;
+        }
       }
 
       this.expression_counter++;
@@ -1280,7 +1358,8 @@ export class RulewbComponent implements OnInit {
         else {
           this.lookupfor = 'feature_lookup';
           this.rule_wb_data.applicable_for_feature_id = data;
-          this.getFeatureDetailsForOutput();
+          this.getFBOMHeader();
+          // this.getFeatureDetailsForOutput();
         }
       })
   }
@@ -1291,11 +1370,16 @@ export class RulewbComponent implements OnInit {
       var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
         return obj.is_default;
       });
-      console.log("feature_data_default_value");
-      console.log(feature_data_default_value);
-      if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
-        this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
-        return false;
+      if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'N' && this.feature_bom_header_details.OPTM_MIN_SELECTABLE != '0') {
+        if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
+          this.toastr.error('', this.language.one_default_required, this.commonData.toast_config);
+          return false;
+        }
+      } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'Y') {
+        if (feature_data_default_value.length > this.feature_bom_header_details.OPTM_MAX_SELECTABLE) {
+          this.toastr.error('', this.language.default_more_than_max_sel + ' - ' + this.feature_bom_header_details.OPTM_MAX_SELECTABLE, this.commonData.toast_config);
+          return false;
+        }
       }
 
       let row_auto_index: any = '';
@@ -1424,12 +1508,16 @@ export class RulewbComponent implements OnInit {
           this.rule_feature_data[i].edit_price = value
         }
         else if (name == "default") {
-          this.rule_feature_data.forEach(function (data) {
-            data.default = false;
-            data.is_default = false;
-          });
+          if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'N') {
+            this.rule_feature_data.forEach(function (data) {
+              data.default = false;
+              data.is_default = false;
+            });
+          }
+
           this.rule_feature_data[i].default = value
           this.rule_feature_data[i].is_default = value
+
           console.log(this.rule_feature_data);
         }
       }

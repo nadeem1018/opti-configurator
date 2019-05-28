@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
+  
 })
 export class SidebarComponent implements OnInit {
 
@@ -36,7 +37,7 @@ export class SidebarComponent implements OnInit {
     //console.log(getURL);
     this.menu_options = [
       { "menu_code": 200, "menu_title": this.language.itemcodegeneration, "router_link": "item-code-generation/view", "icon_path": this.imgPath + "/leftpanel/code.svg ", "chkURL": "item-code-generation" },
-      { "menu_code": 201, "menu_title": this.language.feature_Model, "router_link": "feature/model/view", "icon_path": this.imgPath + "/leftpanel/featuremodel.svg", "chkURL": "model" },
+      { "menu_code": 201, "menu_title": this.language.model_feature_master, "router_link": "feature/model/view", "icon_path": this.imgPath + "/leftpanel/featuremodel.svg", "chkURL": "model" },
       { "menu_code": 202, "menu_title": this.language.feature_Bom, "router_link": "feature/bom/view", "icon_path": this.imgPath + "/leftpanel/featureBOM.svg", "chkURL": "bom" },
       { "menu_code": 203, "menu_title": this.language.Model_Bom, "router_link": "modelbom/view", "icon_path": this.imgPath + "/leftpanel/modelBOM.svg", "chkURL": "modelbom" },
       { "menu_code": 204, "menu_title": this.language.rule_workbench, "router_link": "rulewb/view", "icon_path": this.imgPath + "/leftpanel/ruleworkbench.svg", "chkURL": "rulewb" },
@@ -84,6 +85,9 @@ export class SidebarComponent implements OnInit {
       data => {
         if (data != null) {
           this.menu_obj = data;
+          console.log("this.menu_obj", this.menu_obj);
+          
+          this.commonService.setMenuItem(this.menu_obj);
         }
       },
       error =>{

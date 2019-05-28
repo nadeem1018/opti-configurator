@@ -189,7 +189,7 @@ export class LoginComponent implements OnInit {
 
       sessionStorage.setItem('defaultCurrency', "$");
       // this.router.navigateByUrl('/home');
-      let home_page = this.commonData.application_path + '/index.html#home';
+      // let home_page = this.commonData.application_path + '/index.html#home';
       // let home_page = this.commonData.application_path + '/index.html#item-code-generation';
 
       //window.location.href = home_page;
@@ -258,6 +258,8 @@ export class LoginComponent implements OnInit {
   //To get url from DB
   getPSURL() {
     //This will get the psURL
+   /*  this.psURL = 'http://172.16.6.140/OptiAdmin/';
+    this.showLoginLoader = false; */
     this.auth.getPSURL().subscribe(
       data => {
         if (data != null) {

@@ -104,7 +104,7 @@ export class LookupComponent implements OnInit {
   public showLookupLoader: boolean = false;
   public popup_resource: boolean = false;
   public resource_popup_title = '';
-
+  public about_info = [];
   public close_kendo_dialog() {
     this.dialogOpened = false;
     this.current_popup_row = "";
@@ -157,7 +157,7 @@ export class LookupComponent implements OnInit {
     this.skip = 0;
     this.resource_counter = 0;
     this.dialogOpened = false;
-
+    this.about_info = [];
 
     this.current_popup_row = "";
     //this.test_model();
@@ -283,9 +283,11 @@ export class LookupComponent implements OnInit {
       if (this.popup_lookupfor == "template_routing_lookup") {
         this.template_routing_list();
       }
+
+     
     }
   }
-
+ 
   template_routing_list() {
     this.popup_title = this.language.template_routing;
     this.LookupDataLoaded = false;

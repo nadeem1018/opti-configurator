@@ -90,7 +90,13 @@ export class CommonService {
     this.isLoggedInData.next(sessionStorage.getItem('isLoggedIn'));
   }
 
+   // set menu data global
+  public menuItem = new BehaviorSubject<any>([]);
+  currentmenuItemData = this.menuItem.asObservable();
 
+  public setMenuItem(menuItemArr){
+    this.menuItem.next(menuItemArr);
+  }
 
   RemoveLoggedInUser(): Observable<any> {
     var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
