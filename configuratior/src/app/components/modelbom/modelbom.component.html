@@ -151,9 +151,7 @@
           <!-- <hr> -->
           <div class="col-sm-12 p-0">
             <div class="">
-              <kendo-grid [kendoGridBinding]="modelbom_data" [resizable]="true" [sortable]="false" [groupable]="false"
-                [filterable]="false" [selectable]="selectableSettings"
-                                [kendoGridSelectBy]="'rowindex'" [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
+              <kendo-grid [kendoGridBinding]="modelbom_data" [resizable]="true" [sortable]="false" [groupable]="false" [filterable]="false" [selectable]="selectableSettings"  [kendoGridSelectBy]="'rowindex'" [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
                 <kendo-grid-column field="rowindex" title="#" width="60" [minResizableWidth]="60" filter="numeric">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <a class="common_grid_link" (click)="navigateToFeatureOrModelBom(dataItem.type_value, dataItem.type)"
@@ -163,8 +161,7 @@
                     {{dataItem.rowindex}}
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110"
-                  [minResizableWidth]="110">
+                <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="110">
                   <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                     <select class="form-control form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
                       <option *ngFor="let v of commonData.model_bom_type" [value]="v.value" [selected]="dataItem.type==v.value">
@@ -172,8 +169,7 @@
                     </select>
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="ModelBom_FeatureValue" title="{{language.ModelBom_FeatureValue}}" filter="text"
-                  [width]="155" [minResizableWidth]="155">
+                <kendo-grid-column field="ModelBom_FeatureValue" title="{{language.ModelBom_FeatureValue}}" filter="text" [width]="155" [minResizableWidth]="155">
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="input-group">
                       <input [disabled]="dataItem.isTypeDisabled" type="hidden" class="form-control  form-control-sm row_type_value_id"

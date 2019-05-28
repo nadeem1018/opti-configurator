@@ -369,6 +369,7 @@
     "blank_or_zero_inverse_not_allowed": "Blank or zero inverse not allowed",
     "blank_or_zero_noresused_not_allowed": "Blank or zero number of resource used not allowed",
     "blank_or_zero_not_allowed_min_selectable": "Blank or zero min selectable not allowed",
+    "blank_not_allowed_min_selectable": "Blank min selectable not allowed",
     "blank_or_zero_not_allowed_max_selectable": "Blank or zero max selectable not allowed",
     "child_exist_cannot_remove": "Child exist in th following component, First Remove the child of this component. ",
     "valid_date": "Valid Until",
@@ -551,6 +552,8 @@
     "app_title":"App. Title",
     "app_name":"App. Name",
     "default_more_than_max_sel":"Default items cannot be more than 'Max Selectable'",
-    "user":"User"
+    "user":"User",
+    "max_selectable_less_than_default":"'Max Selectable' cannot be less than total default options defined on 'Feature BOM' at row ",
+    "MoreDefaultThanMaxSelectable":"Default Items cannot be more than 'Max Selectable' defined for this feature on 'Model BOM'"
 
 }
