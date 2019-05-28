@@ -250,7 +250,8 @@ export class ArchivingComponent implements OnInit {
   archive_data() {
 
     this.showLookupLoader = true;
-    this.service.archive_data().subscribe(
+    let temp_array = [];
+    this.service.archive_data(temp_array).subscribe(
       data => {
         console.log(data);
         if (data != null) {
