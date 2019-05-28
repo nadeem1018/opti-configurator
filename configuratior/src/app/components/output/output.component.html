@@ -161,7 +161,6 @@
                         (change)="onDocumentChange(document.value)" #document>
                         <option *ngFor="let v of doctype" [value]="v.value" [selected]="document.value==v.value">
                           {{v.Name}}</option>
-                        <!--   <option *ngFor="let v of doctype" [value]="v.value" [selected]="v.value == '1'"> {{v.Name}}</option> -->
                       </select>
                     </div>
                   </div>
