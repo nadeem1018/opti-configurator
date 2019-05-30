@@ -96,7 +96,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.stringtypevalue = this.commonData.stringtypevalue
     this.opertions = this.commonData.opertions
     // check screen authorisation - start
-    this.commanService.menuItem.subscribe(
+    this.commanService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {

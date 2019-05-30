@@ -240,7 +240,7 @@ export class OutputComponent implements OnInit {
 
   async check_authorisation(){
     await this.sleep(1200);
-    this.CommonService.menuItem.subscribe(
+    this.CommonService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {
@@ -1530,7 +1530,7 @@ export class OutputComponent implements OnInit {
 
     var elementtypeforcheckedfunction = parentarray[0].element_type
 
-    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);
+    this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,true);
      /* superfeatureid = feature_model_data.parentfeatureid;*/
 
     this.showLookupLoader = true;
@@ -1550,7 +1550,8 @@ export class OutputComponent implements OnInit {
       selectedvalue: selectedvalue,
       CompanyDBID: this.common_output_data.companyName,
       SuperModelId: this.step2_data.model_id,
-      currentDate: this.step1_data.posting_date
+      /* currentDate: this.step1_data.posting_date */
+      currentDate: this.submit_date,
     });
 
     GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {

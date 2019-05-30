@@ -568,6 +568,7 @@
     "default_more_than_max_sel":"Default items cannot be more than 'Max Selectable'",
     "user":"User",
     "max_selectable_less_than_default":"'Max Selectable' cannot be less than total default options defined on 'Feature BOM' at row ",
-    "MoreDefaultThanMaxSelectable":"Default Items cannot be more than 'Max Selectable' defined for this feature on 'Model BOM'"
+    "MoreDefaultThanMaxSelectable":"Default Items cannot be more than 'Max Selectable' defined for this feature on 'Model BOM'",
+    "apply_remove_rule":"Apply/Remove Rule"
 
 }

@@ -151,7 +151,7 @@ export class ViewModelBomComponent implements OnInit {
         }
 
         // check screen authorisation - start
-        this.commonservice.menuItem.subscribe(
+        this.commonservice.getMenuRecord().subscribe(
             menu_item => {
                 let menu_auth_index = this.menu_auth_index
                 let is_authorised = menu_item.filter(function (obj) {

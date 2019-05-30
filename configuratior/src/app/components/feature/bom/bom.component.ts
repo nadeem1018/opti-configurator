@@ -134,7 +134,7 @@ export class BomComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
     // check screen authorisation - start
-    this.commanService.menuItem.subscribe(
+    this.commanService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {
@@ -143,8 +143,8 @@ export class BomComponent implements OnInit {
 
         if (is_authorised.length == 0) {
           let objcc = this;
+          objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
           setTimeout(function () {
-            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
             objcc.router.navigateByUrl('home');
           }, 200);
         }
