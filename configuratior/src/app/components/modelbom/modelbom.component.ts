@@ -137,7 +137,7 @@ export class ModelbomComponent implements OnInit {
     }
 
     // check screen authorisation - start
-    this.commonService.menuItem.subscribe(
+    this.commonService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {
@@ -281,6 +281,8 @@ export class ModelbomComponent implements OnInit {
               quantity: data.ModelDetail[i].OPTM_QUANTITY,
               min_selected: data.ModelDetail[i].OPTM_MINSELECTABLE,
               max_selected: data.ModelDetail[i].OPTM_MAXSELECTABLE,
+              feature_min_selected: data.ModelDetail[i].FEATURE_MINSELECTABLE,
+              feature_max_selected: data.ModelDetail[i].FEATURE_MAXSELECTABLE,
               propagate_qty: data.ModelDetail[i].OPTM_PROPOGATEQTY,
               price_source: data.ModelDetail[i].ListName,
               price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
@@ -296,7 +298,9 @@ export class ModelbomComponent implements OnInit {
               isUOMDisabled: this.isUOMDisabled,
               isMinSelectedDisable: this.isMinSelectedDisable,
               isMaxSelectedDisable: this.isMaxSelectedDisable,
-              isAccessory :false
+              isAccessory: false,
+              is_feature_multiselect: data.ModelDetail[i].OPTM_ISMULTISELECT,
+              feature_default_count: data.ModelDetail[i].OPTM_DEFAULTCOUNT,
             });
 
           }
@@ -353,7 +357,9 @@ export class ModelbomComponent implements OnInit {
       uom: '',
       quantity: ("1"),
       min_selected: 1,
-      max_selected: 1,
+      max_selected: 1, 
+      feature_min_selected: 1,
+      feature_max_selected: 1,
       propagate_qty: true,
       price_source: '',
       price_source_id: '',
@@ -368,7 +374,9 @@ export class ModelbomComponent implements OnInit {
       pricehide: true,
       isUOMDisabled: true,
       isMinSelectedDisable: false,
-      isMaxSelectedDisable: false
+      isMaxSelectedDisable: false,
+      is_feature_multiselect: 'N',
+      feature_default_count: 0,
 
     });
   };
@@ -422,11 +430,15 @@ export class ModelbomComponent implements OnInit {
     this.modelbom_data[rowindex].quantity = ("0");
     this.modelbom_data[rowindex].min_selected = 1;
     this.modelbom_data[rowindex].max_selected = 1;
+    this.modelbom_data[rowindex].feature_min_selected = 1;
+    this.modelbom_data[rowindex].feature_max_selected = 1;
     this.modelbom_data[rowindex].propagate_qty = 'N';
     this.modelbom_data[rowindex].price_source = '';
     this.modelbom_data[rowindex].price_source_id = '';
     this.modelbom_data[rowindex].mandatory = 'N';
     this.modelbom_data[rowindex].unique_identifer = 'N';
+    this.modelbom_data[rowindex].is_feature_multiselect = 'N';
+    this.modelbom_data[rowindex].feature_default_count = 0;
   }
 
   on_bom_type_change(selectedvalue, rowindex) {
@@ -545,6 +557,12 @@ export class ModelbomComponent implements OnInit {
                   this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString();
                   this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
                   this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME;
+                  this.modelbom_data[i].min_selected = data[0].OPTM_MIN_SELECTABLE;
+                  this.modelbom_data[i].max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
+                  this.modelbom_data[i].feature_min_selected = data[0].OPTM_MIN_SELECTABLE;
+                  this.modelbom_data[i].feature_max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
+                  this.modelbom_data[i].is_feature_multiselect = data[0].OPTM_ISMULTISELECT;
+                  this.modelbom_data[i].feature_default_count  = data[0].OPTM_DEFAULTCOUNT;
                   if (this.modelbom_data[i].type == 1){
                     if (data[0].OPTM_ACCESSORY == 'Y'){
                       this.modelbom_data[i].isAccessory = true;
@@ -576,7 +594,7 @@ export class ModelbomComponent implements OnInit {
           return;
         }
 
-        if(press_location == "Header" && this.lookupfor == 'feature_Detail_lookup'){
+        //if(press_location == "Header" && this.lookupfor == 'feature_Detail_lookup'){
         // for(var i=0; i < this.modelbom_data.length;i++) {
         //   if ((data[0].OPTM_ACCESSORY == "Y") && (this.modelbom_data[i].type_value == data[0].OPTM_FEATUREID)) {
         //     this.modelbom_data[i].isAccessory = true;
@@ -600,7 +618,7 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data[update_index].isAccessory = false;
             }
           } */
-      }
+    //  }
       },
       error => {
         this.showLookupLoader = false;
@@ -934,6 +952,12 @@ export class ModelbomComponent implements OnInit {
                 this.modelbom_data[iIndex].type_value = "";
                 this.modelbom_data[iIndex].type_value_code = "";
                 this.modelbom_data[iIndex].display_name = "";
+                this.modelbom_data[i].min_selected = 1;
+                this.modelbom_data[i].max_selected = 1;
+                this.modelbom_data[i].feature_min_selected = 1;
+                this.modelbom_data[i].feature_max_selected = 1;
+                this.modelbom_data[i].is_feature_multiselect = 'N';
+                this.modelbom_data[i].feature_default_count = 0;
                 return;
               }
               else {
@@ -1043,33 +1067,33 @@ export class ModelbomComponent implements OnInit {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         var rgexp = /^\d+$/;
         if (isNaN(value) == true) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-          $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(0);
           return;
-        } else if (value == 0 || value == '' || value == null || value == undefined) {
-          this.modelbom_data[i].min_selected = 1;
-          this.toastr.error('', this.language.blank_or_zero_not_allowed_min_selectable, this.commonData.toast_config);
-          $(".min_selectable_row").eq((rowindex - 1)).val(1);
+        } else if (value == '' || value == null || value == undefined) {
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+          this.toastr.error('', this.language.blank_not_allowed_min_selectable, this.commonData.toast_config);
+          $(".min_selectable_row").eq((rowindex - 1)).val(0);
           return;
         } else if (value < 0) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
-          $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(0);
           return;
         } else if (rgexp.test(value) == false) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
-          $(".min_selectable_row").eq((rowindex - 1)).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(0);
           return;
         }
 
         this.modelbom_data[i].min_selected = value
         if (this.modelbom_data[i].max_selected != "") {
           if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
-            this.modelbom_data[i].min_selected = 1;
+            this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
             // $(actualvalue).val(1);
-            $(".min_selectable_row").eq((rowindex - 1)).val(1);
+            $(".min_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_min_selected);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
           }
@@ -1084,27 +1108,37 @@ export class ModelbomComponent implements OnInit {
       if (this.modelbom_data[i].rowindex === this.currentrowindex) {
         var rgexp = /^\d+$/;
         if (isNaN(value) == true) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
           return;
         } else if (value == 0 || value == '' || value == null || value == undefined) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
-          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
           return;
         } else if (value < 0) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
-          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
           return;
         } else if (rgexp.test(value) == false) {
-          this.modelbom_data[i].min_selected = 1;
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
           this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
-          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
           return;
         }
-        this.modelbom_data[i].max_selected = value
+       
+        // dont allow less than default defined in feature
+        if (this.modelbom_data[i].feature_default_count > value){
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+          this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
+          $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+          this.toastr.error('', this.language.max_selectable_less_than_default, this.commonData.toast_config);
+          return;
+        }
+
+        this.modelbom_data[i].max_selected = value;
         if (this.modelbom_data[i].type == "1") {
           this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
             data => {
@@ -1119,8 +1153,8 @@ export class ModelbomComponent implements OnInit {
       
               if (data != null) {
                 if (parseFloat(value) > parseFloat(data)) {
-                  this.modelbom_data[i].max_selected = 1;
-                  $(".max_selectable_row").eq((rowindex - 1)).val(1);
+                  this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
+                  $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
                   if(data == 0) {
                     this.toastr.error('', this.language.max_selected_validation + " " + 1, this.commonData.toast_config);
                     return;
@@ -1129,7 +1163,9 @@ export class ModelbomComponent implements OnInit {
                     return;
                   }
                 }
-              }
+              } 
+
+              
             })
         } else if(this.modelbom_data[i].type == "3") {
             this.service.CheckMaxSelectedValueForModel(this.modelbom_data[i].type_value).subscribe(
@@ -1159,8 +1195,8 @@ export class ModelbomComponent implements OnInit {
 
         if (this.modelbom_data[i].min_selected != "") {
           if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {
-            this.modelbom_data[i].min_selected = 1;
-            this.modelbom_data[i].max_selected = 1;
+            this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+            this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
             $(".max_selectable_row").eq((rowindex - 1)).val(1);
             this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
             return;
@@ -1594,6 +1630,8 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[rowIndex].type_value = "";
           this.modelbom_data[rowIndex].type_value_code = "";
           this.modelbom_data[rowIndex].display_name = "";
+          this.modelbom_data[rowIndex].min_selected = 1;
+          this.modelbom_data[rowIndex].max_selected = 1;
           return;
         }
         else {
@@ -1619,6 +1657,9 @@ export class ModelbomComponent implements OnInit {
             this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
             this.modelbom_data[rowindex].type_value = "";
             this.modelbom_data[rowindex].display_name = "";
+            this.modelbom_data[rowindex].min_selected = 1;
+            this.modelbom_data[rowindex].max_selected = 1;
+            
             return;
           }
           else if (data == "True") {

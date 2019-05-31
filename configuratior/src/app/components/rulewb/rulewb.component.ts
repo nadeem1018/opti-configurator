@@ -130,7 +130,7 @@ export class RulewbComponent implements OnInit {
     this.rule_wb_data.Excluded = false;
 
     // check screen authorisation - start
-    this.commonService.menuItem.subscribe(
+    this.commonService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {

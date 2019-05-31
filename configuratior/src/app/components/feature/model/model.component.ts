@@ -88,7 +88,7 @@ export class ModelComponent implements OnInit {
     this.codekey = this.ActivatedRouter.snapshot.paramMap.get('id');
     this.showImageBlock = false;
     // check screen authorisation - start
-    this.commanService.menuItem.subscribe(
+    this.commanService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {

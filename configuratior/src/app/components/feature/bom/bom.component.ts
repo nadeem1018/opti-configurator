@@ -134,7 +134,7 @@ export class BomComponent implements OnInit {
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
     // check screen authorisation - start
-    this.commanService.menuItem.subscribe(
+    this.commanService.getMenuRecord().subscribe(
       menu_item => {
         let menu_auth_index = this.menu_auth_index
         let is_authorised = menu_item.filter(function (obj) {
@@ -143,8 +143,8 @@ export class BomComponent implements OnInit {
 
         if (is_authorised.length == 0) {
           let objcc = this;
+          objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
           setTimeout(function () {
-            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
             objcc.router.navigateByUrl('home');
           }, 200);
         }
@@ -632,7 +632,11 @@ export class BomComponent implements OnInit {
         else if (data === "AlreadyExist") {
           this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
           return;
-        }
+        } 
+        else if (data === "MoreDefaultThanMaxSelectable") {
+          this.toastr.error('', this.language.MoreDefaultThanMaxSelectable, this.commonData.toast_config);
+          return;
+        } 
         else {
           this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
@@ -1506,7 +1510,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_data.feature_name = "";
           this.feature_bom_data.feature_desc = "";
           this.feature_bom_data.is_accessory = "";
-          this.feature_bom_data.multi_select = false;
+          this.feature_bom_data.multi_select = 'false';
           this.feature_bom_data.multi_select_disabled = true;
           this.feature_bom_data.feature_min_selectable = 1;
           this.feature_bom_data.feature_max_selectable = 1;
