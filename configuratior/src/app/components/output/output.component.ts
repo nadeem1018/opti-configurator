@@ -4010,6 +4010,7 @@ export class OutputComponent implements OnInit {
       let GetDataForSelectedFeatureModelItemData: any = {};
       GetDataForSelectedFeatureModelItemData.selecteddata = [];
       GetDataForSelectedFeatureModelItemData.apidata = [];
+      let nodeid = "";
 
       GetDataForSelectedFeatureModelItemData.selecteddata.push({
         type: rowData.OPTM_TYPE,
@@ -4021,7 +4022,9 @@ export class OutputComponent implements OnInit {
         CompanyDBID: this.common_output_data.companyName,
         SuperModelId: this.step2_data.model_id,
         currentDate: this.submit_date,
-        superfeatureid: superfeatureid
+        superfeatureid: superfeatureid,
+        unique_key:rowData.unique_key,
+        nodeid:nodeid
       });
     
     let cobj = this;

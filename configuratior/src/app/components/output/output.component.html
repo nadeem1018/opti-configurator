@@ -604,7 +604,7 @@
                                     <td>
                                       <div class="custom-control custom-checkbox">
                                         <input type="checkbox" id="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" #accessory_checkbox name="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}" (change)="onAccessorySelectionChange(accessory_checkbox.checked,accessory_item_data,accessory_header_data)"
-                                          class="custom-control-input custom-control custom-checkbox" [(checked)]="accessory_item_data.Checked" >
+                                          class="custom-control-input custom-control custom-checkbox" [(checked)]="accessory_item_data.checked" >
                                         <label class="custom-control-label" for="checkbox_{{accessory_item_data.OPTM_FEATUREID}}_{{accessory_item_data.OPTM_LINENO}}_{{i}}"></label>
                                       </div>
                                     </td>
