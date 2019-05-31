@@ -38,7 +38,9 @@ export class ArchivingComponent implements OnInit {
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public selectbuttonText = '';
-  public selectButtonIcon = '';
+  public selectButtonIcon = ''; 
+  public lookupfor = '';
+  public selectedImage = '';
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -109,6 +111,10 @@ export class ArchivingComponent implements OnInit {
     });
 
     this.selectButtonTextIconChange(1);
+  }
+
+  getLookupValue($event) {
+    
   }
 
   date_range(date_range_value) {
@@ -213,8 +219,11 @@ export class ArchivingComponent implements OnInit {
       this.filter_section_data.config_desc = [];
     } 
 
-    if (this.filter_section_data.selected_models == undefined || this.filter_section_data.selected_models == null) {
-      this.filter_section_data.selected_models = [];
+    if (this.filter_section_data.selected_models
+       == undefined || this.filter_section_data.selected_models
+       == null) {
+      this.filter_section_data.selected_models
+       = [];
     } 
 
     console.log("this.filter_section_data ", this.filter_section_data);
@@ -274,8 +283,12 @@ export class ArchivingComponent implements OnInit {
         return;
       }
     );
+  }
 
+
+  ondoc_type_change(selected_value){
 
   }
+
 
 }

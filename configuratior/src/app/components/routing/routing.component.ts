@@ -2170,7 +2170,7 @@ export class RoutingComponent implements OnInit {
     objDataset.Detail = routing_detail_tmp_arr;
     objDataset.DetailResource = routing_detail_res_tmp_arr;
 
-    // console.log("objDataset ", objDataset);
+    console.log("objDataset ", objDataset);
     this.service.SaveUpdateRouting(objDataset).subscribe(
       data => {
         this.showLookupLoader = false;
