@@ -1346,7 +1346,11 @@ export class OutputComponent implements OnInit {
             return obj['ACCESSORY'] != "Y"
           });
           this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
-            return obj['ACCESSORY'] != "Y"
+            if(obj['child_accessory'] != null && obj['child_accessory'] != "") {
+              return obj['ACCESSORY'] != "Y" && obj['child_accessory'] != "Y";
+            } else {
+              return obj['ACCESSORY'] != "Y";
+            }
           });
 
           this.Accessoryarray = [];
@@ -1707,7 +1711,7 @@ export class OutputComponent implements OnInit {
                     if (data.DataForSelectedFeatureModelItem.length > 0) {
                       if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                         isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                          return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID && obj['OPTM_TYPE'] == 1;
+                          return obj['OPTM_CHILDFEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID && obj['nodeid'] == data.DataForSelectedFeatureModelItem[i].nodeid && obj['OPTM_TYPE'] == 1;
                         });
                       }
                       else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2) {
@@ -1808,9 +1812,8 @@ export class OutputComponent implements OnInit {
                             }
                             else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                               isExist = this.ModelHeaderData.filter(function (obj) {
-                                return obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID;
+                                return obj['OPTM_FEATUREID'] == data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID && obj['unique_key'] == data.DataForSelectedFeatureModelItem[i].nodeid;
                               });
-
 
                               var psMaxSelect = "1"
                               var psMinSelect = "1"
