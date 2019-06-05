@@ -199,7 +199,8 @@ export class OutputComponent implements OnInit {
     element.classList.add('sidebar-toggled');
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
-    this.submit_date = (this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate()
+    this.submit_date = (this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate();
+    this.step1_data.delivery_until = new Date((this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate());
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
@@ -306,6 +307,8 @@ export class OutputComponent implements OnInit {
     this.iLogID = '';
     let cDate = new Date();
     this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
+    this.step1_data.delivery_until = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
+    console.log(this.step1_data.delivery_until);
     this.contact_persons = [];
     this.ship_to = [];
     this.bill_to = [];
@@ -343,22 +346,28 @@ export class OutputComponent implements OnInit {
   }
 
   onStep0NextPress() {
-
+  
     this.CommonService.GetServerDate().subscribe(
       data => {
         if (data.length > 0) {
           if (data[0].DATEANDTIME != null) {
             let server_date_time = new Date(data[0].DATEANDTIME);
             this.step1_data.posting_date = (server_date_time.getMonth() + 1) + "/" + server_date_time.getDate() + "/" + server_date_time.getFullYear();
+            this.step1_data.delivery_until = new Date((server_date_time.getMonth() + 1) + "/" + server_date_time.getDate() + "/" + server_date_time.getFullYear());
+            console.log(this.step1_data.delivery_until);
           }
         }
         else {
           this.step1_data.posting_date = (this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear();
+          this.step1_data.delivery_until = new Date((this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear());
+          console.log(this.step1_data.delivery_until);
           this.toastr.error('', this.language.ServerDateError, this.commonData.toast_config);
           return;
         }
       }, error => {
         this.step1_data.posting_date = (this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear();
+        this.step1_data.delivery_until = new Date((this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear());
+        console.log(this.step1_data.delivery_until);
         this.showLookupLoader = false;
       }
     )
@@ -469,7 +478,7 @@ export class OutputComponent implements OnInit {
             this.step1_data.customer_name = data.CustomerOutput[0].Name,
             this.step1_data.bill_to_address = data.CustomerOutput[0].OPTM_BILLADD,
             this.step1_data.ship_to_address = data.CustomerOutput[0].OPTM_SHIPADD,
-            this.step1_data.delivery_until = (data.CustomerOutput[0].OPTM_DELIVERYDATE !== null) ? new Date(data.CustomerOutput[0].OPTM_DELIVERYDATE) : "";
+            // this.step1_data.delivery_until = (data.CustomerOutput[0].OPTM_DELIVERYDATE !== null) ? new Date(data.CustomerOutput[0].OPTM_DELIVERYDATE) : "";
           this.contact_persons.push({
             Name: data.CustomerOutput[0].OPTM_CONTACTPERSON,
           });

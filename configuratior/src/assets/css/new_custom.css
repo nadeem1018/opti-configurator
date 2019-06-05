@@ -261,10 +261,11 @@ mb-3, .my-3 {
 }
 
 .btn-group-sm>.btn, .btn-sm {
-  padding: .2rem 0.35rem !important;
+  padding: .18rem 0.35rem !important;
   font-size: .875rem !important;
-  line-height: 1.0 !important;
+  line-height: 0.9 !important;
   border-radius: .2rem !important;
+  margin-top: -0.42rem;
 }
 
 .col-form-label {
