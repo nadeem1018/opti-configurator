@@ -1433,7 +1433,6 @@ export class OutputComponent implements OnInit {
                     return obj['ACCESSORY'] != "Y";
                   }
                 });
-
                 this.Accessoryarray = [];
                 this.Accessoryarray = data.ModelHeaderData.filter(function (obj) {
                   return obj['ACCESSORY'] == "Y";
@@ -1893,7 +1892,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 } else {
                                   parentarray[0].element_type = "checkbox"
                                 }
-                                this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO);
+                                this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,feature_model_data);
                               }
                               else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                                 isExist = this.ModelHeaderData.filter(function (obj) {
@@ -2079,7 +2078,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                     }
                   }
                   else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
-                    this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO);
+                    this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,"");
                   }
                   else if (type == 2) {
                     if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2091,7 +2090,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       }
 
                     }
-                    this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO);
+                    this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,"");
                     this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
                   }
 
@@ -2112,7 +2111,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                     this.removefeaturesbyuncheck(feature_model_data.OPTM_FEATUREID, feature_model_data.feature_code, feature_model_data.nodeid,feature_model_data.unique_key)
                   }
                   else {
-                    this.removeModelfeaturesbyuncheck(feature_model_data.parentmodelid, feature_model_data.feature_code)
+                    this.removeModelfeaturesbyuncheck(feature_model_data.parentmodelid, feature_model_data.feature_code,feature_model_data.nodeid,feature_model_data.unique_key)
                   }
                 }
 
@@ -2268,7 +2267,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           parentarray[0].HEADER_LINENO = tempparentarray[0].HEADER_LINENO
         }
         itemData.push(dtFeatureDataWithDefault[idtfeature])
-        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO);
+        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,"");
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
@@ -2358,7 +2357,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
     }
 
-    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno) {
+    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno,feature_model_data) {
       let isPriceDisabled: boolean = true;
       let isPricehide: boolean = true;
       let currentfeaturerow: any = [];
@@ -2366,10 +2365,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         if (parentarray[0].element_type == "radio") {
           for (let i = 0; i < this.feature_itm_list_table.length; i++) {
             if (parentarray[0].OPTM_TYPE == 1) {
-              if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
-                currentfeaturerow = this.feature_itm_list_table[i];
-                this.feature_itm_list_table.splice(i, 1);
-                i = i - 1;
+              if(feature_model_data.OPTM_TYPE == 2){
+                if (this.feature_itm_list_table[i].parent_featureid == ItemData[0].OPTM_FEATUREID) {
+                    currentfeaturerow = this.feature_itm_list_table[i];
+                    this.feature_itm_list_table.splice(i, 1);
+                    i = i - 1;
+                  }
+              }else {
+                  if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
+                    currentfeaturerow = this.feature_itm_list_table[i];
+                    this.feature_itm_list_table.splice(i, 1);
+                    i = i - 1;
+                  }
               }
             }
             else if (parentarray[0].OPTM_TYPE == 3) {
@@ -2379,8 +2386,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 i = i - 1;
               }
             }
-
           }
+        } else if(parentarray[0].element_type == "checkbox") {
+            if(feature_model_data.OPTM_TYPE == 1) {
+              for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+                if (this.feature_itm_list_table[i].nodeid == feature_model_data.nodeid) {
+                  currentfeaturerow = this.feature_itm_list_table[i];
+                  this.feature_itm_list_table.splice(i, 1);
+                  i = i - 1;
+                }
+              }
+            }
         }
         var isExist;
         if (parentarray[0].OPTM_TYPE == 1) {
@@ -4133,26 +4149,31 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
                             get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
                               var array = [];
-                              if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y") {
+                              if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" && header_feature_table['is_second_level'] == null) {
                                 array = feature_child_datatable.filter(function (obj) {
                                   if (obj['parentfeatureid'] != "" && obj['parentfeatureid'] != null) {
                                     return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'] && obj['nodeid'] == header_feature_table['unique_key'];
+                                  } else if(obj['parentmodelid'] != "" && obj['parentmodelid'] != null) {
+                                    return obj['parentmodelid'] == header_feature_table['OPTM_MODELID'] && obj['nodeid'] == header_feature_table['unique_key'];
                                   }
                                   else {
-                                    return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'];
+                                    return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'] /*&& obj['nodeid'] == header_feature_table['unique_key']*/;
                                   }
                                 });
                               } else if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['ACCESSORY'] != "Y") {
                                 array = model_child_datatable.filter(function (obj) {
                                   return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['OPTM_TYPE'] != "2";
                                 });
-                              }
-
-                              if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['is_second_level'] == 1) {
+                              }else if(header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" && header_feature_table['is_second_level'] != null) {
+      array = feature_child_datatable.filter(function (obj) {
+        return obj['OPTM_FEATUREID'] == header_feature_table['OPTM_FEATUREID'] && obj['nodeid'] == header_feature_table['unique_key'];
+       });
+     }
+                              /*if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['is_second_level'] == 1) {
                                 array = model_child_datatable.filter(function (obj) {
                                   return obj['OPTM_LEVEL'] == 3 && obj['is_second_level'] == 1;
                                 });
-                              }
+                              }*/
                               if (header_feature_table['OPTM_MAXSELECTABLE'] > 1) {
                                 header_feature_table['element_type'] = "checkbox";
                                 header_feature_table['element_class'] = "custom-control custom-checkbox";
@@ -4506,7 +4527,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
     for (var imodelarray in ModelData) {
       isExist = this.feature_itm_list_table.filter(function (obj) {
-        return obj['FeatureId'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['Description'] == ModelData[imodelarray].OPTM_DISPLAYNAME;
+        return obj['FeatureId'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['Description'] == ModelData[imodelarray].OPTM_DISPLAYNAME && obj['nodeid'] == ModelData[imodelarray].unique_key;
       });
 
       ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
@@ -4532,20 +4553,21 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           OPTM_LEVEL: 1,
           isQuantityDisabled: true,
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
-          OPTM_ITEMTYPE: 1
+          OPTM_ITEMTYPE: 1,
+          nodeid: ModelData[imodelarray].unique_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
 
       var ModelItemsArray = [];
       ModelItemsArray = ModelItems.filter(function (obj) {
-        return obj['OPTM_MODELID'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['OPTM_TYPE'] == 2;
+        return obj['OPTM_MODELID'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['OPTM_TYPE'] == 2 && obj['nodeid'] == ModelData[imodelarray].unique_key;
       });
 
 
       for (var imodelItemsarray in ModelItemsArray) {
         isExist = this.feature_itm_list_table.filter(function (obj) {
-          return obj['FeatureId'] == ModelItemsArray[imodelItemsarray].OPTM_MODELID && obj['Item'] == ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY;
+          return obj['FeatureId'] == ModelItemsArray[imodelItemsarray].OPTM_MODELID && obj['Item'] == ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY && obj['nodeid'] == ModelItemsArray[imodelItemsarray].nodeid;
         });
 
         ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
@@ -4570,6 +4592,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             OPTM_LEVEL: 2,
             isQuantityDisabled: true,
             HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
+            nodeid:ModelItemsArray[imodelItemsarray].nodeid
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           ItemPrice = ItemPrice + ModelItemsArray[imodelItemsarray].Price
@@ -5743,7 +5766,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
     }
 
-    removeModelfeaturesbyuncheck(featureid, featurecode) {
+    removeModelfeaturesbyuncheck(featureid, featurecode,nodeId,unique_key) {
       var tempfeatureidmodelheader;
       var tempparentfeatureidmodelheader;
       var tempchildfeatureidmodelheader;
@@ -5752,21 +5775,25 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
       var tempfeatureidforfeaturebom;
       let tempchildfeatuniqueKey;
       let tempNodeId;
+      let tempchildfeaturecode_nodeid;
+      let tempchildfeaturecode_unique_key;
       for (var itemp = 0; itemp < this.ModelHeaderData.length; itemp++) {
-        if (this.ModelHeaderData[itemp].parentmodelid == featureid && this.ModelHeaderData[itemp].feature_code == featurecode) {
+        if (this.ModelHeaderData[itemp].feature_code == featurecode && this.ModelHeaderData[itemp].unique_key == unique_key) {
           tempfeatureidmodelheader = this.ModelHeaderData[itemp].OPTM_FEATUREID
           tempchildfeatuniqueKey = this.ModelHeaderData[itemp].unique_key
           this.ModelHeaderData.splice(itemp, 1);
           itemp = itemp - 1
 
           for (var itemp2 = 0; itemp2 < this.FeatureBOMDataForSecondLevel.length; itemp2++) {
-            if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID == tempchildfeatuniqueKey) {
+            if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatuniqueKey) {
               if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "1") {
                 tempchildfeatureidmodelheader = this.FeatureBOMDataForSecondLevel[itemp2].parentmodelid
                 tempchildfeaturecodemodelheader = this.FeatureBOMDataForSecondLevel[itemp2].feature_code
+                tempchildfeaturecode_nodeid = this.FeatureBOMDataForSecondLevel[itemp2].nodeid;
+                tempchildfeaturecode_unique_key = this.FeatureBOMDataForSecondLevel[itemp2].unique_key;
                 this.FeatureBOMDataForSecondLevel.splice(itemp2, 1)
                 itemp2 = itemp2 - 1
-                this.removeModelfeaturesbyuncheck(tempchildfeatureidmodelheader, tempchildfeaturecodemodelheader)
+                this.removeModelfeaturesbyuncheck(tempchildfeatureidmodelheader, tempchildfeaturecodemodelheader,tempchildfeaturecode_nodeid,tempchildfeaturecode_unique_key)
               }
               else if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "2") {
                 tempfeatureidforfeaturebom = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID
