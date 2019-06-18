@@ -3134,7 +3134,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         this.step2_data.model_code = '';
         this.feature_itm_list_table = [];
         this.selectedAccessoryBOM = [];
-        this.SelectedAccessory = [];
+
         this.feature_accessory_list = [];
         $(".accesory_check_for_second_screen").prop('checked', false);
         this.step2_selected_model_id = '';
@@ -3492,27 +3492,34 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   break;
                 }
               }
-            }
-            else if (isMandatoryItems[imandtory].OPTM_TYPE == "1") {
-              for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
-                if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true) {
-                  isMandatoryCount++;
-                  counted = 1;
-                  break;
+            } else if (isMandatoryItems[imandtory].OPTM_TYPE == "1") {
+              if (isMandatoryItems[imandtory].parentmodelid != "" && isMandatoryItems[imandtory].parentmodelid != null) {
+                for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
+                  if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].unique_key == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].nodeid && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true && isMandatoryItems[imandtory].parentmodelid == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parentmodelid) {
+                    isMandatoryCount++;
+                    counted = 1;
+                    break;
+                  }
+                }
+              } else {
+                for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
+                  if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true && isMandatoryItems[imandtory].unique_key == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].nodeid) {
+                    isMandatoryCount++;
+                    counted = 1;
+                    break;
+                  }
                 }
               }
+
               for (let imodelBOMitems = 0; imodelBOMitems < this.ModelBOMDataForSecondLevel.length; imodelBOMitems++) {
-                if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked == true) {
+                if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked == true && isMandatoryItems[imandtory].unique_key == this.ModelBOMDataForSecondLevel[imodelBOMitems].unique_key) {
                   isMandatoryCount++;
                   counted = 1;
                   break;
                 }
+                counted = 0;
               }
             }
-            if (counted == 0) {
-              itemnotselectedarray.push(isMandatoryItems[imandtory].OPTM_DISPLAYNAME)
-            }
-            counted = 0;
           }
         }
         if (isMandatoryCount != isMandatoryItems.length) {
@@ -5952,6 +5959,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                this.bill_to = data.BillToDef;
                this.customerBillTo = data.BillToDef[0].BillToDef;
                this.step1_data.bill_to = data.BillToDef[0].BillToDef;
+               this.bill_data = [];
 
                this.bill_data.push({
                  CompanyDBId: this.common_output_data.companyName,
@@ -6042,6 +6050,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
          this.ship_to = ShipDetails;
          this.customerShipTo = ShipDetails[0].ShipToDef;
          this.step1_data.ship_to = ShipDetails[0].ShipToDef;
+         this.ship_data = [];
 
 
          this.ship_data.push({
