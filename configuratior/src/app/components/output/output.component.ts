@@ -3517,9 +3517,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   counted = 1;
                   break;
                 }
-                counted = 0;
+
               }
             }
+            if (counted == 0) {
+              itemnotselectedarray.push(isMandatoryItems[imandtory].OPTM_DISPLAYNAME)
+            }
+            counted = 0;
           }
         }
         if (isMandatoryCount != isMandatoryItems.length) {
