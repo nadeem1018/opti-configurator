@@ -55,7 +55,7 @@ export class ModelbomComponent implements OnInit {
   public row_selection: number[] = [];
   public current_selected_row: any = [];
   public selectableSettings: any = [];
-  public mandatory_disabled: boolean = false;
+  // public mandatory_disabled: boolean = false;
   public menu_auth_index = '203'; 
   modalRef: BsModalRef;
 
@@ -215,6 +215,7 @@ export class ModelbomComponent implements OnInit {
 
         if (data.ModelDetail.length > 0) {
           for (let i = 0; i < data.ModelDetail.length; ++i) {
+            let mandatory_item_disabled = false;
             if (data.ModelDetail[i].OPTM_TYPE == 1) {
               this.typevaluefromdatabase = data.ModelDetail[i].OPTM_FEATUREID.toString()
               this.typevaluecodefromdatabase = data.ModelDetail[i].feature_code.toString()
@@ -223,7 +224,8 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = true
               this.isMinSelectedDisable = false;
               this.isMaxSelectedDisable = false;
-              this.mandatory_disabled = false;
+              mandatory_item_disabled = false;
+              // this.mandatory_disabled = false;
             } else if (data.ModelDetail[i].OPTM_TYPE == 2) {
               this.typevaluefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY.toString()
               this.typevaluecodefromdatabase = data.ModelDetail[i].OPTM_ITEMKEY
@@ -232,7 +234,8 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = false
               this.isMinSelectedDisable = true;
               this.isMaxSelectedDisable = true;
-              this.mandatory_disabled = true;
+              mandatory_item_disabled = true;
+              // this.mandatory_disabled = true;
             } else {
               this.typevaluefromdatabase = data.ModelDetail[i].OPTM_CHILDMODELID.toString()
               this.typevaluecodefromdatabase = data.ModelDetail[i].child_code.toString()
@@ -241,7 +244,8 @@ export class ModelbomComponent implements OnInit {
               this.isUOMDisabled = true
               this.isMinSelectedDisable = false;
               this.isMaxSelectedDisable = false;
-              this.mandatory_disabled = false;
+              mandatory_item_disabled = false;
+              // this.mandatory_disabled = false;
             }
             // if (data.ModelDetail[i].OPTM_READYTOUSE == "" || data.ModelDetail[i].OPTM_READYTOUSE == null || data.ModelDetail[i].OPTM_READYTOUSE == undefined || data.ModelDetail[i].OPTM_READYTOUSE == "N") {
             //   data.ModelDetail[i].OPTM_READYTOUSE = false
@@ -287,6 +291,7 @@ export class ModelbomComponent implements OnInit {
               price_source: data.ModelDetail[i].ListName,
               price_source_id: data.ModelDetail[i].OPTM_PRICESOURCE,
               mandatory: data.ModelDetail[i].OPTM_MANDATORY,
+              mandatory_item_disabled : mandatory_item_disabled,
               unique_identifer: data.ModelDetail[i].OPTM_UNIQUEIDNT,
               isDisplayNameDisabled: false,
               isTypeDisabled: false,
@@ -364,6 +369,7 @@ export class ModelbomComponent implements OnInit {
       price_source: '',
       price_source_id: '',
       mandatory: false,
+      mandatory_item_disabled : false,
       unique_identifer: false,
       isDisplayNameDisabled: false,
       isTypeDisabled: false,
@@ -468,7 +474,8 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data[i].propagate_qty = true;
           this.modelbom_data[i].mandatory = false;
           this.modelbom_data[i].unique_identifer = false;
-          this.mandatory_disabled = false;
+             this.modelbom_data[i].mandatory_item_disabled = false;
+          // this.mandatory_disabled = false;
         }
         else {
           this.modelbom_data[i].isDisplayNameDisabled = false
@@ -485,8 +492,10 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].isMaxSelectedDisable = true;
             this.modelbom_data[i].propagate_qty = true;
             this.modelbom_data[i].mandatory = true;
-            this.mandatory_disabled = true;
+            // this.mandatory_disabled = true;
             this.modelbom_data[i].unique_identifer = false;
+            this.modelbom_data[i].mandatory_item_disabled = true;
+            
           }
           else {
             this.modelbom_data[i].type = 1
@@ -499,7 +508,8 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data[i].propagate_qty = true;
             this.modelbom_data[i].mandatory = false;
             this.modelbom_data[i].unique_identifer = false;
-            this.mandatory_disabled = false;
+               this.modelbom_data[i].mandatory_item_disabled = false;
+            // this.mandatory_disabled = false;
           }
 
         }
