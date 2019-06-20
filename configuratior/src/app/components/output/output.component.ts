@@ -31,6 +31,7 @@ export class OutputComponent implements OnInit {
   public page_main_title = this.language.output_window;
   public common_output_data: any = [];
   public feature_accessory_list: any[];
+  public getSavedModelData = [];
   public step1_data: any = [];
   public stepp_data: any = [];
   public step2_data: any = [];
@@ -895,8 +896,9 @@ export class OutputComponent implements OnInit {
       this.isModelVisible = true
       this.navigatenextbtn = false;
       this.validnextbtn = true;
+      this.getSavedModelData = [];
       // this.GetDataForModelBomOutput();
-      this.GetAllDataForModelBomOutput("");
+      this.GetAllDataForModelBomOutput(this.getSavedModelData);
     }
     else if (this.lookupfor == 'Price_lookup') {
       // this.getPriceDetails($event[0], "Header", this.currentrowindex);
@@ -1883,6 +1885,7 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                             }
                           }
                           if (parentarray.length > 0) {
+                            /*this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO);*/
                             if (parentarray[0].OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID && data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2 && parentarray[0].parent_code != undefined && parentarray[0].parent_code != null) {
                               parentarray[0].feature_code = parentarray[0].parent_code
                             }
