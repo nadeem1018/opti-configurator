@@ -766,9 +766,9 @@ export class OutputComponent implements OnInit {
         }
 
         if (this.selectedAccessoryHeader.length > 0) {
-          for (let i = 0; i < this.selectedAccessoryHeader.length; i++) {
+          for (let acchdr_i = 0; acchdr_i < this.selectedAccessoryHeader.length; acchdr_i++) {
             console.log("data.Savedgetmodelsavedata ", data.Savedgetmodelsavedata);
-            this.setItemDataForFeatureAccessory(this.SelectedAccessory, this.selectedAccessoryHeader[i], '', data.Savedgetmodelsavedata);
+            this.setItemDataForFeatureAccessory(this.SelectedAccessory, this.selectedAccessoryHeader[acchdr_i], '', data.Savedgetmodelsavedata);
           }
         }
       }
@@ -1491,8 +1491,7 @@ export class OutputComponent implements OnInit {
                 this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                 return;
               }
-              console.log('----this.ModelHeaderData------', this.ModelHeaderData);
-              console.log('----this.FeatureBOMDataForSecondLevel------', this.FeatureBOMDataForSecondLevel);
+            
 
             },
             error => {
@@ -1540,7 +1539,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
     selectedvalue = feature_model_data.OPTM_VALUE
   }
   if (feature_model_data.OPTM_FEATUREID == undefined || feature_model_data.OPTM_FEATUREID == null) {
-    parentfeatureid = "";
+    parentfeatureid = null;
   }
   else {
     parentfeatureid = feature_model_data.OPTM_FEATUREID
@@ -4189,7 +4188,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
         get_accessory_element(accessory_header_data, accessory_bom_data) {
           let accessoryBOM = [];
-          if (accessory_header_data.OPTM_CHILDFEATUREID != "" && accessory_header_data.OPTM_CHILDFEATUREID != undefined) {
+          /*if (accessory_header_data.OPTM_CHILDFEATUREID != "" && accessory_header_data.OPTM_CHILDFEATUREID != undefined) {
             accessoryBOM = accessory_bom_data.filter(function (array) {
               return array['OPTM_FEATUREID'] == accessory_header_data.OPTM_CHILDFEATUREID;
             });
@@ -4197,7 +4196,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             accessoryBOM = accessory_bom_data.filter(function (array) {
               return array['OPTM_FEATUREID'] == accessory_header_data.OPTM_FEATUREID;
             });
-          }
+          }*/
+          accessoryBOM = accessory_bom_data.filter(function (obj) {
+              return obj['nodeid'] == accessory_header_data.unique_key;
+            });
           return accessoryBOM;
         }
 
@@ -4206,7 +4208,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           var isAccExist;
           for (let iaccss = 0; iaccss < Accarray.length; iaccss++) {
             isAccExist = this.feature_accessory_list.filter(function (obj) {
-              return obj['OPTM_FEATUREID'] == Accarray[iaccss].OPTM_FEATUREID
+              // return obj['OPTM_FEATUREID'] == Accarray[iaccss].OPTM_FEATUREID
+              return obj['unique_key'] == Accarray[iaccss].unique_key
             })
 
 
@@ -4225,7 +4228,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 OPTM_PROPOGATEQTY: Accarray[iaccss].OPTM_PROPOGATEQTY,
                 OPTM_QUANTITY: parseFloat(Accarray[iaccss].OPTM_QUANTITY).toFixed(3),
                 OPTM_TYPE: Accarray[iaccss].OPTM_TYPE,
-                OPTM_VALUE: Accarray[iaccss].OPTM_VALUE
+                OPTM_VALUE: Accarray[iaccss].OPTM_VALUE,
+                unique_key: Accarray[iaccss].unique_key
               });
             }
 
@@ -4239,7 +4243,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           let GetDataForSelectedFeatureModelItemData: any = {};
           GetDataForSelectedFeatureModelItemData.selecteddata = [];
           GetDataForSelectedFeatureModelItemData.apidata = [];
-          let nodeid = "";
+          
 
           GetDataForSelectedFeatureModelItemData.selecteddata.push({
             type: rowData.OPTM_TYPE,
@@ -4253,12 +4257,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             currentDate: this.submit_date,
             superfeatureid: superfeatureid,
             unique_key: rowData.unique_key,
-            nodeid: nodeid
+            nodeid: rowData.nodeid
           });
 
           let cobj = this;
           let accessoryIndex = this.selectedAccessoryBOM.findIndex(function (obj) {
-            return (obj.OPTM_ITEMKEY == rowData.OPTM_ITEMKEY && obj.OPTM_FEATUREID == rowData.OPTM_FEATUREID) ? obj : "";
+            //return (obj.OPTM_ITEMKEY == rowData.OPTM_ITEMKEY && obj.OPTM_FEATUREID == rowData.OPTM_FEATUREID) ? obj : "";
+            return (obj.nodeid == rowData.nodeid && obj.unique_key == rowData.unique_key) ? obj : "";
           });
 
           this.selectedAccessoryBOM[accessoryIndex].checked = value;
@@ -4287,7 +4292,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 }
                 else {
                   for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-                    if (this.feature_itm_list_table[i].FeatureId == rowData.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == rowData.OPTM_ITEMKEY) {
+                    //if (this.feature_itm_list_table[i].FeatureId == rowData.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == rowData.OPTM_ITEMKEY) {
+                      if (this.feature_itm_list_table[i].nodeid == rowData.nodeid && this.feature_itm_list_table[i].unique_key == rowData.unique_key) {
                       this.feature_itm_list_table.splice(i, 1);
                       i = i - 1;
                     }
@@ -4317,7 +4323,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           let isPricehide: boolean = false;
           if (ItemData.length > 0) {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-              if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID && this.feature_itm_list_table[i].Item == ItemData[0].OPTM_ITEMKEY) {
+              // if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID && this.feature_itm_list_table[i].Item == ItemData[0].OPTM_ITEMKEY) {
+                if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid && this.feature_itm_list_table[i].unique_key == ItemData[0].unique_key) {
                 this.feature_itm_list_table.splice(i, 1);
                 i = i - 1;
               }
@@ -4327,14 +4334,16 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             let isheadercounter = 10000;
             for (let i = 0; i < ItemData.length; i++) {
               isExist = this.feature_itm_list_table.filter(function (obj) {
-                return obj['FeatureId'] == ItemData[i].OPTM_FEATUREID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
+                //return obj['FeatureId'] == ItemData[i].OPTM_FEATUREID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
+                return obj['nodeid'] == ItemData[i].nodeid && obj['unique_key'] == ItemData[i].unique_key;
               });
 
               var formatequantity: any;
               let price : any;
               let price_list:any;
               let qty_value : any;
-              let unqiue_key : any;
+              let unique_key : any;
+              let nodeid : any;
               let rowData :any
               if (saved_data_from_dtl == ""){
                 console.log("in saved_data_from_dtl");
@@ -4355,7 +4364,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 }
                 price = ItemData[i].Price;
                 price_list = ItemData[i].ListName;
-                unqiue_key = current_row_accessory.unique_key;
+                unique_key = current_row_accessory.unique_key;
+                nodeid = current_row_accessory.nodeid;
 
               } else {
 
@@ -4385,27 +4395,34 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     price = rowData.OPTM_TOTALPRICE;
                   }
                   price_list = (rowData.OPTM_PRICELIST!= undefined )? rowData.OPTM_PRICELIST : "0" ;
-                  unqiue_key = (rowData.UNIQUE_KEY!= undefined )? rowData.UNIQUE_KEY : "0" ;
+                  unique_key = (rowData.UNIQUE_KEY!= undefined )? rowData.UNIQUE_KEY : "0" ;
+                  nodeid = (rowData.NODEID!= undefined )? rowData.NODEID : "0" ;
                 }   else {
                   price = 0;
                   price_list = 0;
-                  unqiue_key = 0;
+                  unique_key = 0;
+                  nodeid = 0;
                 }
 
               }
 
               var priceextn: any = formatequantity * price
-              let display_name = '';
+              /*let display_name = '';
               if (parentArray.name != "" && parentArray.name != undefined) {
                 display_name = parentArray.name;
               } else if (parentArray.OPTM_DISPLAYNAME != "" && parentArray.OPTM_DISPLAYNAME != undefined) {
                 display_name = parentArray.OPTM_DISPLAYNAME;
-              }
+              }*/
 
+              let display_name = this.selectedAccessoryHeader.filter(function(obj){
+                return (obj.unique_key == nodeid) ? obj.OPTM_DISPLAYNAME : "";
+              });
+
+              console.log("display_name ", display_name);
               if (isExist.length == 0) {
                 this.feature_itm_list_table.push({
                   FeatureId: ItemData[i].OPTM_FEATUREID,
-                  featureName: display_name,
+                  featureName: display_name[0].OPTM_DISPLAYNAME,
                   Item: ItemData[i].OPTM_ITEMKEY,
                   ItemNumber: ItemData[i].DocEntry,
                   Description: ItemData[i].OPTM_DISPLAYNAME,
@@ -4420,7 +4437,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   isQuantityDisabled: false,
                   ispropogateqty: ItemData[i].OPTM_PROPOGATEQTY,
                   HEADER_LINENO: isheadercounter,
-                  unique_key: unqiue_key
+                  unique_key: unique_key,
+                  nodeid: nodeid,
+
 
                 });
                 console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
@@ -4431,96 +4450,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
         }
 
-  /*selectallAccessory(value) {
-    if (this.feature_accessory_list.length > 0) {
-      this.showLookupLoader = true;
-      for (let i = 0; i < this.feature_accessory_list.length; ++i) {
-        this.feature_accessory_list[i].checked = value;
-        if (value == true) {
-          let GetDataForSelectedFeatureModelItemData: any = {};
-          GetDataForSelectedFeatureModelItemData.selecteddata = [];
-          GetDataForSelectedFeatureModelItemData.featurebomdata = [];
-          GetDataForSelectedFeatureModelItemData.modelbomdata = [];
-          GetDataForSelectedFeatureModelItemData.apidata = [];
-          GetDataForSelectedFeatureModelItemData.selecteddata.push({
-            type: 1,
-            modelid: "",
-            featureid: this.feature_accessory_list[i].id,
-            item: "",
-            parentfeatureid: this.feature_accessory_list[i].parentfeatureid,
-            parentmodelid: "",
-            selectedvalue: "",
-            CompanyDBID: this.common_output_data.companyName,
-            SuperModelId: this.step2_data.model_id,
-            currentDate: this.submit_date
-          });
-
-          GetDataForSelectedFeatureModelItemData.featurebomdata = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-            obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
-            return obj['checked'] == true
-          })
-
-          GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-            obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
-            return obj['checked'] == true
-          })
-
-          GetDataForSelectedFeatureModelItemData.apidata.push({
-            GUID: sessionStorage.getItem("GUID"),
-            UsernameForLic: sessionStorage.getItem("loggedInUser")
-          });
-
-          this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
-            data => {
-              this.showLookupLoader = false;
-              if (data != null && data != undefined) {
-                if (data.length > 0) {
-                  if (data[0].ErrorMsg == "7001") {
-                    this.CommonService.RemoveLoggedInUser().subscribe();
-                    this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                    return;
-                  }
-                }
-              }
-              let parentfeatureid = this.feature_accessory_list[i].parentfeatureid
-              let parentarray = this.Accessoryarray.filter(function (obj) {
-                return obj['OPTM_FEATUREID'] == parentfeatureid
-              });
-              if (parentarray.length == 0) {
-                parentarray = this.AccessModel.filter(function (obj) {
-                  return obj['OPTM_FEATUREID'] == parentfeatureid
-                });
-              }
-              if (data.DataForSelectedFeatureModelItem.length > 0)
-                this.setItemDataForFeatureAccessory(data.DataForSelectedFeatureModelItem, parentarray, "", "");
-              this.RuleIntegration(data.RuleOutputData, value)
-
-            },
-            error => {
-              this.showLookupLoader = false;
-              this.stoprefreshloader();
-              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-              return;
-            });
-        }
-        else {
-          if (this.feature_itm_list_table.length > 0) {
-            for (let iacc = 0; iacc < this.feature_itm_list_table.length; iacc++) {
-              if (this.feature_itm_list_table[iacc].FeatureId == this.feature_accessory_list[i].id) {
-                this.feature_itm_list_table.splice(iacc, 1)
-                iacc = iacc - 1;
-              }
-
-            }
-          }
-          this.showLookupLoader = false;
-        }
-      }
-      this.feature_price_calculate();
-    }
-
-  }*/
-
+  
   getDefaultItems(DefaultData) {
     let isPriceDisabled: boolean = true;
     let isPricehide: boolean = true;

@@ -25,37 +25,6 @@ function calculate_progress(progress_block) {
 (function($) {
   "use strict"; // Start of use strict
 
-
-
-  $(document).on("click", "#showAccordion" , function(e){
-    $(".fa-compress").removeClass("ecselect");
-    $(".fa-expand").addClass("ecselect");
-    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").removeClass('collapse');
-    $('.custom_panel_icon_section i').addClass("fa-minus").removeClass('fa-plus');
-  });
-
-  $(document).on("click", "#hideAccordion" , function(e){
-    $(".fa-compress").addClass("ecselect");
-    $(".fa-expand").removeClass("ecselect");
-    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").addClass('collapse');
-    $('.custom_panel_icon_section i').removeClass("fa-minus").addClass('fa-plus');
-  });
-
-
-  $(document).on("click", "#showAccordionAcc", function (e) {
-    $(".compress_accessory").removeClass("ecselect");
-    $(".expand_accessory").addClass("ecselect");
-    $(".AccessoryAccordion .panel-default .panel-collapse").removeClass('collapse');
-    $('.custom_acc_panel_icon_section i').addClass("fa-minus").removeClass('fa-plus');
-  });
-
-  $(document).on("click", "#hideAccordionAcc", function (e) {
-    $(".compress_accessory").addClass("ecselect");
-    $(".expand_accessory").removeClass("ecselect");
-    $(".AccessoryAccordion .panel-default .panel-collapse").addClass('collapse');
-    $('.custom_acc_panel_icon_section i').removeClass("fa-minus").addClass('fa-plus');
-  });
-
   // Toggle the side navigation
   $(document).on("click","#sidebarToggle", function(e) {
     e.preventDefault();
@@ -89,15 +58,6 @@ function calculate_progress(progress_block) {
     });
   });
 
-
-  /*// Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(event) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    event.preventDefault();
-  });*/
 
   $(document).on('click', 'a.drpdown_menu', function (event) {
     var cobj = $(this);
@@ -160,29 +120,7 @@ function calculate_progress(progress_block) {
     go_to_next(next_block);
   });
 
-  
-/*   $(document).on('click', '.expand_cllapse_click', function (e) {
-    var obj = $(this);
-    var children = obj.parent("span").parent('div.has_elements').find('ul > li');
-    children.each(function () {
-      var child = $(this);
-      if (child.is(":visible") == true) {
-        child.hide('fast');
-        child.find("i").removeClass('fa-minus').addClass('fa-plus');
-       // obj.parent("span").attr('title', laguage.expand_this_branch);
-        obj.removeClass('fa-minus').addClass('fa-plus');
-      } else {
-        child.show('fast');
-      //  obj.parent("span").attr('title', laguage.collapse_this_branch);
-        child.find("i").removeClass('fa-plus').addClass('fa-minus');
-        obj.removeClass('fa-plus').addClass('fa-minus');
-      }
-    });
 
-  });
- */
-
-  
  $(document).on('click', '.custom_panel_parent_section', function (e) {
     var obj = $(this);
     var parent = obj.parents(".custom_panel_box");
@@ -195,6 +133,35 @@ function calculate_progress(progress_block) {
     }
  });
 
+
+  $(document).on("click", "#showAccordion" , function(e){
+    $(".fa-compress").removeClass("ecselect");
+    $(".fa-expand").addClass("ecselect");
+    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").removeClass('collapse');
+    $('.custom_panel_icon_section_feature i').addClass("fa-minus").removeClass('fa-plus');
+  });
+
+  $(document).on("click", "#hideAccordion" , function(e){
+    $(".fa-compress").addClass("ecselect");
+    $(".fa-expand").removeClass("ecselect");
+    $(".opti_optiLeftTopAccordion .panel-default .panel-collapse").addClass('collapse');
+    $('.custom_panel_icon_section_feature i').removeClass("fa-minus").addClass('fa-plus');
+  });
+
+
+  $(document).on("click", "#showAccordionAcc", function (e) {
+    $(".compress_accessory").removeClass("ecselect");
+    $(".expand_accessory").addClass("ecselect");
+    $(".AccessoryAccordion .panel-default .panel-collapse").removeClass('collapse');
+    $('.custom_panel_icon_section_acc i').addClass("fa-minus").removeClass('fa-plus');
+  });
+
+  $(document).on("click", "#hideAccordionAcc", function (e) {
+    $(".compress_accessory").addClass("ecselect");
+    $(".expand_accessory").removeClass("ecselect");
+    $(".AccessoryAccordion .panel-default .panel-collapse").addClass('collapse');
+    $('.custom_panel_icon_section_acc i').removeClass("fa-minus").addClass('fa-plus');
+  });
 
   $(document).on('click', '#main_operation_type', function (e) {
     var obj = $(this);

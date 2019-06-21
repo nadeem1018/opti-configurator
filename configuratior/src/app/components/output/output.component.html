@@ -416,7 +416,7 @@
                           <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+step2_data.model_code}}"
                             attr.aria-expanded="false" attr.aria-controls="{{header_data.OPTM_FEATUREID}}" class="custom_panel_parent_section">
                             {{header_data.OPTM_DISPLAYNAME}}
-                            <span class="text-right pull-right custom_panel_icon_section" *ngIf="ModelHeaderData.length > 0">
+                            <span class="text-right pull-right custom_panel_icon_section custom_panel_icon_section_feature" *ngIf="ModelHeaderData.length > 0">
                               <i class="fa fa-plus"></i>
                             </span>
                           </a>
@@ -508,59 +508,7 @@
                   </div>
                 </div>
                 <hr>
-                <!-- current accessory section  -->
-                <!-- <div class="form-group row clearfix" style="padding-right: 15px;">
-                  <label class="col-sm-3 col-form-label" for="accessory">{{language.Model_Accessory}}</label>
-                  <div class="col-sm-12 pr-0">
-                    <kendo-grid [kendoGridBinding]="feature_accessory_list" [resizable]="true" [sortable]="false"
-                      [groupable]="false" [filterable]="false">
-                      <kendo-grid-column field="step_2_accesories_checkbox" title="" template="" [width]="30"
-                        [minResizableWidth]="30">
-
-                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" let-dataItem>
-
-                          <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="acccessory_parent_check{{dataItem.id}}" name="acccessory_parent_check{{dataItem.id}}"
-                              class="custom-control-input accesory_check_for_second_screen" #accallcheckbox (click)="selectallAccessory(accallcheckbox.checked)">
-                            <label class="custom-control-label" for="acccessory_parent_check{{dataItem.id}}"></label>
-                          </div>
-                        </ng-template>
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                          <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" id="accesory_child_checkbox_{{dataItem.id}}" name="accesory_child_checkbox"
-                              [(checked)]="dataItem.checked" #checkedvalue (change)="onAccessorySelectionChange(checkedvalue.checked,dataItem)"
-                              class="custom-control-input">
-                            <label class="custom-control-label" for="accesory_child_checkbox_{{dataItem.id}}"></label>
-                          </div>
-                        </ng-template>
-                      </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_code" title="" template="" [width]="150"
-                        [minResizableWidth]="150">
-                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          {{this.language.code}}
-                        </ng-template>
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                          <span>
-                            {{dataItem.name}}
-                          </span>
-                        </ng-template>
-                      </kendo-grid-column>
-                      <kendo-grid-column field="step_2_accesories_name" title="" template="" [width]="150"
-                        [minResizableWidth]="150">
-                        <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                          {{this.language.Name}}
-                        </ng-template>
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                          <span>
-                            {{dataItem.key}}
-                          </span>
-                        </ng-template>
-                      </kendo-grid-column>
-                    </kendo-grid>
-
-                  </div>
-                </div> -->
-                <!-- current accesory section close  -->
+               
                 <!-- new acsessory section - start -->
                 <div class="form-group row clearfix">
                   <div class="col-sm-12" *ngIf="feature_accessory_list.length > 0">
@@ -584,7 +532,7 @@
                             <a role="button" attr.data-toggle="collapse" attr.data-parent="{{'#step_default_'+accessory_header_data.name}}"
                               attr.aria-expanded="false" attr.aria-controls="{{accessory_header_data.name}}" class="custom_panel_parent_section">
                               {{accessory_header_data.name}}
-                              <span class="text-right pull-right custom_acc_panel_icon_section" *ngIf="feature_accessory_list.length > 0">
+                              <span class="text-right pull-right custom_panel_icon_section custom_panel_icon_section_acc " *ngIf="feature_accessory_list.length > 0">
                                 <i class="fa fa-plus"></i>
                               </span>
                             </a>
