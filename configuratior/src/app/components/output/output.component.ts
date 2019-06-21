@@ -1625,7 +1625,6 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
     var elementtypeforcheckedfunction = parentarray[0].element_type
 
     this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, true);
-    /* superfeatureid = feature_model_data.parentfeatureid;*/
 
     this.showLookupLoader = true;
     let GetDataForSelectedFeatureModelItemData: any = {};
@@ -1733,6 +1732,7 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                 var pselementclass = "custom-control custom-radio"
                 var pselementtype = "radio"
                 if (data.DataForSelectedFeatureModelItem.length > 0) {
+                  this.setItemDataForFeature("", parentarray, "", "", parentarray[0].feature_code, parentarray[0].HEADER_LINENO);
                   isExist = this.ModelHeaderData.filter(function (obj) {
                     return obj['unique_key'] == feature_model_data.unique_key && obj['parentfeatureid'] == feature_model_data.OPTM_FEATUREID;
                   });
@@ -1786,7 +1786,6 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                       nodeid: feature_model_data.nodeid,
                       random_unique_key: this.commonData.random_string(50)
                     });
-                    console.log('----this.ModelHeaderData--------', this.ModelHeaderData);
 
                     if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                       propagateqtychecked = "Y"
@@ -1863,7 +1862,6 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                           nodeid: data.DataForSelectedFeatureModelItem[i].nodeid,
                           random_unique_key: this.commonData.random_string(50)
                         });
-                        console.log('---this.FeatureBOMDataForSecondLevel----',this.FeatureBOMDataForSecondLevel);
 
                         if (checkeddefault == true) {
                           var itemData = [];
@@ -1969,8 +1967,6 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                                   if (data.dtFeatureDataWithDefault.length > 0) {
                                     this.setDtFeatureDataWithDefault(data.dtFeatureDataWithDefault, data.DataForSelectedFeatureModelItem[i], feature_model_data, parentmodelid, parentarray, propagateqtychecked, data)
                                   }
-                                  console.log('---this.FeatureBOMDataForSecondLevel----', this.FeatureBOMDataForSecondLevel);
-                                  console.log('---this.ModelHeaderData----', this.ModelHeaderData);
 
                                 }
 
@@ -2109,6 +2105,7 @@ console.log('---this.ModelHeaderData---',this.ModelHeaderData);
                 } else {
                   this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, false);
                 }
+                console.log('---this.FeatureBOMDataForSecondLevel------',this.FeatureBOMDataForSecondLevel);
 
                 this.showLookupLoader = false;
               } //end value
@@ -2386,17 +2383,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
 
           }
-        } /*else if(parentarray[0].element_type == "checkbox") {
-            for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-              if (parentarray[0].OPTM_TYPE == 1) {
-                if (this.feature_itm_list_table[i].FeatureId == ItemData[0].parent_featureid) {
-                  currentfeaturerow = this.feature_itm_list_table[i];
-                  this.feature_itm_list_table.splice(i, 1);
-                  i = i - 1;
-                }
-              }
-            }
-        }*/
+        }
         var isExist;
         if (parentarray[0].OPTM_TYPE == 1) {
           isExist = this.feature_itm_list_table.filter(function (obj) {
@@ -2479,6 +2466,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             nodeid: ItemData[0].nodeid
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
+        }
+      } else {
+        if (parentarray[0].element_type == "radio") {
+          for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+            if (parentarray[0].OPTM_TYPE == 1) {
+              if (this.feature_itm_list_table[i].nodeid == parentarray[0].unique_key) {
+                this.feature_itm_list_table.splice(i, 1);
+                i = i - 1;
+              }
+            }
+          }
         }
       }
 
@@ -5243,7 +5241,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
         }
         if (enabled) {
-          if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].nodeid == feature_model_data.nodeid) {
+          if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
             this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
             var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
             this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -5758,7 +5756,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
            itemp = itemp - 1
 
            for (var itemp2 = 0; itemp2 < this.FeatureBOMDataForSecondLevel.length; itemp2++) {
-             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key) {
+             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].parentfeatureid == tempfeatureidmodelheader) {
                if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "1") {
                  tempchildfeatureidmodelheader = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID
                  this.FeatureBOMDataForSecondLevel.splice(itemp2, 1)
