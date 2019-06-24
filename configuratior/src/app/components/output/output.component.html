@@ -206,7 +206,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.customer}}</label>
                     <div class="col-sm-7 input-group">
-                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange()"
+                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange('')"
                         name="customer" id="customer" placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer"
                         #customer>
                       <div class="input-group-append">
@@ -230,7 +230,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="contact_persons">{{language.contact_person}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #person name="contact_persons" id="contact_persons"
+                      <select class="form-control  form-control-sm mt3" #person name="contact_persons" [(ngModel)]="step1_data.person_name" id="contact_persons"
                         (change)="onContactPersonChange(person.value)">
                         <option [selected]="person.value == v.Name" *ngFor="let v of contact_persons" [value]="v.Name">
                           {{v.Name}}</option>
@@ -247,8 +247,8 @@
                     <label class="col-sm-5 col-form-label" for="ship_to">{{language.ship_to}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #customerShipTo name="ship_to" id="ship_to"
-                        (change)="onShipToChange(customerShipTo.value)">
-                        <option [selected]="customerShipTo.value == v.ShipToDef" *ngFor="let v of ship_to" [value]="v.ShipToDef">
+                        (change)="onShipToChange(customerShipTo.value)" >
+                        <option [selected]="step1_data.ship_to == v.ShipToDef" *ngFor="let v of ship_to" [value]="v.ShipToDef">
                           {{v.ShipToDef}}</option>
                       </select>
                     </div>
@@ -272,8 +272,8 @@
                     <label class="col-sm-5 col-form-label" for="bill_to">{{language.bill_to}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #customerBillTo name="bill_to" id="bill_to"
-                        (change)="onBillToChange(customerBillTo.value)">
-                        <option [selected]="customerBillTo.value == v.BillToDef" *ngFor="let v of bill_to" [value]="v.BillToDef">
+                        (change)="onBillToChange(customerBillTo.value)" >
+                        <option [selected]="step1_data.bill_to == v.BillToDef" *ngFor="let v of bill_to" [value]="v.BillToDef">
                           {{v.BillToDef}}</option>
                       </select>
                     </div>
@@ -305,17 +305,18 @@
                     <label class="col-sm-5 col-form-label" for="sales_employee">{{language.sales_employee}}</label>
                     <div class="col-sm-7">
                       <select class="form-control  form-control-sm mt3" #salesemployee name="sales_employee" id="sales_employee"
-                        (change)="onSalesPersonChange(salesemployee.value)">
-                        <option [selected]="v.selected" *ngFor="let v of sales_employee" [value]="v.SlpName">
+                        (change)="onSalesPersonChange(salesemployee.value)"  >
+                        <option [selected]="v.SlpName == step1_data.sales_employee" *ngFor="let v of sales_employee" [value]="v.SlpName">
                           {{v.SlpName}}</option>
                       </select>
                     </div>
                   </div>
+               
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="owner_list">{{language.owner}}</label>
                     <div class="col-sm-7">
-                      <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list">
-                        <option *ngFor="let v of owner_list" [selected]="owner.value == v.lastName" [value]="v.value">
+                      <select class="form-control  form-control-sm mt3" #owner name="owner_list" id="owner_list"  [value]='step1_data.owner' (change)="on_onwer_change(owner.value)" >
+                        <option *ngFor="let v of owner_list" [value]="v.lastName"  [selected]="step1_data.owner == v.lastName">
                           {{v.lastName}}</option>
                       </select>
                     </div>
