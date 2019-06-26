@@ -1459,6 +1459,13 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
                   return obj['ACCESSORY'] != "Y"
                 });
+                this.ModelBOMDataForSecondLevel.filter(function(obj){
+                  if(obj['OPTM_MAXSELECTABLE'] > 1) {
+                    return obj['element_type'] = 'checkbox';
+                  } else {
+                    return obj['element_type'] = 'radio';
+                  }
+                });
                 this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
                   if (obj['child_accessory'] != null && obj['child_accessory'] != "") {
                     return obj['ACCESSORY'] != "Y" && obj['child_accessory'] != "Y";
@@ -1623,6 +1630,12 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       });
     }
 
+    if(parentarray.length == 0) {
+      parentarray = this.ModelBOMDataForSecondLevel.filter(function(obj) {
+        return  obj['OPTM_MODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid;
+      });
+    }
+
   }
   else {
     parentarray = this.ModelHeaderData.filter(function (obj) {
@@ -1647,8 +1660,14 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
     }
 
   }
-  var parentArrayElemType = parentarray[0].element_type;
-  console.log('---parentArrayElemType---',parentArrayElemType);
+
+  var parentArrayElemType = "";
+  if(parentarray[0].element_type != undefined && parentarray[0].element_type != null && parentarray[0].element_type != "") {
+      parentArrayElemType = parentarray[0].element_type;
+  } else {
+      parentArrayElemType = "";
+  }
+  
 
   if (parentarray[0].OPTM_MAXSELECTABLE > 1 && value == true) {
     //  if( feature_model_data.OPTM_FEATUREID==2){
@@ -1714,9 +1733,6 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")
     });
-
-    console.log('---this.ModelHeaderData---',this.ModelHeaderData);
-
 
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
@@ -1867,9 +1883,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       }
                       this.FeatureBOMDataForSecondLevel.filter(function(obj) {
                         if((obj.OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) && (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) && obj.OPTM_DEFAULT == 'Y') {
-                          console.log('---obj---',obj)
                           return obj['checked'] = true;
-                        }
+                      }
                       });
 
 
@@ -2422,7 +2437,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
       var all_child_of_current_selection_parent = this.FeatureBOMDataForSecondLevel.filter(function(obj) {
         return obj.nodeid == unique_key;
       });
-      console.log("all_child_of_current_selection_parent ", all_child_of_current_selection_parent);
       if(all_child_of_current_selection_parent.length > 0){
         for(var i=0; i< all_child_of_current_selection_parent.length; i++){
           var selection_parent_child_data  = all_child_of_current_selection_parent[i];
