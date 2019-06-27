@@ -1527,8 +1527,13 @@ export class RulewbComponent implements OnInit {
 
   check_all(value) {
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
-      this.rule_feature_data[i].check_child = value
+      this.rule_feature_data[i].check_child = value;
+       if(value == false ){
+        this.rule_feature_data[i].default = value;
+        this.rule_feature_data[i].is_default = value;
+      }
     }
+   
     this.selectall = true;
   }
 
@@ -1537,6 +1542,7 @@ export class RulewbComponent implements OnInit {
       this.isExcluded = true;
       for (var i = 0; i < this.rule_feature_data.length; i++) {
         this.rule_feature_data[i].check_child = false;
+        
       }
       this.selectall = false;
     } else {

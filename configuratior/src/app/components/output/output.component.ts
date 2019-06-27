@@ -3074,7 +3074,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               delete modelheader_item_array[mhia_i]['is_second_level'];
               delete modelheader_item_array[mhia_i]['parentfeatureid'];
               delete modelheader_item_array[mhia_i]['parentmodelid'];
-              if (modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") {
+              if (modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "" && modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
                 modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3089,7 +3089,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             if (me_d_v_row.selectedAccessoryBOM != null && me_d_v_row.selectedAccessoryBOM != undefined && me_d_v_row.selectedAccessoryBOM != "") {
               let temp_selectedAccessoryBOM = me_d_v_row.selectedAccessoryBOM;
               for (let sabom_i = 0; sabom_i < temp_selectedAccessoryBOM.length; sabom_i++) {
-                if (temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "") {
+                if (temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "" && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY == 0 ) {
                   temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY = parseFloat(temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY).toFixed(3);
                 }
                 final_dataset_to_save.SelectedAccessoryBOM.push(temp_selectedAccessoryBOM[sabom_i]);
@@ -3105,7 +3105,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_ModelBOMDataForSecondLevel = me_d_v_row.ModelBOMDataForSecondLevel;
             for (let mbomd_i = 0; mbomd_i < temp_ModelBOMDataForSecondLevel.length; mbomd_i++) {
-              if (temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != "") {
+              if (temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != ""  && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY  == 0) {
                 temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY = parseFloat(temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3119,7 +3119,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_FeatureBOMDataForSecondLevel = me_d_v_row.FeatureBOMDataForSecondLevel;
             for (let fbdsl_i = 0; fbdsl_i < temp_FeatureBOMDataForSecondLevel.length; fbdsl_i++) {
-              if (temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "") {
+              if (temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "" && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY == 0) {
                 temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY = parseFloat(temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3133,7 +3133,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_RuleOutputData = me_d_v_row.RuleOutputData;
             for (let rod_i = 0; rod_i < temp_RuleOutputData.length; rod_i++) {
-              if (temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") {
+              if (temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "" && temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
                 temp_RuleOutputData[rod_i].OPTM_QUANTITY = parseFloat(temp_RuleOutputData[rod_i].OPTM_QUANTITY).toFixed(3);
               }
               final_dataset_to_save.RuleOutputData.push(temp_RuleOutputData[rod_i]);
