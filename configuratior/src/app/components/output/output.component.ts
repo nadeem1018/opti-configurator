@@ -50,6 +50,7 @@ export class OutputComponent implements OnInit {
   public tree_accessory_json = [];
   public Accessoryarray = [];
   public ModelHeaderItemsArray = [];
+  public ModelBOMRules = [];
   public warehouse: string = "";
   public currentDate = new Date();
   public submit_date;
@@ -1446,6 +1447,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 }
 
                 this.RuleOutputData = data.RuleOutputData;
+                this.ModelBOMRules = data.ModelBOMRules;
 
                 this.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
                   obj['random_unique_key'] = this_obj.commonData.random_string(50)
@@ -2162,8 +2164,30 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                 }
 
               }//end data length
+              /*var isRuleApplied = true;
               this.enableFeatureModelsItems();
-            this.RuleIntegration(data.RuleOutputData, value, feature_model_data);
+              var RuleAppliedForFeature = this.ModelBOMRules.filter(function(obj) {
+                return obj['OPTM_FEATURE'] == feature_model_data.OPTM_FEATUREID;
+              })
+              console.log('RuleAppliedForFeature:',isRuleApplied);
+              var ruleAppliedForApplicableFeature = this.ModelBOMRules.filter(function(obj) {
+                return obj['OPTM_APPLICABLEFOR'] == feature_model_data.OPTM_FEATUREID;
+              })
+              console.log('ruleAppliedForApplicableFeature:',ruleAppliedForApplicableFeature);
+              var count = RuleAppliedForFeature.length + ruleAppliedForApplicableFeature.length;
+              console.log('count:',count);
+              if(count > 0) {
+                isRuleApplied = true
+              } else {
+                isRuleApplied = false;
+              }*/
+              
+              /*if(isRuleApplied){
+                this.RuleIntegration(data.RuleOutputData, value, feature_model_data);
+              }*/
+
+              this.RuleIntegration(data.RuleOutputData, value, feature_model_data);
+              
               if (isSecondLevel) {
                 this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, true);
               } else {
@@ -2189,7 +2213,31 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                 }
               }
               this.enableFeatureModelsItems();
+
+              /*var isRuleApplied = true;
+              this.enableFeatureModelsItems();
+              var RuleAppliedForFeature = this.ModelBOMRules.filter(function(obj) {
+                return obj['OPTM_FEATURE'] == feature_model_data.OPTM_FEATUREID;
+              })
+              console.log('RuleAppliedForFeature:',isRuleApplied);
+              var ruleAppliedForApplicableFeature = this.ModelBOMRules.filter(function(obj) {
+                return obj['OPTM_APPLICABLEFOR'] == feature_model_data.OPTM_FEATUREID;
+              })
+              console.log('ruleAppliedForApplicableFeature:',ruleAppliedForApplicableFeature);
+              var count = RuleAppliedForFeature.length + ruleAppliedForApplicableFeature.length;
+              console.log('count:',count);
+              if(count > 0) {
+                isRuleApplied = true
+              } else {
+                isRuleApplied = false;
+              }
+*/
+              /*if(isRuleApplied){
+                this.RuleIntegration(data.RuleOutputData, value,feature_model_data);
+              }*/
+
               this.RuleIntegration(data.RuleOutputData, value,feature_model_data);
+              
               this.feature_price_calculate();
               this.showLookupLoader = false;
             }
@@ -4950,7 +4998,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
                             var checkedRowFound = false
 
-                            checkedRowFound = this.ischeckedRow(RuleOutputData, this.FeatureBOMDataForSecondLevel, this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)
+                            /*checkedRowFound = this.ischeckedRow(RuleOutputData[iItemRule], this.FeatureBOMDataForSecondLevel, this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)*/
+
+                            checkedRowFound = this.isRuleDefaultItemRow(RuleOutputData[iItemRule], this.FeatureBOMDataForSecondLevel, this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID,feature_model_data)
                             // var tempRuleArray = RuleOutputData.filter(function (obj) {
                               //   return obj['OPTM_ISINCLUDED'].trim() == "True"
                               // })
@@ -4994,6 +5044,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                                               }
                                             }
+
                                           }
 
                                         }
@@ -5839,6 +5890,26 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
            }
          }
 
+       }
+       return false
+     }
+
+     isRuleDefaultItemRow(RuleOutputData, FeatureModelData, featureid,feature_model_data) {
+       if (RuleOutputData.OPTM_FEATUREID != "" && RuleOutputData.OPTM_FEATUREID != null && RuleOutputData.OPTM_FEATUREID != undefined) {
+           var tempFeatArray = FeatureModelData.filter(function (obj) {
+             return obj['OPTM_ITEMKEY'] == RuleOutputData.OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "N" && obj['nodeid'] == feature_model_data.nodeid
+           })
+           if (tempFeatArray.length == 0) {
+             var tempFeatArray = FeatureModelData.filter(function (obj) {
+               return obj['OPTM_ITEMKEY'] == RuleOutputData.OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "Y" && obj['checked'] == true && obj['nodeid'] == feature_model_data.nodeid
+             })
+           }
+           if (tempFeatArray.length > 0) {
+             if (tempFeatArray[0].checked == true) {
+               return true
+               // break
+             }
+           }
        }
        return false
      }
