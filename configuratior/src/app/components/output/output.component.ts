@@ -1628,7 +1628,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
     else {
       parentarray = this.ModelHeaderData.filter(function (obj) {
         /* obj['OPTM_MODELID'] = obj['OPTM_CHILDMODELID'] */
-        return obj['OPTM_MODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid
+        return obj['parentmodelid'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid
       });
     }
 
