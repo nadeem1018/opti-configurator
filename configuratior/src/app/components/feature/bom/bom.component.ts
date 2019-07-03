@@ -1190,15 +1190,16 @@ export class BomComponent implements OnInit {
           return (obj.is_accessory == 'N' || obj.is_accessory == undefined || obj.is_accessory == null) ? obj : "";
         });
         let total_detail_elements = filtered_bom_data.length;
+        
         if (this.feature_bom_data.multi_select_disabled == false) {
 
           if (total_detail_elements < this.feature_bom_data.feature_min_selectable) {
-            this.toastr.error('', this.language.min_selectable_greater_total, this.commonData.toast_config);
+            this.toastr.error('', this.language.min_selectable_greater_total_acc, this.commonData.toast_config);
             return false;
           }
 
           if (total_detail_elements < this.feature_bom_data.feature_max_selectable) {
-            this.toastr.error('', this.language.max_selectable_greater_total, this.commonData.toast_config);
+            this.toastr.error('', this.language.max_selectable_greater_total_acc, this.commonData.toast_config);
             return false;
           }
 
@@ -1315,14 +1316,14 @@ export class BomComponent implements OnInit {
         }
         console.log(data);
         if (data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists") {
-          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId, this.commonData.toast_config);
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureCode, this.commonData.toast_config);
         }
         else if (data[0].IsDeleted == "1") {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.toastr.success('', this.language.DataDeleteSuccesfully  + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
           this.router.navigateByUrl('feature/bom/view');
         }
         else {
-          this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId, this.commonData.toast_config);
+          this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
         }
         // if (data === "True") {
         //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);

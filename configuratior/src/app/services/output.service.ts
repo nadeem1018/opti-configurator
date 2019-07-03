@@ -30,7 +30,7 @@ export class OutputService {
 
   GetModelList(): Observable<any> {
     let cache_control = this.common_params.random_string(40);
-    let jObject = { GetModel: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company,
+    let jObject = { GetModel: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelForConfigureWizard?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
@@ -38,26 +38,26 @@ export class OutputService {
 
   getFeatureList(modelid): Observable<any> {
     let cache_control = this.common_params.random_string(40);
-    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: modelid,
+    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelId: modelid,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureForConfigureWizard?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
 
   getFeatureDetails(feature_id, modelid): Observable<any> {
     let cache_control = this.common_params.random_string(40);
-    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
+    let jObject = { GetFeature: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, FeatureId: feature_id, ModelId: modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFeatureListForSelectedFeatureForConfigureWizard?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
 
   GetAccessory(): Observable<any> {
     let cache_control = this.common_params.random_string(40);
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAccessorry?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
 
   GetItemDataForSelectedAccessorry(feature_id, modelid): Observable<any> {
     let cache_control = this.common_params.random_string(40);
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, FeatureId: feature_id, ModelId: modelid }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, FeatureId: feature_id, ModelId: modelid }]) }
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetItemDataForSelectedAccessorry?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
 
@@ -73,7 +73,7 @@ export class OutputService {
   GetDataForModelBomOutput(modelID, modalDesc): Observable<any> {
     let cache_control = this.common_params.random_string(40);
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelID: modelID, ModelDisplayName: modalDesc }]) }
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataForModelBomOutput?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
@@ -81,7 +81,7 @@ export class OutputService {
   // GetDataByModelIDForFirstLevel(modelID, modalDesc): Observable<any> {
   //  let cache_control = this.common_params.random_string(40);
   //   //JSON Obeject Prepared to be send as a param to API
-  //   let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelID: modelID, ModelDisplayName: modalDesc }]) }
+  //   let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelID: modelID, ModelDisplayName: modalDesc }]) }
   //   //Return the response form the API  
   //   return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelIDForFirstLevel?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   // }
@@ -162,7 +162,7 @@ export class OutputService {
     let cache_control = this.common_params.random_string(40);
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelId: id }]) };
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelId: id }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetDataByModelID?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
@@ -171,7 +171,7 @@ export class OutputService {
     let cache_control = this.common_params.random_string(40);
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, LogID: ilogID,
+    let jObject = { GetData: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, LogID: ilogID,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetFinalStatus?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
@@ -180,7 +180,7 @@ export class OutputService {
   getConfigurationList(OperationType): Observable<any> {
     let cache_control = this.common_params.random_string(40);
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType,
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, OperationType: OperationType,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser")}]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetLookupData?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
@@ -189,7 +189,7 @@ export class OutputService {
   GetAllOutputData(OperationType, LogID, Description): Observable<any> {
     let cache_control = this.common_params.random_string(40);
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, OperationType: OperationType, LogID: LogID, Description: Description,
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, OperationType: OperationType, LogID: LogID, Description: Description,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetAllOutputData?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
@@ -198,7 +198,7 @@ export class OutputService {
     let cache_control = this.common_params.random_string(40);
 
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { ModelList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: code,
+    let jObject = { ModelList: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelCode: code,
       GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/RuleWorkBench/CheckValidModelEntered?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
@@ -207,7 +207,7 @@ export class OutputService {
   GetModelIdbyModelCode(modelcode): Observable<any> {
     let cache_control = this.common_params.random_string(40);
     //JSON Obeject Prepared to be send as a param to API
-    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: this.logged_in_company, ModelCode: modelcode }]) };
+    let jObject = { Customer: JSON.stringify([{ currentDate: this.formatted_date, CompanyDBID: sessionStorage.selectedComp, ModelCode: modelcode }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetModelIdByModelCode?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }

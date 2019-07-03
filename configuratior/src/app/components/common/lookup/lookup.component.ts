@@ -1431,6 +1431,11 @@ export class LookupComponent implements OnInit {
             ]
           }
 
+          if(this.serviceData.oper_res[inx].basis != undefined && this.serviceData.oper_res[inx].basis !="" && this.serviceData.oper_res[inx].basis != null){
+            basis = this.serviceData.oper_res[inx].basis;
+          }
+
+
           this.resource_counter++;
           var res_consum_type = 1;
           if (this.serviceData.oper_res[inx].resource_consumption_type != undefined && this.serviceData.oper_res[inx].resource_consumption_type != "") {
@@ -1469,6 +1474,7 @@ export class LookupComponent implements OnInit {
           }
 
           this.resourceServiceOperCM = this.serviceData.oper_res[inx].oper_consumption_method;
+          console.log("this.serviceData.oper_res[inx ", this.serviceData.oper_res[inx);
         }
 
         if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {

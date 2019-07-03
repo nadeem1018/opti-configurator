@@ -1827,10 +1827,10 @@ export class RoutingComponent implements OnInit {
         } else if (value < 0) {
           value = 1;
           this.toastr.error('', this.language.mtq_value_nagative + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
-        } else if (rgexp.test(value) == false) {
+        } /*else if (rgexp.test(value) == false) {
           value = 1;
           this.toastr.error('', this.language.mtq_value_decimal + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
-        }
+        }*/
       }
       this.routing_detail_data[currentrow].mtq = value;
       $(".mtq_grid_level").eq(currentrow).val(value);
@@ -2227,23 +2227,16 @@ export class RoutingComponent implements OnInit {
         }
 
         if (data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists") {
-          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].RoutingId, this.commonData.toast_config);
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].RoutingCode, this.commonData.toast_config);
         }
         else if (data[0].IsDeleted == "1") {
-          this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+          this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[0].RoutingCode, this.commonData.toast_config);
           this.route.navigateByUrl('routing/view');
         }
         else {
-          this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RoutingId, this.commonData.toast_config);
+          this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RoutingCode, this.commonData.toast_config);
         }
 
-        // if (data === "True") {
-        //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-        //   this.route.navigateByUrl('routing/view');
-        // } else {
-        //   this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-        //   return;
-        // }
       }, error => {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;

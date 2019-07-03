@@ -20,7 +20,7 @@ export class ArchivingService {
   get_all_model_list(): Observable<any> {
     let jObject = {
       ModelList: JSON.stringify([{
-        CompanyDBID: this.logged_in_company,
+        CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"), 
         UsernameForLic: sessionStorage.getItem("loggedInUser")
       }])
@@ -31,7 +31,7 @@ export class ArchivingService {
   filter_results(filter_data_obj): Observable<any> {
     let jObject = {
       FilteredData: JSON.stringify([{
-        CompanyDBID: this.logged_in_company,
+        CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"), 
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
         dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
@@ -50,7 +50,7 @@ export class ArchivingService {
   archive_data(filter_data_obj): Observable<any> {
     let jObject = {
       ArchiveDate: JSON.stringify([{
-        CompanyDBID: this.logged_in_company,
+        CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"),
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
         dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,

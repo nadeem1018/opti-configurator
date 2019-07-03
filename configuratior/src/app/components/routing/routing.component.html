@@ -221,7 +221,7 @@
                         <input type="text" name="applicable_bom_unit" class="form-control  form-control-sm mt3 text-right"
                           id="applicable_bom_unit" placeholder="{{language.applicable_bom_unit}}" (change)="header_numeric_input_change(routing_header_data.applicable_bom_unit,'applicable_bom_unit')"
                           [(ngModel)]="routing_header_data.applicable_bom_unit" title="{{routing_header_data.applicable_bom_unit}}"
-                          tabindex="2">
+                          tabindex="2" [disabled]="true">
                       </div>
                     </div>
                   </div>

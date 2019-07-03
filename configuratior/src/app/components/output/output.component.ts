@@ -2187,7 +2187,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
               }*/
 
               this.RuleIntegration(data.RuleOutputData, value, feature_model_data);
-              
+
               if (isSecondLevel) {
                 this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, true);
               } else {

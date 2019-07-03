@@ -283,6 +283,8 @@ export class ViewFeatureBOMComponent implements OnInit {
         });
         this.fbs.DeleteData(this.GetItemData).subscribe(
             data => {
+                 this.CheckedData = [];
+                    this.isMultiDelete = false;
                 if (data != undefined && data.length > 0) {
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
@@ -292,15 +294,15 @@ export class ViewFeatureBOMComponent implements OnInit {
                 }
 
                 if (data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists") {
-                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId, this.commonData.toast_config);
+                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureCode, this.commonData.toast_config);
                 }
                 else if (data[0].IsDeleted == "1") {
-                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    this.toastr.success('', this.language.DataDeleteSuccesfully  + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('feature/bom/view');
                 }
                 else {
-                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId, this.commonData.toast_config);
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
                 }
 
                 // if (data === "True") {
@@ -406,6 +408,8 @@ export class ViewFeatureBOMComponent implements OnInit {
             this.fbs.DeleteData(this.CheckedData).subscribe(
                 data => {
                     this.showLoader = false
+                     this.CheckedData = [];
+                    this.isMultiDelete = false;
                     if (data != undefined && data.length > 0) {
                         if (data[0].ErrorMsg == "7001") {
                             this.commonservice.RemoveLoggedInUser().subscribe();
@@ -416,16 +420,16 @@ export class ViewFeatureBOMComponent implements OnInit {
 
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists") {
-                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].FeatureId, this.commonData.toast_config);
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].FeatureCode, this.commonData.toast_config);
                         }
                         else if (data[i].IsDeleted == "1") {
-                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].FeatureId, this.commonData.toast_config);
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].FeatureCode, this.commonData.toast_config);
                             this.CheckedData = [];
                             this.service_call(this.current_page, this.search_string);
                             this.router.navigateByUrl('feature/bom/view');
                         }
                         else {
-                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].FeatureId, this.commonData.toast_config);
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].FeatureCode, this.commonData.toast_config);
                         }
                     }
 

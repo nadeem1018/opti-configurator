@@ -460,6 +460,8 @@
     "multi_select": "Multi Select",
     "min_selectable_greater_total": "Min. selectable cannot be greater than total rows",
     "max_selectable_greater_total": "Max. selectable cannot be greater than total rows",
+     "min_selectable_greater_total_acc": "Min. selectable cannot be greater than total non-accessory rows",
+    "max_selectable_greater_total_acc": "Max. selectable cannot be greater than total non-accessory rows",
     "min_selectable_greater_than_max": "Min. selectable cannot be greater Max. selectable",
     "max_selectable_less_than_min": "Max. selectable cannot be less than Min. selectable",
     "atleast_one_unique_required": "Atleast 1 unique identifier is required.",

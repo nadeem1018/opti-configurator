@@ -380,7 +380,7 @@
                             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                                 <select class="form-control form-control-sm" #resource_basic [disabled]='dataItem.is_basis_disabled'
                                     (change)="on_input_change(resource_basic.value,dataItem.rowindex, 'resource_basic')">
-                                    <option *ngFor="let v of resource_basisdd" [value]="v.value" [selected]="dataItem.resource_basic==v.value">
+                                    <option *ngFor="let v of resource_basisdd" [value]="v.value" [selected]="dataItem.basis==v.value">
                                         {{v.Name}}</option>
                                 </select>
                             </ng-template>

@@ -62,50 +62,50 @@ export class ViewModelBomComponent implements OnInit {
     isIpad:boolean=false;
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
-  
+
     public columns: ColumnSetting[] = [
-        {
-          field: 'OPTM_FEATURECODE',
-          title: this.language.model_ModelCode,
-          type: 'text',
-          width: '200',
-          attrType: 'link'
-        }, 
-        {
-            field: 'OPTM_DISPLAYNAME',
-            title: this.language.Name,
-            type: 'text',
-            width: '200',
-            attrType: 'text'
-          },
-          {
-            field: 'OPTM_FEATUREDESC',
-            title: this.language.description,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-          },
-      ];
+    {
+        field: 'OPTM_FEATURECODE',
+        title: this.language.model_ModelCode,
+        type: 'text',
+        width: '200',
+        attrType: 'link'
+    }, 
+    {
+        field: 'OPTM_DISPLAYNAME',
+        title: this.language.Name,
+        type: 'text',
+        width: '200',
+        attrType: 'text'
+    },
+    {
+        field: 'OPTM_FEATUREDESC',
+        title: this.language.description,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
+    ];
 
     getcurrentPageSize(grid_value){
-      sessionStorage.setItem('defaultRecords', grid_value);
-      console.log('=sessionStorage=======',sessionStorage.defaultRecords);
-      this.skip = 0;
-      this.selectedValue = grid_value;
-      this.record_per_page = sessionStorage.getItem('defaultRecords');
+        sessionStorage.setItem('defaultRecords', grid_value);
+        console.log('=sessionStorage=======',sessionStorage.defaultRecords);
+        this.skip = 0;
+        this.selectedValue = grid_value;
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     getLookupValue($event) {
-        
+
     }  
 
     dataStateChanged(event){
         // console.log(event);
-         event.filter = [];
-         this.record_per_page = sessionStorage.getItem('defaultRecords');
-         this.selectedValue = event.take;
-         this.skip = event.skip;
-     }
+        event.filter = [];
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
+        this.selectedValue = event.take;
+        this.skip = event.skip;
+    }
 
     on_selection(grid_event) {
         grid_event.selectedRows = [];
@@ -117,11 +117,11 @@ export class ViewModelBomComponent implements OnInit {
         this.isIpad = getDevice[1];
         this.isDesktop = getDevice[2];
         if(this.isMobile==true){
-        this.isPerfectSCrollBar = true;
+            this.isPerfectSCrollBar = true;
         }else if(this.isIpad==true){
-        this.isPerfectSCrollBar = false;
+            this.isPerfectSCrollBar = false;
         }else{
-        this.isPerfectSCrollBar = false;
+            this.isPerfectSCrollBar = false;
         }
     }
     saveFilterState() {
@@ -140,14 +140,14 @@ export class ViewModelBomComponent implements OnInit {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
-          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+            this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
         } else {
-          this.selectedValue = Number(this.commonData.default_count);
+            this.selectedValue = Number(this.commonData.default_count);
         }
         if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
+            this.isColumnFilter = true;
         } else {
-          this.isColumnFilter = false;
+            this.isColumnFilter = false;
         }
 
         // check screen authorisation - start
@@ -166,12 +166,12 @@ export class ViewModelBomComponent implements OnInit {
                     }, 200);
                 }
             });
-      // check screen authorisation - end
+        // check screen authorisation - end
 
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-       // this._el.nativeElement.focus();
+        // this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -201,36 +201,36 @@ export class ViewModelBomComponent implements OnInit {
         }
         var dataset = this.service.getAllViewDataForModelBom(search, page_number, this.record_per_page).subscribe(
             data => {
-                
+
                 console.log(data);
                 this.showLoader = false;
                 if(data != undefined && data !=null){
-                   if(data.length > 0){
-                    if (data[0].ErrorMsg == "7001") {
-                        this.commonservice.RemoveLoggedInUser().subscribe();
-                        this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
-                        return;
-                    } 
+                    if(data.length > 0){
+                        if (data[0].ErrorMsg == "7001") {
+                            this.commonservice.RemoveLoggedInUser().subscribe();
+                            this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                            return;
+                        } 
+                    }
                 }
-            }
-                                
+
                 this.dataArray = data;
-               
+
                 // dataset = JSON.parse(data);
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                //     pages = 1;
-                // }
-                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                // if (page_number != undefined) {
-                //     this.current_page = page_number;
-                // }
+                    //     pages = 1;
+                    // }
+                    // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                    // if (page_number != undefined) {
+                        //     this.current_page = page_number;
+                        // }
 
-                // if (search != undefined) {
-                //     this.search_string = search;
-                // }
-            });
+                        // if (search != undefined) {
+                            //     this.search_string = search;
+                            // }
+                        });
     }
 
     // action button values 
@@ -282,6 +282,8 @@ export class ViewModelBomComponent implements OnInit {
         });
         this.service.DeleteData(this.GetItemData).subscribe(
             data => {
+                this.CheckedData = [];
+                this.isMultiDelete = false;
                 if(data != undefined && data.length > 0){
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
@@ -289,32 +291,19 @@ export class ViewModelBomComponent implements OnInit {
                         return;
                     } 
                 }
-                    if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-                        this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ModelId , this.commonData.toast_config);
-                    }
-                    else if(data[0].IsDeleted == "1"){
-                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[0].ModelId , this.commonData.toast_config);
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('modelbom/view');
-                    }
-                    else{
-                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].ModelId , this.commonData.toast_config);
-                    }
-                // if (data === "True") {
-                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('modelbom/view');
-                //     return;
-                // } else if (data == "ReferenceExists") {
-                //     this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-                //     return;
-                // }
-                // else {
-                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                //     return;
-                // }
-            }
-        )
+                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+                    this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ModelCode , this.commonData.toast_config);
+                }
+                else if(data[0].IsDeleted == "1"){
+                    this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[0].ModelCode , this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('modelbom/view');
+                }
+                else{
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].ModelCode , this.commonData.toast_config);
+                }
+
+            });
     }
 
     on_checkbox_checked(checkedvalue, row_data) {
@@ -393,45 +382,44 @@ export class ViewModelBomComponent implements OnInit {
     }
 
     delete_multi_row() {
-        this.showLoader = true
-        this.service.DeleteData(this.CheckedData).subscribe(
-            data => {
-                this.showLoader = false
-                if(data != undefined && data.length > 0){
-                    if (data[0].ErrorMsg == "7001") {
-                        this.commonservice.RemoveLoggedInUser().subscribe();
-                        this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
-                        return;
-                    } 
-                }
+       
+        if (this.CheckedData.length > 0) {
+             this.showLoader = true
+            this.service.DeleteData(this.CheckedData).subscribe(
+                data => {
+                    this.showLoader = false
+                    this.CheckedData = [];
+                    this.isMultiDelete = false;
+                    if(data != undefined && data.length > 0){
+                        if (data[0].ErrorMsg == "7001") {
+                            this.commonservice.RemoveLoggedInUser().subscribe();
+                            this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                            return;
+                        } 
+                    }
 
-                for(var i=0;  i < data.length ; i++){
-                    if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
-                        this.toastr.error('', this.language.Refrence + ' at: ' + data[i].ModelId , this.commonData.toast_config);
+                    for(var i=0;  i < data.length ; i++){
+                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].ModelCode , this.commonData.toast_config);
+                        }
+                        else if(data[i].IsDeleted == "1"){
+                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].ModelCode , this.commonData.toast_config);
+                            this.CheckedData = [];
+                            this.service_call(this.current_page, this.search_string);
+                            this.router.navigateByUrl('modelbom/view');
+                        }
+                        else{
+                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].ModelCode , this.commonData.toast_config);
+                        }
                     }
-                    else if(data[i].IsDeleted == "1"){
-                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[i].ModelId , this.commonData.toast_config);
-                        this.CheckedData = [];
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('modelbom/view');
-                    }
-                    else{
-                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].ModelId , this.commonData.toast_config);
-                    }
-                }
 
-                // if (data === "True") {
-                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('modelbom/view');
-                //     return;
-                // }
-                // else {
-                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                //     return;
-                // }
-            }
-        )
+                }
+                )
+        } else {
+
+            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+        }
+
     }
 
 }

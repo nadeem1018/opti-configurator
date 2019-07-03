@@ -506,14 +506,14 @@ export class ModelComponent implements OnInit {
       }
 
         if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureId , this.commonData.toast_config);
+          this.toastr.error('', this.language.Refrence + ' at: ' + data[0].FeatureCode , this.commonData.toast_config);
         }
         else if(data[0].IsDeleted == "1"){
-            this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+            this.toastr.success('', this.language.DataDeleteSuccesfully  + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
         }
         else{
-            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureId , this.commonData.toast_config);
+            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureCode , this.commonData.toast_config);
         }
         // if (data === "True") {
         //   this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
