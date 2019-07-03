@@ -2024,7 +2024,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 parentmodelid: parentmodelid,
                                 OPTM_LEVEL: feature_model_data.OPTM_LEVEL,
                                 is_second_level: 1,
-                                unique_key: feature_model_data.unique_key,
+                                unique_key: data.DataForSelectedFeatureModelItem[i].unique_key,
                                 random_unique_key: this.commonData.random_string(50)
 
                               });
@@ -2380,7 +2380,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         //   return obj['OPTM_CHILDFEATUREID'] == data.dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID
         // });
         var tempparentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-          return obj['OPTM_CHILDFEATUREID'] == dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID;
+          return obj['OPTM_CHILDFEATUREID'] == dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID && obj['nodeid'] == dtFeatureDataWithDefault[idtfeature].nodeid;
         });
         if (tempparentarray.length > 0) {
           parentarray[0].OPTM_TYPE = tempparentarray[0].OPTM_TYPE
@@ -2395,8 +2395,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         } else{
           input_type = 'radio' ;
         }
+        let temp_feature_code;
+        if(tempparentarray.length == 0) {
+          temp_feature_code = '';
+        } else {
+          temp_feature_code = tempparentarray[0].feature_code;
+        }
         
-
         this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type);
       }
     }
@@ -2572,6 +2577,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             } */
             this.remove_all_features_child(parentarray[0].nodeid);
           } else if (parentarray[0].OPTM_TYPE == 1 && type == 2) {
+              /* this.remove_all_features_child(parentarray[0].nodeid); */
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
               if(this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
                 currentfeaturerow = this.feature_itm_list_table[i];
@@ -4384,7 +4390,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
              });
           } else if (header_feature_table['OPTM_TYPE'] == "3" && header_feature_table['ACCESSORY'] != "Y") {
             array = model_child_datatable.filter(function (obj) {
-              return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['nodeid'] == header_feature_table['unique_key'] /*&& obj['OPTM_TYPE'] != "2"*/;
+              return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['nodeid'] == header_feature_table['unique_key'] && obj['OPTM_TYPE'] != "2";
             });
           } else if(header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" &&
             header_feature_table['is_second_level'] != null) {
