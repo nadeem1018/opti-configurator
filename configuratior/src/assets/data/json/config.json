@@ -1,10 +1,11 @@
 {
-	"company_name":"Optipro ERP",
-	"app_title":"OptiPro Configurator",
-	"locale":"en",
-	"service_url":"http://172.16.6.140/optiproconfiguratorhana/",
-	"admin_db_name":"OPTIPROADMIN",
-	"product_code":"CNF",
-	"system_version":"1.11.0",
-	"installed" : 1
+  "company_name":"Optipro ERP Manufacturing",
+  "app_title":"OptiPro Configurator",
+  "locale":"en",
+  "locale_name": "English",
+  "service_url":"YOUR_SERVER_BASE_URL",
+  "admin_db_name":"OPTIPROADMIN",
+  "product_code":"CNF",
+  "system_version":"1.14.24",
+  "installed" : 1
 }
