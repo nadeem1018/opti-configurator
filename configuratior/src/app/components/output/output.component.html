@@ -377,9 +377,9 @@
                 <div class="form-group row clearfix">
                   <label class="col-sm-3 col-form-label" for="model">{{language.model}}</label>
                   <div class="col-sm-9 input-group">
-                    <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="step2_data.modal_id"
+                    <input type="hidden" ngValue="" class="form-control  form-control-sm" [(ngModel)]="step2_data.modal_id"
                       name="modelName" id="modelNameId">
-                    <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="model" id="model"
+                    <input type="text" ngValue="" class="form-control  form-control-sm" name="model" id="model"
                       placeholder="{{language.model}}" [(ngModel)]="step2_data.model_code" #modelcode (change)="onModelCodeChange()">
                     <div class="input-group-append">
                       <span class="input-group-text cursor_icon" id="basic-addon2" (click)="openModalList()">
