@@ -9,11 +9,11 @@
 </div>
 
 <div class="card mb-3 opti_global-table-view">
-    <div class="card-body">
+    <div class="card-body py-1">
 
         <div class="container-fluid">
             <div class="row" style="margin-bottom:6px;">
-                <div class="col-sm-6 p-0" style="margin-top: 2px;">
+                <div class="col-sm-6 p-0">
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
                             <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
@@ -43,7 +43,7 @@
             <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
             <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)">
                 <ng-template kendoGridToolbarTemplate>
-                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
+                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0 pl-2">
                         <div class="custom-control custom-checkbox float-left">
                             <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
                                 class="custom-control-input" name="columnfilter" />
@@ -52,7 +52,7 @@
                     </form>
                 </ng-template>
 
-                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60" [filterable]="false">
+                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="25" [minResizableWidth]="25" headerClass="text-center" [filterable]="false">
                     <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">

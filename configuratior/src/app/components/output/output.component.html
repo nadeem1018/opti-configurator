@@ -100,7 +100,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="modify_duplicate_lookup">{{language.configuration_id}}</label>
                     <div class="col-sm-5 input-group">
-                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="on_configuration_id_change(modify_duplicate_lookup.value)"
+                      <input type="text" ngValue="" class="form-control form-control-sm" (change)="on_configuration_id_change(modify_duplicate_lookup.value)"
                         name="modify_duplicate_lookup" #modify_duplicate_lookup id="modify_duplicate_lookup"
                         placeholder="{{language.configuration_id}}" [(ngModel)]="step1_data.selected_configuration_key"
                         #selected_configuration_key readonly>
@@ -206,7 +206,7 @@
                   <div class="form-group row clearfix">
                     <label class="col-sm-5 col-form-label" for="customer_doc">{{language.customer}}</label>
                     <div class="col-sm-7 input-group">
-                      <input type="text" ngValue="" class="form-control form-control-sm mt3" (change)="onCustomerChange('')"
+                      <input type="text" ngValue="" class="form-control form-control-sm" (change)="onCustomerChange('')"
                         name="customer" id="customer" placeholder="{{language.customer}}" [(ngModel)]="step1_data.customer"
                         #customer>
                       <div class="input-group-append">

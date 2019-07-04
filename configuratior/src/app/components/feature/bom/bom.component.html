@@ -63,11 +63,11 @@
                                     </a>
                                 </label>
                                 <div class="col-sm-5 input-group">
-                                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
+                                    <input type="text" ngValue="" [disabled]="isFeatureIdEnable" class="form-control form-control-sm"
                                         [(ngModel)]="feature_bom_data.feature_code" name="featureNameCode" id="featureNameCode"
                                         (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
                                         #featureinputbox title="{{feature_bom_data.feature_code}}">
-                                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control  form-control-sm mt3"
+                                    <input type="hidden" ngValue="" [disabled]="isFeatureIdEnable" class="form-control form-control-sm"
                                         [(ngModel)]="feature_bom_data.feature_id" name="featureName" id="featureNameId"
                                         (change)="onFeatureIdChange()" placeholder="{{language.Feature_Code}}"
                                         #featureinputbox title="{{feature_bom_data.feature_id}}">
@@ -116,16 +116,16 @@
                             <div class="form-group row clearfix">
                                 <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                                 <div class="col-sm-5 mt-3px">
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline mr-3">
                                         <input type="radio" id="yes" name="featureAccessory" [(ngModel)]="feature_bom_data.is_accessory"
                                             class="custom-control-input" value="Y" title="{{this.language.YES}}">
-                                        <label class="custom-control-label" for="yes">&nbsp; {{this.language.YES}}</label>
+                                        <label class="custom-control-label" for="yes">{{this.language.YES}}</label>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline ml-2">
+                                    <div class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" [disabled]="true" id="no" name="featureAccessory"
                                             [(ngModel)]="feature_bom_data.is_accessory" class="custom-control-input"
                                             value="N" title="{{this.language.NO}}">
-                                        <label class="custom-control-label" for="no">&nbsp; {{this.language.NO}}</label>
+                                        <label class="custom-control-label" for="no">{{this.language.NO}}</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
@@ -160,19 +160,19 @@
                                                 tabindex="5" (click)="on_multiple_model_change(multipleselectcheck.value, multipleselectcheck.checked)">
                                             <label class="custom-control-label" for="multiple_select_yes"></label>
                                         </div> -->
-                                        <div class="custom-control custom-radio custom-control-inline">
+                                        <div class="custom-control custom-radio custom-control-inline mr-3">
                                             <input type="radio" id="multiple_select_yes" name="accessory" class="custom-control-input"
                                                 value="true" #multipleselectcheck tabindex="5" [(ngModel)]="feature_bom_data.multi_select"
                                                 title="{{this.language.YES}}" [checked]="feature_bom_data.multi_select == 'true'"
                                                 (change)="on_multiple_model_change()">
-                                            <label class="custom-control-label ml-2" for="multiple_select_yes">{{this.language.YES}}</label>
+                                            <label class="custom-control-label" for="multiple_select_yes">{{this.language.YES}}</label>
                                         </div>
-                                        <div class="custom-control custom-radio custom-control-inline ml-2">
+                                        <div class="custom-control custom-radio custom-control-inline">
                                             <input type="radio" id="multiple_select_no" name="accessory" class="custom-control-input"
                                                 value="false" #multipleselectcheck tabindex="5" [(ngModel)]="feature_bom_data.multi_select"
                                                 title="{{this.language.NO}}" [checked]="feature_bom_data.multi_select == 'false'"
                                                 (change)="on_multiple_model_change()">
-                                            <label class="custom-control-label ml-2" for="multiple_select_no">{{this.language.NO}}</label>
+                                            <label class="custom-control-label" for="multiple_select_no">{{this.language.NO}}</label>
                                         </div>
                                     </div>
                                 </div>

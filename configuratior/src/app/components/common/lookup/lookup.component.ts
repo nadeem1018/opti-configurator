@@ -1474,7 +1474,7 @@ export class LookupComponent implements OnInit {
           }
 
           this.resourceServiceOperCM = this.serviceData.oper_res[inx].oper_consumption_method;
-          console.log("this.serviceData.oper_res[inx ", this.serviceData.oper_res[inx);
+          console.log("this.serviceData.oper_res[inx ", this.serviceData.oper_res[inx]);
         }
 
         if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
