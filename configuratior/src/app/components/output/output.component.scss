@@ -506,8 +506,9 @@ only screen and ( min-resolution: 2dppx) {
 }
 
 .f1_button_top_border_padding {
-    padding-top: 20px;
+    padding-top: 7px;
     border-top: 1px solid #ccc;
+    padding-bottom: 5px;
 }
 
 .list-group-item {
@@ -645,16 +646,16 @@ only screen and ( min-resolution: 2dppx) {
     #opti_configur-wizard-third-step-leftside{
         table tr td{
             .custom-control{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 24px !important;
+                // display: flex;
+                // justify-content: center;
+                // align-items: center;
+                // min-height: 24px !important;
             }
         }
         .Model_Accessory-table tr th:first-child{
             .custom-control{
                 position: relative;
-                top: -2px;
+                // top: -2px;
             }
         }
     }

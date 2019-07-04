@@ -60,10 +60,10 @@
                   </a>
                 </label>
                 <div class="col-sm-5 input-group">
-                  <input type="hidden" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_id"
+                  <input type="hidden" ngValue="" class="form-control  form-control-sm" [(ngModel)]="modelbom_data.modal_id"
                     title="{{modelbom_data.modal_id}}" name="featureName" [disabled]="isModelIdEnable" id="featureNameId"
                     placeholder="{{language.model}}" #Modelinputbox (change)="onModelIdChange()">
-                  <input type="text" ngValue="" class="form-control  form-control-sm mt3" [(ngModel)]="modelbom_data.modal_code"
+                  <input type="text" ngValue="" class="form-control  form-control-sm" [(ngModel)]="modelbom_data.modal_code"
                     title="{{modelbom_data.modal_code}}" name="featureCode" [disabled]="isModelIdEnable" id="featureCodeId"
                     placeholder="{{language.model}}" #Modelinputboxcode (change)="onModelIdChange()">
                   <div class="input-group-append" [hidden]=ModelLookupBtnhide>
@@ -77,7 +77,7 @@
               <div class="form-group row clearfix">
                 <label class="col-sm-3 col-form-label" for="featureDisplay">{{language.Name}}</label>
                 <div class="col-sm-5">
-                  <input type="text" name="feature_name" class="form-control  form-control-sm mt3" id="featuredisplayname"
+                  <input type="text" name="feature_name" class="form-control  form-control-sm" id="featuredisplayname"
                     placeholder="{{language.Name}}" readonly [(ngModel)]="modelbom_data.feature_name" title="{{modelbom_data.feature_name}}">
                 </div>
                 <div class="col-sm-4 mt-3px">
@@ -99,7 +99,7 @@
               <div class="form-group row clearfix">
                 <label class="col-sm-3 col-form-label" for="featureDesc">{{language.description}}</label>
                 <div class="col-sm-5">
-                  <input type="text" name="feature_desc" class="form-control  form-control-sm mt3" id="featureDesc"
+                  <input type="text" name="feature_desc" class="form-control  form-control-sm" id="featureDesc"
                     placeholder="{{language.description}}" readonly [(ngModel)]="modelbom_data.feature_desc" title="{{modelbom_data.feature_desc}}">
                 </div>
               </div>

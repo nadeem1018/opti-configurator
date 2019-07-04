@@ -261,7 +261,7 @@ mb-3, .my-3 {
 }
 
 .btn-group-sm>.btn, .btn-sm {
-  padding: .18rem 0.35rem !important;
+  padding: .18rem 0.35rem .189rem 0.35rem !important;
   font-size: .875rem !important;
   line-height: 0.9 !important;
   border-radius: .2rem !important;
@@ -277,14 +277,25 @@ mb-3, .my-3 {
 .table-sm td, .table-sm th {
   padding: 0.1rem 0.5rem !important;
 }
-
+.k-grid th, .k-grid td{
+  box-sizing: border-box;
+}
+.k-grid table{
+  box-sizing: border-box;
+}
 .form-control-sm, .input-group-sm>.form-control, .input-group-sm>.input-group-append>.btn, .input-group-sm>.input-group-append>.input-group-text, .input-group-sm>.input-group-prepend>.btn, .input-group-sm>.input-group-prepend>.input-group-text {
   padding: .20rem .5rem !important;
   font-size: .875rem !important;
   line-height: 1.0 !important;
   border-radius: .2rem !important;
 }
-
+.input-group>.form-control {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.input-group-text{
+  border-radius: .2rem;
+}
 .form-group {
   margin-bottom: 0.5rem !important;
 }

@@ -18,7 +18,8 @@ function go_to_next(next_block) {
 
 function calculate_progress(progress_block) {
   var block_num = $("#" + progress_block).data("step");
-  var new_width = ($("#" + progress_block).offset().left) - ($("div.f1-progress").offset().left) + 120;
+  var new_width = ($("#" + progress_block).offset().left) - ($("div.f1-progress").offset().left) + 170;
+  console.log($("#" + progress_block).offset().left);
   $("div.f1-progress-line").attr("style", "width: " + new_width + "px")
 }
 
