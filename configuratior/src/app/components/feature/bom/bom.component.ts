@@ -1353,39 +1353,44 @@ export class BomComponent implements OnInit {
   //THis will get the BOMs associated to selected feature id
   onAssociatedBOMClick() {
     if (this.feature_bom_data.feature_id != undefined) {
+      this.showLookupLoader = true;
       this.fbom.ViewAssosciatedBOM(this.feature_bom_data.feature_id).subscribe(
         data => {
           if (data != null && data != undefined) {
             if (data.length > 0) {
-              if (data[0].ErrorMsg == "7001") {
+               if (data[0].ErrorMsg == "7001") {
                 this.commanService.RemoveLoggedInUser().subscribe();
                 this.commanService.signOut(this.toastr, this.router, 'Sessionout');
+                this.showLookupLoader = false;
                 return;
               }
-            }
 
-            if (data.length > 0) {
               this.serviceData = data;
               this.lookupfor = 'associated_BOM';
+              this.showLookupLoader = false;
             }
             else {
-              this.toastr.error('', this.language.no_assocaited_bom, this.commonData.toast_config);
+              this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + this.feature_bom_data.feature_code, this.commonData.toast_config);
+              this.showLookupLoader = false;
               return;
             }
           }
           else {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + this.feature_bom_data.feature_code, this.commonData.toast_config);
+            this.showLookupLoader = false;
             return;
           }
         },
         error => {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          this.showLookupLoader = false;
           return;
         }
       )
     }
     else {
       this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+      this.showLoader = false;
       return;
     }
   }

@@ -72,19 +72,19 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
 
     public columns: ColumnSetting[] = [
-        {
-            field: this.language.code,
-            title: this.language.code,
-            type: 'text',
-            width: '500',
-            attrType: 'link'
-        }, {
-            field: 'FinalString',
-            title: this.language.finalstring,
-            type: 'text',
-            width: '500',
-            attrType: 'text'
-        },
+    {
+        field: this.language.code,
+        title: this.language.code,
+        type: 'text',
+        width: '500',
+        attrType: 'link'
+    }, {
+        field: 'FinalString',
+        title: this.language.finalstring,
+        type: 'text',
+        width: '500',
+        attrType: 'text'
+    },
     ];
 
     getLookupValue($event) {
@@ -156,7 +156,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                     }, 200);
                 }
             });
-      // check screen authorisation - end
+        // check screen authorisation - end
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
@@ -164,7 +164,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     }
 
     dataStateChanged(event){
-       // console.log(event);
+        // console.log(event);
         event.filter = [];
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         this.selectedValue = event.take;
@@ -225,15 +225,20 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = false;
+    feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
 
     button_click1(data) {
 
@@ -245,9 +250,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
         this.show_dialog = true;
         this.row_id = data.Code;
-
         // var result = confirm(this.language.DeleteConfimation);
+    }
 
+    show_association(data){
+        console.log("data " , data);
+        return false;
     }
 
     //This will take confimation box value
@@ -298,185 +306,185 @@ export class ViewItemCodeGenerationComponent implements OnInit {
                 }
 
             }
-        )
+            )
 
         //    this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
 
         //         data => {
-        //             if (data == "True") {
-        //                 this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-        //                 return false;
-        //             }
-        //             else {
-        //                 this.itemgen.DeleteData(this.GetItemData).subscribe(
-        //                     data => {
-        //                         if(data != undefined && data.length > 0){
-        //                             if (data[0].ErrorMsg == "7001") {
-        //                                 this.commonservice.RemoveLoggedInUser().subscribe();
-        //                                 this.commonservice.signOut(this.toastr, this.router);
-        //                                 return;
-        //                             } 
-        //                          }
+            //             if (data == "True") {
+                //                 this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+                //                 return false;
+                //             }
+                //             else {
+                    //                 this.itemgen.DeleteData(this.GetItemData).subscribe(
+                    //                     data => {
+                        //                         if(data != undefined && data.length > 0){
+                            //                             if (data[0].ErrorMsg == "7001") {
+                                //                                 this.commonservice.RemoveLoggedInUser().subscribe();
+                                //                                 this.commonservice.signOut(this.toastr, this.router);
+                                //                                 return;
+                                //                             } 
+                                //                          }
 
-        //                         if (data === "True") {
-        //                             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-        //                             this.service_call(this.current_page, this.search_string);
-        //                             this.router.navigateByUrl('item-code-generation/view');
-        //                             return;
-        //                         }
-        //                         else {
-        //                             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-        //                             return;
-        //                         }
-        //                     }
-        //                 )
-        //             }
-        //         }
-        //     )
-    }
+                                //                         if (data === "True") {
+                                    //                             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                    //                             this.service_call(this.current_page, this.search_string);
+                                    //                             this.router.navigateByUrl('item-code-generation/view');
+                                    //                             return;
+                                    //                         }
+                                    //                         else {
+                                        //                             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                        //                             return;
+                                        //                         }
+                                        //                     }
+                                        //                 )
+                                        //             }
+                                        //         }
+                                        //     )
+                                    }
 
-    on_checkbox_checked(checkedvalue, row_data) {
-        var isExist = 0;
-        if (this.CheckedData.length > 0) {
-            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i].ItemCode == row_data.Code) {
-                    isExist = 1;
-                    if (checkedvalue == true) {
-                        this.CheckedData.push({
-                            ItemCode: row_data.Code,
-                            CompanyDBId: this.companyName,
-                            GUID: sessionStorage.getItem("GUID"),
-                            UsernameForLic: sessionStorage.getItem("loggedInUser")
-                        })
-                    }
-                    else {
-                        this.CheckedData.splice(i, 1)
-                    }
-                }
-            }
-            if (isExist == 0) {
-                this.CheckedData.push({
-                    ItemCode: row_data.Code,
-                    CompanyDBId: this.companyName,
-                    GUID: sessionStorage.getItem("GUID"),
-                    UsernameForLic: sessionStorage.getItem("loggedInUser")
-                })
-            }
-        }
-        else {
-            this.CheckedData.push({
-                ItemCode: row_data.Code,
-                CompanyDBId: this.companyName,
-                GUID: sessionStorage.getItem("GUID"),
-                UsernameForLic: sessionStorage.getItem("loggedInUser")
-            })
-        }
-
-
-    }
-
-    on_Selectall_checkbox_checked(checkedvalue) {
-        var isExist = 0;
-        this.CheckedData = []
-        this.selectall = false
-        if (checkedvalue == true) {
-            if (this.dataArray.length > 0) {
-                this.selectall = true
-                for (let i = 0; i < this.dataArray.length; ++i) {
-
-                    this.CheckedData.push({
-                        ItemCode: this.dataArray[i].Code,
-                        CompanyDBId: this.companyName,
-                        GUID: sessionStorage.getItem("GUID"),
-                        UsernameForLic: sessionStorage.getItem("loggedInUser")
-                    })
-                }
-            }
-        }
-        else {
-            this.selectall = false
-        }
-    }
-
-    delete() {
-        if (this.CheckedData.length > 0) {
-            this.isMultiDelete = true;
-            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-            this.show_dialog = true;
-        }
-        else {
-            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
-        }
-
-    }
-
-    delete_multi_row() {
-        this.showLoader = true
-        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
-            data => {
-              
-                if (data != undefined && data.length > 0) {
-                    if (data[0].ErrorMsg == "7001") {
-                        this.commonservice.RemoveLoggedInUser().subscribe();
-                        this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
-                        return;
-                    }
-                }
-
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists") {
-                        this.toastr.error('', this.language.Refrence + ' at: ' + data[i].ItemCode, this.commonData.toast_config);
-                        
-                    }
-                    else if (data[i].IsDeleted == "1") {
-                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Item Id : ' + data[i].ItemCode, this.commonData.toast_config);
-                        this.CheckedData = [];
-                        this.showLoader = true;
-                        this.service_call(this.current_page, this.search_string);
-                        this.router.navigateByUrl('item-code-generation/view');
-                    }
-                    else {
-                        
-                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].ItemCode, this.commonData.toast_config);
-                    }
-                    this.showLoader = false
-                }
-            }
-        )
-        //for (let i = 0; i < this.CheckedData.length; ++i) {
-        // this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
-        //     data => {
-        //         if (data == "True") {
-        //             this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
-        //             return;
-        //         }
-        //         else {
-        //             this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
-        //                 data => {
-        //                     if(data != undefined && data.length > 0){
-        //                         if (data[0].ErrorMsg == "7001") {
-        //                             this.commonservice.RemoveLoggedInUser().subscribe();
-        //                             this.commonservice.signOut(this.toastr, this.router);
-        //                             return;
-        //                         } 
-        //                      }
-        //                     if (data === "True") {
-        //                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-        //                         this.service_call(this.current_page, this.search_string);
-        //                         this.router.navigateByUrl('item-code-generation/view');
-        //                         return;
-        //                     }
-        //                     else {
-        //                         this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-        //                         return;
-        //                     }
-        //                 }
-        //             )
-        //         }
-        //     }
-        // )
-        // }
-    }
+                                    on_checkbox_checked(checkedvalue, row_data) {
+                                        var isExist = 0;
+                                        if (this.CheckedData.length > 0) {
+                                            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                                                if (this.CheckedData[i].ItemCode == row_data.Code) {
+                                                    isExist = 1;
+                                                    if (checkedvalue == true) {
+                                                        this.CheckedData.push({
+                                                            ItemCode: row_data.Code,
+                                                            CompanyDBId: this.companyName,
+                                                            GUID: sessionStorage.getItem("GUID"),
+                                                            UsernameForLic: sessionStorage.getItem("loggedInUser")
+                                                        })
+                                                    }
+                                                    else {
+                                                        this.CheckedData.splice(i, 1)
+                                                    }
+                                                }
+                                            }
+                                            if (isExist == 0) {
+                                                this.CheckedData.push({
+                                                    ItemCode: row_data.Code,
+                                                    CompanyDBId: this.companyName,
+                                                    GUID: sessionStorage.getItem("GUID"),
+                                                    UsernameForLic: sessionStorage.getItem("loggedInUser")
+                                                })
+                                            }
+                                        }
+                                        else {
+                                            this.CheckedData.push({
+                                                ItemCode: row_data.Code,
+                                                CompanyDBId: this.companyName,
+                                                GUID: sessionStorage.getItem("GUID"),
+                                                UsernameForLic: sessionStorage.getItem("loggedInUser")
+                                            })
+                                        }
 
 
-}
+                                    }
+
+                                    on_Selectall_checkbox_checked(checkedvalue) {
+                                        var isExist = 0;
+                                        this.CheckedData = []
+                                        this.selectall = false
+                                        if (checkedvalue == true) {
+                                            if (this.dataArray.length > 0) {
+                                                this.selectall = true
+                                                for (let i = 0; i < this.dataArray.length; ++i) {
+
+                                                    this.CheckedData.push({
+                                                        ItemCode: this.dataArray[i].Code,
+                                                        CompanyDBId: this.companyName,
+                                                        GUID: sessionStorage.getItem("GUID"),
+                                                        UsernameForLic: sessionStorage.getItem("loggedInUser")
+                                                    })
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            this.selectall = false
+                                        }
+                                    }
+
+                                    delete() {
+                                        if (this.CheckedData.length > 0) {
+                                            this.isMultiDelete = true;
+                                            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+                                            this.show_dialog = true;
+                                        }
+                                        else {
+                                            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+                                        }
+
+                                    }
+
+                                    delete_multi_row() {
+                                        this.showLoader = true
+                                        this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+                                            data => {
+
+                                                if (data != undefined && data.length > 0) {
+                                                    if (data[0].ErrorMsg == "7001") {
+                                                        this.commonservice.RemoveLoggedInUser().subscribe();
+                                                        this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                                                        return;
+                                                    }
+                                                }
+
+                                                for (var i = 0; i < data.length; i++) {
+                                                    if (data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists") {
+                                                        this.toastr.error('', this.language.Refrence + ' at: ' + data[i].ItemCode, this.commonData.toast_config);
+
+                                                    }
+                                                    else if (data[i].IsDeleted == "1") {
+                                                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Item Id : ' + data[i].ItemCode, this.commonData.toast_config);
+                                                        this.CheckedData = [];
+                                                        this.showLoader = true;
+                                                        this.service_call(this.current_page, this.search_string);
+                                                        this.router.navigateByUrl('item-code-generation/view');
+                                                    }
+                                                    else {
+
+                                                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].ItemCode, this.commonData.toast_config);
+                                                    }
+                                                    this.showLoader = false
+                                                }
+                                            }
+                                            )
+                                        //for (let i = 0; i < this.CheckedData.length; ++i) {
+                                            // this.itemgen.getItemCodeReference(this.CheckedData).subscribe(
+                                            //     data => {
+                                                //         if (data == "True") {
+                                                    //             this.toastr.error('', this.language.ItemCodeLink, this.commonData.toast_config);
+                                                    //             return;
+                                                    //         }
+                                                    //         else {
+                                                        //             this.itemgen.DeleteSelectedData(this.CheckedData).subscribe(
+                                                        //                 data => {
+                                                            //                     if(data != undefined && data.length > 0){
+                                                                //                         if (data[0].ErrorMsg == "7001") {
+                                                                    //                             this.commonservice.RemoveLoggedInUser().subscribe();
+                                                                    //                             this.commonservice.signOut(this.toastr, this.router);
+                                                                    //                             return;
+                                                                    //                         } 
+                                                                    //                      }
+                                                                    //                     if (data === "True") {
+                                                                        //                         this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                                                                        //                         this.service_call(this.current_page, this.search_string);
+                                                                        //                         this.router.navigateByUrl('item-code-generation/view');
+                                                                        //                         return;
+                                                                        //                     }
+                                                                        //                     else {
+                                                                            //                         this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                                                                            //                         return;
+                                                                            //                     }
+                                                                            //                 }
+                                                                            //             )
+                                                                            //         }
+                                                                            //     }
+                                                                            // )
+                                                                            // }
+                                                                        }
+
+
+                                                                    }

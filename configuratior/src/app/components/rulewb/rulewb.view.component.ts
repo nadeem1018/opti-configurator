@@ -57,48 +57,48 @@ export class RuleWbViewComponent implements OnInit {
     table_head_foot = [this.language.select, this.language.hash, this.language.rule_id, this.language.rule_code, this.language.description, this.language.applicable_for, this.language.Fromdate, this.language.Todate, this.language.discontinued, this.language.action];
     dataArray:any = [];
     public columns: ColumnSetting[] = [
-        {
-            field: 'OPTM_RULECODE',
-            title: this.language.rule_code,
-            type: 'text',
-            width: '100',
-            attrType: 'link'
-        },
-        {
-            field: 'OPTM_DESCRIPTION',
-            title: this.language.description,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-        },
-        {
-            field: 'OPTM_APPLICABLEFOR',
-            title: this.language.applicable_for,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-        },
-        {
-            field: 'OPTM_EFFECTIVEFROM',
-            title: this.language.Fromdate,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-        },
-        {
-            field: 'OPTM_EFFECTIVETO',
-            title: this.language.Todate,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-        },
-        {
-            field: 'OPTM_DISCONTINUE',
-            title: this.language.discontinued,
-            type: 'text',
-            width: '100',
-            attrType: 'text'
-        },
+    {
+        field: 'OPTM_RULECODE',
+        title: this.language.rule_code,
+        type: 'text',
+        width: '100',
+        attrType: 'link'
+    },
+    {
+        field: 'OPTM_DESCRIPTION',
+        title: this.language.description,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
+    {
+        field: 'OPTM_APPLICABLEFOR',
+        title: this.language.applicable_for,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
+    {
+        field: 'OPTM_EFFECTIVEFROM',
+        title: this.language.Fromdate,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
+    {
+        field: 'OPTM_EFFECTIVETO',
+        title: this.language.Todate,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
+    {
+        field: 'OPTM_DISCONTINUE',
+        title: this.language.discontinued,
+        type: 'text',
+        width: '100',
+        attrType: 'text'
+    },
     ];
 
     public table_hidden_elements = [false, true, true, false, false, false, false, false, false, false, false];
@@ -114,40 +114,40 @@ export class RuleWbViewComponent implements OnInit {
     isPerfectSCrollBar:boolean = false;
 
     getLookupValue($event) {
-        
+
     }
 
     getcurrentPageSize(grid_value){
-      sessionStorage.setItem('defaultRecords', grid_value);
-      this.skip = 0;
-      this.selectedValue = grid_value;
-      this.record_per_page = sessionStorage.getItem('defaultRecords');
+        sessionStorage.setItem('defaultRecords', grid_value);
+        this.skip = 0;
+        this.selectedValue = grid_value;
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
     }
 
     dataStateChanged(event){
         // console.log(event);
-         event.filter = [];
-         this.record_per_page = sessionStorage.getItem('defaultRecords');
-         this.selectedValue = event.take;
-         this.skip = event.skip;
-     }
+        event.filter = [];
+        this.record_per_page = sessionStorage.getItem('defaultRecords');
+        this.selectedValue = event.take;
+        this.skip = event.skip;
+    }
     
     on_selection(grid_event) {
         grid_event.selectedRows = [];
     }
-  
+
     detectDevice(){
-      let getDevice = UIHelper.isDevice();
-      this.isMobile = getDevice[0];
-      this.isIpad = getDevice[1];
-      this.isDesktop = getDevice[2];
-      if(this.isMobile==true){
-        this.isPerfectSCrollBar = true;
-      }else if(this.isIpad==true){
-        this.isPerfectSCrollBar = false;
-      }else{
-        this.isPerfectSCrollBar = false;
-      }
+        let getDevice = UIHelper.isDevice();
+        this.isMobile = getDevice[0];
+        this.isIpad = getDevice[1];
+        this.isDesktop = getDevice[2];
+        if(this.isMobile==true){
+            this.isPerfectSCrollBar = true;
+        }else if(this.isIpad==true){
+            this.isPerfectSCrollBar = false;
+        }else{
+            this.isPerfectSCrollBar = false;
+        }
     }
 
     saveFilterState() {
@@ -166,14 +166,14 @@ export class RuleWbViewComponent implements OnInit {
         this.companyName = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');
         if(sessionStorage.getItem('defaultRecords')!== undefined && sessionStorage.getItem('defaultRecords')!=""){
-          this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
+            this.selectedValue =  Number(sessionStorage.getItem('defaultRecords'));
         } else {
-          this.selectedValue = Number(this.commonData.default_count);
+            this.selectedValue = Number(this.commonData.default_count);
         }
         if(sessionStorage.isFilterEnabled == "true" ) {
-          this.isColumnFilter = true;
+            this.isColumnFilter = true;
         } else {
-          this.isColumnFilter = false;
+            this.isColumnFilter = false;
         }
         // check screen authorisation - start
         this.commonservice.getMenuRecord().subscribe(
@@ -191,12 +191,12 @@ export class RuleWbViewComponent implements OnInit {
                     }, 200);
                 }
             });
-      // check screen authorisation - end
+        // check screen authorisation - end
 
         this.service_call(this.current_page, this.search_string);
     }
     ngAfterViewInit() {
-       //  this._el.nativeElement.focus();
+        //  this._el.nativeElement.focus();
     }
     on_page_limit_change() {
         this.current_page = 1;
@@ -226,7 +226,7 @@ export class RuleWbViewComponent implements OnInit {
         }
         var dataset = this.service.GetRuleList(search, page_number, this.record_per_page).subscribe(
             data => {
-                
+
                 console.log(data);
                 this.showLoader = false;
                 if(data != undefined && data.length > 0){
@@ -242,31 +242,36 @@ export class RuleWbViewComponent implements OnInit {
                 // this.rows = dataset[0];
                 // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
                 // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                //     pages = 1;
-                // }
-                // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                // if (page_number != undefined) {
-                //     this.current_page = page_number;
-                // }
+                    //     pages = 1;
+                    // }
+                    // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
+                    // if (page_number != undefined) {
+                        //     this.current_page = page_number;
+                        // }
 
-                // if (search != undefined) {
-                //     this.search_string = search;
-                // }
-            });
+                        // if (search != undefined) {
+                            //     this.search_string = search;
+                            // }
+                        });
     }
 
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = false;
+    feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
 
     button_click1(data) {
 
@@ -278,6 +283,11 @@ export class RuleWbViewComponent implements OnInit {
         this.show_dialog = true;
         this.row_id = data.OPTM_RULEID;
         // var result = confirm(this.language.DeleteConfimation);
+    }
+
+    show_association(data){
+        console.log("data " , data);
+        return false;
     }
 
     //This will take confimation box value
@@ -316,38 +326,38 @@ export class RuleWbViewComponent implements OnInit {
                     this.toastr.error('',  data[0].RuleId + this.language.RuleIsUsed  , this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('rulewb/view');
-                  }
-                  else if(data[0].IsDeleted == "1"){
-                      this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                      this.service_call(this.current_page, this.search_string);
-                      this.router.navigateByUrl('rulewb/view');
-                  }
-                  else{
-                      this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RuleId , this.commonData.toast_config);
-                      this.service_call(this.current_page, this.search_string);
-                      this.router.navigateByUrl('rulewb/view');
-                 }
+                }
+                else if(data[0].IsDeleted == "1"){
+                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
+                }
+                else{
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RuleId , this.commonData.toast_config);
+                    this.service_call(this.current_page, this.search_string);
+                    this.router.navigateByUrl('rulewb/view');
+                }
 
                 // if (data === "True") {
-                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('rulewb/view');
-                //     return;
-                // }
-                // else if(data === "Rule Used"){
-                //     this.toastr.error('', this.language.RuleIsUsed, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('rulewb/view');
-                //     return
-                // }
-                // else {
-                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('rulewb/view');
-                //     return;
-                // }
-            }
-        )
+                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    //     this.service_call(this.current_page, this.search_string);
+                    //     this.router.navigateByUrl('rulewb/view');
+                    //     return;
+                    // }
+                    // else if(data === "Rule Used"){
+                        //     this.toastr.error('', this.language.RuleIsUsed, this.commonData.toast_config);
+                        //     this.service_call(this.current_page, this.search_string);
+                        //     this.router.navigateByUrl('rulewb/view');
+                        //     return
+                        // }
+                        // else {
+                            //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                            //     this.service_call(this.current_page, this.search_string);
+                            //     this.router.navigateByUrl('rulewb/view');
+                            //     return;
+                            // }
+                        }
+                        )
     }
 
     on_checkbox_checked(checkedvalue, row_data) {
@@ -452,16 +462,16 @@ export class RuleWbViewComponent implements OnInit {
                 }
                 
                 // if (data === "True") {
-                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('rulewb/view');
-                //     return;
-                // }
-                // else {
-                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                //     return;
-                // }
-            }
-        )
+                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                    //     this.service_call(this.current_page, this.search_string);
+                    //     this.router.navigateByUrl('rulewb/view');
+                    //     return;
+                    // }
+                    // else {
+                        //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                        //     return;
+                        // }
+                    }
+                    )
     }
 }

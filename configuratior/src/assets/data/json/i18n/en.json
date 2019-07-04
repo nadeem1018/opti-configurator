@@ -142,9 +142,11 @@
     "explode": "Explode",
     "verify_output": "Verify Output",
     "associated_BOM": "Associated BOM",
+    "associated_BOMs": "Associated BOM's",
     "on_associated_bom": "On Associated BOMs",
     "associated_modal_bom": "Associated Modal BOMs",
     "no_assocaited_bom": "No BOMs are associated to this feature id",
+    "no_assocaited_bom_with_feature": "No BOM's are associated with feature ",
     "Name": "Name",
     "feature_image": "Feature Image",
     "Model_FeatureName": "Feature Name",
@@ -571,6 +573,8 @@
     "user":"User",
     "max_selectable_less_than_default":"'Max Selectable' cannot be less than total default options defined on 'Feature BOM' at row ",
     "MoreDefaultThanMaxSelectable":"Default Items cannot be more than 'Max Selectable' defined for this feature on 'Model BOM'",
-    "apply_remove_rule":"Apply/Remove Rule"
+    "apply_remove_rule":"Apply/Remove Rule",
+    "no_accessory_selected":"No accessory selected for this model",
+    "no_items_available":"No items available"
 
 }

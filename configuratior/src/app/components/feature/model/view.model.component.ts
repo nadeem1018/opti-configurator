@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
+import { FeaturebomService } from '../../../services/featurebom.service';
 import { CommonData, ColumnSetting } from "src/app/models/CommonData";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -37,6 +38,7 @@ export class ViewFeatureModelComponent implements OnInit {
     //table_head_foot = ['Select','#','Id','Code', 'EffectiveDate','Type', 'Display Name', 'Status', 'Action'];
     table_head_foot = [this.language.select, this.language.hash, this.language.Id, this.language.code, this.language.Bom_Displayname, this.language.Model_Date, this.language.Type, this.language.Model_Status, this.language.action];
     public showLoader: boolean = true;
+    public showLookupLoader: boolean = false;
     public columns: ColumnSetting[] = [
     {
         field: 'OPTM_FEATURECODE',
@@ -89,8 +91,7 @@ export class ViewFeatureModelComponent implements OnInit {
     public dataBind: any = "";
     CompanyDBId: string;
 
-    constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService,
-        private commonservice:CommonService) { }
+    constructor(private fms: FeaturemodelService, private router: Router, private toastr: ToastrService,private fbs: FeaturebomService, private commonservice:CommonService) { }
     show_table_footer: boolean = false;
     public lookupfor = '';
     //custom dialoag params
@@ -238,36 +239,29 @@ export class ViewFeatureModelComponent implements OnInit {
                         } 
                     }
                 }
-                this.dataArray = data;
-                // dataset = JSON.parse(data);
-                // this.rows = dataset[0];
-                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    //     pages = 1;
-                    // }
-                    // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                    // if (page_number != undefined) {
-                        //     this.current_page = page_number;
-                        // }
 
-                        // if (search != undefined) {
-                            //     this.search_string = search;
-                            // }
-                        });
+                this.dataArray = data;
+
+            });
     }
 
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = false;
+    feature_model_button : boolean = true;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
 
     button_click1(data) {
         //alert(id)
@@ -279,7 +273,45 @@ export class ViewFeatureModelComponent implements OnInit {
         this.show_dialog = true;
         this.row_id = data.OPTM_FEATUREID;
         //var result = confirm(this.language.DeleteConfimation);
+    }
 
+    show_association(row_data){
+        console.log("data " , row_data);
+        this.showLookupLoader = true;
+        this.fbs.ViewAssosciatedBOM(row_data.OPTM_FEATUREID).subscribe(
+            data => {
+                if (data != null && data != undefined) {
+                    if (data.length > 0) {
+                        if (data[0].ErrorMsg == "7001") {
+                            this.commonservice.RemoveLoggedInUser().subscribe();
+                            this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                            this.showLookupLoader = false;
+                            return;
+                        }
+
+                        this.serviceData = data;
+                        this.lookupfor = 'associated_BOM';
+                        this.showLookupLoader = false;
+                    }
+                    else {
+                        this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + row_data.OPTM_FEATURECODE, this.commonData.toast_config);
+                        this.showLookupLoader = false;
+                        return;
+                    }
+                }
+                else {
+                    this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + row_data.OPTM_FEATURECODE, this.commonData.toast_config);
+                    this.showLookupLoader = false;
+                    return;
+                }
+            },
+            error => {
+                this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                this.showLookupLoader = false;
+                return;
+            }
+            )
+        
     }
 
     //This will take confimation box value

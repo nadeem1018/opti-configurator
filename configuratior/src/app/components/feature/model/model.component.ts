@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FeaturemodelService } from '../../../services/featuremodel.service';
+import { FeaturebomService } from '../../../services/featurebom.service';
 import { LookupComponent } from '../../common/lookup/lookup.component';
 import { CommonData } from "../../../models/CommonData";
 import { ToastrService } from 'ngx-toastr';
@@ -35,7 +36,7 @@ export class ModelComponent implements OnInit {
   //constructor(private fms: FeaturemodelService,private lookupData: LookupComponent) { }
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   constructor(private fms: FeaturemodelService, private lookup: LookupComponent, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute,
-    private commanService: CommonService) { }
+    private commanService: CommonService, private fbom: FeaturebomService) { }
   page_main_title = this.language.model_feature_master;
   section_title = "";
   companyName: string;
@@ -48,6 +49,7 @@ export class ModelComponent implements OnInit {
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = true;
+  public isAssociatedBOMButtonVisible: boolean = true;
   public selectedFile: string = "";
   public model_name_label = this.language.Model_Name;
   public model_desc_label = this.language.Model_Desc;
@@ -474,6 +476,51 @@ export class ModelComponent implements OnInit {
     this.show_dialog = true;
   }
 
+
+  //THis will get the BOMs associated to selected feature id
+  onAssociatedBOMClick() {
+    if (this.codekey != undefined) {
+      this.showLookupLoader = true;
+      this.fbom.ViewAssosciatedBOM(this.codekey).subscribe(
+        data => {
+          if (data != null && data != undefined) {
+            if (data.length > 0) {
+               if (data[0].ErrorMsg == "7001") {
+                this.commanService.RemoveLoggedInUser().subscribe();
+                this.commanService.signOut(this.toastr, this.router, 'Sessionout');
+                this.showLookupLoader = false;
+                return;
+              }
+
+              this.serviceData = data;
+              this.lookupfor = 'associated_BOM';
+              this.showLookupLoader = false;
+            }
+            else {
+              this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + this.featureBom.Code, this.commonData.toast_config);
+              this.showLookupLoader = false;
+              return;
+            }
+          }
+          else {
+            this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + this.featureBom.Code, this.commonData.toast_config);
+            this.showLookupLoader = false;
+            return;
+          }
+        },
+        error => {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          this.showLookupLoader = false;
+          return;
+        }
+      )
+    }
+    else {
+      this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+      this.showLoader = false;
+      return;
+    }
+  }
 
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
