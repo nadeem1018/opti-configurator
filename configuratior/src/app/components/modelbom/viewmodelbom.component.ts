@@ -236,15 +236,20 @@ export class ViewModelBomComponent implements OnInit {
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = false;
+    feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
 
     button_click1(data) {
 
@@ -256,6 +261,11 @@ export class ViewModelBomComponent implements OnInit {
         this.show_dialog = true;
         this.row_id = data.OPTM_MODELID;
         // var result = confirm(this.language.DeleteConfimation);
+    }
+
+    show_association(data){
+        console.log("data " , data);
+        return false;
     }
 
     //This will take confimation box value
@@ -382,9 +392,9 @@ export class ViewModelBomComponent implements OnInit {
     }
 
     delete_multi_row() {
-       
+
         if (this.CheckedData.length > 0) {
-             this.showLoader = true
+            this.showLoader = true
             this.service.DeleteData(this.CheckedData).subscribe(
                 data => {
                     this.showLoader = false

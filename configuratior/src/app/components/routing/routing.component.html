@@ -611,22 +611,22 @@
                   <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-primary mr-10">
                     <i class="fa fa-save"></i> {{language.update}}</button>
                   <button type="button" *ngIf="isExplodeButtonVisible" (click)="onExplodeClick('manual')" class="btn btn-sm btn-secondary  mr-10">
-                    <i class="fa fa-window-maximize"></i> {{language.explode}}
+                    <i class="fa fa-sitemap"></i> {{language.explode}}
                   </button>
                 </div>
               </div>
-              <div class="col-md-4 pr-0">
+              <div class="col-md-4 pr-1">
                 <div class="pull-right">
-                  <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                    <i class="fa fa-times fa-fw"></i>
-                    <span>{{language.cancel}}</span>
-                  </button>
-
-                  <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="deleteConfirm()">
+                   <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="deleteConfirm()">
                     <i class="fa fa-trash fa-fw"></i>
                     <span>{{language.delete}}</span>
                   </button>
-                  <!-- only view when edit mode -->
+
+                  <button type="button" routerLink="{{view_route_link}}" class="ml-1 btn btn-sm btn-grey mr-10">
+                    <i class="fa fa-times fa-fw"></i>
+                    <span>{{language.cancel}}</span>
+                  </button>
+                   <!-- only view when edit mode -->
 
                 </div>
               </div>

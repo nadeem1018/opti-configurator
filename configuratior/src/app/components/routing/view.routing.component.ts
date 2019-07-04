@@ -18,7 +18,7 @@ export class ViewRoutingComponent implements OnInit {
     public lookupfor = '';
     public selectedImage = "";
     public commonData = new CommonData();
- 
+
     public listItems: Array<string> = this.commonData.default_limits;
     public selectedValue: number = Number(this.commonData.default_count);
     public skip:number = 0;
@@ -59,15 +59,20 @@ export class ViewRoutingComponent implements OnInit {
 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = false;
+    feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
 
     button_click1(data) {
 
@@ -81,6 +86,11 @@ export class ViewRoutingComponent implements OnInit {
         // var result = confirm(this.language.DeleteConfimation);
     }
 
+    show_association(data){
+        console.log("data " , data);
+        return false;
+    }
+
     get_dialog_value(userSelectionValue) {
         if (userSelectionValue == true) {
 
@@ -91,39 +101,39 @@ export class ViewRoutingComponent implements OnInit {
             } else {
                 row_data = [{ CompanyDBID: sessionStorage.selectedComp, RoutingId: this.row_id,
                     GUID: sessionStorage.getItem("GUID"), UsernameForLic: sessionStorage.getItem("loggedInUser") }]
-            }
-          
-            this.rs.DeleteRouting(row_data).subscribe(
-                data => {
-                    this.showLoader = false;
-                    this.CheckedData = [];
-                    this.isMultiDelete = false;
-                    for(var i=0;  i < data.length ; i++){
-                        if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
-                            this.toastr.error('', this.language.Refrence + ' at: ' + data[i].RoutingCode , this.commonData.toast_config);
-                        }
-                        else if(data[i].IsDeleted == "1"){
-                            this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
-                            this.CheckedData = [];
-                            this.service_call(this.current_page, this.search_string);
-                            this.router.navigateByUrl('routing/view');
-                        }
-                        else{
-                            this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
-                        }
-                    }
-
-                }, error => {
-                    this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-                    this.showLoader = false;
                 }
-            )
 
+                this.rs.DeleteRouting(row_data).subscribe(
+                    data => {
+                        this.showLoader = false;
+                        this.CheckedData = [];
+                        this.isMultiDelete = false;
+                        for(var i=0;  i < data.length ; i++){
+                            if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
+                                this.toastr.error('', this.language.Refrence + ' at: ' + data[i].RoutingCode , this.commonData.toast_config);
+                            }
+                            else if(data[i].IsDeleted == "1"){
+                                this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
+                                this.CheckedData = [];
+                                this.service_call(this.current_page, this.search_string);
+                                this.router.navigateByUrl('routing/view');
+                            }
+                            else{
+                                this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
+                            }
+                        }
+
+                    }, error => {
+                        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                        this.showLoader = false;
+                    }
+                    )
+
+            }
+            this.show_dialog = false;
         }
-        this.show_dialog = false;
-    }
 
-    public columns: ColumnSetting[] = [
+        public columns: ColumnSetting[] = [
         {
             field: 'OPTM_FEATURECODE',
             title: this.language.code,
@@ -159,175 +169,184 @@ export class ViewRoutingComponent implements OnInit {
             width: '200',
             attrType: 'text'
         },
-    ];
+        ];
 
-    getcurrentPageSize(grid_value) {
-        sessionStorage.setItem('defaultRecords', grid_value);
-        this.skip = 0;
-        this.selectedValue = grid_value;
-        this.record_per_page = sessionStorage.getItem('defaultRecords');
-    }
-
-    getLookupValue($event) {
-
-    }
-
-    getPageValue() {
-        if(this.selectedValue == null){
-            this.selectedValue = 10;
-        }  
-        return this.selectedValue;
-    }
-
-    dataStateChanged(event){
-        // console.log(event);
-         event.filter = [];
-         this.record_per_page = sessionStorage.getItem('defaultRecords');
-         this.selectedValue = event.take;
-         this.skip = event.skip;
-     }
-    
-    on_selection(grid_event) {
-        grid_event.selectedRows = [];
-    }
-
-    saveFilterState() {
-       sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
-    }
-
-    ngOnInit() {
-        this.showLoader = true;
-        const element = document.getElementsByTagName("body")[0];
-        element.className = "";
-        this.detectDevice()
-        element.classList.add("app_feature-bom-view-model");
-        element.classList.add("opti_body-main-module");
-        element.classList.add('sidebar-toggled');
-
-        this.commonData.checkSession();
-        this.companyName = sessionStorage.getItem('selectedComp');
-        this.record_per_page = sessionStorage.getItem('defaultRecords');
-        
-        if(sessionStorage.isFilterEnabled == "true" ) {
-            this.isColumnFilter = true;
-        } else {
-            this.isColumnFilter = false;
+        getcurrentPageSize(grid_value) {
+            sessionStorage.setItem('defaultRecords', grid_value);
+            this.skip = 0;
+            this.selectedValue = grid_value;
+            this.record_per_page = sessionStorage.getItem('defaultRecords');
         }
 
-        // check screen authorisation - start
-        this.commonservice.getMenuRecord().subscribe(
-            menu_item => {
-                let menu_auth_index = this.menu_auth_index
-                let is_authorised = menu_item.filter(function (obj) {
-                    return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+        getLookupValue($event) {
+
+        }
+
+        getPageValue() {
+            if(this.selectedValue == null){
+                this.selectedValue = 10;
+            }  
+            return this.selectedValue;
+        }
+
+        dataStateChanged(event){
+            // console.log(event);
+            event.filter = [];
+            this.record_per_page = sessionStorage.getItem('defaultRecords');
+            this.selectedValue = event.take;
+            this.skip = event.skip;
+        }
+
+        on_selection(grid_event) {
+            grid_event.selectedRows = [];
+        }
+
+        saveFilterState() {
+            sessionStorage.setItem('isFilterEnabled', this.isColumnFilter.toString());
+        }
+
+        ngOnInit() {
+            this.showLoader = true;
+            const element = document.getElementsByTagName("body")[0];
+            element.className = "";
+            this.detectDevice()
+            element.classList.add("app_feature-bom-view-model");
+            element.classList.add("opti_body-main-module");
+            element.classList.add('sidebar-toggled');
+
+            this.commonData.checkSession();
+            this.companyName = sessionStorage.getItem('selectedComp');
+            this.record_per_page = sessionStorage.getItem('defaultRecords');
+
+            if(sessionStorage.isFilterEnabled == "true" ) {
+                this.isColumnFilter = true;
+            } else {
+                this.isColumnFilter = false;
+            }
+
+            // check screen authorisation - start
+            this.commonservice.getMenuRecord().subscribe(
+                menu_item => {
+                    let menu_auth_index = this.menu_auth_index
+                    let is_authorised = menu_item.filter(function (obj) {
+                        return (obj.OPTM_MENUID == menu_auth_index) ? obj : "";
+                    });
+
+                    if (is_authorised.length == 0) {
+                        let objcc = this;
+                        setTimeout(function () {
+                            objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
+                            objcc.router.navigateByUrl('home');
+                        }, 200);
+                    }
                 });
+            // check screen authorisation - end
 
-                if (is_authorised.length == 0) {
-                    let objcc = this;
-                    setTimeout(function () {
-                        objcc.toastr.error('', objcc.language.notAuthorisedScreen, objcc.commonData.toast_config);
-                        objcc.router.navigateByUrl('home');
-                    }, 200);
+            this.service_call(this.current_page, this.search_string);
+
+        }
+        ngAfterViewInit() {
+            //  this._el.nativeElement.focus();
+        }
+
+        detectDevice() {
+            let getDevice = UIHelper.isDevice();
+            this.isMobile = getDevice[0];
+            this.isIpad = getDevice[1];
+            this.isDesktop = getDevice[2];
+            if (this.isMobile == true) {
+                this.isPerfectSCrollBar = true;
+            } else if (this.isIpad == true) {
+                this.isPerfectSCrollBar = false;
+            } else {
+                this.isPerfectSCrollBar = false;
+            }
+        }
+
+        service_call(page_number, search) {
+
+            var dataset = this.rs.get_all_routing_data().subscribe(
+                data => {
+                    console.log(data);               
+                    if(data != undefined){
+                        if(data.length > 0){
+                            if (data[0].ErrorMsg == "7001") {
+                                this.commonservice.RemoveLoggedInUser().subscribe();
+                                this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                                this.showLoader = false;
+                                return;
+                            } 
+                        }
+                    }
+                    this.dataArray = data; 
+                    this.showLoader = false;              
+                });
+        }
+
+        delete() {
+            if (this.CheckedData.length > 0) {
+                this.isMultiDelete = true;
+                this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+                this.show_dialog = true;
+            }
+            else {
+                this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
+            }
+        }
+
+        on_Selectall_checkbox_checked(checkedvalue) {
+            var isExist = 0;
+            this.CheckedData = []
+            this.selectall = false
+
+            if (checkedvalue == true) {
+                if (this.dataArray.length > 0) {
+                    this.selectall = true
+                    for (let i = 0; i < this.dataArray.length; ++i) {
+
+                        this.CheckedData.push({
+                            RoutingId: this.dataArray[i].OPTM_MODELFEATUREID,
+                            CompanyDBId: this.companyName,
+                            GUID: sessionStorage.getItem("GUID"),
+                            UsernameForLic: sessionStorage.getItem("loggedInUser")
+                        })
+                    }
                 }
-            });
-      // check screen authorisation - end
-
-        this.service_call(this.current_page, this.search_string);
-
-    }
-    ngAfterViewInit() {
-        //  this._el.nativeElement.focus();
-    }
-
-    detectDevice() {
-        let getDevice = UIHelper.isDevice();
-        this.isMobile = getDevice[0];
-        this.isIpad = getDevice[1];
-        this.isDesktop = getDevice[2];
-        if (this.isMobile == true) {
-            this.isPerfectSCrollBar = true;
-        } else if (this.isIpad == true) {
-            this.isPerfectSCrollBar = false;
-        } else {
-            this.isPerfectSCrollBar = false;
+            }
+            else {
+                this.selectall = false
+            }
         }
-    }
 
-    service_call(page_number, search) {
-        
-        var dataset = this.rs.get_all_routing_data().subscribe(
-            data => {
-                console.log(data);               
-                if(data != undefined){
-                    if(data.length > 0){
-                    if (data[0].ErrorMsg == "7001") {
-                        this.commonservice.RemoveLoggedInUser().subscribe();
-                        this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
-                        this.showLoader = false;
-                        return;
-                    } 
-                  }
+        on_checkbox_checked(checkedvalue, row_data) {
+            var isExist = 0;
+            if (this.CheckedData.length > 0) {
+                for (let i = this.CheckedData.length - 1; i >= 0; --i) {
+                    if (this.CheckedData[i].RoutingId == row_data.OPTM_MODELFEATUREID) {
+                        isExist = 1;
+                        if (checkedvalue == true) {
+                            this.CheckedData.push({
+                                RoutingId: row_data.OPTM_MODELFEATUREID,
+                                CompanyDBId: this.companyName,
+                                GUID: sessionStorage.getItem("GUID"),
+                                UsernameForLic: sessionStorage.getItem("loggedInUser")
+                            })
+                        }
+                        else {
+                            this.CheckedData.splice(i, 1)
+                        }
+                    }
                 }
-                this.dataArray = data; 
-                this.showLoader = false;              
-            });
-    }
-
-    delete() {
-        if (this.CheckedData.length > 0) {
-            this.isMultiDelete = true;
-            this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-            this.show_dialog = true;
-        }
-        else {
-            this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
-        }
-    }
-
-    on_Selectall_checkbox_checked(checkedvalue) {
-        var isExist = 0;
-        this.CheckedData = []
-        this.selectall = false
-
-        if (checkedvalue == true) {
-            if (this.dataArray.length > 0) {
-                this.selectall = true
-                for (let i = 0; i < this.dataArray.length; ++i) {
-
+                if (isExist == 0) {
                     this.CheckedData.push({
-                        RoutingId: this.dataArray[i].OPTM_MODELFEATUREID,
+                        RoutingId: row_data.OPTM_MODELFEATUREID,
                         CompanyDBId: this.companyName,
                         GUID: sessionStorage.getItem("GUID"),
                         UsernameForLic: sessionStorage.getItem("loggedInUser")
                     })
                 }
             }
-        }
-        else {
-            this.selectall = false
-        }
-    }
-
-    on_checkbox_checked(checkedvalue, row_data) {
-        var isExist = 0;
-        if (this.CheckedData.length > 0) {
-            for (let i = this.CheckedData.length - 1; i >= 0; --i) {
-                if (this.CheckedData[i].RoutingId == row_data.OPTM_MODELFEATUREID) {
-                    isExist = 1;
-                    if (checkedvalue == true) {
-                        this.CheckedData.push({
-                            RoutingId: row_data.OPTM_MODELFEATUREID,
-                            CompanyDBId: this.companyName,
-                            GUID: sessionStorage.getItem("GUID"),
-                            UsernameForLic: sessionStorage.getItem("loggedInUser")
-                        })
-                    }
-                    else {
-                        this.CheckedData.splice(i, 1)
-                    }
-                }
-            }
-            if (isExist == 0) {
+            else {
                 this.CheckedData.push({
                     RoutingId: row_data.OPTM_MODELFEATUREID,
                     CompanyDBId: this.companyName,
@@ -335,16 +354,7 @@ export class ViewRoutingComponent implements OnInit {
                     UsernameForLic: sessionStorage.getItem("loggedInUser")
                 })
             }
-        }
-        else {
-            this.CheckedData.push({
-                RoutingId: row_data.OPTM_MODELFEATUREID,
-                CompanyDBId: this.companyName,
-                GUID: sessionStorage.getItem("GUID"),
-                UsernameForLic: sessionStorage.getItem("loggedInUser")
-            })
-        }
 
 
+        }
     }
-}

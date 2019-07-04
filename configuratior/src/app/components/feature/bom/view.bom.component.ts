@@ -65,6 +65,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     public isMultiDelete: boolean = false;
     public isColumnFilter: boolean = false;
     public menu_auth_index: string = "202";
+    public showLookupLoader: boolean = false;
 
     isMobile: boolean = false;
     isIpad: boolean = false;
@@ -235,15 +236,21 @@ export class ViewFeatureBOMComponent implements OnInit {
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
+    show_button3: boolean = true;
+    feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
+    button3_title = this.language.associated_BOMs;
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
+    button3_color = "btn-secondary";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
+    button3_icon = "fa fa-share-alt fa-fw";
+
 
     button_click1(data) {
 
@@ -257,6 +264,45 @@ export class ViewFeatureBOMComponent implements OnInit {
         this.row_id = data.OPTM_FEATUREID;
 
         // var result = confirm(this.language.DeleteConfimation);
+    }
+
+    show_association(row_data){
+        console.log("data " , row_data);
+        this.showLookupLoader = true;
+          this.fbs.ViewAssosciatedBOM(row_data.OPTM_FEATUREID).subscribe(
+            data => {
+              if (data != null && data != undefined) {
+                if (data.length > 0) {
+                   if (data[0].ErrorMsg == "7001") {
+                    this.commonservice.RemoveLoggedInUser().subscribe();
+                    this.commonservice.signOut(this.toastr, this.router, 'Sessionout');
+                    this.showLookupLoader = false;
+                    return;
+                  }
+
+                  this.serviceData = data;
+                  this.lookupfor = 'associated_BOM';
+                  this.showLookupLoader = false;
+                }
+                else {
+                  this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + row_data.OPTM_FEATURECODE, this.commonData.toast_config);
+                  this.showLookupLoader = false;
+                  return;
+                }
+              }
+              else {
+                this.toastr.error('', this.language.no_assocaited_bom_with_feature + " : " + row_data.OPTM_FEATURECODE, this.commonData.toast_config);
+                this.showLookupLoader = false;
+                return;
+              }
+            },
+            error => {
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+              this.showLookupLoader = false;
+              return;
+            }
+          )
+        
     }
 
     //This will take confimation box value
@@ -305,18 +351,6 @@ export class ViewFeatureBOMComponent implements OnInit {
                     this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
                 }
 
-                // if (data === "True") {
-                //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                //     this.service_call(this.current_page, this.search_string);
-                //     this.router.navigateByUrl('feature/bom/view');
-                //     return;
-                // } else if (data == "ReferenceExists") {
-                //     this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-                //     return;
-                // } else {
-                //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                //     return;
-                // }
             }
         )
     }

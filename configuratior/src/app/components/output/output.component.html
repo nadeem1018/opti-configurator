@@ -591,8 +591,8 @@
                 <div class="feature_block">
                   <div class="feature_table">
                     <div class="">
-                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false"
-                        [height]="350" [groupable]="false" [filterable]="false">
+                      <kendo-grid [kendoGridBinding]="feature_itm_list_table" [resizable]="true" [sortable]="false"  [height]="350" [groupable]="false" [filterable]="false">
+                        <kendo-grid-messages noRecords="{{this.language.no_items_available}}"> </kendo-grid-messages>
                         <kendo-grid-column field="step_2_right_grid_feature_name" title="" template="" [width]="120"
                           [minResizableWidth]="120">
                           <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
@@ -1006,6 +1006,7 @@
                   <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                     <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                       [selectable]="false" [resizable]="true">
+                      <kendo-grid-messages noRecords="{{this.language.no_accessory_selected}}"> </kendo-grid-messages>
                       <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex" [width]="31"
                         [minResizableWidth]="31"></kendo-grid-column>
                       <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [width]="50"
@@ -1385,6 +1386,7 @@
                           <ng-template kendoGridDetailTemplate let-dataItem let-column let-columnIndex="columnIndex">
                             <kendo-grid class="opti_screen4-detail-row opti_screen4-detail-row-btm" [data]="getFeatureHasAccesory(dataItem.feature)"
                               [selectable]="false" [resizable]="true">
+                               <kendo-grid-messages noRecords="{{this.language.no_accessory_selected}}"> </kendo-grid-messages>
                               <kendo-grid-column class="k-hierarchy-cell k-header" field="rowIndex" title="rowIndex"
                                 [width]="50" [minResizableWidth]="50"></kendo-grid-column>
                               <kendo-grid-column field="sl_no" title="{{this.language.serial}}" [width]="50"

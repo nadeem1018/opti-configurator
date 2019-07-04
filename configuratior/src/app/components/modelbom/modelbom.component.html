@@ -144,7 +144,7 @@
           <div class="" style="margin-bottom: 10px;">
             <div class="col-md-12 p-0">
               <button type="button" (click)="on_rule_click()" class="btn btn-sm btn-primary  mr-10">
-                {{language.apply_remove_rule}}</button>
+               <b><i class="fa fa-exchange-alt"></i></b>  {{language.apply_remove_rule}}</button>
             </div>
           </div>
 
@@ -304,11 +304,11 @@
                   <button type="button" *ngIf="isUpdateButtonVisible" (click)="onSave()" class="btn btn-sm btn-primary mr-10">
                     <i class="fa fa-save"></i> {{language.update}}</button>
                   <button type="button" (click)="onExplodeClick('manual')" *ngIf="isExplodeButtonVisible" class="btn btn-sm btn-secondary  mr-10">
-                    <i class="fa fa-window-maximize"></i> {{language.explode}}
+                    <i class="fa fa-sitemap"></i> {{language.explode}}
                   </button>
 
                   <button type="button" (click)="onVerifyOutput()" *ngIf="isVerifyButtonVisible" class="btn btn-sm btn-secondary  mr-10">
-                    <i class="fa fa-window-maximize"></i> {{language.verify_output}}
+                    <i class="fa fa-check-circle"></i> {{language.verify_output}}
                   </button>
                 </div>
               </div>
