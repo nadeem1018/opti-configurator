@@ -38,7 +38,7 @@
 
                 <div class="col-sm-6 p-0">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>
@@ -50,69 +50,69 @@
             <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)">
                 <ng-template kendoGridToolbarTemplate>
                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
-                        <div class="custom-control custom-checkbox float-left">
-                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
-                                class="custom-control-input" name="columnfilter" />
-                            <label class="custom-control-label" for="columnFilter">  {{language.enable_filter}}</label>
-                        </div>
-                    </form>
+                    <div class="custom-control custom-checkbox float-left">
+                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
+                        class="custom-control-input" name="columnfilter" />
+                        <label class="custom-control-label" for="columnFilter">  {{language.enable_filter}}</label>
+                    </div>
+                </form>
+            </ng-template>
+
+            <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60" [filterable]="false">
+                <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
+                        <label class="custom-control-label" for="parent_checkbox_{{rowIndex}}"></label>
+                    </div>
                 </ng-template>
+                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,dataItem)" [checked]=selectall id="child_checkbox_{{rowIndex}}" class="custom-control-input">
+                        <label class="custom-control-label" for="child_checkbox_{{rowIndex}}"></label>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
 
-                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60" [filterable]="false">
-                    <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
-                            <label class="custom-control-label" for="parent_checkbox_{{rowIndex}}"></label>
-                       </div>
-                    </ng-template>
-                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,dataItem)" [checked]=selectall id="child_checkbox_{{rowIndex}}" class="custom-control-input">
-                            <label class="custom-control-label" for="child_checkbox_{{rowIndex}}"></label>
-                            </div>
-                    </ng-template>
-                </kendo-grid-column>
-
-                <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-                                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" >
-                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
-                    <ng-container *ngIf="column.attrType == 'link'">
+            <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
+            format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" >
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
+                <ng-container *ngIf="column.attrType == 'link'">
 
                     <a class="common_grid_link" (click)="button_click1(dataItem)">{{dataItem[column.field]}}</a>
 
-                    </ng-container>
+                </ng-container>
 
-                    <ng-container *ngIf="column.attrType == 'text'">{{dataItem[column.field]}}</ng-container>
-                  </ng-template>
-                </kendo-grid-column>
+                <ng-container *ngIf="column.attrType == 'text'">{{dataItem[column.field]}}</ng-container>
+            </ng-template>
+        </kendo-grid-column>
 
-                <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120" [filterable]="false">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
-                            <i class="{{button1_icon}}"></i>
-                        </button>
-                        
-                          <button type="button" class="btn btn-sm mr-10 {{button3_color}}" *ngIf="show_button3" (click)="show_association(dataItem)" title="{{button3_title}}">
-                            <i class="{{button3_icon}}"></i>
-                        </button>
-                        
-                        <button type="button" class="btn btn-sm mr-10 {{button2_color}}" *ngIf="show_button2" (click)="button_click2(dataItem)" title="{{button2_title}}">
-                            <i class="{{button2_icon}}"></i>
-                        </button>
-                         <button 
-                         type="button" class="btn btn-sm mr-10 {{button3_color}}" *ngIf="feature_model_button && dataItem.OPTM_TYPE != undefined && dataItem.OPTM_TYPE == 'Feature'" (click)="show_association(dataItem)" title="{{button3_title}}">
-                            <i class="{{button3_icon}}"></i>
-                        </button>
-                    </ng-template>
-                </kendo-grid-column>
-            </kendo-grid>
-        </div>
-    </div>
+        <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
+                    <i class="{{button1_icon}}"></i>
+                </button>
+                <button type="button" class="btn btn-sm mr-10 {{button2_color}}" *ngIf="show_button2" (click)="button_click2(dataItem)" title="{{button2_title}}">
+                    <i class="{{button2_icon}}"></i>
+                </button>
+
+                <button type="button" class="btn btn-sm mr-10 {{button3_color}}" *ngIf="show_button3" (click)="show_association(dataItem)" title="{{button3_title}}">
+                    <i class="{{button3_icon}}"></i>
+                </button>
+
+                <button 
+                type="button" class="btn btn-sm mr-10 {{button3_color}}" *ngIf="feature_model_button && dataItem.OPTM_TYPE != undefined && dataItem.OPTM_TYPE == 'Feature'" (click)="show_association(dataItem)" title="{{button3_title}}">
+                <i class="{{button3_icon}}"></i>
+            </button>
+        </ng-template>
+    </kendo-grid-column>
+</kendo-grid>
+</div>
+</div>
 </div>
 
 <!--Custom Dialog-->
 <app-custom-dialogs *ngIf="show_dialog" [dialogParams]="dialog_params" (userSelectionValue)="get_dialog_value($event)"></app-custom-dialogs>
 
 <span [hidden]="showLookupLoader">
-<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+    <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
 </span>
