@@ -46,7 +46,6 @@
         </div>
 
         <div class="opti_grid-table-outer">
-            <!-- [skip]="skip" (dataStateChange)="dataStateChanged($event)" -->
             <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
             <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)">
                 <ng-template kendoGridToolbarTemplate>
@@ -105,6 +104,8 @@
                 <i class="{{button3_icon}}"></i>
             </button>
         </ng-template>
+
+        </kendo-grid-column>
 </kendo-grid>
 </div>
 </div>
