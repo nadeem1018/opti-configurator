@@ -215,22 +215,8 @@ export class ViewModelBomComponent implements OnInit {
                 }
 
                 this.dataArray = data;
-
-                // dataset = JSON.parse(data);
-                // this.rows = dataset[0];
-                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    //     pages = 1;
-                    // }
-                    // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                    // if (page_number != undefined) {
-                        //     this.current_page = page_number;
-                        // }
-
-                        // if (search != undefined) {
-                            //     this.search_string = search;
-                            // }
-                        });
+                
+            });
     }
 
     // action button values 
