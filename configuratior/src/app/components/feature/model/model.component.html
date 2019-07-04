@@ -144,11 +144,11 @@
                     <div class="form-group row clearfix" [hidden]="IsAccessoryVisible">
                         <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                         <div  class="col-sm-5 mt-3px">
-                            <div  class="custom-control custom-radio custom-control-inline">
+                            <div  class="custom-control custom-radio custom-control-inline ml-3">
                                 <input [disabled] = "isUsedAccesoriesDisabled" type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory" title="{{this.language.YES}}">
                                 <label class="custom-control-label" for="yes">{{this.language.YES}}</label>
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline ml-2">
+                            <div class="custom-control custom-radio custom-control-inline ">
                                 <input [disabled] = "isUsedAccesoriesDisabled"  type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory" title="{{this.language.NO}}">
                                 <label class="custom-control-label" for="no">{{this.language.NO}}</label>
                             </div>

@@ -265,14 +265,10 @@ mb-3, .my-3 {
   font-size: .875rem !important;
   line-height: 0.9 !important;
   border-radius: .2rem !important;
-  margin-top: -0.42rem;
 }
 
 .col-form-label {
-  /*  padding-top: calc(0.6rem + 1px) !important; */
-  padding-top: 0.3rem !important;
-  padding-bottom: calc(.45rem + 1px) !important;
-  margin-bottom: 0;
+  padding: 6px 1rem !important;
   font-size: 0.9rem !important;
   line-height: 1.0 !important;
   font-weight: 500;
@@ -294,11 +290,70 @@ mb-3, .my-3 {
 }
 
 .input-group-sm>.input-group-append>select.btn:not([size]):not([multiple]), .input-group-sm>.input-group-append>select.input-group-text:not([size]):not([multiple]), .input-group-sm>.input-group-prepend>select.btn:not([size]):not([multiple]), .input-group-sm>.input-group-prepend>select.input-group-text:not([size]):not([multiple]), .input-group-sm>select.form-control:not([size]):not([multiple]), select.form-control-sm:not([size]):not([multiple]) {
-  height: calc(1.7rem + 1px) !important;
+  height: 26px !important;
+  line-height: 26px !important;
+  padding: 0 5px !important;
 }
 
+.form-control-sm.form-control:not(textarea){
+  height: 26px !important;
+  line-height: 26px !important;
+  padding: 0 5px !important;
+}
+.k-filtercell .k-filtercell-wrapper>.k-textbox{
+  height: 26px !important;
+  line-height: 26px !important;
+  padding: 0 5px !important;
+  border: 1px solid #ced4da;
+  border-radius: .2rem !important;
+}
+.k-filtercell .k-filtercell-operator>.k-button:not(.k-clear-button-visible) {
+  visibility: hidden;
+  pointer-events: none;
+  display:none;
+}
+.k-filtercell .k-filtercell-operator>.k-button.k-clear-button-visible{
+  width: 26px;
+  text-align: center;
+  height: 26px !important;
+  border-radius: 0.2rem;
+  display: flex;
+  border: 1px solid #ced4da !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: #fff;
+  margin-left:4px;
+}
+.k-filtercell .k-filtercell-operator {
+  display: flex;
+}
+kendo-dropdownlist.k-dropdown-operator {
+  width: 26px;
+  text-align: center;
+  height: 26px;
+  border-radius: 0.2rem;
+  display: flex;
+  border: 1px solid #ced4da !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: #fff;
+  cursor: pointer;
+}
+kendo-dropdownlist.k-dropdown-operator:hover{
+  background-color:#ededed
+}
+kendo-dropdownlist.k-dropdown-operator .k-dropdown-wrap{
+  background: transparent;
+  border:none;
+}
+kendo-dropdownlist.k-dropdown-operator .k-select {
+  height: 26px !important;
+  margin: 0 auto;
+}
 .input-group-text {
-  margin-top: 0.2rem;
+  height:26px;
   padding: .2rem .29rem !important;
 }
 
@@ -347,7 +402,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
   margin: 0 !important;
 }
 
-.modal-header .close:active, .modal-header .close:focus, a:active, a:focus {
+.modal-header .close:active, .modal-header .close:focus, a:active:not(.btn), a:focus:not(.btn) {
   outline: 0;
   border: none;
   -moz-outline-style: none;
@@ -560,9 +615,13 @@ hr {
 
 .custom-control {
   min-height: 0.5rem !important;
-  padding-left: 1rem !important;
 }
-
+.custom-control-label{
+  line-height: 16px;
+}
+.custom-control-label::before, .custom-control-label::after{
+  top: 0 !important;
+}
 .custom-control-inline {
   display: -ms-inline-flexbox;
   display: inline-flex;

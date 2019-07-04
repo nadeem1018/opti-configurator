@@ -15,11 +15,11 @@
 </div>
 
 <div class="card mb-3 opti_global-table-view">
-    <div class="card-body">
+    <div class="card-body py-1">
 
         <div class="container-fluid">
             <div class="row" style="margin-bottom:6px;">
-                <div class="col-sm-6 p-0" style="margin-top: 2px;">
+                <div class="col-sm-6 p-0">
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
                             <button type="button" routerLink="{{add_route_link}}" class="mr-10 btn btn-sm btn-outline-primary">
@@ -39,6 +39,7 @@
                 <div class="col-sm-6 p-0">
                     <div class="float-right">
 
+                        
                     </div>
                 </div>
             </div>
@@ -49,34 +50,34 @@
             <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
             <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)">
                 <ng-template kendoGridToolbarTemplate>
-                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
-                    <div class="custom-control custom-checkbox float-left">
-                        <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
-                        class="custom-control-input" name="columnfilter" />
-                        <label class="custom-control-label" for="columnFilter">  {{language.enable_filter}}</label>
-                    </div>
-                </form>
-            </ng-template>
-
-            <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="60" [minResizableWidth]="60" [filterable]="false">
-                <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
-                        <label class="custom-control-label" for="parent_checkbox_{{rowIndex}}"></label>
-                    </div>
+                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0 pl-2">
+                        <div class="custom-control custom-checkbox float-left">
+                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" (change)="saveFilterState()"
+                                class="custom-control-input" name="columnfilter" />
+                            <label class="custom-control-label" for="columnFilter">  {{language.enable_filter}}</label>
+                        </div>
+                    </form>
                 </ng-template>
-                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,dataItem)" [checked]=selectall id="child_checkbox_{{rowIndex}}" class="custom-control-input">
-                        <label class="custom-control-label" for="child_checkbox_{{rowIndex}}"></label>
-                    </div>
-                </ng-template>
-            </kendo-grid-column>
 
-            <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-            format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" >
-            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
-                <ng-container *ngIf="column.attrType == 'link'">
+                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="25" [minResizableWidth]="25" headerClass="text-center" [filterable]="false">
+                    <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">
+                            <label class="custom-control-label" for="parent_checkbox_{{rowIndex}}"></label>
+                       </div>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="child_checkbox" #checkedvalue  (change)="on_checkbox_checked(checkedvalue.checked,dataItem)" [checked]=selectall id="child_checkbox_{{rowIndex}}" class="custom-control-input">
+                            <label class="custom-control-label" for="child_checkbox_{{rowIndex}}"></label>
+                            </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
+                                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}" >
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
+                    <ng-container *ngIf="column.attrType == 'link'">
 
                     <a class="common_grid_link" (click)="button_click1(dataItem)">{{dataItem[column.field]}}</a>
 
@@ -86,7 +87,7 @@
             </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120" [filterable]="false">
+         <kendo-grid-column field="action" title="Action" filter="numeric" [width]="120" [minResizableWidth]="120" [filterable]="false">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
                     <i class="{{button1_icon}}"></i>
@@ -104,7 +105,6 @@
                 <i class="{{button3_icon}}"></i>
             </button>
         </ng-template>
-    </kendo-grid-column>
 </kendo-grid>
 </div>
 </div>
@@ -115,4 +115,5 @@
 
 <span [hidden]="showLookupLoader">
     <app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
+<app-lookup [lookupfor]='lookupfor' [serviceData]='serviceData' (lookupvalue)="getLookupValue($event) " [selectedImage]="selectedImage"></app-lookup>
 </span>
