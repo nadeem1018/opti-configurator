@@ -1791,9 +1791,10 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                           }
                         }
                         let removemodelheaderid = this.ModelHeaderData[imodelheader].OPTM_FEATUREID
+                        let uniqueKey = this.ModelHeaderData[imodelheader].unique_key
                         this.ModelHeaderData.splice(imodelheader, 1);
                         imodelheader = imodelheader - 1;
-                        this.removemodelheaderdatatable(removemodelheaderid)
+                        this.removemodelheaderdatatable(removemodelheaderid,uniqueKey)
 
                       }
                     }
@@ -5807,21 +5808,22 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
      }//end function
 
-     removemodelheaderdatatable(removemodelheaderid) {
+     removemodelheaderdatatable(removemodelheaderid,uniqueKey) {
        for (let iremove = 0; iremove < this.ModelHeaderData.length; iremove++) {
-         if (this.ModelHeaderData[iremove].parentfeatureid == removemodelheaderid) {
+         if (this.ModelHeaderData[iremove].parentfeatureid == removemodelheaderid && this.ModelHeaderData[iremove].unique_key == uniqueKey) {
            let removemodelheaderidchild = this.ModelHeaderData[iremove].OPTM_FEATUREID
+           let modelHeaderUniqueKey = this.ModelHeaderData[iremove].unique_key
 
 
            for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
-             if (this.feature_itm_list_table[igrid].FeatureId == this.ModelHeaderData[iremove].OPTM_FEATUREID) {
+             if (this.feature_itm_list_table[igrid].FeatureId == this.ModelHeaderData[iremove].OPTM_FEATUREID && this.feature_itm_list_table[igrid].nodeid == this.ModelHeaderData[iremove].unique_key) {
                this.feature_itm_list_table.splice(igrid, 1);
                igrid = igrid - 1;
              }
            }
 
            for (let isecond = 0; isecond < this.FeatureBOMDataForSecondLevel.length; isecond++) {
-             if (this.FeatureBOMDataForSecondLevel[isecond].OPTM_FEATUREID == this.ModelHeaderData[iremove].OPTM_FEATUREID) {
+             if (this.FeatureBOMDataForSecondLevel[isecond].OPTM_FEATUREID == this.ModelHeaderData[iremove].OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[isecond].nodeid == this.ModelHeaderData[iremove].unique_key) {
                this.FeatureBOMDataForSecondLevel.splice(isecond, 1);
                isecond = isecond - 1;
              }
@@ -5829,7 +5831,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
 
            this.ModelHeaderData.splice(iremove, 1);
-           this.removemodelheaderdatatable(removemodelheaderidchild)
+           this.removemodelheaderdatatable(removemodelheaderidchild,modelHeaderUniqueKey)
          }
        }
      }
