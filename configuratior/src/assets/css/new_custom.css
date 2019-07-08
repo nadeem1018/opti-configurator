@@ -259,7 +259,9 @@ mb-3, .my-3 {
 .card-header {
   padding: .20rem 0.4rem !important;
 }
-
+.toast-container .toast{
+  opacity: 1;
+}
 .btn-group-sm>.btn, .btn-sm {
   padding: .18rem 0.35rem .189rem 0.35rem !important;
   font-size: .875rem !important;
