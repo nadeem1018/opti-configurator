@@ -35,14 +35,15 @@
                   <label class="col-sm-4 col-form-label" for="date_range">{{language.date_range}}</label>
                   <div class="col-sm-8">
                     <!-- [min]="min_date" -->
-                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="'range'" class="form-control  form-control-sm mt3 float-left"
-                      name='date_range' type="text" value="" id="date_range" readonly placeholder="{{language.date_range}}"
-                      [(ngModel)]="filter_section_data.date_range" title="{{filter_section_data.date_range}}" style="max-width: calc(100% - 26px) !important; width: 100%;"
-                      tabindex="3">
-                    <div class="input-group-append float-left">
-                      <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                        <i class="fa fa-calendar"></i>
-                      </span>
+                    <div class="input-group">
+                      <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="'range'" class="form-control form-control-sm"
+                        name='date_range' type="text" value="" id="date_range" readonly placeholder="{{language.date_range}}"
+                        [(ngModel)]="filter_section_data.date_range" title="{{filter_section_data.date_range}}" tabindex="3">
+                      <div class="input-group-append">
+                        <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </div>
                     </div>
                     <owl-date-time #dt12 [pickerType]="'calendar'" (afterPickerClosed)="date_range(filter_section_data.date_range)"></owl-date-time>
                   </div>

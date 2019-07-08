@@ -502,14 +502,15 @@
                     <kendo-grid-column field="EffectiveDate" title="{{language.EffectiveDate}}" filter="text" [width]="140"
                       [minResizableWidth]="140">
                       <ng-template kendoGridCellTemplate let-dataItem>
-                        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control  form-control-sm mt3 float-left"
-                          name='EffectiveDate_{{dataItem.rowindex}}' #gridEffectiveDate type="text" id="EffectiveDate_{{dataItem.rowindex}}"
-                          readonly placeholder="{{language.EffectiveDate}}" title="{{dataItem.effective_date}}" [ngModel]="dataItem.effective_date"
-                          style="max-width: calc(100% - 26px) !important; width: 100%;" tabindex="3">
-                        <div class="input-group-append float-left">
-                          <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                            <i class="fa fa-calendar"></i>
-                          </span>
+                        <div class="input-group">
+                          <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="min" class="form-control form-control-sm"
+                            name='EffectiveDate_{{dataItem.rowindex}}' #gridEffectiveDate type="text" id="EffectiveDate_{{dataItem.rowindex}}"
+                            readonly placeholder="{{language.EffectiveDate}}" title="{{dataItem.effective_date}}" [ngModel]="dataItem.effective_date" tabindex="3">
+                          <div class="input-group-append">
+                            <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
                         </div>
                         <owl-date-time #dt12 [pickerType]="'calendar'" [startAt]="dataItem.effective_date"
                           (afterPickerClosed)="on_input_change(gridEffectiveDate.value, dataItem.rowindex, 'effective_date')"></owl-date-time>
@@ -615,13 +616,13 @@
               <div class="col-md-4 pr-1">
                 <div class="pull-right">
                    <button type="button" class="btn btn-sm btn-danger" *ngIf="isDeleteButtonVisible" (click)="deleteConfirm()">
-                    <i class="fa fa-trash fa-fw"></i>
-                    <span>{{language.delete}}</span>
+                    <i class="fa fa-trash"></i>
+                    <span> {{language.delete}}</span>
                   </button>
 
-                  <button type="button" routerLink="{{view_route_link}}" class="ml-1 btn btn-sm btn-grey mr-10">
-                    <i class="fa fa-times fa-fw"></i>
-                    <span>{{language.cancel}}</span>
+                  <button type="button" routerLink="{{view_route_link}}" class="ml-1 btn btn-sm btn-secondary mr-10">
+                    <i class="fa fa-times"></i>
+                    <span> {{language.cancel}}</span>
                   </button>
                    <!-- only view when edit mode -->
 
