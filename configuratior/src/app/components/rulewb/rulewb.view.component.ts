@@ -51,6 +51,7 @@ export class RuleWbViewComponent implements OnInit {
     public isMultiDelete: boolean = false;
     public showImportButton: boolean = false;
     public menu_auth_index = '204';
+    public showLookupLoader: boolean = false;
 
     // table_head_foot = ['Select','#','Rule Id', 'Rule Code', 'Description','Applicable for','From date','To date','Discontinue', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));

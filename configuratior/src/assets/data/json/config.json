@@ -3,9 +3,9 @@
   "app_title":"OptiPro Configurator",
   "locale":"en",
   "locale_name": "English",
-  "service_url":"YOUR_SERVER_BASE_URL",
+  "service_url":"http://localhost:9635/",
   "admin_db_name":"OPTIPROADMIN",
   "product_code":"CNF",
-  "system_version":"1.14.24",
+  "system_version":"1.14.29",
   "installed" : 1
 }

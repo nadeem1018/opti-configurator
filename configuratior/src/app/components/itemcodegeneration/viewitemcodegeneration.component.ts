@@ -56,6 +56,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     public showImportButton: boolean = false;
     public menu_auth_index = '200';
     public dataArray: any[];
+    public showLookupLoader: boolean = false;
 
     //table_head_foot = ['checkbox_here', '#', 'Code', 'Final String', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));

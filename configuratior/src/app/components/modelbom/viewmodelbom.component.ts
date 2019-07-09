@@ -49,6 +49,7 @@ export class ViewModelBomComponent implements OnInit {
     public isColumnFilter: boolean = false;
     public showImportButton: boolean = false;
     public menu_auth_index = '203'; 
+    public showLookupLoader: boolean = false;
     //table_head_foot = ['Select','#', 'Model Id', 'Name', 'Action'];
     language = JSON.parse(sessionStorage.getItem('current_lang'));
     page_main_title = this.language.Model_Bom;
@@ -215,7 +216,7 @@ export class ViewModelBomComponent implements OnInit {
                 }
 
                 this.dataArray = data;
-                
+
             });
     }
 

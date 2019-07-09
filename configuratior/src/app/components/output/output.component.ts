@@ -644,24 +644,26 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
     data.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
       obj['OPTM_LEVEL'] = 1;
-      return data.FeatureBOMDataForSecondLevel
+      return obj; // data.FeatureBOMDataForSecondLevel
     })
 
     data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
       obj['OPTM_LEVEL'] = 2;
-      return data.ModelBOMDataForSecondLevel
+      return obj; // data.ModelBOMDataForSecondLevel
     })
 
     data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
-      if (obj['checked'] == "True") {
-        obj['checked'] = true
+      if (obj['checked'] == "True" || obj['checked'] == "true") {
+        obj['checked'] = true;
+      } else {
+         obj['checked'] = false;
       }
-      return data.ModelBOMDataForSecondLevel
+      return obj; // data.ModelBOMDataForSecondLevel
     })
 
     data.ObjFeatureItemDataWithDfaultY = data.ObjFeatureItemDataWithDfaultY.filter(function (obj) {
       obj['OPTM_LEVEL'] = 1;
-      return data.ObjFeatureItemDataWithDfaultY
+      return obj// data.ObjFeatureItemDataWithDfaultY
     })
 
     for (var i in data.FeatureBOMDataForSecondLevel) {
@@ -3160,7 +3162,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               delete modelheader_item_array[mhia_i]['is_second_level'];
               delete modelheader_item_array[mhia_i]['parentfeatureid'];
               delete modelheader_item_array[mhia_i]['parentmodelid'];
-              if (modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "" && modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
+              if ((modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") || modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
                 modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3175,7 +3177,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             if (me_d_v_row.selectedAccessoryBOM != null && me_d_v_row.selectedAccessoryBOM != undefined && me_d_v_row.selectedAccessoryBOM != "") {
               let temp_selectedAccessoryBOM = me_d_v_row.selectedAccessoryBOM;
               for (let sabom_i = 0; sabom_i < temp_selectedAccessoryBOM.length; sabom_i++) {
-                if (temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "" && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY == 0 ) {
+                if ((temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "") || temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY == 0 ) {
                   temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY = parseFloat(temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY).toFixed(3);
                 }
                 final_dataset_to_save.SelectedAccessoryBOM.push(temp_selectedAccessoryBOM[sabom_i]);
@@ -3183,7 +3185,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
             let temp_Accessoryarray = me_d_v_row.Accessoryarray;
             for (let ahdr_i = 0; ahdr_i < temp_Accessoryarray.length; ahdr_i++) {
-              if (temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != null && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != undefined && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != "") {
+              if ((temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != null && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != undefined && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != "") || temp_Accessoryarray[ahdr_i].OPTM_QUANTITY  == 0) {
                 temp_Accessoryarray[ahdr_i].OPTM_QUANTITY = parseFloat(temp_Accessoryarray[ahdr_i].OPTM_QUANTITY).toFixed(3);
               }
               final_dataset_to_save.SelectedAccessory.push(temp_Accessoryarray[ahdr_i]);
@@ -3191,7 +3193,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_ModelBOMDataForSecondLevel = me_d_v_row.ModelBOMDataForSecondLevel;
             for (let mbomd_i = 0; mbomd_i < temp_ModelBOMDataForSecondLevel.length; mbomd_i++) {
-              if (temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != ""  && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY  == 0) {
+              if ((temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != "")  || temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY  == 0) {
                 temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY = parseFloat(temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3205,7 +3207,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_FeatureBOMDataForSecondLevel = me_d_v_row.FeatureBOMDataForSecondLevel;
             for (let fbdsl_i = 0; fbdsl_i < temp_FeatureBOMDataForSecondLevel.length; fbdsl_i++) {
-              if (temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "" && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY == 0) {
+              if ((temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "" ) || temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY == 0) {
                 temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY = parseFloat(temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY).toFixed(3);
               }
 
@@ -3219,7 +3221,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_RuleOutputData = me_d_v_row.RuleOutputData;
             for (let rod_i = 0; rod_i < temp_RuleOutputData.length; rod_i++) {
-              if (temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "" && temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
+              if ((temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") || temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
                 temp_RuleOutputData[rod_i].OPTM_QUANTITY = parseFloat(temp_RuleOutputData[rod_i].OPTM_QUANTITY).toFixed(3);
               }
               final_dataset_to_save.RuleOutputData.push(temp_RuleOutputData[rod_i]);
@@ -3909,12 +3911,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       return matchmodelitemarray[imatchmodel].Item == obj['OPTM_ITEMKEY'] && matchmodelitemarray[imatchmodel].FeatureId == obj['OPTM_FEATUREID']
                     })
 
+
                     if (indexmatchmodelitemarray.length > 0)
                       imodelfilteritems.push({
                         DocEntry: matchmodelitemarray[imatchmodel].ItemNumber,
                         OPTM_UNIQUEIDNT: imodelData[0].OPTM_UNIQUEIDNT,
                         OPTM_ITEMKEY: indexmatchmodelitemarray[0].OPTM_ITEMKEY,
-                        OPTM_MODELID: imodelData[0].OPTM_MODELID
+                        OPTM_MODELID: imodelData[0].OPTM_MODELID,
+                        OPTM_CHILDMODELID : imodelData[0].OPTM_CHILDMODELID
                       })
 
                   }
@@ -3979,9 +3983,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       return obj['Item'] == imodelfilteritems[i].OPTM_ITEMKEY && obj['ModelId'] == imodelfilteritems[i].OPTM_MODELID
                     })
 
+                    if(featureitemlistfilterdata.length == 0){
+                      featureitemlistfilterdata = step3_data_row.feature.filter(function (obj) {
+                      return obj['Item'] == imodelfilteritems[i].OPTM_ITEMKEY && obj['ModelId'] == imodelfilteritems[i].OPTM_CHILDMODELID
+                    })
+                    }
+
                     var checkmodelitem = step3_data_row.ModelBOMDataForSecondLevel.filter(function (obj) {
-                      return obj['OPTM_MODELID'] == featureitemlistfilterdata[0].ModelId && obj['OPTM_TYPE'] == 2 &&
-                      obj['OPTM_ITEMKEY'] == featureitemlistfilterdata[0].Item
+                      return obj['OPTM_MODELID'] == featureitemlistfilterdata[0].ModelId && obj['OPTM_TYPE'] == 2 &&  obj['OPTM_ITEMKEY'] == featureitemlistfilterdata[0].Item
                     })
                     var formatedTotalPrice: any = featureitemlistfilterdata[0].quantity * featureitemlistfilterdata[0].Actualprice
                     formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
@@ -4409,6 +4418,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             array = model_child_datatable.filter(function (obj) {
               return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['nodeid'] == header_feature_table['unique_key'] && obj['OPTM_TYPE'] != "2";
             });
+            console.log('Array:',array);
           } else if(header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" &&
             header_feature_table['is_second_level'] != null) {
             array = feature_child_datatable.filter(function (obj) {
@@ -4598,12 +4608,19 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     if(ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY!= ""){
                       qty_value = ItemData[i].OPTM_QUANTITY;
                     } else {
-                      qty_value = parentArray[0].OPTM_QUANTITY;
+                      if(parentArray[0].OPTM_QUANTITY !== undefined && parentArray[0].OPTM_QUANTITY != ""){
+                        qty_value = parentArray[0].OPTM_QUANTITY;
+                      } else {
+                        qty_value = 1;
+                      }
+                      
                     }
 
                     formatequantity = qty_value * this.step2_data.quantity
                   } else {
-
+                    if(ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY!= ""){
+                      qty_value = ItemData[i].OPTM_QUANTITY;
+                    }
                     formatequantity = qty_value
                   }
                   if (ItemData[i].Price == null || ItemData[i].Price == undefined || ItemData[i].Price == "") {
@@ -4627,13 +4644,20 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     } else  if(ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY!= ""){
                       qty_value = ItemData[i].OPTM_QUANTITY;
                     } else {
-                      qty_value = parentArray[0].OPTM_QUANTITY;
+                       if(parentArray[0].OPTM_QUANTITY !== undefined && parentArray[0].OPTM_QUANTITY != ""){
+                        qty_value = parentArray[0].OPTM_QUANTITY;
+                       } else {
+                        qty_value = 1;
+                      }
                     }
 
                     // formatequantity = qty_value * this.step2_data.quantity
                     formatequantity = qty_value;
                   }
                   else {
+                     if(ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY!= ""){
+                      qty_value = ItemData[i].OPTM_QUANTITY;
+                    }
                     formatequantity = qty_value
                   }
                   if(rowData!== undefined){

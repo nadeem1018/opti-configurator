@@ -56,6 +56,7 @@ export class ViewRoutingComponent implements OnInit {
     isIpad: boolean = false;
     isDesktop: boolean = true;
     isPerfectSCrollBar: boolean = false;
+    public showLookupLoader: boolean = false;
 
     show_button1: boolean = true;
     show_button2: boolean = true;
