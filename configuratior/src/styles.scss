@@ -523,9 +523,13 @@ ul.parent_ul li:first-child div treeview li::after {
         padding-right: 0 !important;
     }
 }
-.opti_screen4-detail-row-btm tr th:first-child,
+/*.opti_screen4-detail-row-btm tr th:first-child,
 .opti_screen4-detail-row-btm tr td:first-child {
     width: 33px !important;
+}*/
+body .k-grid-norecords{
+    display: table-row;
+    font-size:14px;
 }
 .opti_screen4-detail-row-top{
     tr.k-detail-row > td.k-hierarchy-cell{
