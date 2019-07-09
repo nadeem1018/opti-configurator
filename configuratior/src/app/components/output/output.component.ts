@@ -1508,7 +1508,20 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
                 this.setModelItemsDataInGrid(this.ModelHeaderItemsArray)
 
-                this.getDefaultItems(data.ObjFeatureItemDataWithDfaultY);
+                if(data.RuleOutputData.length > 0) {
+                  for(let count=0;count<data.ObjFeatureItemDataWithDfaultY.length; count++){
+                    for(let ruleDataCount =0 ;ruleDataCount < data.RuleOutputData.length; ruleDataCount++) {
+                      if(data.RuleOutputData[ruleDataCount].OPTM_APPLICABLEFOR == data.ObjFeatureItemDataWithDfaultY[count].OPTM_FEATUREID && data.RuleOutputData[ruleDataCount].OPTM_ITEMKEY == data.ObjFeatureItemDataWithDfaultY[count].OPTM_ITEMKEY && data.RuleOutputData[ruleDataCount].OPTM_DEFAULT == "False") {
+                        data.ObjFeatureItemDataWithDfaultY.splice(count,1);
+                        count = count-1;
+                      }
+                    }
+                  }
+                  this.getDefaultItems(data.ObjFeatureItemDataWithDfaultY);
+                } else {
+                  this.getDefaultItems(data.ObjFeatureItemDataWithDfaultY);
+                }
+                
 
                 this.RuleIntegration(data.RuleOutputData, true, "")
 
@@ -5292,7 +5305,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                         }
                                         for (var iFeatureItemaddedTable = 0; iFeatureItemaddedTable < this.feature_itm_list_table.length; iFeatureItemaddedTable++) {
                                           for (var iItemRule in RuleOutputData) {
-                                            if (this.feature_itm_list_table[iFeatureItemaddedTable].Item == RuleOutputData[iItemRule].OPTM_ITEMKEY) {
+                                            if (this.feature_itm_list_table[iFeatureItemaddedTable].Item == RuleOutputData[iItemRule].OPTM_ITEMKEY && this.feature_itm_list_table[iFeatureItemaddedTable].FeatureId == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR) {
                                               if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                                                 this.feature_itm_list_table.splice(iFeatureItemaddedTable, 1)
                                                 iFeatureItemaddedTable = iFeatureItemaddedTable - 1
@@ -5307,16 +5320,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 }
 
                                                 var tempfeatureid = this.feature_itm_list_table[iFeatureItemaddedTable].FeatureId
+                                                var tempnodeId = this.feature_itm_list_table[iFeatureItemaddedTable].nodeid
                                                 if (this.feature_itm_list_table[iFeatureItemaddedTable].is_accessory == "N") {
                                                   var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
-                                                    return obj['OPTM_FEATUREID'] == tempfeatureid
+                                                    return obj['OPTM_FEATUREID'] == tempfeatureid && obj['unique_key'] == tempnodeId
                                                   })
                                                   if (modelheaderpropagatechecked.length > 0) {
                                                     if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                                                       if (modelheaderpropagatechecked[0].OPTM_TYPE == "1") {
                                                         var itemkey = this.feature_itm_list_table[iFeatureItemaddedTable].Item
+                                                        var nodeId = this.feature_itm_list_table[iFeatureItemaddedTable].nodeid
                                                         var featurepropagatecheck = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                                                          return obj['OPTM_ITEMKEY'] == itemkey
+                                                          return obj['OPTM_ITEMKEY'] == itemkey && obj['nodeid'] == nodeId
                                                         })
                                                         if (featurepropagatecheck.length > 0) {
                                                           if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
@@ -5325,7 +5340,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                         }
                                                       }
                                                       else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
-                                                        if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[iFeatureItemaddedTable].Item) {
+                                                        if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[iFeatureItemaddedTable].Item && modelheaderpropagatechecked[0].unique_key == this.feature_itm_list_table[iFeatureItemaddedTable].nodeId) {
                                                           this.feature_itm_list_table[iFeatureItemaddedTable].quantity = (RuleOutputData[iItemRule].OPTM_QUANTITY * this.step2_data.quantity)
                                                         }
                                                       }

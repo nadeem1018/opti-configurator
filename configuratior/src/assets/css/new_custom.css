@@ -259,7 +259,9 @@ mb-3, .my-3 {
 .card-header {
   padding: .20rem 0.4rem !important;
 }
-
+.toast-container .toast{
+  opacity: 1;
+}
 .btn-group-sm>.btn, .btn-sm {
   padding: .18rem 0.35rem .189rem 0.35rem !important;
   font-size: .875rem !important;
@@ -385,7 +387,7 @@ li.breadcrumb-item a, li.breadcrumb-item {
 }
 
 .modal-body {
-  padding: 0.2rem 1rem !important;
+  padding: 1rem 1rem !important;
 }
 
 .dropdown-item {
@@ -726,7 +728,18 @@ hr {
   padding: 5px 16px !important;
   min-height: 130px;
 }
-
+.k-content.k-window-content.k-dialog-content {
+  padding: 1rem !important;
+}
+.toast-container .toast{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toast-container .toast .toast-close-button{
+  order:1;
+  top: -3px !important;
+}
 .tree-wrapper {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, .125);

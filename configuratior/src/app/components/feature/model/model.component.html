@@ -75,9 +75,9 @@
                         <div class="form-group row clearfix">
                             <label class="col-sm-4 col-form-label" for="featureItem">{{language.Model_Item}}</label>
 
-                            <div class="col-sm-5 input-group">
-                                <input type="text" name="modelItemName" class="form-control  form-control-sm mt3" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName" title="{{featureBom.ItemName}}">
-                                <input type="hidden" name="modelItemCode" class="form-control  form-control-sm mt3" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode" title="{{featureBom.ItemCode}}">
+                            <div class="col-sm-5 input-group mt3">
+                                <input type="text" name="modelItemName" class="form-control  form-control-sm" id="featureItemName" value="featureBom.ItemName" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemName" title="{{featureBom.ItemName}}">
+                                <input type="hidden" name="modelItemCode" class="form-control  form-control-sm" id="featureItemcode" value="featureBom.ItemCode" [disabled]="isItemCodeDisabled" placeholder="{{language.Model_Item}}" (change)="onItemCodeChange()" [(ngModel)]="featureBom.ItemCode" title="{{featureBom.ItemCode}}">
                                 <div class="input-group-append" [hidden] ="isItemlookupDisabled">
                                     <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onTemplateItemPress(true)">
                                         <i class="fa fa-bars"></i>
@@ -88,8 +88,8 @@
                         <div class="form-group row clearfix">
                             <label class="col-sm-4 col-form-label" for="featureItemCode">{{language.Model_Ref}}</label>
 
-                            <div class="col-sm-5 input-group">
-                                <input type="text" ngValue="" class="form-control  form-control-sm mt3" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
+                            <div class="col-sm-5 input-group mt3">
+                                <input type="text" ngValue="" class="form-control  form-control-sm" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
                                 placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" title="{{featureBom.Ref}}" [disabled]="isRefCodeDisabled">
                                 <div class="input-group-append" [hidden] ="isReflookupDisabled">
                                     <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
@@ -102,13 +102,15 @@
 
                         <div class="form-group row clearfix">
                             <label class="col-sm-4 col-form-label" for="datetime_input" class="col-sm-4 col-form-label">{{language.Model_Date}}</label>
-                            <div class="col-sm-5 input-group">
-                                <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="minimum_date" class="form-control  form-control-sm mt3" name='datepicker'
-                                type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
-                                <div class="input-group-append">
-                                    <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
+                            <div class="col-sm-5 mt3">
+                                <div class="input-group">
+                                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="" [min]="minimum_date" class="form-control  form-control-sm" name='datepicker'
+                                    type="text" value="" id="datetime_input" readonly placeholder="{{language.Model_Date}}" [(ngModel)]="featureBom.Date">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text cursor_icon" [owlDateTimeTrigger]="dt12" id="date_time_icon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
                                 </div>
                                 <owl-date-time #dt12 [pickerType]="'calendar'"></owl-date-time>
                             </div>
@@ -144,7 +146,7 @@
                     <div class="form-group row clearfix" [hidden]="IsAccessoryVisible">
                         <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                         <div  class="col-sm-5 mt-3px">
-                            <div  class="custom-control custom-radio custom-control-inline ml-3">
+                            <div  class="custom-control custom-radio custom-control-inline mr-3">
                                 <input [disabled] = "isUsedAccesoriesDisabled" type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory" title="{{this.language.YES}}">
                                 <label class="custom-control-label" for="yes">{{this.language.YES}}</label>
                             </div>
@@ -173,7 +175,7 @@
                                 <i class="fa fa-save"></i> {{language.update}}
                             </button>
 
-                            <button type="button" *ngIf="isAssociatedBOMButtonVisible && featureBom.type == 'Feature' && this.codekey!= ''" class="btn btn-sm btn-secondary  mr-10"
+                            <button type="button" *ngIf="isAssociatedBOMButtonVisible && featureBom.type == 'Feature' && this.codekey!= ''" class="btn btn-sm btn-secondary"
                             (click)="onAssociatedBOMClick()">
                             <i class="fa fa-share-alt"></i> {{language.associated_BOM}}
                         </button>
@@ -184,13 +186,13 @@
                     <div class="pull-right">
 
                         <button type="button" class="btn btn-sm btn-danger pr-1 mr-10" *ngIf="isDeleteButtonVisible" (click)="onDeleteClick()">
-                            <i class="fa fa-trash fa-fw"></i>
-                            <span>{{language.delete}}</span>
+                            <i class="fa fa-trash"></i>
+                            <span> {{language.delete}}</span>
                         </button>
                         <!-- only view when edit mode -->
-                        <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                            <i class="fa fa-times fa-fw"></i>
-                            <span>{{language.cancel}}</span>
+                        <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-sm btn-secondary">
+                            <i class="fa fa-times"></i>
+                            <span> {{language.cancel}}</span>
                         </button>
 
                     </div>

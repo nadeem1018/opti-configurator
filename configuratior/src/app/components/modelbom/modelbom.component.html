@@ -125,28 +125,24 @@
 
             </div>
           </div>
-
-          <div class="col-sm-12 p-0">
-            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} " (click)="onAddRow()"
+          <hr>
+          <div class="col-sm-12 p-0 mb-3">
+            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1 mr-3" title="{{language.add_row}} " (click)="onAddRow()"
               #button>
               <i class="fa fa-plus"></i> {{language.add_row}}
             </a>
-            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1 ml-3 mr-3" [hidden]="this.current_selected_row.length == 0" *ngIf="this.modelbom_data.length > 1"
+            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1 mr-3" [hidden]="this.current_selected_row.length == 0" *ngIf="this.modelbom_data.length > 1"
               title="{{language.move_row_up}} " (click)="resequence_operation('1')">
               <b><i class="fa fa-arrow-up"></i> </b>
             </a>
-            <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" [hidden]="this.current_selected_row.length == 0"  *ngIf="this.modelbom_data.length > 1" title="{{language.move_row_down}}"
+            <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1 mr-3" [hidden]="this.current_selected_row.length == 0"  *ngIf="this.modelbom_data.length > 1" title="{{language.move_row_down}}"
               (click)="resequence_operation('2')">
               <b><i class="fa fa-arrow-down"></i></b>
             </a>
+            <button type="button" (click)="on_rule_click()" class="btn btn-outline-primary btn-sm mt-1" style="height:22px;">
+              <b><i class="fa fa-exchange-alt"></i></b>  {{language.apply_remove_rule}}</button>
           </div>
-          <hr>
-          <div class="" style="margin-bottom: 10px;">
-            <div class="col-md-12 p-0">
-              <button type="button" (click)="on_rule_click()" class="btn btn-sm btn-primary  mr-10">
-               <b><i class="fa fa-exchange-alt"></i></b>  {{language.apply_remove_rule}}</button>
-            </div>
-          </div>
+          
 
           <!-- <hr> -->
           <div class="col-sm-12 p-0">
@@ -316,13 +312,13 @@
                 <div class="pull-right">
 
                   <button type="button" class="btn btn-sm btn-danger pr-1 mr-10" *ngIf="isDeleteButtonVisible" (click)="onDelete()">
-                    <i class="fa fa-trash fa-fw"></i>
-                    <span>{{language.delete}}</span>
+                    <i class="fa fa-trash"></i>
+                    <span> {{language.delete}}</span>
                   </button>
                   <!-- only view when edit mode -->
-                  <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-grey mr-10">
-                    <i class="fa fa-times fa-fw"></i>
-                    <span>{{language.cancel}}</span>
+                  <button type="button" routerLink="{{view_route_link}}" class="btn btn-sm btn-secondary mr-10">
+                    <i class="fa fa-times"></i>
+                    <span> {{language.cancel}}</span>
                   </button>
 
                 </div>
