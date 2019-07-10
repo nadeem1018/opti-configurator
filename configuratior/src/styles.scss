@@ -523,10 +523,24 @@ ul.parent_ul li:first-child div treeview li::after {
         padding-right: 0 !important;
     }
 }
-/*.opti_screen4-detail-row-btm tr th:first-child,
-.opti_screen4-detail-row-btm tr td:first-child {
-    width: 33px !important;
-}*/
+.k-grid tr th:first-child,
+.k-grid tr td:first-child {
+    min-width:31px;
+    & .custom-control{
+        width:16px;
+        height:16px;
+        margin:0 auto;
+        padding: 0;
+        & label.custom-control-label{
+            width:16px;
+            height:16px;
+            margin:0 auto;
+            &:before, &:after{
+                left:0;
+            }
+        }
+    }
+}
 body .k-grid-norecords{
     display: table-row;
     font-size:14px;

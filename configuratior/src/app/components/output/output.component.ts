@@ -2274,16 +2274,17 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
             }
             if (data.DataForSelectedFeatureModelItem.length == 1) {
               var currentSelectedFeatureId = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
+              var currentSelectedNodeId = data.DataForSelectedFeatureModelItem[0].nodeid;
               if(currentSelectedFeatureId != null && currentSelectedFeatureId != "") {
                 var ModelBOMDataForSelectedFeature = this.ModelBOMDataForSecondLevel.filter(function (array) {
-                  return array.OPTM_FEATUREID == currentSelectedFeatureId;
+                  return array.OPTM_FEATUREID == currentSelectedFeatureId && array['nodeid'] == currentSelectedNodeId;
                 });
               }
               if(ModelBOMDataForSelectedFeature != undefined && ModelBOMDataForSelectedFeature != null) {
                 if (ModelBOMDataForSelectedFeature.length > 0) {
                   for (var i = 0; i < this.ModelBOMDataForSecondLevel.length; i++) {
                     if (this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID != 'undefined' || ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID != 'undefined') {
-                      if (ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID) {
+                      if (ModelBOMDataForSelectedFeature[0].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[i].OPTM_FEATUREID && ModelBOMDataForSelectedFeature[0].nodeid == this.ModelBOMDataForSecondLevel[i].nodeid) {
                         this.ModelBOMDataForSecondLevel[i].checked = true;
                       } else {
                         this.ModelBOMDataForSecondLevel[i].checked = false;
@@ -4426,7 +4427,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             array = model_child_datatable.filter(function (obj) {
               return obj['OPTM_MODELID'] == header_feature_table['OPTM_CHILDMODELID'] && obj['nodeid'] == header_feature_table['unique_key'] && obj['OPTM_TYPE'] != "2";
             });
-            console.log('Array:',array);
           } else if(header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" &&
             header_feature_table['is_second_level'] != null) {
             array = feature_child_datatable.filter(function (obj) {
