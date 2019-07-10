@@ -1636,23 +1636,18 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
   if (parentmodelid != "") {
     if (parentmodelid == this.step2_data.model_id) {
       parentarray = this.ModelHeaderData.filter(function (obj) {
-        // return obj['OPTM_MODELID'] == parentmodelid && obj['OPTM_ITEMKEY'] == feature_model_data.OPTM_ITEMKEY && obj['unique_key'] == feature_model_data.nodeid;
-        return obj['OPTM_MODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid;
+         return obj['unique_key'] == feature_model_data.nodeid;
+       // return obj['OPTM_MODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid;
       });
     }
     else {
       parentarray = this.ModelHeaderData.filter(function (obj) {
-        /* obj['OPTM_MODELID'] = obj['OPTM_CHILDMODELID'] */
         return obj['parentmodelid'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid
       });
     }
 
     if(parentarray.length == 0) {
-      /* parentarray = this.ModelBOMDataForSecondLevel.filter(function(obj) {
-        return  obj['OPTM_MODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid;
-      }); */
-      parentarray = this.ModelHeaderData.filter(function (obj) {
-        /* obj['OPTM_MODELID'] = obj['OPTM_CHILDMODELID'] */
+       parentarray = this.ModelHeaderData.filter(function (obj) {
         return obj['OPTM_CHILDMODELID'] == parentmodelid && obj['unique_key'] == feature_model_data.nodeid
       });
     }
@@ -1683,7 +1678,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
   }
 
   var parentArrayElemType = "";
-  if(parentarray[0].element_type != undefined && parentarray[0].element_type != null && parentarray[0].element_type != "") {
+  if(parentarray!== undefined && parentarray[0].element_type != undefined && parentarray[0].element_type != null && parentarray[0].element_type != "") {
       parentArrayElemType = parentarray[0].element_type;
   } else {
       parentArrayElemType = "";

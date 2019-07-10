@@ -73,6 +73,7 @@ export class ModelComponent implements OnInit {
   public showLoader: boolean = true;
   public showLookupLoader: boolean = false;
   public isUsedAccesoriesDisabled = false;
+  public header_image_data: any;
   public menu_auth_index = '201';
 
   ngOnInit() {

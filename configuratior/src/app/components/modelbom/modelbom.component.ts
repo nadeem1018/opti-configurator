@@ -192,7 +192,7 @@ export class ModelbomComponent implements OnInit {
           this.modelbom_data.image_path = data.ModelHeader[0].OPTM_PHOTO;
           this.modelbom_data.is_ready_to_use = data.ModelHeader[0].OPTM_READYTOUSE
           if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
-            this.showheaderImageBlock = true;
+            this.showImageBlock = true;
             this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path
           }
 
@@ -809,9 +809,9 @@ export class ModelbomComponent implements OnInit {
               this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
               this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
               this.modelbom_data.image_path = data[0].OPTM_PHOTO;
-              if (this.modelbom_data.image_path != null || this.modelbom_data.image_path != "") {
+              if (this.modelbom_data.image_path != null && this.modelbom_data.image_path != "") {
                 this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path;
-                this.showheaderImageBlock = true;
+                this.showImageBlock = true;
               }
             }
             else {
