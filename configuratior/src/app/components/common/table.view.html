@@ -58,7 +58,7 @@
                     </form>
                 </ng-template>
 
-                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="26" [minResizableWidth]="26" class="text-center" headerClass="text-center" [filterable]="false">
+                <kendo-grid-column field="checkbox" title="checkbox" filter="numeric" [width]="38" [minResizableWidth]="38" class="text-center" headerClass="text-center" [filterable]="false">
                     <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  [checked]=selectall class="custom-control-input">

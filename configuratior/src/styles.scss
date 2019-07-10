@@ -525,6 +525,7 @@ ul.parent_ul li:first-child div treeview li::after {
 }
 .k-grid tr th:first-child,
 .k-grid tr td:first-child {
+    min-width:31px;
     & .custom-control{
         width:16px;
         height:16px;
