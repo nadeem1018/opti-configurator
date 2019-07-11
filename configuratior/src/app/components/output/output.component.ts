@@ -2605,14 +2605,16 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             } */
             this.remove_all_features_child(parentarray[0].nodeid);
           } else if (parentarray[0].OPTM_TYPE == 1 && type == 2) {
-              /* this.remove_all_features_child(parentarray[0].nodeid); */
-            for (let i = 0; i < this.feature_itm_list_table.length; i++) {
+              this.remove_all_features_child(parentarray[0].unique_key);
+            /* for (let i = 0; i < this.feature_itm_list_table.length; i++) {
               if(this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
                 currentfeaturerow = this.feature_itm_list_table[i];
                 this.feature_itm_list_table.splice(i, 1);
                 i = i - 1;
               }
-            }
+            } */
+          } else if(parentarray[0].OPTM_TYPE == 1 && type == 3){
+            this.remove_all_features_child(parentarray[0].unique_key);
           } else if (parentarray[0].OPTM_TYPE == 3) {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
               if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
