@@ -5465,8 +5465,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].nodeid == feature_model_data.nodeid && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
             this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
             var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
+            var tempNodeId = this.FeatureBOMDataForSecondLevel[ifeaturechecked].nodeid
             this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-              if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
+              if (obj['OPTM_FEATUREID'] == tempfeaturechild && obj['nodeid'] == tempNodeId) {
                 obj['checked'] = false
               }
               return obj
