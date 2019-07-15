@@ -2011,8 +2011,16 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 elementtypeforcheckedfunction = "checkbox"
                               }
                             }
-
-
+                            let parent_modelid = '';
+                            if(parentarray[0].OPTM_MODELID == undefined){
+                              if(parentarray[0].parentmodelid == undefined){
+                                parent_modelid   = this.step2_data.model_id;
+                              } else {
+                                parent_modelid   = parentarray[0].parentmodelid;
+                              }
+                            } else {
+                              parent_modelid = parentarray[0].OPTM_MODELID;
+                            }  
 
                             if (isExist.length == 0) {
                               this.ModelHeaderData.push({
@@ -2029,7 +2037,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 OPTM_MANDATORY: "N",
                                 OPTM_MAXSELECTABLE: psMaxSelect,
                                 OPTM_MINSELECTABLE: psMinSelect,
-                                OPTM_MODELID: parentarray[0].OPTM_MODELID,
+                                OPTM_MODELID: parent_modelid,
                                 OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
                                 OPTM_MODIFIEDDATETIME: String(data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDDATETIME).toString(),
                                 OPTM_PRICESOURCE: data.DataForSelectedFeatureModelItem[i].ListName,
@@ -3154,6 +3162,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_modelheder_data = me_d_v_row.ModelHeaderData;
             for (let mhd_i = 0; mhd_i < temp_modelheder_data.length; mhd_i++) {
+              delete temp_modelheder_data[mhd_i]['OPTM_MODIFIEDDATETIME'];
+              delete temp_modelheder_data[mhd_i]['random_unique_key'];
+              delete temp_modelheder_data[mhd_i]['nodeid'];
               if (temp_modelheder_data[mhd_i].OPTM_QUANTITY != null && temp_modelheder_data[mhd_i].OPTM_QUANTITY != undefined && temp_modelheder_data[mhd_i].OPTM_QUANTITY != "") {
                 temp_modelheder_data[mhd_i].OPTM_QUANTITY = parseFloat(temp_modelheder_data[mhd_i].OPTM_QUANTITY).toFixed(3);
               }
