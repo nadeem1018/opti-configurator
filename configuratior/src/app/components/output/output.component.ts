@@ -5057,7 +5057,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       }
                       //  }
                       else {
-                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                        if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                        } else {
+                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                        }
                         if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                         }
@@ -5176,7 +5180,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                           }
                                           //  }
                                           else {
-                                            this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                                            if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                                              this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                                            }else{
+                                              this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                                            }
                                             if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                             }
