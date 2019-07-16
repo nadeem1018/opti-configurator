@@ -3593,16 +3593,21 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
       update_added_model() {
         this.lookupfor = "";
+        var obj = this;
         $(".multiple_model_click_btn").attr("disabled", "true");
-
         this.console.log(this.step3_data_final.length);
-        for (var i = 0; i < this.step3_data_final.length; i++) {
-          if (this.step3_data_final[i] !== undefined) {
-            if (this.step3_data_final[i].rowIndex == this.step2_selected_model_id) {
-              this.fill_step3_data_array('update', i);
+        this.onValidateNextPress(false, function () {
+          if (obj.step3_data_final.length > 0 && obj.step3_data_final != undefined && obj.step2_selected_model_id != "") {
+            for (var i = 0; i < obj.step3_data_final.length; i++) {
+              if (obj.step3_data_final[i] !== undefined) {
+                if (obj.step3_data_final[i].rowIndex == obj.step2_selected_model_id) {
+                  obj.fill_step3_data_array('update', i);
+                }
+              }
             }
           }
-        }
+        });
+
         $(".multiple_model_click_btn").removeAttr("disabled");
       }
 
@@ -4328,6 +4333,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               // key generation array iteration - end 
               //  this.step2_final_dataset_to_save.push(temp_step2_final_dataset_save);
               for (let itempsavefinal = 0; itempsavefinal < temp_step2_final_dataset_save.length; itempsavefinal++) {
+                let discount_percent = '0'; 
+                if(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT == "" ||  temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT == undefined || temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT == null || temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT == 'NaN'){
+                  discount_percent =  parseFloat('0').toFixed(3);
+                } else {
+                  discount_percent = parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT).toFixed(3);
+                }
+                
                 this.step2_final_dataset_to_save.push({
                   "OPTM_OUTPUTID": temp_step2_final_dataset_save[itempsavefinal].OPTM_OUTPUTID,
                   "OPTM_OUTPUTDTLID": temp_step2_final_dataset_save[itempsavefinal].OPTM_OUTPUTDTLID,
@@ -4344,7 +4356,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
                   "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE).toFixed(3),
                   "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE).toFixed(3),
-                  "OPTM_DISCPERCENT": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_DISCPERCENT).toFixed(3),
+                  "OPTM_DISCPERCENT": discount_percent,
                   "OPTM_CREATEDBY": this.common_output_data.usernameOPTM_CREATEDBY,
                   "OPTM_MODIFIEDBY": this.common_output_data.usernameOPTM_MODIFIEDBY,
                   "UNIQUEIDNT": temp_step2_final_dataset_save[itempsavefinal].UNIQUEIDNT,

@@ -239,21 +239,10 @@ export class RuleWbViewComponent implements OnInit {
                 }
                 this.dataArray = data;
                 
-                // dataset = JSON.parse(data);
-                // this.rows = dataset[0];
-                // let pages: any = Math.ceil(parseInt(dataset[1]) / parseInt(this.record_per_page));
-                // if (parseInt(pages) == 0 || parseInt(pages) < 0) {
-                    //     pages = 1;
-                    // }
-                    // this.page_numbers = Array(pages).fill(1).map((x, i) => (i + 1));
-                    // if (page_number != undefined) {
-                        //     this.current_page = page_number;
-                        // }
+                this.CheckedData = [];
+                this.selectall = false;
 
-                        // if (search != undefined) {
-                            //     this.search_string = search;
-                            // }
-                        });
+            });
     }
 
     // action button values 
@@ -334,31 +323,14 @@ export class RuleWbViewComponent implements OnInit {
                     this.router.navigateByUrl('rulewb/view');
                 }
                 else{
-                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RuleId , this.commonData.toast_config);
+                    this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].RuleCode , this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('rulewb/view');
                 }
-
-                // if (data === "True") {
-                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    //     this.service_call(this.current_page, this.search_string);
-                    //     this.router.navigateByUrl('rulewb/view');
-                    //     return;
-                    // }
-                    // else if(data === "Rule Used"){
-                        //     this.toastr.error('', this.language.RuleIsUsed, this.commonData.toast_config);
-                        //     this.service_call(this.current_page, this.search_string);
-                        //     this.router.navigateByUrl('rulewb/view');
-                        //     return
-                        // }
-                        // else {
-                            //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                            //     this.service_call(this.current_page, this.search_string);
-                            //     this.router.navigateByUrl('rulewb/view');
-                            //     return;
-                            // }
-                        }
-                        )
+                this.CheckedData = [];
+                this.selectall = false;
+                $("input[name='child_checkbox']").prop("checked", false);
+            })
     }
 
     on_checkbox_checked(checkedvalue, row_data) {
@@ -449,30 +421,25 @@ export class RuleWbViewComponent implements OnInit {
                 
                 for(var i=0;  i < data.length ; i++){
                     if(data[i].IsDeleted == "0" && data[i].Message == "Rule Used"){
-                        this.toastr.error('',  data[i].RuleId + this.language.RuleIsUsed  , this.commonData.toast_config);
+                        this.toastr.error('',  data[i].RuleCode + this.language.RuleIsUsed  , this.commonData.toast_config);
+                        this.CheckedData = [];
+                        this.selectall = false;
                     }
                     else if(data[i].IsDeleted == "1"){
-                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[i].RuleId, this.commonData.toast_config);
+                        this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[i].RuleCode, this.commonData.toast_config);
                         this.CheckedData = [];
+                        this.selectall = false;
                         this.service_call(this.current_page, this.search_string);
                         this.router.navigateByUrl('rulewb/view');
                     }
                     else{
-                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RuleId , this.commonData.toast_config);
+                        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RuleCode , this.commonData.toast_config);
                     }
                 }
                 
-                // if (data === "True") {
-                    //     this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    //     this.service_call(this.current_page, this.search_string);
-                    //     this.router.navigateByUrl('rulewb/view');
-                    //     return;
-                    // }
-                    // else {
-                        //     this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-                        //     return;
-                        // }
-                    }
-                    )
+                this.CheckedData = [];
+                this.selectall = false;
+                $("input[name='child_checkbox']").prop("checked", false);
+            })
     }
 }

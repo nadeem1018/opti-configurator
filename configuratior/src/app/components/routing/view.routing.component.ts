@@ -112,10 +112,13 @@ export class ViewRoutingComponent implements OnInit {
                         for(var i=0;  i < data.length ; i++){
                             if(data[i].IsDeleted == "0" && data[i].Message == "ReferenceExists"){
                                 this.toastr.error('', this.language.Refrence + ' at: ' + data[i].RoutingCode , this.commonData.toast_config);
+                                this.CheckedData = [];
+                                this.selectall = false;
                             }
                             else if(data[i].IsDeleted == "1"){
                                 this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
                                 this.CheckedData = [];
+                                this.selectall = false;
                                 this.service_call(this.current_page, this.search_string);
                                 this.router.navigateByUrl('routing/view');
                             }
@@ -123,7 +126,9 @@ export class ViewRoutingComponent implements OnInit {
                                 this.toastr.error('', this.language.DataNotDelete + ' : ' + data[i].RoutingCode , this.commonData.toast_config);
                             }
                         }
-
+                        this.CheckedData = [];
+                        this.selectall = false;
+                        $("input[name='child_checkbox']").prop("checked", false);
                     }, error => {
                         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                         this.showLoader = false;
@@ -265,7 +270,6 @@ export class ViewRoutingComponent implements OnInit {
         }
 
         service_call(page_number, search) {
-
             var dataset = this.rs.get_all_routing_data().subscribe(
                 data => {
                     console.log(data);               
@@ -280,7 +284,10 @@ export class ViewRoutingComponent implements OnInit {
                         }
                     }
                     this.dataArray = data; 
-                    this.showLoader = false;              
+                    this.showLoader = false;         
+                    this.CheckedData = [];
+                    this.selectall = false;
+                    $("input[name='child_checkbox']").prop("checked", false);
                 });
         }
 

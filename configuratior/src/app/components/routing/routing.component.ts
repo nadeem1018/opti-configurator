@@ -129,7 +129,7 @@ export class RoutingComponent implements OnInit {
           }, 200);
         }
       });
-      // check screen authorisation - end
+    // check screen authorisation - end
 
     if (this.update_id === "" || this.update_id === null) {
       this.routing_header_data.routing_for = 'feature';
@@ -405,662 +405,667 @@ export class RoutingComponent implements OnInit {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         });
-    }
+}
+}
+
+ngOnChanges() { }
+
+on_operation_change() {
+  this.current_selected_row = [];
+  if (this.routing_header_data.routing_for == 'feature') {
+    this.reset_model()
+    this.show_resequence_btn = false;
+    this.show_resource_btn = true;
+    this.type_dropdown = this.commonData.bom_type;
+    this.routing_type = 'feature';
+
+    this.grid_option_title = this.language.Bom_FeatureValue;
+  } else if (this.routing_header_data.routing_for == 'model') {
+    this.reset_feature()
+    this.show_resequence_btn = true;
+    this.show_resource_btn = true;
+    this.type_dropdown = this.commonData.model_bom_type;
+    this.grid_option_title = this.language.ModelBom_FeatureValue;
+    this.routing_type = 'model';
   }
+  this.current_selected_row = [];
+  this.row_selection = [];
 
-  ngOnChanges() { }
+}
 
-  on_operation_change() {
-    this.current_selected_row = [];
-    if (this.routing_header_data.routing_for == 'feature') {
-      this.reset_model()
-      this.show_resequence_btn = false;
-      this.show_resource_btn = true;
-      this.type_dropdown = this.commonData.bom_type;
-      this.routing_type = 'feature';
+reset_feature() {
+  this.routing_header_data.feature_id = "";
+  this.routing_header_data.feature_code = "";
+  this.routing_header_data.feature_description = "";
+  this.routing_detail_data = [];
+  this.routing_detail_resource_data = [];
+  this.tree_data_json = [];
+  this.live_tree_view_data = [];
+}
 
-      this.grid_option_title = this.language.Bom_FeatureValue;
-    } else if (this.routing_header_data.routing_for == 'model') {
-      this.reset_feature()
-      this.show_resequence_btn = true;
-      this.show_resource_btn = true;
-      this.type_dropdown = this.commonData.model_bom_type;
-      this.grid_option_title = this.language.ModelBom_FeatureValue;
-      this.routing_type = 'model';
-    }
-    this.current_selected_row = [];
-    this.row_selection = [];
+reset_model() {
+  this.routing_header_data.modal_id = "";
+  this.routing_header_data.modal_code = "";
+  this.routing_header_data.modal_description = "";
+  this.routing_header_data.warehouse_id = "";
+  this.routing_header_data.warehouse_code = "";
+  this.routing_header_data.default_batch_size = 1;
+  this.routing_header_data.default_lot_size = 1;
+  this.routing_header_data.applicable_bom_unit = 1;
+  this.routing_detail_data = [];
+  this.routing_detail_resource_data = [];
+  this.routing_header_data.use_mtq_in_planing = false;
+  $("#use_mtq_in_planing").prop('checked', false);
+  this.routing_header_data.opm_num_format = 1;
+  this.routing_header_data.use_template_routing = false;
+  $("#use_template_routing").prop('checked', false);
+  this.routing_header_data.template_routing_id = "";
+  this.routing_header_data.template_routing_code = "";
+  this.tree_data_json = [];
+  this.live_tree_view_data = [];
+}
 
+header_numeric_input_change(value, input_id) {
+  if (value == 0 && value != '') {
+    value = 1;
+    this.routing_header_data[input_id] = (value);
+    this.toastr.error('', this.language.valuezerovalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
   }
-
-  reset_feature() {
-    this.routing_header_data.feature_id = "";
-    this.routing_header_data.feature_code = "";
-    this.routing_header_data.feature_description = "";
-    this.routing_detail_data = [];
-    this.routing_detail_resource_data = [];
-    this.tree_data_json = [];
-    this.live_tree_view_data = [];
-  }
-
-  reset_model() {
-    this.routing_header_data.modal_id = "";
-    this.routing_header_data.modal_code = "";
-    this.routing_header_data.modal_description = "";
-    this.routing_header_data.warehouse_id = "";
-    this.routing_header_data.warehouse_code = "";
-    this.routing_header_data.default_batch_size = 1;
-    this.routing_header_data.default_lot_size = 1;
-    this.routing_header_data.applicable_bom_unit = 1;
-    this.routing_detail_data = [];
-    this.routing_detail_resource_data = [];
-    this.routing_header_data.use_mtq_in_planing = false;
-    $("#use_mtq_in_planing").prop('checked', false);
-    this.routing_header_data.opm_num_format = 1;
-    this.routing_header_data.use_template_routing = false;
-    $("#use_template_routing").prop('checked', false);
-    this.routing_header_data.template_routing_id = "";
-    this.routing_header_data.template_routing_code = "";
-    this.tree_data_json = [];
-    this.live_tree_view_data = [];
-  }
-
-  header_numeric_input_change(value, input_id) {
-    if (value == 0 && value != '') {
+  else {
+    let rgexp = /^\d+$/;
+    if (isNaN(value) == true) {
       value = 1;
-      this.routing_header_data[input_id] = (value);
-      this.toastr.error('', this.language.valuezerovalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-    }
-    else {
-     //  let rgexp = /^\d+$/;
-      if (isNaN(value) == true) {
-        value = 1;
-        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-      } else if (value == 0 || value == '' || value == null || value == undefined) {
-        value = 1;
-        this.toastr.error('', this.language.blank_or_zero_allowed + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-      } else if (value < 0) {
-        value = 1;
-        this.toastr.error('', this.language.negativevalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-      } /* else if (rgexp.test(value) == false) {
+      this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+    } else if (value == 0 || value == '' || value == null || value == undefined) {
+      value = 1;
+      this.toastr.error('', this.language.blank_or_zero_allowed + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
+    } else if (value < 0) {
+      value = 1;
+      this.toastr.error('', this.language.negativevalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
+    } 
+
+    if(input_id == 'opm_num_format'){
+      if (rgexp.test(value) == false) {
         value = 1;
         this.toastr.error('', this.language.decimalvalid + ' ' + this.language.in + ' ' + this.language[input_id], this.commonData.toast_config);
-      } */
-      
-      if(input_id == "default_batch_size" ){
-        this.routing_header_data['default_lot_size'] = (value);
-      } else {
-        this.routing_header_data[input_id] = (value);
-      }
+      }   
     }
-
-     if(input_id == "default_batch_size" ){
-       $('#default_lot_size').val(value);
-     } else {
-       $('#' + input_id).val(value);
-     }
-  }
-
-  ClearOperLineOnWarehouse() {
-    if (this.routing_detail_data.length > 0) {
-      for (let lookup_change_index = 0; lookup_change_index < this.routing_detail_data.length; lookup_change_index++) {
-        this.routing_detail_data[lookup_change_index].oper_id = '';
-        this.routing_detail_data[lookup_change_index].oper_code = '';
-        this.routing_detail_data[lookup_change_index].oper_desc = '';
-        this.routing_detail_data[lookup_change_index].oper_type = '';
-        this.routing_detail_data[lookup_change_index].oper_consumption_method = '';
-        this.routing_detail_data[lookup_change_index].oper_consumption_method_str = '';
-        this.routing_detail_data[lookup_change_index].wc_id = '';
-        this.routing_detail_data[lookup_change_index].wc_code = '';
-        this.routing_detail_data[lookup_change_index].mtq = '1';
-        this.routing_detail_data[lookup_change_index].count_point_operation = false;
-        this.routing_detail_data[lookup_change_index].auto_move = false;
-        this.routing_detail_data[lookup_change_index].queue_time = '00:00';
-        this.routing_detail_data[lookup_change_index].move_time = '00:00';
-        this.routing_detail_data[lookup_change_index].qc_time = '00:00';
-        this.routing_detail_data[lookup_change_index].time_uom = '1';
-      }
-    }
-  }
-
-  getLookupValue($event) {
-
-    console.log('in getLookupValue' + 'lookup for - ' + this.lookupfor, $event);
-    if (this.lookupfor == 'feature_lookup') {
-      this.routing_header_data.feature_id = $event[0];
-      this.routing_header_data.feature_code = $event[1];
-      this.routing_header_data.feature_description = $event[2];
-      this.GetDataByFeatureId($event[0], "header", 0);
-    }
-
-    if (this.lookupfor == 'ModelBom_lookup') {
-      this.routing_header_data.modal_id = $event[0];
-      this.routing_header_data.modal_code = $event[1];
-      this.routing_header_data.modal_description = $event[2];
-      this.GetDataByModelId($event[0], "header", 0);
-    }
-
-    if (this.lookupfor == 'warehouse_lookup') {
-      this.routing_header_data.warehouse_id = $event[0];
-      this.routing_header_data.warehouse_code = $event[0];
-      this.ClearOperLineOnWarehouse();
-    }
-
-    if (this.lookupfor == 'operation_lookup') {
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
-      this.routing_detail_data[this.current_grid_action_row].auto_move = false;
-
-      this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
-      this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
-      this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[2];
-      this.routing_detail_data[this.current_grid_action_row].oper_type = $event[3];
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[5];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
-      this.routing_detail_data[this.current_grid_action_row].mtq = $event[9];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
-      this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
-      let obj = this;
-
-      this.new_tree_item(this.routing_detail_data[this.current_grid_action_row].type, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row], this.routing_detail_data[this.current_grid_action_row].rowindex);
-
-
-      if ($event[3] == '4' || $event[3] == '5') {
-        this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
-        this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
-      }
-
-      this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_id, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
-        // obj.current_grid_action_row = 0;
-      });
-    }
-
-    if (this.lookupfor == "workcenter_lookup") {
-      this.routing_detail_data[this.current_grid_action_row].wc_id = $event[2];
-      this.routing_detail_data[this.current_grid_action_row].wc_code = $event[2];
-      //  this.current_grid_action_row = 0;
-    }
-
-    if (this.lookupfor == "routing_resource_lookup") {
-      let temp_array = [];
-      let pollcounter = 1;
-      for (let i = 0; i < $event.length; ++i) {
-        console.log("$event[i] ", $event[i]);
-        if ($event[i].resource_code != undefined) {
-          let Lineid;
-          if ($event[i].LineID == undefined || $event[i].LineID == '') {
-            Lineid = pollcounter;
-          } else {
-            Lineid = $event[i].LineID;
-          }
-          temp_array.push({
-            lineno: pollcounter,
-            rowindex: pollcounter,
-            ChrgBasis: $event[i].ChrgBasis,
-            DCNum: $event[i].DCNum,
-            LineID: Lineid,
-            OPRCode: $event[i].operation_no,
-            ResCode: $event[i].resource_code,
-            ResName: $event[i].resource_name,
-            ResType: $event[i].resource_type,
-            ResUOM: $event[i].resource_uom,
-            ResCons: ($event[i].resource_consumption).toString(),
-            ResInv: ($event[i].resource_inverse).toString(),
-            ResUsed: $event[i].no_resource_used,
-            TimeUOM: $event[i].time_uom,
-            TimeCons: ($event[i].time_consumption).toString(),
-            TimeInv: ($event[i].time_inverse).toString(),
-            oper_consumption_method: ($event[i].oper_consumption_method),
-            oper_consumption_type: ($event[i].oper_consumption_method),
-            resource_consumption_type: ($event[i].resource_consumption_type),
-            basis: $event[i].resource_basic,
-            schedule: ($event[i].schedule),
-            is_resource_disabled: true,
-            unique_key: $event[i].unique_key,
-          });
-        }
-        pollcounter++;
-      }
-      console.log("temp_array- ", temp_array);
-      if (temp_array.length > 0) {
-        this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
-      }
-    }
-
-    if (this.lookupfor == "template_routing_lookup") {
-      this.routing_header_data.template_routing_id = $event[0];
-      this.routing_header_data.template_routing_code = $event[0];
-    }
-
-    let obj = this;
-    setTimeout(() => {
-      obj.lookupfor = "";
-    });
-    console.log("this.routing_detail_resource_data - ", this.routing_detail_resource_data);
-  }
-
-  resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    console.log("this.current_selected_row", this.current_selected_row);
-    // let current_row_index = this.current_selected_row.rowindex - 1;
-    let row_c_select = this.current_selected_row.rowindex;
-    let current_row_index = this.routing_detail_data.findIndex(function (obj) {
-      return obj.rowindex == row_c_select;
-    });
-    this.row_selection = [];
-    if (type == '1') {
-       let prev_row_index = current_row_index - 1;
-     if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
-          let row_index = this.routing_detail_data[current_row_index].rowindex;
-        let lineno = this.routing_detail_data[current_row_index].lineno;
-
-        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex;
-        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[prev_row_index].lineno;
-
-        this.routing_detail_data[prev_row_index].rowindex = row_index;
-        this.routing_detail_data[prev_row_index].lineno = lineno;
-
-        var temp_swap = this.routing_detail_data[current_row_index];
-        this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
-        this.routing_detail_data[prev_row_index] = temp_swap;
-        this.row_selection = [this.routing_detail_data[prev_row_index].rowindex];
-        this.current_selected_row = this.routing_detail_data[prev_row_index];
-      }
-    } else if (type == '2') {
-        let next_row_index = current_row_index + 1;
-       
-      if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
-          let row_index = this.routing_detail_data[current_row_index].rowindex;
-        let lineno = this.routing_detail_data[current_row_index].lineno;
-
-        this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex; // this.routing_detail_data[current_row_index].rowindex + 1;
-        this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[next_row_index].lineno;
-
-        this.routing_detail_data[next_row_index].rowindex = row_index;
-        this.routing_detail_data[next_row_index].lineno =lineno;
-
-        var temp_swap = this.routing_detail_data[current_row_index];
-        this.routing_detail_data[current_row_index] = this.routing_detail_data[next_row_index];
-        this.routing_detail_data[next_row_index] = temp_swap;
-        this.row_selection = [this.routing_detail_data[next_row_index].rowindex];
-        this.current_selected_row = this.routing_detail_data[next_row_index];
-      }
-      
-      console.log("this.row_selection", this.row_selection);
-      console.log("this.current_selected_row", this.current_selected_row);
-    }
-  }
-
-  getSelectedRowDetail(event) {
-    if (event.selectedRows.length > 0) {
-      this.current_selected_row = event.selectedRows[0].dataItem;
+    
+    
+    if(input_id == "default_batch_size" ){
+      this.routing_header_data['default_lot_size'] = (value);
     } else {
-      this.current_selected_row = [];
+      this.routing_header_data[input_id] = (value);
     }
   }
 
+  if(input_id == "default_batch_size" ){
+    $('#default_lot_size').val(value);
+  } else {
+    $('#' + input_id).val(value);
+  }
+}
 
-  openFeatureLookup(flag) {
-    this.showLookupLoader = true;
-    console.log('inopen feature');
-    this.serviceData = []
-    this.lookupfor = 'feature_lookup';
-    this.service.getFeatureList().subscribe(
-      data => {
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
+ClearOperLineOnWarehouse() {
+  if (this.routing_detail_data.length > 0) {
+    for (let lookup_change_index = 0; lookup_change_index < this.routing_detail_data.length; lookup_change_index++) {
+      this.routing_detail_data[lookup_change_index].oper_id = '';
+      this.routing_detail_data[lookup_change_index].oper_code = '';
+      this.routing_detail_data[lookup_change_index].oper_desc = '';
+      this.routing_detail_data[lookup_change_index].oper_type = '';
+      this.routing_detail_data[lookup_change_index].oper_consumption_method = '';
+      this.routing_detail_data[lookup_change_index].oper_consumption_method_str = '';
+      this.routing_detail_data[lookup_change_index].wc_id = '';
+      this.routing_detail_data[lookup_change_index].wc_code = '';
+      this.routing_detail_data[lookup_change_index].mtq = '1';
+      this.routing_detail_data[lookup_change_index].count_point_operation = false;
+      this.routing_detail_data[lookup_change_index].auto_move = false;
+      this.routing_detail_data[lookup_change_index].queue_time = '00:00';
+      this.routing_detail_data[lookup_change_index].move_time = '00:00';
+      this.routing_detail_data[lookup_change_index].qc_time = '00:00';
+      this.routing_detail_data[lookup_change_index].time_uom = '1';
+    }
+  }
+}
+
+getLookupValue($event) {
+
+  console.log('in getLookupValue' + 'lookup for - ' + this.lookupfor, $event);
+  if (this.lookupfor == 'feature_lookup') {
+    this.routing_header_data.feature_id = $event[0];
+    this.routing_header_data.feature_code = $event[1];
+    this.routing_header_data.feature_description = $event[2];
+    this.GetDataByFeatureId($event[0], "header", 0);
+  }
+
+  if (this.lookupfor == 'ModelBom_lookup') {
+    this.routing_header_data.modal_id = $event[0];
+    this.routing_header_data.modal_code = $event[1];
+    this.routing_header_data.modal_description = $event[2];
+    this.GetDataByModelId($event[0], "header", 0);
+  }
+
+  if (this.lookupfor == 'warehouse_lookup') {
+    this.routing_header_data.warehouse_id = $event[0];
+    this.routing_header_data.warehouse_code = $event[0];
+    this.ClearOperLineOnWarehouse();
+  }
+
+  if (this.lookupfor == 'operation_lookup') {
+    this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
+    this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+    this.routing_detail_data[this.current_grid_action_row].auto_move = false;
+
+    this.routing_detail_data[this.current_grid_action_row].oper_id = $event[0];
+    this.routing_detail_data[this.current_grid_action_row].oper_code = $event[1];
+    this.routing_detail_data[this.current_grid_action_row].oper_desc = $event[2];
+    this.routing_detail_data[this.current_grid_action_row].oper_type = $event[3];
+    this.routing_detail_data[this.current_grid_action_row].wc_id = $event[5];
+    this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
+    this.routing_detail_data[this.current_grid_action_row].mtq = $event[9];
+    this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
+    this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
+    let obj = this;
+
+    this.new_tree_item(this.routing_detail_data[this.current_grid_action_row].type, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row], this.routing_detail_data[this.current_grid_action_row].rowindex);
+
+
+    if ($event[3] == '4' || $event[3] == '5') {
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
+      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
+    }
+
+    this.getOperationResourceDetail(this.routing_detail_data[this.current_grid_action_row].oper_id, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row].oper_type, this.routing_detail_data[this.current_grid_action_row].oper_consumption_method, this.current_grid_action_row, this.routing_detail_data[this.current_grid_action_row].unique_key, function () {
+      // obj.current_grid_action_row = 0;
+    });
+  }
+
+  if (this.lookupfor == "workcenter_lookup") {
+    this.routing_detail_data[this.current_grid_action_row].wc_id = $event[2];
+    this.routing_detail_data[this.current_grid_action_row].wc_code = $event[2];
+    //  this.current_grid_action_row = 0;
+  }
+
+  if (this.lookupfor == "routing_resource_lookup") {
+    let temp_array = [];
+    let pollcounter = 1;
+    for (let i = 0; i < $event.length; ++i) {
+      console.log("$event[i] ", $event[i]);
+      if ($event[i].resource_code != undefined) {
+        let Lineid;
+        if ($event[i].LineID == undefined || $event[i].LineID == '') {
+          Lineid = pollcounter;
+        } else {
+          Lineid = $event[i].LineID;
         }
-        if (data.length > 0) {
-          this.showLookupLoader = false;
-          this.serviceData = data;
-          console.log(this.serviceData);
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.clearInvalidfeature();
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.serviceData = [];
-        this.lookupfor = "";
-        this.clearInvalidfeature();
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        return;
+        temp_array.push({
+          lineno: pollcounter,
+          rowindex: pollcounter,
+          ChrgBasis: $event[i].ChrgBasis,
+          DCNum: $event[i].DCNum,
+          LineID: Lineid,
+          OPRCode: $event[i].operation_no,
+          ResCode: $event[i].resource_code,
+          ResName: $event[i].resource_name,
+          ResType: $event[i].resource_type,
+          ResUOM: $event[i].resource_uom,
+          ResCons: ($event[i].resource_consumption).toString(),
+          ResInv: ($event[i].resource_inverse).toString(),
+          ResUsed: $event[i].no_resource_used,
+          TimeUOM: $event[i].time_uom,
+          TimeCons: ($event[i].time_consumption).toString(),
+          TimeInv: ($event[i].time_inverse).toString(),
+          oper_consumption_method: ($event[i].oper_consumption_method),
+          oper_consumption_type: ($event[i].oper_consumption_method),
+          resource_consumption_type: ($event[i].resource_consumption_type),
+          basis: $event[i].resource_basic,
+          schedule: ($event[i].schedule),
+          is_resource_disabled: true,
+          unique_key: $event[i].unique_key,
+        });
       }
-    )
-
+      pollcounter++;
+    }
+    console.log("temp_array- ", temp_array);
+    if (temp_array.length > 0) {
+      this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] = temp_array;
+    }
   }
 
-  openModalLookup(flag) {
-    this.showLookupLoader = true;
-    this.serviceData = []
-    this.service.GetModelList().subscribe(
-      data => {
+  if (this.lookupfor == "template_routing_lookup") {
+    this.routing_header_data.template_routing_id = $event[0];
+    this.routing_header_data.template_routing_code = $event[0];
+  }
 
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        }
+  let obj = this;
+  setTimeout(() => {
+    obj.lookupfor = "";
+  });
+  console.log("this.routing_detail_resource_data - ", this.routing_detail_resource_data);
+}
 
+resequence_operation(type) {  // type = 1 : up & type = 2 : down
+  console.log("this.current_selected_row", this.current_selected_row);
+  // let current_row_index = this.current_selected_row.rowindex - 1;
+  let row_c_select = this.current_selected_row.rowindex;
+  let current_row_index = this.routing_detail_data.findIndex(function (obj) {
+    return obj.rowindex == row_c_select;
+  });
+  this.row_selection = [];
+  if (type == '1') {
+    let prev_row_index = current_row_index - 1;
+    if (this.routing_detail_data[prev_row_index] != undefined) { // && this.routing_detail_data[prev_row_index].length > 0
+      let row_index = this.routing_detail_data[current_row_index].rowindex;
+      let lineno = this.routing_detail_data[current_row_index].lineno;
+
+      this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[prev_row_index].rowindex;
+      this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[prev_row_index].lineno;
+
+      this.routing_detail_data[prev_row_index].rowindex = row_index;
+      this.routing_detail_data[prev_row_index].lineno = lineno;
+
+      var temp_swap = this.routing_detail_data[current_row_index];
+      this.routing_detail_data[current_row_index] = this.routing_detail_data[prev_row_index];
+      this.routing_detail_data[prev_row_index] = temp_swap;
+      this.row_selection = [this.routing_detail_data[prev_row_index].rowindex];
+      this.current_selected_row = this.routing_detail_data[prev_row_index];
+    }
+  } else if (type == '2') {
+    let next_row_index = current_row_index + 1;
+    
+    if (this.routing_detail_data[next_row_index] != undefined) { // && this.routing_detail_data[next_row_index].length > 0
+      let row_index = this.routing_detail_data[current_row_index].rowindex;
+      let lineno = this.routing_detail_data[current_row_index].lineno;
+
+      this.routing_detail_data[current_row_index].rowindex = this.routing_detail_data[next_row_index].rowindex; // this.routing_detail_data[current_row_index].rowindex + 1;
+      this.routing_detail_data[current_row_index].lineno = this.routing_detail_data[next_row_index].lineno;
+
+      this.routing_detail_data[next_row_index].rowindex = row_index;
+      this.routing_detail_data[next_row_index].lineno =lineno;
+
+      var temp_swap = this.routing_detail_data[current_row_index];
+      this.routing_detail_data[current_row_index] = this.routing_detail_data[next_row_index];
+      this.routing_detail_data[next_row_index] = temp_swap;
+      this.row_selection = [this.routing_detail_data[next_row_index].rowindex];
+      this.current_selected_row = this.routing_detail_data[next_row_index];
+    }
+    
+    console.log("this.row_selection", this.row_selection);
+    console.log("this.current_selected_row", this.current_selected_row);
+  }
+}
+
+getSelectedRowDetail(event) {
+  if (event.selectedRows.length > 0) {
+    this.current_selected_row = event.selectedRows[0].dataItem;
+  } else {
+    this.current_selected_row = [];
+  }
+}
+
+
+openFeatureLookup(flag) {
+  this.showLookupLoader = true;
+  console.log('inopen feature');
+  this.serviceData = []
+  this.lookupfor = 'feature_lookup';
+  this.service.getFeatureList().subscribe(
+    data => {
+      if (data != undefined) {
         if (data.length > 0) {
-          this.lookupfor = 'ModelBom_lookup';
-          this.showLookupLoader = false;
-          this.serviceData = data;
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.clearInvalidModel();
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.clearInvalidModel();
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        return;
-      }
-    )
-  }
-
-  clearInvalidfeature() {
-    this.routing_header_data.feature_id = '';
-    this.routing_header_data.feature_code = '';
-    this.routing_header_data.feature_description = '';
-    this.routing_detail_data = [];
-    this.live_tree_view_data = [];
-    this.tree_data_json = [];
-
-  }
-
-  clearInvalidModel() {
-    this.routing_header_data.modal_id = '';
-    this.routing_header_data.modal_code = '';
-    this.routing_header_data.modal_description = "";
-    this.routing_detail_data = [];
-    this.live_tree_view_data = [];
-    this.tree_data_json = [];
-
-  }
-
-  getFeatureDetail(feature_code) {
-    this.showLookupLoader = true;
-    this.service.getFeatureDetail(feature_code).subscribe(
-      data => {
-        console.log(data);
-        if (data != null) {
-          if (data != undefined) {
-            if (data.length > 0) {
-              if (data[0].ErrorMsg == "7001") {
-                this.commonService.RemoveLoggedInUser().subscribe();
-                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                this.showLookupLoader = false;
-                return;
-              }
-            }
-          }
-          if (data.length > 0) {
-            this.routing_header_data.feature_id = data[0].FeatureId;
-            this.routing_header_data.feature_code = data[0].FeatureCode;
-            this.routing_header_data.feature_description = data[0].DisplayName
-            this.GetDataByFeatureId(this.routing_header_data.feature_id, 'header', 0);
-          } else {
-            this.clearInvalidfeature();
-            this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
             return;
           }
+        }
+      }
+      if (data.length > 0) {
+        this.showLookupLoader = false;
+        this.serviceData = data;
+        console.log(this.serviceData);
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.clearInvalidfeature();
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.serviceData = [];
+      this.lookupfor = "";
+      this.clearInvalidfeature();
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      return;
+    }
+    )
+
+}
+
+openModalLookup(flag) {
+  this.showLookupLoader = true;
+  this.serviceData = []
+  this.service.GetModelList().subscribe(
+    data => {
+
+      if (data != undefined) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
+          }
+        }
+      }
+
+      if (data.length > 0) {
+        this.lookupfor = 'ModelBom_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.clearInvalidModel();
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.clearInvalidModel();
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      return;
+    }
+    )
+}
+
+clearInvalidfeature() {
+  this.routing_header_data.feature_id = '';
+  this.routing_header_data.feature_code = '';
+  this.routing_header_data.feature_description = '';
+  this.routing_detail_data = [];
+  this.live_tree_view_data = [];
+  this.tree_data_json = [];
+
+}
+
+clearInvalidModel() {
+  this.routing_header_data.modal_id = '';
+  this.routing_header_data.modal_code = '';
+  this.routing_header_data.modal_description = "";
+  this.routing_detail_data = [];
+  this.live_tree_view_data = [];
+  this.tree_data_json = [];
+
+}
+
+getFeatureDetail(feature_code) {
+  this.showLookupLoader = true;
+  this.service.getFeatureDetail(feature_code).subscribe(
+    data => {
+      console.log(data);
+      if (data != null) {
+        if (data != undefined) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              this.showLookupLoader = false;
+              return;
+            }
+          }
+        }
+        if (data.length > 0) {
+          this.routing_header_data.feature_id = data[0].FeatureId;
+          this.routing_header_data.feature_code = data[0].FeatureCode;
+          this.routing_header_data.feature_description = data[0].DisplayName
+          this.GetDataByFeatureId(this.routing_header_data.feature_id, 'header', 0);
         } else {
           this.clearInvalidfeature();
           this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
           this.showLookupLoader = false;
           return;
         }
-      }, error => {
+      } else {
         this.clearInvalidfeature();
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        this.toastr.error('', this.language.InvalidFeatureCode, this.commonData.toast_config);
         this.showLookupLoader = false;
         return;
       }
+    }, error => {
+      this.clearInvalidfeature();
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      this.showLookupLoader = false;
+      return;
+    }
     );
-  }
+}
 
-  getModalDetail(model_code) {
+getModalDetail(model_code) {
 
-    this.showLookupLoader = true;
-    this.service.getModalDetail(model_code).subscribe(
-      data => {
-        console.log(data);
-        if (data != null) {
-          if (data.length > 0) {
-            this.routing_header_data.modal_id = data[0].ModelId;
-            this.routing_header_data.modal_code = data[0].ModelCode;
-            this.routing_header_data.modal_description = data[0].DisplayName;
-            this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0);
-          } else {
-
-            this.clearInvalidModel();
-            this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
-            this.showLookupLoader = false;
-            return;
-          }
+  this.showLookupLoader = true;
+  this.service.getModalDetail(model_code).subscribe(
+    data => {
+      console.log(data);
+      if (data != null) {
+        if (data.length > 0) {
+          this.routing_header_data.modal_id = data[0].ModelId;
+          this.routing_header_data.modal_code = data[0].ModelCode;
+          this.routing_header_data.modal_description = data[0].DisplayName;
+          this.GetDataByModelId(this.routing_header_data.modal_id, 'header', 0);
         } else {
+
           this.clearInvalidModel();
           this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
           this.showLookupLoader = false;
           return;
         }
-      }, error => {
+      } else {
         this.clearInvalidModel();
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        this.toastr.error('', this.language.InvalidModelCode, this.commonData.toast_config);
         this.showLookupLoader = false;
         return;
       }
+    }, error => {
+      this.clearInvalidModel();
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      this.showLookupLoader = false;
+      return;
+    }
     );
-  }
+}
 
 
 
-  GetDataByFeatureId(feature_code, press_location, index) {
-    this.routing_detail_data = [];
-    this.tree_data_json = [];
-    this.live_tree_view_data = [];
-    if (press_location == 'header') {
-      this.showLookupLoader = true;
-      this.service.GetDataByFeatureId(feature_code).subscribe(
-        data => {
-          console.log(data);
-          if (data != undefined && data.LICDATA != undefined) {
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
+GetDataByFeatureId(feature_code, press_location, index) {
+  this.routing_detail_data = [];
+  this.tree_data_json = [];
+  this.live_tree_view_data = [];
+  if (press_location == 'header') {
+    this.showLookupLoader = true;
+    this.service.GetDataByFeatureId(feature_code).subscribe(
+      data => {
+        console.log(data);
+        if (data != undefined && data.LICDATA != undefined) {
+          if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
           }
+        }
 
-          if (data.FeatureDetail.length > 0) {
+        if (data.FeatureDetail.length > 0) {
 
+          let temp = new Date(this.routing_header_data.EffectiveDate);
+          let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+          for (let i = 0; i < data.FeatureDetail.length; ++i) {
+            let featuredata = data.FeatureDetail[i];
+            let value = '';
+            let value_code = '';
+            let desc = '';
+            this.counter = 0;
+            if (this.routing_detail_data.length > 0) {
+              this.counter = this.routing_detail_data.length
+            }
+            this.counter++;
+
+            let open_allow = true;
+            let open_allow_show = true;
+            if (featuredata.OPTM_TYPE == 1) {
+              value = (featuredata.OPTM_CHILDFEATUREID).toString();
+              value_code = featuredata.child_code;
+              if (featuredata.OPTM_ACCESSORY == 'Y' || featuredata.OPTM_ACCESSORY == 'y') {
+                open_allow = false;
+                open_allow_show = false
+              }
+            } else if (featuredata.OPTM_TYPE == 2) {
+              value = (featuredata.OPTM_ITEMKEY).toString();
+              value_code = featuredata.OPTM_ITEMKEY;
+            } else if (featuredata.OPTM_TYPE == 3) {
+              value = (featuredata.OPTM_VALUE).toString();
+              value_code = featuredata.OPTM_VALUE;
+              open_allow = false;
+              open_allow_show = false;
+            }
+            desc = featuredata.OPTM_DISPLAYNAME;
+            this.routing_detail_data.push({
+              lineno: this.counter,
+              rowindex: this.counter,
+              type: featuredata.OPTM_TYPE,
+              type_value: (value),
+              type_value_code: (value_code).toString(),
+              description: desc,
+              operation_top_level: false,
+              oper_id: '',
+              oper_code: '',
+              oper_desc: '',
+              oper_type: '',
+              oper_consumption_method: '',
+              oper_consumption_method_str: '',
+              wc_id: '',
+              wc_code: '',
+              mtq: '1',
+              count_point_operation: false,
+              auto_move: false,
+              effective_date: temp_effective_date,
+              queue_time: '00:00',
+              move_time: '00:00',
+              qc_time: '00:00',
+              time_uom: '1',
+              opn_application: open_allow,
+              isTypeDisabled: true,
+              showOperationbtn: false,
+              count_point_operation_disabled: false,
+              inc_lead_time_calc: false,
+              isOpenApplicableVisible: open_allow_show,
+              unique_key: this.commonData.random_string(55)
+            });
+          }
+          this.showLookupLoader = false;
+        } else {
+          this.showLookupLoader = false;
+          this.clearInvalidfeature();
+          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        }
+      }, error => {
+        this.showLookupLoader = false;
+        this.clearInvalidfeature();
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        return;
+      });
+  }
+}
+
+GetDataByModelId(modal_code, press_location, index) {
+  this.routing_detail_data = [];
+  this.tree_data_json = [];
+  this.live_tree_view_data = [];
+  if (press_location == 'header') {
+    this.showLookupLoader = true;
+    this.service.GetDataByModelId(modal_code).subscribe(
+      data => {
+        if (data != undefined && data.LICDATA != undefined) {
+          if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
+          }
+        }
+        console.log(data);
+        if (data.ModelDetail.length > 0) {
+          for (let i = 0; i < data.ModelDetail.length; ++i) {
+            let modeldata = data.ModelDetail[i];
+            let value = '';
+            let value_code = '';
+            let desc = '';
+            this.counter = 0;
+            if (this.routing_detail_data.length > 0) {
+              this.counter = this.routing_detail_data.length
+            }
+            this.counter++;
             let temp = new Date(this.routing_header_data.EffectiveDate);
             let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-            for (let i = 0; i < data.FeatureDetail.length; ++i) {
-              let featuredata = data.FeatureDetail[i];
-              let value = '';
-              let value_code = '';
-              let desc = '';
-              this.counter = 0;
-              if (this.routing_detail_data.length > 0) {
-                this.counter = this.routing_detail_data.length
-              }
-              this.counter++;
+            let open_allow = true;
+            let open_allow_show = true;
 
-              let open_allow = true;
-              let open_allow_show = true;
-              if (featuredata.OPTM_TYPE == 1) {
-                value = (featuredata.OPTM_CHILDFEATUREID).toString();
-                value_code = featuredata.child_code;
-                if (featuredata.OPTM_ACCESSORY == 'Y' || featuredata.OPTM_ACCESSORY == 'y') {
-                  open_allow = false;
-                  open_allow_show = false
-                }
-              } else if (featuredata.OPTM_TYPE == 2) {
-                value = (featuredata.OPTM_ITEMKEY).toString();
-                value_code = featuredata.OPTM_ITEMKEY;
-              } else if (featuredata.OPTM_TYPE == 3) {
-                value = (featuredata.OPTM_VALUE).toString();
-                value_code = featuredata.OPTM_VALUE;
+            if (modeldata.OPTM_TYPE == 1) {
+              value = (modeldata.OPTM_FEATUREID).toString();
+              value_code = modeldata.feature_code;
+              console.log('in here ', modeldata.OPTM_TYPE, 'vlaue ', value_code, ' accessory ', modeldata.Accessory);
+              if (modeldata.Accessory == 'Y' || modeldata.Accessory == 'y') {
                 open_allow = false;
                 open_allow_show = false;
               }
-              desc = featuredata.OPTM_DISPLAYNAME;
-              this.routing_detail_data.push({
-                lineno: this.counter,
-                rowindex: this.counter,
-                type: featuredata.OPTM_TYPE,
-                type_value: (value),
-                type_value_code: (value_code).toString(),
-                description: desc,
-                operation_top_level: false,
-                oper_id: '',
-                oper_code: '',
-                oper_desc: '',
-                oper_type: '',
-                oper_consumption_method: '',
-                oper_consumption_method_str: '',
-                wc_id: '',
-                wc_code: '',
-                mtq: '1',
-                count_point_operation: false,
-                auto_move: false,
-                effective_date: temp_effective_date,
-                queue_time: '00:00',
-                move_time: '00:00',
-                qc_time: '00:00',
-                time_uom: '1',
-                opn_application: open_allow,
-                isTypeDisabled: true,
-                showOperationbtn: false,
-                count_point_operation_disabled: false,
-                inc_lead_time_calc: false,
-                isOpenApplicableVisible: open_allow_show,
-                unique_key: this.commonData.random_string(55)
-              });
+
+            } else if (modeldata.OPTM_TYPE == 2) {
+              value = (modeldata.OPTM_ITEMKEY).toString();
+              value_code = modeldata.OPTM_ITEMKEY;
+            } else if (modeldata.OPTM_TYPE == 3) {
+              value = (modeldata.OPTM_CHILDMODELID).toString();
+              value_code = modeldata.child_code;
             }
-            this.showLookupLoader = false;
-          } else {
-            this.showLookupLoader = false;
-            this.clearInvalidfeature();
-            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          }
-        }, error => {
-          this.showLookupLoader = false;
-          this.clearInvalidfeature();
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-          return;
-        });
-    }
-  }
-
-  GetDataByModelId(modal_code, press_location, index) {
-    this.routing_detail_data = [];
-    this.tree_data_json = [];
-    this.live_tree_view_data = [];
-    if (press_location == 'header') {
-      this.showLookupLoader = true;
-      this.service.GetDataByModelId(modal_code).subscribe(
-        data => {
-          if (data != undefined && data.LICDATA != undefined) {
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-          console.log(data);
-          if (data.ModelDetail.length > 0) {
-            for (let i = 0; i < data.ModelDetail.length; ++i) {
-              let modeldata = data.ModelDetail[i];
-              let value = '';
-              let value_code = '';
-              let desc = '';
-              this.counter = 0;
-              if (this.routing_detail_data.length > 0) {
-                this.counter = this.routing_detail_data.length
-              }
-              this.counter++;
-              let temp = new Date(this.routing_header_data.EffectiveDate);
-              let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-              let open_allow = true;
-              let open_allow_show = true;
-
-              if (modeldata.OPTM_TYPE == 1) {
-                value = (modeldata.OPTM_FEATUREID).toString();
-                value_code = modeldata.feature_code;
-                console.log('in here ', modeldata.OPTM_TYPE, 'vlaue ', value_code, ' accessory ', modeldata.Accessory);
-                if (modeldata.Accessory == 'Y' || modeldata.Accessory == 'y') {
-                  open_allow = false;
-                  open_allow_show = false;
-                }
-
-              } else if (modeldata.OPTM_TYPE == 2) {
-                value = (modeldata.OPTM_ITEMKEY).toString();
-                value_code = modeldata.OPTM_ITEMKEY;
-              } else if (modeldata.OPTM_TYPE == 3) {
-                value = (modeldata.OPTM_CHILDMODELID).toString();
-                value_code = modeldata.child_code;
-              }
-              desc = modeldata.OPTM_DISPLAYNAME;
-              this.routing_detail_data.push({
-                lineno: this.counter,
-                rowindex: this.counter,
-                type: modeldata.OPTM_TYPE,
-                type_value: (value),
-                type_value_code: (value_code).toString(),
-                description: desc,
-                operation_top_level: '',
-                oper_id: '',
-                oper_code: '',
-                oper_desc: '',
-                oper_type: '',
-                oper_consumption_method: '',
-                oper_consumption_method_str: '',
-                wc_id: '',
-                wc_code: '',
-                mtq: '1',
-                count_point_operation: false,
-                auto_move: false,
-                effective_date: temp_effective_date,
-                queue_time: '00:00',
-                move_time: '00:00',
-                qc_time: '00:00',
-                time_uom: '1',
-                opn_application: open_allow,
-                isTypeDisabled: true,
-                showOperationbtn: false,
-                count_point_operation_disabled: false,
-                inc_lead_time_calc: false,
-                isOpenApplicableVisible: open_allow_show,
-                unique_key: this.commonData.random_string(55)
-              });
+            desc = modeldata.OPTM_DISPLAYNAME;
+            this.routing_detail_data.push({
+              lineno: this.counter,
+              rowindex: this.counter,
+              type: modeldata.OPTM_TYPE,
+              type_value: (value),
+              type_value_code: (value_code).toString(),
+              description: desc,
+              operation_top_level: '',
+              oper_id: '',
+              oper_code: '',
+              oper_desc: '',
+              oper_type: '',
+              oper_consumption_method: '',
+              oper_consumption_method_str: '',
+              wc_id: '',
+              wc_code: '',
+              mtq: '1',
+              count_point_operation: false,
+              auto_move: false,
+              effective_date: temp_effective_date,
+              queue_time: '00:00',
+              move_time: '00:00',
+              qc_time: '00:00',
+              time_uom: '1',
+              opn_application: open_allow,
+              isTypeDisabled: true,
+              showOperationbtn: false,
+              count_point_operation_disabled: false,
+              inc_lead_time_calc: false,
+              isOpenApplicableVisible: open_allow_show,
+              unique_key: this.commonData.random_string(55)
+            });
 
               /*  let icon_type = { "2": "item", "1": "feature", "3": "modal", "4": "operation" };
               if (this.live_tree_view_data.length == 0){
@@ -1086,699 +1091,708 @@ export class RoutingComponent implements OnInit {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           return;
         });
-    } else {
+} else {
 
-    }
-  }
+}
+}
 
-  clearInvalidWarehouse() {
-    this.routing_header_data.warehouse_code = '';
-    this.toastr.error('', this.language.InvalidWHCode, this.commonData.toast_config);
-  }
+clearInvalidWarehouse() {
+  this.routing_header_data.warehouse_code = '';
+  this.toastr.error('', this.language.InvalidWHCode, this.commonData.toast_config);
+}
 
-  openWarehouseLook(flag) {
-    this.showLookupLoader = true;
-    this.serviceData = []
-    this.service.getWarehouseList().subscribe(
-      data => {
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        }
+openWarehouseLook(flag) {
+  this.showLookupLoader = true;
+  this.serviceData = []
+  this.service.getWarehouseList().subscribe(
+    data => {
+      if (data != undefined) {
         if (data.length > 0) {
-          this.lookupfor = 'warehouse_lookup';
-          this.showLookupLoader = false;
-          this.serviceData = data;
-
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        return;
-      }
-    )
-  }
-
-  getWarehouseDetails(warehouse_code) {
-    this.showLookupLoader = true;
-    this.ClearOperLineOnWarehouse();
-    this.service.getWarehouseDetail(warehouse_code).subscribe(
-      data => {
-        console.log(data);
-        if (data != null) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-            this.routing_header_data.warehouse_code = warehouse_code;
-            this.showLookupLoader = false;
-          } else {
-            this.clearInvalidWarehouse();
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
             return;
           }
+        }
+      }
+      if (data.length > 0) {
+        this.lookupfor = 'warehouse_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
+
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      return;
+    }
+    )
+}
+
+getWarehouseDetails(warehouse_code) {
+  this.showLookupLoader = true;
+  this.ClearOperLineOnWarehouse();
+  this.service.getWarehouseDetail(warehouse_code).subscribe(
+    data => {
+      console.log(data);
+      if (data != null) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
+          }
+          this.routing_header_data.warehouse_code = warehouse_code;
+          this.showLookupLoader = false;
         } else {
           this.clearInvalidWarehouse();
           this.showLookupLoader = false;
           return;
         }
-      }, error => {
+      } else {
         this.clearInvalidWarehouse();
         this.showLookupLoader = false;
         return;
       }
+    }, error => {
+      this.clearInvalidWarehouse();
+      this.showLookupLoader = false;
+      return;
+    }
     );
-  }
+}
 
-  openTemplateRoutingLookup(flag) {
+openTemplateRoutingLookup(flag) {
 
-    this.showLookupLoader = true;
-    this.serviceData = []
-    this.service.TemplateRoutingList().subscribe(
-      data => {
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        }
+  this.showLookupLoader = true;
+  this.serviceData = []
+  this.service.TemplateRoutingList().subscribe(
+    data => {
+      if (data != undefined) {
         if (data.length > 0) {
-          this.lookupfor = 'template_routing_lookup';
-          this.showLookupLoader = false;
-          this.serviceData = data;
-
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        return;
-      }
-    )
-
-  }
-
-  clearInvalidTemplateRouting() {
-    this.routing_header_data.template_routing_id = "";
-    this.routing_header_data.template_routing_code = "";
-    this.toastr.error('', this.language.invalid_template_routing_code, this.commonData.toast_config);
-  }
-
-  getTemplateRoutingDetails(template_code) {
-    this.showLookupLoader = true;
-    this.service.TemplateRoutingDetail(template_code).subscribe(
-      data => {
-        console.log(data);
-        if (data != null) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-            this.routing_header_data.template_routing_id = data[0].ITEMCODE;
-            this.routing_header_data.template_routing_code = data[0].ITEMCODE;
-            this.showLookupLoader = false;
-          } else {
-            this.clearInvalidTemplateRouting();
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
             return;
           }
+        }
+      }
+      if (data.length > 0) {
+        this.lookupfor = 'template_routing_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
+
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      return;
+    }
+    )
+
+}
+
+clearInvalidTemplateRouting() {
+  this.routing_header_data.template_routing_id = "";
+  this.routing_header_data.template_routing_code = "";
+  this.toastr.error('', this.language.invalid_template_routing_code, this.commonData.toast_config);
+}
+
+getTemplateRoutingDetails(template_code) {
+  this.showLookupLoader = true;
+  this.service.TemplateRoutingDetail(template_code).subscribe(
+    data => {
+      console.log(data);
+      if (data != null) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
+          }
+          this.routing_header_data.template_routing_id = data[0].ITEMCODE;
+          this.routing_header_data.template_routing_code = data[0].ITEMCODE;
+          this.showLookupLoader = false;
         } else {
           this.clearInvalidTemplateRouting();
           this.showLookupLoader = false;
           return;
         }
-      },
-      error => {
-        this.showLookupLoader = false;
+      } else {
         this.clearInvalidTemplateRouting();
+        this.showLookupLoader = false;
         return;
-      });
-  }
-
-  on_type_click_lookup(type, rowindex) {
-    this.showLookupLoader = true;
-    this.serviceData = [];
-    this.showLookupLoader = false;
-  }
-
-  open_operation_lookup(type, rowindex) {
-    this.serviceData = [];
-
-    if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
-      this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.clearInvalidTemplateRouting();
       return;
-    }
+    });
+}
 
-    this.showLookupLoader = true;
-    this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
-      data => {
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        }
+on_type_click_lookup(type, rowindex) {
+  this.showLookupLoader = true;
+  this.serviceData = [];
+  this.showLookupLoader = false;
+}
+
+open_operation_lookup(type, rowindex) {
+  this.serviceData = [];
+
+  if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
+    this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
+    return;
+  }
+
+  this.showLookupLoader = true;
+  this.service.getOperationList(this.routing_header_data.warehouse_code).subscribe(
+    data => {
+      if (data != undefined) {
         if (data.length > 0) {
-          this.current_grid_action_row = this.getGridCurrentRow(rowindex);
-          this.lookupfor = 'operation_lookup';
-          this.showLookupLoader = false;
-          let temp_data_arr = [];
-          console.log("commonData - ", this.commonData.operation_type);
-          for (var ii = 0; ii < data.length; ii++) {
-            data[ii].operTypeStr = this.commonData.operation_type[data[ii].OPRType];
-            temp_data_arr.push(data[ii]);
-
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
           }
-          console.log(temp_data_arr);
-          this.serviceData = temp_data_arr;
-
         }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-        return;
       }
-    )
-  }
-
-  open_wc_lookup(type, rowindex) {
-    this.serviceData = [];
-
-    if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
-      this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
-      return;
-    }
-
-    this.showLookupLoader = true;
-    this.service.getWCList(this.routing_header_data.warehouse_code).subscribe(
-      data => {
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-        }
-        if (data.length > 0) {
-          this.current_grid_action_row = this.getGridCurrentRow(rowindex);
-          this.lookupfor = 'workcenter_lookup';
-          this.showLookupLoader = false;
-          this.serviceData = data;
-        }
-        else {
-          this.lookupfor = "";
-          this.serviceData = [];
-          this.showLookupLoader = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
+      if (data.length > 0) {
+        this.current_grid_action_row = this.getGridCurrentRow(rowindex);
+        this.lookupfor = 'operation_lookup';
         this.showLookupLoader = false;
-        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-        return;
+        let temp_data_arr = [];
+        console.log("commonData - ", this.commonData.operation_type);
+        for (var ii = 0; ii < data.length; ii++) {
+          data[ii].operTypeStr = this.commonData.operation_type[data[ii].OPRType];
+          temp_data_arr.push(data[ii]);
+
+        }
+        console.log(temp_data_arr);
+        this.serviceData = temp_data_arr;
+
       }
-    )
-  }
-
-  getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
-    this.showLookupLoader = true;
-    if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
-      this.routing_detail_resource_data[rowindex] = [];
-    }
-    this.service.getOperationResource(oper_id).subscribe(
-      data => {
-        this.showLookupLoader = false;
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.commonService.RemoveLoggedInUser().subscribe();
-              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
-        }
-        if (data != undefined && data != '') {
-          if (data.length > 0) {
-            let operData = [];
-            let localhcounter = 1;
-            let basis = '1';
-            let is_basis_disabled = false;
-            if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
-              basis = '4';
-              is_basis_disabled = true;
-            }
-
-            if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
-              basis = '1';
-              is_basis_disabled = false;
-            }
-
-            if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
-              basis = '1';
-              is_basis_disabled = false;
-            }
-            for (let i = 0; i < data.length; ++i) {
-
-
-
-              data[i].OPRCode = oper_code;
-              data[i].lineno = localhcounter;
-              data[i].rowindex = localhcounter;
-              data[i].unique_key = operation_line_unique_key;
-              data[i].ResCode = data[i].ResCode;
-
-              data[i].ResName = data[i].ResName;
-              data[i].ResType = data[i].ResType;
-              data[i].ResUOM = data[i].ResUOM;
-              data[i].ResCons = (data[i].ResCons).toString();
-              data[i].ResInv = (data[i].ResInv).toString();
-              data[i].ResUsed = data[i].ResUsed;
-              data[i].TimeUOM = data[i].TimeUOM
-              data[i].TimeCons = (data[i].TimeCons).toString();
-              data[i].TimeInv = (data[i].TimeInv).toString();
-              data[i].resource_consumption_type = oper_consumption_type;
-              data[i].basis = data[i].ChrgBasis;
-              data[i].schedule = false,
-                data[i].oper_consumption_method = oper_consumption_type;
-              data[i].oper_type = oper_type;
-
-              operData.push(data[i]);
-              localhcounter++;
-            }
-            this.routing_detail_resource_data[rowindex] = operData;
-          }
-        }
-        if (callback != "" || callback !== undefined) {
-          callback();
-        }
-      },
-      error => {
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-        if (callback != "" || callback !== undefined) {
-          callback();
-        }
-        return;
-      }
-    );
-  }
-
-  open_operation_resources(flag) {
-    if (Object.keys(this.current_selected_row).length > 0) {
-      if (this.current_selected_row.oper_code != "") {
-        this.showLookupLoader = true;
-        // service call for operation wise resource 
+      else {
+        this.lookupfor = "";
         this.serviceData = [];
-        /*  this.service.getOperationResource(this.current_selected_row.oper_code).subscribe(
-           data => { */
-        this.serviceData.oper_code = this.current_selected_row.oper_code;
-        this.serviceData.wc_code = this.current_selected_row.wc_code;
-        this.serviceData.unique_key = this.current_selected_row.unique_key;
-        this.serviceData.oper_res = (this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] != undefined) ? this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] : [];
-        this.lookupfor = 'routing_resource_lookup';
         this.showLookupLoader = false;
-
-
-        this.showLookupLoader = false;
-      } else {
-        this.toastr.info('', this.language.Operationcodemissing + ' ' + this.current_selected_row.rowindex, this.commonData.toast_config);
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         return;
       }
-
-    } else {
-      this.toastr.info('', this.language.select_atleast_oper, this.commonData.toast_config);
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
       return;
     }
+    )
+}
+
+open_wc_lookup(type, rowindex) {
+  this.serviceData = [];
+
+  if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
+    this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
+    return;
   }
 
-  changeEffectiveDate(picker_date) {
-    let temp = new Date(picker_date);
-    this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-  }
-
-  confirm_override_grid_effective_date() {
-    this.dialog_params.push({ 'dialog_type': 'confirmation', 'message': this.language.confirm_override_detials_effective_date });
-    this.show_dialog = true;
-  }
-
-  //This will take confimation box value
-  get_dialog_value(userSelectionValue) {
-
-    if (this.is_delete_called == true) {
-      if (userSelectionValue == true) {
-        this.onDelete(this.update_id);
+  this.showLookupLoader = true;
+  this.service.getWCList(this.routing_header_data.warehouse_code).subscribe(
+    data => {
+      if (data != undefined) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            this.showLookupLoader = false;
+            return;
+          }
+        }
       }
-      this.show_dialog = false;
-      this.is_delete_called = false;
-    } else {
-      console.log('in get_dialog_value', userSelectionValue);
-      if (userSelectionValue == true) {
-        this.over_ride_grid_effective_date();
+      if (data.length > 0) {
+        this.current_grid_action_row = this.getGridCurrentRow(rowindex);
+        this.lookupfor = 'workcenter_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
       }
-      this.show_dialog = false;
-
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+      return;
     }
+    )
+}
 
+getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type, rowindex, operation_line_unique_key, callback) {
+  this.showLookupLoader = true;
+  if (this.routing_detail_resource_data[rowindex] == undefined || this.routing_detail_resource_data[rowindex].length > 0) {
+    this.routing_detail_resource_data[rowindex] = [];
   }
-
-  over_ride_grid_effective_date() {
-    console.log('in over_ride_grid_effective_date');
-    let temp = new Date(this.routing_header_data.EffectiveDate);
-    let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
-    // let temp_effective_date = new Date(temp.getFullYear(), (temp.getMonth()), temp.getDate());
-    for (let i = 0; i < this.routing_detail_data.length; ++i) {
-      this.routing_detail_data[i].effective_date = temp_effective_date;
-    }
-  }
-
-  validate_header_info() {
-    var output: any = '1';
-    if (this.routing_header_data.routing_for == 'feature') {
-      if (this.routing_header_data.feature_code == "" || this.routing_header_data.feature_code == undefined || this.routing_header_data.feature_code == null) {
-        this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
-        output = '0';
+  this.service.getOperationResource(oper_id).subscribe(
+    data => {
+      this.showLookupLoader = false;
+      if (data != undefined) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          }
+        }
       }
-    } else if (this.routing_header_data.routing_for == 'model') {
-      if (this.routing_header_data.modal_code == "" || this.routing_header_data.modal_code == undefined || this.routing_header_data.modal_code == null) {
-        this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-        output = '0';
+      if (data != undefined && data != '') {
+        if (data.length > 0) {
+          let operData = [];
+          let localhcounter = 1;
+          let basis = '1';
+          let is_basis_disabled = false;
+          if (oper_consumption_type == '1' || oper_consumption_type == 1) { // setup 
+            basis = '4';
+            is_basis_disabled = true;
+          }
+
+          if (oper_consumption_type == '2' || oper_consumption_type == 2) { // variable
+            basis = '1';
+            is_basis_disabled = false;
+          }
+
+          if (oper_consumption_type == '3' || oper_consumption_type == 3) { // Fixed
+            basis = '1';
+            is_basis_disabled = false;
+          }
+          for (let i = 0; i < data.length; ++i) {
+
+
+
+            data[i].OPRCode = oper_code;
+            data[i].lineno = localhcounter;
+            data[i].rowindex = localhcounter;
+            data[i].unique_key = operation_line_unique_key;
+            data[i].ResCode = data[i].ResCode;
+
+            data[i].ResName = data[i].ResName;
+            data[i].ResType = data[i].ResType;
+            data[i].ResUOM = data[i].ResUOM;
+            data[i].ResCons = (data[i].ResCons).toString();
+            data[i].ResInv = (data[i].ResInv).toString();
+            data[i].ResUsed = data[i].ResUsed;
+            data[i].TimeUOM = data[i].TimeUOM
+            data[i].TimeCons = (data[i].TimeCons).toString();
+            data[i].TimeInv = (data[i].TimeInv).toString();
+            data[i].resource_consumption_type = oper_consumption_type;
+            data[i].basis = data[i].ChrgBasis;
+            data[i].schedule = false,
+            data[i].oper_consumption_method = oper_consumption_type;
+            data[i].oper_type = oper_type;
+
+            operData.push(data[i]);
+            localhcounter++;
+          }
+          this.routing_detail_resource_data[rowindex] = operData;
+        }
+      }
+      if (callback != "" || callback !== undefined) {
+        callback();
+      }
+    },
+    error => {
+      this.showLookupLoader = false;
+      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if (callback != "" || callback !== undefined) {
+        callback();
+      }
+      return;
+    }
+    );
+}
+
+open_operation_resources(flag) {
+  if (Object.keys(this.current_selected_row).length > 0) {
+    if (this.current_selected_row.oper_code != "") {
+      this.showLookupLoader = true;
+      // service call for operation wise resource 
+      this.serviceData = [];
+        /*  this.service.getOperationResource(this.current_selected_row.oper_code).subscribe(
+        data => { */
+          this.serviceData.oper_code = this.current_selected_row.oper_code;
+          this.serviceData.wc_code = this.current_selected_row.wc_code;
+          this.serviceData.unique_key = this.current_selected_row.unique_key;
+          this.serviceData.oper_res = (this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] != undefined) ? this.routing_detail_resource_data[(this.current_selected_row.rowindex - 1)] : [];
+          this.lookupfor = 'routing_resource_lookup';
+          this.showLookupLoader = false;
+
+
+          this.showLookupLoader = false;
+        } else {
+          this.toastr.info('', this.language.Operationcodemissing + ' ' + this.current_selected_row.rowindex, this.commonData.toast_config);
+          return;
+        }
+
       } else {
-        if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == undefined || this.routing_header_data.warehouse_code == null) {
-          this.toastr.error('', this.language.warehouseCodeBlank, this.commonData.toast_config);
+        this.toastr.info('', this.language.select_atleast_oper, this.commonData.toast_config);
+        return;
+      }
+    }
+
+    changeEffectiveDate(picker_date) {
+      let temp = new Date(picker_date);
+      this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+    }
+
+    confirm_override_grid_effective_date() {
+      this.dialog_params.push({ 'dialog_type': 'confirmation', 'message': this.language.confirm_override_detials_effective_date });
+      this.show_dialog = true;
+    }
+
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue) {
+
+      if (this.is_delete_called == true) {
+        if (userSelectionValue == true) {
+          this.onDelete(this.update_id);
+        }
+        this.show_dialog = false;
+        this.is_delete_called = false;
+      } else {
+        console.log('in get_dialog_value', userSelectionValue);
+        if (userSelectionValue == true) {
+          this.over_ride_grid_effective_date();
+        }
+        this.show_dialog = false;
+
+      }
+
+    }
+
+    over_ride_grid_effective_date() {
+      console.log('in over_ride_grid_effective_date');
+      let temp = new Date(this.routing_header_data.EffectiveDate);
+      let temp_effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+      // let temp_effective_date = new Date(temp.getFullYear(), (temp.getMonth()), temp.getDate());
+      for (let i = 0; i < this.routing_detail_data.length; ++i) {
+        this.routing_detail_data[i].effective_date = temp_effective_date;
+      }
+    }
+
+    validate_header_info() {
+      var output: any = '1';
+      if (this.routing_header_data.routing_for == 'feature') {
+        if (this.routing_header_data.feature_code == "" || this.routing_header_data.feature_code == undefined || this.routing_header_data.feature_code == null) {
+          this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
           output = '0';
         }
-      }
-    }
-    return output;
-  }
-
-
-  insert_new_operation(type) { // type = insert || type = add
-    if (this.validate_header_info() == '0') {
-      return false;
-    }
-    this.counter = 0;
-    if (this.routing_detail_data.length > 0) {
-      this.counter = this.routing_detail_data.length
-    }
-    this.counter++;
-
-    if (type == 'add') {
-      this.current_selected_row = [];
-      this.row_selection = [];
-    }
-
-    let current_row_index = 0;
-    if (type == 'insert') {
-      current_row_index = this.current_selected_row.rowindex;
-      this.counter = current_row_index + 1;
-      let row_shift_counter = 0;
-      for (let i = 0; i < this.routing_detail_data.length; ++i) {
-        if (this.routing_detail_data[i].rowindex > current_row_index) {
-          this.routing_detail_data[i].rowindex = this.routing_detail_data[i].rowindex + 1;
-          this.routing_detail_data[i].lineno = this.routing_detail_data[i].lineno + 1;
+      } else if (this.routing_header_data.routing_for == 'model') {
+        if (this.routing_header_data.modal_code == "" || this.routing_header_data.modal_code == undefined || this.routing_header_data.modal_code == null) {
+          this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
+          output = '0';
+        } else {
+          if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == undefined || this.routing_header_data.warehouse_code == null) {
+            this.toastr.error('', this.language.warehouseCodeBlank, this.commonData.toast_config);
+            output = '0';
+          }
         }
       }
+      return output;
     }
 
 
-    let temp_d = new Date(this.routing_header_data.EffectiveDate);
-    let temp_effective_date = new Date((temp_d.getMonth() + 1) + '/' + temp_d.getDate() + '/' + temp_d.getFullYear());
-    let new_row = {
-      lineno: this.counter,
-      rowindex: this.counter,
-      type: '4',
-      type_value: "",
-      type_value_code: "",
-      description: '',
-      operation_top_level: '',
-      oper_id: '',
-      oper_code: '',
-      oper_desc: '',
-      oper_type: '',
-      oper_consumption_method: '',
-      wc_id: '',
-      wc_code: '',
-      mtq: '1',
-      count_point_operation: false,
-      auto_move: false,
-      effective_date: temp_effective_date,
-      queue_time: '00:00',
-      move_time: '00:00',
-      qc_time: '00:00',
-      time_uom: '1',
-      opn_application: true,
-      isTypeDisabled: true,
-      showOperationbtn: true,
-      isOpenApplicableVisible: false,
-      count_point_operation_disabled: false,
-      inc_lead_time_calc: false,
-      unique_key: this.commonData.random_string(55)
-    };
+    insert_new_operation(type) { // type = insert || type = add
+      if (this.validate_header_info() == '0') {
+        return false;
+      }
+      this.counter = 0;
+      if (this.routing_detail_data.length > 0) {
+        this.counter = this.routing_detail_data.length
+      }
+      this.counter++;
 
-    if (type == 'add') {
-      this.routing_detail_data.push(new_row);
-    }
+      if (type == 'add') {
+        this.current_selected_row = [];
+        this.row_selection = [];
+      }
 
-    if (type == 'insert') {
-      this.routing_detail_data.splice(current_row_index, 0, new_row);
-      // this.routing_detail_data[current_row_index] = new_row;
-    }
-
-  }
-
-  getGridCurrentRow(rowindex) {
-    let currentrow = 0;
-    if (this.routing_detail_data.length > 0) {
-      for (let i = 0; i < this.routing_detail_data.length; ++i) {
-        if (this.routing_detail_data[i].rowindex === rowindex) {
-          currentrow = i;
+      let current_row_index = 0;
+      if (type == 'insert') {
+        current_row_index = this.current_selected_row.rowindex;
+        this.counter = current_row_index + 1;
+        let row_shift_counter = 0;
+        for (let i = 0; i < this.routing_detail_data.length; ++i) {
+          if (this.routing_detail_data[i].rowindex > current_row_index) {
+            this.routing_detail_data[i].rowindex = this.routing_detail_data[i].rowindex + 1;
+            this.routing_detail_data[i].lineno = this.routing_detail_data[i].lineno + 1;
+          }
         }
       }
-    }
-    return currentrow
-  }
 
-  clearInvalidOperationData(currentrow) {
 
-    if (this.routing_detail_resource_data[currentrow] != undefined) {
-      this.routing_detail_resource_data[currentrow] = [];
-    }
-    this.routing_detail_data[currentrow].oper_id = "";
-    this.routing_detail_data[currentrow].oper_code = "";
-    this.routing_detail_data[currentrow].oper_desc = "";
-    this.routing_detail_data[currentrow].oper_type = "";
-    this.routing_detail_data[currentrow].oper_consumption_method = "";
-    this.routing_detail_data[currentrow].oper_consumption_method_str = "";
-    this.routing_detail_data[currentrow].count_point_operation = false;
-    this.routing_detail_data[currentrow].count_point_operation_disabled = false;
-    $(".row_oper_id").eq(currentrow).val("");
-    $(".row_oper_code").eq(currentrow).val("");
-    this.routing_detail_data[currentrow].wc_id = "";
-    this.routing_detail_data[currentrow].wc_code = "";
-    $(".row_wc_id").eq(currentrow).val("");
-    $(".row_wc_code").eq(currentrow).val("");
-  }
+      let temp_d = new Date(this.routing_header_data.EffectiveDate);
+      let temp_effective_date = new Date((temp_d.getMonth() + 1) + '/' + temp_d.getDate() + '/' + temp_d.getFullYear());
+      let new_row = {
+        lineno: this.counter,
+        rowindex: this.counter,
+        type: '4',
+        type_value: "",
+        type_value_code: "",
+        description: '',
+        operation_top_level: '',
+        oper_id: '',
+        oper_code: '',
+        oper_desc: '',
+        oper_type: '',
+        oper_consumption_method: '',
+        wc_id: '',
+        wc_code: '',
+        mtq: '1',
+        count_point_operation: false,
+        auto_move: false,
+        effective_date: temp_effective_date,
+        queue_time: '00:00',
+        move_time: '00:00',
+        qc_time: '00:00',
+        time_uom: '1',
+        opn_application: true,
+        isTypeDisabled: true,
+        showOperationbtn: true,
+        isOpenApplicableVisible: false,
+        count_point_operation_disabled: false,
+        inc_lead_time_calc: false,
+        unique_key: this.commonData.random_string(55)
+      };
 
-  new_tree_item(type, operation_code, currentrow_data, rowindex) {
-    let icon_type = { "item": "item", "feature": "feature", "model": "modal", "operation": "operation" };
-    if (type == '4') {
-      let update_data: any = this.tree_data_json.filter(function (obj) {
-        return (obj.current_row_index == rowindex) ? obj : "";
-      });
-
-      if (update_data == "-1" || update_data == "") {
-        this.live_tree_view_data.push({
-          "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
-        });
-      } else {
-        this.live_tree_view_data.push({
-          "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
-        });
+      if (type == 'add') {
+        this.routing_detail_data.push(new_row);
       }
-    } else {
-      let update_data: any = this.tree_data_json.filter(function (obj) {
-        return (obj.componentNumber == currentrow_data.type_value) ? obj : "";
-      });
 
-
-      if (update_data == "-1" || update_data == "") {
-        this.live_tree_view_data.push({
-          "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
-        });
-      } else {
-        this.live_tree_view_data.push({
-          "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
-        });
+      if (type == 'insert') {
+        this.routing_detail_data.splice(current_row_index, 0, new_row);
+        // this.routing_detail_data[current_row_index] = new_row;
       }
 
     }
 
-
-  }
-
-  on_input_change(value, rowindex, grid_element) {
-    let currentrow = 0;
-    currentrow = this.getGridCurrentRow(rowindex);
-    if (grid_element == 'selected_type') {
-      this.routing_detail_data[currentrow].selected_type = value;
+    getGridCurrentRow(rowindex) {
+      let currentrow = 0;
+      if (this.routing_detail_data.length > 0) {
+        for (let i = 0; i < this.routing_detail_data.length; ++i) {
+          if (this.routing_detail_data[i].rowindex === rowindex) {
+            currentrow = i;
+          }
+        }
+      }
+      return currentrow
     }
 
-    if (grid_element == 'type_value_code') {
-      this.routing_detail_data[currentrow].type_value_code = (value).toString();
+    clearInvalidOperationData(currentrow) {
+
+      if (this.routing_detail_resource_data[currentrow] != undefined) {
+        this.routing_detail_resource_data[currentrow] = [];
+      }
+      this.routing_detail_data[currentrow].oper_id = "";
+      this.routing_detail_data[currentrow].oper_code = "";
+      this.routing_detail_data[currentrow].oper_desc = "";
+      this.routing_detail_data[currentrow].oper_type = "";
+      this.routing_detail_data[currentrow].oper_consumption_method = "";
+      this.routing_detail_data[currentrow].oper_consumption_method_str = "";
+      this.routing_detail_data[currentrow].count_point_operation = false;
+      this.routing_detail_data[currentrow].count_point_operation_disabled = false;
+      $(".row_oper_id").eq(currentrow).val("");
+      $(".row_oper_code").eq(currentrow).val("");
+      this.routing_detail_data[currentrow].wc_id = "";
+      this.routing_detail_data[currentrow].wc_code = "";
+      $(".row_wc_id").eq(currentrow).val("");
+      $(".row_wc_code").eq(currentrow).val("");
     }
 
-    if (grid_element == 'description') {
-      this.routing_detail_data[currentrow].description = value;
+    new_tree_item(type, operation_code, currentrow_data, rowindex) {
+      let icon_type = { "item": "item", "feature": "feature", "model": "modal", "operation": "operation" };
+      if (type == '4') {
+        let update_data: any = this.tree_data_json.filter(function (obj) {
+          return (obj.current_row_index == rowindex) ? obj : "";
+        });
+
+        if (update_data == "-1" || update_data == "") {
+          this.live_tree_view_data.push({
+            "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
+          });
+        } else {
+          this.live_tree_view_data.push({
+            "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": "operation", "branchType": "operation", "component": "", "componentNumber": "", "current_row_index": rowindex
+          });
+        }
+      } else {
+        let update_data: any = this.tree_data_json.filter(function (obj) {
+          return (obj.componentNumber == currentrow_data.type_value) ? obj : "";
+        });
+
+
+        if (update_data == "-1" || update_data == "") {
+          this.live_tree_view_data.push({
+            "operation_no": operation_code, "tree_index": this.tree_data_json.length, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
+          });
+        } else {
+          this.live_tree_view_data.push({
+            "operation_no": operation_code, "tree_index": update_data[0].tree_index, "icon": icon_type[currentrow_data.selected_type], "branchType": icon_type[currentrow_data.selected_type], "component": currentrow_data.description, "componentNumber": currentrow_data.type_value, "current_row_index": rowindex
+          });
+        }
+
+      }
+
+
     }
 
-    if (grid_element == 'oper_top_level') {
-      this.routing_detail_data[currentrow].oper_top_level = value;
-      this.routing_detail_data[currentrow].operation_top_level = value;
-    }
+    on_input_change(value, rowindex, grid_element) {
+      let currentrow = 0;
+      currentrow = this.getGridCurrentRow(rowindex);
+      if (grid_element == 'selected_type') {
+        this.routing_detail_data[currentrow].selected_type = value;
+      }
 
-    if (grid_element == 'oper_code') {
-      this.showLookupLoader = true;
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
-      this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
-      this.routing_detail_data[this.current_grid_action_row].auto_move = false;
-      this.service.getOperationDetail(value, 'detail', rowindex).subscribe(
-        data => {
-          console.log(data);
-          if (data != null) {
-            if (data != undefined) {
-              if (data.length > 0) {
-                if (data[0].ErrorMsg == "7001") {
-                  this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                  this.showLookupLoader = false;
-                  return;
+      if (grid_element == 'type_value_code') {
+        this.routing_detail_data[currentrow].type_value_code = (value).toString();
+      }
+
+      if (grid_element == 'description') {
+        this.routing_detail_data[currentrow].description = value;
+      }
+
+      if (grid_element == 'oper_top_level') {
+        this.routing_detail_data[currentrow].oper_top_level = value;
+        this.routing_detail_data[currentrow].operation_top_level = value;
+      }
+
+      if (grid_element == 'oper_code') {
+        this.showLookupLoader = true;
+        this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
+        this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
+        this.routing_detail_data[this.current_grid_action_row].auto_move = false;
+        this.service.getOperationDetail(value, 'detail', rowindex).subscribe(
+          data => {
+            console.log(data);
+            if (data != null) {
+              if (data != undefined) {
+                if (data.length > 0) {
+                  if (data[0].ErrorMsg == "7001") {
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                    this.showLookupLoader = false;
+                    return;
+                  }
                 }
               }
-            }
 
-            if (data.length > 0) {
+              if (data.length > 0) {
 
 
-              this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
-              this.routing_detail_data[currentrow].oper_code = data[0].OperationCode;
-              this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
-              this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
-              this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
+                this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
+                this.routing_detail_data[currentrow].oper_code = data[0].OperationCode;
+                this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
+                this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
+                this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
 
-              this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
-              this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
-              this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
-              this.routing_detail_data[currentrow].mtq = data[0].MTQ;
+                this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
+                this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;
+                this.routing_detail_data[currentrow].wc_code = data[0].DfltWCCode;
+                this.routing_detail_data[currentrow].mtq = data[0].MTQ;
 
-              this.routing_detail_data[currentrow].count_point_operation = false;
-              this.routing_detail_data[currentrow].count_point_operation_disabled = false;
+                this.routing_detail_data[currentrow].count_point_operation = false;
+                this.routing_detail_data[currentrow].count_point_operation_disabled = false;
 
-              if (data[0].OPRType == '4' || data[0].OPRType == '5') {
+                if (data[0].OPRType == '4' || data[0].OPRType == '5') {
 
-                this.routing_detail_data[currentrow].count_point_operation = true;
-                this.routing_detail_data[currentrow].count_point_operation_disabled = true;
+                  this.routing_detail_data[currentrow].count_point_operation = true;
+                  this.routing_detail_data[currentrow].count_point_operation_disabled = true;
+                }
+
+                this.new_tree_item(this.routing_detail_data[currentrow].type, this.routing_detail_data[currentrow].oper_code, this.routing_detail_data[currentrow], this.routing_detail_data[currentrow].rowindex);
+
+
+                this.getOperationResourceDetail(data[0].OPRCode, data[0].OperationCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
+              } else {
+                this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
+                this.clearInvalidOperationData(currentrow);
+                this.showLookupLoader = false;
+                return;
               }
-
-              this.new_tree_item(this.routing_detail_data[currentrow].type, this.routing_detail_data[currentrow].oper_code, this.routing_detail_data[currentrow], this.routing_detail_data[currentrow].rowindex);
-
-
-              this.getOperationResourceDetail(data[0].OPRCode, data[0].OperationCode, data[0].OPRType, data[0].OPRConsumMthd, currentrow, this.routing_detail_data[currentrow].unique_key, function () { });
             } else {
               this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
               this.clearInvalidOperationData(currentrow);
               this.showLookupLoader = false;
               return;
             }
-          } else {
+          }, error => {
             this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
             this.clearInvalidOperationData(currentrow);
             this.showLookupLoader = false;
             return;
           }
-        }, error => {
-          this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
-          this.clearInvalidOperationData(currentrow);
-          this.showLookupLoader = false;
-          return;
-        }
-      );
+          );
 
-    }
+      }
 
-    if (grid_element == 'oper_desc') {
-      this.routing_detail_data[currentrow].oper_desc = value;
-    }
+      if (grid_element == 'oper_desc') {
+        this.routing_detail_data[currentrow].oper_desc = value;
+      }
 
-    if (grid_element == 'wc_code') {
+      if (grid_element == 'wc_code') {
 
-      this.showLookupLoader = true;
-      this.service.getWCDetail(value, 'detail', rowindex).subscribe(
-        data => {
-          console.log(data);
-          if (data != null) {
+        this.showLookupLoader = true;
+        this.service.getWCDetail(value, 'detail', rowindex).subscribe(
+          data => {
+            console.log(data);
+            if (data != null) {
 
-            if (data != undefined) {
-              if (data.length > 0) {
-                if (data[0].ErrorMsg == "7001") {
-                  this.commonService.RemoveLoggedInUser().subscribe();
-                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                  this.showLookupLoader = false;
-                  return;
+              if (data != undefined) {
+                if (data.length > 0) {
+                  if (data[0].ErrorMsg == "7001") {
+                    this.commonService.RemoveLoggedInUser().subscribe();
+                    this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                    this.showLookupLoader = false;
+                    return;
+                  }
                 }
               }
-            }
-            if (data.length > 0) {
-              this.routing_detail_data[currentrow].wc_id = data[0].WCCode;
-              this.routing_detail_data[currentrow].wc_code = data[0].WCCode;
-              this.showLookupLoader = false;
+              if (data.length > 0) {
+                this.routing_detail_data[currentrow].wc_id = data[0].WCCode;
+                this.routing_detail_data[currentrow].wc_code = data[0].WCCode;
+                this.showLookupLoader = false;
+              } else {
+                this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
+                this.routing_detail_data[currentrow].wc_id = "";
+                this.routing_detail_data[currentrow].wc_code = "";
+                $(".row_wc_id").eq(currentrow).val("");
+                $(".row_wc_code").eq(currentrow).val("");
+                this.showLookupLoader = false;
+                return;
+              }
             } else {
               this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
               this.routing_detail_data[currentrow].wc_id = "";
@@ -1788,7 +1802,7 @@ export class RoutingComponent implements OnInit {
               this.showLookupLoader = false;
               return;
             }
-          } else {
+          }, error => {
             this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
             this.routing_detail_data[currentrow].wc_id = "";
             this.routing_detail_data[currentrow].wc_code = "";
@@ -1797,36 +1811,27 @@ export class RoutingComponent implements OnInit {
             this.showLookupLoader = false;
             return;
           }
-        }, error => {
-          this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
-          this.routing_detail_data[currentrow].wc_id = "";
-          this.routing_detail_data[currentrow].wc_code = "";
-          $(".row_wc_id").eq(currentrow).val("");
-          $(".row_wc_code").eq(currentrow).val("");
-          this.showLookupLoader = false;
-          return;
-        }
-      );
+          );
 
 
-    }
-
-    if (grid_element == 'mtq') {
-      if (value == 0 && value != '') {
-        value = 1;
-        this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
       }
-      else {
-        let rgexp = /^\d+$/;
-        if (isNaN(value) == true) {
-          value = 1;
-          this.toastr.error('', this.language.mtq_valid_number, this.commonData.toast_config);
-        } else if (value == 0 || value == '' || value == null || value == undefined) {
+
+      if (grid_element == 'mtq') {
+        if (value == 0 && value != '') {
           value = 1;
           this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
-        } else if (value < 0) {
-          value = 1;
-          this.toastr.error('', this.language.mtq_value_nagative + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
+        }
+        else {
+          let rgexp = /^\d+$/;
+          if (isNaN(value) == true) {
+            value = 1;
+            this.toastr.error('', this.language.mtq_valid_number, this.commonData.toast_config);
+          } else if (value == 0 || value == '' || value == null || value == undefined) {
+            value = 1;
+            this.toastr.error('', this.language.mtq_cannot_be_blank_zero + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
+          } else if (value < 0) {
+            value = 1;
+            this.toastr.error('', this.language.mtq_value_nagative + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
         } /*else if (rgexp.test(value) == false) {
           value = 1;
           this.toastr.error('', this.language.mtq_value_decimal + ' ' + this.language.at_row + ' ' + rowindex, this.commonData.toast_config);
@@ -1895,15 +1900,19 @@ export class RoutingComponent implements OnInit {
 
     if (grid_element == 'opn_application') {
       if (value == false) {
+        let temp_reset_date = new Date(this.routing_header_data.EffectiveDate);
         this.routing_detail_data[currentrow].oper_top_level = value;
         this.routing_detail_data[currentrow].operation_top_level = value;
         this.routing_detail_data[currentrow].oper_id = "";
         this.routing_detail_data[currentrow].oper_code = "";
         this.routing_detail_data[currentrow].oper_desc = "";
+        this.routing_detail_data[currentrow].oper_consumption_method = "";
+        this.routing_detail_data[currentrow].oper_consumption_method_str = "";
         this.routing_detail_data[currentrow].wc_id = "";
         this.routing_detail_data[currentrow].wc_code = "";
         this.routing_detail_data[currentrow].mtq = 1;
         this.routing_detail_data[currentrow].auto_move = value;
+        this.routing_detail_data[currentrow].effective_date = new Date((temp_reset_date.getMonth() + 1) + '/' + temp_reset_date.getDate() + '/' + temp_reset_date.getFullYear());
         this.routing_detail_data[currentrow].count_point_operation = value;
         this.routing_detail_data[currentrow].count_point_operation_disabled = value;
         this.routing_detail_data[currentrow].inc_lead_time_calc = value;
@@ -1915,8 +1924,8 @@ export class RoutingComponent implements OnInit {
       this.routing_detail_data[currentrow].opn_application = value;
     }
 
-  //  console.log("this.routing_detail_data ", this.routing_detail_data);
-   // console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
+    //  console.log("this.routing_detail_data ", this.routing_detail_data);
+    // console.log("this.routing_detail_resource_data[oper_code]", this.routing_detail_resource_data);
   }
 
   format_time_in_hh_mm(value) {
@@ -1984,7 +1993,7 @@ export class RoutingComponent implements OnInit {
             this.toastr.error('', this.language.operationatOprmmandatory + ' ' + (DetailIndex + 1), this.commonData.toast_config);
             return;
           }
-       
+          
           if (this.routing_detail_data[DetailIndex].oper_top_level == true || this.routing_detail_data[DetailIndex].opn_application == true){
             count_opn_appli_top_lvl++;
           }
@@ -2197,7 +2206,7 @@ export class RoutingComponent implements OnInit {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
       }
-    )
+      )
   }
 
 
@@ -2241,7 +2250,7 @@ export class RoutingComponent implements OnInit {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
       }
-    )
+      )
   }
 
 
@@ -2390,7 +2399,7 @@ export class RoutingComponent implements OnInit {
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-        );
+          );
       } else {
 
         for (let i = 0; i < this.routing_detail_data.length; ++i) {
@@ -2409,51 +2418,51 @@ export class RoutingComponent implements OnInit {
         if (this.live_tree_view_data.length > 0) {
 
           //for (var key in this.live_tree_view_data) {
-          for (let key = 0; key < this.live_tree_view_data.length; key++) {
-            let update_data: any = "";
-            let update_index: any;
-            let temp_current_row_index = this.live_tree_view_data[key].current_row_index;
-            let temp_seq = {};
-            if (this.live_tree_view_data[key].branchType == 'operation') {
-              update_data = this.tree_data_json.filter(function (obj) {
-                return (obj.current_row_index == temp_current_row_index) ? obj : "";
-              });
-              update_index = this.tree_data_json.findIndex(function (tree_el) {
-                return (tree_el.current_row_index == temp_current_row_index) ? tree_el : "";
-              });
-            } else {
-              let temp_component_nmber = this.live_tree_view_data[key].componentNumber;
-              update_data = this.tree_data_json.filter(function (obj) {
-                return (obj.componentNumber == temp_component_nmber) ? obj : "";
-              });
-              update_index = this.tree_data_json.findIndex(function (tree_el) {
-                return (tree_el.componentNumber == temp_component_nmber) ? tree_el : "";
-              });
+            for (let key = 0; key < this.live_tree_view_data.length; key++) {
+              let update_data: any = "";
+              let update_index: any;
+              let temp_current_row_index = this.live_tree_view_data[key].current_row_index;
+              let temp_seq = {};
+              if (this.live_tree_view_data[key].branchType == 'operation') {
+                update_data = this.tree_data_json.filter(function (obj) {
+                  return (obj.current_row_index == temp_current_row_index) ? obj : "";
+                });
+                update_index = this.tree_data_json.findIndex(function (tree_el) {
+                  return (tree_el.current_row_index == temp_current_row_index) ? tree_el : "";
+                });
+              } else {
+                let temp_component_nmber = this.live_tree_view_data[key].componentNumber;
+                update_data = this.tree_data_json.filter(function (obj) {
+                  return (obj.componentNumber == temp_component_nmber) ? obj : "";
+                });
+                update_index = this.tree_data_json.findIndex(function (tree_el) {
+                  return (tree_el.componentNumber == temp_component_nmber) ? tree_el : "";
+                });
+              }
+
+              if (update_data == "-1" || update_data == "") {
+                temp_seq = { "sequence": sequence_count, "parentId": display_name, "parentNumber": routing_for_id, "component": "", "componentNumber": "", "level": "0", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType, "icon": this.live_tree_view_data[key].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": this.live_tree_view_data[key].current_row_index };
+                this.tree_data_json.push(temp_seq);
+                temp_data_level.push(temp_seq);
+              } else {
+
+                temp_seq = { "sequence": update_data[0].sequence, "parentId": display_name, "parentNumber": routing_for_id, "component": this.live_tree_view_data[key].component, "componentNumber": this.live_tree_view_data[key].componentNumber, "level": "0", "live_row_id": update_data[0].live_row_id, "is_local": "1", "tree_index": update_data[0].tree_index, "branchType": update_data[0].branchType, "icon": update_data[0].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": update_data[0].current_row_index };
+
+                this.tree_data_json[update_index] = (temp_seq);
+              }
+
             }
-
-            if (update_data == "-1" || update_data == "") {
-              temp_seq = { "sequence": sequence_count, "parentId": display_name, "parentNumber": routing_for_id, "component": "", "componentNumber": "", "level": "0", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType, "icon": this.live_tree_view_data[key].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": this.live_tree_view_data[key].current_row_index };
-              this.tree_data_json.push(temp_seq);
-              temp_data_level.push(temp_seq);
-            } else {
-
-              temp_seq = { "sequence": update_data[0].sequence, "parentId": display_name, "parentNumber": routing_for_id, "component": this.live_tree_view_data[key].component, "componentNumber": this.live_tree_view_data[key].componentNumber, "level": "0", "live_row_id": update_data[0].live_row_id, "is_local": "1", "tree_index": update_data[0].tree_index, "branchType": update_data[0].branchType, "icon": update_data[0].icon, "modalImage": "", "operation_no": this.live_tree_view_data[key].operation_no, "current_row_index": update_data[0].current_row_index };
-
-              this.tree_data_json[update_index] = (temp_seq);
-            }
-
+            console.log(this.tree_data_json);
+            this.live_tree_view_data = [];
           }
-          console.log(this.tree_data_json);
-          this.live_tree_view_data = [];
         }
       }
-    }
-    else {
-      this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
-      return;
+      else {
+        this.toastr.error('', this.language.FeatureCodeBlank, this.commonData.toast_config);
+        return;
+      }
+
     }
 
+    // navigation functions - end
   }
-
-  // navigation functions - end
-}
