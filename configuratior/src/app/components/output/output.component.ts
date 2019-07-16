@@ -5069,7 +5069,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       }
                       //  }
                       else {
-                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                        if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                        } else {
+                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                        }
                         if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                         }
@@ -5188,7 +5192,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                           }
                                           //  }
                                           else {
-                                            this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                                            if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                                              this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                                            }else{
+                                              this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
+                                            }
                                             if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                             }
@@ -5488,8 +5496,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           if (this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[ifeaturechecked].nodeid == feature_model_data.nodeid && elementtypeforcheckedfunction == "radio" && this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
             this.FeatureBOMDataForSecondLevel[ifeaturechecked].checked = false
             var tempfeaturechild = this.FeatureBOMDataForSecondLevel[ifeaturechecked].OPTM_CHILDFEATUREID
+            var tempNodeId = this.FeatureBOMDataForSecondLevel[ifeaturechecked].nodeid
             this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-              if (obj['OPTM_FEATUREID'] == tempfeaturechild) {
+              if (obj['OPTM_FEATUREID'] == tempfeaturechild && obj['nodeid'] == tempNodeId) {
                 obj['checked'] = false
               }
               return obj
