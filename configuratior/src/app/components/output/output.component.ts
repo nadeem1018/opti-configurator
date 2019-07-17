@@ -5137,9 +5137,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                           if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                           }
-                          else {
-                            this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                          }
+                          // else {
+                          //   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                          // }
                         }
                       }
                       //  }
