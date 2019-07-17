@@ -313,7 +313,7 @@ export class RuleWbViewComponent implements OnInit {
                 }
 
                 if(data[0].IsDeleted == "0" && data[0].Message == "Rule Used"){
-                    this.toastr.error('',  data[0].RuleId + this.language.RuleIsUsed  , this.commonData.toast_config);
+                    this.toastr.error('',  data[0].RuleCode + this.language.RuleIsUsed  , this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('rulewb/view');
                 }
@@ -407,10 +407,12 @@ export class RuleWbViewComponent implements OnInit {
     }
 
     delete_multi_row() {
+        if (this.CheckedData.length > 0) {
         this.showLoader = true
         this.service.DeleteData(this.CheckedData).subscribe(
             data => {
                 this.showLoader = false
+                this.isMultiDelete = false;
                 if(data != undefined && data.length > 0){
                     if (data[0].ErrorMsg == "7001") {
                         this.commonservice.RemoveLoggedInUser().subscribe();
@@ -441,5 +443,7 @@ export class RuleWbViewComponent implements OnInit {
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
             })
+
+        }
     }
 }
