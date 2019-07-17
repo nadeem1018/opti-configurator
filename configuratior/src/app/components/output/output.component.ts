@@ -5214,9 +5214,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                   this.getDefaultItems(defaultitemarray)
                                                 }
                                               }
-                                              else {
+                                              /* else {
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                              }
+                                              } */
                                             }
 
                                           }
