@@ -2992,6 +2992,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               "OPTM_ACCESSORYDIS": "",
               "OPTM_ACCESSORYTOTAL": "",
               "OPTM_TOTALDISCOUNT": "",
+              "model_index" : iHdrCount,
             })
           }
         } else {
