@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.add_row}} "
+                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1 mr-3" title="{{language.add_row}} "
                                         (click)="onAddRow()" #button>
                                         <i class="fa fa-plus"></i> {{language.add_row}}
                                     </a>
@@ -138,7 +138,7 @@
                                         (click)="resequence_operation('1')">
                                         <b><i class="fa fa-arrow-up"></i> </b>
                                     </a>
-                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" [hidden]="this.current_selected_row.length == 0"
+                                    <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1 mr-3" [hidden]="this.current_selected_row.length == 0"
                                         *ngIf="this.feature_bom_table.length > 1" title="{{language.move_row_down}} "
                                         (click)="resequence_operation('2')">
                                         <b><i class="fa fa-arrow-down"></i></b>

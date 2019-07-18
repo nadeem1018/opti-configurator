@@ -216,7 +216,9 @@ export class ViewModelBomComponent implements OnInit {
                 }
 
                 this.dataArray = data;
-
+                this.CheckedData = [];
+                this.selectall = false;
+                $("input[name='child_checkbox']").prop("checked", false);
             });
     }
 
@@ -290,16 +292,24 @@ export class ViewModelBomComponent implements OnInit {
                 }
                 if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
                     this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ModelCode , this.commonData.toast_config);
+                    this.CheckedData = [];
+                    this.selectall = false;
+                    $("input[name='child_checkbox']").prop("checked", false);
                 }
                 else if(data[0].IsDeleted == "1"){
                     this.toastr.success('', this.language.DataDeleteSuccesfully + ' with Model Id : ' + data[0].ModelCode , this.commonData.toast_config);
                     this.service_call(this.current_page, this.search_string);
                     this.router.navigateByUrl('modelbom/view');
+                    this.CheckedData = [];
+                    this.selectall = false;
+                    $("input[name='child_checkbox']").prop("checked", false);
                 }
                 else{
                     this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].ModelCode , this.commonData.toast_config);
                 }
-
+                this.CheckedData = [];
+                this.selectall = false;
+                $("input[name='child_checkbox']").prop("checked", false);
             });
     }
 
@@ -410,8 +420,10 @@ export class ViewModelBomComponent implements OnInit {
                         }
                     }
 
-                }
-                )
+                this.CheckedData = [];
+                this.selectall = false;
+                $("input[name='child_checkbox']").prop("checked", false);
+                })
         } else {
 
             this.toastr.error('', this.language.Norowselected, this.commonData.toast_config)
