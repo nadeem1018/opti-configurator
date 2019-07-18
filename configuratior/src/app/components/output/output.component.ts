@@ -1903,6 +1903,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       this.FeatureBOMDataForSecondLevel.filter(function(obj) {
                         if((obj.OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) && (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) && obj.OPTM_DEFAULT == 'Y') {
                           return obj['checked'] = true;
+                      } else if((obj.OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) && (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) && obj.OPTM_DEFAULT == 'N') {
+                        return obj['checked'] = false;
                       }
                       });
 
