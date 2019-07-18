@@ -3161,10 +3161,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             let me_d_v_row = this.step3_data_final[me_d_v_i];
 
             let temp_modelheder_data = me_d_v_row.ModelHeaderData;
-            for (let mhd_i = 0; mhd_i < temp_modelheder_data.length; mhd_i++) {
+            for (let mhd_i = 0; mhd_i < temp_modelheder_data.length; mhd_i++) { 
               delete temp_modelheder_data[mhd_i]['OPTM_MODIFIEDDATETIME'];
               delete temp_modelheder_data[mhd_i]['random_unique_key'];
               delete temp_modelheder_data[mhd_i]['nodeid'];
+              temp_modelheder_data[mhd_i]['model_index'] =  me_d_v_i;
               if (temp_modelheder_data[mhd_i].OPTM_QUANTITY != null && temp_modelheder_data[mhd_i].OPTM_QUANTITY != undefined && temp_modelheder_data[mhd_i].OPTM_QUANTITY != "") {
                 temp_modelheder_data[mhd_i].OPTM_QUANTITY = parseFloat(temp_modelheder_data[mhd_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3184,6 +3185,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               delete modelheader_item_array[mhia_i]['is_second_level'];
               delete modelheader_item_array[mhia_i]['parentfeatureid'];
               delete modelheader_item_array[mhia_i]['parentmodelid'];
+              modelheader_item_array[mhia_i]['model_index'] =  me_d_v_i;
               if ((modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") || modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
                 modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3199,6 +3201,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             if (me_d_v_row.selectedAccessoryBOM != null && me_d_v_row.selectedAccessoryBOM != undefined && me_d_v_row.selectedAccessoryBOM != "") {
               let temp_selectedAccessoryBOM = me_d_v_row.selectedAccessoryBOM;
               for (let sabom_i = 0; sabom_i < temp_selectedAccessoryBOM.length; sabom_i++) {
+                temp_selectedAccessoryBOM[sabom_i]['model_index'] =  me_d_v_i;
                 if ((temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "") || temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY == 0 ) {
                   temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY = parseFloat(temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY).toFixed(3);
                 }
@@ -3207,6 +3210,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
             let temp_Accessoryarray = me_d_v_row.Accessoryarray;
             for (let ahdr_i = 0; ahdr_i < temp_Accessoryarray.length; ahdr_i++) {
+              temp_Accessoryarray[ahdr_i]['model_index'] =  me_d_v_i;
               if ((temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != null && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != undefined && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != "") || temp_Accessoryarray[ahdr_i].OPTM_QUANTITY  == 0) {
                 temp_Accessoryarray[ahdr_i].OPTM_QUANTITY = parseFloat(temp_Accessoryarray[ahdr_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3215,6 +3219,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_ModelBOMDataForSecondLevel = me_d_v_row.ModelBOMDataForSecondLevel;
             for (let mbomd_i = 0; mbomd_i < temp_ModelBOMDataForSecondLevel.length; mbomd_i++) {
+              temp_ModelBOMDataForSecondLevel[mbomd_i]['model_index'] =  me_d_v_i;
               if ((temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != "")  || temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY  == 0) {
                 temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY = parseFloat(temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3229,6 +3234,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_FeatureBOMDataForSecondLevel = me_d_v_row.FeatureBOMDataForSecondLevel;
             for (let fbdsl_i = 0; fbdsl_i < temp_FeatureBOMDataForSecondLevel.length; fbdsl_i++) {
+              temp_FeatureBOMDataForSecondLevel[fbdsl_i]['model_index'] =  me_d_v_i;
               if ((temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "" ) || temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY == 0) {
                 temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY = parseFloat(temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3243,6 +3249,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_RuleOutputData = me_d_v_row.RuleOutputData;
             for (let rod_i = 0; rod_i < temp_RuleOutputData.length; rod_i++) {
+              temp_RuleOutputData[rod_i]['model_index'] =  me_d_v_i;
               if ((temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") || temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
                 temp_RuleOutputData[rod_i].OPTM_QUANTITY = parseFloat(temp_RuleOutputData[rod_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -4871,7 +4878,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   OPTM_LEVEL: 2,
                   isQuantityDisabled: true,
                   HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
-                  nodeid:ModelItemsArray[imodelItemsarray].unique_key,
+                  nodeid:ModelItemsArray[imodelItemsarray].nodeid,
                   unique_key:ModelItemsArray[imodelItemsarray].unique_key
                 });
                 console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
