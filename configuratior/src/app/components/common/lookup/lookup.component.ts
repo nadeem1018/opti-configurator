@@ -263,39 +263,39 @@ export class LookupComponent implements OnInit {
         /*   this.resourceServiceData = [];
           this.resourceServiceOper = "";
           this.resourceServiceWc = ""; */
-        this.is_operation_popup_lookup_open = true;
-        this.routing_resource_lookup();
-        return;
-      }
+          this.is_operation_popup_lookup_open = true;
+          this.routing_resource_lookup();
+          return;
+        }
 
-      if (this.popup_lookupfor == "warehouse_lookup") {
-        this.warehouse_lookup_list();
-      }
+        if (this.popup_lookupfor == "warehouse_lookup") {
+          this.warehouse_lookup_list();
+        }
 
-      if (this.popup_lookupfor == 'operation_lookup') {
-        this.operation_lookup_list();
-      }
+        if (this.popup_lookupfor == 'operation_lookup') {
+          this.operation_lookup_list();
+        }
 
-      if (this.popup_lookupfor == 'workcenter_lookup') {
-        this.workcenter_lookup_list();
-      }
+        if (this.popup_lookupfor == 'workcenter_lookup') {
+          this.workcenter_lookup_list();
+        }
 
-      if (this.popup_lookupfor == "template_routing_lookup") {
-        this.template_routing_list();
-      }
+        if (this.popup_lookupfor == "template_routing_lookup") {
+          this.template_routing_list();
+        }
 
-     
+
+      }
     }
-  }
- 
-  template_routing_list() {
-    this.popup_title = this.language.template_routing;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'template_routing';
-    this.table_head = [this.language.code, this.language.Name];
 
-    this.table_head = [
+    template_routing_list() {
+      this.popup_title = this.language.template_routing;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'template_routing';
+      this.table_head = [this.language.code, this.language.Name];
+
+      this.table_head = [
       {
         field: 'ITEMCODE',
         title: this.language.item_code,
@@ -310,30 +310,30 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-    ];
+      ];
 
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
-    this.width_value = ((100 / this.table_head.length) + '%');
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'Name';
+      this.width_value = ((100 / this.table_head.length) + '%');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
+    workcenter_lookup_list() {
+      this.popup_title = this.language.workcenter;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'workcenterCode';
+      this.table_head = [this.language.code, this.language.Name];
 
-  workcenter_lookup_list() {
-    this.popup_title = this.language.workcenter;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'workcenterCode';
-    this.table_head = [this.language.code, this.language.Name];
-
-    this.table_head = [
+      this.table_head = [
       {
         field: 'WCCode',
         title: this.language.workcenter,
@@ -348,30 +348,30 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-    ];
+      ];
 
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
-    this.width_value = ((100 / this.table_head.length) + '%');
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'Name';
+      this.width_value = ((100 / this.table_head.length) + '%');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
+    operation_lookup_list() {
+      this.popup_title = this.language.operation;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'OperationCode';
+      this.table_head = [this.language.code, this.language.Name];
 
-  operation_lookup_list() {
-    this.popup_title = this.language.operation;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'OperationCode';
-    this.table_head = [this.language.code, this.language.Name];
-
-    this.table_head = [
+      this.table_head = [
       {
         field: 'OPRCode',
         title: this.language.operation_no,
@@ -414,29 +414,29 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-    ];
+      ];
 
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
-    this.width_value = ((100 / this.table_head.length) + '%');
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'Name';
+      this.width_value = ((100 / this.table_head.length) + '%');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
     }
-  }
 
-  warehouse_lookup_list() {
+    warehouse_lookup_list() {
 
-    this.popup_title = this.language.warehouse;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'warehouseCode';
-    this.table_head = [this.language.code, this.language.Name];
-    this.table_head = [
+      this.popup_title = this.language.warehouse;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'warehouseCode';
+      this.table_head = [this.language.code, this.language.Name];
+      this.table_head = [
       {
         field: 'WHSECODE',
         title: this.language.code,
@@ -452,68 +452,68 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
-    this.width_value = ((100 / this.table_head.length) + '%');
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
-      }
-    }
-  }
-
-  operation_resource_update() {
-    this.is_operation_popup_lookup_open == false;
-    if (this.resourceServiceData.length == 0) {
-      this.toastr.error('', this.language.cannot_submit_empty_resource, this.commonData.toast_config);
-      return;
-    } else {
-      for (let ia = 0; ia < this.resourceServiceData.length; ia++) {
-        let res_row = this.resourceServiceData[ia];
-        if (res_row.resource_code == "") {
-          this.toastr.error('', this.language.resource_code_cannot_beblack + ' ' + (ia + 1), this.commonData.toast_config);
-          return
+      ];
+      this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'Name';
+      this.width_value = ((100 / this.table_head.length) + '%');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
         }
       }
     }
-    this.lookupvalue.emit(this.resourceServiceData);
-    $("#routing_resource_modal").modal('hide');
-  }
 
-  log(val) {
-    console.log(val);
-  }
-
-  on_template_type_change() {
-    if (this.template_type === "model") {
-      this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+    operation_resource_update() {
+      this.is_operation_popup_lookup_open == false;
+      if (this.resourceServiceData.length == 0) {
+        this.toastr.error('', this.language.cannot_submit_empty_resource, this.commonData.toast_config);
+        return;
+      } else {
+        for (let ia = 0; ia < this.resourceServiceData.length; ia++) {
+          let res_row = this.resourceServiceData[ia];
+          if (res_row.resource_code == "") {
+            this.toastr.error('', this.language.resource_code_cannot_beblack + ' ' + (ia + 1), this.commonData.toast_config);
+            return
+          }
+        }
+      }
+      this.lookupvalue.emit(this.resourceServiceData);
+      $("#routing_resource_modal").modal('hide');
     }
-    else if (this.template_type === "feature") {
-      this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+
+    log(val) {
+      console.log(val);
     }
 
-  }
-  on_item_select(selection) {
-    var lookup_key = selection.selectedRows[0].dataItem;
-    console.log("this.popup_lookupfor ", this.popup_lookupfor);
+    on_template_type_change() {
+      if (this.template_type === "model") {
+        this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+      }
+      else if (this.template_type === "feature") {
+        this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
+      }
 
-    console.log("lookup_key - ", lookup_key);
-    // if (this.popup_lookupfor == "routing_resource_lookup") {
-    if (this.is_operation_popup_lookup_open == true) {
-      console.log("this.current_popup_row - ", this.current_popup_row);
+    }
+    on_item_select(selection) {
+      var lookup_key = selection.selectedRows[0].dataItem;
+      console.log("this.popup_lookupfor ", this.popup_lookupfor);
 
-      if (lookup_key.ResCode != undefined && lookup_key.Name != undefined) {
-        for (let i = 0; i < this.resourceServiceData.length; ++i) {
-          if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
-            this.resourceServiceData[i].resource_code = lookup_key.ResCode;
-            this.resourceServiceData[i].resource_name = lookup_key.Name;
-            this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
-            this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
-            this.resourceServiceData[i].DCNum = lookup_key.DCNum;
+      console.log("lookup_key - ", lookup_key);
+      // if (this.popup_lookupfor == "routing_resource_lookup") {
+        if (this.is_operation_popup_lookup_open == true) {
+          console.log("this.current_popup_row - ", this.current_popup_row);
+
+          if (lookup_key.ResCode != undefined && lookup_key.Name != undefined) {
+            for (let i = 0; i < this.resourceServiceData.length; ++i) {
+              if (this.resourceServiceData[i].rowindex === this.current_popup_row) {
+                this.resourceServiceData[i].resource_code = lookup_key.ResCode;
+                this.resourceServiceData[i].resource_name = lookup_key.Name;
+                this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+                this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
+                this.resourceServiceData[i].DCNum = lookup_key.DCNum;
 
             /* this.resourceServiceData[i].resource_consumption = parseFloat('1').toFixed(3);
             this.resourceServiceData[i].resource_inverse = parseFloat('0').toFixed(3);
@@ -563,34 +563,34 @@ export class LookupComponent implements OnInit {
     console.log(this.serviceData);
 
     this.table_head = [
-      {
-        field: 'OPTM_LOGID',
-        title: this.language.configuration_id,
-        type: 'numeric',
-        width: '100',
-        attrType: 'text'
-      },
-      {
-        field: 'OPTM_DESC',
-        title: this.language.description,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
-      {
-        field: 'OPTM_BPCODE',
-        title: this.language.customer,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
-      {
-        field: 'OPTM_CONTACTPERSON',
-        title: this.language.contact_person,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      }
+    {
+      field: 'OPTM_LOGID',
+      title: this.language.configuration_id,
+      type: 'numeric',
+      width: '100',
+      attrType: 'text'
+    },
+    {
+      field: 'OPTM_DESC',
+      title: this.language.description,
+      type: 'text',
+      width: '100',
+      attrType: 'text'
+    },
+    {
+      field: 'OPTM_BPCODE',
+      title: this.language.customer,
+      type: 'text',
+      width: '100',
+      attrType: 'text'
+    },
+    {
+      field: 'OPTM_CONTACTPERSON',
+      title: this.language.contact_person,
+      type: 'text',
+      width: '100',
+      attrType: 'text'
+    }
       /* ,
       {
         field: 'OPTM_FGITEM',
@@ -604,32 +604,32 @@ export class LookupComponent implements OnInit {
         type: 'text',
         width: '100'
       }, */
-    ];
+      ];
 
-    //this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'OPTM_DESC';
+      //this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'OPTM_DESC';
 
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.width_value = ((100 / this.table_head.length) + '%');
 
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
     }
-  }
 
-  model_template_lookup() {
-    this.popup_title = this.language.model_template;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureItemName';
-    this.table_head = [this.language.code, this.language.Name];
+    model_template_lookup() {
+      this.popup_title = this.language.model_template;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureItemName';
+      this.table_head = [this.language.code, this.language.Name];
 
-    this.table_head = [
+      this.table_head = [
       {
         field: 'Code',
         title: this.language.code,
@@ -645,34 +645,34 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
 
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
+      this.table_head_hidden_elements = [false, false];
+      this.lookup_key = 'Name';
 
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.width_value = ((100 / this.table_head.length) + '%');
 
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
+    model_item_generation_lookup() {
+      this.popup_title = this.language.Model_Ref;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureItemCode';
+      // this.table_head = [this.language.code];
 
-  model_item_generation_lookup() {
-    this.popup_title = this.language.Model_Ref;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureItemCode';
-    // this.table_head = [this.language.code];
-
-    this.table_head = [
+      this.table_head = [
       {
         field: 'OPTM_CODE',
         title: this.language.code,
@@ -681,33 +681,33 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
-    this.table_head_hidden_elements = [false];
-    this.lookup_key = 'OPTM_CODE';
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [false];
+      this.lookup_key = 'OPTM_CODE';
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
     }
-  }
 
-  get_operand_lookup() {
+    get_operand_lookup() {
 
 
-    this.popup_title = this.language.Bom_FeatureId;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATUREID';
-    // this.table_head = [this.language.Id, this.language.code, this.language.Name];
+      this.popup_title = this.language.Bom_FeatureId;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureNameId';
+      this.lookup_key = 'OPTM_FEATUREID';
+      // this.table_head = [this.language.Id, this.language.code, this.language.Name];
 
-    this.table_head = [
+      this.table_head = [
       {
         field: 'feature_code',
         title: this.language.code,
@@ -723,33 +723,33 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
-    this.table_head_hidden_elements = [true, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [true, false, false];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
-
-  get_features_lookup() {
+    get_features_lookup() {
 
 
-    this.popup_title = this.language.Bom_FeatureId;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATUREID';
-    // this.table_head = [this.language.Id, this.language.code, this.language.Name];
+      this.popup_title = this.language.Bom_FeatureId;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureNameId';
+      this.lookup_key = 'OPTM_FEATUREID';
+      // this.table_head = [this.language.Id, this.language.code, this.language.Name];
 
-    this.table_head = [
+      this.table_head = [
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -765,61 +765,61 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
-    this.table_head_hidden_elements = [true, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [true, false, false];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
+    close_lookup(lookup_id) {
+      console.log("lookup id - " + lookup_id);
+      $("#" + lookup_id).modal('hide');
 
-  close_lookup(lookup_id) {
-    console.log("lookup id - " + lookup_id);
-    $("#" + lookup_id).modal('hide');
+      //clear arrays after close button clicked on print model 
+      if (this.popup_lookupfor == 'output_invoice_print') {
+        this.cleanup_print_arrays();
 
-    //clear arrays after close button clicked on print model 
-    if (this.popup_lookupfor == 'output_invoice_print') {
-      this.cleanup_print_arrays();
+        // popup_lookupfor  = "";
+        setTimeout(() => {
+          this.popup_lookupfor = "";
+        });
+        this.current_popup_row = "";
+      }
 
-      // popup_lookupfor  = "";
-      setTimeout(() => {
-        this.popup_lookupfor = "";
-      });
-      this.current_popup_row = "";
+      if (lookup_id == "routing_resource_modal" || this.popup_lookupfor == 'routing_resource_lookup') {
+        console.log('in array cleaner');
+        this.is_operation_popup_lookup_open = false;
+        this.resourceServiceOper = "";
+        this.resourceServiceOperCM = "";
+        this.resourceServiceWc = "";
+        this.lookupvalue.emit('');
+        this.resourceServiceData = [];
+        $("#routing_resource_modal").modal('hide');
+      }
+
     }
 
-    if (lookup_id == "routing_resource_modal" || this.popup_lookupfor == 'routing_resource_lookup') {
-      console.log('in array cleaner');
-      this.is_operation_popup_lookup_open = false;
-      this.resourceServiceOper = "";
-      this.resourceServiceOperCM = "";
-      this.resourceServiceWc = "";
-      this.lookupvalue.emit('');
-      this.resourceServiceData = [];
-      $("#routing_resource_modal").modal('hide');
-    }
-
-  }
-
-  get_Model_lookup() {
+    get_Model_lookup() {
 
 
-    this.popup_title = this.language.ModelBom;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATUREID';
-    // this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
+      this.popup_title = this.language.ModelBom;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureNameId';
+      this.lookup_key = 'OPTM_FEATUREID';
+      // this.table_head = [this.language.ModelId, this.language.code, this.language.Name];
 
-    this.table_head = [
+      this.table_head = [
       {
         field: 'OPTM_FEATURECODE',
         title: this.language.code,
@@ -835,35 +835,35 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
 
-    this.table_head_hidden_elements = [true, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [true, false, false];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
-
-  get_ModelWizard_lookup() {
+    get_ModelWizard_lookup() {
 
 
-    this.popup_title = this.language.ModelBom;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATUREID';
-    // this.table_head = [this.language.ModelId, this.language.code, this.language.Name, this.language.templateid, this.language.ItemCodeGenkey];
+      this.popup_title = this.language.ModelBom;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureNameId';
+      this.lookup_key = 'OPTM_FEATUREID';
+      // this.table_head = [this.language.ModelId, this.language.code, this.language.Name, this.language.templateid, this.language.ItemCodeGenkey];
 
-    console.log(this.serviceData);
-    this.table_head = [
+      console.log(this.serviceData);
+      this.table_head = [
 
       {
         field: 'OPTM_FEATURECODE',
@@ -880,33 +880,33 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
+      ];
 
-    this.table_head_hidden_elements = [true, false, false, true, true];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [true, false, false, true, true];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
-
-  get_Item_lookup() {
+    get_Item_lookup() {
 
 
-    this.popup_title = this.language.ItemLookupTitle;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'type_value';
-    this.lookup_key = 'ItemKey';
-    // this.table_head = [this.language.itemkey, this.language.Name];
+      this.popup_title = this.language.ItemLookupTitle;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'type_value';
+      this.lookup_key = 'ItemKey';
+      // this.table_head = [this.language.itemkey, this.language.Name];
 
-    this.table_head = [
+      this.table_head = [
       {
         field: 'ItemKey',
         title: this.language.code,
@@ -921,43 +921,43 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-    ];
+      ];
 
-    this.table_head_hidden_elements = [false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      this.table_head_hidden_elements = [false, false];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    this.log('this.serviceData');
-    this.log(this.serviceData);
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      this.log('this.serviceData');
+      this.log(this.serviceData);
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
+
     }
 
-  }
+    import_popup() {
+      this.popup_title = this.language.import_features;
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      this.fileType = "excel";
+      $("#import_modal").modal('show');
 
-  import_popup() {
-    this.popup_title = this.language.import_features;
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    this.fileType = "excel";
-    $("#import_modal").modal('show');
+    }
 
-  }
+    get_Price_lookup() {
+      this.popup_title = this.language.price_source;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'price_source';
+      this.lookup_key = 'PriceListID';
+      // this.table_head = [this.language.price_source, this.language.price_list_name];
 
-  get_Price_lookup() {
-    this.popup_title = this.language.price_source;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'price_source';
-    this.lookup_key = 'PriceListID';
-    // this.table_head = [this.language.price_source, this.language.price_list_name];
-
-    console.log(this.serviceData);
-    this.table_head = [
+      console.log(this.serviceData);
+      this.table_head = [
       {
         field: 'PriceListID',
         title: this.language.price_source,
@@ -973,31 +973,31 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
-    this.table_head_hidden_elements = [false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      ];
+      this.table_head_hidden_elements = [false];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
     }
-  }
 
-  get_features_Output_lookup() {
+    get_features_Output_lookup() {
 
 
-    this.popup_title = this.language.Bom_FeatureId;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureNameId';
-    this.lookup_key = 'OPTM_FEATUREID';
-    // this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
+      this.popup_title = this.language.Bom_FeatureId;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.fill_input_id = 'featureNameId';
+      this.lookup_key = 'OPTM_FEATUREID';
+      // this.table_head = [this.language.Id, this.language.code, this.language.Name, this.language.Model_Accessory];
 
-    this.table_head = [
+      this.table_head = [
 
       {
         field: 'OPTM_FEATURECODE',
@@ -1014,1024 +1014,1033 @@ export class LookupComponent implements OnInit {
         attrType: 'text'
       },
 
-    ];
-    this.table_head_hidden_elements = [true, false, false, true];
-    this.width_value = ((100 / this.table_head.length) + '%');
+      ];
+      this.table_head_hidden_elements = [true, false, false, true];
+      this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
+      this.showLoader = false;
+      this.LookupDataLoaded = true;
+      if (this.serviceData !== undefined) {
+        if (this.serviceData.length > 0) {
+          this.dialogOpened = true;
+          // $("#lookup_modal").modal('show');
+        }
       }
-    }
-
-  }
-
-  ruleSelection() {
-    this.popup_title = this.language.rule_selection;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.lookup_key = 'code';
-    this.table_head = [this.language.select, this.language.rule, this.language.description];
-    console.log(this.serviceData);
-    // this.table_head = [
-    //   {
-    //     field: 'OPTM_LOGID',
-    //     title: this.language.select,
-    //     type: 'text',
-    //     width: '100'
-    //   },      
-    //   {
-    //     field: 'OPTM_LOGID',
-    //     title: this.language.rule,
-    //     type: 'text',
-    //     width: '100'
-    //   },
-    //   {
-    //     field: 'OPTM_DESC',
-    //     title: this.language.description,
-    //     type: 'text',
-    //     width: '100'
-    //   },
-
-    // ];
-
-    this.table_head_hidden_elements = [false, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
-
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.checked_rules = [];
-        //console.log(this.serviceData);
-        for (var i = 0; i < this.serviceData.length; i++) {
-          if (this.serviceData[i].Selected == "Y") {
-            this.serviceData[i].Selected = true;
-            this.checked_rules.push(this.serviceData[i]);
-          }
-          else {
-            this.serviceData[i].Selected = false;
-          }
-
-        }
-
-        $("#rule_selection").modal('show');
-      }
-    }
-  }
-
-  get_rule_output(rule_id, seq_id) {
-    console.log("  rule_id " + rule_id);
-    console.log("  seq_id " + seq_id);
-    this.showruleOutputLoader = true;
-    this.RuleOutputLookupDataLoaded = false;
-    this.rule_output_table_head = ['#', this.language.feature, this.language.description];
-    this.rule_output_table_head_hidden_elements = [false, false, false];
-    $("#rule_output_table_lookup").modal('show');
-    // $("#rule_selection").css("opacity", "0");
-    $(".modal-backdrop:first").addClass("z-index_1050");
-    // this.outputServiceData = [
-    //   { "id": "2", "key": "123", "value": "test 1" },
-    //   { "id": "2", "key": "431", "value": "test 2" },
-    //   { "id": "4", "key": "555", "value": "test 3" },
-    // ];
-
-    let obj = this;
-    this.mbom.getRuleOutput(rule_id, seq_id).subscribe(
-      data => {
-        console.log(data);
-        if (data !== '' && data !== undefined && data !== null) {
-          obj.outputServiceData = data
-          // this.close_lookup();
-        } else {
-          this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
-          // this.close_lookup();
-        }
-
-        //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
-      })
-
-    this.showruleOutputLoader = false;
-    this.RuleOutputLookupDataLoaded = true;
-
-  }
-  close_rule_model(id) {
-    $("#rule_output_table_lookup").modal('hide');
-    $(".modal-backdrop:first").removeClass("z-index_1050");
-    // $("#rule_selection").css("opacity", "1");
-  }
-
-
-  on_checkbox_checked(checkedvalue, row_data) {
-    console.log("checkedvalue " + checkedvalue);
-    console.log(row_data);
-
-    if (checkedvalue == true) {
-      row_data.Selected = true;
-      this.checked_rules.push(row_data);
-    }
-    else {
-      let i = this.checked_rules.indexOf(row_data);
-      row_data.Selected = false;
-      this.checked_rules.splice(i, 1)
-    }
-    console.log(this.checked_rules);
-
-  }
-
-  rule_select_ok() {
-    this.lookupvalue.emit(this.checked_rules);
-    $("#rule_selection").modal('hide');
-  }
-
-  file_input($event) {
-    var obj = this;
-    var proceed = true;
-    this.selectedFile = $event.target.files[0];
-    let file_name_array = this.selectedFile.name.split(".");
-    var index = file_name_array.length - 1;
-    var file_extension = file_name_array[index];
-    if (this.fileType == "excel" && (file_extension == "xlsx" || file_extension == "xls")) {
-      proceed = true;
-    }
-    else if (this.fileType == "csv" && file_extension == "csv") {
-      proceed = true;
-    }
-    else {
-      this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
-      this.selectedFile = "";
-      this.reset();
-      return;
-    }
-    var reader = new FileReader();
-    var XLS_DATA = '';
-    reader.onload = function (loadEvent) {
-      // @ts-ignore: Unreachable code error
-      var data = loadEvent.target.result;
-      var workbook = XLSX.read(data, { type: 'binary' });
-      workbook.SheetNames.forEach(function (sheetName) {
-        // Here is your object
-        // @ts-ignore: Unreachable code error
-        XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-        obj.xls_dataset = XLS_DATA;
-      })
 
     }
-    reader.readAsBinaryString($event.target.files[0]);
-  }
 
-  importclick() {
-    console.log(this.selectedFile);
-    if (this.selectedFile == "" || this.selectedFile == null) {
-      this.toastr.error('', this.language.nofileattach, this.commonData.toast_config);
-      return;
-    }
+    ruleSelection() {
+      this.popup_title = this.language.rule_selection;
+      this.LookupDataLoaded = false;
+      this.showLoader = true;
+      this.lookup_key = 'code';
+      this.table_head = [this.language.select, this.language.rule, this.language.description];
+      console.log(this.serviceData);
+      // this.table_head = [
+      //   {
+        //     field: 'OPTM_LOGID',
+        //     title: this.language.select,
+        //     type: 'text',
+        //     width: '100'
+        //   },      
+        //   {
+          //     field: 'OPTM_LOGID',
+          //     title: this.language.rule,
+          //     type: 'text',
+          //     width: '100'
+          //   },
+          //   {
+            //     field: 'OPTM_DESC',
+            //     title: this.language.description,
+            //     type: 'text',
+            //     width: '100'
+            //   },
 
-    var xls_data = this.xls_dataset;
-    var objData: any = {}
-    objData.ExcelData = [];
-    objData.Common = [];
-    objData.ExcelData = xls_data;
-    objData.Common.push({
-      CompanyDBId: this.companyName,
-      CreatedUser: this.username
-    });
-    console.log('objData');
-    console.log(objData);
-    this.fms.importData(objData).subscribe(
-      data => {
-        console.log(data);
-        if (data !== '' && data !== undefined && data !== null) {
-          this.toastr.warning('', data, this.commonData.toast_config);
-          // this.close_lookup();
-        } else {
-          this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
-          // this.close_lookup();
-        }
-        $("#import_modal").modal('hide');
-        //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
-      })
+            // ];
 
-  }
+            this.table_head_hidden_elements = [false, false, false];
+            this.width_value = ((100 / this.table_head.length) + '%');
 
-  showImage() {
-    this.popup_title = this.language.feature_image;
-    this.showLoader = true;
-    this.LookupDataLoaded = false;
-    this.preview_image = this.selectedImage;
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-  }
+            this.showLoader = false;
+            this.LookupDataLoaded = true;
+            if (this.serviceData !== undefined) {
+              if (this.serviceData.length > 0) {
+                this.checked_rules = [];
+                //console.log(this.serviceData);
+                for (var i = 0; i < this.serviceData.length; i++) {
+                  if (this.serviceData[i].Selected == "Y") {
+                    this.serviceData[i].Selected = true;
+                    this.checked_rules.push(this.serviceData[i]);
+                  }
+                  else {
+                    this.serviceData[i].Selected = false;
+                  }
 
-  output_invoice_print() {
-    this.company_name = "Optipro Product Configuration";
-    this.company_address = "255 Street, Washington DC, USA ";
-    this.popup_title = this.language.print_quote;
-    this.load_print_report = true;
-    console.log(" output_invoice_print - " + this.load_print_report);
-    this.common_service.GetCompanyDetails(this.companyName).subscribe(
-      data => {
-        if (data != null || data != undefined) {
-          if (data.length > 0) {
-            if (data[0].LogoImage != "") {
-              this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
+                }
+
+                $("#rule_selection").modal('show');
+              }
             }
-            this.company_name = data[0].CompanyName;
-            this.company_address = data[0].CompanyAddress;
+          }
+
+          get_rule_output(rule_id, seq_id) {
+            console.log("  rule_id " + rule_id);
+            console.log("  seq_id " + seq_id);
+            this.showruleOutputLoader = true;
+            this.RuleOutputLookupDataLoaded = false;
+            this.rule_output_table_head = ['#', this.language.feature, this.language.description];
+            this.rule_output_table_head_hidden_elements = [false, false, false];
+            $("#rule_output_table_lookup").modal('show');
+            // $("#rule_selection").css("opacity", "0");
+            $(".modal-backdrop:first").addClass("z-index_1050");
+            // this.outputServiceData = [
+            //   { "id": "2", "key": "123", "value": "test 1" },
+            //   { "id": "2", "key": "431", "value": "test 2" },
+            //   { "id": "4", "key": "555", "value": "test 3" },
+            // ];
+
+            let obj = this;
+            this.mbom.getRuleOutput(rule_id, seq_id).subscribe(
+              data => {
+                console.log(data);
+                if (data !== '' && data !== undefined && data !== null) {
+                  obj.outputServiceData = data
+                  // this.close_lookup();
+                } else {
+                  this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+                  // this.close_lookup();
+                }
+
+                //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
+              })
+
+            this.showruleOutputLoader = false;
+            this.RuleOutputLookupDataLoaded = true;
 
           }
-        }
-      },
-      error => {
-        this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
-      }
-    )
+          close_rule_model(id) {
+            $("#rule_output_table_lookup").modal('hide');
+            $(".modal-backdrop:first").removeClass("z-index_1050");
+            // $("#rule_selection").css("opacity", "1");
+          }
 
-    //Print Criteria
-    //Summary --> Customer + COM + Qty + Acces.
-    //Details --> BOM + Feat. + Item + Acces.
 
-    if (this.serviceData.print_types != undefined) {
-      this.report_type = this.serviceData.print_types[0].selected_print_type;
-      //1 for summary and 2 for detail
-    }
+          on_checkbox_checked(checkedvalue, row_data) {
+            console.log("checkedvalue " + checkedvalue);
+            console.log(row_data);
 
-    //customer details
-    if (this.serviceData.customer_and_doc_details != undefined) {
-      this.showCustDetailsSec = true;
-      this.showGeneralDetails = true;
-      this.customer_details.order_type = (this.serviceData.customer_and_doc_details.document == "sales_quote") ? this.language.SalesQuote : ((this.serviceData.customer_and_doc_details.document == "sales_order") ? this.language.SalesOrder : this.language.draft);
-      this.customer_details.customer_name = this.serviceData.customer_and_doc_details.customer_name;
-      this.customer_details.person_name = this.serviceData.customer_and_doc_details.person_name;
-      this.customer_details.ship_to = this.serviceData.customer_and_doc_details.ship_to;
-      this.customer_details.ship_to_address = this.serviceData.customer_and_doc_details.ship_to_address;
-      this.customer_details.bill_to = this.serviceData.customer_and_doc_details.bill_to;
-      this.customer_details.bill_to_address = this.serviceData.customer_and_doc_details.bill_to_address;
-      this.customer_details.contact_person = this.serviceData.customer_and_doc_details.remark;
-      this.customer_details.remark = this.serviceData.customer_and_doc_details.remark;
-
-      this.customer_details.posting_date = this.serviceData.customer_and_doc_details.posting_date;
-      this.customer_details.delivery_until = this.serviceData.customer_and_doc_details.delivery_until;
-
-      if (this.serviceData.customer_and_doc_details.document == "sales_quote") {
-        this.customer_details.doc_type_date_label = this.language.valid_date;
-      } else {
-        this.customer_details.doc_type_date_label = this.language.delivery_date;
-      }
-
-    }
-    else {
-      this.showCustDetailsSec = false;
-      this.showGeneralDetails = false;
-    }
-    //payment details
-    if (this.serviceData.payment_details != undefined) {
-      this.showPaymentDetails = true;
-    }
-    else {
-      this.showPaymentDetails = false;
-    }
-    //ref doc details
-    if (this.serviceData.ref_doc_details != undefined && this.serviceData.ref_doc_details.length > 0) {
-      this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details[0].ref_doc_no;
-      this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details[0].ref_doc_entry;
-      this.refrence_doc_details.conf_id = this.serviceData.ref_doc_details[0].conf_id;
-      this.refrence_doc_details.conf_desc = this.serviceData.ref_doc_details[0].conf_desc;
-    }
-    //item details
-    if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
-      this.showProdDetailsTable = true;
-      this.verify_final_data_sel_details = this.serviceData.verify_final_data_sel_details;
-    }
-    else {
-      this.showProdDetailsTable = false;
-    }
-
-    let row_count = 0;
-    if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
-      for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
-        var row = this.serviceData.verify_final_data_sel_details[mcount];
-        row_count++;
-        //pushing item data
-        this.prepareFinalItemArray(row_count, row.item, row.desc, row.quantity, row.price, row.price_ext, row.feature_discount_percent, row.discounted_price, true);
-
-        let detailed_discount;
-        let discounted_detailed_price;
-        //If report type is details then only we will show features
-        for (let fcount = 0; fcount < row['feature'].length; fcount++) {
-          let featureRow = row['feature'][fcount];
-          row_count++;
-
-          if (this.report_type == "2") {
-            let itemFeatureName = featureRow.featureName;
-            if (featureRow.featureName == "" || featureRow.featureName == null) {
-              itemFeatureName = featureRow.Item;
-            }
-
-            if (featureRow.Item == "" || featureRow.Item == null) {
-              itemFeatureName = featureRow.featureName;
-            }
-
-            detailed_discount = 0;
-            discounted_detailed_price = featureRow.pricextn;
-            if (featureRow.is_accessory == "Y") {
-              detailed_discount = row.accessory_discount_percent
+            if (checkedvalue == true) {
+              row_data.Selected = true;
+              this.checked_rules.push(row_data);
             }
             else {
-              detailed_discount = row.feature_discount_percent
+              let i = this.checked_rules.indexOf(row_data);
+              row_data.Selected = false;
+              this.checked_rules.splice(i, 1)
             }
+            console.log(this.checked_rules);
 
-            if (detailed_discount != 0) {
-              discounted_detailed_price = (featureRow.pricextn - (featureRow.pricextn * (detailed_discount / 100)));
-            }
-
-
-
-            this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(detailed_discount), Number(discounted_detailed_price), false);
           }
-          else {
-            //As discussed with Meenesh & Pulkit
-            //For Summary report will not show sub models,show Accessories in Summary
-            if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
-              this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(row.accessory_discount_percent), Number((featureRow.pricextn - (featureRow.pricextn * (row.accessory_discount_percent / 100)))), false);
+
+          rule_select_ok() {
+            this.lookupvalue.emit(this.checked_rules);
+            $("#rule_selection").modal('hide');
+          }
+
+          file_input($event) {
+            var obj = this;
+            var proceed = true;
+            this.selectedFile = $event.target.files[0];
+            let file_name_array = this.selectedFile.name.split(".");
+            var index = file_name_array.length - 1;
+            var file_extension = file_name_array[index];
+            if (this.fileType == "excel" && (file_extension == "xlsx" || file_extension == "xls")) {
+              proceed = true;
+            }
+            else if (this.fileType == "csv" && file_extension == "csv") {
+              proceed = true;
             }
             else {
-              row_count--;
+              this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+              this.selectedFile = "";
+              this.reset();
+              return;
+            }
+            var reader = new FileReader();
+            var XLS_DATA = '';
+            reader.onload = function (loadEvent) {
+              // @ts-ignore: Unreachable code error
+              var data = loadEvent.target.result;
+              var workbook = XLSX.read(data, { type: 'binary' });
+              workbook.SheetNames.forEach(function (sheetName) {
+                // Here is your object
+                // @ts-ignore: Unreachable code error
+                XLS_DATA = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                obj.xls_dataset = XLS_DATA;
+              })
+
+            }
+            reader.readAsBinaryString($event.target.files[0]);
+          }
+
+          importclick() {
+            console.log(this.selectedFile);
+            if (this.selectedFile == "" || this.selectedFile == null) {
+              this.toastr.error('', this.language.nofileattach, this.commonData.toast_config);
+              return;
+            }
+
+            var xls_data = this.xls_dataset;
+            var objData: any = {}
+            objData.ExcelData = [];
+            objData.Common = [];
+            objData.ExcelData = xls_data;
+            objData.Common.push({
+              CompanyDBId: this.companyName,
+              CreatedUser: this.username
+            });
+            console.log('objData');
+            console.log(objData);
+            this.fms.importData(objData).subscribe(
+              data => {
+                console.log(data);
+                if (data !== '' && data !== undefined && data !== null) {
+                  this.toastr.warning('', data, this.commonData.toast_config);
+                  // this.close_lookup();
+                } else {
+                  this.toastr.error('', this.language.incorrectfile, this.commonData.toast_config);
+                  // this.close_lookup();
+                }
+                $("#import_modal").modal('hide');
+                //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
+              })
+
+          }
+
+          showImage() {
+            this.popup_title = this.language.feature_image;
+            this.showLoader = true;
+            this.LookupDataLoaded = false;
+            this.preview_image = this.selectedImage;
+            this.showLoader = false;
+            this.LookupDataLoaded = true;
+          }
+
+          output_invoice_print() {
+            this.company_name = "Optipro Product Configuration";
+            this.company_address = "255 Street, Washington DC, USA ";
+            this.popup_title = this.language.print_quote;
+            this.load_print_report = true;
+            console.log(" output_invoice_print - " + this.load_print_report);
+            this.common_service.GetCompanyDetails(this.companyName).subscribe(
+              data => {
+                if (data != null || data != undefined) {
+                  if (data.length > 0) {
+                    if (data[0].LogoImage != "") {
+                      this.logo_path = "data:image/jpeg;base64," + data[0].LogoImage;
+                    }
+                    this.company_name = data[0].CompanyName;
+                    this.company_address = data[0].CompanyAddress;
+
+                  }
+                }
+              },
+              error => {
+                this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+              }
+              )
+
+            //Print Criteria
+            //Summary --> Customer + COM + Qty + Acces.
+            //Details --> BOM + Feat. + Item + Acces.
+
+            if (this.serviceData.print_types != undefined) {
+              this.report_type = this.serviceData.print_types[0].selected_print_type;
+              //1 for summary and 2 for detail
+            }
+
+            //customer details
+            if (this.serviceData.customer_and_doc_details != undefined) {
+              this.showCustDetailsSec = true;
+              this.showGeneralDetails = true;
+              this.customer_details.order_type = (this.serviceData.customer_and_doc_details.document == "sales_quote") ? this.language.SalesQuote : ((this.serviceData.customer_and_doc_details.document == "sales_order") ? this.language.SalesOrder : this.language.draft);
+              this.customer_details.customer_name = this.serviceData.customer_and_doc_details.customer_name;
+              this.customer_details.person_name = this.serviceData.customer_and_doc_details.person_name;
+              this.customer_details.ship_to = this.serviceData.customer_and_doc_details.ship_to;
+              this.customer_details.ship_to_address = this.serviceData.customer_and_doc_details.ship_to_address;
+              this.customer_details.bill_to = this.serviceData.customer_and_doc_details.bill_to;
+              this.customer_details.bill_to_address = this.serviceData.customer_and_doc_details.bill_to_address;
+              this.customer_details.contact_person = this.serviceData.customer_and_doc_details.remark;
+              this.customer_details.remark = this.serviceData.customer_and_doc_details.remark;
+
+              this.customer_details.posting_date = this.serviceData.customer_and_doc_details.posting_date;
+              this.customer_details.delivery_until = this.serviceData.customer_and_doc_details.delivery_until;
+
+              if (this.serviceData.customer_and_doc_details.document == "sales_quote") {
+                this.customer_details.doc_type_date_label = this.language.valid_date;
+              } else {
+                this.customer_details.doc_type_date_label = this.language.delivery_date;
+              }
+
+            }
+            else {
+              this.showCustDetailsSec = false;
+              this.showGeneralDetails = false;
+            }
+            //payment details
+            if (this.serviceData.payment_details != undefined) {
+              this.showPaymentDetails = true;
+            }
+            else {
+              this.showPaymentDetails = false;
+            }
+            //ref doc details
+            if (this.serviceData.ref_doc_details != undefined && this.serviceData.ref_doc_details.length > 0) {
+              this.refrence_doc_details.ref_doc_no = this.serviceData.ref_doc_details[0].ref_doc_no;
+              this.refrence_doc_details.ref_doc_entry = this.serviceData.ref_doc_details[0].ref_doc_entry;
+              this.refrence_doc_details.conf_id = this.serviceData.ref_doc_details[0].conf_id;
+              this.refrence_doc_details.conf_desc = this.serviceData.ref_doc_details[0].conf_desc;
+            }
+            //item details
+            if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
+              this.showProdDetailsTable = true;
+              this.verify_final_data_sel_details = this.serviceData.verify_final_data_sel_details;
+            }
+            else {
+              this.showProdDetailsTable = false;
+            }
+
+            let row_count = 0;
+            if (this.serviceData.verify_final_data_sel_details != undefined && this.serviceData.verify_final_data_sel_details.length) {
+              for (let mcount = 0; mcount < this.serviceData.verify_final_data_sel_details.length; mcount++) {
+                var row = this.serviceData.verify_final_data_sel_details[mcount];
+                row_count++;
+                //pushing item data
+                this.prepareFinalItemArray(row_count, row.item, row.desc, row.quantity, row.price, row.price_ext, row.feature_discount_percent, row.discounted_price, true);
+
+                let detailed_discount;
+                let discounted_detailed_price;
+                //If report type is details then only we will show features
+                for (let fcount = 0; fcount < row['feature'].length; fcount++) {
+                  let featureRow = row['feature'][fcount];
+                  row_count++;
+
+                  if (this.report_type == "2") {
+                    let itemFeatureName = featureRow.featureName;
+                    if (featureRow.featureName == "" || featureRow.featureName == null) {
+                      itemFeatureName = featureRow.Item;
+                    }
+
+                    if (featureRow.Item == "" || featureRow.Item == null) {
+                      itemFeatureName = featureRow.featureName;
+                    }
+
+                    detailed_discount = 0;
+                    discounted_detailed_price = featureRow.pricextn;
+                    if (featureRow.is_accessory == "Y") {
+                      detailed_discount = row.accessory_discount_percent
+                    }
+                    else {
+                      detailed_discount = row.feature_discount_percent
+                    }
+
+                    if (detailed_discount != 0) {
+                      discounted_detailed_price = (featureRow.pricextn - (featureRow.pricextn * (detailed_discount / 100)));
+                    }
+
+
+
+                    this.prepareFinalItemArray(row_count, itemFeatureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(detailed_discount), Number(discounted_detailed_price), false);
+                  }
+                  else {
+                    //As discussed with Meenesh & Pulkit
+                    //For Summary report will not show sub models,show Accessories in Summary
+                    if (featureRow.is_accessory == "Y" && featureRow.OPTM_ITEMTYPE != 1) {
+                      this.prepareFinalItemArray(row_count, featureRow.featureName, featureRow.Description, Number(featureRow.quantity), Number(featureRow.Actualprice), Number(featureRow.pricextn), Number(row.accessory_discount_percent), Number((featureRow.pricextn - (featureRow.pricextn * (row.accessory_discount_percent / 100)))), false);
+                    }
+                    else {
+                      row_count--;
+                    }
+                  }
+                }
+
+              }
+            }
+
+            //product grand details
+            if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
+              this.showProdGrandDetails = true;
+              this.product_grand_details.step4_final_prod_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_prod_total).toFixed(3);
+              this.product_grand_details.step4_final_acc_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_acc_total).toFixed(3);
+              this.product_grand_details.step4_final_grand_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_grand_total).toFixed(3);
+              this.product_grand_details.prod_discount_log = parseFloat(this.serviceData.product_grand_details[0].prod_discount_log).toFixed(3);
+              this.product_grand_details.access_dis_amount_log = parseFloat(this.serviceData.product_grand_details[0].access_dis_amount_log).toFixed(3);
+            }
+            else {
+              this.showProdGrandDetails = false;
+            }
+
+            console.log(" invoice_modal show  - " + this.load_print_report);
+            $("#invoice_modal").modal('show');
+            //   this.lookupfor = "";
+          }
+
+
+          routing_resource_lookup() {
+            this.resource_popup_title = this.language.routing_resource;
+            this.LookupDataLoaded = false;
+            this.is_operation_popup_lookup_open = true;
+            this.showLoader = true;
+            this.resourceServiceData = [];
+            this.resource_basisdd = this.commonData.resource_basic;
+            if (this.serviceData !== undefined && this.serviceData !== "") {
+              if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
+                for (var inx = 0; inx < this.serviceData.oper_res.length; inx++) {
+                  console.log("this.serviceData.oper_res[inx] - ", this.serviceData.oper_res[inx]);
+                  this.resource_counter = 0;
+                  if (this.resourceServiceData.length > 0) {
+                    this.resource_counter = this.resourceServiceData.length
+                  }
+
+                  let basis = '1';
+                  let is_basis_disabled = false;
+                  if (this.serviceData.oper_res[inx].oper_consumption_method == '1' || this.serviceData.oper_res[inx].oper_consumption_method == 1) { // setup 
+                    is_basis_disabled = true;
+                    basis = '4';
+                    this.resource_basisdd = [
+                    { "value": '4', "Name": "Setup" }
+                    ]
+                  }
+
+                  if (this.serviceData.oper_res[inx].oper_consumption_method == '2' || this.serviceData.oper_res[inx].oper_consumption_method == 2) { // variable
+                    is_basis_disabled = false;
+                    basis = '1';
+                    this.resource_basisdd = [
+                    { "value": '1', "Name": "Item" },
+                    { "value": '4', "Name": "Setup" }
+                    ]
+                  }
+
+                  if (this.serviceData.oper_res[inx].oper_consumption_method == '3' || this.serviceData.oper_res[inx].oper_consumption_method == 3) { // Fixed
+                    is_basis_disabled = false;
+                    basis = '1';
+                    this.resource_basisdd = [
+                    { "value": '1', "Name": "Item" },
+                    { "value": '2', "Name": "Batch" },
+                    { "value": '4', "Name": "Setup" }
+                    ]
+                  }
+
+                  if(this.serviceData.oper_res[inx].basis != undefined && this.serviceData.oper_res[inx].basis !="" && this.serviceData.oper_res[inx].basis != null){
+                    basis = this.serviceData.oper_res[inx].basis;
+                  }
+
+
+                  this.resource_counter++;
+                  var res_consum_type = 1;
+                  if (this.serviceData.oper_res[inx].resource_consumption_type != undefined && this.serviceData.oper_res[inx].resource_consumption_type != "") {
+                    res_consum_type = this.serviceData.oper_res[inx].resource_consumption_type;
+                  } else {
+                    res_consum_type  = this.serviceData.oper_res[inx].oper_consumption_method;
+                  }
+                  if (this.serviceData.oper_res[inx].OPRCode != undefined) {
+                    this.resourceServiceData.push({
+                      lineno: this.resource_counter,
+                      rowindex: this.resource_counter,
+                      ChrgBasis: this.serviceData.oper_res[inx].ChrgBasis,
+                      DCNum: this.serviceData.oper_res[inx].DCNum,
+                      LineID: this.serviceData.oper_res[inx].LineID,
+                      operation_no: this.serviceData.oper_res[inx].OPRCode,
+                      oper_type: this.serviceData.oper_res[inx].oper_type,
+                      oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
+                      oper_consumption_method: this.serviceData.oper_res[inx].oper_consumption_method,
+                      resource_code: this.serviceData.oper_res[inx].ResCode,
+                      resource_name: this.serviceData.oper_res[inx].ResName,
+                      resource_type: this.serviceData.oper_res[inx].ResType,
+                      resource_uom: this.serviceData.oper_res[inx].ResUOM,
+                      resource_consumption: parseFloat(this.serviceData.oper_res[inx].ResCons).toFixed(3),
+                      resource_inverse: parseFloat(this.serviceData.oper_res[inx].ResInv).toFixed(3),
+                      no_resource_used: this.serviceData.oper_res[inx].ResUsed,
+                      time_uom: this.serviceData.oper_res[inx].TimeUOM,
+                      time_consumption: parseFloat(this.serviceData.oper_res[inx].TimeCons).toFixed(3),
+                      time_inverse: parseFloat(this.serviceData.oper_res[inx].TimeInv).toFixed(3),
+                      resource_consumption_type: res_consum_type,
+                      basis: basis,
+                      is_basis_disabled: is_basis_disabled,
+                      schedule: this.serviceData.oper_res[inx].schedule,
+                      is_resource_disabled: true,
+                      unique_key: this.serviceData.unique_key
+                    });
+                  }
+
+                  this.resourceServiceOperCM = this.serviceData.oper_res[inx].oper_consumption_method;
+                }
+
+                if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
+                  this.resourceServiceOper = this.serviceData.oper_code;
+                }
+
+                if (this.serviceData.wc_code != "" && this.serviceData.wc_code != null && this.serviceData.wc_code != undefined) {
+                  this.resourceServiceWc = this.serviceData.wc_code;
+                }
+
+                this.showLoader = false;
+                this.LookupDataLoaded = true;
+                console.log("routing_resource_modal show ");
+                $("#routing_resource_modal").modal('show');
+
+              }
             }
           }
-        }
 
-      }
-    }
+          insert_new_resource() {
+            console.log("this.resourceServiceData - ", this.resourceServiceData);
+            if (this.resourceServiceData == undefined || this.resourceServiceData == null || this.resourceServiceData == "") {
+              this.resourceServiceData = [];
+            }
+            this.resource_counter = 0;
+            if (this.resourceServiceData.length > 0) {
+              this.resource_counter = this.resourceServiceData.length
+            }
+            let  unqiue_key = '';
+            if(this.serviceData.unique_key == undefined || this.serviceData.unique_key == "" || this.serviceData.unique_key == null ){
+              if(this.resourceServiceData[0].unique_key !== undefined){
+                unqiue_key  = this.resourceServiceData[0].unique_key;
+              }
 
-    //product grand details
-    if (this.serviceData.product_grand_details != undefined && this.serviceData.product_grand_details.length > 0) {
-      this.showProdGrandDetails = true;
-      this.product_grand_details.step4_final_prod_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_prod_total).toFixed(3);
-      this.product_grand_details.step4_final_acc_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_acc_total).toFixed(3);
-      this.product_grand_details.step4_final_grand_total = parseFloat(this.serviceData.product_grand_details[0].step4_final_grand_total).toFixed(3);
-      this.product_grand_details.prod_discount_log = parseFloat(this.serviceData.product_grand_details[0].prod_discount_log).toFixed(3);
-      this.product_grand_details.access_dis_amount_log = parseFloat(this.serviceData.product_grand_details[0].access_dis_amount_log).toFixed(3);
-    }
-    else {
-      this.showProdGrandDetails = false;
-    }
+            } else {
+              unqiue_key = this.serviceData.unique_key ;
+            }
 
-    console.log(" invoice_modal show  - " + this.load_print_report);
-    $("#invoice_modal").modal('show');
-    //   this.lookupfor = "";
-  }
-
-
-  routing_resource_lookup() {
-    this.resource_popup_title = this.language.routing_resource;
-    this.LookupDataLoaded = false;
-    this.is_operation_popup_lookup_open = true;
-    this.showLoader = true;
-    this.resourceServiceData = [];
-    this.resource_basisdd = this.commonData.resource_basic;
-    if (this.serviceData !== undefined && this.serviceData !== "") {
-      if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
-        for (var inx = 0; inx < this.serviceData.oper_res.length; inx++) {
-          console.log("this.serviceData.oper_res[inx] - ", this.serviceData.oper_res[inx]);
-          this.resource_counter = 0;
-          if (this.resourceServiceData.length > 0) {
-            this.resource_counter = this.resourceServiceData.length
-          }
-
-          let basis = '1';
-          let is_basis_disabled = false;
-          if (this.serviceData.oper_res[inx].oper_consumption_method == '1' || this.serviceData.oper_res[inx].oper_consumption_method == 1) { // setup 
-            is_basis_disabled = true;
-            basis = '4';
-            this.resource_basisdd = [
+            let basis = '1';
+            let is_basis_disabled = false;
+            if (this.resourceServiceOperCM == '1' || this.resourceServiceOperCM == 1) { // setup 
+              is_basis_disabled = true;
+              basis = '4';
+              this.resource_basisdd = [
               { "value": '4', "Name": "Setup" }
-            ]
-          }
+              ]
+            }
 
-          if (this.serviceData.oper_res[inx].oper_consumption_method == '2' || this.serviceData.oper_res[inx].oper_consumption_method == 2) { // variable
-            is_basis_disabled = false;
-            basis = '1';
-            this.resource_basisdd = [
+            if (this.resourceServiceOperCM == '2' || this.resourceServiceOperCM == 2) { // variable
+              is_basis_disabled = false;
+              basis = '1';
+              this.resource_basisdd = [
               { "value": '1', "Name": "Item" },
               { "value": '4', "Name": "Setup" }
-            ]
-          }
+              ]
+            }
 
-          if (this.serviceData.oper_res[inx].oper_consumption_method == '3' || this.serviceData.oper_res[inx].oper_consumption_method == 3) { // Fixed
-            is_basis_disabled = false;
-            basis = '1';
-            this.resource_basisdd = [
+            if (this.resourceServiceOperCM == '3' || this.resourceServiceOperCM == 3) { // Fixed
+              is_basis_disabled = false;
+              basis = '1';
+              this.resource_basisdd = [
               { "value": '1', "Name": "Item" },
               { "value": '2', "Name": "Batch" },
               { "value": '4', "Name": "Setup" }
-            ]
-          }
+              ]
+            }
 
-          if(this.serviceData.oper_res[inx].basis != undefined && this.serviceData.oper_res[inx].basis !="" && this.serviceData.oper_res[inx].basis != null){
-            basis = this.serviceData.oper_res[inx].basis;
-          }
-
-
-          this.resource_counter++;
-          var res_consum_type = 1;
-          if (this.serviceData.oper_res[inx].resource_consumption_type != undefined && this.serviceData.oper_res[inx].resource_consumption_type != "") {
-            res_consum_type = this.serviceData.oper_res[inx].resource_consumption_type;
-          } else {
-            res_consum_type  = this.serviceData.oper_res[inx].oper_consumption_method;
-          }
-          if (this.serviceData.oper_res[inx].OPRCode != undefined) {
+            this.resource_counter++;
+            console.log("this.serviceData.unique_key ", this.serviceData.unique_key, "unqiue_key ", unqiue_key);
             this.resourceServiceData.push({
               lineno: this.resource_counter,
               rowindex: this.resource_counter,
-              ChrgBasis: this.serviceData.oper_res[inx].ChrgBasis,
-              DCNum: this.serviceData.oper_res[inx].DCNum,
-              LineID: this.serviceData.oper_res[inx].LineID,
-              operation_no: this.serviceData.oper_res[inx].OPRCode,
-              oper_type: this.serviceData.oper_res[inx].oper_type,
-              oper_consumption_type: this.serviceData.oper_res[inx].oper_consumption_method,
-              oper_consumption_method: this.serviceData.oper_res[inx].oper_consumption_method,
-              resource_code: this.serviceData.oper_res[inx].ResCode,
-              resource_name: this.serviceData.oper_res[inx].ResName,
-              resource_type: this.serviceData.oper_res[inx].ResType,
-              resource_uom: this.serviceData.oper_res[inx].ResUOM,
-              resource_consumption: parseFloat(this.serviceData.oper_res[inx].ResCons).toFixed(3),
-              resource_inverse: parseFloat(this.serviceData.oper_res[inx].ResInv).toFixed(3),
-              no_resource_used: this.serviceData.oper_res[inx].ResUsed,
-              time_uom: this.serviceData.oper_res[inx].TimeUOM,
-              time_consumption: parseFloat(this.serviceData.oper_res[inx].TimeCons).toFixed(3),
-              time_inverse: parseFloat(this.serviceData.oper_res[inx].TimeInv).toFixed(3),
-              resource_consumption_type: res_consum_type,
+              operation_no: this.resourceServiceOper,
+              resource_code: '',
+              resource_name: '',
+              resource_uom: '',
+              resource_type: '',
+              resource_consumption: parseFloat("1").toFixed(3),
+              resource_inverse: parseFloat("0").toFixed(3),
+              no_resource_used: parseInt("1"),
+              time_uom: '',
+              time_consumption: parseFloat("0").toFixed(3),
+              time_inverse: parseFloat("0").toFixed(3),
+              resource_consumption_type: this.resourceServiceOperCM,
+              oper_consumption_method: this.resourceServiceOperCM,
+              oper_consumption_type: this.resourceServiceOperCM,
               basis: basis,
               is_basis_disabled: is_basis_disabled,
-              schedule: this.serviceData.oper_res[inx].schedule,
+              schedule: false,
               is_resource_disabled: true,
-              unique_key: this.serviceData.unique_key
+              unique_key: unqiue_key
             });
           }
 
-          this.resourceServiceOperCM = this.serviceData.oper_res[inx].oper_consumption_method;
-        }
-
-        if (this.serviceData.oper_code != "" && this.serviceData.oper_code != null && this.serviceData.oper_code != undefined) {
-          this.resourceServiceOper = this.serviceData.oper_code;
-        }
-
-        if (this.serviceData.wc_code != "" && this.serviceData.wc_code != null && this.serviceData.wc_code != undefined) {
-          this.resourceServiceWc = this.serviceData.wc_code;
-        }
-
-        this.showLoader = false;
-        this.LookupDataLoaded = true;
-        console.log("routing_resource_modal show ");
-        $("#routing_resource_modal").modal('show');
-
-      }
-    }
-  }
-
-  insert_new_resource() {
-    console.log("this.resourceServiceData - ", this.resourceServiceData);
-    if (this.resourceServiceData == undefined || this.resourceServiceData == null || this.resourceServiceData == "") {
-      this.resourceServiceData = [];
-    }
-    this.resource_counter = 0;
-    if (this.resourceServiceData.length > 0) {
-      this.resource_counter = this.resourceServiceData.length
-    }
-
-    let basis = '1';
-    let is_basis_disabled = false;
-    if (this.resourceServiceOperCM == '1' || this.resourceServiceOperCM == 1) { // setup 
-      is_basis_disabled = true;
-      basis = '4';
-      this.resource_basisdd = [
-        { "value": '4', "Name": "Setup" }
-      ]
-    }
-
-    if (this.resourceServiceOperCM == '2' || this.resourceServiceOperCM == 2) { // variable
-      is_basis_disabled = false;
-      basis = '1';
-      this.resource_basisdd = [
-        { "value": '1', "Name": "Item" },
-        { "value": '4', "Name": "Setup" }
-      ]
-    }
-
-    if (this.resourceServiceOperCM == '3' || this.resourceServiceOperCM == 3) { // Fixed
-      is_basis_disabled = false;
-      basis = '1';
-      this.resource_basisdd = [
-        { "value": '1', "Name": "Item" },
-        { "value": '2', "Name": "Batch" },
-        { "value": '4', "Name": "Setup" }
-      ]
-    }
-
-    this.resource_counter++;
-
-    this.resourceServiceData.push({
-      lineno: this.resource_counter,
-      rowindex: this.resource_counter,
-      operation_no: this.resourceServiceOper,
-      resource_code: '',
-      resource_name: '',
-      resource_uom: '',
-      resource_type: '',
-      resource_consumption: parseFloat("1").toFixed(3),
-      resource_inverse: parseFloat("0").toFixed(3),
-      no_resource_used: parseInt("1"),
-      time_uom: '',
-      time_consumption: parseFloat("0").toFixed(3),
-      time_inverse: parseFloat("0").toFixed(3),
-      resource_consumption_type: this.resourceServiceOperCM,
-      oper_consumption_method: this.resourceServiceOperCM,
-      oper_consumption_type: this.resourceServiceOperCM,
-      basis: basis,
-      is_basis_disabled: is_basis_disabled,
-      schedule: false,
-      is_resource_disabled: true,
-      unique_key: this.serviceData.unique_key
-    });
-  }
-
-  onDeleteRow(rowindex) {
-    if (this.resourceServiceData.length > 0) {
-      for (let i = 0; i < this.resourceServiceData.length; ++i) {
-        if (this.resourceServiceData[i].rowindex === rowindex) {
-          this.resourceServiceData.splice(i, 1);
-          i = i - 1;
-        }
-        else {
-          this.resourceServiceData[i].rowindex = i + 1;
-        }
-      }
-    }
-  }
-
-  clearInvalidRes(currentrow) {
-    this.resourceServiceData[currentrow].resource_code = "";
-    this.resourceServiceData[currentrow].resource_name = "";
-    this.resourceServiceData[currentrow].resource_uom = "";
-    this.resourceServiceData[currentrow].resource_type = "";
-
-    $(".row_resource_code").eq(currentrow).val("");
-    $(".row_resource_name").eq(currentrow).val("");
-    $(".row_resource_uom").eq(currentrow).val("");
-  }
-
-
-  get_consumption_inverse_value(type, value, resource_code, currentrow) {
-    this.rs.getResConversionInverse(type, value, resource_code).subscribe(
-      data => {
-        console.log(data);
-        if (data != undefined) {
-          if (data.length > 0) {
-            if (data[0].ErrorMsg == "7001") {
-              this.common_service.RemoveLoggedInUser().subscribe();
-              this.common_service.signOut(this.toastr, this.router, 'Sessionout');
-              this.showLookupLoader = false;
-              return;
-            }
-            if (type == 'inverse') {
-              this.resourceServiceData[currentrow].resource_consumption = parseFloat(data[0].Consumption).toFixed(3)
-            }
-            if (type == 'consumption') {
-              this.resourceServiceData[currentrow].resource_inverse = parseFloat(data[0].Inverse).toFixed(3);
-            }
-            if (data[0].TimeUOM != null && data[0].TimeUOM != undefined && data[0].TimeUOM != "") {
-              this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
-            } else {
-              this.resourceServiceData[currentrow].time_uom = "";
-            }
-            if (data[0].TimeConsumption != null && data[0].TimeConsumption != undefined) {
-              this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
-            } else {
-              this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
-            }
-            if (data[0].TimeInverse != null && data[0].TimeInverse != undefined) {
-              this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
-            } else {
-              this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
-            }
-          }
-        } else {
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-        }
-      }, error => {
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-      }
-    )
-  }
-
-  on_input_change(value, rowindex, grid_element) {
-    var currentrow = 0;
-    for (let i = 0; i < this.resourceServiceData.length; ++i) {
-      if (this.resourceServiceData[i].rowindex === rowindex) {
-        currentrow = i;
-      }
-    }
-    console.log(currentrow);
-    if (grid_element == 'operation_no') {
-
-    }
-
-    if (grid_element == 'resource_code') {
-      this.showLookupLoader = true;
-      this.rs.getResourceDetail(value).subscribe(
-        data => {
-          console.log(data);
-          if (data != null && data != undefined) {
-            if (data.length > 0) {
-              if (data[0].ErrorMsg == "7001") {
-                this.common_service.RemoveLoggedInUser().subscribe();
-                this.common_service.signOut(this.toastr, this.router, 'Sessionout');
-                this.showLookupLoader = false;
-                return;
+          onDeleteRow(rowindex) {
+            if (this.resourceServiceData.length > 0) {
+              for (let i = 0; i < this.resourceServiceData.length; ++i) {
+                if (this.resourceServiceData[i].rowindex === rowindex) {
+                  this.resourceServiceData.splice(i, 1);
+                  i = i - 1;
+                }
+                else {
+                  this.resourceServiceData[i].rowindex = i + 1;
+                }
               }
-              this.resourceServiceData[currentrow].resource_code = data[0].ResCode;
-              this.resourceServiceData[currentrow].resource_name = data[0].Name;
-              this.resourceServiceData[currentrow].resource_uom = data[0].UnitOfMsr;
-              this.resourceServiceData[currentrow].resource_type = data[0].ResType;
-              this.get_consumption_inverse_value('consumption', 1, this.resourceServiceData[currentrow].resource_code, currentrow);
-              this.showLookupLoader = false;
-            } else {
-              this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
-              this.clearInvalidRes(currentrow);
-              this.showLookupLoader = false;
-              return;
             }
-          } else {
-            this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
-            this.clearInvalidRes(currentrow);
-            this.showLookupLoader = false;
-            return;
           }
-        }, error => {
-          this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
-          this.clearInvalidRes(currentrow);
-          this.showLookupLoader = false;
-          return;
-        }
-      );
-    }
 
-    if (grid_element == 'resource_name') {
+          clearInvalidRes(currentrow) {
+            this.resourceServiceData[currentrow].resource_code = "";
+            this.resourceServiceData[currentrow].resource_name = "";
+            this.resourceServiceData[currentrow].resource_uom = "";
+            this.resourceServiceData[currentrow].resource_type = "";
 
-    }
-
-    if (grid_element == 'resource_uom') {
-
-    }
-
-    if (grid_element == 'resource_consumption') {
-
-      if (value == 0 && value != '') {
-        value = 1;
-
-        this.toastr.error('', this.language.consumption_type_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-      }
-      else {
-        if (isNaN(value) == true) {
-          value = 1;
-          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-        } else if (value == 0 || value == '' || value == null || value == undefined) {
-          value = 1;
-          this.toastr.error('', this.language.blank_or_zero_ct_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        } else if (value < 0) {
-          value = 1;
-          this.toastr.error('', this.language.negative_ct_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        }
-      }
-
-      this.resourceServiceData[currentrow].resource_consumption = parseFloat(value).toFixed(3);;
-      $('.row_resource_consumption').eq(currentrow).val(parseFloat(value).toFixed(3));
-
-      if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
-        this.get_consumption_inverse_value('consumption', value, this.resourceServiceData[currentrow].resource_code, currentrow);
-      } else {
-        this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
-        this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
-      }
-
-    }
-
-    if (grid_element == 'resource_inverse') {
-      if (value == 0 && value != '') {
-        value = 1;
-        this.toastr.error('', this.language.inverse_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-      }
-      else {
-        if (isNaN(value) == true) {
-          value = 1;
-          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-        } else if (value == 0 || value == '' || value == null || value == undefined) {
-          value = 1;
-          this.toastr.error('', this.language.blank_or_zero_inverse_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        } else if (value < 0) {
-          value = 1;
-          this.toastr.error('', this.language.negative_inverse_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        }
-      }
-      this.resourceServiceData[currentrow].resource_inverse = parseFloat(value).toFixed(3);
-      $('.row_resource_inverse').eq(currentrow).val(parseFloat(value).toFixed(3));
-      if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
-        this.get_consumption_inverse_value('inverse', value, this.resourceServiceData[currentrow].resource_code, currentrow);
-      } else {
-        this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
-        this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
-      }
+            $(".row_resource_code").eq(currentrow).val("");
+            $(".row_resource_name").eq(currentrow).val("");
+            $(".row_resource_uom").eq(currentrow).val("");
+          }
 
 
-    }
+          get_consumption_inverse_value(type, value, resource_code, currentrow) {
+            this.rs.getResConversionInverse(type, value, resource_code).subscribe(
+              data => {
+                console.log(data);
+                if (data != undefined) {
+                  if (data.length > 0) {
+                    if (data[0].ErrorMsg == "7001") {
+                      this.common_service.RemoveLoggedInUser().subscribe();
+                      this.common_service.signOut(this.toastr, this.router, 'Sessionout');
+                      this.showLookupLoader = false;
+                      return;
+                    }
+                    if (type == 'inverse') {
+                      this.resourceServiceData[currentrow].resource_consumption = parseFloat(data[0].Consumption).toFixed(3)
+                    }
+                    if (type == 'consumption') {
+                      this.resourceServiceData[currentrow].resource_inverse = parseFloat(data[0].Inverse).toFixed(3);
+                    }
+                    if (data[0].TimeUOM != null && data[0].TimeUOM != undefined && data[0].TimeUOM != "") {
+                      this.resourceServiceData[currentrow].time_uom = data[0].TimeUOM;
+                    } else {
+                      this.resourceServiceData[currentrow].time_uom = "";
+                    }
+                    if (data[0].TimeConsumption != null && data[0].TimeConsumption != undefined) {
+                      this.resourceServiceData[currentrow].time_consumption = parseFloat(data[0].TimeConsumption).toFixed(3);
+                    } else {
+                      this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
+                    }
+                    if (data[0].TimeInverse != null && data[0].TimeInverse != undefined) {
+                      this.resourceServiceData[currentrow].time_inverse = parseFloat(data[0].TimeInverse).toFixed(3);
+                    } else {
+                      this.resourceServiceData[currentrow].time_consumption = (0).toFixed(3);
+                    }
+                  }
+                } else {
+                  this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+                }
+              }, error => {
+                this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+              }
+              )
+          }
 
-    if (grid_element == 'no_resource_used') {
-      if (value == 0 && value != '') {
-        value = 1;
-        this.resourceServiceData[currentrow].no_resource_used = value;
-        this.toastr.error('', this.language.no_of_resource_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-      }
-      else {
-        let rgexp = /^\d+$/;
-        if (isNaN(value) == true) {
-          value = 1;
-          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-        } else if (value == 0 || value == '' || value == null || value == undefined) {
-          value = 1;
-          this.toastr.error('', this.language.blank_or_zero_noresused_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        } else if (value < 0) {
-          value = 1;
-          this.toastr.error('', this.language.negative_resource_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        } else if (rgexp.test(value) == false) {
-          value = 1;
-          this.toastr.error('', this.language.decimal_noresused_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
-        }
-        this.resourceServiceData[currentrow].no_resource_used = (value);
+          on_input_change(value, rowindex, grid_element) {
+            var currentrow = 0;
+            for (let i = 0; i < this.resourceServiceData.length; ++i) {
+              if (this.resourceServiceData[i].rowindex === rowindex) {
+                currentrow = i;
+              }
+            }
+            console.log(currentrow);
+            if (grid_element == 'operation_no') {
 
-      }
-      $('.row_no_resource_used').eq(currentrow).val(value);
-    }
+            }
 
-    if (grid_element == 'time_uom') {
-      this.resourceServiceData[currentrow].time_uom = (value);
-    }
+            if (grid_element == 'resource_code') {
+              this.showLookupLoader = true;
+              this.rs.getResourceDetail(value).subscribe(
+                data => {
+                  console.log(data);
+                  if (data != null && data != undefined) {
+                    if (data.length > 0) {
+                      if (data[0].ErrorMsg == "7001") {
+                        this.common_service.RemoveLoggedInUser().subscribe();
+                        this.common_service.signOut(this.toastr, this.router, 'Sessionout');
+                        this.showLookupLoader = false;
+                        return;
+                      }
+                      this.resourceServiceData[currentrow].resource_code = data[0].ResCode;
+                      this.resourceServiceData[currentrow].resource_name = data[0].Name;
+                      this.resourceServiceData[currentrow].resource_uom = data[0].UnitOfMsr;
+                      this.resourceServiceData[currentrow].resource_type = data[0].ResType;
+                      this.get_consumption_inverse_value('consumption', 1, this.resourceServiceData[currentrow].resource_code, currentrow);
+                      this.showLookupLoader = false;
+                    } else {
+                      this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+                      this.clearInvalidRes(currentrow);
+                      this.showLookupLoader = false;
+                      return;
+                    }
+                  } else {
+                    this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+                    this.clearInvalidRes(currentrow);
+                    this.showLookupLoader = false;
+                    return;
+                  }
+                }, error => {
+                  this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+                  this.clearInvalidRes(currentrow);
+                  this.showLookupLoader = false;
+                  return;
+                }
+                );
+            }
 
-    if (grid_element == 'time_consumption') {
-      this.resourceServiceData[currentrow].time_consumption = parseFloat(value).toFixed(3);
-    }
+            if (grid_element == 'resource_name') {
 
-    if (grid_element == 'time_inverse') {
-      this.resourceServiceData[currentrow].time_inverse = parseFloat(value).toFixed(3);
-    }
+            }
 
-    if (grid_element == 'resource_consumption_type') {
-      this.resourceServiceData[currentrow].resource_consumption_type = (value);
-    }
+            if (grid_element == 'resource_uom') {
 
-    if (grid_element == 'resource_basic') {
-      this.resourceServiceData[currentrow].resource_basic = (value);
-    }
+            }
 
-    if (grid_element == 'schedule') {
-      this.resourceServiceData[currentrow].schedule = (value);
-    }
-  }
+            if (grid_element == 'resource_consumption') {
 
+              if (value == 0 && value != '') {
+                value = 1;
 
-  open_resource_lookup(type, rowindex) {
-    this.showLookupLoader = true;
-    this.serviceData = []
-    this.rs.getResourceList(this.resourceServiceWc).subscribe(
-      data => {
-        if (data != null && data != undefined) {
-          if (data.length > 0) {
-              if (data[0].ErrorMsg == "7001") {
-                this.common_service.RemoveLoggedInUser().subscribe();
-                this.common_service.signOut(this.toastr, this.router, 'Sessionout');
-                this.showLookupLoader = false;
-                return;
+                this.toastr.error('', this.language.consumption_type_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+              }
+              else {
+                if (isNaN(value) == true) {
+                  value = 1;
+                  this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+                } else if (value == 0 || value == '' || value == null || value == undefined) {
+                  value = 1;
+                  this.toastr.error('', this.language.blank_or_zero_ct_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                } else if (value < 0) {
+                  value = 1;
+                  this.toastr.error('', this.language.negative_ct_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                }
               }
 
-            this.current_popup_row = rowindex;
-            this.table_head = [
-              {
-                field: 'ResCode',
-                title: this.language.resource_code,
-                type: 'text',
-                width: '100',
-                attrType: 'text'
-              },
-              {
-                field: 'Name',
-                title: this.language.resource_name,
-                type: 'text',
-                width: '100',
-                attrType: 'text'
-              },
-              {
-                field: 'NumberOfRes',
-                title: this.language.numberofres,
-                type: 'text',
-                width: '100',
-                attrType: 'text'
-              },
-              {
-                field: 'WCCode',
-                title: this.language.workcenter_code,
-                type: 'text',
-                width: '100',
-                attrType: 'text'
-              }];
-            this.serviceData = data;
-            this.popup_title = this.language.resources;
-            this.dialogOpened = true;
-            this.popup_resource = true;
+              this.resourceServiceData[currentrow].resource_consumption = parseFloat(value).toFixed(3);;
+              $('.row_resource_consumption').eq(currentrow).val(parseFloat(value).toFixed(3));
+
+              if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
+                this.get_consumption_inverse_value('consumption', value, this.resourceServiceData[currentrow].resource_code, currentrow);
+              } else {
+                this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
+                this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
+              }
+
+            }
+
+            if (grid_element == 'resource_inverse') {
+              if (value == 0 && value != '') {
+                value = 1;
+                this.toastr.error('', this.language.inverse_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+              }
+              else {
+                if (isNaN(value) == true) {
+                  value = 1;
+                  this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+                } else if (value == 0 || value == '' || value == null || value == undefined) {
+                  value = 1;
+                  this.toastr.error('', this.language.blank_or_zero_inverse_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                } else if (value < 0) {
+                  value = 1;
+                  this.toastr.error('', this.language.negative_inverse_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                }
+              }
+              this.resourceServiceData[currentrow].resource_inverse = parseFloat(value).toFixed(3);
+              $('.row_resource_inverse').eq(currentrow).val(parseFloat(value).toFixed(3));
+              if (this.resourceServiceData[currentrow].resource_code != "" && this.resourceServiceData[currentrow].resource_code != undefined && this.resourceServiceData[currentrow].resource_code != null) {
+                this.get_consumption_inverse_value('inverse', value, this.resourceServiceData[currentrow].resource_code, currentrow);
+              } else {
+                this.resourceServiceData[currentrow].time_consumption = parseFloat('0').toFixed(3);
+                this.resourceServiceData[currentrow].time_inverse = parseFloat('0').toFixed(3);
+              }
+
+
+            }
+
+            if (grid_element == 'no_resource_used') {
+              if (value == 0 && value != '') {
+                value = 1;
+                this.resourceServiceData[currentrow].no_resource_used = value;
+                this.toastr.error('', this.language.no_of_resource_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+              }
+              else {
+                let rgexp = /^\d+$/;
+                if (isNaN(value) == true) {
+                  value = 1;
+                  this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+                } else if (value == 0 || value == '' || value == null || value == undefined) {
+                  value = 1;
+                  this.toastr.error('', this.language.blank_or_zero_noresused_not_allowed + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                } else if (value < 0) {
+                  value = 1;
+                  this.toastr.error('', this.language.negative_resource_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                } else if (rgexp.test(value) == false) {
+                  value = 1;
+                  this.toastr.error('', this.language.decimal_noresused_valid + ' ' + this.language.at_row + ' ' + (currentrow + 1), this.commonData.toast_config);
+                }
+                this.resourceServiceData[currentrow].no_resource_used = (value);
+
+              }
+              $('.row_no_resource_used').eq(currentrow).val(value);
+            }
+
+            if (grid_element == 'time_uom') {
+              this.resourceServiceData[currentrow].time_uom = (value);
+            }
+
+            if (grid_element == 'time_consumption') {
+              this.resourceServiceData[currentrow].time_consumption = parseFloat(value).toFixed(3);
+            }
+
+            if (grid_element == 'time_inverse') {
+              this.resourceServiceData[currentrow].time_inverse = parseFloat(value).toFixed(3);
+            }
+
+            if (grid_element == 'resource_consumption_type') {
+              this.resourceServiceData[currentrow].resource_consumption_type = (value);
+            }
+
+            if (grid_element == 'resource_basic') {
+              this.resourceServiceData[currentrow].resource_basic = (value);
+            }
+
+            if (grid_element == 'schedule') {
+              this.resourceServiceData[currentrow].schedule = (value);
+            }
           }
-          else {
-            this.dialogOpened = false;
-            this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-            return;
+
+
+          open_resource_lookup(type, rowindex) {
+            this.showLookupLoader = true;
+            this.serviceData = []
+            this.rs.getResourceList(this.resourceServiceWc).subscribe(
+              data => {
+                if (data != null && data != undefined) {
+                  if (data.length > 0) {
+                    if (data[0].ErrorMsg == "7001") {
+                      this.common_service.RemoveLoggedInUser().subscribe();
+                      this.common_service.signOut(this.toastr, this.router, 'Sessionout');
+                      this.showLookupLoader = false;
+                      return;
+                    }
+
+                    this.current_popup_row = rowindex;
+                    this.table_head = [
+                    {
+                      field: 'ResCode',
+                      title: this.language.resource_code,
+                      type: 'text',
+                      width: '100',
+                      attrType: 'text'
+                    },
+                    {
+                      field: 'Name',
+                      title: this.language.resource_name,
+                      type: 'text',
+                      width: '100',
+                      attrType: 'text'
+                    },
+                    {
+                      field: 'NumberOfRes',
+                      title: this.language.numberofres,
+                      type: 'text',
+                      width: '100',
+                      attrType: 'text'
+                    },
+                    {
+                      field: 'WCCode',
+                      title: this.language.workcenter_code,
+                      type: 'text',
+                      width: '100',
+                      attrType: 'text'
+                    }];
+                    this.serviceData = data;
+                    this.popup_title = this.language.resources;
+                    this.dialogOpened = true;
+                    this.popup_resource = true;
+                  }
+                  else {
+                    this.dialogOpened = false;
+                    this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+                    return;
+                  }
+                } else {
+                  this.dialogOpened = false;
+                  this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+                  return;
+                }
+              },
+              error => {
+                this.dialogOpened = false;
+                this.showLookupLoader = false;
+                this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+              }
+              )
           }
-        } else {
-          this.dialogOpened = false;
-          this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-          return;
-        }
-      },
-      error => {
-        this.dialogOpened = false;
-        this.showLookupLoader = false;
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-      }
-    )
-  }
 
-  public tree_data_json: any = '';
-  @Input() component;
+          public tree_data_json: any = '';
+          @Input() component;
 
-  prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext, feature_discount_percent, discounted_price, isFG) {
-    // if (this.report_type == "2" && isFG == true) {
-    //   price = "";
-    //   quantity = "";
-    //   price_ext = "";
-    // }
-    this.print_item_list_array.push({
-      "sl_no": index,
-      "item": itemCode,
-      "item_desc": itemDesc,
-      "quantity": parseFloat(quantity).toFixed(3),
-      "price": parseFloat(price).toFixed(3),
-      "price_ext": parseFloat(price_ext).toFixed(3),
-      "feature_discount_percent": parseFloat(feature_discount_percent).toFixed(3),
-      "discounted_price": parseFloat(discounted_price).toFixed(3),
-      "isFG": isFG
-    });
-  }
+          prepareFinalItemArray(index, itemCode, itemDesc, quantity, price, price_ext, feature_discount_percent, discounted_price, isFG) {
+            // if (this.report_type == "2" && isFG == true) {
+              //   price = "";
+              //   quantity = "";
+              //   price_ext = "";
+              // }
+              this.print_item_list_array.push({
+                "sl_no": index,
+                "item": itemCode,
+                "item_desc": itemDesc,
+                "quantity": parseFloat(quantity).toFixed(3),
+                "price": parseFloat(price).toFixed(3),
+                "price_ext": parseFloat(price_ext).toFixed(3),
+                "feature_discount_percent": parseFloat(feature_discount_percent).toFixed(3),
+                "discounted_price": parseFloat(discounted_price).toFixed(3),
+                "isFG": isFG
+              });
+            }
 
-  showAssociatedBOMs() {
+            showAssociatedBOMs() {
 
-    this.popup_title = this.language.associated_BOM;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
+              this.popup_title = this.language.associated_BOM;
+              this.LookupDataLoaded = false;
+              this.showLoader = true;
 
-    console.log(this.serviceData);
-    // this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
-    this.table_head = [
+              console.log(this.serviceData);
+              // this.table_head = [this.language.ModelId, this.language.Model_ModelName, this.language.Model_ModelDesc];
+              this.table_head = [
 
-      {
-        field: 'DisplayName',
-        title: this.language.Model_Name,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
-      {
-        field: 'Description',
-        title: this.language.Model_Desc,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
-    ];
-    this.table_head_hidden_elements = [true, false, false];
-    this.width_value = ((100 / this.table_head.length) + '%');
+              {
+                field: 'DisplayName',
+                title: this.language.Model_Name,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              },
+              {
+                field: 'Description',
+                title: this.language.Model_Desc,
+                type: 'text',
+                width: '100',
+                attrType: 'text'
+              },
+              ];
+              this.table_head_hidden_elements = [true, false, false];
+              this.width_value = ((100 / this.table_head.length) + '%');
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        $("#simple_table_modal").modal('show');
-      }
-    }
+              this.showLoader = false;
+              this.LookupDataLoaded = true;
+              if (this.serviceData !== undefined) {
+                if (this.serviceData.length > 0) {
+                  $("#simple_table_modal").modal('show');
+                }
+              }
 
-  }
+            }
 
-  showModelBOMTreeView() {
-    this.popup_title = this.language.explode;
-    this.showLoader = true;
-    this.LookupDataLoaded = false;
-    //this.tree_data_json = this.dummy_json();
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        // this.tree_data_json =  this.dummy_json();
-        this.tree_data_json = this.serviceData;
+            showModelBOMTreeView() {
+              this.popup_title = this.language.explode;
+              this.showLoader = true;
+              this.LookupDataLoaded = false;
+              //this.tree_data_json = this.dummy_json();
+              this.showLoader = false;
+              this.LookupDataLoaded = true;
+              if (this.serviceData !== undefined) {
+                if (this.serviceData.length > 0) {
+                  // this.tree_data_json =  this.dummy_json();
+                  this.tree_data_json = this.serviceData;
 
-        // setTimeout(function(){
-        $("#tree_view").modal('show');
-        //}, 5000);
-      }
-    }
+                  // setTimeout(function(){
+                    $("#tree_view").modal('show');
+                    //}, 5000);
+                  }
+                }
 
-  }
+              }
 
-  customer_lookup() {
-    this.popup_title = this.language.customer;
-    this.LookupDataLoaded = false;
-    this.showLoader = true;
-    this.fill_input_id = 'featureItemName';
-    // this.table_head = [this.language.customer_code, this.language.Name];
-    console.log(this.serviceData);
-    this.table_head = [
-      {
-        field: 'CustID',
-        title: this.language.customer_code,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
-      {
-        field: 'Name',
-        title: this.language.Name,
-        type: 'text',
-        width: '100',
-        attrType: 'text'
-      },
+              customer_lookup() {
+                this.popup_title = this.language.customer;
+                this.LookupDataLoaded = false;
+                this.showLoader = true;
+                this.fill_input_id = 'featureItemName';
+                // this.table_head = [this.language.customer_code, this.language.Name];
+                console.log(this.serviceData);
+                this.table_head = [
+                {
+                  field: 'CustID',
+                  title: this.language.customer_code,
+                  type: 'text',
+                  width: '100',
+                  attrType: 'text'
+                },
+                {
+                  field: 'Name',
+                  title: this.language.Name,
+                  type: 'text',
+                  width: '100',
+                  attrType: 'text'
+                },
 
-    ];
-    this.table_head_hidden_elements = [false, false];
-    this.lookup_key = 'Name';
+                ];
+                this.table_head_hidden_elements = [false, false];
+                this.lookup_key = 'Name';
 
-    this.width_value = ((100 / this.table_head.length) + '%');
+                this.width_value = ((100 / this.table_head.length) + '%');
 
 
-    this.showLoader = false;
-    this.LookupDataLoaded = true;
-    if (this.serviceData !== undefined) {
-      if (this.serviceData.length > 0) {
-        this.dialogOpened = true;
-        // $("#lookup_modal").modal('show');
-      }
-    }
+                this.showLoader = false;
+                this.LookupDataLoaded = true;
+                if (this.serviceData !== undefined) {
+                  if (this.serviceData.length > 0) {
+                    this.dialogOpened = true;
+                    // $("#lookup_modal").modal('show');
+                  }
+                }
 
-  }
+              }
 
-  reset() {
-    this.myInputVariable.nativeElement.value = "";
-  }
+              reset() {
+                this.myInputVariable.nativeElement.value = "";
+              }
 
-  filtered_feature_list(verify_final_data_sel_details) {
-    console.log(verify_final_data_sel_details);
-    verify_final_data_sel_details = verify_final_data_sel_details.filter(function (obj) {
+              filtered_feature_list(verify_final_data_sel_details) {
+                console.log(verify_final_data_sel_details);
+                verify_final_data_sel_details = verify_final_data_sel_details.filter(function (obj) {
 
-      obj['OPTM_LEVEL'] = 0;
-      return verify_final_data_sel_details.feature;
-    })
-  }
+                  obj['OPTM_LEVEL'] = 0;
+                  return verify_final_data_sel_details.feature;
+                })
+              }
 
-  cleanup_print_arrays() {
-    this.product_grand_details.length = 0;
-    this.print_item_list_array.length = 0;
-  }
+              cleanup_print_arrays() {
+                this.product_grand_details.length = 0;
+                this.print_item_list_array.length = 0;
+              }
 
 
-  dummy_json() {
-    return [
-      { "sequence": 1, "parentId": "", "component": "29", "level": "0" },
-      { "sequence": 2, "parentId": "29", "component": "19", "level": "1" },
-      { "sequence": 3, "parentId": "29", "component": "8", "level": "1" },
-      { "sequence": 4, "parentId": "29", "component": "Wind Sensor", "level": "1" },
-      { "sequence": 5, "parentId": "29", "component": "WMT70BIRDKIT", "level": "1" },
-      { "sequence": 6, "parentId": "19", "component": "21", "level": "2" },
-      { "sequence": 7, "parentId": "19", "component": "20", "level": "2" },
-      { "sequence": 8, "parentId": "8", "component": "Item02", "level": "2" },
-      { "sequence": 9, "parentId": "8", "component": "VALUE", "level": "2" },
-      { "sequence": 10, "parentId": "19", "component": "Wind Sensor", "level": "2" },
-      { "sequence": 11, "parentId": "20", "component": "22", "level": "3" },
-      { "sequence": 12, "parentId": "20", "component": "21", "level": "3" },
-      { "sequence": 13, "parentId": "22", "component": "26", "level": "4" },
-      { "sequence": 14, "parentId": "22", "component": "23", "level": "4" },
+              dummy_json() {
+                return [
+                { "sequence": 1, "parentId": "", "component": "29", "level": "0" },
+                { "sequence": 2, "parentId": "29", "component": "19", "level": "1" },
+                { "sequence": 3, "parentId": "29", "component": "8", "level": "1" },
+                { "sequence": 4, "parentId": "29", "component": "Wind Sensor", "level": "1" },
+                { "sequence": 5, "parentId": "29", "component": "WMT70BIRDKIT", "level": "1" },
+                { "sequence": 6, "parentId": "19", "component": "21", "level": "2" },
+                { "sequence": 7, "parentId": "19", "component": "20", "level": "2" },
+                { "sequence": 8, "parentId": "8", "component": "Item02", "level": "2" },
+                { "sequence": 9, "parentId": "8", "component": "VALUE", "level": "2" },
+                { "sequence": 10, "parentId": "19", "component": "Wind Sensor", "level": "2" },
+                { "sequence": 11, "parentId": "20", "component": "22", "level": "3" },
+                { "sequence": 12, "parentId": "20", "component": "21", "level": "3" },
+                { "sequence": 13, "parentId": "22", "component": "26", "level": "4" },
+                { "sequence": 14, "parentId": "22", "component": "23", "level": "4" },
 
-      //    {"sequence":15,"parentId":"23","component":"19","level":"5"},
-      { "sequence": 16, "parentId": "19", "component": "21", "level": "6" },
-      { "sequence": 17, "parentId": "19", "component": "20", "level": "6" },
-      { "sequence": 18, "parentId": "19", "component": "Wind Sensor", "level": "6" },
+                //    {"sequence":15,"parentId":"23","component":"19","level":"5"},
+                { "sequence": 16, "parentId": "19", "component": "21", "level": "6" },
+                { "sequence": 17, "parentId": "19", "component": "20", "level": "6" },
+                { "sequence": 18, "parentId": "19", "component": "Wind Sensor", "level": "6" },
 
-    ]
-  }
-}
+                ]
+              }
+            }

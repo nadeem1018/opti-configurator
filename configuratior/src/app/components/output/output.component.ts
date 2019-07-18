@@ -3593,103 +3593,21 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
       update_added_model() {
         this.lookupfor = "";
-        /* $(".multiple_model_click_btn").attr("disabled", "true"); */
-
-        var isMandatoryItems = this.ModelHeaderData.filter(function (obj) {
-          return obj['OPTM_MANDATORY'] == "Y"
-        })
-        let isMandatoryCount = 0;
-        var counted = 0;
-        var itemnotselectedarray = [];
-
-        if (isMandatoryItems.length > 0) {
-          for (let imandtory = 0; imandtory < isMandatoryItems.length; imandtory++) {
-            if (isMandatoryItems[imandtory].OPTM_TYPE == "3") {
-              for (let ifeatureitems = 0; ifeatureitems < this.feature_itm_list_table.length; ifeatureitems++) {
-                if (isMandatoryItems[imandtory].OPTM_CHILDMODELID == this.feature_itm_list_table[ifeatureitems].ModelId) {
-                  isMandatoryCount++;
-                  counted = 1;
-                  break;
-                }
-              }
-            } else if (isMandatoryItems[imandtory].OPTM_TYPE == "1") {
-              if (isMandatoryItems[imandtory].parentmodelid != "" && isMandatoryItems[imandtory].parentmodelid != null) {
-                for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
-                  if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].unique_key == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].nodeid && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true && isMandatoryItems[imandtory].parentmodelid == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parentmodelid) {
-                    isMandatoryCount++;
-                    counted = 1;
-                    break;
-                  }
-                }
-              } else {
-                for (let ifeatureBOMitems = 0; ifeatureBOMitems < this.FeatureBOMDataForSecondLevel.length; ifeatureBOMitems++) {
-                  if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].parent_code && this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].checked == true && isMandatoryItems[imandtory].unique_key == this.FeatureBOMDataForSecondLevel[ifeatureBOMitems].nodeid) {
-                    isMandatoryCount++;
-                    counted = 1;
-                    break;
-                  }
-                }
-              }
-
-              for (let imodelBOMitems = 0; imodelBOMitems < this.ModelBOMDataForSecondLevel.length; imodelBOMitems++) {
-                if (isMandatoryItems[imandtory].OPTM_FEATUREID == this.ModelBOMDataForSecondLevel[imodelBOMitems].OPTM_FEATUREID && isMandatoryItems[imandtory].feature_code == this.ModelBOMDataForSecondLevel[imodelBOMitems].parent_code && this.ModelBOMDataForSecondLevel[imodelBOMitems].checked == true && isMandatoryItems[imandtory].unique_key == this.ModelBOMDataForSecondLevel[imodelBOMitems].unique_key) {
-                  isMandatoryCount++;
-                  counted = 1;
-                  break;
-                }
-
-              }
-            }
-            if (counted == 0) {
-              itemnotselectedarray.push(isMandatoryItems[imandtory].OPTM_DISPLAYNAME)
-            }
-            counted = 0;
-          }
-        }
-        if (isMandatoryCount != isMandatoryItems.length) {
-          var psmsg = this.language.MandatoryItems
-          if (itemnotselectedarray.length > 0) {
-            for (var item in itemnotselectedarray) {
-              psmsg = psmsg + " - " + itemnotselectedarray[item]
-            }
-          }
-          this.toastr.error('', psmsg, this.commonData.toast_config);
-          this.showLookupLoader = false;
-          return;
-        }
-        for (let iMinModelHeaderData = 0; iMinModelHeaderData < this.ModelHeaderData.length; iMinModelHeaderData++) {
-          if (this.ModelHeaderData[iMinModelHeaderData].OPTM_MANDATORY == "Y") {
-            if (this.ModelHeaderData[iMinModelHeaderData].OPTM_TYPE == "1") {
-              var tempfeatureid = this.ModelHeaderData[iMinModelHeaderData].OPTM_FEATUREID
-              var isMinItemsCounted = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                return obj['OPTM_FEATUREID'] == tempfeatureid && obj['checked'] == true
-              })
-            }
-            else if (this.ModelHeaderData[iMinModelHeaderData].OPTM_TYPE == "3") {
-              var tempfeatureid = this.ModelHeaderData[iMinModelHeaderData].OPTM_CHILDMODELID
-              var isMinItemsCounted = this.ModelBOMDataForSecondLevel.filter(function (obj) {
-                return obj['OPTM_MODELID'] == tempfeatureid && obj['checked'] == true
-              })
-            }
-
-            if (isMinItemsCounted.length < this.ModelHeaderData[iMinModelHeaderData].OPTM_MINSELECTABLE) {
-              this.toastr.error('', this.language.Minimumitemsarenotselected + this.ModelHeaderData[iMinModelHeaderData].OPTM_DISPLAYNAME, this.commonData.toast_config);
-              this.showLookupLoader = false;
-              return;
-            }
-          }
-
-        }
-
-
+        var obj = this;
+        $(".multiple_model_click_btn").attr("disabled", "true");
         this.console.log(this.step3_data_final.length);
-        for (var i = 0; i < this.step3_data_final.length; i++) {
-          if (this.step3_data_final[i] !== undefined) {
-            if (this.step3_data_final[i].rowIndex == this.step2_selected_model_id) {
-              this.fill_step3_data_array('update', i);
+        this.onValidateNextPress(false, function () {
+          if (obj.step3_data_final.length > 0 && obj.step3_data_final != undefined && obj.step2_selected_model_id != "") {
+            for (var i = 0; i < obj.step3_data_final.length; i++) {
+              if (obj.step3_data_final[i] !== undefined) {
+                if (obj.step3_data_final[i].rowIndex == obj.step2_selected_model_id) {
+                  obj.fill_step3_data_array('update', i);
+                }
+              }
             }
           }
-        }
+        });
+
         $(".multiple_model_click_btn").removeAttr("disabled");
       }
 
