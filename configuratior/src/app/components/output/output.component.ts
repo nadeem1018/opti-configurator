@@ -5006,7 +5006,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
-              
+
               if (isExist.length == 0) {
                 this.feature_itm_list_table.push({
                   FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
@@ -5287,9 +5287,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                   this.getDefaultItems(defaultitemarray)
                                                 }
                                               }
-                                              /* else {
+                                              else {
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                              } */
+                                              }
                                             }
 
                                           }
