@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
     element.classList.add("home-view-model");
     element.classList.add("opti_body-main-module");
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
 
     //this.router.navigateByUrl('/item-code-generation/view');
   }

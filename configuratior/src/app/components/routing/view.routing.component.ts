@@ -219,6 +219,7 @@ export class ViewRoutingComponent implements OnInit {
             element.classList.add("app_feature-bom-view-model");
             element.classList.add("opti_body-main-module");
             element.classList.add('sidebar-toggled');
+            document.getElementById("opti_sidebar").classList.add('toggled');
 
             this.commonData.checkSession();
             this.companyName = sessionStorage.getItem('selectedComp');

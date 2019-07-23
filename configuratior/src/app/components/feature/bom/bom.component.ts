@@ -127,6 +127,8 @@ export class BomComponent implements OnInit {
     this.detectDevice();
     element.classList.add('add-feature-bom');
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
+    
 
     this.commonData.checkSession();
     this.detail_select_options = this.commonData.bom_type;

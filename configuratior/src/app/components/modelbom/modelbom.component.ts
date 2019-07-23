@@ -125,6 +125,7 @@ export class ModelbomComponent implements OnInit {
     this.detectDevice();
     element.classList.add('add_model-bom');
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
 
     this.commonData.checkSession();
     this.username = sessionStorage.getItem('loggedInUser');

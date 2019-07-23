@@ -203,6 +203,7 @@ export class OutputComponent implements OnInit {
     element.className = '';
     this.detectDevice();
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
     this.submit_date = (this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate();

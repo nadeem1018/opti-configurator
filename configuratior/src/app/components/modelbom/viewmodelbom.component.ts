@@ -136,6 +136,7 @@ export class ViewModelBomComponent implements OnInit {
         element.classList.add("app_model-bom-view-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');
+        document.getElementById("opti_sidebar").classList.add('toggled');
 
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');

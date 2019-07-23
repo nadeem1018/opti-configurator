@@ -81,6 +81,7 @@ export class ModelComponent implements OnInit {
     const element = document.getElementsByTagName('body')[0];
     element.className = '';
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
      
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');

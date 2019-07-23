@@ -119,6 +119,7 @@ export class RulewbComponent implements OnInit {
     this.detectDevice();
     element.classList.add('add-rule-web');
     element.classList.add('sidebar-toggled');
+    document.getElementById("opti_sidebar").classList.add('toggled');
 
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));

@@ -160,6 +160,7 @@ export class ViewFeatureModelComponent implements OnInit {
         element.classList.add("app_view-feature-model");
         element.classList.add("opti_body-main-module");
         element.classList.add('sidebar-toggled');
+        document.getElementById("opti_sidebar").classList.add('toggled');
         this.commonData.checkSession();
         this.CompanyDBId = sessionStorage.getItem('selectedComp');
         this.record_per_page = sessionStorage.getItem('defaultRecords');

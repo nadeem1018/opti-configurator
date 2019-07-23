@@ -53,6 +53,7 @@ div#page-top, div#wrapper{
     overflow: auto;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .opti_dash-logo img{
     max-width: 100%;
