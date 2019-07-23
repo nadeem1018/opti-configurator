@@ -1,10 +1,10 @@
-<div id="page-top">
-    <app-header></app-header>
+<div id="page-top">    
     <div id="wrapper" >
         <app-sidebar class="" *ngIf="showSidebar"></app-sidebar>
-        <div id="content-wrapper" class="{{main_class}} container-top-margin-2">
-            <div class="container-fluid" >
-                    <router-outlet></router-outlet>
+        <div id="content-wrapper" class="{{main_class}}">
+            <app-header></app-header>
+            <div class="container-fluid">
+                <router-outlet></router-outlet>
             </div> <!-- /.container-fluid -->
         </div> <!-- /.content-wrapper -->
         <app-footer></app-footer>

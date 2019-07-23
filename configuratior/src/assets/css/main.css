@@ -10,13 +10,25 @@
 
  html {
      position: relative;
-     min-height: 100%;
+     min-height: 100vh;
  }
 
  body {
      height: 100%;
+     min-height: 100vh;
  }
-
+app-root {
+    display: flex;
+    width: 100%;
+    flex: 1;
+}
+div#page-top, div#wrapper{
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    min-height: 100vh;
+}
  #wrapper {
      display: -webkit-box;
      display: -ms-flexbox;
@@ -26,10 +38,39 @@
  #wrapper #content-wrapper {
      overflow-x: hidden;
      width: 100%;
-     padding-top: 5px;   /* padding-top: 1rem; */
-     padding-bottom: 80px;
+     display: flex;
+     flex-direction: column;
  }
-
+ #wrapper #content-wrapper > .container-fluid {
+    flex: 1;
+    height: calc(100vh - 40px);
+    overflow: auto;
+    position: relative;
+    background: #f2f8f9;
+}
+#wrapper #content-wrapper > .container-fluid > *:last-child {
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.opti_dash-logo img{
+    max-width: 100%;
+}
+app-login {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 100%;
+}
+.main-content-area{
+    height: calc(100vh - 40px);
+    overflow: auto;
+    padding-bottom: 20px;
+}
  body.fixed-nav #content-wrapper {
      margin-top: 56px;
      padding-left: 90px;
@@ -94,8 +135,8 @@
      width: 100%;
  }
 
- .navbar-nav .nav-item.active .nav-link {
-     color: #fff;
+ .navbar-nav .nav-item.active {
+    background: #f6f8fa;
  }
 
  .navbar-nav .nav-item.dropdown .dropdown-toggle::after {
@@ -135,12 +176,6 @@
      }
  }
 
- .sidebar {
-     width: 90px !important;
-     background-color: #212529;
-     min-height: calc(100vh - 56px);
- }
-
  .sidebar .nav-item:last-child {
      margin-bottom: 1rem;
  }
@@ -174,21 +209,28 @@
  }
 
  .sidebar .nav-item .nav-link {
-     color: rgba(255, 255, 255, 0.5);
+    color: #4a4a4a;
  }
 
  .sidebar .nav-item .nav-link:active,
  .sidebar .nav-item .nav-link:focus,
  .sidebar .nav-item .nav-link:hover {
-     color: rgba(255, 255, 255, 0.75);
+    color: #4a4a4a;
  }
 
  .sidebar.toggled {
      width: 0 !important;
      overflow: hidden;
+    
  }
 
  @media (min-width: 768px) {
+    .sidebar-toggled .navbar-brand{
+        display:block !important;
+    }
+    .sidebar-toggled .navbar-brand-sm{
+        display: none !important;
+    }
      .sidebar {
          width: 90px !important;
      }
@@ -212,8 +254,7 @@
          display: block;
      }
      .sidebar.toggled {
-         overflow: visible;
-         width: 70px !important;
+         width: 240px !important;
      }
      .sidebar.toggled .nav-item:last-child {
          margin-bottom: 1rem;
@@ -221,7 +262,7 @@
      .sidebar.toggled .nav-item .nav-link {
          text-align: center;
          padding: 0.75rem 1rem;
-         width:70px;
+         width:240px;
      }
      .sidebar.toggled .nav-item .nav-link span {
          font-size: 0.65rem;
@@ -280,6 +321,18 @@
          column-count: 2;
      }
  }
+
+ @media screen and (max-width: 767px) {
+    .sidebar-toggled app-sidebar{
+        display: none;
+    }
+    app-sidebar .navbar-brand{
+        display: block;
+    } 
+    app-sidebar .navbar-brand-sm{
+        display: none;
+    } 
+}
 
  :root {
      --input-padding-x: 0.75rem;

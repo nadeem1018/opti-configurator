@@ -1,4 +1,12 @@
-<ul class="sidebar navbar-nav sidebar_top_margin-3 toggled" style=" height: 100%;" id="opti_sidebar">
+
+<a class="navbar-brand" href="/home" routerLink="/home">
+  <img src="{{imgPath}}/logo_configurator/logo/128.png" alt="logo">
+</a>
+<a class="navbar-brand-sm" href="/home" routerLink="/home">
+  <img src="{{imgPath}}/logo_configurator/icon/128_icon.png" alt="logo">
+</a>
+
+<ul class="sidebar navbar-nav sidebar_top_margin-3 toggled" id="opti_sidebar">
   
   <li class="nav-item " (click)="onMenuPressHome('home')" [ngClass]="{'active': selectedItem == 'home'}" title="{{this.language.dashboard}}">
     <a class="nav-link" routerLink="home" href="javascript:;">

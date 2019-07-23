@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
   constructor(private commonService: CommonService, private toastr: ToastrService, private router: Router) { }
   public menu_obj:any;
   public menu_options: any = [];
-
+  project_name: any = 'OptiPro Configurator';
   showSidebar: boolean ;
   language = JSON.parse(sessionStorage.getItem('current_lang')); 
   private commonData = new CommonData();

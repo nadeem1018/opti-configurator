@@ -61,8 +61,8 @@ $borderColor:#c7c7c7;
     }
 
     .opti_loader-module-grid-list{
-        height: calc(100% - 30px);
-        width: calc(100% - 106px);
+        height: 100%;
+        width: 100%;
     }
 
     .opti_lookup-loader {
@@ -71,8 +71,8 @@ $borderColor:#c7c7c7;
 
     body.sidebar-toggled{
         .opti_loader-module-grid-list{
-            height: calc(100% - 30px);
-            width: calc(100% - 95px);
+            height: 100%;
+            width:  100%;
         }   
     }
 
