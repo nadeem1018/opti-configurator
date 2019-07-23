@@ -1133,7 +1133,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
       iproducttotal = Number(isumofpropriceitem + iprotax - iprodiscount);
       iacctotal = Number(isumofaccpriceitem + iaccotax - iaccdiscount);
-
+      
 
       this.feature_total_before_discount = isumofpropriceitem + isumofaccpriceitem
       this.step3_feature_price_bef_dis = isumofpropriceitem;
@@ -4599,21 +4599,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     this.showLookupLoader = false;
                   }
                 }
-
+                this.feature_price_calculate();
               },
               error => {
                 this.showLookupLoader = false;
                 this.stoprefreshloader();
                 this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                this.feature_price_calculate();
                 return;
               });
 
-
-
-          this.feature_price_calculate();
-          /*this.updateAccessoryCheckedStatus(value, rowData);*/
-          /*this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value,false);*/
-
+ 
         }
 
         setItemDataForFeatureAccessory(ItemData, parentArray, current_row_accessory, saved_data_from_dtl) {
