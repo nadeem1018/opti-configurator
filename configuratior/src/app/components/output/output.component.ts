@@ -563,6 +563,9 @@ getSavedModelDatabyModelCodeAndId(saveddata) {
     console.log(saveddata.ModelBOMData);
     AllDataForModelBomOutput.getmodelsavedata = saveddata.ModelBOMData.filter(function(obj){
       obj['OPTM_DISCPERCENT'] = parseFloat(obj['OPTM_DISCPERCENT']).toFixed(3)
+      obj['OPTM_UNITPRICE'] = parseFloat(obj['OPTM_UNITPRICE']).toFixed(3)
+      obj['OPTM_TOTALPRICE'] = parseFloat(obj['OPTM_TOTALPRICE']).toFixed(3)
+      obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY']).toFixed(3)
       return obj;
     });
     this.showLookupLoader = true;
@@ -743,7 +746,8 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
     this.ModelInModelArray = ModelArray
 
-    this.setModelDataInGrid(ModelArray, this.ModelBOMDataForSecondLevel);
+    /* this.setModelDataInGrid(ModelArray, this.ModelBOMDataForSecondLevel); */
+    this.setModelDataInGridForSavedData(ModelArray, this.ModelBOMDataForSecondLevel,data.Savedgetmodelsavedata);
 
     this.setModelItemsDataInGrid(this.ModelHeaderItemsArray)
 
@@ -1903,6 +1907,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       this.FeatureBOMDataForSecondLevel.filter(function(obj) {
                         if((obj.OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) && (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) && obj.OPTM_DEFAULT == 'Y') {
                           return obj['checked'] = true;
+                      } else if((obj.OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID) && (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) && obj.OPTM_DEFAULT == 'N') {
+                        return obj['checked'] = false;
                       }
                       });
 
@@ -2990,6 +2996,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               "OPTM_ACCESSORYDIS": "",
               "OPTM_ACCESSORYTOTAL": "",
               "OPTM_TOTALDISCOUNT": "",
+              "model_index" : iHdrCount,
             })
           }
         } else {
@@ -3161,10 +3168,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             let me_d_v_row = this.step3_data_final[me_d_v_i];
 
             let temp_modelheder_data = me_d_v_row.ModelHeaderData;
-            for (let mhd_i = 0; mhd_i < temp_modelheder_data.length; mhd_i++) {
+            for (let mhd_i = 0; mhd_i < temp_modelheder_data.length; mhd_i++) { 
               delete temp_modelheder_data[mhd_i]['OPTM_MODIFIEDDATETIME'];
               delete temp_modelheder_data[mhd_i]['random_unique_key'];
               delete temp_modelheder_data[mhd_i]['nodeid'];
+              temp_modelheder_data[mhd_i]['model_index'] =  me_d_v_i;
               if (temp_modelheder_data[mhd_i].OPTM_QUANTITY != null && temp_modelheder_data[mhd_i].OPTM_QUANTITY != undefined && temp_modelheder_data[mhd_i].OPTM_QUANTITY != "") {
                 temp_modelheder_data[mhd_i].OPTM_QUANTITY = parseFloat(temp_modelheder_data[mhd_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3184,6 +3192,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               delete modelheader_item_array[mhia_i]['is_second_level'];
               delete modelheader_item_array[mhia_i]['parentfeatureid'];
               delete modelheader_item_array[mhia_i]['parentmodelid'];
+              modelheader_item_array[mhia_i]['model_index'] =  me_d_v_i;
               if ((modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") || modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
                 modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3199,6 +3208,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             if (me_d_v_row.selectedAccessoryBOM != null && me_d_v_row.selectedAccessoryBOM != undefined && me_d_v_row.selectedAccessoryBOM != "") {
               let temp_selectedAccessoryBOM = me_d_v_row.selectedAccessoryBOM;
               for (let sabom_i = 0; sabom_i < temp_selectedAccessoryBOM.length; sabom_i++) {
+                temp_selectedAccessoryBOM[sabom_i]['model_index'] =  me_d_v_i;
                 if ((temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != null && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != undefined && temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY != "") || temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY == 0 ) {
                   temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY = parseFloat(temp_selectedAccessoryBOM[sabom_i].OPTM_QUANTITY).toFixed(3);
                 }
@@ -3207,6 +3217,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
             let temp_Accessoryarray = me_d_v_row.Accessoryarray;
             for (let ahdr_i = 0; ahdr_i < temp_Accessoryarray.length; ahdr_i++) {
+              temp_Accessoryarray[ahdr_i]['model_index'] =  me_d_v_i;
               if ((temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != null && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != undefined && temp_Accessoryarray[ahdr_i].OPTM_QUANTITY != "") || temp_Accessoryarray[ahdr_i].OPTM_QUANTITY  == 0) {
                 temp_Accessoryarray[ahdr_i].OPTM_QUANTITY = parseFloat(temp_Accessoryarray[ahdr_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3215,6 +3226,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_ModelBOMDataForSecondLevel = me_d_v_row.ModelBOMDataForSecondLevel;
             for (let mbomd_i = 0; mbomd_i < temp_ModelBOMDataForSecondLevel.length; mbomd_i++) {
+              temp_ModelBOMDataForSecondLevel[mbomd_i]['model_index'] =  me_d_v_i;
               if ((temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != null && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != undefined && temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY != "")  || temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY  == 0) {
                 temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY = parseFloat(temp_ModelBOMDataForSecondLevel[mbomd_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3229,6 +3241,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_FeatureBOMDataForSecondLevel = me_d_v_row.FeatureBOMDataForSecondLevel;
             for (let fbdsl_i = 0; fbdsl_i < temp_FeatureBOMDataForSecondLevel.length; fbdsl_i++) {
+              temp_FeatureBOMDataForSecondLevel[fbdsl_i]['model_index'] =  me_d_v_i;
               if ((temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != null && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != undefined && temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY != "" ) || temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY == 0) {
                 temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY = parseFloat(temp_FeatureBOMDataForSecondLevel[fbdsl_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -3243,6 +3256,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let temp_RuleOutputData = me_d_v_row.RuleOutputData;
             for (let rod_i = 0; rod_i < temp_RuleOutputData.length; rod_i++) {
+              temp_RuleOutputData[rod_i]['model_index'] =  me_d_v_i;
               if ((temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") || temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
                 temp_RuleOutputData[rod_i].OPTM_QUANTITY = parseFloat(temp_RuleOutputData[rod_i].OPTM_QUANTITY).toFixed(3);
               }
@@ -4650,7 +4664,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     formatequantity = qty_value
                   }
                   if (ItemData[i].Price == null || ItemData[i].Price == undefined || ItemData[i].Price == "") {
-                    ItemData[i].Price = 0
+                    ItemData[i].Price = parseFloat("0").toFixed(3)
                   }
                   price = ItemData[i].Price;
                   price_list = ItemData[i].ListName;
@@ -4687,16 +4701,16 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     formatequantity = qty_value
                   }
                   if(rowData!== undefined){
-                    if (rowData.OPTM_TOTALPRICE == null && rowData.OPTM_TOTALPRICE == undefined && rowData.OPTM_TOTALPRICE == "") {
-                      price = 0;
+                    if (rowData.OPTM_UNITPRICE == null && rowData.OPTM_UNITPRICE == undefined && rowData.OPTM_UNITPRICE == "") {
+                      price = parseFloat("0").toFixed(3);
                     } else {
-                      price = rowData.OPTM_TOTALPRICE;
+                      price = rowData.OPTM_UNITPRICE;
                     }
                     price_list = (rowData.OPTM_PRICELIST!= undefined )? rowData.OPTM_PRICELIST : "0" ;
                     unique_key = (rowData.UNIQUE_KEY!= undefined )? rowData.UNIQUE_KEY : "0" ;
                     nodeid = (rowData.NODEID!= undefined )? rowData.NODEID : "0" ;
                   }   else {
-                    price = 0;
+                    price = parseFloat("0").toFixed(3);
                     price_list = 0;
                     unique_key = 0;
                     nodeid = 0;
@@ -4871,8 +4885,149 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   OPTM_LEVEL: 2,
                   isQuantityDisabled: true,
                   HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
-                  nodeid:ModelItemsArray[imodelItemsarray].unique_key,
+                  nodeid:ModelItemsArray[imodelItemsarray].nodeid,
                   unique_key:ModelItemsArray[imodelItemsarray].unique_key
+                });
+                console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
+                ItemPrice = ItemPrice + ModelItemsArray[imodelItemsarray].Price
+              }
+            }
+
+            for (var ifeatureitem in this.feature_itm_list_table) {
+              if (this.feature_itm_list_table[ifeatureitem].FeatureId == ModelData[imodelarray].OPTM_CHILDMODELID) {
+                this.feature_itm_list_table[ifeatureitem].Actualprice = parseFloat(ItemPrice).toFixed(3)
+              }
+            }
+
+          }
+          this.feature_price_calculate();
+        }
+
+        setModelDataInGridForSavedData(ModelData, ModelItems,Savedgetmodelsavedata) {
+          var isExist;
+          let isPriceDisabled: boolean = true;
+          let isPricehide: boolean = true;
+          let ItemPrice: any = 0;
+
+          for (var imodelarray in ModelData) {
+            isExist = this.feature_itm_list_table.filter(function (obj) {
+              return obj['FeatureId'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['Description'] == ModelData[imodelarray].OPTM_DISPLAYNAME && obj['nodeid'] == ModelData[imodelarray].unique_key;
+            });
+            let formatequantity: any = '';
+            let priceextn: any = '';
+            let actualPrice: any = '';
+            let unqiue_key : any;
+            let nodeid : any;
+            let get_saved_data = [];
+
+            if (Savedgetmodelsavedata !== "" && Savedgetmodelsavedata !== undefined){
+              get_saved_data = Savedgetmodelsavedata.filter(function(obj){
+                return (obj.OPTM_ITEMCODE == ModelData[imodelarray].child_code && obj.NODEID == ModelData[imodelarray].unique_key) ? obj : "";
+              })
+            }
+            
+            if (get_saved_data.length == 0){
+              ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3)
+              formatequantity = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
+              priceextn = formatequantity * ModelData[imodelarray].Price
+              actualPrice = ModelData[imodelarray].Price;
+              nodeid = (ModelData[imodelarray].unqiue_key!== undefined) ? ModelData[imodelarray] : "";
+            } else {
+              get_saved_data[0].OPTM_QUANTITY = parseFloat(get_saved_data[0].OPTM_QUANTITY).toFixed(3)
+              formatequantity= get_saved_data[0].OPTM_QUANTITY;
+              priceextn = formatequantity * get_saved_data[0].OPTM_UNITPRICE;
+              actualPrice = get_saved_data[0].OPTM_UNITPRICE;
+              nodeid = get_saved_data[0].UNIQUE_KEY;
+            }
+
+            if (isExist.length == 0) {
+              this.feature_itm_list_table.push({
+                FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
+                featureName: ModelData[imodelarray].child_code,
+                Item: ModelData[imodelarray].OPTM_ITEMKEY,
+                ItemNumber: "",
+                Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
+                quantity: parseFloat(formatequantity).toFixed(3),
+                original_quantity: parseFloat(ModelData[imodelarray].OPTM_QUANTITY).toFixed(3),
+                price: ModelData[imodelarray].ListName,
+                Actualprice: actualPrice.toFixed(3),
+                pricextn: priceextn.toFixed(3),
+                is_accessory: "N",
+                isPriceDisabled: isPriceDisabled,
+                pricehide: isPricehide,
+                ModelId: ModelData[imodelarray].OPTM_MODELID,
+                OPTM_LEVEL: 1,
+                isQuantityDisabled: true,
+                HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
+                OPTM_ITEMTYPE: 1,
+                nodeid: nodeid
+              });
+              console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
+            }
+
+            var ModelItemsArray = [];
+            ModelItemsArray = ModelItems.filter(function (obj) {
+              return obj['OPTM_MODELID'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['OPTM_TYPE'] == 2 && obj['nodeid'] == ModelData[imodelarray].unique_key;
+            });
+
+
+            for (var imodelItemsarray in ModelItemsArray) {
+              isExist = this.feature_itm_list_table.filter(function (obj) {
+                return obj['FeatureId'] == ModelItemsArray[imodelItemsarray].OPTM_MODELID && obj['Item'] == ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY && obj['nodeid'] == ModelItemsArray[imodelItemsarray].nodeid;
+              });
+
+              let formatequantity: any = '';
+              let priceextn: any = '';
+              let actualPrice: any = '';
+              let unique_key : any;
+              let nodeid : any;
+              let get_saved_data = [];
+
+              if (Savedgetmodelsavedata !== "" && Savedgetmodelsavedata !== undefined){
+                get_saved_data = Savedgetmodelsavedata.filter(function(obj){
+                  return (obj.OPTM_ITEMCODE == ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY && obj.NODEID == ModelItemsArray[imodelItemsarray].nodeid) ? obj : "";
+                })
+              }
+              
+              if (get_saved_data.length == 0){
+                ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
+                formatequantity = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity
+                priceextn = formatequantity * ModelItemsArray[imodelItemsarray].Price
+                actualPrice = ModelItemsArray[imodelItemsarray].Price;
+                unique_key = (ModelItemsArray[imodelItemsarray].unique_key!== undefined) ? ModelItemsArray[imodelItemsarray].unique_key : "";
+                nodeid = (ModelItemsArray[imodelItemsarray].nodeid !== undefined) ? ModelItemsArray[imodelItemsarray].nodeid : "";
+              } else {
+                get_saved_data[0].OPTM_QUANTITY = parseFloat(get_saved_data[0].OPTM_QUANTITY).toFixed(3)
+                formatequantity= get_saved_data[0].OPTM_QUANTITY;
+                priceextn = formatequantity * get_saved_data[0].OPTM_UNITPRICE;
+                actualPrice = get_saved_data[0].OPTM_UNITPRICE;
+                unique_key = get_saved_data[0].UNIQUE_KEY;
+                nodeid = get_saved_data[0].NODEID;
+              }
+
+              ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
+
+              if (isExist.length == 0) {
+                this.feature_itm_list_table.push({
+                  FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
+                  featureName: ModelItemsArray[imodelItemsarray].feature_code,
+                  Item: ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY,
+                  ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
+                  Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
+                  quantity: parseFloat(formatequantity).toFixed(3),
+                  original_quantity: parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3),
+                  price: ModelItemsArray[imodelItemsarray].ListName,
+                  Actualprice: parseFloat(actualPrice).toFixed(3),
+                  pricextn: parseFloat(priceextn).toFixed(3),
+                  is_accessory: "N",
+                  isPriceDisabled: isPriceDisabled,
+                  pricehide: isPricehide,
+                  ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
+                  OPTM_LEVEL: 2,
+                  isQuantityDisabled: true,
+                  HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
+                  nodeid:nodeid,
+                  unique_key:unique_key
                 });
                 console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
                 ItemPrice = ItemPrice + ModelItemsArray[imodelItemsarray].Price
@@ -5132,9 +5287,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                   this.getDefaultItems(defaultitemarray)
                                                 }
                                               }
-                                              /* else {
-                                                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                              } */
+                                              else {
+                                                if(feature_model_data.OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR && feature_model_data.element_type == "checkbox"){
+                                                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                                                }
+                                                else if (feature_model_data.element_type == "radio") {
+                                                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                                                }
+                                              }
                                             }
 
                                           }
@@ -5163,7 +5323,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                           } */
                                         }
-                                      }
+                                      } 
                                     }
                                     else {
                                       if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_VALUE == RuleOutputData[iItemRule].OPTM_VALUE) {
