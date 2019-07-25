@@ -4,7 +4,7 @@
 
 
     <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="false"
-        [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;">
+        [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;" [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)">
         <!-- [pageSize]="10" -->
         <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
             <kendo-pager-prev-buttons></kendo-pager-prev-buttons>

@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
 
+import { GridDataResult } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+
 @Component({
     selector: 'app-routing-view',
     templateUrl: '../common/table.view.html',
@@ -57,6 +60,10 @@ export class ViewRoutingComponent implements OnInit {
     isDesktop: boolean = true;
     isPerfectSCrollBar: boolean = false;
     public showLookupLoader: boolean = false;
+
+        public allowUnsort = true;
+    public sort: SortDescriptor[];
+    public gridView: GridDataResult;
 
     show_button1: boolean = true;
     show_button2: boolean = true;
@@ -285,12 +292,32 @@ export class ViewRoutingComponent implements OnInit {
                         }
                     }
                     this.dataArray = data; 
+                    this.loadServerData(this.dataArray);
                     this.showLoader = false;         
                     this.CheckedData = [];
                     this.selectall = false;
                     $("input[name='child_checkbox']").prop("checked", false);
                 });
         }
+
+          public sortChange(sort: SortDescriptor[]): void {
+        this.sort = sort;
+        this.loadServerData(this.dataArray);
+    }
+
+   private loadServerData(dataset): void {
+      if(this.sort !== undefined && this.sort !== null){
+          this.gridView = {
+              data: orderBy(dataset, this.sort),
+              total: this.dataArray.length
+          };
+      } else {
+          this.gridView = {
+              data: dataset,
+              total: this.dataArray.length
+          }; 
+      }
+  }
 
         delete() {
             if (this.CheckedData.length > 0) {

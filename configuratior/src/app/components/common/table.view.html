@@ -47,7 +47,8 @@
 
         <div class="opti_grid-table-outer">
             <div class="opti_pagelimit-container"><kendo-dropdownlist [data]="listItems" (selectionChange)="getcurrentPageSize($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist></div>
-            <kendo-grid [kendoGridBinding]="dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)">
+            <kendo-grid [kendoGridBinding]="this.dataArray" [filterable]="isColumnFilter" [selectable]="true" [pageSize]="getPageValue()" 
+            [pageable]="true" [resizable]="true" (selectionChange)="on_selection($event)"  [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)" >
                 <ng-template kendoGridToolbarTemplate>
                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0 pl-2">
                         <div class="custom-control custom-checkbox float-left">
@@ -86,7 +87,7 @@
             </ng-template>
         </kendo-grid-column>
 
-         <kendo-grid-column field="action" title="Action" filter="numeric" [width]="149" [minResizableWidth]="149" [filterable]="false">
+         <kendo-grid-column field="action" title="{{language.action}}" filter="numeric" [width]="149" [minResizableWidth]="149" [filterable]="false">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <button type="button" class="btn btn-sm mr-10 {{button1_color}}" *ngIf="show_button1" (click)="button_click1(dataItem)" title="{{button1_title}}">
                     <i class="{{button1_icon}}"></i>

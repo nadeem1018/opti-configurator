@@ -8,6 +8,8 @@ import { UIHelper } from '../../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
 //import { CustomDialogsComponent } from 'src/app/components/common/custom-dialogs/custom-dialogs.component'
 
+import { GridDataResult } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
     selector: 'app-view-feature-model',
@@ -112,6 +114,10 @@ export class ViewFeatureModelComponent implements OnInit {
     isIpad:boolean=false;
     isDesktop:boolean=true;
     isPerfectSCrollBar:boolean = false;
+
+    public allowUnsort = true;
+    public sort: SortDescriptor[];
+    public gridView: GridDataResult;
 
     getLookupValue($event) {
 
@@ -248,6 +254,25 @@ export class ViewFeatureModelComponent implements OnInit {
             });
     }
 
+    public sortChange(sort: SortDescriptor[]): void {
+        this.sort = sort;
+        this.loadServerData(this.dataArray);
+    }
+
+    private loadServerData(dataset): void {
+      if(this.sort !== undefined && this.sort !== null){
+          this.gridView = {
+              data: orderBy(dataset, this.sort),
+              total: this.dataArray.length
+          };
+      } else {
+          this.gridView = {
+              data: dataset,
+              total: this.dataArray.length
+          }; 
+      }
+  }
+
     // action button values 
     show_button1: boolean = true;
     show_button2: boolean = true;
@@ -364,7 +389,7 @@ export class ViewFeatureModelComponent implements OnInit {
                 else{
                     this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].FeatureCode , this.commonData.toast_config);
                 }
-          
+
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);

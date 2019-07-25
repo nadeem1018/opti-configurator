@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UIHelper } from '../../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
 
+import { GridDataResult } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+
 @Component({
     selector: 'app-feature-bom-view',
     templateUrl: '../../common/table.view.html',
@@ -66,6 +69,10 @@ export class ViewFeatureBOMComponent implements OnInit {
     public isColumnFilter: boolean = false;
     public menu_auth_index: string = "202";
     public showLookupLoader: boolean = false;
+
+      public allowUnsort = true;
+    public sort: SortDescriptor[];
+    public gridView: GridDataResult;
 
     isMobile: boolean = false;
     isIpad: boolean = false;
@@ -214,12 +221,32 @@ export class ViewFeatureBOMComponent implements OnInit {
                     }
                 }
                 this.dataArray = data;
+                this.loadServerData(this.dataArray);
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
 
             });
     }
+
+      public sortChange(sort: SortDescriptor[]): void {
+        this.sort = sort;
+        this.loadServerData(this.dataArray);
+    }
+
+   private loadServerData(dataset): void {
+      if(this.sort !== undefined && this.sort !== null){
+          this.gridView = {
+              data: orderBy(dataset, this.sort),
+              total: this.dataArray.length
+          };
+      } else {
+          this.gridView = {
+              data: dataset,
+              total: this.dataArray.length
+          }; 
+      }
+  }
 
     // action button values 
     show_button1: boolean = true;
