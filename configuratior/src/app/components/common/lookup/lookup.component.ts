@@ -12,6 +12,9 @@ import 'bootstrap';
 import { UIHelper } from '../../../helpers/ui.helpers';
 // import { Http, ResponseContentType } from '@angular/http';
 
+import { GridDataResult } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -105,6 +108,10 @@ export class LookupComponent implements OnInit {
   public popup_resource: boolean = false;
   public resource_popup_title = '';
   public about_info = [];
+  public allowUnsort = true;
+  public sort: SortDescriptor[];
+  public gridView: GridDataResult;
+
   public close_kendo_dialog() {
     this.dialogOpened = false;
     this.current_popup_row = "";
@@ -288,6 +295,25 @@ export class LookupComponent implements OnInit {
       }
     }
 
+      public sortChange(sort: SortDescriptor[]): void {
+        this.sort = sort;
+        this.loadServerData(this.serviceData);
+    }
+
+   private loadServerData(dataset): void {
+      if(this.sort !== undefined && this.sort !== null){
+          this.gridView = {
+              data: orderBy(dataset, this.sort),
+              total: this.serviceData.length
+          };
+      } else {
+          this.gridView = {
+              data: dataset,
+              total: this.serviceData.length
+          }; 
+      }
+  }
+
     template_routing_list() {
       this.popup_title = this.language.template_routing;
       this.LookupDataLoaded = false;
@@ -320,6 +346,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -358,6 +385,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -424,6 +452,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -461,6 +490,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -617,6 +647,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -659,6 +690,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -692,6 +724,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -733,6 +766,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -775,6 +809,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -846,6 +881,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -933,6 +969,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -982,6 +1019,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -1023,6 +1061,7 @@ export class LookupComponent implements OnInit {
       if (this.serviceData !== undefined) {
         if (this.serviceData.length > 0) {
           this.dialogOpened = true;
+          this.loadServerData(this.serviceData);
           // $("#lookup_modal").modal('show');
         }
       }
@@ -1036,28 +1075,7 @@ export class LookupComponent implements OnInit {
       this.lookup_key = 'code';
       this.table_head = [this.language.select, this.language.rule, this.language.description];
       console.log(this.serviceData);
-      // this.table_head = [
-      //   {
-        //     field: 'OPTM_LOGID',
-        //     title: this.language.select,
-        //     type: 'text',
-        //     width: '100'
-        //   },      
-        //   {
-          //     field: 'OPTM_LOGID',
-          //     title: this.language.rule,
-          //     type: 'text',
-          //     width: '100'
-          //   },
-          //   {
-            //     field: 'OPTM_DESC',
-            //     title: this.language.description,
-            //     type: 'text',
-            //     width: '100'
-            //   },
-
-            // ];
-
+     
             this.table_head_hidden_elements = [false, false, false];
             this.width_value = ((100 / this.table_head.length) + '%');
 
@@ -1994,6 +2012,7 @@ export class LookupComponent implements OnInit {
                 if (this.serviceData !== undefined) {
                   if (this.serviceData.length > 0) {
                     this.dialogOpened = true;
+                    this.loadServerData(this.serviceData);
                     // $("#lookup_modal").modal('show');
                   }
                 }
