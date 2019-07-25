@@ -3244,9 +3244,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             let temp_RuleOutputData = me_d_v_row.RuleOutputData;
             for (let rod_i = 0; rod_i < temp_RuleOutputData.length; rod_i++) {
               temp_RuleOutputData[rod_i]['model_index'] =  me_d_v_i;
-              if ((temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") || temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
+              /* if ((temp_RuleOutputData[rod_i].OPTM_QUANTITY != null && temp_RuleOutputData[rod_i].OPTM_QUANTITY != undefined && temp_RuleOutputData[rod_i].OPTM_QUANTITY != "") || temp_RuleOutputData[rod_i].OPTM_QUANTITY  == 0) {
                 temp_RuleOutputData[rod_i].OPTM_QUANTITY = parseFloat(temp_RuleOutputData[rod_i].OPTM_QUANTITY).toFixed(3);
-              }
+              } */
               final_dataset_to_save.RuleOutputData.push(temp_RuleOutputData[rod_i]);
             }
 
