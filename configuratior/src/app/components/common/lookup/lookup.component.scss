@@ -180,3 +180,12 @@ p {
 .maxHeight450{
     max-height: 450px;
 }
+
+.k-window{
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto;
+    top: 50% !important;
+    transform: translateY(-50%);
+}

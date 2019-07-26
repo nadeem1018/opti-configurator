@@ -891,3 +891,7 @@ a.common_grid_link {
 .opti_grid-table-outer .opti_pagelimit-container kendo-dropdownlist {
   max-width: 100%;
 }
+
+.k-window-wrapper.k-window-maximized > .k-content.k-window-content > .k-grid {
+    max-height: 100% !important;
+}

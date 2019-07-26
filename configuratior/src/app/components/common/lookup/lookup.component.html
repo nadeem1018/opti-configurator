@@ -1,7 +1,12 @@
 <!-- Grid Modal-->
-<kendo-dialog title="{{popup_title}}" *ngIf="dialogOpened" (close)="close_kendo_dialog()" [minWidth]="750" [width]="750"
-    style="max-height:480px; overflow-y:auto;">
-
+<div class="k-overlay" *ngIf="dialogOpened"></div>
+<kendo-window *ngIf="dialogOpened" (close)="close_kendo_dialog()" [minWidth]="320" [width]="750" [draggable]="false">
+ <kendo-window-titlebar>
+            <div class='k-window-title'>{{popup_title}}</div>
+            <button kendoWindowMaximizeAction></button>
+            <button kendoWindowRestoreAction></button>
+            <button kendoWindowCloseAction></button>
+        </kendo-window-titlebar>
 
     <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="false"
         [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;" [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)">
@@ -28,7 +33,7 @@
             format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
 
     </kendo-grid>
-</kendo-dialog>
+</kendo-window >
 
 <!-- import data modal -->
 <!-- Grid Modal-->
