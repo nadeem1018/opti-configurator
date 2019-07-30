@@ -1467,6 +1467,8 @@ open_operation_resources(flag) {
     changeEffectiveDate(picker_date) {
       let temp = new Date(picker_date);
       this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+      this.over_ride_grid_effective_date()
+
     }
 
     confirm_override_grid_effective_date() {
@@ -1871,8 +1873,15 @@ open_operation_resources(flag) {
 
     if (grid_element == 'effective_date') {
       console.log("effective_date ", value);
-      let temp = new Date(value);
-      this.routing_detail_data[currentrow].effective_date = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
+      let header_effective_date = new Date(this.routing_header_data.EffectiveDate);
+      let temp_row_date = new Date(value);
+      if(header_effective_date > temp_row_date){ 
+        this.toastr.error('', this.language.detail_effective_date_header_efffective_date + ' - ' + rowindex, this.commonData.toast_config);
+         this.routing_detail_data[currentrow].effective_date = new Date((header_effective_date.getMonth() + 1) + '/' + header_effective_date.getDate() + '/' + header_effective_date.getFullYear());
+      } else {
+        this.routing_detail_data[currentrow].effective_date = new Date((temp_row_date.getMonth() + 1) + '/' + temp_row_date.getDate() + '/' + temp_row_date.getFullYear());
+      }
+      
     }
 
     if (grid_element == 'inc_lead_time_calc') {

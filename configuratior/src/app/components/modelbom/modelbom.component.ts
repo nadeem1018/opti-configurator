@@ -1137,10 +1137,10 @@ onDeleteRow(rowindex) {
                      this.modelbom_data[i].max_selected = 1;
                      $(".max_selectable_row").eq((rowindex - 1)).val(1);
                      if(data == 0) {
-                       this.toastr.error('', this.language.max_selected_validation + " " + 1, this.commonData.toast_config);
+                       this.toastr.error('', this.language.max_selected_validation_model + " " + 1, this.commonData.toast_config);
                        return;
                      } else {
-                       this.toastr.error('', this.language.max_selected_validation + " " + data, this.commonData.toast_config);
+                       this.toastr.error('', this.language.max_selected_validation_model + " " + data, this.commonData.toast_config);
                        return;
                      }
                    }

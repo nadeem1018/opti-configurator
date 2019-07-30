@@ -63,7 +63,7 @@ export class ModelbomService {
     this.logged_in_company = sessionStorage.selectedComp;
     let jObject = { ModelItem: JSON.stringify([{ CompanyDBID: this.logged_in_company, featureCode: feature_code ,pressLocation:press_location,rowid:index,
       GUID: sessionStorage.getItem("GUID"),UsernameForLic: sessionStorage.getItem("loggedInUser")}]) }
-      return this.httpclient.post(this.config_params.service_url + "/FeatureBOM/GetFeatureList", jObject, this.common_params.httpOptions);
+      return this.httpclient.post(this.config_params.service_url + "/ModelBOM/GetFeatureList", jObject, this.common_params.httpOptions);
   }
 
   getItemDetails(ItemKey): Observable<any>{
