@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
   public page_title = this.commonData.project_name;
   public project_name = "";
   public showLoginLoader: boolean = true;
+  public connectButtonLoader: boolean = false;
   // common_params = new CommonData();
   record_per_page: any = this.commonData.default_count;
   constructor(
@@ -200,7 +201,7 @@ onConnectBtnPress() {
     return;
   }
   if (this.loginCredentials.userName != undefined && this.loginCredentials.password != undefined) {
-    this.showLoginLoader = true;
+    this.connectButtonLoader = true;
     this.auth.login(this.loginCredentials, this.psURL).subscribe(
       data => {
         if (data != null || data.Table.length > 0) {
@@ -213,22 +214,22 @@ onConnectBtnPress() {
             }
             else {
               //If user is not active
-              this.showLoginLoader = false;
+              this.connectButtonLoader = false;
               this.toastr.warning('', this.UserNotActive, this.commonData.toast_config);
             }
           }
           else {
             //If no table found
-            this.showLoginLoader = false;
+            this.connectButtonLoader = false;
             this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
           }
         } else {
           //If no username & pass matches
-          this.showLoginLoader = false;
+          this.connectButtonLoader = false;
           this.toastr.error('', this.InvalidCredentials, this.commonData.toast_config);
         }
       }, error => {
-        this.showLoginLoader = false;
+        this.connectButtonLoader = false;
       })
   }
 
@@ -354,10 +355,10 @@ getPSURL() {
  getCompanies() {
    this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
      data => {
-       this.showLoginLoader = false;
+       this.connectButtonLoader = false;
        if (data != null || data != undefined) {
          this.assignedCompanies = data.Table;
-         this.showLoginLoader = false;
+         this.connectButtonLoader = false;
          if (this.assignedCompanies != null) {
            //If comp found
            this.showCompDropDown = true;
@@ -373,11 +374,11 @@ getPSURL() {
        } else {
          //if No companies are retriving then we will consider that user have no company assignment
          // alert("You Don't have Permission to Access this Product");
-         this.showLoginLoader = false;
+         this.connectButtonLoader = false;
          this.toastr.error('', this.isUserPermitted, this.commonData.toast_config);
        }
      }, error => {
-       this.showLoginLoader = false;
+       this.connectButtonLoader = false;
        this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
        return;
      }
