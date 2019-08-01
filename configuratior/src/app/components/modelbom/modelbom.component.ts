@@ -856,7 +856,7 @@ onDeleteRow(rowindex) {
            this.modelbom_data[i].uom = selectedDataDetails[0].InvUOM
            this.modelbom_data[i].price_source = selectedDataDetails[0].ListName;
            this.modelbom_data[i].price_source_id = selectedDataDetails[0].PriceListID;
-           this.modelbom_data[i].price_source_id = false;
+           this.modelbom_data[i].unique_identifer = false;
            this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex,"branchType": 'item', "icon":'item' });
          }
        }
