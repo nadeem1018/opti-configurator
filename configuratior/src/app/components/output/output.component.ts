@@ -1022,20 +1022,30 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
             var tempfeatureid = this.feature_itm_list_table[i].FeatureId
 
             if (this.feature_itm_list_table[i].is_accessory == "N") {
+              // if feature is non-accessory type
               var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
                 return obj['OPTM_FEATUREID'] == tempfeatureid
               })
-              if (modelheaderpropagatechecked.length == 0) {
+              /* if (modelheaderpropagatechecked.length == 0) {
                 modelheaderpropagatechecked = this.ModelInModelArray.filter(function (obj) {
                   return obj['OPTM_CHILDMODELID'] == tempfeatureid
                 })
-              }
+              } */
               if (modelheaderpropagatechecked.length == 0 && this.feature_itm_list_table[i].Item != "") {
                 var itemkey = this.feature_itm_list_table[i].Item
                 modelheaderpropagatechecked = this.ModelHeaderItemsArray.filter(function (obj) {
                   return obj['OPTM_ITEMKEY'] == itemkey
                 })
               }
+
+              if (modelheaderpropagatechecked.length == 0 && this.feature_itm_list_table[i].Item != "") {
+                var itemkey = this.feature_itm_list_table[i].Item
+                var nodeId = this.feature_itm_list_table[i].nodeid
+                modelheaderpropagatechecked = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                  return obj['OPTM_ITEMKEY'] == itemkey && obj['nodeid'] == nodeId
+                })
+              }
+
               if (modelheaderpropagatechecked.length > 0) {
                 if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                   if (modelheaderpropagatechecked[0].OPTM_TYPE == "1") {
@@ -1066,6 +1076,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
               }
             }
             else {
+              // if feature is accessory type
               var modelheaderpropagatechecked = this.Accessoryarray.filter(function (obj) {
                 return obj['OPTM_FEATUREID'] == tempfeatureid
               })
@@ -1728,6 +1739,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       modelid: modelid,
       featureid: featureid,
       item: item,
+      checked:value,
       parentfeatureid: parentfeatureid,
       superfeatureid: feature_model_data.parentfeatureid,
       parentmodelid: parentmodelid,
@@ -2549,18 +2561,29 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
     }
 
 
-    remove_all_features_child(unique_key){
+    remove_all_features_child(unique_key,parentArray){
       // for removing feature within feature 
-      var all_child_of_current_selection_parent = this.FeatureBOMDataForSecondLevel.filter(function(obj) {
-        return obj.nodeid == unique_key;
-      });
+      var all_child_of_current_selection_parent = [];
+      /* if(parentArray[0].parentmodelid == null && parentArray[0].parentmodelid == undefined) { */
+        all_child_of_current_selection_parent = this.FeatureBOMDataForSecondLevel.filter(function(obj) {
+          return obj.nodeid == unique_key;
+        });
+      /* } */
       if(all_child_of_current_selection_parent.length > 0){
         for(var i=0; i< all_child_of_current_selection_parent.length; i++){
           var selection_parent_child_data  = all_child_of_current_selection_parent[i];
           for(var j=0; j< this.feature_itm_list_table.length; j++){
-            if(selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid ){
-              this.feature_itm_list_table.splice(j, 1);
-              this.remove_all_features_child(selection_parent_child_data.unique_key);
+
+            if(selection_parent_child_data.parentmodelid != null && selection_parent_child_data.parentmodelid != undefined){
+              if(selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid ){
+                this.feature_itm_list_table.splice(j, 1);
+                this.remove_all_features_child(selection_parent_child_data.unique_key,parentArray);
+              }
+            } else {
+              if(selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid ){
+                this.feature_itm_list_table.splice(j, 1);
+                this.remove_all_features_child(selection_parent_child_data.unique_key,parentArray);
+              }
             }
             
           }
@@ -2581,7 +2604,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           for(var j=0; j< this.feature_itm_list_table.length; j++){
             if(selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid  && this.feature_itm_list_table[j].OPTM_TYPE == "1"){
               this.feature_itm_list_table.splice(j, 1);
-              this.remove_all_features_child(selection_parent_child_data.nodeid);
+              this.remove_all_features_child(selection_parent_child_data.nodeid,parentArray);
             }
             
           }
@@ -2590,7 +2613,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
 
       // for removing items 
-      if(all_child_of_current_selection_parent.length == 0 && all_child_of_current_selection_submodel.length == 0) {
+      if(parentArray[0].parentmodelid == null && parentArray[0].parentmodelid == undefined) {
         var get_all_items = this.feature_itm_list_table.filter(function(obj) {
           return obj.nodeid == unique_key;
         });
@@ -2613,9 +2636,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
       if (ItemData.length > 0) {
         if (parentArrayElemType == "radio") {
           if (parentarray[0].OPTM_TYPE == 1 && type == 1) {
-            this.remove_all_features_child(parentarray[0].nodeid);
+            this.remove_all_features_child(parentarray[0].nodeid,parentarray);
           } else if (parentarray[0].OPTM_TYPE == 1 && type == 2) {
-              this.remove_all_features_child(parentarray[0].unique_key);
+              this.remove_all_features_child(parentarray[0].unique_key,parentarray);
             /* for (let i = 0; i < this.feature_itm_list_table.length; i++) {
               if(this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
                 currentfeaturerow = this.feature_itm_list_table[i];
@@ -2624,7 +2647,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
             } */
           } else if(parentarray[0].OPTM_TYPE == 1 && type == 3){
-            this.remove_all_features_child(parentarray[0].unique_key);
+            this.remove_all_features_child(parentarray[0].unique_key,parentarray);
           } else if (parentarray[0].OPTM_TYPE == 3) {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
               if (this.feature_itm_list_table[i].ModelId == ItemData[0].OPTM_MODELID) {
@@ -2707,6 +2730,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             FeatureId: ItemData[0].OPTM_FEATUREID,
             featureName: tempfeaturecode,
             Item: ItemData[0].OPTM_ITEMKEY,
+            discount:0,
             ItemNumber: ItemData[0].DocEntry,
             Description: ItemData[0].OPTM_DISPLAYNAME,
             quantity: parseFloat(formatequantity).toFixed(3),
@@ -4542,6 +4566,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             type: rowData.OPTM_TYPE,
             modelid: "",
             item: rowData.OPTM_ITEMKEY,
+            checked:value,
             parentfeatureid: rowData.OPTM_FEATUREID,
             parentmodelid: "",
             selectedvalue: "",
@@ -4728,6 +4753,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   FeatureId: ItemData[i].OPTM_FEATUREID,
                   featureName: display_name[0].OPTM_DISPLAYNAME,
                   Item: ItemData[i].OPTM_ITEMKEY,
+                  discount:0,
                   ItemNumber: ItemData[i].DocEntry,
                   Description: ItemData[i].OPTM_DISPLAYNAME,
                   quantity: parseFloat(formatequantity).toFixed(3),
@@ -4778,6 +4804,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: DefaultData[idefault].OPTM_FEATUREID,
                 featureName: DefaultData[idefault].OPTM_FEATURECODE,
                 Item: DefaultData[idefault].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: DefaultData[idefault].DocEntry,
                 Description: DefaultData[idefault].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
@@ -4816,7 +4843,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             });
 
             ModelData[imodelarray].OPTM_QUANTITY = parseFloat(ModelData[imodelarray].OPTM_QUANTITY)
-            var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
+            /* var formatequantity: any = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity */
+            var formatequantity: any = 0;
 
             let pricextn0 = 0;
             if (isExist.length == 0) {
@@ -4824,6 +4852,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
                 featureName: ModelData[imodelarray].feature_code,
                 Item: ModelData[imodelarray].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: "",
                 Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
@@ -4864,6 +4893,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
                   featureName: ModelItemsArray[imodelItemsarray].feature_code,
                   Item: ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY,
+                  discount:0,
                   ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
                   Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
                   quantity: parseFloat(formatequantity).toFixed(3),
@@ -4889,7 +4919,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             for (var ifeatureitem in this.feature_itm_list_table) {
               if (this.feature_itm_list_table[ifeatureitem].FeatureId == ModelData[imodelarray].OPTM_CHILDMODELID) {
-                this.feature_itm_list_table[ifeatureitem].Actualprice = parseFloat(ItemPrice).toFixed(3)
+                if(this.feature_itm_list_table[ifeatureitem].OPTM_TYPE != "3"){
+                  this.feature_itm_list_table[ifeatureitem].Actualprice = parseFloat(ItemPrice).toFixed(3)
+                }
               }
             }
 
@@ -4939,6 +4971,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
                 featureName: ModelData[imodelarray].child_code,
                 Item: ModelData[imodelarray].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: "",
                 Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
@@ -5006,6 +5039,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
                   featureName: ModelItemsArray[imodelItemsarray].feature_code,
                   Item: ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY,
+                  discount:0,
                   ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
                   Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
                   quantity: parseFloat(formatequantity).toFixed(3),
@@ -5061,6 +5095,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: ModelItemsData[imodelarray].OPTM_MODELID,
                 featureName: ModelItemsData[imodelarray].feature_code,
                 Item: ModelItemsData[imodelarray].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: ModelItemsData[imodelarray].DocEntry,
                 Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
@@ -5140,6 +5175,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: DefaultData[idefault].OPTM_FEATUREID,
                 featureName: DefaultData[idefault].parent_code,
                 Item: DefaultData[idefault].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: DefaultData[idefault].DocEntry,
                 Description: DefaultData[idefault].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
@@ -5272,7 +5308,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE = this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
                                                 defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
-                                                if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
+                                                if (this.defaultitemflagid == defaultitemarray[0].OPTM_FEATUREID) {
 
                                                   this.removefeatureitemlist(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)
                                                   if (defaultitemarray[0].OPTM_FEATURECODE == undefined || defaultitemarray[0].OPTM_FEATURECODE == "" || defaultitemarray[0].OPTM_FEATURECODE == null) {
@@ -5771,6 +5807,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               FeatureId: filtemodeldataheader[0].OPTM_CHILDMODELID,
               featureName: filtemodeldataheader[0].child_code,
               Item: filtemodeldataheader[0].OPTM_ITEMKEY,
+              discount:0,
               ItemNumber: filtemodeldataheader[0].DocEntry,
               Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
@@ -5809,6 +5846,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: ModelItemsArray[0].OPTM_FEATUREID,
                 featureName: ModelItemsArray[0].feature_code,
                 Item: ModelItemsArray[0].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: ModelItemsArray[0].DocEntry,
                 Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
                 quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
@@ -5863,6 +5901,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 FeatureId: ItemsArray[0].OPTM_FEATUREID,
                 featureName: ItemsArray[0].parent_code,
                 Item: ItemsArray[0].OPTM_ITEMKEY,
+                discount:0,
                 ItemNumber: ItemsArray[0].DocEntry,
                 Description: ItemsArray[0].OPTM_DISPLAYNAME,
                 quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),

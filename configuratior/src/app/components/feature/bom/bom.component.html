@@ -277,22 +277,25 @@
                                             #quantity title="{{dataItem.quantity}}" />
                                     </ng-template>
                                 </kendo-grid-column>
+                              
                                 <kendo-grid-column field="Bom_Default" headerClass="text-center" title="{{language.Bom_Default}}"
                                     filter="text" [width]="80" [minResizableWidth]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <ng-container *ngIf="this.feature_bom_data.multi_select == 'false'">
+                                               
                                             <div class="custom-control custom-radio custom-control-inline mr-auto ml-auto d-table position-relative">
                                                 <input type="radio" value="1" name="default_value_selection" class="custom-control-input position-absolute"
-                                                    id="default_{{dataItem.rowindex}}" [disabled]="this.feature_bom_data.feature_min_selectable == '0' || dataItem.is_accessory_disabled == true" (change)="on_defualt_change(default,dataItem.rowindex)"
+                                                    id="default_{{dataItem.rowindex}}" [disabled]="this.feature_bom_data.feature_min_selectable == '0' || dataItem.is_accessory_disabled == true || feature_bom_data.is_accessory == 'Y'" (change)="on_defualt_change(default,dataItem.rowindex)"
                                                     value={{dataItem.default}} #default [(checked)]=dataItem.default
                                                     title="{{dataItem.default}}" style="margin-top: 5px;" />
                                                 <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
                                             </div>
                                         </ng-container>
                                         <ng-container *ngIf="this.feature_bom_data.multi_select == 'true'">
+                                               
                                             <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
                                                 <input type="checkbox" value="1" name="default_value_selection" class="custom-control-input position-absolute" id="default_{{dataItem.rowindex}}"
-                                                    (change)="on_defualt_change(default,dataItem.rowindex)" [disabled]="dataItem.is_accessory_disabled == true" value={{dataItem.default}} #default [(checked)]=dataItem.default
+                                                    (change)="on_defualt_change(default,dataItem.rowindex)" [disabled]="dataItem.is_accessory_disabled == true  || feature_bom_data.is_accessory == 'Y'" value={{dataItem.default}} #default [(checked)]=dataItem.default
                                                     title="{{dataItem.default}}" style="margin-top: 5px;" />
                                                 <label class="custom-control-label" for="default_{{dataItem.rowindex}}"></label>
                                             </div>
