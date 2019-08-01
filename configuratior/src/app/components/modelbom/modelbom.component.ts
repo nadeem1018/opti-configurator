@@ -55,6 +55,7 @@ export class ModelbomComponent implements OnInit {
   public row_selection: number[] = [];
   public current_selected_row: any = [];
   public selectableSettings: any = [];
+  public model_bom_type:any = '';
   // public mandatory_disabled: boolean = false;
   public menu_auth_index = '203'; 
   modalRef: BsModalRef;
@@ -136,6 +137,8 @@ export class ModelbomComponent implements OnInit {
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
     }
+
+    this.model_bom_type = this.commonData.model_bom_type()
 
     // check screen authorisation - start
     this.commonService.getMenuRecord().subscribe(

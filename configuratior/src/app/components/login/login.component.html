@@ -43,7 +43,7 @@
                 <div class="form-group" *ngIf="showCompDropDown">
                   <label class="sr-only" for="form-company">{{language.company}}</label>
                   <select type="company" name="form-company" class="form-username form-control" id="form-company" [(ngModel)]="selecetedComp">
-                    <option value="" [selected]="selecetedComp==''">Select a company</option>
+                    <option value="" [selected]="selecetedComp==''">{{language.select_company}}</option>
                     <!-- <option value="aps">APS</option>
                     <option value="configurator">Configurator</option> -->
                     <option *ngFor="let cmp of assignedCompanies" [ngValue]="cmp">{{cmp.OPTM_COMPID}} ({{cmp.cmpName}})</option>

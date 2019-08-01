@@ -368,7 +368,7 @@
                             [width]="110" [minResizableWidth]="110">
                             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                                 <select class="form-control form-control-sm" #resource_consumption_type (change)="on_input_change(resource_consumption_type.value,dataItem.rowindex, 'resource_consumption_type')">
-                                    <option *ngFor="let v of commonData.resource_consumption_type" [value]="v.value"
+                                    <option *ngFor="let v of commonData.resource_consumption_type()" [value]="v.value"
                                         [selected]="dataItem.resource_consumption_type==v.value">
                                         {{v.Name}}</option>
                                 </select>

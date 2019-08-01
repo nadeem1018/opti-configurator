@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class CommonService {
-  
+
   common_params = new CommonData();
   public logged_in_company = sessionStorage.selectedComp;
   public config_params: any = "";
@@ -28,17 +28,29 @@ export class CommonService {
   public ShareData(data: any) {
     this.commonData.next(data);
   }
- 
- 
-  async get_config() {
+
+
+  async get_config(callback) {
     let config_call = await fetch( this.common_params.get_current_url() +  "/assets/data/json/config.json");
     let config_data = await config_call.json();
+    if(callback != undefined && callback !== ""){
+      sessionStorage.setItem('system_config', JSON.stringify(config_data));
+      callback(config_data);
+      
+    }
+
+  }
+
+  async set_language(config_data, callback){
     let language_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/i18n/" + config_data['locale'] + ".json");
     let language_data = await language_call.json();
-    sessionStorage.setItem('system_config', JSON.stringify(config_data));
+
     sessionStorage.setItem('current_lang', JSON.stringify(language_data));
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
-    console.log("the config param  - ", this.config_params);
+    if(callback != undefined && callback !== ""){
+      sessionStorage.setItem('system_config', JSON.stringify(config_data));
+      callback();
+    }
   }
 
 
@@ -56,7 +68,7 @@ export class CommonService {
     service_call.subscribe( data => {
         sessionStorage.setItem('system_config', JSON.stringify(data));
       });
-  } */
+    } */
 
 
   /* public set_language(language){
@@ -76,8 +88,8 @@ export class CommonService {
     return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
   }
 
-   //This will get he service according to user settings done on Admin Portal
-   getPermissionDetails(): Observable<any>{
+  //This will get he service according to user settings done on Admin Portal
+  getPermissionDetails(): Observable<any>{
     let jObject = { Permission: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') , MenuId:  sessionStorage.getItem('currentMenu') }]) }
     return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetPermissionDetails", jObject, this.common_params.httpOptions);
   }
@@ -90,7 +102,7 @@ export class CommonService {
     this.isLoggedInData.next(sessionStorage.getItem('isLoggedIn'));
   }
 
-   // set menu data global
+  // set menu data global
   public menuItem = new BehaviorSubject<any>([]);
   currentmenuItemData = this.menuItem.asObservable();
 
@@ -116,13 +128,13 @@ export class CommonService {
     /* sessionStorage.clear();
     localStorage.clear(); */
     let login_page = this.common_params.application_path + '/index.html#login';
-        
+
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('selectedComp');
     sessionStorage.removeItem('loggedInUser');
     
     // this.router.navigateByUrl('/login');
-   
+
     setTimeout(()=>{   
       this.setisLoggedInData();
       router.navigateByUrl('/login');
@@ -131,7 +143,7 @@ export class CommonService {
 
   // get company details 
   GetCompanyDetails(selectedCompID): Observable<any> {
-   
+
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: selectedCompID }]) };
     //Return the response form the API  
@@ -140,7 +152,7 @@ export class CommonService {
 
   //Get Server Date
   GetServerDate(): Observable<any> {
-   
+
     //JSON Obeject Prepared to be send as a param to API
     let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: sessionStorage.getItem('selectedComp') }]) };
     //Return the response form the API  

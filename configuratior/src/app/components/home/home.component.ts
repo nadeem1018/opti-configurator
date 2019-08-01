@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
   isPerfectSCrollBar:boolean = false;
   public showLoader: boolean = true;
   public config_param = JSON.parse(sessionStorage.system_config);
+  public language = JSON.parse(sessionStorage.getItem('current_lang'));
+  public from_year = '2008';
+  public to_year = new Date().getFullYear();
 
   detectDevice(){
     let getDevice = UIHelper.isDevice();

@@ -25,11 +25,11 @@ export class HeaderComponent implements OnInit {
 
   showHeader: boolean;
   imgPath = 'assets/images';
-  search_for = "Search for...";
-  // user_profile = "User Profile";
-  // preferences = "Preferences";
-  signout = "Sign-out";
-  about = "System Info";
+  public search_for:string ;
+  public user_profile:string ;
+  public preferences:string ;
+  public signout:string ;
+  public about:string ;
 
 
   ngOnInit() {
@@ -38,36 +38,46 @@ export class HeaderComponent implements OnInit {
       (data) => {
         this.showHeader = data;
       }
-    );
+      );
+
+    let objj = this;
+    this.CommonService.get_config(function(response){
+      objj.CommonService.set_language(response, function(){
+        objj.config_data = JSON.parse(sessionStorage.getItem('system_config'));
+        // objj.commonData.checkSession();
+        if (objj.config_data != undefined && objj.config_data != "") {
+          if (objj.config_data['locale'] != "" && objj.config_data['locale'] != undefined && objj.config_data['locale'] != 0) {
+            // objj.CommonService.set_language(objj.config_data['locale']);
+          }
+          objj.project_name = objj.config_data['app_title'];
+          objj.language = JSON.parse(sessionStorage.getItem('current_lang'));
+          objj.setDefaultLanguage()
+        }
+      })
+    });
 
 
-    this.CommonService.get_config();
-
-    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
-    // this.commonData.checkSession();
-    if (this.config_data != undefined && this.config_data != "") {
-      if (this.config_data['locale'] != "" && this.config_data['locale'] != undefined && this.config_data['locale'] != 0) {
-        // this.CommonService.set_language(this.config_data['locale']);
-      }
-      this.project_name = this.config_data['app_title'];
-      this.language = JSON.parse(sessionStorage.getItem('current_lang'));
-    }
   }
 
-  ngOnChanges() {
+ /* ngOnChanges() {
     // this.commonData.checkSession();
+  }*/
+
+  setDefaultLanguage(){
+    this.search_for = this.language.search_for;
+    this.user_profile = this.language.user_profile;
+    this.preferences = this.language.preferences;
+    this.signout = this.language.signout;
+    this.about = this.language.system_info;
   }
 
   ngAfterViewInit() {
+     let objj = this;
     setTimeout(function () {
       this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
       this.language = JSON.parse(sessionStorage.getItem('current_lang'));
 
-      this.search_for = this.language.search_for;
-      this.user_profile = this.language.user_profile;
-      this.preferences = this.language.preferences;
-      this.signout = this.language.signout;
-      this.about = this.language.system_info;
+      objj.setDefaultLanguage();
 
     }, 2000);
   }
@@ -90,10 +100,10 @@ export class HeaderComponent implements OnInit {
     // // this.router.navigateByUrl('/login');
 
     // setTimeout(()=>{   
-    //   this.CommonService.setisLoggedInData();
-    //   this.router.navigateByUrl('/login');
-    // }, 1000);
-  }
+      //   this.CommonService.setisLoggedInData();
+      //   this.router.navigateByUrl('/login');
+      // }, 1000);
+    }
 
   /* checkSession(){
     let login_page = this.commonData.application_path + '/index.html#login';

@@ -94,8 +94,12 @@ export class ItemcodegenerationComponent implements OnInit {
     //get permissions
     this.getUserPermissionDetials();
     
-    this.stringtypevalue = this.commonData.stringtypevalue
-    this.opertions = this.commonData.opertions
+    // this.stringtypevalue = this.commonData.stringtypevalue;
+    // this.opertions = this.commonData.opertions
+
+    this.stringtypevalue = this.commonData.item_code_gen_string_dropdown();
+    this.opertions = this.commonData.item_code_gen_oper_drpdown();
+
     // check screen authorisation - start
     this.commanService.getMenuRecord().subscribe(
       menu_item => {
