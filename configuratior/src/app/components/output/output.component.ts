@@ -1728,6 +1728,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       modelid: modelid,
       featureid: featureid,
       item: item,
+      checked:value,
       parentfeatureid: parentfeatureid,
       superfeatureid: feature_model_data.parentfeatureid,
       parentmodelid: parentmodelid,

@@ -281,7 +281,7 @@ export class BomComponent implements OnInit {
               is_accessory_disabled : is_accessory_disabled,
               isPropagateQtyDisable: this.isPropagateQtyDisable,
               isPriceDisabled: this.isPriceDisabled,
-              CompanyDBId: data.FeatureDetail[i].OPTM_COMPANYID,
+              CompanyDBId: sessionStorage.selectedComp,
               CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
             });
           }
@@ -493,7 +493,7 @@ validate_min_values(value, input_id) {
         isPriceDisabled: this.isPriceDisabled,
         isPropagateQtyDisable: false,
         pricehide: this.pricehide,
-        CompanyDBId: this.companyName,
+        CompanyDBId:sessionStorage.selectedComp,
         CreatedUser: this.username,
       });
     };
@@ -1329,7 +1329,7 @@ validation(btnpress) {
   delete_record() {
     this.GetItemData = []
     this.GetItemData.push({
-      CompanyDBId: this.companyName,
+      CompanyDBId: sessionStorage.selectedComp,
       FeatureId: this.feature_bom_data.feature_id,
       GUID: sessionStorage.getItem("GUID"),
       UsernameForLic: sessionStorage.getItem("loggedInUser")
