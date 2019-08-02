@@ -67,6 +67,8 @@ export class LoginComponent implements OnInit {
   public project_name = "";
   public showLoginLoader: boolean = true;
   public connectButtonLoader: boolean = false;
+
+  public appVersion: any;
   // common_params = new CommonData();
   record_per_page: any = this.commonData.default_count;
   constructor(
@@ -123,6 +125,7 @@ export class LoginComponent implements OnInit {
         if(objj.language != undefined  && objj.language != ""){
           objj.showLoginLoader = true;
           objj.CommonService.get_config(function(response){
+            objj.appVersion = objj.config_data.system_version;
             objj.CommonService.set_language(response, function(){
               objj.config_data = JSON.parse(sessionStorage.getItem('system_config'));
               // objj.commonData.checkSession();
