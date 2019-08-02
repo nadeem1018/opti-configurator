@@ -3979,7 +3979,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                         OPTM_UNIQUEIDNT: imodelData[0].OPTM_UNIQUEIDNT,
                         OPTM_ITEMKEY: indexmatchmodelitemarray[0].OPTM_ITEMKEY,
                         OPTM_MODELID: imodelData[0].OPTM_MODELID,
-                        OPTM_CHILDMODELID : imodelData[0].OPTM_CHILDMODELID
+                        OPTM_CHILDMODELID : imodelData[0].OPTM_CHILDMODELID,
+                        nodeid:imodelData[0].nodeid,
+                        unique_key:imodelData[0].unique_key,
                       })
 
                   }
@@ -4252,7 +4254,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               // key generation array iteration  - start 
               for (var isavemodelchild in imodelfilteritems) {
                 for (var isavefinaldatasettosave in temp_step2_final_dataset_save) {
-                  if (temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMNUMBER == imodelfilteritems[isavemodelchild].DocEntry && temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMCODE == imodelfilteritems[isavemodelchild].OPTM_ITEMKEY) {
+                  if (temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMNUMBER == imodelfilteritems[isavemodelchild].DocEntry && temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMCODE == imodelfilteritems[isavemodelchild].OPTM_ITEMKEY && temp_step2_final_dataset_save[isavefinaldatasettosave].nodeid == imodelfilteritems[isavemodelchild].unique_key) {
                     temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_PARENTKEY = itemkeyforparentmodel
                     temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_PARENTID = imodelfilteritems[isavemodelchild].OPTM_MODELID
                     temp_step2_final_dataset_save[isavefinaldatasettosave].PARENTID = imodelfilteritems[isavemodelchild].OPTM_MODELID
@@ -4317,7 +4319,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               for (var isave in temp_step2_final_dataset_save) {
-                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1) {
+                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1 && temp_step2_final_dataset_save[isave].OPTM_KEY != "") {
                   if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
                     if (sortitemkey.length == 0) {
                       sortitemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
