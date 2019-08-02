@@ -3985,7 +3985,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   }
 
                 }
-                var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
+                /* var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
                 formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
                 temp_step2_final_dataset_save.push({
@@ -4015,7 +4015,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_PARENTTYPE": 2,
                   "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
-                })
+                }) */
 
                 if (imodelfilteritems.length > 0) {
                   var featureitemlistfilterdata = [];
@@ -4095,6 +4095,38 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   }
 
                 }
+
+                var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
+                formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
+
+                temp_step2_final_dataset_save.push({
+                  "OPTM_OUTPUTID": "",
+                  "OPTM_OUTPUTDTLID": "",
+                  "OPTM_ITEMNUMBER": "",
+                  "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME,
+                  "OPTM_KEY": itemkeyforparentmodel,
+                  "OPTM_PARENTKEY": "",
+                  "OPTM_TEMPLATEID": imodelData[0].MODELTEMPLATEITEM,
+                  "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
+                  "OPTM_ITEMTYPE": 1,
+                  "OPTM_WHSE": this.warehouse,
+                  "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
+                  "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
+                  "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
+                  "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
+                  "OPTM_TOTALPRICE": formatedTotalPrice,
+                  "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
+                  "OPTM_CREATEDBY": this.common_output_data.username,
+                  "OPTM_MODIFIEDBY": this.common_output_data.username,
+                  "UNIQUEIDNT": imodelData[0].OPTM_UNIQUEIDNT,
+                  "PARENTID": imodelData[0].OPTM_MODELID,
+                  "OPTM_FGCREATEDATE": "",
+                  "OPTM_REFITEMCODE": "",
+                  "OPTM_PARENTID": imodelData[0].OPTM_MODELID,
+                  "OPTM_PARENTTYPE": 2,
+                  "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
+                  "NODEID": step3_data_row.feature[ifeature].nodeid,
+                })
 
               }
               else {
@@ -4285,7 +4317,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               for (var isave in temp_step2_final_dataset_save) {
-                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1 && temp_step2_final_dataset_save[isave].OPTM_KEY != "") {
+                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1) {
                   if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
                     if (sortitemkey.length == 0) {
                       sortitemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
