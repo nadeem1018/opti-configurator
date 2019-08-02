@@ -211,7 +211,7 @@ export class OutputComponent implements OnInit {
     this.commonData.checkSession();
     this.common_output_data.username = sessionStorage.getItem('loggedInUser');
     this.common_output_data.companyName = sessionStorage.getItem('selectedComp');
-    this.doctype = this.commonData.document_type;
+    this.doctype = this.commonData.document_type();
     // this.step1_data.document = "sales_quote";
     if (this.step1_data.document == "sales_quote") {
       this.document_date = this.language.valid_date;

@@ -560,7 +560,7 @@
                         #time_uom title={{dataItem.time_uom}} /> -->
                         <select [disabled]="dataItem.opn_application == false" class="form-control form-control-sm"
                           #time_uom (change)="on_input_change(time_uom.value,dataItem.rowindex, 'time_uom')">
-                          <option *ngFor="let v of commonData.time_uom_type" [value]="v.value" [selected]="dataItem.time_uom==v.value">
+                          <option *ngFor="let v of commonData.time_uom_type()" [value]="v.value" [selected]="dataItem.time_uom==v.value">
                             {{v.Name}}</option>
                         </select>
                       </ng-template>

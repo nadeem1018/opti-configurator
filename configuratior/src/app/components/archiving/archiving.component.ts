@@ -81,7 +81,8 @@ export class ArchivingComponent implements OnInit {
       mode: 'multiple'
     };
 
-    this.doctype = [this.commonData.document_type[1], this.commonData.document_type[2], { "value": 'both', "Name": this.language.both, "selected": "0" }];
+    let doc_type_values = this.commonData.document_type();
+    this.doctype = [doc_type_values[1], doc_type_values[2], { "value": 'both', "Name": this.language.both, "selected": "0" }];
     this.doctype[0].selected = '1';
     this.filter_section_data.doc_type = 'sales_quote';
     this.filter_section_data.order_status = this.language.process_status;

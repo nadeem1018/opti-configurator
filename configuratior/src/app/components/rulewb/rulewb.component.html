@@ -210,7 +210,7 @@
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <select class="form-control  form-control-sm " #selectedOperator
                           (change)="on_input_change(dataItem.rowindex, 'operator', selectedOperator.value )">
-                          <option *ngFor="let v of commonData.operator_type" [value]="v.value"
+                          <option *ngFor="let v of commonData.operator_type()" [value]="v.value"
                             [selected]="dataItem.operator==v.value"> {{v.Name}}</option>
                         </select>
                       </ng-template>
@@ -220,7 +220,7 @@
                       <ng-template kendoGridCellTemplate let-dataItem>
                         <select class="form-control  form-control-sm " #selected_type
                           (change)="on_input_change(dataItem.rowindex, 'type', selected_type.value )">
-                          <option *ngFor="let v of commonData.rule_seq_type " [value]="v.value"
+                          <option *ngFor="let v of commonData.rule_seq_type()" [value]="v.value"
                             [selected]="dataItem.type==v.value"> {{v.Name}}</option>
                         </select>
                       </ng-template>
@@ -265,7 +265,7 @@
                           class="form-control  form-control-sm " #selected_condition
                           (change)="on_input_change(dataItem.rowindex, 'condition', selected_condition.value )">
                           <option value=""></option>
-                          <option *ngFor="let v of commonData.express_conditions " [value]="v.value"
+                          <option *ngFor="let v of commonData.express_conditions()" [value]="v.value"
                             [selected]="dataItem.condition==v.value"> {{v.value}}</option>
                         </select>
                       </ng-template>
@@ -459,7 +459,7 @@
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <select class="form-control  form-control-sm" id="edit_quanity" #is_quanity_editable
                             (change)="output_change_event('edit_quanity',is_quanity_editable.value,dataItem.rowindex)">
-                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value"
+                            <option *ngFor="let v of commonData.yes_no_option()" [value]="v.value"
                               [selected]="dataItem.edit_quantity==v.value"> {{v.Name}}</option>
                           </select>
                         </ng-template>
@@ -478,7 +478,7 @@
                         <ng-template kendoGridCellTemplate let-dataItem>
                           <select class="form-control  form-control-sm " id="edit_price" #is_price_editable
                             (change)="output_change_event('edit_price',is_price_editable.value,dataItem.rowindex)">
-                            <option *ngFor="let v of commonData.yes_no_option " [value]="v.value"
+                            <option *ngFor="let v of commonData.yes_no_option()" [value]="v.value"
                               [selected]="dataItem.edit_price==v.value"> {{v.Name}}</option>
                           </select>
                         </ng-template>

@@ -160,7 +160,7 @@
                 <kendo-grid-column field="bom_type_option" title="{{language.Model_Type}}" [width]="110" [minResizableWidth]="110">
                   <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="dropdown_index">
                     <select class="form-control form-control-sm" #selectedvalue (change)="on_bom_type_change(selectedvalue.value,dataItem.rowindex)">
-                      <option *ngFor="let v of commonData.model_bom_type" [value]="v.value" [selected]="dataItem.type==v.value">
+                      <option *ngFor="let v of model_bom_type" [value]="v.value" [selected]="dataItem.type==v.value">
                         {{v.Name}}</option>
                     </select>
                   </ng-template>

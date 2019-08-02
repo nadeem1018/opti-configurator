@@ -34,7 +34,7 @@ export class RoutingComponent implements OnInit {
   public isDeleteButtonVisible: boolean = false;
   public isExplodeButtonVisible: boolean = false;
   public showLookupLoader: boolean = false;
-  public type_dropdown = '';
+  public type_dropdown:any = '';
   public grid_option_title = '';
   public row_selection: number[] = [];
   public current_grid_action_row: number = 0;
@@ -186,7 +186,7 @@ export class RoutingComponent implements OnInit {
                 feature_code = data_header.OPTM_MODELFEATURECODE
                 feature_desc = data_header.OPTM_DESCRIPTION;
                 this.grid_option_title = this.language.Bom_FeatureValue;
-                this.type_dropdown = this.commonData.bom_type;
+                this.type_dropdown = this.commonData.feature_bom_type();
                 this.routing_type = 'feature';
               } else if (data_header.OPTM_TYPE == 2) {
                 routing_for = 'model';
@@ -194,7 +194,7 @@ export class RoutingComponent implements OnInit {
                 model_code = data_header.OPTM_MODELFEATURECODE
                 model_desc = data_header.OPTM_DESCRIPTION;
                 this.grid_option_title = this.language.ModelBom_FeatureValue;
-                this.type_dropdown = this.commonData.model_bom_type;
+                this.type_dropdown = this.commonData.model_bom_type();
                 this.routing_type = 'model'
               }
 
@@ -306,6 +306,7 @@ export class RoutingComponent implements OnInit {
                 if (data_detail.OPTM_INC_LEAD_TIM_CAL == 'Y' || data_detail.OPTM_INC_LEAD_TIM_CAL == 'y') {
                   inc_lead_time_calc = true;
                 }
+                let res_cnsptn_mthd = this.commonData.res_consumption_method();
 
                 this.routing_detail_data.push({
                   optm_id: data_detail.OPTM_ID,
@@ -338,7 +339,7 @@ export class RoutingComponent implements OnInit {
                   unique_key: data_detail.OPTM_UNIQUE_KEY,
                   oper_consumption_method: data_detail.OPTM_OPER_CONSUM_METHOD,
                   inc_lead_time_calc: inc_lead_time_calc,
-                  oper_consumption_method_str: this.commonData.res_consumption_method[data_detail.OPTM_OPER_CONSUM_METHOD],
+                  oper_consumption_method_str: res_cnsptn_mthd[data_detail.OPTM_OPER_CONSUM_METHOD],
                 });
 
                 if (data.ResourceDetail.length > 0) {
@@ -417,7 +418,7 @@ on_operation_change() {
     this.reset_model()
     this.show_resequence_btn = false;
     this.show_resource_btn = true;
-    this.type_dropdown = this.commonData.bom_type;
+    this.type_dropdown = this.commonData.feature_bom_type();
     this.routing_type = 'feature';
 
     this.grid_option_title = this.language.Bom_FeatureValue;
@@ -425,7 +426,7 @@ on_operation_change() {
     this.reset_feature()
     this.show_resequence_btn = true;
     this.show_resource_btn = true;
-    this.type_dropdown = this.commonData.model_bom_type;
+    this.type_dropdown = this.commonData.model_bom_type();
     this.grid_option_title = this.language.ModelBom_FeatureValue;
     this.routing_type = 'model';
   }
@@ -553,6 +554,7 @@ getLookupValue($event) {
   }
 
   if (this.lookupfor == 'operation_lookup') {
+    let res_cnsmtn_mthd = this.commonData.res_consumption_method();
     this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
     this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
     this.routing_detail_data[this.current_grid_action_row].auto_move = false;
@@ -565,7 +567,7 @@ getLookupValue($event) {
     this.routing_detail_data[this.current_grid_action_row].wc_code = $event[5];
     this.routing_detail_data[this.current_grid_action_row].mtq = $event[9];
     this.routing_detail_data[this.current_grid_action_row].oper_consumption_method = $event[8];
-    this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = this.commonData.res_consumption_method[$event[8]];
+    this.routing_detail_data[this.current_grid_action_row].oper_consumption_method_str = res_cnsmtn_mthd[$event[8]];
     let obj = this;
 
     this.new_tree_item(this.routing_detail_data[this.current_grid_action_row].type, this.routing_detail_data[this.current_grid_action_row].oper_code, this.routing_detail_data[this.current_grid_action_row], this.routing_detail_data[this.current_grid_action_row].rowindex);
@@ -1284,9 +1286,9 @@ open_operation_lookup(type, rowindex) {
         this.lookupfor = 'operation_lookup';
         this.showLookupLoader = false;
         let temp_data_arr = [];
-        console.log("commonData - ", this.commonData.operation_type);
+        let res_oper_type = this.commonData.operation_type();
         for (var ii = 0; ii < data.length; ii++) {
-          data[ii].operTypeStr = this.commonData.operation_type[data[ii].OPRType];
+          data[ii].operTypeStr = res_oper_type[data[ii].OPRType];
           temp_data_arr.push(data[ii]);
 
         }
@@ -1713,13 +1715,13 @@ open_operation_resources(flag) {
               }
 
               if (data.length > 0) {
-
+                let res_cnsmpt_mthd = this.commonData.res_consumption_method();
 
                 this.routing_detail_data[currentrow].oper_id = data[0].OPRCode;
                 this.routing_detail_data[currentrow].oper_code = data[0].OperationCode;
                 this.routing_detail_data[currentrow].oper_desc = data[0].OPRDesc;
                 this.routing_detail_data[currentrow].oper_consumption_method = data[0].OPRConsumMthd;
-                this.routing_detail_data[currentrow].oper_consumption_method_str = this.commonData.res_consumption_method[data[0].OPRConsumMthd];
+                this.routing_detail_data[currentrow].oper_consumption_method_str = res_cnsmpt_mthd[data[0].OPRConsumMthd];
 
                 this.routing_detail_data[currentrow].oper_type = data[0].OPRType;
                 this.routing_detail_data[currentrow].wc_id = data[0].DfltWCCode;

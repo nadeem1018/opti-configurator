@@ -63,7 +63,7 @@ export class BomComponent implements OnInit {
   public complete_dataset: any = [];
   public allItemDataDetails: any = [];
   public row_image_data: any;
-  public detail_select_options = '';
+  public detail_select_options:any = '';
   public isPriceDisabled: boolean = false
   public pricehide: boolean = false;
   public isPropagateQtyDisable: boolean = false;
@@ -131,7 +131,8 @@ export class BomComponent implements OnInit {
     
 
     this.commonData.checkSession();
-    this.detail_select_options = this.commonData.bom_type;
+    //this.detail_select_options = this.commonData.bom_type;
+    this.detail_select_options = this.commonData.feature_bom_type();
     this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     this.companyName = sessionStorage.getItem('selectedComp');
     this.username = sessionStorage.getItem('loggedInUser');
@@ -300,10 +301,12 @@ export class BomComponent implements OnInit {
           this.feature_bom_data.is_accessory = data.FeatureHeader[0].OPTM_ACCESSORY;
 
           if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
-            this.detail_select_options = this.commonData.less_bom_type;
+            //this.detail_select_options = this.commonData.less_bom_type;
+            this.detail_select_options = this.commonData.less_feature_bom_type();
 
           } else {
-            this.detail_select_options = this.commonData.bom_type;
+            //this.detail_select_options = this.commonData.bom_type;
+            this.detail_select_options = this.commonData.feature_bom_type();
           }
 
           if (data.FeatureHeader[0].OPTM_ISMULTISELECT == 'y' || data.FeatureHeader[0].OPTM_ISMULTISELECT == 'Y') {
@@ -1062,7 +1065,8 @@ validate_min_values(value, input_id) {
                this.feature_bom_data.image_path = data[0].OPTM_PHOTO;
                this.feature_bom_data.is_accessory = data[0].OPTM_ACCESSORY;
                if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
-                 this.detail_select_options = this.commonData.less_bom_type;
+                 //this.detail_select_options = this.commonData.less_bom_type;
+                 this.detail_select_options = this.commonData.less_feature_bom_type();
                  this.pricehide = false
                  this.isPriceDisabled = false;
 
@@ -1072,7 +1076,8 @@ validate_min_values(value, input_id) {
                  this.feature_bom_data.feature_max_selectable = 1;
                  this.feature_bom_data.is_accessory_disabled =  true;
                } else {
-                 this.detail_select_options = this.commonData.bom_type;
+                 //this.detail_select_options = this.commonData.bom_type;
+                 this.detail_select_options = this.commonData.feature_bom_type();
                  this.pricehide = true
                  this.isPriceDisabled = true;
                  this.feature_bom_data.is_accessory_disabled =  false;

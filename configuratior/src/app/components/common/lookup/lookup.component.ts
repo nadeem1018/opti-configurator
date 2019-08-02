@@ -168,7 +168,7 @@ export class LookupComponent implements OnInit {
 
     this.current_popup_row = "";
     //this.test_model();
-    console.log("this.lookupfor " + this.popup_lookupfor);
+//    console.log("this.lookupfor " + this.popup_lookupfor);
     this.search_string = "";
     if (this.popup_lookupfor == "output_invoice_print") {
       await this.sleep(400);
@@ -529,12 +529,12 @@ export class LookupComponent implements OnInit {
     }
     on_item_select(selection) {
       var lookup_key = selection.selectedRows[0].dataItem;
-      console.log("this.popup_lookupfor ", this.popup_lookupfor);
+    //  console.log("this.popup_lookupfor ", this.popup_lookupfor);
 
-      console.log("lookup_key - ", lookup_key);
+     // console.log("lookup_key - ", lookup_key);
       // if (this.popup_lookupfor == "routing_resource_lookup") {
         if (this.is_operation_popup_lookup_open == true) {
-          console.log("this.current_popup_row - ", this.current_popup_row);
+      //    console.log("this.current_popup_row - ", this.current_popup_row);
 
           if (lookup_key.ResCode != undefined && lookup_key.Name != undefined) {
             for (let i = 0; i < this.resourceServiceData.length; ++i) {
@@ -559,7 +559,7 @@ export class LookupComponent implements OnInit {
       }
     }
 
-    console.log(lookup_key);
+ //   console.log(lookup_key);
     if (this.popup_resource == false) {
       this.lookupvalue.emit(Object.values(lookup_key));
     }
@@ -569,7 +569,7 @@ export class LookupComponent implements OnInit {
     }
     this.serviceData = [];
     //   $("#lookup_modal").modal('hide');
-    console.log(selection);
+ //   console.log(selection);
     selection.selectedRows = [];
     selection.index = 0;
     selection.selected = false;
@@ -590,7 +590,7 @@ export class LookupComponent implements OnInit {
     this.showLoader = true;
     this.fill_input_id = 'modify_duplicate_lookup';
     // this.table_head = [this.language.log_id, this.language.description, this.language.customer, this.language.contact_person, this.language.model, this.language.quantity];
-    console.log(this.serviceData);
+  //  console.log(this.serviceData);
 
     this.table_head = [
     {
@@ -1410,7 +1410,7 @@ export class LookupComponent implements OnInit {
             this.is_operation_popup_lookup_open = true;
             this.showLoader = true;
             this.resourceServiceData = [];
-            this.resource_basisdd = this.commonData.resource_basic;
+            this.resource_basisdd = this.commonData.resource_basic();
             if (this.serviceData !== undefined && this.serviceData !== "") {
               if (this.serviceData.wc_code != "" && this.serviceData.oper_code != "" && this.serviceData.wc_code != undefined && this.serviceData.oper_code != undefined) {
                 for (var inx = 0; inx < this.serviceData.oper_res.length; inx++) {

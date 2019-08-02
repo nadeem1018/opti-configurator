@@ -55,6 +55,7 @@ export class ModelbomComponent implements OnInit {
   public row_selection: number[] = [];
   public current_selected_row: any = [];
   public selectableSettings: any = [];
+  public model_bom_type:any = '';
   // public mandatory_disabled: boolean = false;
   public menu_auth_index = '203'; 
   modalRef: BsModalRef;
@@ -136,6 +137,8 @@ export class ModelbomComponent implements OnInit {
     if (this.image_data.length > 0) {
       this.showImageBlock = true;
     }
+
+    this.model_bom_type = this.commonData.model_bom_type()
 
     // check screen authorisation - start
     this.commonService.getMenuRecord().subscribe(
@@ -853,7 +856,7 @@ onDeleteRow(rowindex) {
            this.modelbom_data[i].uom = selectedDataDetails[0].InvUOM
            this.modelbom_data[i].price_source = selectedDataDetails[0].ListName;
            this.modelbom_data[i].price_source_id = selectedDataDetails[0].PriceListID;
-           this.modelbom_data[i].price_source_id = false;
+           this.modelbom_data[i].unique_identifer = false;
            this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex,"branchType": 'item', "icon":'item' });
          }
        }

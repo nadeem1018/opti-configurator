@@ -55,95 +55,83 @@ export class CommonData {
 
     public lookup_selected_value = '';
 
-    public stringtypevalue: any = [
-        { "value": 1, "Name": "String" },
-        { "value": 2, "Name": "Number" }
-    ];
+   /* public stringtypevalue: any = [
+    { "value": 1, "Name": "String" },
+    { "value": 2, "Name": "Number" }
+    ];*/
 
-    public opertions: any = [
-        { "value": 1, "Name": "No Operation" },
-        { "value": 2, "Name": "Increase" },
-        { "value": 3, "Name": "Decrease" }
-    ];
+   /* public opertions: any = [
+    { "value": 1, "Name": "No Operation" },
+    { "value": 2, "Name": "Increase" },
+    { "value": 3, "Name": "Decrease" }
+    ];*/
 
-    public bom_type: any = [
-        { "value": 1, "Name": "Feature" },
-        { "value": 2, "Name": "Item" },
-        { "value": 3, "Name": "Value" }
+   /* public bom_type: any = [
+    { "value": 1, "Name": "Feature" },
+    { "value": 2, "Name": "Item" },
+    { "value": 3, "Name": "Value" }
     ];
 
     public less_bom_type: any = [
-        { "value": 2, "Name": "Item" }
-        /*  , { "value": 3, "Name": "Value" } */
+    { "value": 2, "Name": "Item" }
     ];
 
-    public model_bom_type: any = [
-        { "value": 1, "Name": "Feature" },
-        { "value": 2, "Name": "Item" },
-        { "value": 3, "Name": "Model" }
-    ];
+     /* public model_bom_type: any = [
+    { "value": 1, "Name": "Feature" },
+    { "value": 2, "Name": "Item" },
+    { "value": 3, "Name": "Model" }
+    ];*/
 
-    public rule_seq_type: any = [
-        { "value": '', "Name": "" },
-        { "value": 1, "Name": "Feature" },
-        { "value": 2, "Name": "Model" }
-    ];
+    /*public rule_seq_type: any = [
+    { "value": '', "Name": "" },
+    { "value": 1, "Name": "Feature" },
+    { "value": 2, "Name": "Model" }
+    ];*/
 
-    public operator_type: any = [
-        { "value": '', "Name": "" },
-        { "value": 'or', "Name": "OR" },
-        { "value": 'and', "Name": "AND" }
-    ];
+    /*public operator_type: any = [
+    { "value": '', "Name": "" },
+    { "value": 'or', "Name": "OR" },
+    { "value": 'and', "Name": "AND" }
+    ];*/
 
-    public yes_no_option: any = [
-        { "value": '', "Name": "" },
-        { "value": 'n', "Name": "No" },
-        { "value": 'y', "Name": "Yes" }
+    /*public yes_no_option: any = [
+    { "value": '', "Name": "" },
+    { "value": 'n', "Name": "No" },
+    { "value": 'y', "Name": "Yes" }
     ];
 
     public resource_consumption_type: any = [
-        { "value": '1', "Name": "Manual" },
-        { "value": '2', "Name": "Automatic" },
-        { "value": '3', "Name": "Operation Issue" }
+    { "value": '1', "Name": "Manual" },
+    { "value": '2', "Name": "Automatic" },
+    { "value": '3', "Name": "Operation Issue" }
     ];
 
     public resource_basic: any = [
-        { "value": '1', "Name": "Item" },
-        { "value": '2', "Name": "Batch" },
-        { "value": '3', "Name": "Fixed" },
-        { "value": '4', "Name": "Setup" }
+    { "value": '1', "Name": "Item" },
+    { "value": '2', "Name": "Batch" },
+    { "value": '3', "Name": "Fixed" },
+    { "value": '4', "Name": "Setup" }
     ];
 
-    public bracket_list = [
-        { "value": '' },
-        { "value": "[" },
-        { "value": "{", },
-        { "value": "(" },
-        { "value": "]" },
-        { "value": "}", },
-        { "value": ")" },
-    ];
+    
+   public express_conditions = [
+    { "value": "=" },
+    { "value": "<" },
+    { "value": ">" },
+    { "value": "<=" },
+    { "value": ">=" },
+    { "value": "Between" }
+    ]; 
 
-    public express_conditions = [
-        { "value": "=" },
-        { "value": "<" },
-        { "value": ">" },
-        { "value": "<=" },
-        { "value": ">=" },
-        { "value": "Between" }
-        /* , { "value": "In" }, */
-    ];
-
-    public document_type = [
-        //{ "value": '', "Name": "" },
-        { "value": 'draft', "Name": "Draft", "selected": "1" },
-        { "value": 'sales_quote', "Name": "Sales Quote", "selected": "0" },
-        { "value": 'sales_order', "Name": "Sales Order", "selected": "0" }
+     public document_type = [
+    { "value": 'draft', "Name": "Draft", "selected": "1" },
+    { "value": 'sales_quote', "Name": "Sales Quote", "selected": "0" },
+    { "value": 'sales_order', "Name": "Sales Order", "selected": "0" }
     ];
 
     public time_uom_type: any = [
-        { "value": 1, "Name": "Hours" },
-        { "value": 2, "Name": "Minutes" }
+    { "value": 1, "Name": "Hours" },
+    { "value": 2, "Name": "Minutes" }
     ];
 
     public operation_type: any = {
@@ -161,6 +149,158 @@ export class CommonData {
         "3": "Fixed",
     };
 
+    */
+
+    item_code_gen_string_dropdown(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return  [
+        { "value": 1, "Name": language.string },
+        { "value": 2, "Name": language.Number }
+        ];
+    }
+
+    item_code_gen_oper_drpdown(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return  [
+        { "value": 1, "Name": language.NoOperation },
+        { "value": 2, "Name": language.Increase },
+        { "value": 3, "Name": language.Decrease }
+        ];
+    }
+
+    feature_bom_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": 1, "Name": language.feature },
+        { "value": 2, "Name": language.item },
+        { "value": 3, "Name": language.value }
+        ];
+    }
+
+    less_feature_bom_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": 2, "Name": language.item }
+        ];
+    }
+
+
+    model_bom_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": 1, "Name": language.feature },
+        { "value": 2, "Name": language.item },
+        { "value": 3, "Name": language.model }
+        ];
+    }
+
+    rule_seq_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": '', "Name": "" },
+        { "value": 1, "Name": language.feature },
+        { "value": 2, "Name": language.model }
+        ];
+    }
+
+    operator_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        [
+        { "value": '', "Name": "" },
+        { "value": 'or', "Name": language.OR },
+        { "value": 'and', "Name": language.AND }
+        ];
+    }
+
+    yes_no_option(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": '', "Name": "" },
+        { "value": 'n', "Name": language.NO },
+        { "value": 'y', "Name": language.YES }
+        ];
+    }
+
+    resource_consumption_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": '1', "Name": language.manual },
+        { "value": '2', "Name": language.automatic },
+        { "value": '3', "Name": language.operation_issue }
+        ]
+    }  
+
+    resource_basic(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": '1', "Name": language.item },
+        { "value": '2', "Name": language.batch },
+        { "value": '3', "Name": language.fixed },
+        { "value": '4', "Name": language.setup }
+        ]
+    }  
+
+    public bracket_list = [
+    { "value": '' },
+    { "value": "[" },
+    { "value": "{", },
+    { "value": "(" },
+    { "value": "]" },
+    { "value": "}", },
+    { "value": ")" },
+    ];
+
+    express_conditions(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": "=" },
+        { "value": "<" },
+        { "value": ">" },
+        { "value": "<=" },
+        { "value": ">=" },
+        { "value": language.Between }
+        ];
+    }
+
+    document_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return [
+        { "value": 'draft', "Name": language.draft, "selected": "1" },
+        { "value": 'sales_quote', "Name": language.SalesQuote, "selected": "0" },
+        { "value": 'sales_order', "Name": language.SalesOrder, "selected": "0" }
+        ];
+    }
+
+    time_uom_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        [
+        { "value": 1, "Name": language.hours },
+        { "value": 2, "Name": language.minute }
+        ];
+    }
+
+    operation_type(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return {
+            "1" : language.set_up,
+            "2" : language.tear_down,
+            "3" : language.manufacturing,
+            "4" : language.inspection_qc,
+            "5" : language.sub_contracting,
+            "6" : language.others,
+        } 
+    }
+
+    res_consumption_method(){
+        let language = JSON.parse(sessionStorage.getItem('current_lang'));
+        return  {
+            "1": language.set_up,
+            "2": language.variable,
+            "3": language.fixed,
+        };
+    }
+
+ 
     // for common view
     public default_limits = ["10", "25", "50", "100"];
     public default_count: number = 10;
@@ -183,7 +323,7 @@ export class CommonData {
         let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let result = '';
         for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
+            return result;
     }
 
     public excludeSpecialCharRegex = /[{}*!^=<>?|/(\\)&#@%]/;
