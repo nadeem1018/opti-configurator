@@ -205,7 +205,7 @@ export class CommonData {
 
     operator_type(){
         let language = JSON.parse(sessionStorage.getItem('current_lang'));
-        [
+       return [
         { "value": '', "Name": "" },
         { "value": 'or', "Name": language.OR },
         { "value": 'and', "Name": language.AND }
@@ -273,7 +273,7 @@ export class CommonData {
 
     time_uom_type(){
         let language = JSON.parse(sessionStorage.getItem('current_lang'));
-        [
+       return [
         { "value": 1, "Name": language.hours },
         { "value": 2, "Name": language.minute }
         ];

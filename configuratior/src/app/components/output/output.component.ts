@@ -326,7 +326,14 @@ export class OutputComponent implements OnInit {
     this.new_output_config = false;
     this.modify_duplicate_selected = false;
     this.step3_data_final = [];
-    this.onclearselection(1);
+    this.step4_final_prod_total = 0;
+    this.step4_final_acc_total = 0;
+    this.step4_final_grand_total = 0;
+    this.prod_discount_log = 0;
+    this.access_dis_amount_log = 0;
+    this.step3_feature_price_bef_dis = 0;
+    this.step3_acc_price_bef_dis = 0;
+    this.clear_all_screen_data();
     if (operation_type == 2 || operation_type == 3 || operation_type == 4) {
       this.modify_duplicate_selected = true;
       this.new_output_config = true;
@@ -4926,14 +4933,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       main_item_key = current_row['OPTM_ITEMNUMBER'];
                     }
                   }
-  
-                  if(current_row['temp_model_id'] == sub_modeldata[0].OPTM_CHILDMODELID){
-                    if(sub_item_key != ""){
-                      sub_item_key = sub_item_key  + "-" + current_row['OPTM_ITEMNUMBER'];
-                    } else {
-                      sub_item_key = current_row['OPTM_ITEMNUMBER'];
+    
+                  if(sub_modeldata.length > 0 && sub_modeldata != undefined ){
+                    if(current_row['temp_model_id'] == sub_modeldata[0].OPTM_CHILDMODELID){
+                      if(sub_item_key != ""){
+                        sub_item_key = sub_item_key  + "-" + current_row['OPTM_ITEMNUMBER'];
+                      } else {
+                        sub_item_key = current_row['OPTM_ITEMNUMBER'];
+                      }
                     }
                   }
+                  
   
                   if(current_row['OPTM_ITEMTYPE'] == 1){
                     sub_model_item_code =  current_row['OPTM_ITEMCODE'];
@@ -4953,15 +4963,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               } */
               main_item_key = this.sort_unique_item_key(main_item_key);
               // include sub-model key in main-model item key - start 
-              let temp_sub_model_tems:any = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                return obj['parentmodelid'] == sub_modeldata[0].OPTM_CHILDMODELID
-              })
-              if(sub_model_item_code!="" && temp_sub_model_tems.length > 0 ){
-                main_item_key  = main_item_key + "-"+ sub_model_item_code;
+              if(sub_modeldata.length > 0 && sub_modeldata != undefined ){
+                let temp_sub_model_tems:any = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                  return obj['parentmodelid'] == sub_modeldata[0].OPTM_CHILDMODELID;
+                })
+                if(sub_model_item_code!="" && temp_sub_model_tems.length > 0 ){
+                  main_item_key  = main_item_key + "-"+ sub_model_item_code;
+                }
               }
                // include sub-model key in main-model item key - end 
-
-              temp_step2_final_dataset_save[temp_ds_row_index].OPTM_KEY = main_item_key;
+              if(temp_ds_row_index != ""){
+               temp_step2_final_dataset_save[temp_ds_row_index].OPTM_KEY = main_item_key; 
+              }
               
               /* var sortitemkey1:any = "";
               var sortitemkeyarray1:any = sub_item_key.split("-").sort((a, b) => a - b)
@@ -4972,7 +4985,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   sortitemkey1 = sortitemkey1 + "-" + sortitemkeyarray1[isort]
                 }
               } */
-              temp_step2_final_dataset_save[temp_ds_sub_model_row_index].OPTM_KEY = this.sort_unique_item_key(sub_item_key);
+              if(sub_item_key!= "" && temp_ds_sub_model_row_index!=""){
+                 temp_step2_final_dataset_save[temp_ds_sub_model_row_index].OPTM_KEY = this.sort_unique_item_key(sub_item_key);
+              }
+             
 
               /*   for (var isave in temp_step2_final_dataset_save) {
                 if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1 && temp_step2_final_dataset_save[isave].OPTM_KEY != "") {
@@ -5987,9 +6003,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                         }
                         else {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                          if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                          /*if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
-                          }
+                          }*/
                           // else {
                           //   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                           // }
@@ -6002,12 +6018,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                         } else {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
                         }
-                        if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                        /*if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                         }
                         else {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                        }
+                        }*/
                       }
                     }
                   }
@@ -6076,11 +6092,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 }
                                               }
                                             } else {
-                                                if(RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && RuleOutputData[iItemRule].OPTM_APPLICABLEFOR == feature_model_data.OPTM_FEATUREID) {
+                                               /* if(RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && RuleOutputData[iItemRule].OPTM_APPLICABLEFOR == feature_model_data.OPTM_FEATUREID) {
                                                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                                 } else {
                                                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                                }
+                                                }*/
                                                   
                                             }
 
@@ -6093,7 +6109,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                           } else {
                                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
                                           }
-                        if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].unique_key == feature_model_data.unique_key) {
+                                          if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].unique_key == feature_model_data.unique_key) {
                                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                                             defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
                                             if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
@@ -6122,12 +6138,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                             }
                                             else {
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-                                              if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                             /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                               }
                                               else {
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                              }
+                                              }*/
                                             }
                                           }
                                           //  }
@@ -6137,12 +6153,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                             }else{
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
                                             }
-                                            if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                           /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                             }
                                             else {
                                               this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                            }
+                                            }*/
                                           }
                                         }
                                       }
@@ -6162,23 +6178,23 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                               }
                                               else {
                                                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                               /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                                 }
                                                 else {
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
-                                                }
+                                                }*/
                                               }
                                             }
                                             //   }
                                             else {
                                               this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                              if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                             /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                                 this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                               }
                                               else {
                                                 this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
-                                              }
+                                              }*/
                                             }
 
                                           }
@@ -6193,10 +6209,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                                                 }
                                                 else {
-                                                  var checkedRowFound = false
-                                                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.ModelBOMDataForSecondLevel, this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID)
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                                  if (checkedRowFound == false) {
+                                                 /*  var checkedRowFound = false
+                                                  checkedRowFound = this.ischeckedRow(RuleOutputData, this.ModelBOMDataForSecondLevel, this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID)
+                                                 if (checkedRowFound == false) {
                                                     if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                                                       this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                                       defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
@@ -6212,14 +6228,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                     else {
                                                       this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
                                                     }
-                                                  }
+                                                  }*/
 
                                                 }
                                               }
                                               //  }
                                               else {
                                                 this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                                if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
+                                               /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True") {
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                                   defaultitemarray.push(this.ModelBOMDataForSecondLevel[iModelItemTable])
                                                   if (this.defaultitemflagid != defaultitemarray[0].OPTM_FEATUREID) {
@@ -6232,7 +6248,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 }
                                                 else {
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
-                                                }
+                                                }*/
                                               }
 
                                             }
@@ -6247,23 +6263,23 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                   }
                                                   else {
                                                     this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                                    if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                                    /*if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                                       this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                                     }
                                                     else {
                                                       this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
-                                                    }
+                                                    }*/
                                                   }
                                                 }
                                                 //   }
                                                 else {
                                                   this.ModelBOMDataForSecondLevel[iModelItemTable].disable = false
-                                                  if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
+                                                 /* if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && this.ModelBOMDataForSecondLevel[iModelItemTable].OPTM_FEATUREID != this.defaultitemflagid) {
                                                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = true
                                                   }
                                                   else {
                                                     this.ModelBOMDataForSecondLevel[iModelItemTable].checked = false
-                                                  }
+                                                  }*/
                                                 }
 
                                               }
