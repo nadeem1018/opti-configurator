@@ -2632,8 +2632,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           var selection_parent_child_data  = all_child_of_current_selection_parent[i];
           for(var j=0; j< this.feature_itm_list_table.length; j++){
 
-            if(selection_parent_child_data.parentmodelid != null && selection_parent_child_data.parentmodelid != undefined){
+            if(selection_parent_child_data.parentmodelid != null && selection_parent_child_data.parentmodelid != undefined && (selection_parent_child_data.OPTM_CHILDFEATUREID == 0 || selection_parent_child_data.OPTM_CHILDFEATUREID == null)){
               if(selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid ){
+                this.feature_itm_list_table.splice(j, 1);
+                this.remove_all_features_child(selection_parent_child_data.unique_key,parentArray);
+              }
+            } else if(selection_parent_child_data.parentmodelid != null && selection_parent_child_data.OPTM_CHILDFEATUREID != null && selection_parent_child_data.OPTM_CHILDFEATUREID != 0){
+              if(selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid ){
                 this.feature_itm_list_table.splice(j, 1);
                 this.remove_all_features_child(selection_parent_child_data.unique_key,parentArray);
               }
