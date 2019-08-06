@@ -80,6 +80,7 @@ export class LookupComponent implements OnInit {
   public showGeneralDetails: boolean = false;
   public showProdDetailsTable: boolean = false;
   public showProdGrandDetails: boolean = false;
+  public isDraggable: boolean = true;
   public customer_details: any = [];
   public refrence_doc_details: any = [];
   public verify_final_data_sel_details: any = [];

@@ -1,6 +1,6 @@
 <!-- Grid Modal-->
 <div class="k-overlay" *ngIf="dialogOpened"></div>
-<kendo-window *ngIf="dialogOpened" (close)="close_kendo_dialog()" [minWidth]="320" [width]="750" [draggable]="false">
+<kendo-window *ngIf="dialogOpened" [draggable]="isDraggable" (close)="close_kendo_dialog()" [minWidth]="320" [width]="750">
  <kendo-window-titlebar>
             <div class='k-window-title'>{{popup_title}}</div>
             <button kendoWindowMaximizeAction></button>
@@ -8,7 +8,7 @@
             <button kendoWindowCloseAction></button>
         </kendo-window-titlebar>
 
-    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="false"
+    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true" [pageSize]="50"
         [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;" [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)">
         <!-- [pageSize]="10" -->
         <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
