@@ -1,39 +1,43 @@
 <!-- Grid Modal-->
 <div class="k-overlay" *ngIf="dialogOpened"></div>
-<kendo-window *ngIf="dialogOpened" [draggable]="isDraggable" (close)="close_kendo_dialog()" [minWidth]="320" [width]="750">
- <kendo-window-titlebar>
-            <div class='k-window-title'>{{popup_title}}</div>
-            <button kendoWindowMaximizeAction></button>
-            <button kendoWindowRestoreAction></button>
-            <button kendoWindowCloseAction></button>
-        </kendo-window-titlebar>
+<div class="custom-window-wrapper" *ngIf="dialogOpened">
+    <div class="custom-window-innner">
+        <kendo-window [draggable]="isDraggable" (close)="close_kendo_dialog()" [minWidth]="320" [width]="750">
+        <kendo-window-titlebar>
+                    <div class='k-window-title'>{{popup_title}}</div>
+                    <button kendoWindowMaximizeAction></button>
+                    <button kendoWindowRestoreAction></button>
+                    <button kendoWindowCloseAction></button>
+                </kendo-window-titlebar>
 
-    <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true" [pageSize]="50"
-        [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;" [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)">
-        <!-- [pageSize]="10" -->
-        <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
-            <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
-            <kendo-pager-numeric-buttons [buttonCount]="10"></kendo-pager-numeric-buttons>
-            <kendo-pager-next-buttons></kendo-pager-next-buttons>
-            <kendo-pager-info></kendo-pager-info>
-        </ng-template>
-        <ng-template kendoGridToolbarTemplate>
-            <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
-                <div class="custom-control custom-checkbox float-left">
-                    <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input"
-                        name="columnfilter" />
-                    <label class="custom-control-label" for="columnFilter">{{language.enable_filter}}</label>
-                </div>
-            </form>
-        </ng-template>
+            <kendo-grid [kendoGridBinding]="serviceData" [filterable]="isColumnFilter" [selectable]="true" [pageable]="true" [pageSize]="50"
+                [resizable]="true" [skip]="skip" (selectionChange)="on_item_select($event)" style="max-height:400px;" [sortable]="{  allowUnsort: allowUnsort,  mode: 'single'  }" [sort]="sort" (sortChange)="sortChange($event)">
+                <!-- [pageSize]="10" -->
+                <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="1">
+                    <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                    <kendo-pager-numeric-buttons [buttonCount]="10"></kendo-pager-numeric-buttons>
+                    <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                    <kendo-pager-info></kendo-pager-info>
+                </ng-template>
+                <ng-template kendoGridToolbarTemplate>
+                    <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile p-0">
+                        <div class="custom-control custom-checkbox float-left">
+                            <input #chkFilter type="checkbox" id="columnFilter" [(ngModel)]="isColumnFilter" class="custom-control-input"
+                                name="columnfilter" />
+                            <label class="custom-control-label" for="columnFilter">{{language.enable_filter}}</label>
+                        </div>
+                    </form>
+                </ng-template>
 
 
 
-        <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
-            format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
+                <kendo-grid-column *ngFor="let column of table_head" field="{{column.field}}" title="{{column.title}}" filter="{{column.type}}"
+                    format="{{column.format}}" width="{{column.width}}" minResizableWidth="{{column.width}}"></kendo-grid-column>
 
-    </kendo-grid>
-</kendo-window >
+            </kendo-grid>
+        </kendo-window >
+    </div>
+</div>
 
 <!-- import data modal -->
 <!-- Grid Modal-->
