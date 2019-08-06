@@ -19,7 +19,7 @@ import { serializePaths } from '@angular/router/src/url_tree';
   templateUrl: './output.component.html',
   styleUrls: ['./output.component.scss']
 })
-export class OutputComponent implements OnInit {
+export class OutputComponent implements OnInit, OnDestroy {
   public selectedImage = "";
   @ViewChild("modelcode") _el: ElementRef;
   @ViewChild("refresh_button") _refresh_el: ElementRef;
@@ -66,6 +66,7 @@ export class OutputComponent implements OnInit {
   public access_dis_amount_log: any = 0;
   public isPreviousPressed: boolean = false;
   public isDuplicate: boolean = false;
+  public navigationSubscription;
   //public step2_data_all_data={};
 
   // public router_link_new_config = "";
@@ -126,7 +127,16 @@ export class OutputComponent implements OnInit {
   public complete_dataset: any = [];
   Object = Object;
   console = console;
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef, private CommonService: CommonService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private OutputService: OutputService, private toastr: ToastrService, private elementRef: ElementRef, private cdref: ChangeDetectorRef, private CommonService: CommonService) { 
+   /* this.navigationSubscription
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+     // If it is a NavigationEnd event re-initalise the component
+     if (e instanceof NavigationEnd) {
+       this.clear_all_screen_data()
+       this.onOperationChange('');
+     }
+   });*/
+  }
   serviceData: any;
   public new_output_config: boolean = false;
   public contact_persons: any = [];
@@ -195,8 +205,17 @@ export class OutputComponent implements OnInit {
     }
   }
 
+ /* ngOnDestroy() {
+    // avoid memory leaks here by cleaning up after ourselves. If we  
+    // don't then we will continue to run our initialiseInvites()   
+    // method on every navigationEnd event.
+    if (this.navigationSubscription) {  
+       this.navigationSubscription.unsubscribe();
+    }
+  }
+*/
   ngOnInit() {
-
+    console.log("init in");
     //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
     //this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
@@ -411,6 +430,9 @@ export class OutputComponent implements OnInit {
     this.showPrintOptions = true;
   }
   previousButtonPress() {
+    this.clear_all_screen_data()
+    this.onOperationChange('');
+    
     this.isPreviousPressed = true;
     this.showPrintOptions = false;
 
