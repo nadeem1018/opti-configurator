@@ -895,7 +895,12 @@ a.common_grid_link {
 .k-window-wrapper.k-window-maximized > .k-content.k-window-content > .k-grid {
     max-height: 100% !important;
 }
-
+.k-window-wrapper> .k-content.k-window-content > .k-grid {
+    max-height: 100% !important;
+}
+.k-window {
+  height: 400px;
+}
 
 /* New Loader Css start */
 body .loader-wrapper{
