@@ -6005,6 +6005,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                         if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                          this.removeLeftAndRightGridDataWhenRuleApplied(RuleOutputData[iItemRule]);
                         }
                         else {
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
@@ -6406,6 +6407,27 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
                                   }
                                   this.defaultitemflagid = "";
+                                }
+
+                                removeLeftAndRightGridDataWhenRuleApplied(RuleOutputData) {
+                                  for(let modelHeaderIndex = 0;modelHeaderIndex < this.ModelHeaderData.length; modelHeaderIndex++) {
+                                    if(this.ModelHeaderData[modelHeaderIndex].OPTM_FEATUREID == RuleOutputData.OPTM_FEATUREID){
+                                      this.ModelHeaderData.splice(modelHeaderIndex,1);
+                                      modelHeaderIndex = modelHeaderIndex-1;
+                                    }
+                                  }
+                                  for(let featureBomIndex = 0;featureBomIndex < this.FeatureBOMDataForSecondLevel.length; featureBomIndex++) {
+                                    if(this.FeatureBOMDataForSecondLevel[featureBomIndex].OPTM_FEATUREID == RuleOutputData.OPTM_FEATUREID) {
+                                      this.FeatureBOMDataForSecondLevel.splice(featureBomIndex,1);
+                                      featureBomIndex = featureBomIndex-1;
+                                    }
+                                  }
+                                  for(let featureItmListIndex = 0;featureItmListIndex < this.feature_itm_list_table.length; featureItmListIndex++) {
+                                    if(this.feature_itm_list_table[featureItmListIndex].FeatureId == RuleOutputData.OPTM_FEATUREID) {
+                                      this.feature_itm_list_table.splice(featureItmListIndex,1);
+                                      featureItmListIndex = featureItmListIndex-1;
+                                    }
+                                  }
                                 }
 
                                 checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, enabled) {
