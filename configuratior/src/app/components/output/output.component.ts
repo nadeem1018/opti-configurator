@@ -6049,34 +6049,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                             /*checkedRowFound = this.ischeckedRow(RuleOutputData[iItemRule], this.FeatureBOMDataForSecondLevel, this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID)*/
 
                             checkedRowFound = this.isRuleDefaultItemRow(RuleOutputData[iItemRule], this.FeatureBOMDataForSecondLevel, this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID,feature_model_data)
-                            // var tempRuleArray = RuleOutputData.filter(function (obj) {
-                              //   return obj['OPTM_ISINCLUDED'].trim() == "True"
-                              // })
-
-
-                              // if (tempRuleArray.length > 0) {
-                                //   for (var itemp in tempRuleArray) {
-                                  //     var tempFeatArray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                                    //       return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "N"
-                                    //     })
-                                    //     if (tempFeatArray.length == 0 ) {
-                                      //       var tempFeatArray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                                        //         return obj['OPTM_ITEMKEY'] == tempRuleArray[itemp].OPTM_ITEMKEY && obj['OPTM_DEFAULT'] == "Y" && obj['checked'] == true
-                                        //       })
-                                        //     }
-                                        //     if (tempFeatArray.length > 0 ) {
-                                          //       if( tempFeatArray[0].checked == true){
-                                            //         checkedRowFound = true
-                                            //         break
-                                            //       }
-
-                                            //     }
-                                            //   }
-
-                                            // }
+                           
                                             if (checkedRowFound == false) {
                                               if (RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && RuleOutputData[iItemRule].OPTM_APPLICABLEFOR == feature_model_data.OPTM_FEATUREID) {
-                                                this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
+                                               /* this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                                 this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATURECODE = this.FeatureBOMDataForSecondLevel[iItemFeatureTable].parent_code
                                                 defaultitemarray.push(this.FeatureBOMDataForSecondLevel[iItemFeatureTable])
                                                 if (this.defaultitemflagid == defaultitemarray[0].OPTM_FEATUREID) {
@@ -6086,7 +6062,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                     defaultitemarray[0].OPTM_FEATURECODE = defaultitemarray[0].parent_code
                                                   }
                                                   this.getDefaultItems(defaultitemarray)
-                                                }
+                                                }*/
                                               }
                                               else {
                                                 if(feature_model_data.OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR && feature_model_data.element_type == "checkbox"){

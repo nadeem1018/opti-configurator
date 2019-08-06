@@ -882,7 +882,13 @@
                                 {{language.price}} ({{defaultCurrency}})
                             </ng-template>
                             <ng-template kendoGridCellTemplate let-row>
-                                <div style="text-align:right">{{row.OPTM_PRICESOURCE | toFixed:'3' }}</div>
+                                <ng-container *ngIf="row.OPTM_PRICESOURCE!='' && row.OPTM_PRICESOURCE != null && row.OPTM_PRICESOURCE!= undefined">
+                                     <div style="text-align:right">{{row.OPTM_PRICESOURCE | toFixed:'3' }}</div>
+                                </ng-container>
+                                <ng-container *ngIf="row.OPTM_PRICESOURCE=='' || row.OPTM_PRICESOURCE == null || row.OPTM_PRICESOURCE == undefined">
+                                     <div style="text-align:right">{{language.n_a}}</div>
+                                </ng-container>
+                               
                             </ng-template>
                         </kendo-grid-column>
                         <kendo-grid-column field="edit_price" title="" template="" [width]="120"

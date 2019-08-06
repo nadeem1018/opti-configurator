@@ -1053,22 +1053,22 @@ onDeleteRow(rowindex) {
          if (this.modelbom_data[i].rowindex === this.currentrowindex) {
            var rgexp = /^\d+$/;
            if (isNaN(value) == true) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
              this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
              $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
              return;
            } else if (value == 0 || value == '' || value == null || value == undefined) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
              this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
              $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
              return;
            } else if (value < 0) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
              this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
              $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
              return;
            } else if (rgexp.test(value) == false) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
              this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
              $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
              return;
@@ -1103,20 +1103,20 @@ onDeleteRow(rowindex) {
                    if(data[0].FeatureChild == 0) {
                      this.modelbom_data[i].max_selected = 1;
                      $(".max_selectable_row").eq((rowindex - 1)).val(1);
-                     this.toastr.error('', this.language.max_selected_validation + " " + 1, this.commonData.toast_config);
+                     this.toastr.error('', this.language.max_selected_validation_ie + " : " + 1, this.commonData.toast_config);
                      return;
                    } else {
                      if (parseFloat(value) > parseFloat(MaxSelectable)) { 
                        this.modelbom_data[i].max_selected = MaxSelectable;
                        $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
-                       this.toastr.error('', this.language.max_selected_validation + " " + MaxSelectable, this.commonData.toast_config);
+                       this.toastr.error('', this.language.max_selected_validation_ie + " : " + MaxSelectable, this.commonData.toast_config);
                        return;
                      }
 
                      if (parseFloat(value) < parseFloat(defaultCount)) { 
                        this.modelbom_data[i].max_selected = MaxSelectable;
                        $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
-                       this.toastr.error('', this.language.max_selectable_less_than_default + " - " + rowindex, this.commonData.toast_config);
+                       this.toastr.error('', this.language.max_selectable_less_than_default + " : " + rowindex, this.commonData.toast_config);
                        return;
                      }
                    }
