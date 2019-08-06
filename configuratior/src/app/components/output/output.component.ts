@@ -324,6 +324,7 @@ export class OutputComponent implements OnInit {
     this.step1_data.selected_configuration_key = "";
     this.step1_data.description = "";
     this.new_output_config = false;
+    this.clear_all_screen_data();
     this.modify_duplicate_selected = false;
     this.step3_data_final = [];
     this.step4_final_prod_total = 0;
@@ -392,7 +393,7 @@ export class OutputComponent implements OnInit {
         return;
       }
       this.setModelDataFlag = false;
-      this.onclearselection(1);
+      // this.onclearselection(1);
 
     }
     if (this.step1_data.main_operation_type == 2 || this.step1_data.main_operation_type == 3 || this.step1_data.main_operation_type == 4) {
