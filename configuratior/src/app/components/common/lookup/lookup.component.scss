@@ -181,11 +181,18 @@ p {
     max-height: 450px;
 }
 
-.k-window{
+.custom-window-wrapper{
     position: fixed !important;
     left: 0 !important;
     right: 0 !important;
     margin: 0 auto;
-    top: 50% !important;
-    transform: translateY(-50%);
+    top: 0 !important;
+    width: 100%;
+    min-height: 100vh;
+    z-index: 100000;
+}
+.custom-window-innner{
+    widows: 100%;
+    position: relative;
+    min-height:100vh;
 }
