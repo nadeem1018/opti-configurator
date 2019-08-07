@@ -19,7 +19,7 @@ import { serializePaths } from '@angular/router/src/url_tree';
   templateUrl: './output.component.html',
   styleUrls: ['./output.component.scss']
 })
-export class OutputComponent implements OnInit, OnDestroy {
+export class OutputComponent implements OnInit {
   public selectedImage = "";
   @ViewChild("modelcode") _el: ElementRef;
   @ViewChild("refresh_button") _refresh_el: ElementRef;
@@ -4880,17 +4880,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               // key generation array iteration  - start 
-              /* for (var isavemodelchild in imodelfilteritems) {
-                for (var isavefinaldatasettosave in temp_step2_final_dataset_save) {
-                  if (temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMNUMBER == imodelfilteritems[isavemodelchild].DocEntry && temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_ITEMCODE == imodelfilteritems[isavemodelchild].OPTM_ITEMKEY && temp_step2_final_dataset_save[isavefinaldatasettosave].nodeid == imodelfilteritems[isavemodelchild].unique_key) {
-                    temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_PARENTKEY = itemkeyforparentmodel
-                    temp_step2_final_dataset_save[isavefinaldatasettosave].OPTM_PARENTID = imodelfilteritems[isavemodelchild].OPTM_MODELID
-                    temp_step2_final_dataset_save[isavefinaldatasettosave].PARENTID = imodelfilteritems[isavemodelchild].OPTM_MODELID
-                  }
-                }
-
-              } */
-
               var modelitemtype = temp_step2_final_dataset_save.filter(function (obj) {
                 return obj['OPTM_ITEMTYPE'] == 1
               })
@@ -4900,31 +4889,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   var itemnumbersplitnumber = String(modelitemtype[imodelitemtypesave].OPTM_KEY).split("-")
                 }
               }
-
-            /*   for (var isave in temp_step2_final_dataset_save) {
-               
-                 if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE != 1 && isave != "0" && temp_step2_final_dataset_save[isave].OPTM_PARENTKEY == "" && temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y" && temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE != 3) {
-                  var modelitemflag = false;
-                  // comment for when all block uncommented - start 
-                  for (var i in itemnumbersplitnumber) {
-                    if (itemnumbersplitnumber[i] == temp_step2_final_dataset_save[isave].OPTM_ITEMNUMBER) {
-                      modelitemflag = true
-                    }
-                  }
-                  // comment for when all block uncommented - end 
-
-                  if (modelitemflag == false) {
-                    if (itemkey.length == 0) {
-                      itemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMNUMBER
-                    } else {
-                      itemkey = itemkey + "-" + temp_step2_final_dataset_save[isave].OPTM_ITEMNUMBER
-                    }
-                  }
-
-                }
-
-                temp_step2_final_dataset_save[0].OPTM_KEY = itemkey.toString()
-              } */
 
                // parent child item key and parent key new mapping - start 
                var main_item_key:any = "";
@@ -4979,16 +4943,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 }
               }
 
-              /* var sortitemkey:any = "";
-              var sortitemkeyarray:any = main_item_key.split("-").sort((a, b) => a - b);
-
-              for (var isort in sortitemkeyarray) {
-                if (sortitemkey.length == 0) {
-                  sortitemkey = sortitemkeyarray[isort]
-                } else {
-                  sortitemkey = sortitemkey + "-" + sortitemkeyarray[isort]
-                }
-              } */
               main_item_key = this.sort_unique_item_key(main_item_key);
               // include sub-model key in main-model item key - start 
               if(sub_modeldata.length > 0 && sub_modeldata != undefined ){
@@ -5004,36 +4958,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                temp_step2_final_dataset_save[temp_ds_row_index].OPTM_KEY = main_item_key; 
               }
               
-              /* var sortitemkey1:any = "";
-              var sortitemkeyarray1:any = sub_item_key.split("-").sort((a, b) => a - b)
-              for (var isort in sortitemkeyarray1) {
-                if (sortitemkey1.length == 0) {
-                  sortitemkey1 = sortitemkeyarray1[isort]
-                } else {
-                  sortitemkey1 = sortitemkey1 + "-" + sortitemkeyarray1[isort]
-                }
-              } */
               if(sub_item_key!= "" && temp_ds_sub_model_row_index!=""){
                  temp_step2_final_dataset_save[temp_ds_sub_model_row_index].OPTM_KEY = this.sort_unique_item_key(sub_item_key);
               }
-             
-
-              /*   for (var isave in temp_step2_final_dataset_save) {
-                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE == 1 && temp_step2_final_dataset_save[isave].OPTM_KEY != "") {
-                  if (temp_step2_final_dataset_save[isave].UNIQUEIDNT == "Y") {
-                    if (sortitemkey.length == 0) {
-                      sortitemkey = temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
-                    } else {
-                      sortitemkey = sortitemkey + "-" + temp_step2_final_dataset_save[isave].OPTM_ITEMCODE
-                    }
-                  }
-
-                }
-              }
-               temp_step2_final_dataset_save[0].OPTM_KEY = sortitemkey.toString()
-               */
-
-             
 
               // itemkey = sortitemkey;
              
@@ -5056,30 +4983,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               // parent child item key and parent key new mapping - end 
-
-              /* for (var isave in temp_step2_final_dataset_save) {
-                if (temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE != 0 && temp_step2_final_dataset_save[isave].OPTM_ITEMTYPE != 3 && temp_step2_final_dataset_save[isave].OPTM_PARENTKEY == "") {
-                  temp_step2_final_dataset_save[isave].OPTM_PARENTKEY = itemkey
-                }
-              } */
-              /* var modelitemtype = temp_step2_final_dataset_save.filter(function (obj) {
-                return obj['OPTM_ITEMTYPE'] == 1
-              })
-
-              if (modelitemtype.length > 0) {
-                for (var imodelitemtypesave in modelitemtype) {
-                  var itemnumbersplitnumber = String(modelitemtype[imodelitemtypesave].OPTM_KEY).split("-")
-                  for (var isave in temp_step2_final_dataset_save) {
-                    if (itemnumbersplitnumber.length > 0) {
-                      for (var i in itemnumbersplitnumber) {
-                        if (itemnumbersplitnumber[i] == temp_step2_final_dataset_save[isave].OPTM_ITEMNUMBER) {
-                          temp_step2_final_dataset_save[isave].OPTM_PARENTKEY = modelitemtype[imodelitemtypesave].OPTM_KEY.toString()
-                        }
-                      }
-                    }
-                  }
-                }
-              } */
+             
 
               var iValueData = [];
               iValueData = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
