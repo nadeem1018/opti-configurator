@@ -2146,7 +2146,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                               this.ModelHeaderData.push({
                                 ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                                 IMAGEPATH: data.DataForSelectedFeatureModelItem[i].IMAGEPATH,
-                                OPTM_CHILDMODELID: "",
+                                OPTM_CHILDMODELID: 0,
                                 OPTM_COMPANYID: data.DataForSelectedFeatureModelItem[i].OPTM_COMPANYID,
                                 OPTM_CREATEDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_CREATEDATETIME,
                                 OPTM_CREATEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_CREATEDBY,
@@ -3432,8 +3432,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         var obj = this;
         // final data submission 
 
-        /*
-        this.showLookupLoader = true;
+        
+       /* this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -4538,7 +4538,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             if (this.step3_data_final[mj] !== undefined) {
               var step3_data_row = this.step3_data_final[mj];
               var imodelfilteritems = [];
-              var itemkeyforparentmodel = "";
+            //  var itemkeyforparentmodel = "";
               var temp_step2_final_dataset_save = [];
               var main_model_id = step3_data_row.model_id;
 
@@ -4577,10 +4577,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               var imodelfilteritems = [];
               var imodelData = [];
               var submodel_id  = "";
-             var is_sub_model = [];
+              var is_sub_model = [];
 
              is_sub_model = step3_data_row.ModelHeaderData.filter(function (obj) {
-               return  obj['OPTM_TYPE'] == 3
+               return  obj['OPTM_TYPE'] == 3 && step3_data_row.feature[ifeature].ModelId == obj['OPTM_CHILDMODELID']
               });
 
               if(is_sub_model.length > 0 && is_sub_model[0].OPTM_MODELID!= ""){
@@ -4593,7 +4593,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               } else if(submodel_id == step3_data_row.feature[ifeature].ModelId) {
                 master_model_id = submodel_id;
               }
-
 
               if (step3_data_row.feature[ifeature].Item == null || step3_data_row.feature[ifeature].Item == "" || step3_data_row.feature[ifeature].Item == undefined) {
                 var imodelfilterfeatures = [];
@@ -4642,7 +4641,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                
                 if (imodelfilteritems.length > 0) {
                   var featureitemlistfilterdata = [];
-                  itemkeyforparentmodel = "";
+                 //  itemkeyforparentmodel = "";
                   for (var i in imodelfilteritems) {
                     var itemtype;
                     if (step3_data_row.feature[ifeature].is_accessory == "Y") {
@@ -4652,7 +4651,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       itemtype = 2;
                     }
 
-                    if (itemkeyforparentmodel.length == 0) {
+                   /* if (itemkeyforparentmodel.length == 0) {
                       if (imodelfilteritems[i].OPTM_UNIQUEIDNT == "Y")
                         itemkeyforparentmodel = imodelfilteritems[i].DocEntry
 
@@ -4661,7 +4660,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       if (imodelfilteritems[i].OPTM_UNIQUEIDNT == "Y")
                         itemkeyforparentmodel = itemkeyforparentmodel + "-" + imodelfilteritems[i].DocEntry
 
-                    }
+                    }*/
 
                     featureitemlistfilterdata = step3_data_row.feature.filter(function (obj) {
                       return obj['Item'] == imodelfilteritems[i].OPTM_ITEMKEY && obj['ModelId'] == imodelfilteritems[i].OPTM_MODELID
@@ -4712,11 +4711,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     }
                   }
 
-                  for (var isave in temp_step2_final_dataset_save) {
+                  /*for (var isave in temp_step2_final_dataset_save) {
                     if (temp_step2_final_dataset_save[isave].PARENTID == imodelData[0].OPTM_MODELID && temp_step2_final_dataset_save[isave].OPTM_ITEMCODE == imodelData[0].child_code) {
                       temp_step2_final_dataset_save[isave].OPTM_KEY = itemkeyforparentmodel.toString()
                     }
-                  }
+                  }*/
 
                 }
 
@@ -4728,7 +4727,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_OUTPUTDTLID": "",
                   "OPTM_ITEMNUMBER": "",
                   "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME,
-                  "OPTM_KEY": itemkeyforparentmodel,
+                  //"OPTM_KEY": itemkeyforparentmodel,
+                  "OPTM_KEY":"",
                   "OPTM_PARENTKEY": "",
                   "OPTM_TEMPLATEID": imodelData[0].MODELTEMPLATEITEM,
                   "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
@@ -4878,7 +4878,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               // key generation array iteration  - start 
-              var modelitemtype = temp_step2_final_dataset_save.filter(function (obj) {
+             /* var modelitemtype = temp_step2_final_dataset_save.filter(function (obj) {
                 return obj['OPTM_ITEMTYPE'] == 1
               })
 
@@ -4886,10 +4886,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 for (var imodelitemtypesave in modelitemtype) {
                   var itemnumbersplitnumber = String(modelitemtype[imodelitemtypesave].OPTM_KEY).split("-")
                 }
-              }
+              }*/
 
                // parent child item key and parent key new mapping - start 
-               var main_item_key:any = "";
+
+              /* var main_item_key:any = "";
                var sub_item_key:any = "";
                var sub_model_item_code = "";
                var temp_ds_row_index:any = ""; var temp_ds_sub_model_row_index:any = ""
@@ -4960,8 +4961,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                  temp_step2_final_dataset_save[temp_ds_sub_model_row_index].OPTM_KEY = this.sort_unique_item_key(sub_item_key);
               }
 
-              // itemkey = sortitemkey;
-             
               if(main_modeldata.length > 0){
                 temp_step2_final_dataset_save = temp_step2_final_dataset_save.filter(function (obj) {
                   if(obj['temp_model_id'] == main_modeldata[0].temp_model_id && obj['OPTM_ITEMTYPE'] != 0){
@@ -4978,7 +4977,99 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   }
                   return obj;
                 })
+              }*/
+
+              var model_item_type_arr:any = ['0', '1'];
+              for(let model_item_type in model_item_type_arr){
+                var temp_model_dataa_row = temp_step2_final_dataset_save.filter(function (obj) {
+                  return obj['OPTM_ITEMTYPE'] == model_item_type
+                });
+
+                if(temp_model_dataa_row.length > 0 && temp_model_dataa_row!= undefined){
+                  for(var model_index in temp_model_dataa_row ){
+                    var model_curr_row:any = temp_model_dataa_row[model_index];
+                    var model_id:any = ''; var submodel_code:any = ''; var sub_model_tems:any = [];  
+                    if(model_item_type == '0'){
+                      model_id = model_curr_row['temp_model_id'];
+                      
+
+                    } else if(model_item_type == '1'){
+                      let sub_model_header_row:any = step3_data_row.ModelHeaderData.filter(function (obj) {
+                        return obj['OPTM_TYPE'] == 3 &&  obj['child_code'] == model_curr_row['OPTM_ITEMCODE']
+                      })  
+                      if(sub_model_header_row.length > 0 && sub_model_header_row != undefined && sub_model_header_row[0]!= undefined){
+                        model_id = sub_model_header_row[0]['OPTM_CHILDMODELID'];
+                        submodel_code = sub_model_header_row[0]['child_code'];
+                        
+                      }
+                    }
+                    if(model_id!= ""){
+
+                      let model_child_item_arr:any = temp_step2_final_dataset_save.filter(function (obj) {
+                        return obj['temp_model_id'] == model_id && obj.UNIQUEIDNT == 'Y' && obj.OPTM_ITEMTYPE != model_item_type
+                      });  
+
+                      var parent_item_key:any = "";
+                      var sub_item:any = "";
+                      for(var model_child_index in model_child_item_arr){
+                        var model_item_curr_row:any = model_child_item_arr[model_child_index];
+                        let push_item:any = '';
+                        if(model_item_curr_row['OPTM_ITEMNUMBER'] != "" && model_item_curr_row['OPTM_ITEMNUMBER'] != undefined){
+                          push_item = model_item_curr_row['OPTM_ITEMNUMBER'];
+                        } else {
+                          if(model_item_curr_row['OPTM_ITEMNUMBER'] == "" && model_item_curr_row['OPTM_ITEMTYPE']  == 1 ){
+                            if(model_item_curr_row['OPTM_ITEMCODE'] != ""){
+                              sub_item = step3_data_row.ModelHeaderData.filter(function (obj) {
+                                return obj['OPTM_TYPE'] == 3 &&  obj['child_code'] == model_item_curr_row['OPTM_ITEMCODE']
+                              })  
+                              if(sub_item.length  > 0){
+                               /* sub_model_tems = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                                  return obj['parentmodelid'] == sub_item[0]['OPTM_CHILDMODELID'];
+                                });*/
+                                 sub_model_tems = step3_data_row.feature.filter(function (obj) {
+                                  return obj['ModelId'] == sub_item[0]['OPTM_CHILDMODELID'];
+                                });
+                                if(sub_model_tems.length > 0){
+                                  push_item = model_item_curr_row['OPTM_ITEMCODE'];
+                                }
+                              }
+                            }
+                          }
+                        }
+
+                        // pushing string in key with a different and unique delimter as "-"  can be a part of sub model name
+                        if(parent_item_key != ""){
+                          parent_item_key = parent_item_key + '_::__::_'+ push_item;
+                        } else {
+                          parent_item_key = push_item;
+                        }
+                      } 
+
+                      parent_item_key = this.sort_unique_item_key(parent_item_key);
+                      
+                      temp_step2_final_dataset_save = temp_step2_final_dataset_save.filter(function(obj){
+                          if(obj['OPTM_ITEMTYPE'] == model_item_type && obj['temp_model_id'] == model_id){ // for main model entry
+                            obj['OPTM_KEY'] = parent_item_key
+                          }
+
+                          if(obj['OPTM_ITEMTYPE'] != 0  && obj['temp_model_id'] == model_id){ // for items of sub model and main model entry 
+                            obj['OPTM_PARENTKEY'] = parent_item_key
+                          }
+
+                          if(obj['OPTM_ITEMTYPE'] == 1 && model_item_type =='1'  && submodel_code ==  obj['OPTM_ITEMCODE']){ // for submodel header entry
+                            obj['OPTM_KEY'] = parent_item_key
+                          }
+
+                         return obj;
+                      });
+                    }
+                  }
+                }
+                console.log("temp_step2_final_dataset_save ", temp_step2_final_dataset_save);
+
+
               }
+
 
               // parent child item key and parent key new mapping - end 
              
@@ -5066,6 +5157,40 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
         sort_unique_item_key(item_key){
           var sortitemkey:any = "";
+          if(item_key.toString().indexOf("_::__::_") !== -1){
+            let sortitemkeyarray:any = item_key.split("_::__::_");
+            var number_key_arr = []; var string_key_arr = [];
+            for (let isort in sortitemkeyarray) {
+              if(sortitemkeyarray[isort]!= "" && sortitemkeyarray[isort]!= null && sortitemkeyarray[isort]!= undefined){
+                if(isNaN(sortitemkeyarray[isort]) == false ){
+                  number_key_arr.push(sortitemkeyarray[isort]);
+                } else {
+                  string_key_arr.push(sortitemkeyarray[isort]);
+                }
+              }
+            }
+            
+            if(number_key_arr.length > 0){
+              sortitemkey =  number_key_arr.sort((a, b) => a - b).join("-");
+            }
+
+            if(string_key_arr.length > 0){
+              let string_key = string_key_arr.sort((a, b) => a - b).join("-");
+              if (sortitemkey == "") {
+                sortitemkey = string_key
+              } else {
+                sortitemkey = sortitemkey + "-" + string_key
+              }
+            }
+          } else {
+            sortitemkey  = item_key;
+          }
+          return sortitemkey;
+        }
+
+
+       /* sort_unique_item_key(item_key){
+          var sortitemkey:any = "";
           if(item_key.toString().indexOf("-") !== -1){
             let sortitemkeyarray:any = item_key.split("-").sort((a, b) => a - b);
             for (let isort in sortitemkeyarray) {
@@ -5082,7 +5207,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
          
           return sortitemkey;
-        }
+        }*/
 
         //For getting final status this mehod will handle 
         getFinalBOMStatus() {
