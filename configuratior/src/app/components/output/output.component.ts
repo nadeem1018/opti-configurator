@@ -460,19 +460,19 @@ export class OutputComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           this.showLookupLoader = false;
 
-          /* if (data[0].ErrorMsg == "7001") {
+           if (data[0].ErrorMsg == "7001") {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
-          } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
+          } 
+          // if(data != undefined && data.LICDATA != undefined){
+          //   if (data.LICDATA[0].ErrorMsg == "7001") {
+          //     this.showLookupLoader = false;
+          //     this.CommonService.RemoveLoggedInUser().subscribe();
+          //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+          //     return;
+          //   }
+          // }
 
           this.serviceData = data;
         }
@@ -495,19 +495,19 @@ export class OutputComponent implements OnInit {
 
         if (data != undefined && data.length > 0) {
           // test
-         /*  if (data[0].ErrorMsg == "7001") {
+           if (data[0].ErrorMsg == "7001") {
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
-          } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
+          } 
+          // if(data != undefined && data.LICDATA != undefined){
+          //   if (data.LICDATA[0].ErrorMsg == "7001") {
+          //     this.showLookupLoader = false;
+          //     this.CommonService.RemoveLoggedInUser().subscribe();
+          //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+          //     return;
+          //   }
+          // }
         }
 
         if (data.CustomerOutput.length > 0) {
@@ -619,8 +619,8 @@ getSavedModelDatabyModelCodeAndId(saveddata) {
       data => {
         if (data != null && data != undefined) {
           if (data.length > 0) {
-            if(data.LICDATA != undefined){
-              if (data.LICDATA[0].ErrorMsg == "7001") {
+            if(data != undefined){
+              if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -876,20 +876,20 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
     this.OutputService.getFeatureList(this.step2_data.model_id).subscribe(
       data => {
         if (data.length > 0) {
-          /* if (data[0].ErrorMsg == "7001") {
+           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
-          } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
+          } 
+          // if(data != undefined && data.LICDATA != undefined){
+          //   if (data.LICDATA[0].ErrorMsg == "7001") {
+          //     this.showLookupLoader = false;
+          //     this.CommonService.RemoveLoggedInUser().subscribe();
+          //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+          //     return;
+          //   }
+          // }
           this.serviceData = data;
         }
         else {
@@ -910,20 +910,20 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
     this.OutputService.getCustomerLookupData(this.common_output_data.companyName).subscribe(
       data => {
         if (data.length > 0) {
-          /* if (data[0].ErrorMsg == "7001") {
+           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
-          } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
+          } 
+          // if(data != undefined && data.LICDATA != undefined){
+          //   if (data.LICDATA[0].ErrorMsg == "7001") {
+          //     this.showLookupLoader = false;
+          //     this.CommonService.RemoveLoggedInUser().subscribe();
+          //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+          //     return;
+          //   }
+          // }
           this.lookupfor = 'output_customer';
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -959,20 +959,20 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
       data => {
 
         if (data.length > 0) {
-          /* if (data[0].ErrorMsg == "7001") {
+           if (data[0].ErrorMsg == "7001") {
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
-          } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
-              this.showLookupLoader = false;
-              this.CommonService.RemoveLoggedInUser().subscribe();
-              this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-            }
-          }
+          } 
+          // if(data != undefined && data.LICDATA != undefined){
+          //   if (data.LICDATA[0].ErrorMsg == "7001") {
+          //     this.showLookupLoader = false;
+          //     this.CommonService.RemoveLoggedInUser().subscribe();
+          //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+          //     return;
+          //   }
+          // }
           this.lookupfor = 'ModelBomForWizard_lookup';
           this.showLookupLoader = false;
           this.serviceData = data;
@@ -1459,20 +1459,20 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
               var this_obj = this;
               if (data != null && data != undefined) {
                 if (data.length > 0) {
-                 /*  if (data[0].ErrorMsg == "7001") {
+                 if (data[0].ErrorMsg == "7001") {
                     this.showLookupLoader = false;
                     this.CommonService.RemoveLoggedInUser().subscribe();
                     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
-                  } */
-                  if(data != undefined && data.LICDATA != undefined){
-                    if (data.LICDATA[0].ErrorMsg == "7001") {
-                      this.showLookupLoader = false;
-                      this.CommonService.RemoveLoggedInUser().subscribe();
-                      this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                      return;
-                    }
-                  }
+                  } 
+                  // if(data != undefined && data.LICDATA != undefined){
+                  //   if (data.LICDATA[0].ErrorMsg == "7001") {
+                  //     this.showLookupLoader = false;
+                  //     this.CommonService.RemoveLoggedInUser().subscribe();
+                  //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+                  //     return;
+                  //   }
+                  // }
                 }
                 if (data.SubModelReadyToUse !== undefined) {
                   if (data.SubModelReadyToUse.length > 0) {
@@ -1852,19 +1852,19 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       data => {
         if (data != null && data != undefined) {
           if (data.length > 0) {
-            /* if (data[0].ErrorMsg == "7001") {
+             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
-            } */
-            if(data != undefined && data.LICDATA != undefined){
-              if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.showLookupLoader = false;
-                this.CommonService.RemoveLoggedInUser().subscribe();
-                this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                return;
-              }
-            }
+            } 
+            // if(data != undefined && data.LICDATA != undefined){
+            //   if (data.LICDATA[0].ErrorMsg == "7001") {
+            //     this.showLookupLoader = false;
+            //     this.CommonService.RemoveLoggedInUser().subscribe();
+            //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+            //     return;
+            //   }
+            // }
           }
 
           if (value == true) {
@@ -2897,20 +2897,20 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         data => {
           if (data != null && data != undefined) {
             if (data.length > 0) {
-              /* if (data[0].ErrorMsg == "7001") {
+               if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
-              } */
-              if(data != undefined && data.LICDATA != undefined){
-                if (data.LICDATA[0].ErrorMsg == "7001") {
-                  this.showLookupLoader = false;
-                  this.CommonService.RemoveLoggedInUser().subscribe();
-                  this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                  return;
-                }
-              }
+              } 
+              // if(data != undefined && data.LICDATA != undefined){
+              //   if (data.LICDATA[0].ErrorMsg == "7001") {
+              //     this.showLookupLoader = false;
+              //     this.CommonService.RemoveLoggedInUser().subscribe();
+              //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+              //     return;
+              //   }
+              // }
             }
             this.showLookupLoader = false;
             this.step1_data.ship_to_address = data.ShippingAdress[0].ShippingAdress;
@@ -2941,20 +2941,20 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         data => {
           if (data != null && data != undefined) {
             if (data.length > 0) {
-              /* if (data[0].ErrorMsg == "7001") {
+               if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
-              } */
-              if(data != undefined && data.LICDATA != undefined){
-                if (data.LICDATA[0].ErrorMsg == "7001") {
-                  this.showLookupLoader = false;
-                  this.CommonService.RemoveLoggedInUser().subscribe();
-                  this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                  return;
-                }
-              }
+              } 
+              // if(data != undefined && data.LICDATA != undefined){
+              //   if (data.LICDATA[0].ErrorMsg == "7001") {
+              //     this.showLookupLoader = false;
+              //     this.CommonService.RemoveLoggedInUser().subscribe();
+              //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+              //     return;
+              //   }
+              // }
             }
             if (data.BillingAdress[0] != undefined) {
               this.showLookupLoader = false;
@@ -2976,20 +2976,20 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
           if (data != undefined && data != null) {
             if (data.length > 0) {
-              /* if (data[0].ErrorMsg == "7001") {
+               if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
-              } */
-              if(data != undefined && data.LICDATA != undefined){
-                if (data.LICDATA[0].ErrorMsg == "7001") {
-                  this.showLookupLoader = false;
-                  this.CommonService.RemoveLoggedInUser().subscribe();
-                  this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                  return;
-                }
-              }
+              } 
+              // if(data != undefined && data.LICDATA != undefined){
+              //   if (data.LICDATA[0].ErrorMsg == "7001") {
+              //     this.showLookupLoader = false;
+              //     this.CommonService.RemoveLoggedInUser().subscribe();
+              //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+              //     return;
+              //   }
+              // }
             }
           }
 
@@ -3027,19 +3027,19 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         data => {
           if (data != null && data != undefined && data.length > 0) {
 
-            /* if (data[0].ErrorMsg == "7001") {
+             if (data[0].ErrorMsg == "7001") {
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
-            } */
-            if(data != undefined && data.LICDATA != undefined){
-              if (data.LICDATA[0].ErrorMsg == "7001") {
-                this.showLookupLoader = false;
-                this.CommonService.RemoveLoggedInUser().subscribe();
-                this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-                return;
-              }
-            }
+            } 
+            // if(data != undefined && data.LICDATA != undefined){
+            //   if (data.LICDATA[0].ErrorMsg == "7001") {
+            //     this.showLookupLoader = false;
+            //     this.CommonService.RemoveLoggedInUser().subscribe();
+            //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+            //     return;
+            //   }
+            // }
             this.step1_data.customer_name = data[0].Name;
           }
           else {
@@ -3446,8 +3446,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
-              if(data.length > 0 && data.LICDATA != undefined){
-                if (data.LICDATA[0].ErrorMsg == "7001") {
+              if(data.length > 0 && data != undefined){
+                if (data[0].ErrorMsg == "7001") {
                   this.showLookupLoader = false;
                   this.CommonService.RemoveLoggedInUser().subscribe();
                   this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -5106,8 +5106,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   } */
-                  if(data != undefined && data.LICDATA != undefined){
-                    if (data.LICDATA[0].ErrorMsg == "7001") {
+                  if(data != undefined && data != undefined){
+                    if (data[0].ErrorMsg == "7001") {
                       this.showLookupLoader = false;
                       this.CommonService.RemoveLoggedInUser().subscribe();
                       this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -5298,8 +5298,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                     return;
                   } */
-                  if(data != undefined && data.LICDATA != undefined){
-                    if (data.LICDATA[0].ErrorMsg == "7001") {
+                  if(data != undefined && data != undefined){
+                    if (data[0].ErrorMsg == "7001") {
                       this.showLookupLoader = false;
                       this.CommonService.RemoveLoggedInUser().subscribe();
                       this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -6473,8 +6473,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             } */
-            if(data != undefined && data.LICDATA != undefined){
-              if (data.LICDATA[0].ErrorMsg == "7001") {
+            if(data != undefined && data != undefined){
+              if (data[0].ErrorMsg == "7001") {
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -7111,8 +7111,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                  this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
                  return;
                } */
-               if(data != undefined && data.LICDATA != undefined){
-                if (data.LICDATA[0].ErrorMsg == "7001") {
+               if(data != undefined && data != undefined){
+                if (data[0].ErrorMsg == "7001") {
                   this.showLookupLoader = false;
                   this.CommonService.RemoveLoggedInUser().subscribe();
                   this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -7246,8 +7246,8 @@ fillShipAddress(ship_data, orig_data) {
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
           } */
-          if(data != undefined && data.LICDATA != undefined){
-            if (data.LICDATA[0].ErrorMsg == "7001") {
+          if(data != undefined && data != undefined){
+            if (data[0].ErrorMsg == "7001") {
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
