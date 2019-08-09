@@ -2047,16 +2047,23 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                         } */
                         this.FeatureBOMDataForSecondLevel.push({
                           ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
+                          ListName:data.DataForSelectedFeatureModelItem[i].ListName,
                           IMAGEPATH: this.commonData.get_current_url() + data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
                           DocEntry: data.DataForSelectedFeatureModelItem[i].DocEntry,
                           OPTM_ATTACHMENT: data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
                           OPTM_CHILDFEATUREID: data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID,
+                          CHILD_ACCESSORY:data.DataForSelectedFeatureModelItem[i].CHILD_ACCESSORY,
                           OPTM_COMPANYID: data.DataForSelectedFeatureModelItem[i].OPTM_COMPANYID,
                           OPTM_CREATEDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_CREATEDATETIME,
                           OPTM_CREATEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_CREATEDBY,
                           OPTM_DEFAULT: data.DataForSelectedFeatureModelItem[i].OPTM_DEFAULT,
                           OPTM_DISPLAYNAME: data.DataForSelectedFeatureModelItem[i].OPTM_DISPLAYNAME,
                           OPTM_FEATUREID: data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID,
+                          OPTM_ISMULTISELECT: data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT,
+                          OPTM_ISEXCLUDED: data.DataForSelectedFeatureModelItem[i].OPTM_ISEXCLUDED,
+                          OPTM_ISINCLUDED : data.DataForSelectedFeatureModelItem[i].OPTM_ISINCLUDED,
+                          OPTM_MIN_SELECTABLE:data.DataForSelectedFeatureModelItem[i].OPTM_MIN_SELECTABLE,
+                          OPTM_MAX_SELECTABLE:data.DataForSelectedFeatureModelItem[i].OPTM_MAX_SELECTABLE,
                           OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                           OPTM_LINENO: data.DataForSelectedFeatureModelItem[i].OPTM_LINENO,
                           OPTM_MODIFIEDBY: data.DataForSelectedFeatureModelItem[i].OPTM_MODIFIEDBY,
@@ -6081,7 +6088,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                           this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                         }*/
                       }
-                    }
+                    } 
                   }
                   else if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_TYPE == 2) {
                     if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_ITEMKEY == RuleOutputData[iItemRule].OPTM_ITEMKEY && this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR) {
