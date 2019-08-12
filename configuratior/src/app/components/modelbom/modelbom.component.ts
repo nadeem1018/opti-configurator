@@ -497,7 +497,7 @@ onDeleteRow(rowindex) {
                this.modelbom_data[i].propagate_qty = true;
                this.modelbom_data[i].mandatory = true;
                // this.mandatory_disabled = true;
-               this.modelbom_data[i].unique_identifer = false;
+               this.modelbom_data[i].unique_identifer = true;
                this.modelbom_data[i].mandatory_item_disabled = true;
 
              }
@@ -826,7 +826,7 @@ onDeleteRow(rowindex) {
                    this.modelbom_data[i].uom = data[0].InvUOM
                    this.modelbom_data[i].price_source = data[0].ListName;
                    this.modelbom_data[i].price_source_id = data[0].PriceListID;
-                   this.modelbom_data[i].unique_identifer =  false; 
+                   this.modelbom_data[i].unique_identifer =  true; 
                    this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex ,"branchType": 'item', "icon":'item'});
                  }
                }
@@ -856,7 +856,7 @@ onDeleteRow(rowindex) {
            this.modelbom_data[i].uom = selectedDataDetails[0].InvUOM
            this.modelbom_data[i].price_source = selectedDataDetails[0].ListName;
            this.modelbom_data[i].price_source_id = selectedDataDetails[0].PriceListID;
-           this.modelbom_data[i].unique_identifer = false;
+           this.modelbom_data[i].unique_identifer = true;
            this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex,"branchType": 'item', "icon":'item' });
          }
        }
@@ -1670,9 +1670,9 @@ onDeleteRow(rowindex) {
        save_data() {
          if (this.modelbom_data.length > 0) {
            let objDataset: any = {};
-           objDataset.ModelData = [];
-           objDataset.RuleData = [];
-           
+           objDataset.ModelData =[];
+            objDataset.RuleData = [];
+           var temp_model_data = new Array();
            this.modelbom_data[0].id = this.update_id;
 
            for (let i = 0; i < this.modelbom_data.length; ++i) {
@@ -1687,38 +1687,40 @@ onDeleteRow(rowindex) {
            /*if(this.validate_unique_identifier() == false){
              return;
            }*/
+            temp_model_data = this.modelbom_data;
+           console.log("modelbom data ", this.modelbom_data);
+           for (let i = 0; i < temp_model_data.length; ++i) {
+             if (temp_model_data[i].unique_identifer == false) {
+               temp_model_data[i].unique_identifer = "N"
+             }
+             else {
+               temp_model_data[i].unique_identifer = "Y"
+             }
+             if (temp_model_data[i].mandatory == false) {
+               temp_model_data[i].mandatory = "N"
+             }
+             else {
+               temp_model_data[i].mandatory = "Y"
+             }
+             if (temp_model_data[i].propagate_qty == false) {
+               temp_model_data[i].propagate_qty = "N"
+             }
+             else {
+               temp_model_data[i].propagate_qty = "Y"
+             }
+             if (temp_model_data[i].ReadyToUse == false) {
+               temp_model_data[i].ReadyToUse = "N"
+             }
+             else {
+               temp_model_data[i].ReadyToUse = "Y"
+             }
 
-           for (let i = 0; i < this.modelbom_data.length; ++i) {
-
-             if (this.modelbom_data[i].unique_identifer == false) {
-               this.modelbom_data[i].unique_identifer = "N"
-             }
-             else {
-               this.modelbom_data[i].unique_identifer = "Y"
-             }
-             if (this.modelbom_data[i].mandatory == false) {
-               this.modelbom_data[i].mandatory = "N"
-             }
-             else {
-               this.modelbom_data[i].mandatory = "Y"
-             }
-             if (this.modelbom_data[i].propagate_qty == false) {
-               this.modelbom_data[i].propagate_qty = "N"
-             }
-             else {
-               this.modelbom_data[i].propagate_qty = "Y"
-             }
-             if (this.modelbom_data[i].ReadyToUse == false) {
-               this.modelbom_data[i].ReadyToUse = "N"
-             }
-             else {
-               this.modelbom_data[i].ReadyToUse = "Y"
-             }
-
-             this.modelbom_data[i].type_value = this.modelbom_data[i].type_value.toString();
+             temp_model_data[i].type_value = temp_model_data[i].type_value.toString();
            }
 
-           objDataset.ModelData = this.modelbom_data;
+
+           console.log("temp_model_data ", temp_model_data);
+           objDataset.ModelData = temp_model_data;
            objDataset.RuleData = this.rule_data;
 
            this.service.SaveModelBom(objDataset).subscribe(

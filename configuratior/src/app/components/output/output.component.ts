@@ -4658,17 +4658,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       itemtype = 2;
                     }
 
-                   /* if (itemkeyforparentmodel.length == 0) {
-                      if (imodelfilteritems[i].OPTM_UNIQUEIDNT == "Y")
-                        itemkeyforparentmodel = imodelfilteritems[i].DocEntry
-
-                    }
-                    else {
-                      if (imodelfilteritems[i].OPTM_UNIQUEIDNT == "Y")
-                        itemkeyforparentmodel = itemkeyforparentmodel + "-" + imodelfilteritems[i].DocEntry
-
-                    }*/
-
                     featureitemlistfilterdata = step3_data_row.feature.filter(function (obj) {
                       return obj['Item'] == imodelfilteritems[i].OPTM_ITEMKEY && obj['ModelId'] == imodelfilteritems[i].OPTM_MODELID
                     })
@@ -4717,13 +4706,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       })
                     }
                   }
-
-                  /*for (var isave in temp_step2_final_dataset_save) {
-                    if (temp_step2_final_dataset_save[isave].PARENTID == imodelData[0].OPTM_MODELID && temp_step2_final_dataset_save[isave].OPTM_ITEMCODE == imodelData[0].child_code) {
-                      temp_step2_final_dataset_save[isave].OPTM_KEY = itemkeyforparentmodel.toString()
-                    }
-                  }*/
-
                 }
 
                 var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
@@ -4885,107 +4867,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
 
               // key generation array iteration  - start 
-             /* var modelitemtype = temp_step2_final_dataset_save.filter(function (obj) {
-                return obj['OPTM_ITEMTYPE'] == 1
-              })
-
-              if (modelitemtype.length > 0) {
-                for (var imodelitemtypesave in modelitemtype) {
-                  var itemnumbersplitnumber = String(modelitemtype[imodelitemtypesave].OPTM_KEY).split("-")
-                }
-              }*/
-
-               // parent child item key and parent key new mapping - start 
-
-              /* var main_item_key:any = "";
-               var sub_item_key:any = "";
-               var sub_model_item_code = "";
-               var temp_ds_row_index:any = ""; var temp_ds_sub_model_row_index:any = ""
-               var main_modeldata = temp_step2_final_dataset_save.filter(function (obj) {
-                return obj['OPTM_ITEMTYPE'] == 0
-              })
-
-              var sub_modeldata = step3_data_row.ModelHeaderData.filter(function (obj) {
-                return obj['OPTM_TYPE'] == 3
-              })
-
-              var sub_modeldata_key = temp_step2_final_dataset_save.filter(function (obj) {
-                return obj['OPTM_ITEMTYPE'] == 1
-              })
-
-              for(let temp_fin_ds_i in temp_step2_final_dataset_save ){
-                let current_row = temp_step2_final_dataset_save[temp_fin_ds_i];
-                if(current_row.UNIQUEIDNT == "Y" && current_row.OPTM_ITEMTYPE != 3){
-                  if(current_row['OPTM_ITEMTYPE'] == 0){
-                    temp_ds_row_index = temp_fin_ds_i;
-                  }
-  
-                  if(current_row['OPTM_ITEMTYPE'] == 1){
-                    temp_ds_sub_model_row_index = temp_fin_ds_i;
-                  }
-                  
-                  if(current_row['temp_model_id'] == main_modeldata[0].temp_model_id && current_row['OPTM_ITEMTYPE'] != 0){
-                    if(main_item_key != ""){
-                      main_item_key = main_item_key  + "-" +  current_row['OPTM_ITEMNUMBER'];
-                    } else {
-                      main_item_key = current_row['OPTM_ITEMNUMBER'];
-                    }
-                  }
-    
-                  if(sub_modeldata.length > 0 && sub_modeldata != undefined ){
-                    if(current_row['temp_model_id'] == sub_modeldata[0].OPTM_CHILDMODELID){
-                      if(sub_item_key != ""){
-                        sub_item_key = sub_item_key  + "-" + current_row['OPTM_ITEMNUMBER'];
-                      } else {
-                        sub_item_key = current_row['OPTM_ITEMNUMBER'];
-                      }
-                    }
-                  }
-                  
-  
-                  if(current_row['OPTM_ITEMTYPE'] == 1){
-                    sub_model_item_code =  current_row['OPTM_ITEMCODE'];
-                  }  
-                }
-              }
-
-              main_item_key = this.sort_unique_item_key(main_item_key);
-              // include sub-model key in main-model item key - start 
-              if(sub_modeldata.length > 0 && sub_modeldata != undefined ){
-                let temp_sub_model_tems:any = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                  return obj['parentmodelid'] == sub_modeldata[0].OPTM_CHILDMODELID;
-                })
-                if(sub_model_item_code!="" && temp_sub_model_tems.length > 0 ){
-                  main_item_key  = main_item_key + "-"+ sub_model_item_code;
-                }
-              }
-               // include sub-model key in main-model item key - end 
-              if(temp_ds_row_index != ""){
-               temp_step2_final_dataset_save[temp_ds_row_index].OPTM_KEY = main_item_key; 
-              }
-              
-              if(sub_item_key!= "" && temp_ds_sub_model_row_index!=""){
-                 temp_step2_final_dataset_save[temp_ds_sub_model_row_index].OPTM_KEY = this.sort_unique_item_key(sub_item_key);
-              }
-
-              if(main_modeldata.length > 0){
-                temp_step2_final_dataset_save = temp_step2_final_dataset_save.filter(function (obj) {
-                  if(obj['temp_model_id'] == main_modeldata[0].temp_model_id && obj['OPTM_ITEMTYPE'] != 0){
-                    obj['OPTM_PARENTKEY'] = main_modeldata[0].OPTM_KEY;
-                  }
-                  return obj;
-                })
-              } 
-
-              if(sub_modeldata.length > 0){
-                temp_step2_final_dataset_save = temp_step2_final_dataset_save.filter(function (obj) {
-                  if(obj['temp_model_id'] == sub_modeldata[0].OPTM_CHILDMODELID){
-                    obj['OPTM_PARENTKEY'] = sub_modeldata_key[0].OPTM_KEY;
-                  }
-                  return obj;
-                })
-              }*/
-
               var model_item_type_arr:any = ['0', '1'];
               for(let model_item_type in model_item_type_arr){
                 var temp_model_dataa_row = temp_step2_final_dataset_save.filter(function (obj) {
@@ -5164,8 +5045,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
         sort_unique_item_key(item_key){
           var sortitemkey:any = "";
-          if(item_key.toString().indexOf("_::__::_") !== -1){
-            let sortitemkeyarray:any = item_key.split("_::__::_");
+          var seperator = "_::__::_";
+          // var key_delimeter = "-";
+          var key_delimeter = "#";
+          if(item_key.toString().indexOf(seperator) !== -1){
+            let sortitemkeyarray:any = item_key.split(seperator);
             var number_key_arr = []; var string_key_arr = [];
             for (let isort in sortitemkeyarray) {
               if(sortitemkeyarray[isort]!= "" && sortitemkeyarray[isort]!= null && sortitemkeyarray[isort]!= undefined){
@@ -5178,15 +5062,15 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
             
             if(number_key_arr.length > 0){
-              sortitemkey =  number_key_arr.sort((a, b) => a - b).join("-");
+              sortitemkey =  number_key_arr.sort((a, b) => a - b).join(key_delimeter);
             }
 
             if(string_key_arr.length > 0){
-              let string_key = string_key_arr.sort((a, b) => a - b).join("-");
+              let string_key = string_key_arr.sort((a, b) => a - b).join(key_delimeter);
               if (sortitemkey == "") {
                 sortitemkey = string_key
               } else {
-                sortitemkey = sortitemkey + "-" + string_key
+                sortitemkey = sortitemkey + key_delimeter + string_key
               }
             }
           } else {
@@ -5195,26 +5079,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           return sortitemkey;
         }
 
-
-       /* sort_unique_item_key(item_key){
-          var sortitemkey:any = "";
-          if(item_key.toString().indexOf("-") !== -1){
-            let sortitemkeyarray:any = item_key.split("-").sort((a, b) => a - b);
-            for (let isort in sortitemkeyarray) {
-              if(sortitemkeyarray[isort]!= "" && sortitemkeyarray[isort]!= null && sortitemkeyarray[isort]!= undefined){
-                if (sortitemkey.length == 0) {
-                  sortitemkey = sortitemkeyarray[isort]
-                } else {
-                  sortitemkey = sortitemkey + "-" + sortitemkeyarray[isort]
-                }
-              }
-            }
-          } else {
-            sortitemkey  = item_key;
-          }
-         
-          return sortitemkey;
-        }*/
 
         //For getting final status this mehod will handle 
         getFinalBOMStatus() {

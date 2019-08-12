@@ -228,7 +228,7 @@
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
                       <input type="checkbox" class="custom-control-input pull-right position-absolute" id="propagate_qtye_{{dataItem.rowindex}}"
                         value={{dataItem.propagate_qty}} (change)="on_propagate_qty_change(propagate_qty,dataItem.rowindex)"
-                        [(checked)]=dataItem.propagate_qty #propagate_qty title="{{dataItem.propagate_qty}}" style="margin-top: 5px;" />
+                        [(checked)]="dataItem.propagate_qty" #propagate_qty title="{{dataItem.propagate_qty}}" style="margin-top: 5px;" />
                       <label class="custom-control-label" for="propagate_qtye_{{dataItem.rowindex}}"></label>
                     </div>
 
@@ -268,7 +268,7 @@
                   <ng-template kendoGridCellTemplate let-dataItem>
                     <div class="custom-control custom-checkbox custom-control-inline mr-auto ml-auto d-table position-relative">
                       <input type="checkbox" class="custom-control-input position-absolute" id="unique_identifer_{{dataItem.rowindex}}"
-                        [disabled]="dataItem.isAccessory || dataItem.type == '2' " value={{dataItem.unique_identifer}} [(checked)]=dataItem.unique_identifer (change)="on_unique_identifer_change(unique_identifer,dataItem.rowindex)"
+                        [disabled]="dataItem.isAccessory || dataItem.type == '2' " value={{dataItem.unique_identifer}} [(checked)]="dataItem.unique_identifer" (change)="on_unique_identifer_change(unique_identifer,dataItem.rowindex)"
                         title="{{dataItem.unique_identifer}}" #unique_identifer style="margin-top: 5px;" />
                       <label class="custom-control-label" for="unique_identifer_{{dataItem.rowindex}}"></label>
                     </div>

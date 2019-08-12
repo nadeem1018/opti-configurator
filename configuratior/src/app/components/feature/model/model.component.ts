@@ -204,6 +204,7 @@ export class ModelComponent implements OnInit {
         })
     }
   }
+
   ngAfterViewInit() {
 
     if (this.codekey === "" || this.codekey === null) {
@@ -211,6 +212,13 @@ export class ModelComponent implements OnInit {
     }
     else {
       this._ele.nativeElement.focus();
+    }
+  }
+
+  validate_special_char(code){
+    if(code !== "" && this.commonData.excludeSpecialCharRegex.test(code) === true) {
+      this.featureBom.Code = "";
+      this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
     }
   }
 

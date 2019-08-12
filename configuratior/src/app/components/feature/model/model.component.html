@@ -45,7 +45,7 @@
                             {{model_code_label}}</label>
                             <div class="col-sm-5">
                                 <input type="text" id="codeID" name="codeName" maxlength="50" [disabled]="code_disabled" class="form-control  form-control-sm mt3" placeholder="{{model_code_label}}"
-                                [(ngModel)]="featureBom.Code" title="{{featureBom.Code}}" #inputBox>
+                                [(ngModel)]="featureBom.Code" title="{{featureBom.Code}}" #inputBox (change)="validate_special_char(featureBom.Code)">
                             </div>
                         </div>
                         <div class="form-group row clearfix">
