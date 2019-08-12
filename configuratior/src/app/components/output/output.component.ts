@@ -3440,7 +3440,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         // final data submission 
 
         
-       /* this.showLookupLoader = true;
+        this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -3481,7 +3481,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-          )*/
+          )
       }
 
       colSpanValue(e) {
