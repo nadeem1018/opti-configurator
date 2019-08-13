@@ -172,7 +172,6 @@ export class OutputComponent implements OnInit {
   public step0_isNextButtonVisible: boolean = false;
   public setModelDataFlag: boolean = false;
   public defaultitemflagid: any;
-  public ModelInModelArray: any = [];
   public ModelLookupFlag = false
   public cDate = new Date();
   public AccessModel: any = [];
@@ -788,7 +787,6 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
       return obj['OPTM_TYPE'] == "3"
     });
 
-    this.ModelInModelArray = ModelArray
 
     /* this.setModelDataInGrid(ModelArray, this.ModelBOMDataForSecondLevel); */
     this.setModelDataInGridForSavedData(ModelArray, this.ModelBOMDataForSecondLevel,data.Savedgetmodelsavedata);
@@ -935,7 +933,6 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
       )
 
   }
-
 
   onContactPersonChange(contact) {
     this.person = contact;
@@ -1089,11 +1086,6 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
               var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
                 return obj['OPTM_FEATUREID'] == tempfeatureid
               })
-              /* if (modelheaderpropagatechecked.length == 0) {
-                modelheaderpropagatechecked = this.ModelInModelArray.filter(function (obj) {
-                  return obj['OPTM_CHILDMODELID'] == tempfeatureid
-                })
-              } */
               if (modelheaderpropagatechecked.length == 0 && this.feature_itm_list_table[i].Item != "") {
                 var itemkey = this.feature_itm_list_table[i].Item
                 modelheaderpropagatechecked = this.ModelHeaderItemsArray.filter(function (obj) {
@@ -1546,7 +1538,6 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 this.ModelHeaderItemsArray = data.ModelHeaderData.filter(function (obj) {
                   return obj['OPTM_TYPE'] == "2"
                 })
-                // this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel
                 this.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
                   return obj['ACCESSORY'] != "Y"
                 });
@@ -1588,8 +1579,6 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 ModelArray = data.ModelHeaderData.filter(function (obj) {
                   return obj['OPTM_TYPE'] == "3"
                 });
-
-                this.ModelInModelArray = ModelArray
 
                 this.setModelDataInGrid(ModelArray, this.ModelBOMDataForSecondLevel);
 
@@ -3513,12 +3502,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         this.getFinalBOMStatus();
       }
 
-      tree_view_expand_collapse() {
-        let laguage = this.language;
-        // $(document).find('.tree li:has(ul)').addClass('parent_li').find('span.parent_span').find("i.fa").addClass("fa-plus");
-      }
-
-
   check_component_exist(component, level) {
         level = (parseInt(level) + 1);
         let data = this.tree_data_json.filter(function (obj) {
@@ -4977,6 +4960,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         setModelDataInGrid(ModelData, ModelItems) {
+          // this function sets Sub-Model Header & Items data in right grid.
           var isExist;
           let isPriceDisabled: boolean = true;
           let isPricehide: boolean = true;
@@ -5218,6 +5202,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         setModelItemsDataInGrid(ModelItemsData) {
+          //this function sets Items data of Model Header in right grid.
           var isExist;
           let isPriceDisabled: boolean = true;
           let isPricehide: boolean = true;
