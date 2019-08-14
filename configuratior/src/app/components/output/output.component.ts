@@ -666,7 +666,7 @@ getSavedModelDatabyModelCodeAndId(saveddata) {
 }
 
 GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
-
+// This function returns all data for Multi Model in Modify Existing/Duplicate/View Operation. 
   this.showLookupLoader = true;
   if (data != null && data != undefined) {
     if (data.DeafultWarehouse !== undefined && data.DeafultWarehouse[0] !== undefined) {
@@ -1634,6 +1634,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 }
 
 onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
+  // this function sets/removes data from right grid on selection/de-selection.
   let type = feature_model_data.OPTM_TYPE
   let modelid;
   let featureid;
@@ -1675,6 +1676,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
   else {
     parentfeatureid = feature_model_data.OPTM_FEATUREID
   }*/
+  parentfeatureid = "";
   if (feature_model_data.OPTM_FEATUREID != undefined && feature_model_data.OPTM_FEATUREID != null && feature_model_data.OPTM_FEATUREID != "") {
     parentfeatureid = feature_model_data.OPTM_FEATUREID;
   }
@@ -1837,14 +1839,14 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
             } 
-            // if(data != undefined && data.LICDATA != undefined){
-            //   if (data.LICDATA[0].ErrorMsg == "7001") {
-            //     this.showLookupLoader = false;
-            //     this.CommonService.RemoveLoggedInUser().subscribe();
-            //     this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
-            //     return;
-            //   }
-            // }
+            /* if(data != undefined && data.LICDATA != undefined){
+              if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.showLookupLoader = false;
+                this.CommonService.RemoveLoggedInUser().subscribe();
+                this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
+                return;
+              }
+            } */
           }
 
           if (value == true) {
@@ -4598,6 +4600,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         get_feature_elements(header_feature_table, feature_child_datatable, model_child_datatable) {
+          //This function is used to render feature & model data with their respective BOM in left grid.
           var array = [];
           if (header_feature_table['OPTM_TYPE'] == "1" && header_feature_table['ACCESSORY'] != "Y" && header_feature_table['is_second_level'] == null) {
             array = feature_child_datatable.filter(function (obj) {
@@ -4633,6 +4636,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         get_accessory_element(accessory_header_data, accessory_bom_data) {
+          // This function is used to render Accessory data in left grid.
           let accessoryBOM = [];
           accessoryBOM = accessory_bom_data.filter(function (obj) {
             return obj['nodeid'] == accessory_header_data.unique_key;
@@ -4641,6 +4645,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         getAccessoryData(Accarray) {
+          // This function is used to render Accessory Header data in right grid.
           let checkedacc = false;
           var isAccExist;
           for (let iaccss = 0; iaccss < Accarray.length; iaccss++) {
@@ -4674,6 +4679,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         onAccessorySelectionChange(value, rowData, accessory_header_data) {
+          // This function sets Accessory selections in right grid.
           this.showLookupLoader = true;
           let parentfeatureid = rowData.parentfeatureid;
           let superfeatureid = "";
@@ -4738,7 +4744,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 }
                 else {
                   for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-                    //if (this.feature_itm_list_table[i].FeatureId == rowData.OPTM_FEATUREID && this.feature_itm_list_table[i].Item == rowData.OPTM_ITEMKEY) {
                       if (this.feature_itm_list_table[i].nodeid == rowData.nodeid && this.feature_itm_list_table[i].unique_key == rowData.unique_key) {
                         this.feature_itm_list_table.splice(i, 1);
                         i = i - 1;
@@ -4761,6 +4766,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
         setItemDataForFeatureAccessory(ItemData, parentArray, current_row_accessory, saved_data_from_dtl) {
+          // This Feature sets Accessory items data in right grid on Selection change.
           let isPriceDisabled: boolean = false;
           let isPricehide: boolean = false;
           if (ItemData.length > 0) {
@@ -4910,6 +4916,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
 
         getDefaultItems(DefaultData) {
+          //This function will set default item data in right grid.
           let isPriceDisabled: boolean = true;
           let isPricehide: boolean = true;
 
