@@ -2292,7 +2292,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             element_class: "custom-control custom-radio",
                             element_type: "radio",
                             parentfeatureid: parentfeatureid,
-                            parentmodelid: parentmodelid,
+                            parentmodelid: data.DataForSelectedFeatureModelItem[i].parent_modelid,
                             HEADER_LINENO: parentarray[0].OPTM_LINENO,
                             random_unique_key: this.commonData.random_string(50),
                             nodeid: data.DataForSelectedFeatureModelItem[i].nodeid,
@@ -2300,6 +2300,11 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                           });
                         }
                       }
+                      this.ModelBOMDataForSecondLevel.filter(function(obj){
+                        if(obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) {
+                          return obj['checked'] = false;
+                        }
+                      })
                     }
                     this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                   }
@@ -2815,7 +2820,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
 
-        if (isExist.length == 0) {
+        if (isExist.length == 0 /* && (ItemData[0].OPTM_VALUE == null || ItemData[0].OPTM_VALUE == undefined || ItemData[0].OPTM_VALUE == "") */ ){
           this.feature_itm_list_table.push({
             FeatureId: ItemData[0].OPTM_FEATUREID,
             featureName: tempfeaturecode,
@@ -2832,8 +2837,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
             // ModelId: ItemData[0].OPTM_MODELID,
-            ModelId: tempModelID,
+            ModelId: (tempModelID).toString(),
             OPTM_LEVEL: parentarray[0].OPTM_LEVEL,
+            OPTM_TYPE:ItemData[0].OPTM_TYPE,
             isQuantityDisabled: true,
             HEADER_LINENO: lineno,
             parent_featureid: ItemData[0].parent_featureid,
@@ -4983,6 +4989,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: this.step2_data.model_id,
                 OPTM_LEVEL: 1,
+                OPTM_TYPE:DefaultData[idefault].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: DefaultData[idefault].HEADER_LINENO,
                 parent_featureid: DefaultData[idefault].parent_featureid,
@@ -5151,6 +5158,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: ModelData[imodelarray].OPTM_MODELID,
                 OPTM_LEVEL: 1,
+                OPTM_TYPE:ModelData[imodelarray].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
                 OPTM_ITEMTYPE: 1,
@@ -5219,6 +5227,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   pricehide: isPricehide,
                   ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
                   OPTM_LEVEL: 2,
+                  OPTM_TYPE:ModelItemsArray[imodelItemsarray].OPTM_TYPE,
                   isQuantityDisabled: true,
                   HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
                   nodeid:nodeid,
@@ -5276,6 +5285,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: ModelItemsData[imodelarray].OPTM_MODELID,
                 OPTM_LEVEL: 1,
+                OPTM_TYPE:ModelItemsData[imodelarray].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: ModelItemsData[imodelarray].OPTM_LINENO,
                 nodeid: ModelItemsData[imodelarray].unique_key,
@@ -5356,6 +5366,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: tempmodelid,
                 OPTM_LEVEL: 2,
+                OPTM_TYPE:DefaultData[idefault].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: DefaultData[idefault].HEADER_LINENO,
                 unique_key: unqiue_key,
@@ -5988,6 +5999,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               pricehide: isPricehide,
               ModelId: filtemodeldataheader[0].OPTM_MODELID,
               OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+              OPTM_TYPE:getmodelsavedata[imodelsavedata].OPTM_TYPE,
               isQuantityDisabled: true,
               HEADER_LINENO: parseFloat(imodelsavedata) + 1
             });
@@ -6027,6 +6039,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: ModelItemsArray[0].OPTM_MODELID,
                 OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+                OPTM_TYPE:getmodelsavedata[imodelsavedata].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: parseFloat(imodelsavedata) + 1
               });
@@ -6082,6 +6095,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 pricehide: isPricehide,
                 ModelId: ItemsArray[0].OPTM_MODELID,
                 OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
+                OPTM_TYPE:getmodelsavedata[imodelsavedata].OPTM_TYPE,
                 isQuantityDisabled: true,
                 HEADER_LINENO: parseFloat(imodelsavedata) + 1
               });
