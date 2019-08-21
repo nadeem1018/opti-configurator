@@ -46,13 +46,13 @@ export class HomeComponent implements OnInit {
     this.commonData.checkSession();
 
     const element = document.getElementsByTagName("body")[0];
-    element.className = "";
+    // element.className = "";
     this.showLoader = true;
     this.detectDevice();
     element.classList.add("home-view-model");
     element.classList.add("opti_body-main-module");
-    element.classList.add('sidebar-toggled');
-    document.getElementById("opti_sidebar").classList.add('toggled');
+    // element.classList.add('sidebar-toggled');
+    // document.getElementById("opti_sidebar").classList.add('toggled');
 
     //this.router.navigateByUrl('/item-code-generation/view');
   }

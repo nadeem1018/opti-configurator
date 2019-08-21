@@ -213,10 +213,10 @@ export class OutputComponent implements OnInit {
     //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
     //this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
-    element.className = '';
+    // // element.className = '';
     this.detectDevice();
-    element.classList.add('sidebar-toggled');
-    document.getElementById("opti_sidebar").classList.add('toggled');
+    // element.classList.add('sidebar-toggled');
+    // document.getElementById("opti_sidebar").classList.add('toggled');
     let d = new Date();
     this.min = new Date(d.setDate(d.getDate() - 1));
     this.submit_date = (this.currentDate.getFullYear()) + '/' + (this.currentDate.getMonth() + 1) + '/' + this.currentDate.getDate();
@@ -3430,7 +3430,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         // final data submission 
 
         
-        this.showLookupLoader = true;
+       /* this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -3471,7 +3471,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-          )
+          )*/
       }
 
       colSpanValue(e) {
@@ -4071,7 +4071,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               if (step3_data_row.feature[ifeature].Item == null || step3_data_row.feature[ifeature].Item == "" || step3_data_row.feature[ifeature].Item == undefined) {
                 var imodelfilterfeatures = [];
 
-                var tempfeatureid = step3_data_row.feature[ifeature].FeatureId
+
+                var tempfeatureid = step3_data_row.feature[ifeature].FeatureId;
+
+                if(tempfeatureid == "0" || tempfeatureid == 0){
+                   tempfeatureid = null;
+                }
+                console.log(tempfeatureid);
               
                 imodelData = step3_data_row.ModelHeaderData.filter(function (obj) {
                   return obj['OPTM_CHILDMODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 3
@@ -4175,6 +4181,8 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   }
                 }
 
+               if(imodelData.length > 0 && imodelData!= undefined ){
+
                 var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
                 formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
@@ -4208,6 +4216,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": imodelData[0].OPTM_MODELID
                 })
+               }
 
               }
               else {

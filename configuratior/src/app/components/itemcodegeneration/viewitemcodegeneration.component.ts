@@ -125,13 +125,13 @@ export class ViewItemCodeGenerationComponent implements OnInit {
 
 
     const element = document.getElementsByTagName("body")[0];
-    element.className = "";
+    // element.className = "";
     this.showLoader = true;
     this.detectDevice();
-    element.classList.add("add_item-code-view-model");
-    element.classList.add("opti_body-main-module");
-    element.classList.add('sidebar-toggled');
-    document.getElementById("opti_sidebar").classList.add('toggled');
+  //  element.classList.add("add_item-code-view-model");
+   // element.classList.add("opti_body-main-module");
+    // element.classList.add('sidebar-toggled');
+    // document.getElementById("opti_sidebar").classList.add('toggled');
     this.page_main_title = 
     this.commonData.checkSession();
     this.companyName = sessionStorage.getItem('selectedComp');

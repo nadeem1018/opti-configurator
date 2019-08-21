@@ -139,12 +139,12 @@ export class ViewModelBomComponent implements OnInit {
     ngOnInit() {
         this.showLoader = true;
         const element = document.getElementsByTagName("body")[0];
-        element.className = "";
+        // element.className = "";
         this.detectDevice();
-        element.classList.add("app_model-bom-view-model");
-        element.classList.add("opti_body-main-module");
-        element.classList.add('sidebar-toggled');
-        document.getElementById("opti_sidebar").classList.add('toggled');
+      //  element.classList.add("app_model-bom-view-model");
+      //  element.classList.add("opti_body-main-module");
+        // element.classList.add('sidebar-toggled');
+        // document.getElementById("opti_sidebar").classList.add('toggled');
 
         this.commonData.checkSession();
         this.companyName = sessionStorage.getItem('selectedComp');
