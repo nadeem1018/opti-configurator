@@ -1612,7 +1612,24 @@ validation(btnpress) {
 
 
     //This will recurse the tree
-    get_childrens(componentNumber) {
+    get_childrens(unique_key) {
+      let data = this.complete_dataset.filter(function (obj) {
+        return obj['node_id'] == unique_key;
+      });
+      return data;
+    }
+
+    check_component_exist(unique_key, level) {
+      level = (parseInt(level) + 1);
+      let data = [];
+      if (unique_key != "" && unique_key != null && unique_key != undefined) {
+        data = this.tree_data_json.filter(function (obj) {
+          return obj['node_id'] == unique_key; //  && obj['level'] == level;
+        });
+      }
+      return data;
+    }
+    /* get_childrens(componentNumber) {
       let data = this.complete_dataset.filter(function (obj) {
         return obj['parentNumber'] == componentNumber;
       });
@@ -1628,7 +1645,7 @@ validation(btnpress) {
         });
       }
       return data;
-    }
+    } */
 
     toggleTree(e) {
       let element = document.getElementById('right-tree-section');
