@@ -6,35 +6,35 @@ import * as $ from 'jquery';
     selector: 'treeview',
     template: `
      <ul>
-        <li class="treeview_li" *ngFor="let inner_element of tree_data_json; let i= index;">  
+        <li class="treeview_li" *ngFor="let innerelement of tree_data_json; let i= index;">  
             <ng-template #template>
                 <div class="modal-body text-center image-previe-container">
-                    <img [attr.src]="inner_element.modalImage"  style="max-width:100%">
+                    <img [attr.src]="innerelement.modalImage"  style="max-width:100%">
                 </div>
             </ng-template>
             <ng-template #popTemplate>
                 <div class="text-center">
-                  <img *ngIf="!inner_element.modalImage==''" [attr.src]="inner_element.modalImage" height="100" (click)="openModal(template)">
-                  <div *ngIf="inner_element.modalImage=='' || inner_element.modalImage== undefined " class="no-img-msg">No Image Found</div>
+                  <img *ngIf="!innerelement.modalImage==''" [attr.src]="innerelement.modalImage" height="100" (click)="openModal(template)">
+                  <div *ngIf="innerelement.modalImage=='' || innerelement.modalImage== undefined " class="no-img-msg">No Image Found</div>
                 </div>
               </ng-template>
             <span 
             [popover]="popTemplate"
             container="body"
             [outsideClick]="true"            
-              popoverTitle="{{inner_element.component}}"
+              popoverTitle="{{innerelement.component}}"
               placement="left"
               triggers="" #pop="bs-popover"> 
-              <span #btn (click)="childExpand(btn)" class="expand-btn" *ngIf="get_childrens(inner_element.componentNumber, inner_element.level).length > 0"></span>
+              <span #btn (click)="childExpand(btn)" class="expand-btn" *ngIf="get_childrens(innerelement.unique_key, innerelement.level).length > 0"></span>
               
-              <span [attr.data-branchtype]="inner_element.branchType" (click)="pop.toggle()">{{inner_element.component}}</span>
+              <span [attr.data-branchtype]="innerelement.branchType" (click)="pop.toggle()">{{innerelement.component}}</span>
 
-              <ng-container *ngIf="inner_element.branchType !='operation' && inner_element.component!=''">
-                  <span class="opration-type" *ngIf="inner_element.branchType !='value' && inner_element.operation_no !=''">{{inner_element.operation_no}}</span>
+              <ng-container *ngIf="innerelement.branchType !='operation' && innerelement.component!=''">
+                  <span class="opration-type" *ngIf="innerelement.branchType !='value' && innerelement.operation_no !=''">{{innerelement.operation_no}}</span>
               </ng-container>
-              <span class="opration-type" *ngIf="inner_element.branchType =='operation' && inner_element.operation_no != '' ">{{inner_element.operation_no}}</span>
+              <span class="opration-type" *ngIf="innerelement.branchType =='operation' && innerelement.operation_no != '' ">{{innerelement.operation_no}}</span>
             </span>
-            <treeview #tree style="display:none" [tree_data_json]="get_childrens(inner_element.componentNumber, inner_element.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(inner_element.componentNumber, inner_element.level).length > 0"></treeview>
+            <treeview #tree style="display:none" [tree_data_json]="get_childrens(innerelement.unique_key, innerelement.level)" [complete_dataset]="complete_dataset" *ngIf="get_childrens(innerelement.unique_key, innerelement.level).length > 0"></treeview>
 
     </ul>
     `,
@@ -67,12 +67,12 @@ export class TreeViewComponent {
         })
     }
 
-    get_childrens(componentNumber, current_level) {
+    get_childrens(unique_key, current_level) {
         var next_level = (parseInt(current_level) + 1);
         let data = [];
-        if (componentNumber != "" && componentNumber != null && componentNumber != undefined) {
+        if (unique_key != "" && unique_key != null && unique_key != undefined) {
             data = this.complete_dataset.filter(function (obj) {
-                return obj['parentNumber'] == componentNumber; //  && obj.level == next_level;
+                return obj['node_id'] == unique_key; //  && obj.level == next_level;
             });
         }
         return data;
