@@ -799,8 +799,29 @@ export class LookupComponent implements OnInit {
         width: '100',
         attrType: 'text'
       },
-
       ];
+
+      if (this.serviceData !== undefined ) {
+        if(this.serviceData[0]!= undefined && this.serviceData[0].Accessory !== undefined){
+          var objj = this;
+          var language = this.language;
+          this.serviceData = this.serviceData.filter(function(obj){
+            if(obj.Accessory == 'N'){
+              obj.Accessory = language.NO;
+            } else if(obj.Accessory == 'Y'){
+             obj.Accessory = language.YES;
+            }
+            return obj;
+          });
+          this.table_head.push({
+          field: 'Accessory',
+          title: this.language.Model_Accessory,
+          type: 'text',
+          width: '100',
+          attrType: 'text'
+          });
+        }
+      }
 
       this.table_head_hidden_elements = [true, false, false];
       this.width_value = ((100 / this.table_head.length) + '%');
