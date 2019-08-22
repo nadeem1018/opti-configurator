@@ -2101,7 +2101,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             } else {
                               parentarray[0].element_type = "checkbox"
                             }
-                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,parentArrayElemType);
+                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,parentArrayElemType,false);
                           }
                           else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                             isExist = this.ModelHeaderData.filter(function (obj) {
@@ -2310,11 +2310,11 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                   }
                   let selectedModelData = [];
                   selectedModelData.push(feature_model_data);
-                  this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType);
+                  this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false);
                 }
-                /* else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
-                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType);
-                } */
+                else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
+                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,true);
+                }
                 else if (type == 2) {
                   if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
                     if (data.DataForSelectedFeatureModelItem[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2325,7 +2325,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                     }
 
                   }
-                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType);
+                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false);
                   this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
                 }
 
@@ -2565,7 +2565,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           temp_feature_code = tempparentarray[0].feature_code;
         }
         
-        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type);
+        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type,false);
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
@@ -2730,7 +2730,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
     }
 
-    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno,type,parentArrayElemType) {
+    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno,type,parentArrayElemType,isValue) {
       let isPriceDisabled: boolean = true;
       let isPricehide: boolean = true;
       let currentfeaturerow: any = [];
@@ -2744,7 +2744,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               this.remove_all_features_child(parentarray[0].unique_key,parentarray);
           } else if (parentarray[0].OPTM_TYPE == 3) {
             for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-              if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid) {
+              if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid && this.feature_itm_list_table[i].OPTM_TYPE != 2) {
                 currentfeaturerow = this.feature_itm_list_table[i];
                 this.feature_itm_list_table.splice(i, 1);
                 i = i - 1;
@@ -2820,7 +2820,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
 
 
-        if (isExist.length == 0 /* && (ItemData[0].OPTM_VALUE == null || ItemData[0].OPTM_VALUE == undefined || ItemData[0].OPTM_VALUE == "") */ ){
+        if (isExist.length == 0 && !isValue){
           this.feature_itm_list_table.push({
             FeatureId: ItemData[0].OPTM_FEATUREID,
             featureName: tempfeaturecode,
