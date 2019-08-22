@@ -120,14 +120,14 @@ export class BomComponent implements OnInit {
   ngOnInit() {
 
     const element = document.getElementsByTagName('body')[0];
-    element.className = '';
+    // // element.className = '';
     this.selectableSettings = {
       mode: 'single'
     };
     this.detectDevice();
     element.classList.add('add-feature-bom');
-    element.classList.add('sidebar-toggled');
-    document.getElementById("opti_sidebar").classList.add('toggled');
+    // element.classList.add('sidebar-toggled');
+    // document.getElementById("opti_sidebar").classList.add('toggled');
     
 
     this.commonData.checkSession();
