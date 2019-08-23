@@ -4077,30 +4077,29 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               if (step3_data_row.feature[ifeature].Item == null || step3_data_row.feature[ifeature].Item == "" || step3_data_row.feature[ifeature].Item == undefined) {
                 var imodelfilterfeatures = [];
 
-
-                var tempfeatureid = step3_data_row.feature[ifeature].FeatureId;
-
-                if(tempfeatureid == "0" || tempfeatureid == 0){
-                   tempfeatureid = null;
+               if(step3_data_row.feature[ifeature].FeatureId == "0" || step3_data_row.feature[ifeature].FeatureId == 0){
+                   step3_data_row.feature[ifeature].FeatureId = null;
                 }
-                console.log(tempfeatureid);
+                var temp_child_model_id = step3_data_row.feature[ifeature].FeatureId;
+               /* var tempmodelid = step3_data_row.feature[ifeature].ModelId;
+                console.log(temp_child_model_id);*/
               
                 imodelData = step3_data_row.ModelHeaderData.filter(function (obj) {
-                  return obj['OPTM_CHILDMODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 3
+                  return obj['OPTM_CHILDMODELID'] == temp_child_model_id && obj['OPTM_TYPE'] == 3
                 });
 
                 imodelfilteritems = step3_data_row.ModelBOMDataForSecondLevel.filter(function (obj) {
-                  return obj['OPTM_MODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 2
+                  return obj['OPTM_MODELID'] == temp_child_model_id && obj['OPTM_TYPE'] == 2
                 });
 
                 imodelfilterfeatures = step3_data_row.ModelBOMDataForSecondLevel.filter(function (obj) {
-                  return obj['OPTM_MODELID'] == tempfeatureid && obj['OPTM_TYPE'] == 1
+                  return obj['OPTM_MODELID'] == temp_child_model_id && obj['OPTM_TYPE'] == 1
                 })
 
                 var matchmodelitemarray = [];
 
                 matchmodelitemarray = step3_data_row.feature.filter(function (obj) {
-                  return obj['ModelId'] == tempfeatureid
+                  return obj['ModelId'] == 0
                 })
 
                 if (matchmodelitemarray.length > 0) {
@@ -4187,7 +4186,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   }
                 }
 
-               if(imodelData.length > 0 && imodelData!= undefined ){
+             //  if(imodelData.length > 0 && imodelData!= undefined ){
 
                 var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
                 formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
@@ -4222,7 +4221,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": imodelData[0].OPTM_MODELID
                 })
-               }
+            //   }
 
               }
               else {
