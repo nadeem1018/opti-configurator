@@ -2101,7 +2101,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             } else {
                               parentarray[0].element_type = "checkbox"
                             }
-                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,parentArrayElemType,false);
+                            this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,parentArrayElemType,false,feature_model_data);
                           }
                           else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
                             isExist = this.ModelHeaderData.filter(function (obj) {
@@ -2310,13 +2310,13 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       } else {
                         featureCode = parentarray[0].child_code
                       }
-                      this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, featureCode, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false);
+                      this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, featureCode, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);
                     }
                     this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                   }
                 }
                 else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
-                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,true);
+                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,true,feature_model_data);
                 }
                 else if (type == 2) {
                   if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2328,7 +2328,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                     }
 
                   }
-                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false);
+                  this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);
                   this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
                 }
 
@@ -2568,7 +2568,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           temp_feature_code = tempparentarray[0].feature_code;
         }
         
-        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type,false);
+        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type,false,"");
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
@@ -2733,7 +2733,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
     }
 
-    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno,type,parentArrayElemType,isValue) {
+    setItemDataForFeature(ItemData, parentarray, propagateqtychecked, propagateqty, tempfeaturecode, lineno,type,parentArrayElemType,isValue,featureModelData) {
       let isPriceDisabled: boolean = true;
       let isPricehide: boolean = true;
       let currentfeaturerow: any = [];
@@ -2779,18 +2779,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid;
             });
-          } else if(ItemData[0].OPTM_TYPE == 2) {
+          } else {
             isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY ;
             });
           }
-          
         }
         else {
           isExist = this.feature_itm_list_table.filter(function (obj) {
             return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
           });
         }
+
         if (ItemData[0].Price == null || ItemData[0].Price == undefined || ItemData[0].Price == "") {
           ItemData[0].Price = 0;
         }
@@ -2808,34 +2808,46 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
         var priceextn: any = formatequantity * ItemData[0].Price
         var tempModelID
-        if (parentarray[0].parentmodelid != this.step2_data.model_id) {
-          if (parentarray[0].parentmodelid !== undefined && parentarray[0].parentmodelid !== null) {
-            tempModelID = parentarray[0].parentmodelid;
-          } else {
-            if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
-              tempModelID = currentfeaturerow.ModelId;
+        if(parentarray[0].OPTM_TYPE == 3) {
+          tempModelID = ItemData[0].OPTM_MODELID
+        } else {
+          if (parentarray[0].parentmodelid != this.step2_data.model_id) {
+            if (parentarray[0].parentmodelid !== undefined && parentarray[0].parentmodelid !== null) {
+              tempModelID = parentarray[0].parentmodelid;
             } else {
-              tempModelID = this.step2_data.model_id;
+              if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
+                tempModelID = currentfeaturerow.ModelId;
+              } else {
+                tempModelID = this.step2_data.model_id;
+              }
             }
           }
-        }
-        else {
-          if (parentarray[0].OPTM_MODELID != undefined && parentarray[0].OPTM_MODELID != null) {
-            tempModelID = parentarray[0].OPTM_MODELID;
-          } else {
-            if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
-              tempModelID = currentfeaturerow.ModelId;
+          else {
+            if (parentarray[0].OPTM_MODELID != undefined && parentarray[0].OPTM_MODELID != null) {
+              tempModelID = parentarray[0].OPTM_MODELID;
             } else {
-              tempModelID = this.step2_data.model_id;
+              if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
+                tempModelID = currentfeaturerow.ModelId;
+              } else {
+                tempModelID = this.step2_data.model_id;
+              }
             }
           }
 
         }
+        
+
         let featureId = "";
-        if(ItemData[0].OPTM_TYPE == 3) {
-          featureId = ItemData[0].OPTM_CHILDMODELID
+        let description = "";
+        /* let nodeId = "" */
+        if(parentarray[0].OPTM_TYPE == 3) {
+          featureId = ItemData[0].OPTM_MODELID
+          description = featureModelData.child_code
+          /* nodeId = featureModelData.nodeid */
         } else {
           featureId = ItemData[0].OPTM_FEATUREID
+          description = ItemData[0].OPTM_DISPLAYNAME
+          /* nodeId = ItemData[0].nodeid */
         }
 
 
@@ -2846,7 +2858,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             Item: ItemData[0].OPTM_ITEMKEY,
             discount:0,
             ItemNumber: ItemData[0].DocEntry,
-            Description: ItemData[0].OPTM_DISPLAYNAME,
+            Description: description,
             quantity: parseFloat(formatequantity).toFixed(3),
             original_quantity: parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3),
             price: ItemData[0].ListName,
