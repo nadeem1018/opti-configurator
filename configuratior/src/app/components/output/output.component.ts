@@ -2569,7 +2569,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           temp_feature_code = tempparentarray[0].feature_code;
         }
         
-        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, tempparentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,input_type,false,"");
+        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, temp_feature_code, parentarray[0].HEADER_LINENO,type,input_type,false,"");
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
