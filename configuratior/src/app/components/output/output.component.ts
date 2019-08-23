@@ -3449,7 +3449,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         // final data submission 
 
         
-       /* this.showLookupLoader = true;
+        this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -3490,7 +3490,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-          )*/
+          )
       }
 
       colSpanValue(e) {
@@ -4405,21 +4405,34 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                 return obj['OPTM_TYPE'] == 3 &&  obj['child_code'] == model_item_curr_row['OPTM_ITEMCODE']
                               })  
                               if(sub_item.length  > 0){
-                               /* sub_model_tems = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                                  return obj['parentmodelid'] == sub_item[0]['OPTM_CHILDMODELID'];
-                                });*/
-                                 sub_model_tems = step3_data_row.feature.filter(function (obj) {
+                                sub_model_tems = step3_data_row.feature.filter(function (obj) {
                                   return obj['ModelId'] == sub_item[0]['OPTM_CHILDMODELID'];
                                 });
                                 if(sub_model_tems.length > 0){
                                   push_item = model_item_curr_row['OPTM_ITEMCODE'];
+                                } else {
+                                  let has_sub_submodel = step3_data_row.ModelHeaderData.filter(function (obj) {
+                                    return obj['OPTM_TYPE'] == 3 &&  obj['parentmodelid'] == sub_item[0]['OPTM_CHILDMODELID'];
+                                  }) 
+
+                                  if(has_sub_submodel.length > 0){
+                                    let has_sub_submodel_hdr = step3_data_row.ModelHeaderData.filter(function (obj) {
+                                      return obj['parentmodelid'] == has_sub_submodel[0]['OPTM_CHILDMODELID']
+                                    });
+
+                                    if(has_sub_submodel_hdr.length > 0){
+                                      push_item = model_item_curr_row['OPTM_ITEMCODE'];
+                                    }
+                                  }
+
                                 }
-                              }
+                              } 
+
                             }
                           }
                         }
 
-                        // pushing string in key with a different and unique delimter as "-"  can be a part of sub model name
+                        // pushing string in key with a different and unique delimter as "_::__::_"  can be a part of sub model name
                         if(parent_item_key != ""){
                           parent_item_key = parent_item_key + '_::__::_'+ push_item;
                         } else {
