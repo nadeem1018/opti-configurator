@@ -2735,17 +2735,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
     }
 
     removeAllSubmodelChild(uniqueKey,featureModelData) {
+      //this function removes sub-model & thieir respective childs from right grid.
       let all_child_of_selected_submodel = [];
       let isSubModelExist:boolean = true;
       let subModelData = [];
       all_child_of_selected_submodel = this.ModelBOMDataForSecondLevel.filter(function(obj) {
         return obj.nodeid == uniqueKey;
       });
-      if(featureModelData.OPTM_LEVEL == 3) {
+      /* if(featureModelData.OPTM_LEVEL == 3) {
         isSubModelExist = false
       } else {
         isSubModelExist = true
-      }
+      } */
 
       if(all_child_of_selected_submodel.length > 0){
         for(let i=0; i< all_child_of_selected_submodel.length; i++){
@@ -2753,15 +2754,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           for(let j=0; j< this.feature_itm_list_table.length; j++){
             if(selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid && featureModelData.unique_key != this.feature_itm_list_table[j].unique_key){
               let currentRow =  this.feature_itm_list_table[j];
-              /* subModelData = this.ModelHeaderData.filter(function(obj){
-                return obj.unique_key == currentRow.nodeid
-              }) */
-              /* if(subModelData.length > 0) {
-                isSubModelExist = false;
-              } else {
-                isSubModelExist = true;
-              } */
-
               if(currentRow.OPTM_ITEMTYPE == undefined &&  currentRow.OPTM_ITEMTYPE == null) {
                 if(isSubModelExist){
                   this.feature_itm_list_table.splice(j, 1);
@@ -5177,6 +5169,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   pricehide: isPricehide,
                   ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
                   OPTM_LEVEL: 2,
+                  OPTM_ITEMTYPE: 1,
                   OPTM_TYPE:ModelItemsArray[imodelItemsarray].OPTM_TYPE,
                   isQuantityDisabled: true,
                   HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
@@ -6490,7 +6483,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
            itemp = itemp - 1
 
            for (var itemp2 = 0; itemp2 < this.FeatureBOMDataForSecondLevel.length; itemp2++) {
-             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].parentfeatureid == tempfeatureidmodelheader) {
+             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID == tempfeatureidmodelheader) {
                if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "1") {
                  tempchildfeatureidmodelheader = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID
                  this.FeatureBOMDataForSecondLevel.splice(itemp2, 1)
