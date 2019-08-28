@@ -2216,8 +2216,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: this.ModelHeaderData.length + 1,
                       OPTM_MANDATORY: "N",
-                      OPTM_MAXSELECTABLE: "1",
-                      OPTM_MINSELECTABLE: "1",
+                      OPTM_MAXSELECTABLE: feature_model_data.OPTM_MAXSELECTABLE,
+                      OPTM_MINSELECTABLE: feature_model_data.OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
                       OPTM_MODIFIEDBY: feature_model_data.OPTM_MODIFIEDBY,
                       OPTM_MODIFIEDDATETIME: String(feature_model_data.OPTM_MODIFIEDDATETIME).toString(),
@@ -2325,6 +2325,16 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       propagateqtychecked = "Y"
                       parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                       propagateqty = parentarray[0].OPTM_QUANTITY * data.DataForSelectedFeatureModelItem[0].OPTM_QUANTITY
+
+                      let ModelHeaderPropogateQuantityChecked = [];
+                      ModelHeaderPropogateQuantityChecked = this.ModelHeaderData.filter(function(obj){
+                        return obj.unique_key == parentarray[0].nodeid
+                      })
+                      if(ModelHeaderPropogateQuantityChecked.length > 0) {
+                        if(ModelHeaderPropogateQuantityChecked[0].OPTM_PROPOGATEQTY == "Y") {
+                          propagateqty = propagateqty * ModelHeaderPropogateQuantityChecked[0].OPTM_QUANTITY;
+                        }
+                      }
 
                     }
 
@@ -2735,17 +2745,18 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
     }
 
     removeAllSubmodelChild(uniqueKey,featureModelData) {
+      //this function removes sub-model & thieir respective childs from right grid.
       let all_child_of_selected_submodel = [];
       let isSubModelExist:boolean = true;
       let subModelData = [];
       all_child_of_selected_submodel = this.ModelBOMDataForSecondLevel.filter(function(obj) {
         return obj.nodeid == uniqueKey;
       });
-      if(featureModelData.OPTM_LEVEL == 3) {
+      /* if(featureModelData.OPTM_LEVEL == 3) {
         isSubModelExist = false
       } else {
         isSubModelExist = true
-      }
+      } */
 
       if(all_child_of_selected_submodel.length > 0){
         for(let i=0; i< all_child_of_selected_submodel.length; i++){
@@ -2753,15 +2764,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           for(let j=0; j< this.feature_itm_list_table.length; j++){
             if(selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid && featureModelData.unique_key != this.feature_itm_list_table[j].unique_key){
               let currentRow =  this.feature_itm_list_table[j];
-              /* subModelData = this.ModelHeaderData.filter(function(obj){
-                return obj.unique_key == currentRow.nodeid
-              }) */
-              /* if(subModelData.length > 0) {
-                isSubModelExist = false;
-              } else {
-                isSubModelExist = true;
-              } */
-
               if(currentRow.OPTM_ITEMTYPE == undefined &&  currentRow.OPTM_ITEMTYPE == null) {
                 if(isSubModelExist){
                   this.feature_itm_list_table.splice(j, 1);
@@ -2812,16 +2814,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           });
         }
         else if (parentarray[0].OPTM_TYPE == 3) {
-          /* if(ItemData[0].OPTM_PARENTMODELID != null && ItemData[0].OPTM_PARENTMODELID != "") {
-            isExist = this.feature_itm_list_table.filter(function (obj) {
-              return obj['ModelId'] == ItemData[0].OPTM_PARENTMODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY ;
-            });
-          } else {
-            isExist = this.feature_itm_list_table.filter(function (obj) {
-              return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY ;
-            });
-          } */
-
           if(ItemData[0].OPTM_TYPE == 2) {
             isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY ;
@@ -2889,12 +2881,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         /* let nodeId = "" */
         if(parentarray[0].OPTM_TYPE == 3) {
           featureId = ItemData[0].OPTM_MODELID
-          description = featureModelData.child_code
-          /* nodeId = featureModelData.nodeid */
+          if(ItemData[0].OPTM_TYPE != 2) {
+            description = featureModelData.child_code  
+          } else {
+            description = ItemData[0].OPTM_DISPLAYNAME
+          }
         } else {
           featureId = ItemData[0].OPTM_FEATUREID
           description = ItemData[0].OPTM_DISPLAYNAME
-          /* nodeId = ItemData[0].nodeid */
         }
 
 
@@ -5169,6 +5163,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   pricehide: isPricehide,
                   ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
                   OPTM_LEVEL: 2,
+                  OPTM_ITEMTYPE: 1,
                   OPTM_TYPE:ModelItemsArray[imodelItemsarray].OPTM_TYPE,
                   isQuantityDisabled: true,
                   HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
@@ -6482,7 +6477,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
            itemp = itemp - 1
 
            for (var itemp2 = 0; itemp2 < this.FeatureBOMDataForSecondLevel.length; itemp2++) {
-             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].parentfeatureid == tempfeatureidmodelheader) {
+             if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID == tempfeatureidmodelheader) {
                if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "1") {
                  tempchildfeatureidmodelheader = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID
                  this.FeatureBOMDataForSecondLevel.splice(itemp2, 1)
@@ -6602,7 +6597,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                  this.removeModelfeaturesbyuncheck(tempchildfeatureidmodelheader, tempchildfeaturecodemodelheader, tempNodeId, temp_unique_key)
                }
                else if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "2") {
-                 tempfeatureidforfeaturebom = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID
                  tempNodeId = this.FeatureBOMDataForSecondLevel[itemp2].nodeid
                  itemkey = this.FeatureBOMDataForSecondLevel[itemp2].OPTM_ITEMKEY
                  this.FeatureBOMDataForSecondLevel.splice(itemp2, 1)
@@ -6621,11 +6615,37 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
              }
            }
 
+           for (let index = 0; index < this.ModelBOMDataForSecondLevel.length; index++) {
+              if (this.ModelBOMDataForSecondLevel[index].nodeid == tempchildfeatuniqueKey) {
+                  let tempParentModelId;
+                  let tempFeatureCode;
+                  let tempNodeId;
+                  let tempUniqueKey;
+
+                  tempParentModelId = this.ModelBOMDataForSecondLevel[index].parentmodelid
+                  tempFeatureCode = this.ModelBOMDataForSecondLevel[index].feature_code
+                  tempNodeId = this.ModelBOMDataForSecondLevel[index].nodeid
+                  tempUniqueKey = this.ModelBOMDataForSecondLevel[index].unique_key
+                  this.ModelBOMDataForSecondLevel.splice(index, 1)
+                  index = index - 1
+                  for(let featureListIndex = 0; featureListIndex < this.feature_itm_list_table.length; featureListIndex++){
+                    let tempIdForFeatureList = "";
+                    if(this.feature_itm_list_table[featureListIndex].OPTM_TYPE == 3) {
+                      tempIdForFeatureList = this.feature_itm_list_table[featureListIndex].unique_key;
+                    } else {
+                      tempIdForFeatureList = this.feature_itm_list_table[featureListIndex].nodeid;
+                    }
+                    if(tempIdForFeatureList == tempchildfeatuniqueKey) {
+                      this.feature_itm_list_table.splice(featureListIndex,1);
+                      featureListIndex = featureListIndex -1;
+                    }
+                  }
+                  this.removeModelfeaturesbyuncheck(tempParentModelId, tempFeatureCode, tempNodeId, tempUniqueKey)
+              }
+          }
 
          }
-
        }
-
 
      }
 
