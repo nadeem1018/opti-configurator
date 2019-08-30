@@ -5607,17 +5607,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                                 if(feature_model_data.OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR && feature_model_data.element_type == "checkbox"){
                                                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                                                 }
-                                                else if (feature_model_data.element_type == "radio") {
+                                                else if (feature_model_data.OPTM_FEATUREID == RuleOutputData[iItemRule].OPTM_APPLICABLEFOR && feature_model_data.element_type == "radio") {
                                                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                                                 }
                                               }
-                                            } else {
-                                               /* if(RuleOutputData[iItemRule].OPTM_DEFAULT == "True" && RuleOutputData[iItemRule].OPTM_APPLICABLEFOR == feature_model_data.OPTM_FEATUREID) {
-                                                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
-                                                } else {
-                                                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                                }*/
-                                                  
                                             }
 
                                           }
