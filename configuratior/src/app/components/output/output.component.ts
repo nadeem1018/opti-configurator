@@ -2020,15 +2020,6 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       }
 
                       if (isExist.length == 0) {
-                        /* let uniqueKey = '';
-                        let nodeId = '';
-                        if(data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
-                            uniqueKey = feature_model_data.unique_key;
-                            nodeId = feature_model_data.unique_key;
-                        } else if( data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2) {
-                            uniqueKey = data.DataForSelectedFeatureModelItem[i].unique_key;
-                            nodeId = data.DataForSelectedFeatureModelItem[i].nodeid;
-                        } */
                         this.FeatureBOMDataForSecondLevel.push({
                           ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                           ListName:data.DataForSelectedFeatureModelItem[i].ListName,
@@ -2101,6 +2092,9 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             } else {
                               parentarray[0].element_type = "checkbox"
                             }
+
+                            propagateqty = propagateqty * this.getPropagateQuantity(parentarray[0].nodeid);
+                            
                             this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].HEADER_LINENO,type,parentArrayElemType,false,feature_model_data);
                           }
                           else if (data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 1) {
@@ -2313,7 +2307,20 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       } else {
                         featureCode = parentarray[0].child_code
                       }
-                      this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, featureCode, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);
+                      let propagateQtyForitem = 1;
+                      if(data.DataForSelectedFeatureModelItem[i].OPTM_TYPE != 2) {
+                        propagateqty = propagateqty * this.getPropagateQuantity(parentarray[0].unique_key);
+                      } else {
+                          if(data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY == "Y") {
+                            propagateQtyForitem = propagateQtyForitem * this.getPropagateQuantity(data.DataForSelectedFeatureModelItem[i].nodeid);
+                          }
+                      }
+                      
+                      if(data.DataForSelectedFeatureModelItem[i].OPTM_TYPE != 2) {
+                        this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateqty, featureCode, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);  
+                      } else {
+                        this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateQtyForitem, featureCode, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);
+                      }
                     }
                     this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                   }
@@ -2328,16 +2335,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                       propagateqty = parentarray[0].OPTM_QUANTITY * data.DataForSelectedFeatureModelItem[0].OPTM_QUANTITY
 
-                      let ModelHeaderPropogateQuantityChecked = [];
-                      ModelHeaderPropogateQuantityChecked = this.ModelHeaderData.filter(function(obj){
-                        return obj.unique_key == parentarray[0].nodeid
-                      })
-                      if(ModelHeaderPropogateQuantityChecked.length > 0) {
-                        if(ModelHeaderPropogateQuantityChecked[0].OPTM_PROPOGATEQTY == "Y") {
-                          propagateqty = propagateqty * ModelHeaderPropogateQuantityChecked[0].OPTM_QUANTITY;
-                        }
-                      }
-
+                      propagateqty = propagateqty * this.getPropagateQuantity(parentarray[0].nodeid);
                     }
 
                   }
@@ -2395,31 +2393,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                 }
               }
               this.enableFeatureModelsItems();
-
-              /*var isRuleApplied = true;
-              this.enableFeatureModelsItems();
-              var RuleAppliedForFeature = this.ModelBOMRules.filter(function(obj) {
-                return obj['OPTM_FEATURE'] == feature_model_data.OPTM_FEATUREID;
-              })
-              console.log('RuleAppliedForFeature:',isRuleApplied);
-              var ruleAppliedForApplicableFeature = this.ModelBOMRules.filter(function(obj) {
-                return obj['OPTM_APPLICABLEFOR'] == feature_model_data.OPTM_FEATUREID;
-              })
-              console.log('ruleAppliedForApplicableFeature:',ruleAppliedForApplicableFeature);
-              var count = RuleAppliedForFeature.length + ruleAppliedForApplicableFeature.length;
-              console.log('count:',count);
-              if(count > 0) {
-                isRuleApplied = true
-              } else {
-                isRuleApplied = false;
-              }
-*/
-              /*if(isRuleApplied){
-                this.RuleIntegration(data.RuleOutputData, value,feature_model_data);
-              }*/
-
               this.RuleIntegration(data.RuleOutputData, value,feature_model_data);
-              
               this.feature_price_calculate();
               this.showLookupLoader = false;
             }
@@ -2460,6 +2434,27 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
 this.feature_price_calculate();
 
 } //end selection
+
+getPropagateQuantity(nodeId) {
+  //Logic to calculate total quantity based on propagate quantity for an item at different level in Model tree.
+  let FilteredModelHeaderData = [];
+  let quantity = 1 ;
+  FilteredModelHeaderData = this.ModelHeaderData.filter(function(obj){
+    return obj.unique_key == nodeId
+  })
+  if(FilteredModelHeaderData.length > 0) {
+    if(FilteredModelHeaderData[0].OPTM_PROPOGATEQTY == "Y") {
+      quantity = quantity * FilteredModelHeaderData[0].OPTM_QUANTITY;
+    }
+    if(FilteredModelHeaderData[0].nodeid != undefined && FilteredModelHeaderData[0].nodeid != null) {
+      return quantity * this.getPropagateQuantity(FilteredModelHeaderData[0].nodeid);
+    } else {
+      return quantity;  
+    }
+  } else {
+    return quantity;
+  }
+}
 
 setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureModelItem, feature_model_data, parentmodelid, parentarray, propagateqtychecked, data,type) {
   for (var idtfeature in dtFeatureDataWithDefault) {
@@ -2555,9 +2550,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
     }
 
     if (dtFeatureDataWithDefault[idtfeature].OPTM_DEFAULT == "Y" && dtFeatureDataWithDefault[idtfeature].OPTM_TYPE == "2") {
-      // parentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-        //   return obj['OPTM_CHILDFEATUREID'] == data.dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID
-        // });
         var tempparentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['OPTM_CHILDFEATUREID'] == dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID && obj['unique_key'] == dtFeatureDataWithDefault[idtfeature].nodeid;
         });
@@ -2580,7 +2572,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         } else {
           temp_feature_code = tempparentarray[0].feature_code;
         }
-        
+
+        propagateqty = propagateqty * this.getPropagateQuantity(parentarray[0].nodeid);
+      
         this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, temp_feature_code, parentarray[0].HEADER_LINENO,type,input_type,false,"");
       }
     }
@@ -2845,7 +2839,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
         else {
           ItemData[0].OPTM_QUANTITY = parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3)
-          formatequantity = ItemData[0].OPTM_QUANTITY
+          formatequantity = ItemData[0].OPTM_QUANTITY * propagateqty
         }
         var priceextn: any = formatequantity * ItemData[0].Price
         var tempModelID
@@ -5180,7 +5174,22 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               });
 
               ModelItemsArray[imodelItemsarray].OPTM_QUANTITY = parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3)
-              var formatequantity: any = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity
+
+              var formatequantity: any = 1;
+              let filteredModelHeaderData = [];
+              filteredModelHeaderData = ModelData.filter(function(obj){
+                return obj.unique_key == ModelItemsArray[imodelItemsarray].nodeid
+              })
+              if(filteredModelHeaderData.length > 0) {
+                if(filteredModelHeaderData[0].OPTM_PROPOGATEQTY == "Y") {
+                  formatequantity = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * filteredModelHeaderData[0].OPTM_QUANTITY;  
+                } else {
+                  formatequantity = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity;  
+                } 
+              } else {
+                formatequantity = ModelItemsArray[imodelItemsarray].OPTM_QUANTITY * this.step2_data.quantity;  
+              }
+
               var priceextn: any = formatequantity * ModelItemsArray[imodelItemsarray].Price
               if (isExist.length == 0) {
                 this.feature_itm_list_table.push({
