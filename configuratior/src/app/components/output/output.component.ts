@@ -1548,6 +1548,14 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                     return obj['element_type'] = 'radio';
                   }
                 });
+                data.FeatureBOMDataForSecondLevel.filter(function(obj){
+                  if(obj['OPTM_ISMULTISELECT']  == "Y") {
+                    return obj['element_type'] = 'checkbox';
+                  } else {
+                    return obj['element_type'] = 'radio';
+                  }
+                });
+
                 this.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
                   if (obj['child_accessory'] != null && obj['child_accessory'] != "") {
                     return obj['ACCESSORY'] != "Y" && obj['child_accessory'] != "Y";
@@ -4774,15 +4782,22 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
 
 
-          if (header_feature_table['OPTM_MAXSELECTABLE'] > 1) {
+          /* if (header_feature_table['OPTM_MAXSELECTABLE'] > 1) {
             header_feature_table['element_type'] = "checkbox";
             header_feature_table['element_class'] = "custom-control custom-checkbox";
           }
           else {
             header_feature_table['element_type'] = "radio";
             header_feature_table['element_class'] = "custom-control custom-radio";
-          }
+          } */
 
+          if(header_feature_table['OPTM_ISMULTISELECT'] == "Y" || header_feature_table['OPTM_MAXSELECTABLE'] > 1) {
+            header_feature_table['element_type'] = "checkbox";
+            header_feature_table['element_class'] = "custom-control custom-checkbox";
+          } else {
+            header_feature_table['element_type'] = "radio";
+            header_feature_table['element_class'] = "custom-control custom-radio";
+          }
           return array;
         }
 
