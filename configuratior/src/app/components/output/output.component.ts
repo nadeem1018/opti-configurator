@@ -2262,12 +2262,18 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             return obj['OPTM_ITEMKEY'] == data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY && obj['nodeid'] == data.DataForSelectedFeatureModelItem[i].nodeid;
                           });
                         }
+                        
+let child_feature_id = "";
+                        if(data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID != undefined && data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID != null){
+                          child_feature_id = (data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID).toString(); 
+                        }
+
                         if (isExist.length == 0) {
                           this.ModelBOMDataForSecondLevel.push({
                             ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                             IMAGEPATH: this.commonData.get_current_url() + data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
                             OPTM_ATTACHMENT: data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
-                            OPTM_CHILDFEATUREID: data.DataForSelectedFeatureModelItem[i].OPTM_CHILDFEATUREID,
+                            OPTM_CHILDFEATUREID: child_feature_id,
                             OPTM_CHILDMODELID: data.DataForSelectedFeatureModelItem[i].OPTM_CHILDMODELID,
                             OPTM_COMPANYID: data.DataForSelectedFeatureModelItem[i].OPTM_COMPANYID,
                             OPTM_CREATEDATETIME: data.DataForSelectedFeatureModelItem[i].OPTM_CREATEDATETIME,
@@ -4153,7 +4159,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 submodel_id   = is_sub_model[0].OPTM_CHILDMODELID;
               }
 
-              var master_model_id = "";
+              var master_model_id:any = 0;
               if(main_model_id == step3_data_row.feature[ifeature].ModelId) {
                 master_model_id = main_model_id;
               } else if(submodel_id == step3_data_row.feature[ifeature].ModelId) {
@@ -4239,7 +4245,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       var formatedTotalPrice: any = featureitemlistfilterdata[0].quantity * featureitemlistfilterdata[0].Actualprice
                       formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
-                      let temp_model_id_default = '';
+                      let temp_model_id_default:any = 0;
                       let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function(obj){
                         return obj.OPTM_ITEMKEY == featureitemlistfilterdata[0].Item
                       });
@@ -4599,7 +4605,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     "OPTM_PARENTTYPE": 1,
                     "UNIQUE_KEY": iValueData[itempsavefinal].unique_key,
                     "NODEID": iValueData[itempsavefinal].nodeid,
-                    "temp_model_id":""
+                    "temp_model_id": parseInt('0')
                   })
                 }
               }
