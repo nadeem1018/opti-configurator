@@ -2090,6 +2090,19 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                           }
                         }
                         if (parentarray.length > 0) {
+                          let uniqueIdentifier = "";
+                          if(parentarray[0].OPTM_UNIQUEIDNT == undefined && parentarray[0].OPTM_UNIQUEIDNT == null) {
+                            let filteredUniqueIdetifierArray = [];
+                            filteredUniqueIdetifierArray = this.ModelHeaderData.filter(function(obj) {
+                              return obj.nodeid  == parentarray[0].nodeid;
+                            })
+                            if(filteredUniqueIdetifierArray.length > 0) {
+                              uniqueIdentifier = filteredUniqueIdetifierArray[0].OPTM_UNIQUEIDNT 
+                            }
+                          } else {
+                            uniqueIdentifier = parentarray[0].OPTM_UNIQUEIDNT
+                          }
+
                           if (parentarray[0].OPTM_FEATUREID == data.DataForSelectedFeatureModelItem[i].OPTM_FEATUREID && data.DataForSelectedFeatureModelItem[i].OPTM_TYPE == 2 && parentarray[0].parent_code != undefined && parentarray[0].parent_code != null) {
                             parentarray[0].feature_code = parentarray[0].parent_code
                           }
@@ -2157,7 +2170,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 OPTM_PROPOGATEQTY: data.DataForSelectedFeatureModelItem[i].OPTM_PROPOGATEQTY,
                                 OPTM_QUANTITY: parseFloat(data.DataForSelectedFeatureModelItem[i].OPTM_QUANTITY).toFixed(3),
                                 OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
-                                OPTM_UNIQUEIDNT: parentarray[0].OPTM_UNIQUEIDNT,
+                                OPTM_UNIQUEIDNT: uniqueIdentifier,
                                 OPTM_UOM: parentarray[0].OPTM_UOM,
                                 child_code: parentarray[0].child_code,
                                 element_class: pselementclass,
@@ -3525,7 +3538,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         // final data submission 
 
         
-      /*  this.showLookupLoader = true;
+       this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -3566,7 +3579,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-          )*/
+          )
       }
 
       colSpanValue(e) {
