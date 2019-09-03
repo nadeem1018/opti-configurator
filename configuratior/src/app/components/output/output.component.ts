@@ -3525,7 +3525,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         // final data submission 
 
         
-        this.showLookupLoader = true;
+      /*  this.showLookupLoader = true;
         this.OutputService.AddUpdateCustomerData(final_dataset_to_save).subscribe(
           data => {
             if (data != null && data != undefined) {
@@ -3566,7 +3566,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
             return;
           }
-          )
+          )*/
       }
 
       colSpanValue(e) {
@@ -4328,7 +4328,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_REFITEMCODE": "",
                   "OPTM_PARENTID": imodelData[0].OPTM_MODELID,
                   "OPTM_PARENTTYPE": 2,
-                  "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
+                  "UNIQUE_KEY": imodelData[0].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": parseInt(master_model_id)
                 })
@@ -4341,10 +4341,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 var fid = step3_data_row.feature[ifeature].FeatureId;
 
                 let temp_model_id_default = master_model_id;
-                let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function(obj){
-                  return obj.OPTM_ITEMKEY == step3_data_row.feature[ifeature].Item
-                });
                 let temp_item_number = step3_data_row.feature[ifeature].Item;
+
+                let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function(obj){
+                  return obj.OPTM_ITEMKEY == temp_item_number
+                });
+
                 if(temp_model_data.length == 0){
                   temp_model_data = step3_data_row.ModelBOMDataForSecondLevel.filter(function(obj){
                     return obj.OPTM_ITEMKEY == temp_item_number
@@ -4352,11 +4354,16 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
                   if(temp_model_data.length != 0){
                     if(temp_model_data[0].OPTM_MODELID !== undefined){
-                    temp_model_id_default = temp_model_data[0].OPTM_MODELID
+                      temp_model_id_default = temp_model_data[0].OPTM_MODELID
+                    }
                   }
+                } else if(master_model_id == ""){
+                  if(temp_model_data.length != 0){
+                    if(temp_model_data[0].parentmodelid !== undefined){
+                      temp_model_id_default = temp_model_data[0].parentmodelid
+                    }
                   }
                 }
-
 
                 if (step3_data_row.feature[ifeature].FeatureId != null) {
                   if (step3_data_row.feature[ifeature].FeatureId != step3_data_row.model_id) {
@@ -4547,15 +4554,15 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       
                       temp_step2_final_dataset_save = temp_step2_final_dataset_save.filter(function(obj){
                           if(obj['OPTM_ITEMTYPE'] == model_item_type && obj['temp_model_id'] == model_id){ // for main model entry
-                            obj['OPTM_KEY'] = parent_item_key
+                            obj['OPTM_KEY'] = (parent_item_key).toString()
                           }
 
                           if(obj['OPTM_ITEMTYPE'] != 0  && obj['temp_model_id'] == model_id){ // for items of sub model and main model entry 
-                            obj['OPTM_PARENTKEY'] = parent_item_key
+                            obj['OPTM_PARENTKEY'] = (parent_item_key).toString()
                           }
 
                           if(obj['OPTM_ITEMTYPE'] == 1 && model_item_type =='1'  && submodel_code ==  obj['OPTM_ITEMCODE']){ // for submodel header entry
-                            obj['OPTM_KEY'] = parent_item_key
+                            obj['OPTM_KEY'] = (parent_item_key).toString()
                           }
 
                          return obj;
