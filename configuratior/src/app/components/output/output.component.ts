@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from '../../services/common.service';
+import { AnimationStyleNormalizer } from '@angular/animations/browser/src/dsl/style_normalization/animation_style_normalizer';
+import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 
 @Component({
@@ -718,6 +720,11 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
       }
       else {
         data.FeatureBOMDataForSecondLevel[i].checked = false
+      }
+      if(data.FeatureBOMDataForSecondLevel[i].disable == "False") {
+        data.FeatureBOMDataForSecondLevel[i].disable = false
+      } else if (data.FeatureBOMDataForSecondLevel[i].disable == "True") {
+        data.FeatureBOMDataForSecondLevel[i].disable = true
       }
       if (data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != "" && data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != null && data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT != undefined) {
         data.FeatureBOMDataForSecondLevel[i].IMAGEPATH = this.commonData.get_current_url() + data.FeatureBOMDataForSecondLevel[i].OPTM_ATTACHMENT
@@ -1595,6 +1602,9 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 if(data.RuleOutputData.length > 0) {
                   for(let count=0;count<data.ObjFeatureItemDataWithDfaultY.length; count++){
                     for(let ruleDataCount =0 ;ruleDataCount < data.RuleOutputData.length; ruleDataCount++) {
+                      if(count < 0) {
+                        count = 0;
+                      }
                       if(data.RuleOutputData[ruleDataCount].OPTM_APPLICABLEFOR == data.ObjFeatureItemDataWithDfaultY[count].OPTM_FEATUREID && data.RuleOutputData[ruleDataCount].OPTM_ITEMKEY == data.ObjFeatureItemDataWithDfaultY[count].OPTM_ITEMKEY && data.RuleOutputData[ruleDataCount].OPTM_DEFAULT == "False") {
                         data.ObjFeatureItemDataWithDfaultY.splice(count,1);
                         count = count-1;
@@ -2285,6 +2295,8 @@ let child_feature_id = "";
                           this.ModelBOMDataForSecondLevel.push({
                             ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                             IMAGEPATH: this.commonData.get_current_url() + data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
+                            ITEMCODEGENREF:data.DataForSelectedFeatureModelItem[i].ITEMCODEGENREF,
+                            MODELTEMPLATEITEM:data.DataForSelectedFeatureModelItem[i].MODELTEMPLATEITEM,
                             OPTM_ATTACHMENT: data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
                             OPTM_CHILDFEATUREID: child_feature_id,
                             OPTM_CHILDMODELID: data.DataForSelectedFeatureModelItem[i].OPTM_CHILDMODELID,
@@ -2917,6 +2929,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
         if (isExist.length == 0 && !isValue){
           if(ItemData[0].OPTM_TYPE != 2) {
+            let featureModelDataPrice:any = 0;
+            if(featureModelData.Price == undefined && featureModelData.Price == null) {
+              featureModelDataPrice = featureModelDataPrice;
+            } else {
+              featureModelDataPrice = featureModelData.Price;
+            }
             this.feature_itm_list_table.push({
               FeatureId: featureId,
               featureName: tempfeaturecode,
@@ -2927,7 +2945,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               quantity: parseFloat(formatequantity).toFixed(3),
               original_quantity: parseFloat(featureModelData.OPTM_QUANTITY).toFixed(3),
               price: featureModelData.ListName,
-              Actualprice: parseFloat(featureModelData.Price).toFixed(3),
+              Actualprice: parseFloat(featureModelDataPrice).toFixed(3),
               pricextn: parseFloat(priceextn).toFixed(3),
               is_accessory: "N",
               isPriceDisabled: isPriceDisabled,
