@@ -25,11 +25,13 @@ export class HeaderComponent implements OnInit {
 
   showHeader: boolean;
   imgPath = 'assets/images';
-  public search_for:string ;
-  public user_profile:string ;
-  public preferences:string ;
-  public signout:string ;
-  public about:string ;
+  public search_for:string;
+  public user_profile:string;
+  public preferences:string;
+  public signout:string;
+  public about:string;
+  public help:string;
+
 
 
   ngOnInit() {
@@ -69,6 +71,7 @@ export class HeaderComponent implements OnInit {
     this.preferences = this.language.preferences;
     this.signout = this.language.signout;
     this.about = this.language.system_info;
+    this.help = this.language.help;
   }
 
   ngAfterViewInit() {
