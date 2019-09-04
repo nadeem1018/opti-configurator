@@ -6,8 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from '../../services/common.service';
-import { AnimationStyleNormalizer } from '@angular/animations/browser/src/dsl/style_normalization/animation_style_normalizer';
-import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 
 @Component({
