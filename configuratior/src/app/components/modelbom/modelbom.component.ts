@@ -1249,9 +1249,9 @@ onDeleteRow(rowindex) {
 
      onSave() {
        var obj = this;
-       /*if (this.validate_unique_identifier() == false) {
+       if (this.validate_unique_identifier() == false) {
          return;
-       }*/
+       }
        if (obj.validation("Save") == false) {
          return;
        }
@@ -1701,9 +1701,9 @@ onDeleteRow(rowindex) {
              }
            }
 
-           /*if(this.validate_unique_identifier() == false){
+           if(this.validate_unique_identifier() == false){
              return;
-           }*/
+           }
             temp_model_data = this.modelbom_data;
            console.log("modelbom data ", this.modelbom_data);
            for (let i = 0; i < temp_model_data.length; ++i) {
