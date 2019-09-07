@@ -369,7 +369,13 @@ on_multiple_model_change() {
   }
   this.feature_bom_data.feature_min_selectable = 1;
   if (this.feature_bom_table.length > 0) {
-    this.feature_bom_table[0].default = true;
+    let default_rows  =  this.feature_bom_table.filter(function(obj){
+      return obj.default == true;
+    });
+    
+    if(default_rows.length == 0){
+      this.feature_bom_table[0].default = true;   
+    }
   }
   this.feature_bom_data.feature_max_selectable = 1;
 }
