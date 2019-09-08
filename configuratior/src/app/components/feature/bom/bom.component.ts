@@ -1076,7 +1076,7 @@ validate_min_values(value, input_id) {
                  this.pricehide = false
                  this.isPriceDisabled = false;
 
-                 this.feature_bom_data.multi_select = false;
+                 this.feature_bom_data.multi_select = 'false';
                  this.feature_bom_data.multi_select_disabled = true;
                  this.feature_bom_data.feature_min_selectable = 1;
                  this.feature_bom_data.feature_max_selectable = 1;
