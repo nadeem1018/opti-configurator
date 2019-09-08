@@ -3314,7 +3314,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               "OPTM_PRODTOTAL": Number(this.step3_data_final[iHdrCount].price_ext),
               "OPTM_TOTALBEFOREDIS": Number(this.step3_data_final[iHdrCount].price),
               "OPTM_PRODDISCOUNT": Number(this.step3_data_final[iHdrCount].feature_discount_percent),
-              "OPTM_ACCESSORYDIS": "",
+              "OPTM_ACCESSORYDIS": this.step3_data_final[iHdrCount].accessory_discount_percent,
               "OPTM_ACCESSORYTOTAL": "",
               "OPTM_TOTALDISCOUNT": "",
               "model_index" : iHdrCount,
