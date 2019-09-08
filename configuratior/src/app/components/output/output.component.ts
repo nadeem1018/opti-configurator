@@ -1097,7 +1097,11 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
             if (this.feature_itm_list_table[i].is_accessory == "N") {
               // if feature is non-accessory type
               var modelheaderpropagatechecked = this.ModelHeaderData.filter(function (obj) {
-                return obj['OPTM_FEATUREID'] == tempfeatureid
+                if(obj['OPTM_TYPE'] == 3) {
+                  return obj['OPTM_CHILDMODELID'] == tempfeatureid
+                } else {
+                  return obj['OPTM_FEATUREID'] == tempfeatureid
+                }
               })
               if (modelheaderpropagatechecked.length == 0 && this.feature_itm_list_table[i].Item != "") {
                 var itemkey = this.feature_itm_list_table[i].Item
@@ -3465,7 +3469,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 dicount_amount: step3_temp_row.feature[us_indexx].dicount_amount,
                 discount: step3_temp_row.feature[us_indexx].discount,
                 featureName: step3_temp_row.feature[us_indexx].featureName,
-                gross: step3_temp_row.feature[us_indexx].gross,
+                gross: parseFloat(step3_temp_row.feature[us_indexx].gross).toFixed(3),
                 isPriceDisabled: step3_temp_row.feature[us_indexx].isPriceDisabled,
                 isQuantityDisabled: step3_temp_row.feature[us_indexx].isQuantityDisabled,
                 is_accessory: step3_temp_row.feature[us_indexx].is_accessory,
