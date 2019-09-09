@@ -853,6 +853,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
         var Modelfeaturesaveditems = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['checked'] == true && obj['OPTM_TYPE'] == 2
         })
+        
         if (Modelfeaturesaveditems.length > 0) {
           this.SetModelFeatureSavedItems(Modelfeaturesaveditems, data.Savedgetmodelsavedata);
         }
@@ -4211,6 +4212,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 "OPTM_WHSE": this.warehouse,
                 "OPTM_LEVEL": 0,
                 "OPTM_QUANTITY": parseFloat(step3_data_row.quantity).toFixed(3),
+                "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.quantity).toFixed(3),
                 "OPTM_PRICELIST": 0,
                 "OPTM_UNITPRICE": parseFloat("0").toFixed(3),
                 "OPTM_TOTALPRICE": parseFloat("0").toFixed(3),
@@ -4358,6 +4360,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                           "OPTM_WHSE": this.warehouse,
                           "OPTM_LEVEL": featureitemlistfilterdata[0].OPTM_LEVEL,
                           "OPTM_QUANTITY": parseFloat(featureitemlistfilterdata[0].quantity).toFixed(3),
+                          "OPTM_ORIGINAL_QUANTITY": parseFloat(featureitemlistfilterdata[0].original_quantity).toFixed(3),
                           "OPTM_PRICELIST": Number(featureitemlistfilterdata[0].price),
                           "OPTM_UNITPRICE": parseFloat(featureitemlistfilterdata[0].Actualprice).toFixed(3),
                           "OPTM_TOTALPRICE": formatedTotalPrice,
@@ -4400,6 +4403,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_WHSE": this.warehouse,
                   "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
                   "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
+                  "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.feature[ifeature].original_quantity).toFixed(3),
                   "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
                   "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
                   "OPTM_TOTALPRICE": formatedTotalPrice,
@@ -4508,6 +4512,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       "OPTM_WHSE": this.warehouse,
                       "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
                       "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
+                      "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.feature[ifeature].original_quantity).toFixed(3),
                       "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
                       "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
                       "OPTM_TOTALPRICE": formatedTotalPrice,
@@ -4555,6 +4560,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                         "OPTM_WHSE": this.warehouse,
                         "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
                         "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
+                        "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.feature[ifeature].original_quantity).toFixed(3),
                         "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
                         "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
                         "OPTM_TOTALPRICE": formatedTotalPrice,
@@ -4692,6 +4698,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                     "OPTM_WHSE": this.warehouse,
                     "OPTM_LEVEL": iValueData[itempsavefinal].OPTM_LEVEL,
                     "OPTM_QUANTITY": parseFloat(iValueData[itempsavefinal].OPTM_QUANTITY).toFixed(3),
+                    "OPTM_ORIGINAL_QUANTITY": parseFloat(iValueData[itempsavefinal].OPTM_QUANTITY).toFixed(3),
                     "OPTM_PRICELIST": Number(0),
                     "OPTM_UNITPRICE": parseFloat("0").toFixed(3),
                     "OPTM_TOTALPRICE": 0,
@@ -4729,6 +4736,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   "OPTM_WHSE": this.warehouse,
                   "OPTM_LEVEL": temp_step2_final_dataset_save[itempsavefinal].OPTM_LEVEL,
                   "OPTM_QUANTITY": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_QUANTITY).toFixed(3),
+                  "OPTM_ORIGINAL_QUANTITY": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_ORIGINAL_QUANTITY).toFixed(3),
                   "OPTM_PRICELIST": temp_step2_final_dataset_save[itempsavefinal].OPTM_PRICELIST,
                   "OPTM_UNITPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_UNITPRICE).toFixed(3),
                   "OPTM_TOTALPRICE": parseFloat(temp_step2_final_dataset_save[itempsavefinal].OPTM_TOTALPRICE).toFixed(3),
@@ -5585,10 +5593,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             let actualPrice: any = '';
             let unqiue_key : any;
             let nodeid : any;
+            let originalQuantity:any = "";
             console.log("saved_data_for_output_dtl ", saved_data_for_output_dtl); 
             if (get_saved_data.length == 0){
               DefaultData[idefault].OPTM_QUANTITY = parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3)
               formatequantity = DefaultData[idefault].OPTM_QUANTITY * this.step2_data.quantity
+              originalQuantity = DefaultData[idefault].OPTM_QUANTITY
               priceextn = formatequantity * DefaultData[idefault].Price
               actualPrice = DefaultData[idefault].Price;
               unqiue_key = (DefaultData[idefault].unqiue_key!== undefined) ? DefaultData[idefault].unqiue_key : "";
@@ -5597,11 +5607,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               get_saved_data[0].OPTM_QUANTITY = parseFloat(get_saved_data[0].OPTM_QUANTITY).toFixed(3)
               // formatequantity= get_saved_data[0].OPTM_QUANTITY * this.step2_data.quantity
               formatequantity= get_saved_data[0].OPTM_QUANTITY;
+              originalQuantity = get_saved_data[0].OPTM_ORIGINAL_QUANTITY;
               priceextn = formatequantity * get_saved_data[0].OPTM_UNITPRICE;
               actualPrice = get_saved_data[0].OPTM_UNITPRICE;
               unqiue_key = get_saved_data[0].UNIQUE_KEY;
               nodeid = get_saved_data[0].NODEID;
             }
+          
 
             if (isExist.length == 0) {
               this.feature_itm_list_table.push({
@@ -5612,7 +5624,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                 ItemNumber: DefaultData[idefault].DocEntry,
                 Description: DefaultData[idefault].OPTM_DISPLAYNAME,
                 quantity: parseFloat(formatequantity).toFixed(3),
-                original_quantity: parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3),
+                original_quantity: parseFloat(originalQuantity).toFixed(3),
                 price: DefaultData[idefault].ListName,
                 Actualprice: parseFloat(actualPrice).toFixed(3),
                 pricextn: parseFloat(priceextn).toFixed(3),
@@ -5629,6 +5641,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               });
               console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
             }
+          }
+          for(let index = 0; index < saved_data_for_output_dtl.length; index++) {
+            this.feature_itm_list_table.filter(function(obj){
+              if(obj['nodeid'] == saved_data_for_output_dtl[index].NODEID && obj['ItemNumber'] ==  saved_data_for_output_dtl[index].OPTM_ITEMNUMBER) {
+                obj['original_quantity'] = saved_data_for_output_dtl[index].OPTM_ORIGINAL_QUANTITY
+              }
+            })
           }
           this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
           this.feature_price_calculate();
