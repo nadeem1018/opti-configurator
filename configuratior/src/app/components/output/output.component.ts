@@ -5315,7 +5315,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                   ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
                   Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
                   quantity: parseFloat(formatequantity).toFixed(3),
-                  original_quantity: parseFloat(ModelItemsArray[imodelItemsarray].OPTM_QUANTITY).toFixed(3),
+                  original_quantity: parseFloat(formatequantity).toFixed(3),
                   price: ModelItemsArray[imodelItemsarray].ListName,
                   Actualprice: parseFloat(ModelItemsArray[imodelItemsarray].Price).toFixed(3),
                   pricextn: parseFloat(priceextn).toFixed(3),
