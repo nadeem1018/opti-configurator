@@ -4426,22 +4426,32 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
                 let temp_model_id_default = master_model_id;
                 let temp_item_number = step3_data_row.feature[ifeature].Item;
+                let temp_uniqye_key = step3_data_row.feature[ifeature].unique_key;
 
                 let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function(obj){
-                  return obj.OPTM_ITEMKEY == temp_item_number
+                  return obj.OPTM_ITEMKEY == temp_item_number && obj.unique_key == temp_uniqye_key;
                 });
 
                 if(temp_model_data.length == 0){
                   temp_model_data = step3_data_row.ModelBOMDataForSecondLevel.filter(function(obj){
-                    return obj.OPTM_ITEMKEY == temp_item_number
+                    return obj.OPTM_ITEMKEY == temp_item_number  &&  obj.unique_key == temp_uniqye_key
                   });
 
                   if(temp_model_data.length != 0){
                     if(temp_model_data[0].OPTM_MODELID !== undefined){
                       temp_model_id_default = temp_model_data[0].OPTM_MODELID
                     }
+                  } else {
+                    temp_model_data =  step3_data_row.ModelHeaderItemsArray.filter(function(obj){
+                      return obj.OPTM_ITEMKEY == temp_item_number
+                    });
+                    if(temp_model_data.length != 0){
+                      if(temp_model_data[0].OPTM_MODELID !== undefined){
+                        temp_model_id_default = temp_model_data[0].OPTM_MODELID
+                      }
+                    }
                   }
-                } else if(master_model_id == ""){
+                } else {
                   if(temp_model_data.length != 0){
                     if(temp_model_data[0].parentmodelid !== undefined){
                       temp_model_id_default = temp_model_data[0].parentmodelid
