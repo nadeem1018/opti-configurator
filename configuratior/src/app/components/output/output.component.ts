@@ -1979,6 +1979,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: this.ModelHeaderData.length + 1,
                       OPTM_MANDATORY: feature_model_data.OPTM_MANDATORY,
+                      OPTM_ISMULTISELECT: feature_model_data.OPTM_ISMULTISELECT,
                       OPTM_MAXSELECTABLE: psMaxSelect,
                       OPTM_MINSELECTABLE: psMinSelect,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -5501,11 +5502,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               }
             }
 
-            for (var ifeatureitem in this.feature_itm_list_table) {
+            /* for (var ifeatureitem in this.feature_itm_list_table) {
               if (this.feature_itm_list_table[ifeatureitem].FeatureId == ModelData[imodelarray].OPTM_CHILDMODELID) {
                 this.feature_itm_list_table[ifeatureitem].Actualprice = parseFloat(ItemPrice).toFixed(3)
               }
-            }
+            } */
 
           }
           this.feature_price_calculate();
