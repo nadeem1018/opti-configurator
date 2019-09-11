@@ -2025,7 +2025,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       }
                       else {
                         isExist = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
-                          return obj['OPTM_VALUE'] == data.DataForSelectedFeatureModelItem[i].OPTM_VALUE;
+                          return obj['OPTM_VALUE'] == data.DataForSelectedFeatureModelItem[i].OPTM_VALUE && obj['nodeid'] == data.DataForSelectedFeatureModelItem[i].nodeid;
                         });
                       }
                       let checkeddefault = false;
@@ -2192,6 +2192,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                                 OPTM_ITEMKEY: data.DataForSelectedFeatureModelItem[i].OPTM_ITEMKEY,
                                 OPTM_LINENO: this.ModelHeaderData.length + 1,
                                 OPTM_MANDATORY: "N",
+                                OPTM_ISMULTISELECT: data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT,
                                 OPTM_MAXSELECTABLE: psMaxSelect,
                                 OPTM_MINSELECTABLE: psMinSelect,
                                 OPTM_MODELID: parent_modelid,
@@ -2264,6 +2265,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: this.ModelHeaderData.length + 1,
                       OPTM_MANDATORY: "N",
+                      OPTM_ISMULTISELECT: feature_model_data.OPTM_ISMULTISELECT,
                       OPTM_MAXSELECTABLE: feature_model_data.OPTM_MAXSELECTABLE,
                       OPTM_MINSELECTABLE: feature_model_data.OPTM_MINSELECTABLE,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -2680,6 +2682,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           OPTM_ITEMKEY: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_ITEMKEY,
           OPTM_LINENO: this.ModelHeaderData.length + 1,
           OPTM_MANDATORY: "N",
+          OPTM_ISMULTISELECT: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_ISMULTISELECT,
           OPTM_MAXSELECTABLE: psMaxSelect,
           OPTM_MINSELECTABLE: psMinSelect,
           OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -6191,7 +6194,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         }
       }
       else if (feature_model_data.OPTM_TYPE == 1) {
-        if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID == feature_model_data.OPTM_CHILDFEATUREID) {
+        if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID == feature_model_data.OPTM_CHILDFEATUREID && this.ModelBOMDataForSecondLevel[imodelchecked].nodeid == feature_model_data.nodeid) {
           this.ModelBOMDataForSecondLevel[imodelchecked].checked = value
         }
         // if (this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_FEATUREID == feature_model_data.OPTM_FEATUREID && parentarray[0].element_type == "radio" && this.ModelBOMDataForSecondLevel[imodelchecked].OPTM_CHILDFEATUREID != feature_model_data.OPTM_CHILDFEATUREID) {
