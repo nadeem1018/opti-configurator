@@ -5652,14 +5652,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
             }
           }
-          /* for(let index = 0; index < saved_data_for_output_dtl.length; index++) {
-            this.feature_itm_list_table.filter(function(obj){
-              if(obj['nodeid'] == saved_data_for_output_dtl[index].NODEID && obj['ItemNumber'] ==  saved_data_for_output_dtl[index].OPTM_ITEMNUMBER) {
-                obj['original_quantity'] = saved_data_for_output_dtl[index].OPTM_ORIGINAL_QUANTITY
-              }
-            })
-          } */
-          
           this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
           this.feature_price_calculate();
 
