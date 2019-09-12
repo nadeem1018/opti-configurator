@@ -94,6 +94,13 @@ export class ViewFeatureBOMComponent implements OnInit {
         width: '500',
         attrType: 'text'
     },
+    {
+        field: 'OPTM_ACCESSORY',
+        title: this.language.Model_Accessory,
+        type: 'text',
+        width: '500',
+        attrType: 'text'
+    }
     ];
 
     getLookupValue($event) {
@@ -221,6 +228,16 @@ export class ViewFeatureBOMComponent implements OnInit {
                     }
                 }
                 this.dataArray = data;
+
+                var objj = this;
+                var language = this.language;
+                this.dataArray.filter(function(obj){
+                    if(obj.OPTM_ACCESSORY == "Y") {
+                        obj.OPTM_ACCESSORY = language.YES;
+                    } else if(obj.OPTM_ACCESSORY == "N") {
+                        obj.OPTM_ACCESSORY = language.NO;
+                    }
+                })
                 this.loadServerData(this.dataArray);
                 this.CheckedData = [];
                 this.selectall = false;

@@ -798,8 +798,18 @@ export class LookupComponent implements OnInit {
         type: 'text',
         width: '100',
         attrType: 'text'
-      },
+      }
       ];
+
+      if(this.lookupfor == "feature_lookup") {
+        this.table_head.push({
+          field: 'OPTM_ACCESSORY',
+          title: this.language.Model_Accessory,
+          type: 'text',
+          width: '100',
+          attrType: 'text'
+        });
+      }
 
       if (this.serviceData !== undefined ) {
         if(this.serviceData[0]!= undefined && this.serviceData[0].Accessory !== undefined){
@@ -813,13 +823,16 @@ export class LookupComponent implements OnInit {
             }
             return obj;
           });
-          this.table_head.push({
-          field: 'Accessory',
-          title: this.language.Model_Accessory,
-          type: 'text',
-          width: '100',
-          attrType: 'text'
-          });
+          if(this.lookupfor == "feature_Detail_lookup") {
+            this.table_head.push({
+              field: 'Accessory',
+              title: this.language.Model_Accessory,
+              type: 'text',
+              width: '100',
+              attrType: 'text'
+              });
+          }
+          
         }
       }
 
