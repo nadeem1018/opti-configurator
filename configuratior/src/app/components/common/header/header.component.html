@@ -56,8 +56,8 @@
       -->
         <a class="dropdown-item" href="javascript:;" (click)="open_info_popup()"><i class="fa fa-info-circle fa-fw"></i>
           {{this.about}}</a>
-          <!-- <a class="dropdown-item" href="javascript:;" (click)="help()"><i class="fa fa-question fa-fw"></i>
-          {{this.help}}</a> -->
+          <a class="dropdown-item" href="javascript:;" (click)="help_popup()"><i class="fa fa-question fa-fw"></i>
+          {{this.help}}</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="javascript:;" (click)="logout()"> <i class="fa fa-sign-out fa-fw"></i>
           {{this.signout}}</a>
@@ -149,4 +149,30 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="help_popup" tabindex="-1" role="dialog" aria-labelledby="help_popup" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-sm-12 row">
+                    <div class="col-sm-6">
+                        <h5 class="modal-title" id="help_popup_title">{{popup_title}}</h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="text-right pull-right close" type="button" data-dismiss="modal" (click)="close_lookup('help_popup')"
+                        aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-window-close"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body" *ngIf="show_pdf != ''">
+            <iframe id="user_guide_iframe" style="border:1px solid #666CCC" title="{{popup_title}}" [src]="show_pdf | safe" frameborder="1" scrolling="auto" height="800" width="760" ></iframe>
+        </div> 
+    </div>
+</div>
+
 </div>
