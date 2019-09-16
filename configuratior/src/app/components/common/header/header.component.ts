@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   public about:string;
   public help:string;
  public lookupfor: string;
- public showLookupLoader:boolean = true;
+ public dialogOpened:boolean = false;
   public show_help_file:boolean = false;
  public popup_title = "";
  public show_pdf = '';
@@ -67,17 +67,13 @@ export class HeaderComponent implements OnInit {
 
   help_popup(){
     this.popup_title = this.language.user_guide;
-    this.showLookupLoader = false;
+    this.dialogOpened = true;
     let current_url = this.commonData.get_current_url();
     this.show_pdf = current_url + '/assets/data/user-guide.pdf';
-    console.log("this.show_pdf ", this.show_pdf);
-    this.lookupfor = 'help_popup';
-    $("#help_popup").modal('show');
-
   }
 
   close_lookup(){
-    $("#help_popup").modal('hide');
+     this.dialogOpened = false;
   }
 
   getLookupValue($event){}
