@@ -779,9 +779,9 @@
               <div class="opti_add-update-modal ml-5">
                 <div class="opti_select-section float-left">
                   <select class="ml-10 pl-10 form-control  form-control-sm  thin_select" name="added_model_list" id="added_model_list"
-                    style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" (change)="onAddedModelChange(step2_model_ref.value,'')"
+                    style=" height: calc(1.35rem + 1px) !important; " *ngIf="this.step3_data_final.length > 0" (change)="onAddedModelChange(step2_model_ref.value,step2_model_ref)"
                     #step2_model_ref>
-                    <option value="">{{language.select_model_on_config}}</option>
+                    <option value="" [selected]="step2_selected_model_id == ''">{{language.select_model_on_config}}</option>
                     <option *ngFor="let model_data of this.step3_data_final" [value]="model_data.rowIndex" [selected]="step2_selected_model_id == model_data.rowIndex">{{model_data.item}}</option>
                   </select>
                 </div>
@@ -793,6 +793,8 @@
                   <button type="button" class="btn btn-sm btn-info ml-1 add-update-btn update-btn float-left multiple_model_click_btn"
                     (click)="update_added_model()" *ngIf="step2_data.model_code != '' && step2_data.model_code != undefined &&  step2_selected_model_id != '' "> <i class="fa fa-plus-square fa-fw"></i>
                     {{language.update_model}}</button>
+                  <button type="button" class="btn btn-sm ml-1 mb-2 btn-danger" title="{{language.remove_this_modal}}" *ngIf="step2_data.model_code != '' && step2_data.model_code != undefined &&  step2_selected_model_id != '' " (click)="remove_final_modal(step2_selected_model)">
+                    <i class="fa fa-trash fa-fw"></i>{{language.delete_model}}</button>
                 </div>
               </div>
 

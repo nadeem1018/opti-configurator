@@ -3750,6 +3750,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         //After the removal of all data of that model will recalculate the prices
         this.feature_price_calculate();
         this.step4_final_price_calculation();
+
+        if(this.step3_data_final.length > 0) {
+          for(let index=0; index < this.step3_data_final.length; index++) {
+            this.step3_data_final[index].rowIndex = this.step3_data_final.indexOf(this.step3_data_final[index]);
+          }
+        }
+        this.toastr.success('', this.language.multiple_model_delete, this.commonData.toast_config);
+        
       }
 
       delete_all_row_data() {
@@ -3814,6 +3822,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
       onAddedModelChange(model_row_index, from_step4) {
         this.lookupfor = "";
         console.log(model_row_index);
+        console.log('step2_model_ref',from_step4);
         if (model_row_index != "" && model_row_index != undefined) {
           this.showLookupLoader = true;
           this.onclearselection(0);
@@ -3849,9 +3858,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           this.feature_price_calculate();
           this.showLookupLoader = false;
 
-          if (from_step4 !== undefined && from_step4 != "") {
+          /* if (from_step4 !== undefined && from_step4 != "") {
             from_step4();
-          }
+          } */
         } else {
           this.onclearselection(1);
         }
@@ -3901,6 +3910,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             }
           } else {
             obj.fill_step3_data_array('add', '0');
+          }
+
+          //this will update rowIndex  in correct order of there are multiModels and when add operation is performed
+          if(obj.step3_data_final.length > 0) {
+            for(let index=0; index < obj.step3_data_final.length; index++) {
+              obj.step3_data_final[index].rowIndex = obj.step3_data_final.indexOf(obj.step3_data_final[index]);
+            }
           }
 
           setTimeout(() => {
