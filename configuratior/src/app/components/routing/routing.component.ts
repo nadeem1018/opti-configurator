@@ -728,6 +728,15 @@ openFeatureLookup(flag) {
         this.showLookupLoader = false;
         this.serviceData = data;
         console.log(this.serviceData);
+        var objss = this;
+        var language = this.language;
+        this.serviceData.filter(function(obj){
+          if(obj.OPTM_ACCESSORY == "Y") {
+              obj.OPTM_ACCESSORY = language.YES;
+          } else if(obj.OPTM_ACCESSORY == "N") {
+              obj.OPTM_ACCESSORY = language.NO;
+          }
+        })
       }
       else {
         this.lookupfor = "";
