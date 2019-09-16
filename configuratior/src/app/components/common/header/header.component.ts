@@ -31,8 +31,12 @@ export class HeaderComponent implements OnInit {
   public signout:string;
   public about:string;
   public help:string;
-
-
+ public lookupfor: string;
+ public dialogOpened:boolean = false;
+  public show_help_file:boolean = false;
+ public popup_title = "";
+ public show_pdf = '';
+ public current_data;
 
   ngOnInit() {
 
@@ -61,9 +65,18 @@ export class HeaderComponent implements OnInit {
 
   }
 
- /* ngOnChanges() {
-    // this.commonData.checkSession();
-  }*/
+  help_popup(){
+    this.popup_title = this.language.user_guide;
+    this.dialogOpened = true;
+    let current_url = this.commonData.get_current_url();
+    this.show_pdf = current_url + '/assets/data/user-guide.pdf';
+  }
+
+  close_lookup(){
+     this.dialogOpened = false;
+  }
+
+  getLookupValue($event){}
 
   setDefaultLanguage(){
     this.search_for = this.language.search_for;
@@ -91,21 +104,6 @@ export class HeaderComponent implements OnInit {
     this.CommonService.signOut(this.toastr, this.router, 'Logout');
 
 
-    // this.toastr.success('', 'Session has been stopped', this.commonData.toast_config);
-    // /* sessionStorage.clear();
-    // localStorage.clear(); */
-    // let login_page = this.commonData.application_path + '/index.html#login';
-
-    // sessionStorage.removeItem('isLoggedIn');
-    // sessionStorage.removeItem('selectedComp');
-    // sessionStorage.removeItem('loggedInUser');
-
-    // // this.router.navigateByUrl('/login');
-
-    // setTimeout(()=>{   
-      //   this.CommonService.setisLoggedInData();
-      //   this.router.navigateByUrl('/login');
-      // }, 1000);
     }
 
   /* checkSession(){

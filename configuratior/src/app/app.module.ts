@@ -33,6 +33,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 //pipes
 import { FilterPipe } from './filter.pipe';
 import { LookupFilterPipe } from './filter.pipe';
+import { SafePipe } from './safe-url.pipe';
 
 // user defined components
 import { AppComponent } from './app.component';
@@ -139,6 +140,7 @@ const routes: Routes = [
     FormElementTreeViewComponent,
     CustomDialogsComponent,
     LookupFilterPipe,
+    SafePipe,
     RulewbComponent,
     RuleWbViewComponent,
     OutputComponent,

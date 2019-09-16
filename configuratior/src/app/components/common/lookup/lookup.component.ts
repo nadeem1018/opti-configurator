@@ -36,7 +36,7 @@ export class LookupComponent implements OnInit {
 
   public commonData = new CommonData();
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  popup_title = this.language.title;
+  popup_title = '';
   constructor(private common_service: CommonService, private fms: FeaturemodelService, private toastr: ToastrService, private router: Router, private mbom: ModelbomService, private rs: RoutingService) { }
   public table_head_hidden_elements = [];
   public defaultCurrency = sessionStorage.defaultCurrency;
@@ -91,7 +91,7 @@ export class LookupComponent implements OnInit {
   public resourceServiceOperCM: any = "";
   public resourceServiceWc: any = "";
   public current_popup_row: any = "";
-  public downLoadfileName = this.language.quatation + '.pdf';
+  public downLoadfileName = "";
   public template_type = "";
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -112,6 +112,8 @@ export class LookupComponent implements OnInit {
   public allowUnsort = true;
   public sort: SortDescriptor[];
   public gridView: GridDataResult;
+  public config_data:any;
+  public show_pdf:any;
 
   public close_kendo_dialog() {
     this.dialogOpened = false;
@@ -139,10 +141,12 @@ export class LookupComponent implements OnInit {
     this.detectDevice();
     this.username = sessionStorage.getItem('loggedInUser');
     this.companyName = sessionStorage.getItem('selectedComp');
+    this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     this.template_type = "model";
     this.skip = 0;
     this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
     this.dialogOpened = false;
+    this.downLoadfileName =  'Quotation.pdf';
   }
 
   sleep(ms) {
@@ -292,6 +296,10 @@ export class LookupComponent implements OnInit {
           this.template_routing_list();
         }
 
+        if(this.popup_lookupfor == "help_popup"){
+
+           this.show_help_popup();
+        }
 
       }
     }
@@ -2009,7 +2017,12 @@ export class LookupComponent implements OnInit {
                     //}, 5000);
                   }
                 }
+              }
 
+              show_help_popup(){
+             //   this.popup_title = this.language.user_guide;
+                  
+                 
               }
 
               customer_lookup() {
