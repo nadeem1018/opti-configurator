@@ -3513,11 +3513,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
             let modelheader_item_array = me_d_v_row.ModelHeaderItemsArray;
             for (let mhia_i = 0; mhia_i < modelheader_item_array.length; mhia_i++) {
-              delete modelheader_item_array[mhia_i]['element_class'];
-              delete modelheader_item_array[mhia_i]['element_type'];
-              delete modelheader_item_array[mhia_i]['is_second_level'];
-              delete modelheader_item_array[mhia_i]['parentfeatureid'];
-              delete modelheader_item_array[mhia_i]['parentmodelid'];
+              /* delete modelheader_item_array[mhia_i]['element_class'];
+              delete modelheader_item_array[mhia_i]['element_type']; */
+              /* delete modelheader_item_array[mhia_i]['is_second_level']; */
+              /* delete modelheader_item_array[mhia_i]['parentfeatureid']; */
+              /* delete modelheader_item_array[mhia_i]['parentmodelid']; */
               modelheader_item_array[mhia_i]['model_index'] =  me_d_v_i;
               if ((modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") || modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
                 modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
