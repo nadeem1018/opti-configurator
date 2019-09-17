@@ -98,7 +98,7 @@ export class ViewFeatureBOMComponent implements OnInit {
         field: 'OPTM_ACCESSORY',
         title: this.language.Model_Accessory,
         type: 'text',
-        width: '500',
+        width: '100',
         attrType: 'text'
     }
     ];
