@@ -20,23 +20,26 @@ export class HeaderComponent implements OnInit {
   version = "";
   company = "";
   language_current = "";
+  public current_url = '';
 
   constructor(private router: Router, private toastr: ToastrService, private CommonService: CommonService, private modalService: BsModalService) { }
 
   showHeader: boolean;
   imgPath = 'assets/images';
-  public search_for:string;
-  public user_profile:string;
-  public preferences:string;
-  public signout:string;
-  public about:string;
-  public help:string;
- public lookupfor: string;
- public dialogOpened:boolean = false;
-  public show_help_file:boolean = false;
- public popup_title = "";
- public show_pdf = '';
- public current_data;
+    public search_for:string;
+    public user_profile:string;
+    public preferences:string;
+    public signout:string;
+    public about:string;
+    public help:string;
+    public lookupfor: string;
+    public dialogOpened:boolean = false;
+    public show_help_file:boolean = false;
+    public popup_title = "";
+    public show_pdf = '';
+    public current_data;
+
+    public user_guide_link = '';
 
   ngOnInit() {
 
@@ -61,15 +64,14 @@ export class HeaderComponent implements OnInit {
         }
       })
     });
-
-
+    this.current_url = this.commonData.get_current_url();
+    this.user_guide_link = this.current_url + '/assets/html%20Help%20file/OptiPro-Configurator.html';
   }
 
   help_popup(){
     this.popup_title = this.language.user_guide;
     this.dialogOpened = true;
-    let current_url = this.commonData.get_current_url();
-    this.show_pdf = current_url + '/assets/data/user-guide.pdf';
+    this.show_pdf = this.current_url + '/assets/data/user-guide.pdf';
   }
 
   close_lookup(){
