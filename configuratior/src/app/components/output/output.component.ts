@@ -3822,7 +3822,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
       onAddedModelChange(model_row_index, from_step4) {
         this.lookupfor = "";
         console.log(model_row_index);
-        console.log('step2_model_ref',from_step4);
         if (model_row_index != "" && model_row_index != undefined) {
           this.showLookupLoader = true;
           this.onclearselection(0);
@@ -3857,10 +3856,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           this.selectedAccessoryBOM = this.step2_selected_model.selectedAccessoryBOM;
           this.feature_price_calculate();
           this.showLookupLoader = false;
-
-          /* if (from_step4 !== undefined && from_step4 != "") {
-            from_step4();
-          } */
+          
         } else {
           this.onclearselection(1);
         }
