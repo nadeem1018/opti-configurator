@@ -1,1 +1,0 @@
-gXMLBuffer ="<?xml version=\"1.0\" encoding=\"utf-8\" ?><data ><book name=\"The Application\" src=\"toc1.js\" /><book name=\"Import of Data from SAP Business One\" src=\"toc2.js\" /><book name=\"Import of Data from Legacy System\" src=\"toc3.js\" /><book name=\"The Application\" src=\"toc4.js\" /></data>";

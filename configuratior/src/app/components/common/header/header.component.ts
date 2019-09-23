@@ -65,10 +65,10 @@ export class HeaderComponent implements OnInit {
       })
     });
     this.current_url = this.commonData.get_current_url();
-    this.user_guide_link = this.current_url + '/assets/html%20Help%20file/OptiPro-Configurator.html';
+    this.user_guide_link = this.current_url + '/assets/user-guide/OptiPro-Configurator.html';
   }
 
-  help_popup(){
+ /* help_popup(){
     this.popup_title = this.language.user_guide;
     this.dialogOpened = true;
     this.show_pdf = this.current_url + '/assets/data/user-guide.pdf';
@@ -77,7 +77,7 @@ export class HeaderComponent implements OnInit {
   close_lookup(){
      this.dialogOpened = false;
   }
-
+*/
   getLookupValue($event){}
 
   setDefaultLanguage(){
