@@ -242,7 +242,7 @@ export class RulewbComponent implements OnInit {
 
               }
               else {
-                this.typevaluefromdatabase = (data.RuleWorkBenchInput[i].OPTM_MODEL != "" && data.RuleWorkBenchInput[i].OPTM_FEATURE!= null ) ? data.RuleWorkBenchInput[i].OPTM_MODEL.toString() : "";
+                this.typevaluefromdatabase = (data.RuleWorkBenchInput[i].OPTM_MODEL != "" && data.RuleWorkBenchInput[i].OPTM_MODEL!= null ) ? data.RuleWorkBenchInput[i].OPTM_MODEL.toString() : "";
 
               }
               if (data.RuleWorkBenchInput[i].OPTM_TYPE == 1) {
