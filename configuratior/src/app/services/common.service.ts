@@ -112,7 +112,7 @@ export class CommonService {
 
   RemoveLoggedInUser(): Observable<any> {
     var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
-    return this.httpclient.post(this.config_params.service_url + "/Signin/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
   } 
 
   signOut(toastr: ToastrService, router: Router, Logoutvar){
