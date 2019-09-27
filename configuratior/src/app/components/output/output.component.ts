@@ -5802,14 +5802,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                         }
                                       } else {
                                           if(feature_model_data != "" && feature_model_data != undefined) {
-                                            let filteredRuleOutputData = RuleOutputData.filter(function(obj){
-                                              return obj.OPTM_FEATURE  == feature_model_data.OPTM_FEATUREID
-                                            })
-                                            if(filteredRuleOutputData.length == 0) {
-                                              this.FeatureBOMDataForSecondLevel.filter(function(obj){
-                                                  obj['disable'] = false;
+                                            if(feature_model_data.OPTM_TYPE == 2 && feature_model_data.is_second_level == null) {
+                                              let filteredRuleOutputData = RuleOutputData.filter(function(obj){
+                                                return obj.OPTM_FEATURE  == feature_model_data.OPTM_FEATUREID
                                               })
+                                              if(filteredRuleOutputData.length == 0) {
+                                                this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                                    obj['disable'] = false;
+                                                })
+                                              }
                                             }
+
                                           }
                                       } 
                                     }
