@@ -4349,12 +4349,14 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
                       let temp_model_id_default:any = 0;
                       let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function(obj){
-                        return obj.OPTM_ITEMKEY == featureitemlistfilterdata[0].Item
+                      //  return obj.OPTM_ITEMKEY == featureitemlistfilterdata[0].Item; 
+                      return obj.unique_key == featureitemlistfilterdata[0].unique_key; 
                       });
 
                       if(temp_model_data.length == 0){
                         temp_model_data = step3_data_row.ModelBOMDataForSecondLevel.filter(function(obj){
-                          return obj.OPTM_ITEMKEY == featureitemlistfilterdata[0].Item
+                          // return obj.OPTM_ITEMKEY == featureitemlistfilterdata[0].Item;
+                          return obj.unique_key == featureitemlistfilterdata[0].unique_key; 
                         });
                       }
                       if(temp_model_data[0].OPTM_MODELID !== undefined){
