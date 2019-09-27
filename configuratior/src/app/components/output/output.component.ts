@@ -4361,7 +4361,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       }
                       if(temp_model_data[0].OPTM_MODELID !== undefined){
                           temp_model_id_default = temp_model_data[0].OPTM_MODELID
-                      }
+                      } 
                     
 
                       if (checkmodelitem.length > 0) {
@@ -5800,6 +5800,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                             this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = true
                                           } */
                                         }
+                                      } else {
+                                          if(feature_model_data != "" && feature_model_data != undefined) {
+                                            let filteredRuleOutputData = RuleOutputData.filter(function(obj){
+                                              return obj.OPTM_FEATURE  == feature_model_data.OPTM_FEATUREID
+                                            })
+                                            if(filteredRuleOutputData.length == 0) {
+                                              this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                                  obj['disable'] = false;
+                                              })
+                                            }
+                                          }
                                       } 
                                     }
                                     else {
