@@ -1634,6 +1634,9 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
                 this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
 
+                this.setDefaultByFeatureBOM();
+                this.setDefaultByRule(data.RuleOutputData);
+
                 if (this.setModelDataFlag == true) {
                   this.setModelDataInOutputBom(getmodelsavedata, "", data.ModelHeaderData, "");
                   var Modelfeaturesaveditems = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
@@ -1848,6 +1851,11 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
       return obj['checked'] == true
     })
 
+    this.ModelBOMDataForSecondLevel.filter(function(obj){
+      if(obj['OPTM_CHILDFEATUREID'] == "") {
+        obj['OPTM_CHILDFEATUREID'] = 0
+      }
+    })
     GetDataForSelectedFeatureModelItemData.modelbomdata = this.ModelBOMDataForSecondLevel.filter(function (obj) {
       obj['OPTM_QUANTITY'] = parseFloat(obj['OPTM_QUANTITY'])
       return obj['checked'] == true
@@ -2244,6 +2252,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                   }
 
                   this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
+                  this.setDefaultByFeatureBOM();
+                  this.setDefaultByRule(data.RuleOutputData);
 
                 }
               }
@@ -2389,6 +2399,7 @@ let child_feature_id = "";
                 }
                 else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
                   this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,true,feature_model_data);
+                  this.setDefaultByRule(data.RuleOutputData);
                 }
                 else if (type == 2) {
                   if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2403,6 +2414,13 @@ let child_feature_id = "";
                   }
                   this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,false,feature_model_data);
                   this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
+                  
+                  this.setDefaultByFeatureBOM();
+                  if(data.RuleOutputData.length > 0) {
+                    this.setDefaultByRule(data.RuleOutputData);
+                  }
+                  console.log("this.FeatureBOMDataForSecondLevel-",this.FeatureBOMDataForSecondLevel);
+                  
                 }
 
               }//end data length
@@ -2457,6 +2475,7 @@ let child_feature_id = "";
               }
               this.enableFeatureModelsItems();
               this.RuleIntegration(data.RuleOutputData, value,feature_model_data);
+              this.setDefaultByFeatureBOM();
               this.RuleOutputData = data.RuleOutputData;
               this.feature_price_calculate();
               this.showLookupLoader = false;
@@ -5233,10 +5252,17 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             var formatequantity: any = DefaultData[idefault].OPTM_QUANTITY * this.step2_data.quantity
             var priceextn: any = formatequantity * DefaultData[idefault].Price
 
+            let featureName = "";
+            if(DefaultData[idefault].OPTM_FEATURECODE != undefined && DefaultData[idefault].OPTM_FEATURECODE != null) {
+              featureName = DefaultData[idefault].OPTM_FEATURECODE
+            } else {
+              featureName = DefaultData[idefault].parent_code
+            }
+
             if (isExist.length == 0) {
               this.feature_itm_list_table.push({
                 FeatureId: DefaultData[idefault].OPTM_FEATUREID,
-                featureName: DefaultData[idefault].OPTM_FEATURECODE,
+                featureName: featureName,
                 Item: DefaultData[idefault].OPTM_ITEMKEY,
                 discount:0,
                 ItemNumber: DefaultData[idefault].DocEntry,
@@ -5801,19 +5827,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                           } */
                                         }
                                       } else {
-                                          if(feature_model_data != "" && feature_model_data != undefined) {
-                                            if(feature_model_data.OPTM_TYPE == 2 && feature_model_data.is_second_level == null) {
-                                              let filteredRuleOutputData = RuleOutputData.filter(function(obj){
-                                                return obj.OPTM_FEATURE  == feature_model_data.OPTM_FEATUREID
-                                              })
-                                              if(filteredRuleOutputData.length == 0) {
-                                                this.FeatureBOMDataForSecondLevel.filter(function(obj){
-                                                    obj['disable'] = false;
-                                                })
-                                              }
-                                            }
+                                          
 
-                                          }
+                                          
                                       } 
                                     }
                                     else {
@@ -5851,6 +5867,28 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                         }
                                       }
 
+                                      if(feature_model_data != "" && feature_model_data != undefined) {
+                                        let filteredRuleOutputData = RuleOutputData.filter(function(obj){
+                                          if(obj['OPTM_FEATURE'] != "") {
+                                            return obj.OPTM_FEATURE  == feature_model_data.OPTM_FEATUREID
+                                          }
+                                        })
+                                        if(filteredRuleOutputData.length == 0) {
+                                          let modelBomRules = []
+                                          if(feature_model_data.OPTM_TYPE == 2) {
+                                            modelBomRules = this.ModelBOMRules.filter(function(obj){
+                                              return obj.OPTM_FEATURE == feature_model_data.OPTM_FEATUREID /* && obj.OPTM_OP1CODE == feature_model_data.OPTM_ITEMKEY */
+                                            })
+                                          }
+                                          if(modelBomRules.length > 0) {
+                                            this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                              if(obj.OPTM_FEATUREID == modelBomRules[0].OPTM_APPLICABLEFOR) {
+                                                obj['disable'] = false
+                                              }
+                                            })
+                                          }
+                                        }
+                                    }
 
                                     }
                                   }
@@ -6131,6 +6169,114 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                                   }
                                   this.defaultitemflagid = "";
                                 }
+
+                                setDefaultByFeatureBOM() {
+                                  if(this.FeatureBOMDataForSecondLevel.length > 0) {
+                                    let defaultitems = [];
+                                      this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                        if(obj['OPTM_DEFAULT'] == "Y") {
+                                          obj['checked'] = true
+                                        } else {
+                                          obj['checked'] = false
+                                        }
+                                      })
+                                       defaultitems = this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                         return obj.OPTM_DEFAULT == "Y"
+                                       })
+                                       
+                                       if(defaultitems.length > 0) {
+                                         this.getDefaultItems(defaultitems);
+                                         /* this.removeFeatureItemsInRule(defaultitems) */
+                                       }
+                                  }
+                                }
+                                
+        setDefaultByRule(RuleOutputData) {
+          if(RuleOutputData.length > 0){
+              
+              if(this.FeatureBOMDataForSecondLevel.length > 0) {
+                /* loopFET: */
+                for(var featureIndex in this.FeatureBOMDataForSecondLevel) {
+                  loopRule:
+                  for(var ruleIndex in RuleOutputData) {
+                    if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_TYPE == 1) {
+                        if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_FEATUREID.toString() == RuleOutputData[ruleIndex].OPTM_APPLICABLEFOR && RuleOutputData[ruleIndex].OPTM_DEFAULT == "True") {
+                            this.FeatureBOMDataForSecondLevel[featureIndex].checked = true
+                            break loopRule;
+                        } else if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_FEATUREID.toString() == RuleOutputData[ruleIndex].OPTM_APPLICABLEFOR) {
+                            this.FeatureBOMDataForSecondLevel[featureIndex].checked = false
+                            break loopRule;
+                        }
+                    } else if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_TYPE == 2) {
+                      
+                        if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_FEATUREID.toString() == RuleOutputData[ruleIndex].OPTM_APPLICABLEFOR && this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_ITEMKEY == RuleOutputData[ruleIndex].OPTM_ITEMKEY && RuleOutputData[ruleIndex].OPTM_DEFAULT == "True" ) {
+                          this.FeatureBOMDataForSecondLevel[featureIndex].checked = true
+                          let defaultItemArray = [];
+                          defaultItemArray.push(this.FeatureBOMDataForSecondLevel[featureIndex])
+                          if(defaultItemArray.length > 0) {
+                            this.getDefaultItems(defaultItemArray);
+                          } 
+                          break loopRule;
+                        } else if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_FEATUREID.toString() == RuleOutputData[ruleIndex].OPTM_APPLICABLEFOR && this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_ITEMKEY == RuleOutputData[ruleIndex].OPTM_ITEMKEY ){
+                          this.FeatureBOMDataForSecondLevel[featureIndex].checked = false
+                          break loopRule;
+                      }
+                      
+                    } else {
+                        if(this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_FEATUREID.toString() == RuleOutputData[ruleIndex].OPTM_APPLICABLEFOR && this.FeatureBOMDataForSecondLevel[featureIndex].OPTM_VALUE == RuleOutputData[ruleIndex].OPTM_VALUE && RuleOutputData[ruleIndex].OPTM_DEFAULT == "True") {
+                            this.FeatureBOMDataForSecondLevel[featureIndex].checked = true
+                        } /* else {
+                            this.FeatureBOMDataForSecondLevel[featureIndex].checked = false
+                        } */
+
+                    } 
+
+                  }
+                }
+              }
+
+              if(this.ModelBOMDataForSecondLevel.length > 0) {
+                for(let modelIndex in this.ModelBOMDataForSecondLevel) {
+                  for(var modelRuleIndex in RuleOutputData) {
+
+                    if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_TYPE == 1) {
+                        if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_FEATUREID == RuleOutputData[modelRuleIndex].OPTM_APPLICABLEFOR && RuleOutputData[modelRuleIndex].OPTM_DEFAULT == "True") {
+                            this.ModelBOMDataForSecondLevel[modelIndex].checked = true
+                        }
+                    } /* else if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_TYPE == 2) {
+                        if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_FEATUREID == RuleOutputData[modelRuleIndex].OPTM_APPLICABLEFOR && this.ModelBOMDataForSecondLevel[modelIndex].OPTM_ITEMKEY == RuleOutputData[modelRuleIndex].OPTM_ITEMKEY && RuleOutputData[modelRuleIndex].OPTM_DEFAULT == "True") {
+                            this.ModelBOMDataForSecondLevel[modelIndex].checked = true
+                        }
+                    } */ else if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_TYPE == 3) {
+
+                      if(this.ModelBOMDataForSecondLevel[modelIndex].OPTM_CHILDMODELID == RuleOutputData[modelRuleIndex].OPTM_APPLICABLEFOR && RuleOutputData[modelRuleIndex].OPTM_DEFAULT == "True") {
+                          this.ModelBOMDataForSecondLevel[modelIndex].checked = true
+                      }
+
+                    }
+
+                  }
+                }
+              }
+          }
+
+        }
+        removeFeatureItemsInRule(DefaultData) {
+          if(this.feature_itm_list_table.length > 0) {
+              for(let index=0; index < this.feature_itm_list_table.length; index++) {
+                for(var itemIndex in DefaultData) {
+                  if(index < 0) {
+                    index = 0
+                  }
+                  if(this.feature_itm_list_table[index].FeatureId == DefaultData[itemIndex].OPTM_FEATUREID && this.feature_itm_list_table[index].nodeid == DefaultData[itemIndex].nodeid ) {
+                    this.feature_itm_list_table.splice(index,1);
+                    index = index-1;
+                  }
+                }
+
+              }
+          }
+        }
 
                                 removeLeftAndRightGridDataWhenRuleApplied(RuleOutputData) {
                                   for(let modelHeaderIndex = 0;modelHeaderIndex < this.ModelHeaderData.length; modelHeaderIndex++) {
