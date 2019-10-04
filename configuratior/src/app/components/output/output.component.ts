@@ -1812,7 +1812,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
   }
   
 
-  if (parentarray[0].OPTM_MAXSELECTABLE > 1 && value == true) {
+  if (( parentarray[0].OPTM_ISMULTISELECT == 'Y' || parentarray[0].OPTM_MAXSELECTABLE > 1) && value == true) {
+    // if ( parentarray[0].OPTM_MAXSELECTABLE > 1 && value == true) {
     //  if( feature_model_data.OPTM_FEATUREID==2){
       var isExistForItemMax = [];
       var isExistForFeatureMax = []; 
@@ -1898,6 +1899,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
     });
 
     // this.OutputService.GetDataForSelectedFeatureModelItem(type, modelid, featureid, item, parentfeatureid, parentmodelid,selectedvalue,this.FeatureBOMDataForSecondLevel).subscribe(
+    var objj = this;
     this.OutputService.GetDataForSelectedFeatureModelItem(GetDataForSelectedFeatureModelItemData).subscribe(
       data => {
         if (data != null && data != undefined) {
@@ -1997,7 +1999,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       if (data.DataForMinMaxForFeatureId[0].OPTM_ISMULTISELECT == "Y") {
                         psMaxSelect = data.DataForMinMaxForFeatureId[0].OPTM_MAX_SELECTABLE
                         psMinSelect = data.DataForMinMaxForFeatureId[0].OPTM_MIN_SELECTABLE
-                        if (parseFloat(psMaxSelect) > 1) {
+                        if (parseInt(psMaxSelect) >= 1) {
                           pselementclass = "custom-control custom-checkbox"
                           pselementtype = "checkbox"
                         }
@@ -2006,6 +2008,13 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                     }
                   }
                   if (isExist.length == 0) {
+                    let is_multi_select = 'N';
+                    if(feature_model_data.OPTM_ISMULTISELECT != null  && feature_model_data.OPTM_ISMULTISELECT != undefined){
+                      is_multi_select = feature_model_data.OPTM_ISMULTISELECT;
+                    } else{
+                      is_multi_select = data.DataForMinMaxForFeatureId[0].OPTM_ISMULTISELECT;
+                    }
+
                     this.ModelHeaderData.push({
                       ACCESSORY: feature_model_data.ACCESSORY,
                       IMAGEPATH: feature_model_data.IMAGEPATH,
@@ -2018,7 +2027,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       OPTM_ITEMKEY: feature_model_data.OPTM_ITEMKEY,
                       OPTM_LINENO: this.ModelHeaderData.length + 1,
                       OPTM_MANDATORY: feature_model_data.OPTM_MANDATORY,
-                      OPTM_ISMULTISELECT: feature_model_data.OPTM_ISMULTISELECT,
+                      OPTM_ISMULTISELECT: is_multi_select,
                       OPTM_MAXSELECTABLE: psMaxSelect,
                       OPTM_MINSELECTABLE: psMinSelect,
                       OPTM_MODELID: parentarray[0].OPTM_MODELID,
@@ -2089,6 +2098,15 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       }
 
                       if (isExist.length == 0) {
+                        // hit and try multi-select changes after a certial level
+                        if(data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT != undefined && data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT == 'Y'){
+                            var item_elementclass = "custom-control custom-checkbox";
+                            var item_elementtype = "checkbox";
+                        } else {
+                          item_elementclass = "custom-control custom-radio"
+                          item_elementtype = "radio"
+                         }
+                           
                         this.FeatureBOMDataForSecondLevel.push({
                           ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                           ListName:data.DataForSelectedFeatureModelItem[i].ListName,
@@ -2123,8 +2141,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                           checked: checkeddefault,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                           is_second_level: 1,
-                          element_class: "custom-control custom-radio",
-                          element_type: "radio",
+                          element_class: item_elementclass,
+                          element_type: item_elementtype,
                           parentfeatureid: parentfeatureid.toString(),
                           parentmodelid: parentmodelid,
                           HEADER_LINENO: this.ModelHeaderData.length + 1,
@@ -2156,9 +2174,15 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             if (parentarray[0].OPTM_MAXSELECTABLE > 1) {
                               parentarray[0].element_class = "custom-control custom-checkbox"
                               parentarray[0].element_type = "checkbox"
-                            }
+                            }  
                           }
                         }
+
+                       if(data.DataForSelectedFeatureModelItem[0].OPTM_ISMULTISELECT != undefined && data.DataForSelectedFeatureModelItem[0].OPTM_ISMULTISELECT == 'Y' ){
+                          parentarray[0].element_class = "custom-control custom-checkbox"
+                          parentarray[0].element_type = "checkbox"
+                       }
+
                         if (parentarray.length > 0) {
                           let uniqueIdentifier = "";
                           if(parentarray[0].OPTM_UNIQUEIDNT == undefined && parentarray[0].OPTM_UNIQUEIDNT == null) {
@@ -2201,7 +2225,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             if (data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT == "Y") {
                               psMaxSelect = data.DataForSelectedFeatureModelItem[i].OPTM_MAX_SELECTABLE
                               psMinSelect = data.DataForSelectedFeatureModelItem[i].OPTM_MIN_SELECTABLE
-                              if (parseFloat(psMaxSelect) > 1) {
+                              if (parseInt(psMaxSelect) >= 1) {
                                 pselementclass = "custom-control custom-checkbox"
                                 pselementtype = "checkbox"
                                 elementtypeforcheckedfunction = "checkbox"
@@ -2363,6 +2387,14 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                         }
 
                         if (isExist.length == 0) {
+                            if(data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT != undefined && data.DataForSelectedFeatureModelItem[i].OPTM_ISMULTISELECT == 'Y'){
+                            var item_elementclass = "custom-control custom-checkbox";
+                            var item_elementtype = "checkbox";
+                        } else {
+                          item_elementclass = "custom-control custom-radio"
+                          item_elementtype = "radio"
+                         }
+
                           this.ModelBOMDataForSecondLevel.push({
                             ACCESSORY: data.DataForSelectedFeatureModelItem[i].ACCESSORY,
                             IMAGEPATH: this.commonData.get_current_url() + data.DataForSelectedFeatureModelItem[i].OPTM_ATTACHMENT,
@@ -2393,8 +2425,8 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                             child_code: data.DataForSelectedFeatureModelItem[i].child_code,
                             OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                             is_second_level: 1,
-                            element_class: "custom-control custom-radio",
-                            element_type: "radio",
+                            element_class: item_elementclass,
+                            element_type: item_elementtype,
                             parentfeatureid: parentfeatureid,
                             parentmodelid: data.DataForSelectedFeatureModelItem[i].parent_modelid,
                             HEADER_LINENO: parentarray[0].OPTM_LINENO,
@@ -2437,7 +2469,6 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                 }
                 else if (type == 3 && feature_model_data.OPTM_VALUE != null) {
                   this.setItemDataForFeature(data.DataForSelectedFeatureModelItem, parentarray, propagateqtychecked, propagateqty, parentarray[0].feature_code, parentarray[0].OPTM_LINENO,type,parentArrayElemType,true,feature_model_data);
-                  this.setDefaultByRule(data.RuleOutputData);
                 }
                 else if (type == 2) {
                   if (parentarray[0].OPTM_PROPOGATEQTY == "Y") {
@@ -2629,7 +2660,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         psFeatureMax = 1
       } else {
         psFeatureMax = dtFeatureDataWithDefault[idtfeature].OPTM_MAX_SELECTABLE
-        if (parseFloat(psFeatureMax) > 1) {
+        if (parseInt(psFeatureMax) > 1) {
           psFeatureelement_class = "custom-control custom-checkbox"
           psFeatureelement_type = "checkbox"
         }
@@ -5056,6 +5087,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             header_feature_table['element_type'] = "radio";
             header_feature_table['element_class'] = "custom-control custom-radio";
           }
+
           return array;
         }
 
