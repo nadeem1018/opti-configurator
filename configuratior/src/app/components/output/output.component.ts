@@ -1643,7 +1643,7 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
                 this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
 
                 if(data.RuleOutputData.length > 0){
-                    this.setDefaultByRule(data.RuleOutputData);
+                   // this.setDefaultByRule(data.RuleOutputData);
                 }
 
                 if (this.setModelDataFlag == true) {
@@ -2490,7 +2490,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                   this.defaultitemflagid = data.DataForSelectedFeatureModelItem[0].OPTM_FEATUREID;
 
                   if(data.RuleOutputData.length > 0) {
-                    this.setDefaultByRule(data.RuleOutputData);
+                    //this.setDefaultByRule(data.RuleOutputData);
                   }
                 }
 
@@ -2553,8 +2553,11 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
             }
 
           }//end data null
-            if (data.RuleOutputData != undefined && data.RuleOutputData.length > 0)
+            if (data.RuleOutputData != undefined && data.RuleOutputData.length != null)
             {
+              if(data.RuleOutputData.length > 0)
+{
+
               if (this.ruleData.length > 0 && this.ruleData.length > this.ruleIndex)
               {
 
@@ -2568,6 +2571,7 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                   this.ruleIndex = this.ruleIndex + 1;
                 }
               }
+}
             }
           this.showLookupLoader = false;
         },//end data
@@ -2950,7 +2954,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           } else if(parentarray[0].OPTM_TYPE == 1 && type == 3){
               this.remove_all_features_child(parentarray[0].unique_key,parentarray);
           } else if (parentarray[0].OPTM_TYPE == 3) {
-            this.removeAllSubmodelChild(parentarray[0].unique_key,featureModelData);
+          //  this.removeAllSubmodelChild(parentarray[0].unique_key,featureModelData); // need to discuss with parakh 
             /* this.remove_all_features_child(parentarray[0].unique_key,parentarray); */
           }
 
