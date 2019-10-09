@@ -68,23 +68,25 @@ import { ViewRoutingComponent } from './components/routing/view.routing.componen
 import { ArchivingComponent } from './components/archiving/archiving.component';
 
 
-
-
+// for deactivating route 
+import { CanDeactivateGuard } from 'src/app/can-deactivate.guard';
 
 
 // routing & navigation
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
+
   { path: 'feature/model/add', component: ModelComponent },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
   { path: 'feature/model/edit/:id', component: ModelComponent },
+
   { path: 'feature/bom/add', component: BomComponent },
   { path: 'feature/bom/edit/:id', component: BomComponent },
   { path: 'feature/bom/view', component: ViewFeatureBOMComponent },
   
-  { path: 'item-code-genration/add', component: ItemcodegenerationComponent },
-  { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent },
+  { path: 'item-code-genration/add', component: ItemcodegenerationComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent, canDeactivate: [CanDeactivateGuard] },
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
   { path: 'item-code-generation', component: ViewItemCodeGenerationComponent },
 

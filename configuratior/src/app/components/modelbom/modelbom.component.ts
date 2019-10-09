@@ -1125,7 +1125,7 @@ onDeleteRow(rowindex) {
 
 
                })
-           } else if(this.modelbom_data[i].type == "3") {
+           }/* else if(this.modelbom_data[i].type == "3") {
              this.service.CheckMaxSelectedValueForModel(this.modelbom_data[i].type_value).subscribe(
                data => {
                  if(data != undefined && data != null && data.length > 0){
@@ -1149,7 +1149,7 @@ onDeleteRow(rowindex) {
                    }
                  }
                })
-           }
+           }*/
 
            if (this.modelbom_data[i].min_selected != "") {
              if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {

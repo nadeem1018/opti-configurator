@@ -6,7 +6,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from "@angular/router";
 import { UIHelper } from '../../helpers/ui.helpers';
-
+import  { DialogService } from 'src/app/services/dialog.service';
+/*import { Observable, of } from 'rxjs';*/
 
 
 @Component({
@@ -21,9 +22,15 @@ export class ItemcodegenerationComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/item-code-generation/view';
   language = JSON.parse(sessionStorage.getItem('current_lang'));
-  constructor(private router: ActivatedRoute, private route: Router, private itemgen: ItemcodegenerationService, private toastr: ToastrService,private commanService: CommonService) {
+  constructor(
+    private router: ActivatedRoute, 
+    private route: Router, 
+    private itemgen: ItemcodegenerationService, 
+    private toastr: ToastrService,
+    private commanService: CommonService, 
+    private dialogService: DialogService
+    ) { }
 
-  }
   companyName: string;
   page_main_title = this.language.ItemCodeGeneration
   public itemCodeGen: any = [];
@@ -64,6 +71,15 @@ export class ItemcodegenerationComponent implements OnInit {
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
   public menu_auth_index = '200';
+
+  canDeactivate() {
+  /*  // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    if (this.codekey != "") {
+      return true;
+    }*/
+
+    return this.dialogService.confirm('');
+  }
 
   detectDevice(){
     let getDevice = UIHelper.isDevice();
@@ -116,7 +132,7 @@ export class ItemcodegenerationComponent implements OnInit {
           }, 200);
         }
       });
-      // check screen authorisation - end
+    // check screen authorisation - end
 
     this.codekey = "";
     this.codekey = this.router.snapshot.paramMap.get('id');
@@ -149,7 +165,7 @@ export class ItemcodegenerationComponent implements OnInit {
             if(data[0].Reference==false && data[i].OPTM_TYPE==2){
               this.isOperationDisable=false
             }
-  
+
             this.itemcodetable.push({
               rowindex: data[i].OPTM_LINEID,
               string: data[i].OPTM_CODESTRING,
@@ -160,21 +176,21 @@ export class ItemcodegenerationComponent implements OnInit {
               codekey: this.codekey,
               CreatedUser: this.username,
               isOperationDisable:this.isOperationDisable
-             
+
             })
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING
           }
           this.showLoader  = false;
         }
-      )
+        )
 
       //Check Permission
-     
+
       this.checkPermission("edit");
     }
     else{
-      
-     // this.setfocus=true
+
+      // this.setfocus=true
       this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
@@ -192,19 +208,19 @@ export class ItemcodegenerationComponent implements OnInit {
         CreatedUser:this.username,
         isOperationDisable:true
       }) */
-     
+
       //Check Permission
       this.showLoader  = false;
       this.checkPermission("save");
       
     }
 
-      //Check Permission
-      this.checkPermission("general");
+    //Check Permission
+    this.checkPermission("general");
   }
   ngAfterViewInit() {
     if(this.codekey === "" || this.codekey === null){
-    this._el.nativeElement.focus();
+      this._el.nativeElement.focus();
     }
     else{
       this._button.nativeElement.focus();
@@ -265,7 +281,7 @@ export class ItemcodegenerationComponent implements OnInit {
     console.log(this.itemcodetable);
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
-      
+
         if (data == "7001") {
           this.commanService.RemoveLoggedInUser().subscribe();
           this.commanService.signOut(this.toastr, this.route, 'Sessionout');
@@ -285,7 +301,7 @@ export class ItemcodegenerationComponent implements OnInit {
           return;
         }
       }
-    )
+      )
 
   }
 
@@ -320,96 +336,51 @@ export class ItemcodegenerationComponent implements OnInit {
     this.show_dialog = true;
     // var result = confirm(this.language.DeleteConfimation);
     // if (result) {
-    //   this.validateRowData("Delete")
-    // }
-  }
+      //   this.validateRowData("Delete")
+      // }
+    }
 
-  //This will take confimation box value
-  get_dialog_value(userSelectionValue) {
-    if (userSelectionValue == true) {
-      this.validateRowData("Delete")
-    }
-    this.show_dialog = false;
-  }
-  onCodeStrBlur(code) {
-    if(code !== "" && this.commonData.excludeSpecialCharRegex.test(code) === true) {
-      this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
-    }
-  }
-  onStrBlur(selectedvalue, rowindex, string_number) {
-    if (string_number == 2){ // validate string on blur
-      var rgexp = /^\d+$/;
-      if (rgexp.test(selectedvalue) == false) {
-        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+    //This will take confimation box value
+    get_dialog_value(userSelectionValue) {
+      if (userSelectionValue == true) {
+        this.validateRowData("Delete")
       }
-    } else  {
-      if (this.commonData.excludeSpecialCharRegex.test(selectedvalue.trim()) === true) {
+      this.show_dialog = false;
+    }
+    onCodeStrBlur(code) {
+      if(code !== "" && this.commonData.excludeSpecialCharRegex.test(code) === true) {
         this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
       }
     }
-    if (this.itemcodetable.length > 0) {
-      this.finalstring = "";
-      for (let i = 0; i < this.itemcodetable.length; ++i) {
-        if (this.itemcodetable[i].rowindex === rowindex) {
-          this.itemcodetable[i].string = selectedvalue.trim();
-          this.itemcodetable[i].codekey = this.codekey.trim(); //bug:18908
+    onStrBlur(selectedvalue, rowindex, string_number) {
+      if (string_number == 2){ // validate string on blur
+        var rgexp = /^\d+$/;
+        if (rgexp.test(selectedvalue) == false) {
+          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
         }
-        this.finalstring = this.finalstring + this.itemcodetable[i].string
+      } else  {
+        if (this.commonData.excludeSpecialCharRegex.test(selectedvalue.trim()) === true) {
+          this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+        }
       }
-    }
-
-  }
-
-  validateRowData(buttonpressevent) {
-    if (buttonpressevent == "AddRow") {
       if (this.itemcodetable.length > 0) {
-
+        this.finalstring = "";
         for (let i = 0; i < this.itemcodetable.length; ++i) {
-          if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
-            if (isNaN(this.itemcodetable[i].string) == true) {
-              this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-              return false;
-            }
-            if (this.itemcodetable[i].operations == 1) {
-              this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
-              return false;
-            }
-
+          if (this.itemcodetable[i].rowindex === rowindex) {
+            this.itemcodetable[i].string = selectedvalue.trim();
+            this.itemcodetable[i].codekey = this.codekey.trim(); //bug:18908
           }
-          else {
-            if (this.itemcodetable[i].operations != 1) {
-              this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
-              return false;
-            }
-          }
-          if(this.itemcodetable[i].codekey =="" || this.itemcodetable[i].codekey ==null){
-            this.itemcodetable[i].codekey=this.codekey
-          }
-          
+          this.finalstring = this.finalstring + this.itemcodetable[i].string
         }
       }
+
     }
-    else {
-      if (buttonpressevent != "Delete") {
-        if (this.itemcodetable.length == 0) {
-          this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
-          return false;
-        }
-        else {
-          this.countnumberrow = 0;
+
+    validateRowData(buttonpressevent) {
+      if (buttonpressevent == "AddRow") {
+        if (this.itemcodetable.length > 0) {
+
           for (let i = 0; i < this.itemcodetable.length; ++i) {
-            if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
-              this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
-              return false;
-            } 
-            else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
-              this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
-              return false;
-            }
-            else if(this.commonData.excludeSpecialCharRegex.test(this.codekey) === true) {
-              this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
-              return false;
-            }
             if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
               if (isNaN(this.itemcodetable[i].string) == true) {
                 this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
@@ -419,260 +390,305 @@ export class ItemcodegenerationComponent implements OnInit {
                 this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
-              this.countnumberrow++;
 
-            } else if(this.itemcodetable[i].stringtype == 1 && this.commonData.excludeSpecialCharRegex.test(this.itemcodetable[i].string) === true) {
-              this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
-              return false;
             }
             else {
               if (this.itemcodetable[i].operations != 1) {
                 this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
                 return false;
               }
-
             }
-            if(this.itemcodetable[i].string.trim() == ""){
-              this.toastr.error('', this.language.EnterString, this.commonData.toast_config);
-              return false;
+            if(this.itemcodetable[i].codekey =="" || this.itemcodetable[i].codekey ==null){
+              this.itemcodetable[i].codekey=this.codekey
             }
-
-          }
-          if (this.countnumberrow == 0) {
-            this.toastr.error('', this.language.RowNumberType, this.commonData.toast_config);
-            return false;
 
           }
         }
       }
       else {
-        this.GetItemData = []
-        this.GetItemData.push({
-          CompanyDBId: this.companyName,
-          ItemCode: this.codekey,
-          GUID: sessionStorage.getItem("GUID"),
-          UsernameForLic: sessionStorage.getItem("loggedInUser")
-        })
+        if (buttonpressevent != "Delete") {
+          if (this.itemcodetable.length == 0) {
+            this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
+            return false;
+          }
+          else {
+            this.countnumberrow = 0;
+            for (let i = 0; i < this.itemcodetable.length; ++i) {
+              if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
+                this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+                return false;
+              } 
+              else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
+                this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+                return false;
+              }
+              else if(this.commonData.excludeSpecialCharRegex.test(this.codekey) === true) {
+                this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+                return false;
+              }
+              if (this.itemcodetable[i].stringtype == 2 || this.itemcodetable[i].stringtype == 3) {
+                if (isNaN(this.itemcodetable[i].string) == true) {
+                  this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+                  return false;
+                }
+                if (this.itemcodetable[i].operations == 1) {
+                  this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
+                  return false;
+                }
+                this.countnumberrow++;
 
-        this.itemgen.DeleteData(this.GetItemData).subscribe(
-            data => {
-                if(data != undefined && data.length > 0){
-                  if (data[0].ErrorMsg == "7001") {
-                      this.commanService.RemoveLoggedInUser().subscribe();
-                      this.commanService.signOut(this.toastr, this.route, 'Sessionout');
-                      return;
-                  } 
-                }
-               
-                if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-                  this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ItemCode , this.commonData.toast_config);
-                }
-                else if(data[0].IsDeleted == "1"){
-                    this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                    this.route.navigateByUrl('item-code-generation/view');
-                }
-                else{
-                    this.toastr.error('', this.language.DataNotDelete + ' : ' , this.commonData.toast_config);
+              } else if(this.itemcodetable[i].stringtype == 1 && this.commonData.excludeSpecialCharRegex.test(this.itemcodetable[i].string) === true) {
+                this.toastr.error('', this.language.ValidString, this.commonData.toast_config);
+                return false;
+              }
+              else {
+                if (this.itemcodetable[i].operations != 1) {
+                  this.toastr.error('', this.language.ValidOperations, this.commonData.toast_config);
+                  return false;
                 }
 
               }
+              if(this.itemcodetable[i].string.trim() == ""){
+                this.toastr.error('', this.language.EnterString, this.commonData.toast_config);
+                return false;
+              }
+
+            }
+            if (this.countnumberrow == 0) {
+              this.toastr.error('', this.language.RowNumberType, this.commonData.toast_config);
+              return false;
+
+            }
+          }
+        }
+        else {
+          this.GetItemData = []
+          this.GetItemData.push({
+            CompanyDBId: this.companyName,
+            ItemCode: this.codekey,
+            GUID: sessionStorage.getItem("GUID"),
+            UsernameForLic: sessionStorage.getItem("loggedInUser")
+          })
+
+          this.itemgen.DeleteData(this.GetItemData).subscribe(
+            data => {
+              if(data != undefined && data.length > 0){
+                if (data[0].ErrorMsg == "7001") {
+                  this.commanService.RemoveLoggedInUser().subscribe();
+                  this.commanService.signOut(this.toastr, this.route, 'Sessionout');
+                  return;
+                } 
+              }
+
+              if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+                this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ItemCode , this.commonData.toast_config);
+              }
+              else if(data[0].IsDeleted == "1"){
+                this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                this.route.navigateByUrl('item-code-generation/view');
+              }
+              else{
+                this.toastr.error('', this.language.DataNotDelete + ' : ' , this.commonData.toast_config);
+              }
+
+            }
             )
 
-        // this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
-        //   data => {
-            
-        //     if (data == "True") {
-        //       this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
-        //       return false;
-        //     }
-        //     else {
-        //       this.itemgen.DeleteData(this.GetItemData).subscribe(
-        //         data => {
-        //           if(data != undefined && data.length > 0){
-        //             if (data[0].ErrorMsg == "7001") {
-        //                 this.commanService.RemoveLoggedInUser().subscribe();
-        //                 this.commanService.signOut(this.toastr, this.route);
-        //                 return;
-        //             } 
-        //          }
-        //           if (data === "True") {
-        //             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-        //             this.route.navigateByUrl('item-code-generation/view');
-        //             return;
-        //           }
-        //           else {
-        //             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
-        //             return;
-        //           }
-        //         }
-        //       )
-        //     }
-        //   }
-        //)
-      }
+          // this.itemgen.getItemCodeReference(this.GetItemData).subscribe(
+          //   data => {
 
-    }
-    if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
-      this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
-      return false;
-    }
-    else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
-      this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
-      return false;
-    }
-    if (this.finalstring.length > 50) {
-      this.toastr.error('', this.language.StringLengthValidation, this.commonData.toast_config);
-      return false;
-    }
+            //     if (data == "True") {
+              //       this.toastr.error('', this.language.Refrence, this.commonData.toast_config);
+              //       return false;
+              //     }
+              //     else {
+                //       this.itemgen.DeleteData(this.GetItemData).subscribe(
+                //         data => {
+                  //           if(data != undefined && data.length > 0){
+                    //             if (data[0].ErrorMsg == "7001") {
+                      //                 this.commanService.RemoveLoggedInUser().subscribe();
+                      //                 this.commanService.signOut(this.toastr, this.route);
+                      //                 return;
+                      //             } 
+                      //          }
+                      //           if (data === "True") {
+                        //             this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
+                        //             this.route.navigateByUrl('item-code-generation/view');
+                        //             return;
+                        //           }
+                        //           else {
+                          //             this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
+                          //             return;
+                          //           }
+                          //         }
+                          //       )
+                          //     }
+                          //   }
+                          //)
+                        }
 
-  }
-  CheckDuplicateCode(){
-    this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
-      data => {
+                      }
+                      if (this.codekey == " " || this.codekey == "" || this.codekey == null) {
+                        this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+                        return false;
+                      }
+                      else if(this.codekey.trim() == "" || this.codekey.trim() == null || this.codekey.trim() == " "){
+                        this.toastr.error('', this.language.CodeBlank, this.commonData.toast_config);
+                        return false;
+                      }
+                      if (this.finalstring.length > 50) {
+                        this.toastr.error('', this.language.StringLengthValidation, this.commonData.toast_config);
+                        return false;
+                      }
 
-        if(data != undefined && data.length > 0){
-          if (data[0].ErrorMsg == "7001") {
-              this.commanService.RemoveLoggedInUser().subscribe();
-              this.commanService.signOut(this.toastr, this.route, 'Sessionout');
-              return;
-          } 
-       }
-       
-        if(data[0].TOTALCOUNT > 0){
-          this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
-          this.codekey= "";
-          return;
-        }
-        else{
-          console.log(this.itemcodetable);
-          for (let iCount = 0; iCount < this.itemcodetable.length; ++iCount) {
-            this.itemcodetable[iCount]['codekey'] = this.codekey.replace(/ +/g, "");
-          }
-        } 
-      }
-    )
-  }
+                    }
+                    CheckDuplicateCode(){
+                      this.itemgen.CheckDuplicateCode(this.companyName, this.codekey).subscribe(
+                        data => {
 
-  //get user permission
-  getUserPermissionDetials(){
+                          if(data != undefined && data.length > 0){
+                            if (data[0].ErrorMsg == "7001") {
+                              this.commanService.RemoveLoggedInUser().subscribe();
+                              this.commanService.signOut(this.toastr, this.route, 'Sessionout');
+                              return;
+                            } 
+                          }
 
-    this.commanService.getPermissionDetails().subscribe(
-      data => {
-        if(data !=null || data != undefined){
-          // let isReadOnly:boolean
-          // let isUpdationAllowed:boolean
-          // let isAdditionAllowed:boolean
-          // let isDeletionAllowed:boolean
-          // let isFullPermitted:boolean
+                          if(data[0].TOTALCOUNT > 0){
+                            this.toastr.error('', this.language.DuplicateCode, this.commonData.toast_config);
+                            this.codekey= "";
+                            return;
+                          }
+                          else{
+                            console.log(this.itemcodetable);
+                            for (let iCount = 0; iCount < this.itemcodetable.length; ++iCount) {
+                              this.itemcodetable[iCount]['codekey'] = this.codekey.replace(/ +/g, "");
+                            }
+                          } 
+                        }
+                        )
+                    }
 
-        // this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
+                    //get user permission
+                    getUserPermissionDetials(){
 
-          // PermissionStr.forEach(function (indexValue) {
-          //   if (PermissionStr[indexValue] == "A") {
-          //       isAdditionAllowed = true;
-          //   }
-          //   else if (PermissionStr[indexValue] == "U") {
-          //       isUpdationAllowed = true;
-          //   }
-          //   else if (PermissionStr[indexValue] == "D") {
-          //       isDeletionAllowed = true;
-          //   }
-          //   else if (PermissionStr[indexValue] == "R") {
-          //       isReadOnly = true;
-          //   }
-          // }); 
+                      this.commanService.getPermissionDetails().subscribe(
+                        data => {
+                          if(data !=null || data != undefined){
+                            // let isReadOnly:boolean
+                            // let isUpdationAllowed:boolean
+                            // let isAdditionAllowed:boolean
+                            // let isDeletionAllowed:boolean
+                            // let isFullPermitted:boolean
 
-          // if (isAdditionAllowed === true && isUpdationAllowed == true && isDeletionAllowed === true) {
-          //     this.showAddRowbtn = false;
+                            // this.PermissionStr = data[0].OPTM_PERMISSION.split(",");
 
-          // }
-        // else if (isAdditionAllowed === true && isUpdationAllowed == true) {
-        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
-        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
-        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
-        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
-        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
-        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
-        //     var oTable = oCurrentController.getView().byId("tblResourceId");
-        //     oTable.setShowOverlay(false);
-        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
-        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
-        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
-        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
-        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
-        // }
-      
-        // else if (isUpdationAllowed === true && isDeletionAllowed === true) {
-        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
-        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
-        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
-        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
-        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
-        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
-        //     var oTable = oCurrentController.getView().byId("tblResourceId");
-        //     oTable.setShowOverlay(false);
-        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
-        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
-        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
-        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
-        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
-        // }
-      
-        // else if (isUpdationAllowed === true) {
-        //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
-        //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
-        //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
-        //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
-        //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
-        //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
-        //     var oTable = oCurrentController.getView().byId("tblResourceId");
-        //     oTable.setShowOverlay(false);
-        //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
-        //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
-        //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
-        //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
-        //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
-        //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
-        // }
-      
-          
-        }
-        else{
-          this.toastr.error('', this.language.permission_load_error, this.commonData.toast_config);
-        }
-      },
-      error =>{
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-      }
-    ) 
-  }
+                            // PermissionStr.forEach(function (indexValue) {
+                              //   if (PermissionStr[indexValue] == "A") {
+                                //       isAdditionAllowed = true;
+                                //   }
+                                //   else if (PermissionStr[indexValue] == "U") {
+                                  //       isUpdationAllowed = true;
+                                  //   }
+                                  //   else if (PermissionStr[indexValue] == "D") {
+                                    //       isDeletionAllowed = true;
+                                    //   }
+                                    //   else if (PermissionStr[indexValue] == "R") {
+                                      //       isReadOnly = true;
+                                      //   }
+                                      // }); 
 
-  checkPermission(mode){
-    setTimeout(function(){
-    
+                                      // if (isAdditionAllowed === true && isUpdationAllowed == true && isDeletionAllowed === true) {
+                                        //     this.showAddRowbtn = false;
+
+                                        // }
+                                        // else if (isAdditionAllowed === true && isUpdationAllowed == true) {
+                                          //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+                                          //     var oTable = oCurrentController.getView().byId("tblResourceId");
+                                          //     oTable.setShowOverlay(false);
+                                          //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+                                          //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+                                          //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+                                          //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+                                          //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+                                          //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+                                          //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+                                          // }
+
+                                          // else if (isUpdationAllowed === true && isDeletionAllowed === true) {
+                                            //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+                                            //     var oTable = oCurrentController.getView().byId("tblResourceId");
+                                            //     oTable.setShowOverlay(false);
+                                            //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+                                            //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+                                            //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+                                            //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+                                            //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+                                            //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+                                            //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+                                            // }
+
+                                            // else if (isUpdationAllowed === true) {
+                                              //     oCurrentController.getView().byId("btnStartResumeId").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnBatchSerial").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnFinishId").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnInterruptId").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnAbortId").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnSubmitId").setVisible(true);
+                                              //     var oTable = oCurrentController.getView().byId("tblResourceId");
+                                              //     oTable.setShowOverlay(false);
+                                              //     oCurrentController.getView().byId("txtQtyProducedId").setVisible(true);
+                                              //     oCurrentController.getView().byId("txtQtyAcceptedId").setVisible(true);
+                                              //     oCurrentController.getView().byId("txtQtyRejectedId").setVisible(true);
+                                              //     oCurrentController.getView().byId("cmbxReason").setVisible(true);
+                                              //     oCurrentController.getView().byId("txtRemarkId").setVisible(true);
+                                              //     oCurrentController.getView().byId("txtAbortReasonId").setVisible(true);
+                                              //     oCurrentController.getView().byId("btnGenerateQRCode").setVisible(true);
+                                              // }
+
+
+                                            }
+                                            else{
+                                              this.toastr.error('', this.language.permission_load_error, this.commonData.toast_config);
+                                            }
+                                          },
+                                          error =>{
+                                            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                                          }
+                                          ) 
+}
+
+checkPermission(mode){
+  setTimeout(function(){
+
     if(this.PermissionStr != undefined){
 
-    this.PermissionStr.forEach(function (indexValue) {
-      if (this.PermissionStr[indexValue] == "A") {
+      this.PermissionStr.forEach(function (indexValue) {
+        if (this.PermissionStr[indexValue] == "A") {
           this.isAdditionAllowed = true;
-      }
-      else if (this.PermissionStr[indexValue] == "U") {
+        }
+        else if (this.PermissionStr[indexValue] == "U") {
           this.isUpdationAllowed = true;
-      }
-      else if (this.PermissionStr[indexValue] == "D") {
+        }
+        else if (this.PermissionStr[indexValue] == "D") {
           this.isDeletionAllowed = true;
-      }
-      else if (this.PermissionStr[indexValue] == "R") {
+        }
+        else if (this.PermissionStr[indexValue] == "R") {
           this.isReadOnly = true;
-      }
-    }); 
+        }
+      }); 
 
-    if(mode == "add"){
+      if(mode == "add"){
         if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
           this.isSaveButtonVisible = true;
         }
@@ -680,48 +696,48 @@ export class ItemcodegenerationComponent implements OnInit {
           this.isSaveButtonVisible = true;
         }
         // else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
-          
-        // }
-        // else if (this.isUpdationAllowed === true) {
-      
-        // }
-    }
-    if(mode == "edit"){
-      if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
-        this.isUpdateButtonVisible = true;
-      }
-      else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
-        this.isUpdateButtonVisible = true;
-      }
-      else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
-        this.isUpdateButtonVisible = true;
-      }
-      else if (this.isUpdationAllowed === true) {
-        this.isUpdateButtonVisible = true;
-      }
 
-    }
-    // if(mode == "delete"){
-    //    this.showRemoveBtn = true;
-    // }
-    if(mode == "general"){
-          if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
-              this.showAddRowbtn = false;
-              this.showRemoveBtn = true;
+          // }
+          // else if (this.isUpdationAllowed === true) {
+
+            // }
           }
-          else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
-            this.showAddRowbtn = false;
+          if(mode == "edit"){
+            if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
+              this.isUpdateButtonVisible = true;
+            }
+            else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
+              this.isUpdateButtonVisible = true;
+            }
+            else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
+              this.isUpdateButtonVisible = true;
+            }
+            else if (this.isUpdationAllowed === true) {
+              this.isUpdateButtonVisible = true;
+            }
+
           }
-          else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
-            this.showRemoveBtn = true;
+          // if(mode == "delete"){
+            //    this.showRemoveBtn = true;
+            // }
+            if(mode == "general"){
+              if (this.isAdditionAllowed === true && this.isUpdationAllowed == true && this.isDeletionAllowed === true) {
+                this.showAddRowbtn = false;
+                this.showRemoveBtn = true;
+              }
+              else if (this.isAdditionAllowed === true && this.isUpdationAllowed == true) {
+                this.showAddRowbtn = false;
+              }
+              else if (this.isUpdationAllowed === true && this.isDeletionAllowed === true) {
+                this.showRemoveBtn = true;
+              }
+              else if (this.isUpdationAllowed === true) {
+
+              }
+            }
           }
-          else if (this.isUpdationAllowed === true) {
-         
-          }
-    }
-  }
-    
-    }, 3000);
- }
+
+        }, 3000);
+}
 
 }
