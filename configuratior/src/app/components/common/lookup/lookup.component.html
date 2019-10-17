@@ -41,7 +41,7 @@
 
 <!-- import data modal -->
 <!-- Grid Modal-->
-<div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true"
+<!-- <div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true"
     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-md" role="document">
         <div class="modal-content">
@@ -67,7 +67,7 @@
                         <div class="col-sm-6">
                             <select class="form-control  form-control-sm mt3" [(ngModel)]="fileType" name="fileType" id="fileTypeID">
                                 <option value="excel">{{language.excel}}</option>
-                                <!-- <option value="csv">{{language.csv}}</option> -->
+                                <option value="csv">{{language.csv}}</option>
                             </select>
                         </div>
 
@@ -106,7 +106,7 @@
 
     <script src="Scripts/xlsx.full.min.js"></script>
     <script src="Scripts/jszip.js"></script>
-</div>
+</div> -->
 
 <!-- enlarge image modal -->
 
@@ -985,8 +985,8 @@
                                                     </thead>
                                                     <tbody *ngIf="rule_data.Expression !== undefined && rule_data.Expression !== '' && rule_data.Expression.length > 0 ">
                                                         <tr *ngFor="let rule_sequence_data of (rule_data.Expression).split('**'); ">
-                                                            <td> {{rule_sequence_data.split(',')[0].split(':')[1]}} </td>
-                                                            <td> {{rule_sequence_data.split(',')[1].split(':')[1]}}</td>
+                                                            <td> {{rule_sequence_data.split('::__::')[0].split(':')[1]}} </td>
+                                                            <td> {{rule_sequence_data.split('::__::')[1].split(':')[1]}}</td>
                                                             <td>
                                                                 <button type="button" class="btn btn-sm mr-10 btn-primary" (click)="get_rule_output(rule_data.OPTM_RULEID, rule_sequence_data.split(',')[0].split(':')[1])"
                                                                     title="{{language.view_output}}">

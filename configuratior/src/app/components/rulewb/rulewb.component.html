@@ -50,7 +50,7 @@
             <div class="col-sm-5">
               <input type="text" name="rule_code" class="form-control form-control-sm" maxlength="50" id="rule_code"
                 placeholder="{{language.name}}" [(ngModel)]="rule_wb_data.rule_code" #rulecode
-                title="{{rule_wb_data.rule_code}}" tabindex="1" [disabled]="code_disabled">
+                title="{{rule_wb_data.rule_code}}" tabindex="1" [disabled]="code_disabled" (change)="detect_change()">
             </div>
 
             <!-- <label class="opt_custome-label col-form-label" for="rule_description">{{language.description}}</label>
@@ -150,7 +150,7 @@
             <div class="col-sm-5">
               <input type="text" name="description" class="form-control  form-control-sm mt3" maxlength="50"
                 id="rule_description" placeholder="{{language.description}}" [(ngModel)]="rule_wb_data.description"
-                title="{{rule_wb_data.description}}" tabindex="2">
+                title="{{rule_wb_data.description}}" tabindex="2" (change)="detect_change()">
             </div>
 
           </div>

@@ -62,14 +62,14 @@
                             <label class="col-sm-4 col-form-label" for="featurename">{{model_name_label}}</label>
                             <div class="col-sm-5">
                                 <input type="text" id="modelID" name="modelID" maxlength="50" class="form-control  form-control-sm mt3" placeholder="{{model_name_label}}"
-                                [(ngModel)]="featureBom.Name" title="{{featureBom.Name}}">
+                                [(ngModel)]="featureBom.Name" title="{{featureBom.Name}}" (change)="call_change_event()">
                             </div>
                         </div>
                         <div class="form-group row clearfix">
                             <label class="col-sm-4 col-form-label" for="featureDesc">{{model_desc_label}}</label>
                             <div class="col-sm-5">
                                 <input type="text" name="descName" maxlength="50" class="form-control  form-control-sm mt3" id="featureDesc" placeholder="{{model_desc_label}}"
-                                [(ngModel)]="featureBom.Desc" title="{{featureBom.Desc}}">
+                                [(ngModel)]="featureBom.Desc" title="{{featureBom.Desc}}" (change)="call_change_event()">
                             </div>
                         </div>
                         <div class="form-group row clearfix">
@@ -90,7 +90,7 @@
 
                             <div class="col-sm-5 input-group mt3">
                                 <input type="text" ngValue="" class="form-control  form-control-sm" name="itemCodeName" id="featureItemCode" (change)="onRefCodeChange()"
-                                placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" title="{{featureBom.Ref}}" [disabled]="isRefCodeDisabled">
+                                placeholder="{{language.Model_Ref}}" [(ngModel)]="featureBom.Ref" title="{{featureBom.Ref}}" [disabled]="isRefCodeDisabled" (change)="call_change_event()">
                                 <div class="input-group-append" [hidden] ="isReflookupDisabled">
                                     <span class="input-group-text cursor_icon" id="basic-addon2"  (click)="onItemGenerationPress(true)">
                                         <i class="fa fa-bars"></i>
@@ -136,7 +136,7 @@
                      <div class="form-group row clearfix">
                         <label class="col-sm-4 col-form-label" for="Status">{{language.Model_Status}}</label>
                         <div class="col-sm-5">
-                            <select class="form-control  form-control-sm mt3" name="featureTypeName" [(ngModel)]="featureBom.Status" id="featureTypeNameID">
+                            <select class="form-control  form-control-sm mt3" name="featureTypeName" [(ngModel)]="featureBom.Status" id="featureTypeNameID" (change)="call_change_event()">
                                 <option value="Active">{{language.Model_Active}}</option>
                                 <option value="Inactive">{{language.Model_InActive}}</option>
                             </select>
@@ -147,11 +147,11 @@
                         <label class="col-sm-4 col-form-label" for="Accessory">{{language.Model_Accessory}}</label>
                         <div  class="col-sm-5 mt-3px">
                             <div  class="custom-control custom-radio custom-control-inline mr-3">
-                                <input [disabled] = "isUsedAccesoriesDisabled" type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory" title="{{this.language.YES}}">
+                                <input [disabled] = "isUsedAccesoriesDisabled" type="radio" id="yes" name="accessory" class="custom-control-input" value="Y" [(ngModel)]="featureBom.Accessory" (change)="call_change_event()" title="{{this.language.YES}}">
                                 <label class="custom-control-label" for="yes">{{this.language.YES}}</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline ">
-                                <input [disabled] = "isUsedAccesoriesDisabled"  type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory" title="{{this.language.NO}}">
+                                <input [disabled] = "isUsedAccesoriesDisabled"  type="radio" id="no" name="accessory" class="custom-control-input" value="N" [(ngModel)]="featureBom.Accessory" (change)="call_change_event()" title="{{this.language.NO}}">
                                 <label class="custom-control-label" for="no">{{this.language.NO}}</label>
                             </div>
                         </div>

@@ -70,7 +70,7 @@ export class LookupComponent implements OnInit {
   public isRuleChecked = false;
   username: string;
   public fileType = "";
-  public template_path = "";
+  // public template_path = "";
   public print_item_list_array: any = [];
   public is_operation_popup_lookup_open: boolean = false
   //Print Data variables
@@ -144,7 +144,7 @@ export class LookupComponent implements OnInit {
     this.config_data = JSON.parse(sessionStorage.getItem('system_config'));
     this.template_type = "model";
     this.skip = 0;
-    this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
+    // this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
     this.dialogOpened = false;
     this.downLoadfileName =  'Quotation.pdf';
   }
@@ -527,15 +527,7 @@ export class LookupComponent implements OnInit {
       console.log(val);
     }
 
-    on_template_type_change() {
-      if (this.template_type === "model") {
-        this.template_path = this.commonData.application_path + "/assets/data/json/ModelMaster.xlsx";
-      }
-      else if (this.template_type === "feature") {
-        this.template_path = this.commonData.application_path + "/assets/data/json/FeatureMaster.xlsx";
-      }
-
-    }
+ 
     on_item_select(selection) {
       var lookup_key = selection.selectedRows[0].dataItem;
     //  console.log("this.popup_lookupfor ", this.popup_lookupfor);
@@ -554,13 +546,7 @@ export class LookupComponent implements OnInit {
                 this.resourceServiceData[i].resource_uom = lookup_key.UnitOfMsr;
                 this.resourceServiceData[i].DCNum = lookup_key.DCNum;
 
-            /* this.resourceServiceData[i].resource_consumption = parseFloat('1').toFixed(3);
-            this.resourceServiceData[i].resource_inverse = parseFloat('0').toFixed(3);
-            this.resourceServiceData[i].no_resource_used = '1';
-            this.resourceServiceData[i].time_uom = '';
-            this.resourceServiceData[i].time_consumption = parseFloat('0').toFixed(3);
-            this.resourceServiceData[i].time_inverse = parseFloat('0').toFixed(3); */
-            this.get_consumption_inverse_value('consumption', 1, this.resourceServiceData[i].resource_code, i);
+             this.get_consumption_inverse_value('consumption', 1, this.resourceServiceData[i].resource_code, i);
 
 
           }

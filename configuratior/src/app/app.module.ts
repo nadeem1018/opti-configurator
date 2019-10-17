@@ -77,12 +77,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
 
-  { path: 'feature/model/add', component: ModelComponent },
+  { path: 'feature/model/add', component: ModelComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
-  { path: 'feature/model/edit/:id', component: ModelComponent },
+  { path: 'feature/model/edit/:id', component: ModelComponent,   canDeactivate: [CanDeactivateGuard] },
 
-  { path: 'feature/bom/add', component: BomComponent },
-  { path: 'feature/bom/edit/:id', component: BomComponent },
+  { path: 'feature/bom/add', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'feature/bom/edit/:id', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/bom/view', component: ViewFeatureBOMComponent },
   
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent,   canDeactivate: [CanDeactivateGuard] },
@@ -90,20 +90,20 @@ const routes: Routes = [
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
   { path: 'item-code-generation', component: ViewItemCodeGenerationComponent },
 
-  { path: 'modelbom/add', component: ModelbomComponent },
-  { path: 'modelbom/edit/:id', component: ModelbomComponent },
+  { path: 'modelbom/add', component: ModelbomComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'modelbom/edit/:id', component: ModelbomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'modelbom/view', component: ViewModelBomComponent },
 
-  { path: 'rulewb/add', component: RulewbComponent },
-  { path: 'rulewb/edit/:id', component: RulewbComponent },
+  { path: 'rulewb/add', component: RulewbComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'rulewb/edit/:id', component: RulewbComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'rulewb/view', component: RuleWbViewComponent },
 
-  { path: 'output/view', component: OutputComponent },
-  { path: 'output/view/:id', component: OutputComponent },
-  { path: 'output/view/new', component: OutputComponent },
+  { path: 'output/view', component: OutputComponent,  canDeactivate: [CanDeactivateGuard] },
+  { path: 'output/view/:id', component: OutputComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'output/view/new', component: OutputComponent,  canDeactivate: [CanDeactivateGuard] },
 
-  { path: 'routing/add', component: RoutingComponent },
-  { path: 'routing/edit/:id', component: RoutingComponent },
+  { path: 'routing/add', component: RoutingComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'routing/edit/:id', component: RoutingComponent ,   canDeactivate: [CanDeactivateGuard]},
   { path: 'routing/view', component: ViewRoutingComponent },
 
   { path: 'archiving/configuration', component: ArchivingComponent },

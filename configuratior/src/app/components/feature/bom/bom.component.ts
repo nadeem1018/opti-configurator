@@ -9,6 +9,7 @@ import { jaLocale, BsModalRef, BsModalService } from 'ngx-bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
+import  { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-bom',
@@ -76,19 +77,29 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
-  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService) { }
+  constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService, private DialogService: DialogService) { }
 
   isMobile: boolean = false;
   isIpad: boolean = false;
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
   public menu_auth_index: string = "202";
+  public made_changes:boolean = false;
 
   getSelectedRowDetail(event) {
+    this.made_changes = true;
     if (event.selectedRows.length > 0) {
       this.current_selected_row = event.selectedRows[0].dataItem;
     } else {
       this.current_selected_row = [];
+    }
+  }
+
+  canDeactivate() {
+    if(this.made_changes == true){
+      return this.DialogService.confirm('');
+    } else {
+      return true;
     }
   }
 
@@ -157,6 +168,7 @@ export class BomComponent implements OnInit {
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
+      this.made_changes = true;
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
       this.isFeatureIdEnable = false;
@@ -169,6 +181,7 @@ export class BomComponent implements OnInit {
       this.feature_bom_data.feature_max_selectable = 1;
     }
     else {
+      this.made_changes = false;
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true;
@@ -185,6 +198,7 @@ export class BomComponent implements OnInit {
       data => {
         if (data != undefined && data.LICDATA != undefined) {
           if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
@@ -362,6 +376,7 @@ ngAfterViewInit() {
 }
 
 on_multiple_model_change() {
+  this.made_changes = true;
   if (this.feature_bom_data.multi_select == 'false') {
     this.feature_bom_data.multi_select_disabled = true;
   } else if (this.feature_bom_data.multi_select == 'true') {
@@ -381,6 +396,7 @@ on_multiple_model_change() {
 }
 
 validate_min_values(value, input_id) {
+  this.made_changes = true;
   if (this.feature_bom_data.multi_select == 'true') {
       /* if (value == 0) {
         value = 1;
@@ -426,6 +442,7 @@ validate_min_values(value, input_id) {
     }
 
     validate_max_values(value, input_id) {
+      this.made_changes = true;
       if (value == 0) {
         value = 1;
         this.feature_bom_data[input_id] = (value);
@@ -474,8 +491,15 @@ validate_min_values(value, input_id) {
 
 
       let table_default_type = 1;
+
+      let print_on_report_flag = false;
+      let print_on_report_disabled_flag = true;
+
       if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
         table_default_type = 2;
+
+        print_on_report_flag = true;
+        print_on_report_disabled_flag  = false;
       }
 
       this.feature_bom_table.push({
@@ -504,7 +528,10 @@ validate_min_values(value, input_id) {
         pricehide: this.pricehide,
         CompanyDBId:sessionStorage.selectedComp,
         CreatedUser: this.username,
+        print_on_report : print_on_report_flag,
+        print_on_report_disabled : print_on_report_disabled_flag
       });
+      this.made_changes = true;
     };
 
     uploaddetailfile(files: any, rowindex) {
@@ -551,6 +578,7 @@ validate_min_values(value, input_id) {
     }
 
     onDeleteRow(rowindex) {
+      this.made_changes = true;
       if (this.feature_bom_table.length > 0) {
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
           if (this.feature_bom_table[i].rowindex === rowindex) {
@@ -633,12 +661,14 @@ validate_min_values(value, input_id) {
         data => {
           this.showLookupLoader = false;
           if (data == "7001") {
+            this.made_changes = false;
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
           }
 
           if (data === "True") {
+            this.made_changes= false;
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.route.navigateByUrl('feature/bom/view');
             return;
@@ -664,8 +694,8 @@ validate_min_values(value, input_id) {
     }
 
     on_bom_type_change(selectedvalue, rowindex) {
-      console.log('on bom type change');
-      console.log(selectedvalue);
+
+      this.made_changes = true;
       this.currentrowindex = rowindex
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -685,6 +715,8 @@ validate_min_values(value, input_id) {
             this.feature_bom_table[i].isPropagateQtyDisable = true
             this.feature_bom_table[i].price_source = ""
             this.feature_bom_table[i].price_source_id = ""
+            this.feature_bom_table[i].print_on_report = false;
+            this.feature_bom_table[i].print_on_report_disabled = true;
           }
           else {
             this.feature_bom_table[i].isDisplayNameDisabled = false
@@ -697,6 +729,8 @@ validate_min_values(value, input_id) {
               this.feature_bom_table[i].isQuanityDisabled = false
               this.feature_bom_table[i].isPriceDisabled = false
               this.feature_bom_table[i].pricehide = false
+              this.feature_bom_table[i].print_on_report = true;
+              this.feature_bom_table[i].print_on_report_disabled = false;
             }
             else {
               this.feature_bom_table[i].type = 1
@@ -705,7 +739,9 @@ validate_min_values(value, input_id) {
               this.feature_bom_table[i].isPriceDisabled = true
               this.feature_bom_table[i].pricehide = true
               this.feature_bom_table[i].price_source = ""
-              this.feature_bom_table[i].price_source_id = ""
+              this.feature_bom_table[i].price_source_id = "";
+              this.feature_bom_table[i].print_on_report = false;
+              this.feature_bom_table[i].print_on_report_disabled = true;;
             }
           }
 
@@ -716,8 +752,7 @@ validate_min_values(value, input_id) {
     }
 
     on_type_change(selectedvalue, rowindex) {
-      console.log('on type change ');
-      console.log(selectedvalue);
+      this.made_changes = true;
       this.currentrowindex = rowindex;
       this.showLookupLoader = true;
       this.getFeatureDetails(this.feature_bom_data.feature_id, "Detail", selectedvalue);
@@ -762,6 +797,7 @@ validate_min_values(value, input_id) {
     }
 
     on_remark_change(value, rowindex) {
+      this.made_changes = true;
       this.currentrowindex = rowindex
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -771,6 +807,7 @@ validate_min_values(value, input_id) {
     }
 
     on_displayname_change(value, rowindex) {
+      this.made_changes = true;
       this.currentrowindex = rowindex
       for (let i = 0; i < this.feature_bom_table.length; ++i) {
         if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -789,6 +826,7 @@ validate_min_values(value, input_id) {
 
    on_typevalue_change(value, rowindex, code, type_value_code) {
      var iIndex;
+     this.made_changes = true;
      this.currentrowindex = rowindex
      iIndex = this.currentrowindex - 1;
      for (let j = 0; j < this.feature_bom_table.length; j++) {
@@ -835,6 +873,7 @@ validate_min_values(value, input_id) {
 
                if (data != undefined && data.length > 0) {
                  if (data[0].ErrorMsg == "7001") {
+                   this.made_changes = false;
                    this.commanService.RemoveLoggedInUser().subscribe();
                    this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                    return;
@@ -875,6 +914,7 @@ validate_min_values(value, input_id) {
    }
 
    on_defualt_change(value, rowindex) {
+     this.made_changes = true;
      this.currentrowindex = rowindex
      for (let i = 0; i < this.feature_bom_table.length; ++i) {
        if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -898,12 +938,14 @@ validate_min_values(value, input_id) {
 
    getLookupValue($event) {
      if (this.lookupfor == 'feature_lookup') {
+       this.made_changes = true;
        this.feature_bom_data.feature_id = $event[0];
        this.feature_bom_data.feature_code = $event[1];
        this.getFeatureDetails($event[0], "Header", 0);
      }
      else if (this.lookupfor == 'Item_Detail_lookup') {
        this.lookupfor = 'Item_Detail_lookup';
+       this.made_changes = true;
        for (let j = 0; j < this.feature_bom_table.length; j++) {
          var psTypeCode = this.feature_bom_table[j].type_value_code;
          if (psTypeCode != undefined && psTypeCode != "") {
@@ -920,6 +962,7 @@ validate_min_values(value, input_id) {
      }
      else if (this.lookupfor == 'feature_Detail_lookup') {
        //call the method cyclic chk
+       this.made_changes = true;
        for (let j = 0; j < this.feature_bom_table.length; j++) {
          var psTypeCode = this.feature_bom_table[j].type_value_code;
          if (psTypeCode != undefined && psTypeCode != "") {
@@ -935,6 +978,7 @@ validate_min_values(value, input_id) {
        this.checkFeaturesAlreadyAddedinParent($event[0], "", this.currentrowindex - 1, "lookup");
      }
      else if (this.lookupfor == 'Price_lookup') {
+       this.made_changes = true;
        this.getPriceDetails($event[1], $event[0], this.currentrowindex);
      }
 
@@ -951,6 +995,7 @@ validate_min_values(value, input_id) {
 
    openFeatureLookUp() {
      this.showLookupLoader = true;
+     this.made_changes = true;
      console.log('inopen feature');
      this.serviceData = []
      this.lookupfor = 'feature_lookup';
@@ -958,6 +1003,7 @@ validate_min_values(value, input_id) {
        data => {
          if (data != undefined && data.length > 0) {
            if (data[0].ErrorMsg == "7001") {
+             this.made_changes = false;
              this.showLookupLoader = false;
              this.commanService.RemoveLoggedInUser().subscribe();
              this.commanService.signOut(this.toastr, this.router, 'Sessionout');
@@ -968,16 +1014,16 @@ validate_min_values(value, input_id) {
            this.showLookupLoader = false;
            this.serviceData = data;
            console.log(this.serviceData);
-          
-          var objss = this;
-          var language = this.language;
+
+           var objss = this;
+           var language = this.language;
            this.serviceData.filter(function(obj){
-              if(obj.OPTM_ACCESSORY == "Y") {
-                  obj.OPTM_ACCESSORY = language.YES;
-              } else if(obj.OPTM_ACCESSORY == "N") {
-                  obj.OPTM_ACCESSORY = language.NO;
-              }
-            })
+             if(obj.OPTM_ACCESSORY == "Y") {
+               obj.OPTM_ACCESSORY = language.YES;
+             } else if(obj.OPTM_ACCESSORY == "N") {
+               obj.OPTM_ACCESSORY = language.NO;
+             }
+           })
 
          }
          else {
@@ -999,6 +1045,7 @@ validate_min_values(value, input_id) {
        data => {
          if (data != undefined && data.length > 0) {
            if (data[0].ErrorMsg == "7001") {
+             this.made_changes = false;
              this.commanService.RemoveLoggedInUser().subscribe();
              this.commanService.signOut(this.toastr, this.router, 'Sessionout');
              return;
@@ -1065,6 +1112,7 @@ validate_min_values(value, input_id) {
 
          if (data != undefined && data.length > 0) {
            if (data[0].ErrorMsg == "7001") {
+             this.made_changes = false;
              this.showLookupLoader = false;
              this.commanService.RemoveLoggedInUser().subscribe();
              this.commanService.signOut(this.toastr, this.router, 'Sessionout');
@@ -1163,10 +1211,12 @@ openPriceLookUp(ItemKey, rowindex) {
   this.showLookupLoader = true;
   this.serviceData = []
   this.currentrowindex = rowindex;
+  this.made_changes = true;
   this.fbom.GetPriceList(ItemKey).subscribe(
     data => {
       if (data != undefined && data.length > 0) {
         if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
           this.showLookupLoader = false;
           this.commanService.RemoveLoggedInUser().subscribe();
           this.commanService.signOut(this.toastr, this.router, 'Sessionout');
@@ -1256,7 +1306,7 @@ validation(btnpress) {
           return  (obj.is_accessory == 'Y' &&  obj.type == 1 ) ? obj : ''
         });
         let total_acc_rows  = (temp_acc != undefined ) ? temp_acc.length : 0;
-         
+
 
         let total_detail_elements =  (total_rows - total_acc_rows );
         
@@ -1290,7 +1340,7 @@ validation(btnpress) {
   }
 
   on_propagate_qty_change(value, rowindex) {
-
+    this.made_changes = true;
     this.currentrowindex = rowindex
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
@@ -1303,11 +1353,27 @@ validation(btnpress) {
         }
       }
     }
+  }
 
+  print_on_report_change(value, rowindex){
+    this.made_changes = true;
+    this.currentrowindex = rowindex
+    for (let i = 0; i < this.feature_bom_table.length; ++i) {
+      if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
+        console.log('print_on_report value ' + value);
+        if (value.checked == true) {
+          this.feature_bom_table[i].print_on_report = true
+        }
+        else {
+          this.feature_bom_table[i].print_on_report = false
+        }
+      }
+    }
   }
 
   on_price_source_change(id, value, rowindex, actualValue) {
     this.currentrowindex = rowindex
+    this.made_changes = true;
     for (let i = 0; i < this.feature_bom_table.length; ++i) {
       if (this.feature_bom_table[i].rowindex === this.currentrowindex) {
 
@@ -1316,6 +1382,7 @@ validation(btnpress) {
 
             if (data != undefined && data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
                 this.commanService.RemoveLoggedInUser().subscribe();
                 this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                 return;
@@ -1359,6 +1426,7 @@ validation(btnpress) {
       data => {
         if (data != undefined && data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commanService.RemoveLoggedInUser().subscribe();
             this.commanService.signOut(this.toastr, this.router, 'Sessionout');
             return;
@@ -1370,6 +1438,7 @@ validation(btnpress) {
         }
         else if (data[0].IsDeleted == "1") {
           this.toastr.success('', this.language.DataDeleteSuccesfully  + ' : ' + data[0].FeatureCode, this.commonData.toast_config);
+          this.made_changes = false;
           this.router.navigateByUrl('feature/bom/view');
         }
         else {
@@ -1409,6 +1478,7 @@ validation(btnpress) {
           if (data != null && data != undefined) {
             if (data.length > 0) {
               if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
                 this.commanService.RemoveLoggedInUser().subscribe();
                 this.commanService.signOut(this.toastr, this.router, 'Sessionout');
                 this.showLookupLoader = false;
@@ -1458,6 +1528,7 @@ validation(btnpress) {
 
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
+                  this.made_changes = false;
                   this.commanService.RemoveLoggedInUser().subscribe();
                   this.commanService.signOut(this.toastr, this.router, 'Sessionout');
                   return;
@@ -1547,12 +1618,14 @@ validation(btnpress) {
 
 
     onFeatureIdChange() {
+      this.made_changes = true;
       this.fbom.onFeatureIdChange(this.feature_bom_data.feature_code).subscribe(
         data => {
           console.log(data);
 
           if (data != undefined && data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.route, 'Sessionout');
               return;
@@ -1587,6 +1660,7 @@ validation(btnpress) {
         data => {
           if (data != undefined && data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.router, 'Sessionout');
               return;
@@ -1712,39 +1786,39 @@ validation(btnpress) {
     }
 
     resequence_operation(type) {  // type = 1 : up & type = 2 : down
-    /* let current_row_index = this.current_selected_row.rowindex - 1;
-    this.row_selection = []; */
-    let row_c_select = this.current_selected_row.rowindex;
-    let current_row_index = this.feature_bom_table.findIndex(function (obj) {
-      return obj.rowindex == row_c_select;
-    });
-    this.row_selection = [];
-    console.log("this.row_selection start  - ", this.row_selection);
-    if (type == '1') {
-      let prev_row_index = current_row_index - 1;
-      if (this.feature_bom_table[prev_row_index] != undefined) { // && this.feature_bom_table[prev_row_index].length > 0
-        this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex - 1;
-        this.feature_bom_table[prev_row_index].rowindex = this.feature_bom_table[prev_row_index].rowindex + 1;
 
-        var temp_swap = this.feature_bom_table[current_row_index];
-        this.feature_bom_table[current_row_index] = this.feature_bom_table[prev_row_index];
-        this.feature_bom_table[prev_row_index] = temp_swap;
-        this.row_selection = [this.feature_bom_table[prev_row_index].rowindex];
-        this.current_selected_row = this.feature_bom_table[prev_row_index];
-      }
-    } else if (type == '2') {
-      let next_row_index = current_row_index + 1;
-      if (this.feature_bom_table[next_row_index] != undefined) { // && this.feature_bom_table[next_row_index].length > 0
-        this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex + 1;
-        this.feature_bom_table[next_row_index].rowindex = this.feature_bom_table[next_row_index].rowindex - 1;
+      this.made_changes = true;
+      let row_c_select = this.current_selected_row.rowindex;
+      let current_row_index = this.feature_bom_table.findIndex(function (obj) {
+        return obj.rowindex == row_c_select;
+      });
+      this.row_selection = [];
+      console.log("this.row_selection start  - ", this.row_selection);
+      if (type == '1') {
+        let prev_row_index = current_row_index - 1;
+        if (this.feature_bom_table[prev_row_index] != undefined) { // && this.feature_bom_table[prev_row_index].length > 0
+          this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex - 1;
+          this.feature_bom_table[prev_row_index].rowindex = this.feature_bom_table[prev_row_index].rowindex + 1;
+
+          var temp_swap = this.feature_bom_table[current_row_index];
+          this.feature_bom_table[current_row_index] = this.feature_bom_table[prev_row_index];
+          this.feature_bom_table[prev_row_index] = temp_swap;
+          this.row_selection = [this.feature_bom_table[prev_row_index].rowindex];
+          this.current_selected_row = this.feature_bom_table[prev_row_index];
+        }
+      } else if (type == '2') {
+        let next_row_index = current_row_index + 1;
+        if (this.feature_bom_table[next_row_index] != undefined) { // && this.feature_bom_table[next_row_index].length > 0
+          this.feature_bom_table[current_row_index].rowindex = this.feature_bom_table[current_row_index].rowindex + 1;
+          this.feature_bom_table[next_row_index].rowindex = this.feature_bom_table[next_row_index].rowindex - 1;
 
 
-        var temp_swap = this.feature_bom_table[current_row_index];
-        this.feature_bom_table[current_row_index] = this.feature_bom_table[next_row_index];
-        this.feature_bom_table[next_row_index] = temp_swap;
-        this.row_selection = [this.feature_bom_table[next_row_index].rowindex];
-        this.current_selected_row = this.feature_bom_table[next_row_index];
+          var temp_swap = this.feature_bom_table[current_row_index];
+          this.feature_bom_table[current_row_index] = this.feature_bom_table[next_row_index];
+          this.feature_bom_table[next_row_index] = temp_swap;
+          this.row_selection = [this.feature_bom_table[next_row_index].rowindex];
+          this.current_selected_row = this.feature_bom_table[next_row_index];
+        }
       }
     }
   }
-}
