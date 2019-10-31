@@ -229,4 +229,13 @@ export class OutputService {
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Wizard/GetCustomerAllInfo?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
+
+  getPrintOnReportStatus(item_list_data): Observable<any> {
+    let cache_control = this.common_params.random_string(40);
+    //JSON Obeject Prepared to be send as a param to API
+   
+     let jObject = { GetData: JSON.stringify(item_list_data) }
+    //Return the response form the API  
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetPrintOnReport?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
+  }
 }

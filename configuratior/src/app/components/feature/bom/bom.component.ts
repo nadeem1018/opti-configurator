@@ -278,6 +278,22 @@ export class BomComponent implements OnInit {
             }
             this.counter++;
 
+            let print_on_report =  false;
+            let print_on_report_disabled = true;
+            if(data.FeatureDetail[i].OPTM_TYPE == 2){
+              if(data.FeatureDetail[i].OPTM_PRINT_OPTN == 'Y' || data.FeatureDetail[i].OPTM_PRINT_OPTN == 'y'){
+                print_on_report  = true;
+              } else {
+                print_on_report  = false;
+              }
+              
+              print_on_report_disabled = false;
+            } else {
+              print_on_report = false;
+              print_on_report_disabled = true;
+            }
+
+
             this.feature_bom_table.push({
               rowindex: this.counter,
               FeatureId: data.FeatureDetail[i].OPTM_FEATUREID,
@@ -304,6 +320,8 @@ export class BomComponent implements OnInit {
               isPriceDisabled: this.isPriceDisabled,
               CompanyDBId: sessionStorage.selectedComp,
               CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
+              print_on_report : print_on_report,
+              print_on_report_disabled : print_on_report_disabled
             });
           }
         } else {
@@ -507,10 +525,12 @@ validate_min_values(value, input_id) {
 
       if (this.feature_bom_data.is_accessory == 'y' || this.feature_bom_data.is_accessory == 'Y') {
         table_default_type = 2;
+      }
 
+       if(table_default_type == 2) {
         print_on_report_flag = true;
         print_on_report_disabled_flag  = false;
-      }
+       }
 
       this.feature_bom_table.push({
         rowindex: this.counter,
@@ -661,7 +681,7 @@ validate_min_values(value, input_id) {
           else {
             this.feature_bom_table[i].default = "Y"
           }
-          console.log("qty - " + this.feature_bom_table[i].propagate_qty);
+        
           if (this.feature_bom_table[i].propagate_qty === false) {
             this.feature_bom_table[i].propagate_qty = "N"
           }
@@ -670,6 +690,13 @@ validate_min_values(value, input_id) {
           }
 
           this.feature_bom_table[i].quantity = this.feature_bom_table[i].quantity.toString();
+
+           if (this.feature_bom_table[i].print_on_report === false) {
+              this.feature_bom_table[i].print_on_report = "N"
+            }
+            else {
+              this.feature_bom_table[i].print_on_report = "Y"
+            }
         }
       }
       this.showLookupLoader = true;
@@ -763,7 +790,7 @@ validate_min_values(value, input_id) {
               this.feature_bom_table[i].price_source = ""
               this.feature_bom_table[i].price_source_id = "";
               this.feature_bom_table[i].print_on_report = false;
-              this.feature_bom_table[i].print_on_report_disabled = true;;
+              this.feature_bom_table[i].print_on_report_disabled = true;
             }
           }
 

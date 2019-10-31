@@ -605,6 +605,10 @@
     "others":"Others",
     "variable":"Variable",
     "fixed":"Fixed",
-    "print_on_report":"Print on Quote"
+    "print_on_report":"Print on Quote",
+    "miscellaneous_charges":"Miscellaneous Charges",
+    "hidden_item_text_on_report":"Hidden Item Text On Report",
+    "DataNotUpdated": "Failed to update data"
+
 
 }

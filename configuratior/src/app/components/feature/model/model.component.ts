@@ -291,7 +291,6 @@ export class ModelComponent implements OnInit {
       })
 
       this.fms.saveData(this.featureModel).subscribe(
-
         data => {
           this.showLookupLoader = false;
           if (data == "7001") {
