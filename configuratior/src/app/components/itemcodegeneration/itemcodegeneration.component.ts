@@ -106,7 +106,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.username = sessionStorage.getItem('loggedInUser');
     
     //get permissions
-    this.getUserPermissionDetials();
+    // this.getUserPermissionDetials();
     
     // this.stringtypevalue = this.commonData.stringtypevalue;
     // this.opertions = this.commonData.opertions
