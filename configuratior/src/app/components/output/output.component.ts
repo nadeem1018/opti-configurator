@@ -5076,9 +5076,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
         get_accessory_element(accessory_header_data, accessory_bom_data) {
           // This function is used to render Accessory data in left grid.
           let accessoryBOM = [];
-          accessoryBOM = accessory_bom_data.filter(function (obj) {
-            return obj['nodeid'] == accessory_header_data.unique_key;
-          });
+          if(accessory_bom_data != undefined && accessory_bom_data != null) {
+            accessoryBOM = accessory_bom_data.filter(function (obj) {
+              return obj['nodeid'] == accessory_header_data.unique_key;
+            });
+          }
           return accessoryBOM;
         }
 
@@ -6585,7 +6587,7 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
     }
 
     onModelCodeChange() {
-      this.onclearselection(1);
+      /* this.onclearselection(1); */
       this.showLookupLoader = true;
       this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
         data => {
