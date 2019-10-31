@@ -196,6 +196,12 @@ export class ViewFeatureModelComponent implements OnInit {
                         objcc.router.navigateByUrl('home');
                     }, 200);
                 }
+            },
+            error => {
+              if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                this.commonservice.isUnauthorized();
+              }
+              return;
             });
         // check screen authorisation - end
 
@@ -251,6 +257,12 @@ export class ViewFeatureModelComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false
 
+            },error => {
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonservice.isUnauthorized();
+                }
+                return;
             });
     }
 
@@ -393,7 +405,13 @@ export class ViewFeatureModelComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
-            }
+            },error => {
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
+              }
             )
     }
 
@@ -519,6 +537,12 @@ export class ViewFeatureModelComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
+            },error => {
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
             });
 
     }

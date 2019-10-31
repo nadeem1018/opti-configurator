@@ -137,8 +137,13 @@ export class ViewRoutingComponent implements OnInit {
                         this.selectall = false;
                         $("input[name='child_checkbox']").prop("checked", false);
                     }, error => {
-                        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                         this.showLoader = false;
+                        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                            this.commonservice.isUnauthorized();
+                        } else {
+                            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                        }
+                        return
                     }
                     )
 
@@ -253,6 +258,13 @@ export class ViewRoutingComponent implements OnInit {
                             objcc.router.navigateByUrl('home');
                         }, 200);
                     }
+                }, error => {
+                    if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                        this.commonservice.isUnauthorized();
+                    } else {
+                        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                    }
+                    return
                 });
             // check screen authorisation - end
 
@@ -297,6 +309,13 @@ export class ViewRoutingComponent implements OnInit {
                     this.CheckedData = [];
                     this.selectall = false;
                     $("input[name='child_checkbox']").prop("checked", false);
+                },
+                error => {
+                this.showLoader = false; 
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonservice.isUnauthorized();
+                }
+                return;
                 });
         }
 

@@ -243,6 +243,12 @@ export class ViewFeatureBOMComponent implements OnInit {
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
 
+            },error=>{
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                this.commonservice.isUnauthorized();
+                }
+                return;
             });
     }
 
@@ -329,11 +335,15 @@ export class ViewFeatureBOMComponent implements OnInit {
                 }
             },
             error => {
-                this.toastr.error('', this.language.server_error, this.commonData.toast_config);
                 this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonservice.isUnauthorized();
+                } else {
+                    this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                }
                 return;
             }
-            )
+            );
         
     }
 
@@ -388,7 +398,13 @@ export class ViewFeatureBOMComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
-            }
+            },error => {
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
+              }
             )
     }
 
@@ -509,6 +525,12 @@ export class ViewFeatureBOMComponent implements OnInit {
                     this.CheckedData = [];
                     this.selectall = false;
                     $("input[name='child_checkbox']").prop("checked", false);
+                },error => {
+                    this.showLookupLoader = false;
+                    if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                      this.commonservice.isUnauthorized();
+                    }
+                    return;
                 })
 
         }

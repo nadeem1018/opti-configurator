@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
-
+import  { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-routing',
@@ -49,8 +49,9 @@ export class RoutingComponent implements OnInit {
   language = JSON.parse(sessionStorage.getItem('current_lang'));
   public customPatterns = { '0': { pattern: new RegExp('\[0-9\]') } }
   public menu_auth_index = '206';
+  public made_changes:boolean = false;
 
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RoutingService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RoutingService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService, private DialogService : DialogService) { }
 
   companyName: string;
   page_main_title = this.language.routing
@@ -68,6 +69,14 @@ export class RoutingComponent implements OnInit {
   isPerfectSCrollBar: boolean = false;
   public form_mode = '';
   isOperationDisabled: boolean = false;
+
+  canDeactivate() {
+    if(this.made_changes == true){
+      return this.DialogService.confirm('');
+    } else {
+      return true;
+    }
+  }
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -133,6 +142,7 @@ export class RoutingComponent implements OnInit {
     // check screen authorisation - end
 
     if (this.update_id === "" || this.update_id === null) {
+      this.made_changes = true;
       this.routing_header_data.routing_for = 'feature';
       this.on_operation_change();
       this.isSaveButtonVisible = true;
@@ -148,6 +158,7 @@ export class RoutingComponent implements OnInit {
       this.form_mode = 'add';
       this.isOperationDisabled = false;
     } else {
+      this.made_changes = false;
       this.isSaveButtonVisible = false;
       this.isUpdateButtonVisible = true;
       this.isDeleteButtonVisible = true;
@@ -163,6 +174,7 @@ export class RoutingComponent implements OnInit {
           if (data != undefined) {
             if (data.LICDATA != undefined) {
               if (data.LICDATA[0].ErrorMsg == "7001") {
+                this.made_changes = false;
                 this.commonService.RemoveLoggedInUser().subscribe();
                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                 this.showLoader = false;
@@ -404,7 +416,11 @@ export class RoutingComponent implements OnInit {
         },
         error => {
           this.showLoader = false;
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
           return;
         });
 }
@@ -413,6 +429,7 @@ export class RoutingComponent implements OnInit {
 ngOnChanges() { }
 
 on_operation_change() {
+  this.made_changes = true;
   this.current_selected_row = [];
   if (this.routing_header_data.routing_for == 'feature') {
     this.reset_model()
@@ -468,6 +485,7 @@ reset_model() {
 }
 
 header_numeric_input_change(value, input_id) {
+  this.made_changes = true;
   if (value == 0 && value != '') {
     value = 1;
     this.routing_header_data[input_id] = (value);
@@ -537,6 +555,7 @@ getLookupValue($event) {
     this.routing_header_data.feature_id = $event[0];
     this.routing_header_data.feature_code = $event[1];
     this.routing_header_data.feature_description = $event[2];
+    this.made_changes = true;
     this.GetDataByFeatureId($event[0], "header", 0);
   }
 
@@ -544,16 +563,19 @@ getLookupValue($event) {
     this.routing_header_data.modal_id = $event[0];
     this.routing_header_data.modal_code = $event[1];
     this.routing_header_data.modal_description = $event[2];
+    this.made_changes = true;
     this.GetDataByModelId($event[0], "header", 0);
   }
 
   if (this.lookupfor == 'warehouse_lookup') {
     this.routing_header_data.warehouse_id = $event[0];
     this.routing_header_data.warehouse_code = $event[0];
+    this.made_changes = true;
     this.ClearOperLineOnWarehouse();
   }
 
   if (this.lookupfor == 'operation_lookup') {
+    this.made_changes = true;
     let res_cnsmtn_mthd = this.commonData.res_consumption_method();
     this.routing_detail_data[this.current_grid_action_row].count_point_operation = false;
     this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = false;
@@ -574,6 +596,7 @@ getLookupValue($event) {
 
 
     if ($event[3] == '4' || $event[3] == '5') {
+
       this.routing_detail_data[this.current_grid_action_row].count_point_operation = true;
       this.routing_detail_data[this.current_grid_action_row].count_point_operation_disabled = true;
     }
@@ -584,12 +607,14 @@ getLookupValue($event) {
   }
 
   if (this.lookupfor == "workcenter_lookup") {
+    this.made_changes = true;
     this.routing_detail_data[this.current_grid_action_row].wc_id = $event[2];
     this.routing_detail_data[this.current_grid_action_row].wc_code = $event[2];
     //  this.current_grid_action_row = 0;
   }
 
   if (this.lookupfor == "routing_resource_lookup") {
+    this.made_changes = true;
     let temp_array = [];
     let pollcounter = 1;
     for (let i = 0; i < $event.length; ++i) {
@@ -636,6 +661,7 @@ getLookupValue($event) {
   }
 
   if (this.lookupfor == "template_routing_lookup") {
+    this.made_changes = true;
     this.routing_header_data.template_routing_id = $event[0];
     this.routing_header_data.template_routing_code = $event[0];
   }
@@ -648,6 +674,7 @@ getLookupValue($event) {
 }
 
 resequence_operation(type) {  // type = 1 : up & type = 2 : down
+  this.made_changes = true;
   console.log("this.current_selected_row", this.current_selected_row);
   // let current_row_index = this.current_selected_row.rowindex - 1;
   let row_c_select = this.current_selected_row.rowindex;
@@ -708,6 +735,7 @@ getSelectedRowDetail(event) {
 
 
 openFeatureLookup(flag) {
+  this.made_changes = true;
   this.showLookupLoader = true;
   console.log('inopen feature');
   this.serviceData = []
@@ -717,6 +745,7 @@ openFeatureLookup(flag) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -751,7 +780,11 @@ openFeatureLookup(flag) {
       this.serviceData = [];
       this.lookupfor = "";
       this.clearInvalidfeature();
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -759,6 +792,7 @@ openFeatureLookup(flag) {
 }
 
 openModalLookup(flag) {
+  this.made_changes = true;
   this.showLookupLoader = true;
   this.serviceData = []
   this.service.GetModelList().subscribe(
@@ -767,6 +801,7 @@ openModalLookup(flag) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -792,7 +827,11 @@ openModalLookup(flag) {
     error => {
       this.showLookupLoader = false;
       this.clearInvalidModel();
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -819,6 +858,7 @@ clearInvalidModel() {
 }
 
 getFeatureDetail(feature_code) {
+  this.made_changes = true;
   this.showLookupLoader = true;
   this.service.getFeatureDetail(feature_code).subscribe(
     data => {
@@ -827,6 +867,7 @@ getFeatureDetail(feature_code) {
         if (data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               this.showLookupLoader = false;
@@ -853,7 +894,11 @@ getFeatureDetail(feature_code) {
       }
     }, error => {
       this.clearInvalidfeature();
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       this.showLookupLoader = false;
       return;
     }
@@ -861,7 +906,7 @@ getFeatureDetail(feature_code) {
 }
 
 getModalDetail(model_code) {
-
+  this.made_changes = true;
   this.showLookupLoader = true;
   this.service.getModalDetail(model_code).subscribe(
     data => {
@@ -887,7 +932,11 @@ getModalDetail(model_code) {
       }
     }, error => {
       this.clearInvalidModel();
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       this.showLookupLoader = false;
       return;
     }
@@ -907,6 +956,7 @@ GetDataByFeatureId(feature_code, press_location, index) {
         console.log(data);
         if (data != undefined && data.LICDATA != undefined) {
           if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -990,7 +1040,11 @@ GetDataByFeatureId(feature_code, press_location, index) {
       }, error => {
         this.showLookupLoader = false;
         this.clearInvalidfeature();
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
         return;
       });
   }
@@ -1006,6 +1060,7 @@ GetDataByModelId(modal_code, press_location, index) {
       data => {
         if (data != undefined && data.LICDATA != undefined) {
           if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1100,7 +1155,11 @@ GetDataByModelId(modal_code, press_location, index) {
         }, error => {
           this.showLookupLoader = false;
           this.clearInvalidModel();
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
           return;
         });
 } else {
@@ -1114,6 +1173,7 @@ clearInvalidWarehouse() {
 }
 
 openWarehouseLook(flag) {
+  this.made_changes = true;
   this.showLookupLoader = true;
   this.serviceData = []
   this.service.getWarehouseList().subscribe(
@@ -1121,6 +1181,7 @@ openWarehouseLook(flag) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1144,7 +1205,11 @@ openWarehouseLook(flag) {
     },
     error => {
       this.showLookupLoader = false;
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -1159,6 +1224,7 @@ getWarehouseDetails(warehouse_code) {
       if (data != null) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1179,13 +1245,16 @@ getWarehouseDetails(warehouse_code) {
     }, error => {
       this.clearInvalidWarehouse();
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
       return;
     }
     );
 }
 
 openTemplateRoutingLookup(flag) {
-
+this.made_changes = true;
   this.showLookupLoader = true;
   this.serviceData = []
   this.service.TemplateRoutingList().subscribe(
@@ -1193,6 +1262,7 @@ openTemplateRoutingLookup(flag) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1216,7 +1286,11 @@ openTemplateRoutingLookup(flag) {
     },
     error => {
       this.showLookupLoader = false;
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -1237,6 +1311,7 @@ getTemplateRoutingDetails(template_code) {
       if (data != null) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1259,19 +1334,23 @@ getTemplateRoutingDetails(template_code) {
     error => {
       this.showLookupLoader = false;
       this.clearInvalidTemplateRouting();
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
       return;
     });
 }
 
 on_type_click_lookup(type, rowindex) {
+  this.made_changes = true;
   this.showLookupLoader = true;
   this.serviceData = [];
   this.showLookupLoader = false;
 }
 
 open_operation_lookup(type, rowindex) {
+this.made_changes = true;
   this.serviceData = [];
-
   if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
     this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
     return;
@@ -1283,6 +1362,7 @@ open_operation_lookup(type, rowindex) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1315,7 +1395,11 @@ open_operation_lookup(type, rowindex) {
     },
     error => {
       this.showLookupLoader = false;
-      this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -1323,7 +1407,7 @@ open_operation_lookup(type, rowindex) {
 
 open_wc_lookup(type, rowindex) {
   this.serviceData = [];
-
+this.made_changes = true;
   if (this.routing_header_data.warehouse_code == "" || this.routing_header_data.warehouse_code == null || this.routing_header_data.warehouse_code == undefined) {
     this.toastr.error('', this.language.noselectWarehouse, this.commonData.toast_config);
     return;
@@ -1335,6 +1419,7 @@ open_wc_lookup(type, rowindex) {
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             this.showLookupLoader = false;
@@ -1358,7 +1443,11 @@ open_wc_lookup(type, rowindex) {
     },
     error => {
       this.showLookupLoader = false;
-      this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+      }
       return;
     }
     )
@@ -1375,6 +1464,7 @@ getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type,
       if (data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
@@ -1438,7 +1528,11 @@ getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type,
     },
     error => {
       this.showLookupLoader = false;
-      this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      } else {
+        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+      }
       if (callback != "" || callback !== undefined) {
         callback();
       }
@@ -1448,6 +1542,7 @@ getOperationResourceDetail(oper_id, oper_code, oper_type, oper_consumption_type,
 }
 
 open_operation_resources(flag) {
+  this.made_changes = true;
   if (Object.keys(this.current_selected_row).length > 0) {
     if (this.current_selected_row.oper_code != "") {
       this.showLookupLoader = true;
@@ -1476,6 +1571,7 @@ open_operation_resources(flag) {
     }
 
     changeEffectiveDate(picker_date) {
+      this.made_changes = true;
       let temp = new Date(picker_date);
       this.routing_header_data.EffectiveDate = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
       this.over_ride_grid_effective_date()
@@ -1483,13 +1579,14 @@ open_operation_resources(flag) {
     }
 
     confirm_override_grid_effective_date() {
+      this.made_changes = true;
       this.dialog_params.push({ 'dialog_type': 'confirmation', 'message': this.language.confirm_override_detials_effective_date });
       this.show_dialog = true;
     }
 
     //This will take confimation box value
     get_dialog_value(userSelectionValue) {
-
+this.made_changes = true;
       if (this.is_delete_called == true) {
         if (userSelectionValue == true) {
           this.onDelete(this.update_id);
@@ -1543,6 +1640,7 @@ open_operation_resources(flag) {
       if (this.validate_header_info() == '0') {
         return false;
       }
+      this.made_changes = true;
       this.counter = 0;
       if (this.routing_detail_data.length > 0) {
         this.counter = this.routing_detail_data.length
@@ -1684,6 +1782,7 @@ open_operation_resources(flag) {
     }
 
     on_input_change(value, rowindex, grid_element) {
+      this.made_changes = true;
       let currentrow = 0;
       currentrow = this.getGridCurrentRow(rowindex);
       if (grid_element == 'selected_type') {
@@ -1715,6 +1814,7 @@ open_operation_resources(flag) {
               if (data != undefined) {
                 if (data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
+                    this.made_changes = false;
                     this.commonService.RemoveLoggedInUser().subscribe();
                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     this.showLookupLoader = false;
@@ -1763,9 +1863,13 @@ open_operation_resources(flag) {
               return;
             }
           }, error => {
-            this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
             this.clearInvalidOperationData(currentrow);
             this.showLookupLoader = false;
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            } else {
+              this.toastr.error('', this.language.invalidOperationcodeRow + ' ' + rowindex, this.commonData.toast_config);
+            }
             return;
           }
           );
@@ -1787,6 +1891,7 @@ open_operation_resources(flag) {
               if (data != undefined) {
                 if (data.length > 0) {
                   if (data[0].ErrorMsg == "7001") {
+                    this.made_changes = false;
                     this.commonService.RemoveLoggedInUser().subscribe();
                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                     this.showLookupLoader = false;
@@ -1817,11 +1922,15 @@ open_operation_resources(flag) {
               return;
             }
           }, error => {
-            this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
             this.routing_detail_data[currentrow].wc_id = "";
             this.routing_detail_data[currentrow].wc_code = "";
             $(".row_wc_id").eq(currentrow).val("");
             $(".row_wc_code").eq(currentrow).val("");
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            } else {
+              this.toastr.error('', this.language.invalidwccodeRow + ' ' + rowindex, this.commonData.toast_config);
+            }
             this.showLookupLoader = false;
             return;
           }
@@ -1958,6 +2067,7 @@ open_operation_resources(flag) {
   }
 
   onDeleteRow(rowindex) {
+    this.made_changes = true;
     if (this.routing_detail_data.length > 0) {
       for (let i = 0; i < this.routing_detail_data.length; ++i) {
         if (this.routing_detail_data[i].rowindex === rowindex) {
@@ -2205,12 +2315,14 @@ open_operation_resources(flag) {
       data => {
         this.showLookupLoader = false;
         if (data == "7001") {
+          this.made_changes = false;
           this.commonService.RemoveLoggedInUser().subscribe();
           this.commonService.signOut(this.toastr, this.route, 'Sessionout');
           return;
         }
 
         if (data === "True") {
+          this.made_changes = false;
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('routing/view');
         } else {
@@ -2224,8 +2336,13 @@ open_operation_resources(flag) {
 
         }
       }, error => {
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
+        return
       }
       )
   }
@@ -2249,6 +2366,7 @@ open_operation_resources(flag) {
         if (data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
@@ -2261,6 +2379,7 @@ open_operation_resources(flag) {
         }
         else if (data[0].IsDeleted == "1") {
           this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[0].RoutingCode, this.commonData.toast_config);
+          this.made_changes = false;
           this.route.navigateByUrl('routing/view');
         }
         else {
@@ -2268,8 +2387,13 @@ open_operation_resources(flag) {
         }
 
       }, error => {
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
+        return
       }
       )
   }
@@ -2386,6 +2510,7 @@ open_operation_resources(flag) {
 
               if (data.length > 0) {
                 if (data[0].ErrorMsg == "7001") {
+                  this.made_changes = false;
                   this.commonService.RemoveLoggedInUser().subscribe();
                   this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                   return;
@@ -2417,7 +2542,11 @@ open_operation_resources(flag) {
 
           },
           error => {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            } else {
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            }
             return;
           }
           );

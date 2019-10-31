@@ -7,6 +7,7 @@ import 'bootstrap';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
+import  { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-rulewb',
@@ -51,6 +52,7 @@ export class RulewbComponent implements OnInit {
   public add_sequence_mode: boolean = false;
   public update_sequence_mode: boolean = false;
   public is_applicable_for_disabled: boolean = false;
+  public made_changes: boolean = false;
 
   //public rule_wb_data_header: any = [];
   public ruleWorkBenchData = new Array();
@@ -59,7 +61,7 @@ export class RulewbComponent implements OnInit {
   public ModelLookupBtnhide: boolean = true;
   public editeffectivefrom: any = "";
   public editeffectiveto: any = "";
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService, private commonService: CommonService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: RulewbService, private toastr: ToastrService, private commonService: CommonService, private DialogService: DialogService) { }
 
   page_main_title = this.language.rule_workbench
   serviceData: any;
@@ -86,6 +88,17 @@ export class RulewbComponent implements OnInit {
   isDesktop: boolean = true;
   isPerfectSCrollBar: boolean = false;
 
+ canDeactivate() {
+    if(this.made_changes == true){
+      return this.DialogService.confirm('');
+    } else {
+      return true;
+    }
+  }
+
+  detect_change(){
+     this.made_changes = true;
+  }
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -145,12 +158,19 @@ export class RulewbComponent implements OnInit {
             objcc.route.navigateByUrl('home');
           }, 200);
         }
-      });
+      },error => {
+        this.showLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+    });
     // check screen authorisation - end
 
     this.update_id = "";
     this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
+      this.made_changes = true;
       this.isUpdateButtonVisible = false;
       this.code_disabled = "false";
       this.isSaveButtonVisible = true;
@@ -163,6 +183,7 @@ export class RulewbComponent implements OnInit {
       this.showLoader = false;
       this.is_applicable_for_disabled = false;
     } else {
+      this.made_changes = false;
       this.isUpdateButtonVisible = true;
       this.code_disabled = "true";
       this.isSaveButtonVisible = false;
@@ -175,6 +196,7 @@ export class RulewbComponent implements OnInit {
         data => {
           if (data != undefined && data.LICDATA != undefined) {
             if (data.LICDATA[0].ErrorMsg == "7001") {
+              this.made_changes = false;
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
@@ -409,10 +431,13 @@ export class RulewbComponent implements OnInit {
             obj.getFBOMHeader();
             // obj.getFeatureDetailsForOutput();
           }, 300)
-        },
-        error => {
+        },error => {
           this.showLoader = false;
-        })
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+      })
 
 }
 }
@@ -431,6 +456,7 @@ ngAfterViewInit() {
 }
 
 effective_from(effective_from_date) {
+  this.made_changes = true;
   var temp = new Date(effective_from_date);
   let effectiveFrom = new Date((temp.getMonth() + 1) + '/' + temp.getDate() + '/' + temp.getFullYear());
   if (this.rule_wb_data.effective_to != null) {
@@ -459,6 +485,7 @@ effective_to(effective_to_date) {
     }
   }
   this.rule_wb_data.effective_to = effectiveto;
+  this.made_changes = true;
 }
 
 copy(o) {
@@ -472,6 +499,7 @@ copy(o) {
 }
 
 addNewSequence() {
+  this.made_changes = true;
   this.add_sequence_mode = true;
   this.update_sequence_mode = false;
   if (this.validation("AddRow") == false)
@@ -503,6 +531,7 @@ addNewSequence() {
 }
 
 close_rule_sequence() {
+  
   this.show_sequence = false;
   this.show_add_sequence_btn = true;
   this.showAddSequenceBtn = false;
@@ -517,6 +546,7 @@ close_rule_sequence() {
 }
 
 hide_show_output() {
+  this.made_changes = true;
   if (this.is_showoutput_visible == 0) {
     this.is_showoutput_visible = 1;
     this.showoutput_btn_text = this.language.hide_output;
@@ -556,9 +586,11 @@ onAddRow() {
     is_operand2_disable: true,
     row_expression: ''
   });
+  this.made_changes = true;
 }
 
 getFetureListLookup(status) {
+  this.made_changes = true;
   console.log('inopen feature');
   this.showLookupLoader = true;
   this.serviceData = []
@@ -567,6 +599,7 @@ getFetureListLookup(status) {
     data => {
       if (data.length > 0) {
         if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
           this.showLookupLoader = false;
           this.commonService.RemoveLoggedInUser().subscribe();
           this.commonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -585,9 +618,12 @@ getFetureListLookup(status) {
         this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         return;
       }
-    },
-    error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
     )
 }
@@ -667,6 +703,7 @@ getFeatureDetails(feature_code, press_location, index) {
       this.showLookupLoader = false;
       if (data.length > 0) {
         if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
           this.commonService.RemoveLoggedInUser().subscribe();
           this.commonService.signOut(this.toastr, this.route, 'Sessionout');
           return;
@@ -684,8 +721,12 @@ getFeatureDetails(feature_code, press_location, index) {
         this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         return;
       }
-    }, error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
     )
 }
@@ -712,6 +753,7 @@ getFBOMHeader() {
       if (data != null && data != "" && data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.showLookupLoader = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -732,8 +774,11 @@ getFBOMHeader() {
       this.showLookupLoader = false;
       this.rule_wb_data.applicable_for_feature_id = '';
       this.rule_wb_data.applicable_for_feature_code = '';
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
-
     )
 }
 
@@ -748,6 +793,7 @@ getFeatureDetailsForOutput() {
       if (data != null && data != "" && data != undefined) {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.showLookupLoader = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -809,8 +855,12 @@ getFeatureDetailsForOutput() {
         }
       }
       this.showLookupLoader = false;
-    }, error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
 
     )
@@ -841,7 +891,7 @@ sleep(ms) {
 }
 
 async  genearate_expression() {
-
+  this.made_changes = true;
   await this.sleep(700);
   let current_seq = this.seq_count;
   console.log(current_seq);
@@ -1032,6 +1082,7 @@ async  genearate_expression() {
      }
 
      on_input_change(rowindex, key, value, actualvalue) {
+       this.made_changes = true;
        this.currentrowindex = rowindex;
        for (let i = 0; i < this.rule_sequence_data.length; ++i) {
          if (this.rule_sequence_data[i].rowindex === this.currentrowindex) {
@@ -1099,6 +1150,7 @@ async  genearate_expression() {
 
                    if (data != undefined && data.length > 0) {
                      if (data[0].ErrorMsg == "7001") {
+                       this.made_changes = false;
                        this.commonService.RemoveLoggedInUser().subscribe();
                        this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                        return;
@@ -1115,7 +1167,12 @@ async  genearate_expression() {
                      this.rule_sequence_data[i].type_value = data;
                      this.rule_sequence_data[i].type_value_code = value;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              } else if (this.rule_sequence_data[i].type == 2) {
                this.rule_sequence_data[i]['is_operand1_disable'] = true;
                this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
@@ -1123,6 +1180,7 @@ async  genearate_expression() {
 
                    if (data != undefined && data.length > 0) {
                      if (data[0].ErrorMsg == "7001") {
+                       this.made_changes = false;
                        this.commonService.RemoveLoggedInUser().subscribe();
                        this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                        return;
@@ -1138,7 +1196,12 @@ async  genearate_expression() {
                      this.rule_sequence_data[i].type_value = data;
                      this.rule_sequence_data[i].type_value_code = value;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
            }
 
@@ -1149,6 +1212,7 @@ async  genearate_expression() {
 
                    if (data != undefined && data.length > 0) {
                      if (data[0].ErrorMsg == "7001") {
+                       this.made_changes = false;
                        this.commonService.RemoveLoggedInUser().subscribe();
                        this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                        return;
@@ -1181,7 +1245,12 @@ async  genearate_expression() {
                      }
 
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
 
              else {
@@ -1190,6 +1259,7 @@ async  genearate_expression() {
 
                    if (data != undefined && data.length > 0) {
                      if (data[0].ErrorMsg == "7001") {
+                       this.made_changes = false;
                        this.commonService.RemoveLoggedInUser().subscribe();
                        this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                        return;
@@ -1204,7 +1274,12 @@ async  genearate_expression() {
                    else {
                      this.rule_sequence_data[i].type_value = data;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
            }
            console.log(this.rule_sequence_data[i]);
@@ -1221,20 +1296,24 @@ async  genearate_expression() {
              this.lookupfor = 'ModelBom_lookup';
              this.showLookupLoader = false;
              if (data[0].ErrorMsg == "7001") {
+               this.made_changes = false;
                this.commonService.RemoveLoggedInUser().subscribe();
                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                return;
              }
              this.serviceData = data;
            }
-         },
-         error => {
+         },error => {
            this.showLookupLoader = false;
-         }
-         )
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
 
      show_operand_lookup(type, type_value, rowindex, operand_value) {
+       this.made_changes = true;
        this.showLookupLoader = true;
        this.service.get_model_feature_options(type_value, type).subscribe(
          data => {
@@ -1244,6 +1323,7 @@ async  genearate_expression() {
            if (data.length > 0) {
              console.log(data);
              if (data[0].ErrorMsg == "7001") {
+               this.made_changes = false;
                this.commonService.RemoveLoggedInUser().subscribe();
                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                return;
@@ -1265,10 +1345,12 @@ async  genearate_expression() {
              this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
              return;
            }
-         }, error => {
-           this.showLookupLoader = false;
-         }
-         )
+         },error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
 
      show_input_lookup(selected_type, rowindex) {
@@ -1302,10 +1384,12 @@ async  genearate_expression() {
 
   on_typevalue_change(value, rowindex, actualvalue) {
     // apply validation 
+    this.made_changes = true;
     this.on_input_change(rowindex, 'type_value', value, actualvalue);
   }
 
   add_rule_sequence() {
+    this.made_changes = true;
     if (this.rule_sequence_data.length > 0) {
       this.expression_counter = 0;
       if (this.rule_expression_data.length > 0) {
@@ -1365,10 +1449,16 @@ async  genearate_expression() {
           this.getFBOMHeader();
           // this.getFeatureDetailsForOutput();
         }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
       })
   }
 
   update_rule_sequence() {
+    this.made_changes = true;
     if (this.rule_sequence_data.length > 0) {
       // additional validation for atleast 1 option selected as default in output
       var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
@@ -1406,6 +1496,7 @@ async  genearate_expression() {
   }
 
   edit_expression(row, rowindex) {
+    this.made_changes = true;
     this.add_sequence_mode = false;
     this.update_sequence_mode = true;
     this.rule_sequence_data = [];
@@ -1444,13 +1535,14 @@ async  genearate_expression() {
   }
 
   delete_expression(rowindex) {
-
+    this.made_changes = true;
     this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
     this.show_dialog = true;
     this.row_id = rowindex;
   }
 
   delete_row() {
+    this.made_changes = true;
     if (this.rule_expression_data.length > 0) {
       for (let i = 0; i < this.rule_expression_data.length; ++i) {
         if (this.rule_expression_data[i].rowindex === this.row_id) {
@@ -1470,6 +1562,7 @@ async  genearate_expression() {
 
   //This will take confimation box value
   get_dialog_value(userSelectionValue) {
+    this.made_changes = true;
     if (userSelectionValue == true) {
       this.delete_row();
     }
@@ -1478,6 +1571,7 @@ async  genearate_expression() {
 
 
   output_change_event(name, value, rowindex) {
+    this.made_changes = true;
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
       if (this.rule_feature_data[i].rowindex == rowindex) {
         if (name == "check_child") {
@@ -1530,6 +1624,7 @@ async  genearate_expression() {
   }
 
   check_all(value) {
+    this.made_changes = true;
     for (let i = 0; i < this.rule_feature_data.length; ++i) {
       this.rule_feature_data[i].check_child = value;
       if(value == false ){
@@ -1542,6 +1637,7 @@ async  genearate_expression() {
   }
 
   excludeAllRowsOnCheck() {
+    this.made_changes = true;
     if (this.rule_wb_data.Excluded) {
       this.isExcluded = true;
       for (var i = 0; i < this.rule_feature_data.length; i++) {
@@ -1673,12 +1769,14 @@ async  genearate_expression() {
          data => {
            this.showLookupLoader = false;
            if (data == "7001") {
+             this.made_changes = false;
              this.commonService.RemoveLoggedInUser().subscribe();
              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
              return;
            }
 
            if (data === "True") {
+             this.made_changes = false;
              this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
              this.route.navigateByUrl('rulewb/view');
              return;
@@ -1691,11 +1789,13 @@ async  genearate_expression() {
              this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
              return;
            }
-         },
-         error => {
+         },error => {
            this.showLookupLoader = false;
-         }
-         )
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
    }
  }

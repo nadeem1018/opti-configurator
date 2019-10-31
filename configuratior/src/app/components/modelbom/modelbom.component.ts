@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { UIHelper } from '../../helpers/ui.helpers';
 import { CommonService } from 'src/app/services/common.service';
+import  { DialogService } from 'src/app/services/dialog.service';
+
 @Component({
   selector: 'app-modelbom',
   templateUrl: './modelbom.component.html',
@@ -58,9 +60,10 @@ export class ModelbomComponent implements OnInit {
   public model_bom_type:any = '';
   // public mandatory_disabled: boolean = false;
   public menu_auth_index = '203'; 
+  public made_changes:boolean = false;
   modalRef: BsModalRef;
 
-  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService) { }
+  constructor(private ActivatedRouter: ActivatedRoute, private route: Router, private service: ModelbomService, private toastr: ToastrService, private commonService: CommonService, private modalService: BsModalService, private DialogService: DialogService) { }
 
   companyName: string;
   page_main_title = this.language.Model_Bom
@@ -84,6 +87,14 @@ export class ModelbomComponent implements OnInit {
     }
   }
 
+  canDeactivate() {
+    if(this.made_changes == true){
+      return this.DialogService.confirm('');
+    } else {
+      return true;
+    }
+  }
+
   navigateToFeatureOrModelBom(type_value, type ) {
     if(type == '1'){
       this.route.navigateByUrl("feature/bom/edit/"+type_value);
@@ -98,7 +109,6 @@ export class ModelbomComponent implements OnInit {
   navigateToMasterHeader(modal_id) {
     this.route.navigateByUrl("feature/model/edit/"+modal_id);
   }
-
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -124,7 +134,7 @@ export class ModelbomComponent implements OnInit {
     const element = document.getElementsByTagName('body')[0];
     // // element.className = '';
     this.detectDevice();
-   // element.classList.add('add_model-bom');
+    // element.classList.add('add_model-bom');
     // element.classList.add('sidebar-toggled');
     // document.getElementById("opti_sidebar").classList.add('toggled');
 
@@ -155,10 +165,17 @@ export class ModelbomComponent implements OnInit {
             objcc.route.navigateByUrl('home');
           }, 200);
         }
+      },
+      error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
       });
     // check screen authorisation - end
 
     if (this.update_id === "" || this.update_id === null) {
+      this.made_changes = true;
       this.isUpdateButtonVisible = false;
       this.isDeleteButtonVisible = false;
       this.isModelIdEnable = false;
@@ -167,6 +184,7 @@ export class ModelbomComponent implements OnInit {
       this.showLoader = false;
     }
     else {
+      this.made_changes = false;
       this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true;
@@ -182,6 +200,7 @@ export class ModelbomComponent implements OnInit {
       data => {
         if(data != undefined && data.LICDATA != undefined){
           if (data.LICDATA[0].ErrorMsg == "7001") {
+            this.made_changes = false;
             this.commonService.RemoveLoggedInUser().subscribe();
             this.commonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
@@ -328,8 +347,12 @@ export class ModelbomComponent implements OnInit {
           }
           this.onExplodeClick('auto');
           this.showLoader = false;
-        }, error => {
+        },error => {
           this.showLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
         }
         )
 };
@@ -387,11 +410,12 @@ onAddRow() {
     isMaxSelectedDisable: false,
     is_feature_multiselect: 'N',
     feature_default_count: 0,
-
   });
+  this.made_changes = true;
 };
 
 onDeleteRow(rowindex) {
+  this.made_changes = true;
   if (this.modelbom_data.length > 0) {
     for (let i = 0; i < this.modelbom_data.length; ++i) {
       if (this.modelbom_data[i].rowindex === rowindex) {
@@ -401,1254 +425,1324 @@ onDeleteRow(rowindex) {
             return (obj['component'] == display_name);
           });
           if (remove_tree_data.length > 0) {
-              /* let tree_element_child = this.tree_data_json.filter(function (obj) {
-                return obj['parentId'] == remove_tree_data[0]['component'];
-              });
-              console.log(remove_tree_data);
-              console.log(tree_element_child);
-              console.log(this.tree_data_json); */
-              /*  if (tree_element_child.length > 0) {
-                 this.toastr.error('', this.language.child_exist_cannot_remove, this.commonData.toast_config);
-                 return false;
-               } else { */
-                 for (let j = 0; j < this.tree_data_json.length; ++j) {
-                   if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
-                     this.tree_data_json.splice(j, 1);
-                   }
-                 }
-                 /*  } */
-               }
-             }
-             this.modelbom_data.splice(i, 1);
-             i = i - 1;
-           }
-           else {
-             this.modelbom_data[i].rowindex = i + 1;
-           }
-         }
-       }
-       // remove data from exploded view tree
-       //this.live_tree_view_data
-       this.current_selected_row = [];
-       this.row_selection = [];
-     }
-
-     clearData(rowindex) {
-       //this.modelbom_data[rowindex].type_value="";
-       this.modelbom_data[rowindex].uom = "";
-       this.modelbom_data[rowindex].display_name = "";
-       this.modelbom_data[rowindex].quantity = ("0");
-       this.modelbom_data[rowindex].min_selected = 1;
-       this.modelbom_data[rowindex].max_selected = 1;
-       this.modelbom_data[rowindex].feature_min_selected = 1;
-       this.modelbom_data[rowindex].feature_max_selected = 1;
-       this.modelbom_data[rowindex].propagate_qty = 'N';
-       this.modelbom_data[rowindex].price_source = '';
-       this.modelbom_data[rowindex].price_source_id = '';
-       this.modelbom_data[rowindex].mandatory = 'N';
-       this.modelbom_data[rowindex].unique_identifer = 'N';
-       this.modelbom_data[rowindex].is_feature_multiselect = 'N';
-       this.modelbom_data[rowindex].feature_default_count = 0;
-     }
-
-     on_bom_type_change(selectedvalue, rowindex) {
-
-       if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-         this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-         return false;
-       }
-       this.serviceData = []
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           this.clearData(i);
-           this.modelbom_data[i].type_value = "";
-           this.modelbom_data[i].type_value_code = "";
-           if (selectedvalue == 3) {
-             this.modelbom_data[i].isDisplayNameDisabled = false
-             this.modelbom_data[i].isTypeDisabled = false
-             this.modelbom_data[i].hide = false
-             this.modelbom_data[i].type = 3
-             this.modelbom_data[i].isPriceDisabled = true
-             this.modelbom_data[i].pricehide = true
-             this.modelbom_data[i].isUOMDisabled = true
-             this.modelbom_data[i].quantity = ("1");
-             this.modelbom_data[i].isMinSelectedDisable = false;
-             this.modelbom_data[i].isMaxSelectedDisable = false;
-             this.modelbom_data[i].propagate_qty = true;
-             this.modelbom_data[i].mandatory = false;
-             this.modelbom_data[i].unique_identifer = false;
-             this.modelbom_data[i].mandatory_item_disabled = false;
-             // this.mandatory_disabled = false;
-           }
-           else {
-             this.modelbom_data[i].isDisplayNameDisabled = false
-             this.modelbom_data[i].isTypeDisabled = false
-             this.modelbom_data[i].hide = false
-             this.modelbom_data[i].quantity = ("1");
-             if (selectedvalue == 2) {
-               this.lookupfor = 'Item_Detail_lookup';
-               this.modelbom_data[i].type = 2
-               this.modelbom_data[i].isPriceDisabled = false
-               this.modelbom_data[i].pricehide = false
-               this.modelbom_data[i].isUOMDisabled = false
-               this.modelbom_data[i].isMinSelectedDisable = true;
-               this.modelbom_data[i].isMaxSelectedDisable = true;
-               this.modelbom_data[i].propagate_qty = true;
-               this.modelbom_data[i].mandatory = true;
-               // this.mandatory_disabled = true;
-               this.modelbom_data[i].unique_identifer = true;
-               this.modelbom_data[i].mandatory_item_disabled = true;
-
-             }
-             else {
-               this.modelbom_data[i].type = 1
-               this.lookupfor = 'feature_lookup';
-               this.modelbom_data[i].isPriceDisabled = true
-               this.modelbom_data[i].pricehide = true
-               this.modelbom_data[i].isUOMDisabled = true
-               this.modelbom_data[i].isMinSelectedDisable = false;
-               this.modelbom_data[i].isMaxSelectedDisable = false;
-               this.modelbom_data[i].propagate_qty = true;
-               this.modelbom_data[i].mandatory = false;
-               this.modelbom_data[i].unique_identifer = false;
-               this.modelbom_data[i].mandatory_item_disabled = false;
-               // this.mandatory_disabled = false;
-             }
-
-           }
-
-
-         }
-       }
-     }
-
-     on_type_click(selectedvalue, rowindex) {
-       if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-         this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-         return false;
-       }
-       this.currentrowindex = rowindex
-       if (selectedvalue == 3) {
-         this.getModelDetails(this.modelbom_data.modal_id, "Detail", selectedvalue)
-       }
-       else {
-         // this.lookupfor = 'Item_Detail_lookup';
-
-         this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
-       }
-
-     }
-
-     getModelFeatureDetails(feature_code, press_location, index) {
-       console.log('inopen feature');
-       this.showLookupLoader = true;
-       this.serviceData = [];
-       this.allItemDataDetails = []; 
-       this.service.getModelFeatureDetails(feature_code, press_location, index).subscribe(
-         data => {
-           this.allItemDataDetails = data; 
-           if (data.length > 0) {
-             this.showLookupLoader = false;
-             if (data[0].ErrorMsg == "7001") {
-               this.commonService.RemoveLoggedInUser().subscribe();
-               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-               return;
-             } 
-             if (press_location == "Header") {
-               if (this.lookupfor == 'feature_lookup') {
-                 // this.feature_bom_data.feature_id = data;
-                 this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
-                 this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-
-               }
-               else {
-                 // this.feature_bom_table=data;
-                 for (let i = 0; i < this.modelbom_data.length; ++i) {
-                   if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-                     this.modelbom_data[i].isAccessory = false;
-                     this.modelbom_data[i].unique_identifer = true;
-                     this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString();
-                     this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
-                     this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME;
-                     this.modelbom_data[i].min_selected = data[0].OPTM_MIN_SELECTABLE;
-                     this.modelbom_data[i].max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
-                     this.modelbom_data[i].feature_min_selected = data[0].OPTM_MIN_SELECTABLE;
-                     this.modelbom_data[i].feature_max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
-                     this.modelbom_data[i].is_feature_multiselect = data[0].OPTM_ISMULTISELECT;
-                     this.modelbom_data[i].feature_default_count  = data[0].OPTM_DEFAULTCOUNT;
-                     if (this.modelbom_data[i].type == 1){
-                       if (data[0].OPTM_ACCESSORY == 'Y'){
-                         this.modelbom_data[i].isAccessory = true;
-                         this.modelbom_data[i].unique_identifer = false;
-                       }  
-                     }
-
-                     this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex,"branchType": 'feature', "icon":'feature' });
-                   }
-                 }
-               }
-             }
-             else {
-               if (index == 1) {
-                 this.lookupfor = 'feature_Detail_lookup';
-               }
-               else {
-                 this.lookupfor = 'Item_Detail_lookup';
-               }
-
-               this.serviceData = data;
-             }
-           }
-           else {
-             this.lookupfor = "";
-             this.serviceData = [];
-             this.showLookupLoader = false;
-             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-             return;
-           }
-
-         },
-         error => {
-           this.showLookupLoader = false;
-         }
-         )
-     }
-
-     openFeatureLookUp() {
-       this.showLookupLoader = true;
-       this.serviceData = []
-       this.service.GetModelList().subscribe(
-         data => {
-           if(data != undefined && data != null){
-             if(data.length > 0){
-               if (data[0].ErrorMsg == "7001") {
-                 this.showLookupLoader = false;
-                 this.commonService.RemoveLoggedInUser().subscribe();
-                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                 return;
-               } 
-             }
-           }
-           if (data.length > 0) {
-             this.lookupfor = 'ModelBom_lookup';
-             this.showLookupLoader = false;
-             this.serviceData = data;
-
-           }
-           else {
-             this.lookupfor = "";
-             this.serviceData = [];
-             this.showLookupLoader = false;
-             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-             return;
-           }
-         },
-         error => {
-           this.showLookupLoader = false;
-         }
-         )
-     }
-
-     openPriceLookUp(ItemKey, rowindex) {
-       this.serviceData = []
-       this.showLookupLoader = true;
-       this.currentrowindex = rowindex;
-       console.log(this.modelbom_data);
-       this.service.GetPriceList(ItemKey).subscribe(
-         data => {
-           if(data != undefined && data.length > 0){
-             if (data[0].ErrorMsg == "7001") {
-               this.showLookupLoader = false;
-               this.commonService.RemoveLoggedInUser().subscribe();
-               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-               return;
-             } 
-           }
-
-           if (data.length > 0) {
-             this.lookupfor = 'Price_lookup';
-             this.showLookupLoader = false;
-             this.serviceData = data;
-           }
-           else {
-             this.lookupfor = "";
-             this.serviceData = [];
-             this.showLookupLoader = false;
-             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-             return;
-           }
-         }, error => {
-           this.showLookupLoader = false;
-         }
-         )
-     }
-
-     getLookupValue($event) {
-       if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup") {
-         console.log("in here - selection ");
-         for (let j = 0; j < this.modelbom_data.length; j++) {
-           var psTypeCode = this.modelbom_data[j].type_value_code;
-           var result = false;
-           if (psTypeCode != undefined && psTypeCode != "") {
-             if (this.lookupfor == "Item_Detail_lookup") {
-               if (psTypeCode.toUpperCase() == $event[1].toUpperCase() || psTypeCode.toUpperCase() == $event[0].toUpperCase()) {
-                 result = true;
-               }
-             } else {
-               if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
-                 result = true;
-               }
-             }
-
-             if (result == true) {
-               this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
-
-               $(".row_type_value_id").eq(this.currentrowindex - 1).val("");
-               $(".row_type_value_code").eq(this.currentrowindex - 1).val("");
-               return;
-             }
-           }
-         }
-       }
-
-       if (this.lookupfor == 'ModelBom_lookup') {
-         //alert($event);
-         this.modelbom_data.modal_id = $event[0];
-         this.modelbom_data.modal_code = $event[1];
-
-         this.getModelDetails($event[0], "Header", 0);
-       }
-       else if (this.lookupfor == 'feature_Detail_lookup') {
-         this.getModelFeatureDetails($event[0], "Header", 0);
-       }
-       else if (this.lookupfor == 'ModelBom_Detail_lookup') {
-         //On choosing value from lookup we will chk its cyclic dependency
-         //First we will check the conflicts
-         this.checkModelAlreadyAddedinParent($event[0], this.modelbom_data.modal_id, this.currentrowindex - 1, "lookup");
-
-       }
-       else if (this.lookupfor == 'Price_lookup') {
-         this.getPriceDetails($event[1], $event[0], this.currentrowindex);
-       }
-       else if (this.lookupfor == 'rule_section_lookup') {
-         this.rule_data = $event;
-       }
-       else if (this.lookupfor == 'Item_Detail_lookup') {
-         this.serviceData = []
-         this.getItemDetails($event[0]);
-       }
-     }
-
-     getPriceDetails(price_list_name, price, index) {
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === index) {
-           this.modelbom_data[i].price_source = price_list_name.toString()
-           this.modelbom_data[i].price_source_id = price.toString()
-         }
-       }
-     }
-
-
-     getModelDetails(Model_code, press_location, index) {
-       this.showLookupLoader = true;
-       this.service.getModelDetails(Model_code, press_location, index).subscribe(
-         data => {
-
-           if (data.length > 0) {
-             this.showLookupLoader = false;  
-             if (data[0].ErrorMsg == "7001") {
-               this.commonService.RemoveLoggedInUser().subscribe();
-               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-               return;
-             }                   
-
-             if (press_location == "Header") {
-               if (this.lookupfor == 'ModelBom_lookup') {
-                 this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
-                 this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
-                 this.modelbom_data.image_path = data[0].OPTM_PHOTO;
-                 if (this.modelbom_data.image_path != null && this.modelbom_data.image_path != "") {
-                   this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path;
-                   this.showImageBlock = true;
-                 }
-               }
-               else {
-                 for (let i = 0; i < this.modelbom_data.length; ++i) {
-                   if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-                     console.log(data[0]);
-                     this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID;
-                     this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE;
-                     this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
-                     this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex ,"branchType": 'modal', "icon":'modal'});
-                   }
-                 }
-               }
-             }
-             else {
-               if (index == 3) {
-                 this.lookupfor = 'ModelBom_Detail_lookup';
-               }
-               this.serviceData = data;
-             }
-           }
-           else {
-             this.lookupfor = "";
-             this.serviceData = [];
-             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
-             return;
-           }
-         }, error => {
-           this.showLookupLoader = false;
-         }
-
-         )
-     }
-
-     getItemDetailsOnChange(ItemKey){
-       this.serviceData = []
-       this.service.getItemDetails(ItemKey).subscribe(
-         data => {
-
-           if (data != null) {
-             if (data.length > 0) {
-               if (data[0].ErrorMsg == "7001") {
-                 this.commonService.RemoveLoggedInUser().subscribe();
-                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                 return;
-               } 
-
-               for (let i = 0; i < this.modelbom_data.length; ++i) {
-                 if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-                   this.modelbom_data[i].type_value = data[0].ItemKey;
-                   this.modelbom_data[i].type_value_code = data[0].ItemKey;
-                   this.modelbom_data[i].display_name = data[0].Description
-                   this.modelbom_data[i].uom = data[0].InvUOM
-                   this.modelbom_data[i].price_source = data[0].ListName;
-                   this.modelbom_data[i].price_source_id = data[0].PriceListID;
-                   this.modelbom_data[i].unique_identifer =  true; 
-                   this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex ,"branchType": 'item', "icon":'item'});
-                 }
-               }
-             }
-           }
-         })
-     }
-
-     getSelectedItemDetails(ItemKey){
-       let data = this.allItemDataDetails.filter(function (obj) {
-         return obj.ItemKey == ItemKey;
-       });
-       return data;
-     }
-
-     getItemDetails(ItemKey) {
-       this.serviceData = []
-
-       let selectedDataDetails:any = [];
-       selectedDataDetails = this.getSelectedItemDetails(ItemKey);
-
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           this.modelbom_data[i].type_value = selectedDataDetails[0].ItemKey;
-           this.modelbom_data[i].type_value_code = selectedDataDetails[0].ItemKey;
-           this.modelbom_data[i].display_name = selectedDataDetails[0].Description
-           this.modelbom_data[i].uom = selectedDataDetails[0].InvUOM
-           this.modelbom_data[i].price_source = selectedDataDetails[0].ListName;
-           this.modelbom_data[i].price_source_id = selectedDataDetails[0].PriceListID;
-           this.modelbom_data[i].unique_identifer = true;
-           this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex,"branchType": 'item', "icon":'item' });
-         }
-       }
-
-     }
-
-     on_typevalue_change(value, rowindex, code, type_value_code) {
-       this.currentrowindex = rowindex
-       var iIndex = this.currentrowindex - 1;
-       for (let j = 0; j < this.modelbom_data.length; j++) {
-         var psTypeCode = this.modelbom_data[j].type_value_code;
-         if (psTypeCode != undefined && psTypeCode != "") {
-           if (psTypeCode.toUpperCase() == code.toUpperCase()) {
-             this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
-             $(type_value_code).val("");
-             return;
-           }
-         }
-       }
-
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           this.modelbom_data[i].type_value = value.toString()
-           this.modelbom_data[i].type_value_code = code.toString()
-           if (this.modelbom_data[i].type == 1) {
-             this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
-               data => {
-
-                 if(data != undefined && data.length > 0){
-                   if (data[0].ErrorMsg == "7001") {
-                     this.commonService.RemoveLoggedInUser().subscribe();
-                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                     return;
-                   } 
-                 }
-                 if (data === "False") {
-                   this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
-                   this.modelbom_data[iIndex].type_value = "";
-                   this.modelbom_data[iIndex].type_value_code = "";
-                   this.modelbom_data[iIndex].display_name = "";
-                   this.modelbom_data[i].min_selected = 1;
-                   this.modelbom_data[i].max_selected = 1;
-                   this.modelbom_data[i].feature_min_selected = 1;
-                   this.modelbom_data[i].feature_max_selected = 1;
-                   this.modelbom_data[i].is_feature_multiselect = 'N';
-                   this.modelbom_data[i].feature_default_count = 0;
-                   return;
-                 }
-                 else {
-                   this.lookupfor = ""
-                   this.modelbom_data[iIndex].type_value = data;
-                   this.getModelFeatureDetails(this.modelbom_data[iIndex].type_value, "Header", iIndex)
-                 }
-               })
-           }
-           else if (this.modelbom_data[i].type == 2) {
-             this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
-               data => {
-                 console.log(data);
-                 if(data != undefined && data.length > 0){
-                   if (data[0].ErrorMsg == "7001") {
-                     this.commonService.RemoveLoggedInUser().subscribe();
-                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                     return;
-                   } 
-                 }
-                 if (data === "False") {
-                   this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
-                   this.modelbom_data[iIndex].type_value = "";
-                   this.modelbom_data[iIndex].type_value_code = "";
-                   this.modelbom_data[iIndex].display_name = "";
-                   this.modelbom_data[iIndex].price_source = ""; 
-                   this.modelbom_data[iIndex].price_source_id = ""; 
-                   return;
-                 }
-                 else {
-                   this.lookupfor = "";
-                   this.modelbom_data[iIndex].type_value = data;
-                   // this.getItemDetails(this.modelbom_data[iIndex].type_value);
-                   this.getItemDetailsOnChange(this.modelbom_data[iIndex].type_value);
-                 }
-               })
-           }
-           else {
-             //First we will check the conflicts
-             this.checkModelAlreadyAddedinParent(value, code, i, "change");
-           }
-         }
-       }
-     }
-
-     on_display_name_change(value, rowindex) {
-       console.log("value - " + value);
-       console.log(" modelbom_data.feature_name " + this.modelbom_data.feature_name);
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           if (this.modelbom_data.feature_name == value) {
-             this.modelbom_data[i].display_name = "";
-             this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
-             return false;
-           }
-           this.modelbom_data[i].display_name = value;
-           this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
-         }
-       }
-     }
-
-     on_quantity_change(value, rowindex) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           if (value == 0) {
-             value = 1;
-             this.modelbom_data[i].quantity = (value);
-             this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
-           }
-           else {
-             var rgexp = /^\d+$/;
-             if (isNaN(value) == true) {
-               value = 1;
-               this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-             } else if (value == 0 || value == '' || value == null || value == undefined) {
-               value = 1;
-               this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
-             } else if (value < 0) {
-               value = 1;
-               this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
-             } else if (rgexp.test(value) == false) {
-               value = 1;
-               this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
-             }
-             this.modelbom_data[i].quantity = (value);
-           }
-
-           $('input[name="bom_quantity"]').eq((rowindex - 1)).val((value));
-         }
-       }
-     }
-
-     on_uom_change(value, rowindex) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           this.modelbom_data[i].uom = value
-         }
-       }
-     }
-
-     on_min_selected_change(value, rowindex, actualvalue) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           var rgexp = /^\d+$/;
-           if (isNaN(value) == true) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-             this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-             $(".min_selectable_row").eq((rowindex - 1)).val(0);
-             return;
-           } else if (value == '' || value == null || value == undefined) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-             this.toastr.error('', this.language.blank_not_allowed_min_selectable, this.commonData.toast_config);
-             $(".min_selectable_row").eq((rowindex - 1)).val(0);
-             return;
-           } else if (value < 0) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-             this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
-             $(".min_selectable_row").eq((rowindex - 1)).val(0);
-             return;
-           } else if (rgexp.test(value) == false) {
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-             this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
-             $(".min_selectable_row").eq((rowindex - 1)).val(0);
-             return;
-           }
-
-           this.modelbom_data[i].min_selected = value
-           if (this.modelbom_data[i].max_selected != "") {
-             if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
-               this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-               // $(actualvalue).val(1);
-               $(".min_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_min_selected);
-               this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
-               return;
-             }
-           }
-         }
-       }
-     }
-
-     on_max_selected_change(value, rowindex, actualvalue) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           var rgexp = /^\d+$/;
-           if (isNaN(value) == true) {
-             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
-             this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
-             $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
-             return;
-           } else if (value == 0 || value == '' || value == null || value == undefined) {
-             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
-             this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
-             $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
-             return;
-           } else if (value < 0) {
-             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
-             this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
-             $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
-             return;
-           } else if (rgexp.test(value) == false) {
-             this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
-             this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
-             $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
-             return;
-           }
-
-           // dont allow less than default defined in feature
-           if (this.modelbom_data[i].feature_default_count > value){
-             this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-             this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
-             $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
-             this.toastr.error('', this.language.max_selectable_less_than_default + ' ' + rowindex, this.commonData.toast_config);
-             return;
-           }
-
-           this.modelbom_data[i].max_selected = value;
-           if (this.modelbom_data[i].type == "1") {
-             this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
-               data => {
-                 console.log(data);
-                 if(data != undefined && data != null && data.length > 0){
-                   if (data[0].ErrorMsg == "7001") {
-                     this.commonService.RemoveLoggedInUser().subscribe();
-                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                     return;
-                   } 
-                 }
-
-                 if (data != null && data[0] != undefined && data[0]) {
-                   let defaultCount = data[0].DefaultCount;
-                   let FeatureChild = (data[0].FeatureChild);
-                   let MaxSelectable = data[0].MaxSelectable;
-                   if(data[0].FeatureChild == 0) {
-                     this.modelbom_data[i].max_selected = 1;
-                     $(".max_selectable_row").eq((rowindex - 1)).val(1);
-                     this.toastr.error('', this.language.max_selected_validation_ie + " : " + 1, this.commonData.toast_config);
-                     return;
-                   } else {
-                     if (parseFloat(value) > parseFloat(MaxSelectable)) { 
-                       this.modelbom_data[i].max_selected = MaxSelectable;
-                       $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
-                       this.toastr.error('', this.language.max_selected_validation_ie + " : " + MaxSelectable, this.commonData.toast_config);
-                       return;
-                     }
-
-                     if (parseFloat(value) < parseFloat(defaultCount)) { 
-                       this.modelbom_data[i].max_selected = MaxSelectable;
-                       $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
-                       this.toastr.error('', this.language.max_selectable_less_than_default + " : " + rowindex, this.commonData.toast_config);
-                       return;
-                     }
-                   }
-
-                 } 
-
-
-               })
-           }/* else if(this.modelbom_data[i].type == "3") {
-             this.service.CheckMaxSelectedValueForModel(this.modelbom_data[i].type_value).subscribe(
-               data => {
-                 if(data != undefined && data != null && data.length > 0){
-                   if (data[0].ErrorMsg == "7001") {
-                     this.commonService.RemoveLoggedInUser().subscribe();
-                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                     return;
-                   }
-                 }
-                 if (data != null) {
-                   if (parseFloat(value) > parseFloat(data)) {
-                     this.modelbom_data[i].max_selected = 1;
-                     $(".max_selectable_row").eq((rowindex - 1)).val(1);
-                     if(data == 0) {
-                       this.toastr.error('', this.language.max_selected_validation_model + " " + 1, this.commonData.toast_config);
-                       return;
-                     } else {
-                       this.toastr.error('', this.language.max_selected_validation_model + " " + data, this.commonData.toast_config);
-                       return;
-                     }
-                   }
-                 }
-               })
-           }*/
-
-           if (this.modelbom_data[i].min_selected != "") {
-             if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {
-               this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
-               this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
-               $(".max_selectable_row").eq((rowindex - 1)).val(1);
-               this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
-               return;
-             }
-           }
-
-         }
-       }
-     }
-
-     on_propagate_qty_change(value, rowindex) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           if (value.checked == true) {
-             this.modelbom_data[i].propagate_qty = true
-           }
-           else {
-             this.modelbom_data[i].propagate_qty = false
-           }
-         }
-       }
-     }
-
-     on_price_source_change(id, value, rowindex, actualValue) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
-             data => {
-               if(data != undefined && data.length > 0){
-                 if (data[0].ErrorMsg == "7001") {
-                   this.commonService.RemoveLoggedInUser().subscribe();
-                   this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                   return;
-                 } 
-               }
-               if (data === "False") {
-                 $(actualValue).val("");
-                 this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
-                 return;
-               }
-               else if (data != null) {
-                 this.modelbom_data[i].price_source_id = data
-                 this.modelbom_data[i].price_source = value
-                 this.lookupfor = ""
-               }
-
-             })
-         }
-       }
-     }
-
-     on_mandatory_change(value, rowindex) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           if (value.checked == true) {
-             this.modelbom_data[i].mandatory = true
-           }
-           else {
-             this.modelbom_data[i].mandatory = false
-           }
-         }
-       }
-     }
-
-     on_unique_identifer_change(value, rowindex) {
-       this.currentrowindex = rowindex
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (this.modelbom_data[i].rowindex === this.currentrowindex) {
-           if (value.checked == true) {
-             this.modelbom_data[i].unique_identifer = true
-           }
-           else {
-             this.modelbom_data[i].unique_identifer = false
-           }
-         }
-       }
-     }
-
-     on_isready_change(value) {
-       for (let i = 0; i < this.modelbom_data.length; ++i) {
-         if (value.checked == true) {
-           this.modelbom_data[i].ReadyToUse = true
-         }
-         else {
-           this.modelbom_data[i].ReadyToUse = false
-         }
-       }
-     }
-
-     onSave() {
-       var obj = this;
-       if (this.validate_unique_identifier() == false) {
-         return;
-       }
-       if (obj.validation("Save") == false) {
-         return;
-       }
-       this.showLookupLoader = true;
-
-       if(this.rule_data.length == 0)
-       {
-         obj.save_data();
-         return;
-       }
-
-       obj.onVerifyOutput(function (response) {
-         console.log('in validate true ' + response);
-         if (response == true) {
-           obj.save_data();
-         } else {
-           this.showLookupLoader = false;
-         }
-       });
-     }
-
-     validation(btnpress) {
-       if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
-         this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-         return false;
-       }
-
-       if (btnpress == "Save") {
-         if (this.modelbom_data.length == 0) {
-           this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
-           return false;
-         }
-         else {
-           for (let i = 0; i < this.modelbom_data.length; ++i) {
-             let currentrow = i + 1;
-             if (this.modelbom_data[i].type == 1 && this.modelbom_data[i].type_value == "") {
-               this.toastr.error('', this.language.SelectFeature + currentrow, this.commonData.toast_config);
-               return false;
-             }
-             if (this.modelbom_data[i].type == 2 && this.modelbom_data[i].type_value == "") {
-               this.toastr.error('', this.language.SelectItem + currentrow, this.commonData.toast_config);
-               return false;
-             }
-             if (this.modelbom_data[i].type == 3 && this.modelbom_data[i].type_value == "") {
-               this.toastr.error('', this.language.SelectModel + currentrow, this.commonData.toast_config);
-               return false;
-             }
-             if (this.modelbom_data[i].quantity == "") {
-               this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
-               return false;
-             }
-           }
-         }
-
-       }
-     }
-
-     onDelete() {
-       // var result = confirm(this.language.DeleteConfimation);
-       this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
-       this.show_dialog = true;
-     }
-
-     //delete record will be execute from here
-     delete_record() {
-       console.log('this.modelbom_data.modal_id');
-       console.log(this.modelbom_data.modal_id);
-       let GetItemData = []
-       GetItemData.push({
-         CompanyDBId: this.companyName,
-         ModelId: this.modelbom_data.modal_id,
-         GUID: sessionStorage.getItem("GUID"),
-         UsernameForLic: sessionStorage.getItem("loggedInUser")
-       });
-       this.service.DeleteData(GetItemData).subscribe(
-         data => {
-           if(data != undefined && data.length > 0){
-             if (data[0].ErrorMsg == "7001") {
-               this.showLookupLoader = false;
-               this.commonService.RemoveLoggedInUser().subscribe();
-               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-               return;
-             } 
-           }
-
-           if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
-             this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ModelCode , this.commonData.toast_config);
-           }
-           else if(data[0].IsDeleted == "1"){
-             this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[0].ModelCode, this.commonData.toast_config);
-             this.route.navigateByUrl('modelbom/view');
-           }
-           else{
-             this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].ModelCode , this.commonData.toast_config);
-           }
-
-         }
-         )
-     }
-
-     //This will take confimation box value
-     get_dialog_value(userSelectionValue) {
-       if (userSelectionValue == true) {
-         this.delete_record();
-       }
-       this.show_dialog = false;
-     }
-
-     onExplodeClick(type) {
-       if (type == "manual") {
-         this.showtree();
-       }
-       console.log('onExplodeClick');
-       this.lookupfor = 'tree_view__model_bom_lookup"';
-       console.log(this.tree_data_json);
-       if (this.modelbom_data.modal_id != undefined) {
-         //now call bom id
-         if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
-           this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id, this.modelbom_data.feature_name).subscribe(
-             data => {
-               if (data != null && data != undefined) {
-                 if(data.length > 0){
-                   if (data[0].ErrorMsg == "7001") {
-                     this.commonService.RemoveLoggedInUser().subscribe();
-                     this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                     return;
-                   } 
-                 }
-                 // this.serviceData = data;
-                 // this.lookupfor = "tree_view__model_bom_lookup";
-                 let counter_temp = 0;
-                 let temp_data = data.filter(function (obj) {
-                   obj['tree_index'] = (counter_temp);
-                   obj['live_row_id'] = (counter_temp++);
-                   return obj;
-                 });
-                 this.tree_data_json = temp_data;
-
-               }
-               else {
-                 this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-                 return;
-               }
-
-             },
-             error => {
-               this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-               return;
-             }
-             );
-         }
-         else {
-
-           for (let i = 0; i < this.modelbom_data.length; ++i) {
-             if(this.modelbom_data[i].display_name == ''){
-               let currentrowindx = i+1;
-               this.toastr.error('', this.language.DisplayNameRequired + currentrowindx, this.commonData.toast_config);
-             }
-           }
-
-           let temp_data_level = this.tree_data_json.filter(function (obj) {
-             return obj.level == "0" || obj.level == "1";
-           });
-
-           let sequence_count = parseInt(this.tree_data_json.length + 1);
-           console.log(this.live_tree_view_data);
-           if (this.live_tree_view_data.length > 0) {
-
-             // for (var key in this.live_tree_view_data) {
-               for (var key = 0 ; key < this.live_tree_view_data.length ; key++) {
-                 var update_index = "";
-
-                 if (this.live_tree_view_data[key].tree_index !== undefined) {
-                   let local_tree_index = this.live_tree_view_data[key].tree_index;
-                   update_index = temp_data_level.findIndex(function (tree_el) {
-                     return tree_el.tree_index == local_tree_index
-                   });
-                 }
-
-                 let temp_seq = {};
-
-                 //let temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
-                 if (update_index == "-1") {
-                   temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.modal_code, "parentNumber": this.modelbom_data.modal_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
-                   this.tree_data_json.push(temp_seq);
-                   temp_data_level.push(temp_seq);
-                 } else {
-                   let TempBranchType = temp_data_level[update_index].branchType;
-                   let TempIcon = temp_data_level[update_index].icon;
-
-                   temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.modal_code, "parentNumber": this.modelbom_data.modal_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon,"modalImage": ""};
-
-                   let up_index = this.tree_data_json.findIndex(function (tree_el) {
-                     return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
-                   });
-
-                   this.tree_data_json[up_index] = (temp_seq);
-                   temp_data_level[update_index] = (temp_seq);
-                 }
-                 //this.live_tree_view_data.splice(key, 1);
-               }
-               console.log(this.tree_data_json);
-               this.live_tree_view_data = [];
-             }
-           }
-         } else {
-           this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
-           return;
-         }
-       }
-
-       onVerifyOutput(success_call): any {
-         let objDataset: any = {};
-         objDataset.ModelData = [];
-         objDataset.RuleData = [];
-         objDataset.apiData = [];
-         objDataset.ModelData.push({
-           CompanyDBId: this.companyName,
-           ModelId: this.modelbom_data.modal_id
-         });
-         objDataset.RuleData = this.rule_data;
-         objDataset.apiData.push({
-           GUID: sessionStorage.getItem("GUID"),
-           UsernameForLic: sessionStorage.getItem("loggedInUser")
-         });
-
-         this.service.onVerifyOutput(objDataset).subscribe(
-           data => {
-             if (data !== undefined && data != "" && data != null) {
-               if(data.length > 0){
-                 if (data[0].ErrorMsg == "7001") {
-                   this.commonService.RemoveLoggedInUser().subscribe();
-                   this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                   return;
-                 }
-               } 
-               if (data == "Rules Conflict") {
-                 this.showLookupLoader = false;
-                 this.toastr.error('', this.language.conflict, this.commonData.toast_config);
-                 success_call(false);
-                 return false;
-               }
-
-               else{
-                 this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
-                 success_call(true);
-                 return true;
-               }
-             }
-           })
-       }
-
-       enlage_image(image) {
-         this.lookupfor = 'large_image_view';
-         this.selectedImage = image;
-       }
-
-       onModelIdChange() {
-         this.service.onModelIdChange(this.modelbom_data.modal_code).subscribe(
-           data => {
-             if (data === "False") {
-               this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
-               this.modelbom_data.modal_id = "";
-               this.modelbom_data.modal_code = "";
-               this.modelbom_data.feature_name = "";
-               this.modelbom_data.feature_desc = "";
-               return;
-             }
-             else {
-               this.lookupfor = "ModelBom_lookup"
-               this.modelbom_data.modal_id = data;
-               this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
-
-             }
-           })
-       }
-
-       on_rule_click() {
-         this.lookupfor = "rule_section_lookup";
-         this.ruleselected = [];
-         //this.ruleselected=this.rule_data;
-         this.serviceData = [];
-         this.showLookupLoader = true;
-         this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
-           data => {
-             this.showLookupLoader = false;
-             console.log(data);
-             if(data != undefined && data.length > 0){
-               if (data[0].ErrorMsg == "7001") {
-                 this.commonService.RemoveLoggedInUser().subscribe();
-                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                 return;
-               } 
-             }
-
-             if (data.length > 0) {
-               this.serviceData = data;
-             }
-             else {
-               this.toastr.error('', this.language.norules, this.commonData.toast_config);
-               return;
-             }
-           }, error => {
-             this.showLookupLoader = true;
-           });
-       }
-
-       getModelItemDetails(rowIndex) {
-         this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value_code).subscribe(
-           data => {
-
-             if(data != undefined && data.length > 0){
-               if (data[0].ErrorMsg == "7001") {
-                 this.commonService.RemoveLoggedInUser().subscribe();
-                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                 return;
-               } 
-             }
-
-             if (data === "False") {
-               this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
-               this.modelbom_data[rowIndex].type_value = "";
-               this.modelbom_data[rowIndex].type_value_code = "";
-               this.modelbom_data[rowIndex].display_name = "";
-               this.modelbom_data[rowIndex].min_selected = 1;
-               this.modelbom_data[rowIndex].max_selected = 1;
-               return;
-             }
-             else {
-               this.lookupfor = "";
-               this.modelbom_data.modal_id = data;
-               this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
-             }
-           })
-       }
-
-       checkModelAlreadyAddedinParent(enteredModelID, modelbom_type_value, rowindex, fromEvent) {
-         console.log(modelbom_type_value);
-         this.service.CheckModelAlreadyAddedinParent(enteredModelID, this.modelbom_data.modal_id).subscribe(
-           data => {
-             if (data.length > 0) {
-               if (data[0].ErrorMsg == "7001") {
-                 this.commonService.RemoveLoggedInUser().subscribe();
-                 this.commonService.signOut(this.toastr, this.route, 'Sessionout');
-                 return;
-               } 
-               //If exists then will restrict user 
-               else if (data == "Exist") {
-                 this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
-                 this.modelbom_data[rowindex].type_value = "";
-                 this.modelbom_data[rowindex].display_name = "";
-                 this.modelbom_data[rowindex].min_selected = 1;
-                 this.modelbom_data[rowindex].max_selected = 1;
-
-                 return;
-               }
-               else if (data == "True") {
-                 if (fromEvent == "lookup") {
-                   this.lookupfor = 'ModelBom_Detail_lookup';
-                   this.getModelDetails(enteredModelID, "Header", 0);
-                 }
-                 else if (fromEvent == "change") {
-                   this.getModelItemDetails(rowindex);
-                 }
-               }
-             }
-             else {
-               this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-               console.log("Failed when checking hierac check for feature ID")
-               return;
-             }
-           },
-           error => {
-             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-             return;
-           }
-           )
-       }
-
-       //This will recurse the tree
-       get_childrens(unique_key) {
-        let data = this.complete_dataset.filter(function (obj) {
-          return obj['node_id'] == unique_key;
-        });
-        return data;
-      }
-  
-      check_component_exist(unique_key, level) {
-        level = (parseInt(level) + 1);
-        let data = [];
-        if (unique_key != "" && unique_key != null && unique_key != undefined) {
-          data = this.tree_data_json.filter(function (obj) {
-            return obj['node_id'] == unique_key; //  && obj['level'] == level;
-          });
+            for (let j = 0; j < this.tree_data_json.length; ++j) {
+              if (remove_tree_data[0]['live_row_id'] == this.tree_data_json[j]['live_row_id']) {
+                this.tree_data_json.splice(j, 1);
+              }
+            }
+          }
         }
-        return data;
+        this.modelbom_data.splice(i, 1);
+        i = i - 1;
       }
+      else {
+        this.modelbom_data[i].rowindex = i + 1;
+      }
+    }
+  }
+  // remove data from exploded view tree
+  //this.live_tree_view_data
+  this.current_selected_row = [];
+  this.row_selection = [];
+}
+
+clearData(rowindex) {
+  //this.modelbom_data[rowindex].type_value="";
+  this.modelbom_data[rowindex].uom = "";
+  this.modelbom_data[rowindex].display_name = "";
+  this.modelbom_data[rowindex].quantity = ("0");
+  this.modelbom_data[rowindex].min_selected = 1;
+  this.modelbom_data[rowindex].max_selected = 1;
+  this.modelbom_data[rowindex].feature_min_selected = 1;
+  this.modelbom_data[rowindex].feature_max_selected = 1;
+  this.modelbom_data[rowindex].propagate_qty = 'N';
+  this.modelbom_data[rowindex].price_source = '';
+  this.modelbom_data[rowindex].price_source_id = '';
+  this.modelbom_data[rowindex].mandatory = 'N';
+  this.modelbom_data[rowindex].unique_identifer = 'N';
+  this.modelbom_data[rowindex].is_feature_multiselect = 'N';
+  this.modelbom_data[rowindex].feature_default_count = 0;
+}
+
+on_bom_type_change(selectedvalue, rowindex) {
+
+  if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
+    this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
+    return false;
+  }
+  this.serviceData = [];
+  this.currentrowindex = rowindex;
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      this.clearData(i);
+      this.modelbom_data[i].type_value = "";
+      this.modelbom_data[i].type_value_code = "";
+      if (selectedvalue == 3) {
+        this.modelbom_data[i].isDisplayNameDisabled = false
+        this.modelbom_data[i].isTypeDisabled = false
+        this.modelbom_data[i].hide = false
+        this.modelbom_data[i].type = 3
+        this.modelbom_data[i].isPriceDisabled = true
+        this.modelbom_data[i].pricehide = true
+        this.modelbom_data[i].isUOMDisabled = true
+        this.modelbom_data[i].quantity = ("1");
+        this.modelbom_data[i].isMinSelectedDisable = false;
+        this.modelbom_data[i].isMaxSelectedDisable = false;
+        this.modelbom_data[i].propagate_qty = true;
+        this.modelbom_data[i].mandatory = false;
+        this.modelbom_data[i].unique_identifer = false;
+        this.modelbom_data[i].mandatory_item_disabled = false;
+        // this.mandatory_disabled = false;
+      }
+      else {
+        this.modelbom_data[i].isDisplayNameDisabled = false
+        this.modelbom_data[i].isTypeDisabled = false
+        this.modelbom_data[i].hide = false
+        this.modelbom_data[i].quantity = ("1");
+        if (selectedvalue == 2) {
+          this.lookupfor = 'Item_Detail_lookup';
+          this.modelbom_data[i].type = 2
+          this.modelbom_data[i].isPriceDisabled = false
+          this.modelbom_data[i].pricehide = false
+          this.modelbom_data[i].isUOMDisabled = false
+          this.modelbom_data[i].isMinSelectedDisable = true;
+          this.modelbom_data[i].isMaxSelectedDisable = true;
+          this.modelbom_data[i].propagate_qty = true;
+          this.modelbom_data[i].mandatory = true;
+          // this.mandatory_disabled = true;
+          this.modelbom_data[i].unique_identifer = true;
+          this.modelbom_data[i].mandatory_item_disabled = true;
+
+        }
+        else {
+          this.modelbom_data[i].type = 1
+          this.lookupfor = 'feature_lookup';
+          this.modelbom_data[i].isPriceDisabled = true
+          this.modelbom_data[i].pricehide = true
+          this.modelbom_data[i].isUOMDisabled = true
+          this.modelbom_data[i].isMinSelectedDisable = false;
+          this.modelbom_data[i].isMaxSelectedDisable = false;
+          this.modelbom_data[i].propagate_qty = true;
+          this.modelbom_data[i].mandatory = false;
+          this.modelbom_data[i].unique_identifer = false;
+          this.modelbom_data[i].mandatory_item_disabled = false;
+          // this.mandatory_disabled = false;
+        }
+
+      }
+
+
+    }
+  }
+}
+
+on_type_click(selectedvalue, rowindex) {
+  if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
+    this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
+    return false;
+  }
+  this.made_changes = true;
+  this.currentrowindex = rowindex;
+  if (selectedvalue == 3) {
+    this.getModelDetails(this.modelbom_data.modal_id, "Detail", selectedvalue)
+  }
+  else {
+    // this.lookupfor = 'Item_Detail_lookup';
+
+    this.getModelFeatureDetails(this.modelbom_data.modal_id, "Detail", selectedvalue);
+  }
+
+}
+
+getModelFeatureDetails(feature_code, press_location, index) {
+  console.log('inopen feature');
+  this.showLookupLoader = true;
+  this.serviceData = [];
+  this.allItemDataDetails = []; 
+  this.service.getModelFeatureDetails(feature_code, press_location, index).subscribe(
+    data => {
+      this.allItemDataDetails = data; 
+      if (data.length > 0) {
+        this.showLookupLoader = false;
+        if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+          return;
+        } 
+        if (press_location == "Header") {
+          if (this.lookupfor == 'feature_lookup') {
+            // this.feature_bom_data.feature_id = data;
+            this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
+            this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
+
+          }
+          else {
+            // this.feature_bom_table=data;
+            for (let i = 0; i < this.modelbom_data.length; ++i) {
+              if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+                this.modelbom_data[i].isAccessory = false;
+                this.modelbom_data[i].unique_identifer = true;
+                this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID.toString();
+                this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE.toString();
+                this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME;
+                this.modelbom_data[i].min_selected = data[0].OPTM_MIN_SELECTABLE;
+                this.modelbom_data[i].max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
+                this.modelbom_data[i].feature_min_selected = data[0].OPTM_MIN_SELECTABLE;
+                this.modelbom_data[i].feature_max_selected = (data[0].OPTM_MAX_SELECTABLE != "" && data[0].OPTM_MAX_SELECTABLE != 0) ? data[0].OPTM_MAX_SELECTABLE : 1;
+                this.modelbom_data[i].is_feature_multiselect = data[0].OPTM_ISMULTISELECT;
+                this.modelbom_data[i].feature_default_count  = data[0].OPTM_DEFAULTCOUNT;
+                if (this.modelbom_data[i].type == 1){
+                  if (data[0].OPTM_ACCESSORY == 'Y'){
+                    this.modelbom_data[i].isAccessory = true;
+                    this.modelbom_data[i].unique_identifer = false;
+                  }  
+                }
+
+                this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex,"branchType": 'feature', "icon":'feature' });
+              }
+            }
+          }
+        }
+        else {
+          if (index == 1) {
+            this.lookupfor = 'feature_Detail_lookup';
+          }
+          else {
+            this.lookupfor = 'Item_Detail_lookup';
+          }
+
+          this.serviceData = data;
+        }
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+
+    },error => {
+      this.showLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    }
+    )
+}
+
+openFeatureLookUp() {
+  this.made_changes = true;
+  this.showLookupLoader = true;
+  this.serviceData = []
+  this.service.GetModelList().subscribe(
+    data => {
+      if(data != undefined && data != null){
+        if(data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
+            this.showLookupLoader = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          } 
+        }
+      }
+      if (data.length > 0) {
+        this.lookupfor = 'ModelBom_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
+
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },error => {
+      this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    }
+    )
+}
+
+openPriceLookUp(ItemKey, rowindex) {
+  this.serviceData = []
+  this.showLookupLoader = true;
+  this.currentrowindex = rowindex;
+  console.log(this.modelbom_data);
+  this.service.GetPriceList(ItemKey).subscribe(
+    data => {
+      if(data != undefined && data.length > 0){
+        if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
+          this.showLookupLoader = false;
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+          return;
+        } 
+      }
+
+      if (data.length > 0) {
+        this.lookupfor = 'Price_lookup';
+        this.showLookupLoader = false;
+        this.serviceData = data;
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.showLookupLoader = false;
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },error => {
+      this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    }
+    )
+}
+
+getLookupValue($event) {
+  if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup") {
+    console.log("in here - selection ");
+    for (let j = 0; j < this.modelbom_data.length; j++) {
+      var psTypeCode = this.modelbom_data[j].type_value_code;
+      var result = false;
+      if (psTypeCode != undefined && psTypeCode != "") {
+        if (this.lookupfor == "Item_Detail_lookup") {
+          if (psTypeCode.toUpperCase() == $event[1].toUpperCase() || psTypeCode.toUpperCase() == $event[0].toUpperCase()) {
+            result = true;
+          }
+        } else {
+          if (psTypeCode.toUpperCase() == $event[1].toUpperCase()) {
+            result = true;
+          }
+        }
+
+        if (result == true) {
+          this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
+
+          $(".row_type_value_id").eq(this.currentrowindex - 1).val("");
+          $(".row_type_value_code").eq(this.currentrowindex - 1).val("");
+          return;
+        }
+      }
+    }
+  }
+
+  if (this.lookupfor == 'ModelBom_lookup') {
+    //alert($event);
+    this.made_changes = true;
+    this.modelbom_data.modal_id = $event[0];
+    this.modelbom_data.modal_code = $event[1];
+
+    this.getModelDetails($event[0], "Header", 0);
+  }
+  else if (this.lookupfor == 'feature_Detail_lookup') {
+    this.made_changes = true;
+    this.getModelFeatureDetails($event[0], "Header", 0);
+  }
+  else if (this.lookupfor == 'ModelBom_Detail_lookup') {
+    //On choosing value from lookup we will chk its cyclic dependency
+    //First we will check the conflicts
+    this.made_changes = true;
+    this.checkModelAlreadyAddedinParent($event[0], this.modelbom_data.modal_id, this.currentrowindex - 1, "lookup");
+
+  }
+  else if (this.lookupfor == 'Price_lookup') {
+    this.made_changes = true;
+    this.getPriceDetails($event[1], $event[0], this.currentrowindex);
+  }
+  else if (this.lookupfor == 'rule_section_lookup') {
+    this.made_changes = true;
+    this.rule_data = $event;
+  }
+  else if (this.lookupfor == 'Item_Detail_lookup') {
+    this.made_changes = true;
+    this.serviceData = []
+    this.getItemDetails($event[0]);
+  }
+}
+
+getPriceDetails(price_list_name, price, index) {
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === index) {
+      this.modelbom_data[i].price_source = price_list_name.toString()
+      this.modelbom_data[i].price_source_id = price.toString()
+    }
+  }
+}
+
+
+getModelDetails(Model_code, press_location, index) {
+  this.showLookupLoader = true;
+  this.service.getModelDetails(Model_code, press_location, index).subscribe(
+    data => {
+
+      if (data.length > 0) {
+        this.showLookupLoader = false;  
+        if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+          return;
+        }                   
+
+        if (press_location == "Header") {
+          if (this.lookupfor == 'ModelBom_lookup') {
+            this.modelbom_data.feature_name = data[0].OPTM_DISPLAYNAME;
+            this.modelbom_data.feature_desc = data[0].OPTM_FEATUREDESC;
+            this.modelbom_data.image_path = data[0].OPTM_PHOTO;
+            if (this.modelbom_data.image_path != null && this.modelbom_data.image_path != "") {
+              this.header_image_data = this.commonData.get_current_url() + this.modelbom_data.image_path;
+              this.showImageBlock = true;
+            }
+          }
+          else {
+            for (let i = 0; i < this.modelbom_data.length; ++i) {
+              if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+                console.log(data[0]);
+                this.modelbom_data[i].type_value = data[0].OPTM_FEATUREID;
+                this.modelbom_data[i].type_value_code = data[0].OPTM_FEATURECODE;
+                this.modelbom_data[i].display_name = data[0].OPTM_DISPLAYNAME
+                this.live_tree_view_data.push({ "display_name": data[0].OPTM_DISPLAYNAME, "tree_index": this.currentrowindex ,"branchType": 'modal', "icon":'modal'});
+              }
+            }
+          }
+        }
+        else {
+          if (index == 3) {
+            this.lookupfor = 'ModelBom_Detail_lookup';
+          }
+          this.serviceData = data;
+        }
+      }
+      else {
+        this.lookupfor = "";
+        this.serviceData = [];
+        this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
+        return;
+      }
+    },error => {
+      this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    }
+
+    )
+}
+
+getItemDetailsOnChange(ItemKey){
+  this.serviceData = []
+  this.service.getItemDetails(ItemKey).subscribe(
+    data => {
+
+      if (data != null) {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          } 
+
+          for (let i = 0; i < this.modelbom_data.length; ++i) {
+            if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+              this.modelbom_data[i].type_value = data[0].ItemKey;
+              this.modelbom_data[i].type_value_code = data[0].ItemKey;
+              this.modelbom_data[i].display_name = data[0].Description
+              this.modelbom_data[i].uom = data[0].InvUOM
+              this.modelbom_data[i].price_source = data[0].ListName;
+              this.modelbom_data[i].price_source_id = data[0].PriceListID;
+              this.modelbom_data[i].unique_identifer =  true; 
+              this.live_tree_view_data.push({ "display_name": data[0].Description, "tree_index": this.currentrowindex ,"branchType": 'item', "icon":'item'});
+            }
+          }
+        }
+      }
+    },error => {
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    })
+}
+
+getSelectedItemDetails(ItemKey){
+  let data = this.allItemDataDetails.filter(function (obj) {
+    return obj.ItemKey == ItemKey;
+  });
+  return data;
+}
+
+getItemDetails(ItemKey) {
+  this.serviceData = []
+
+  let selectedDataDetails:any = [];
+  selectedDataDetails = this.getSelectedItemDetails(ItemKey);
+
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      this.modelbom_data[i].type_value = selectedDataDetails[0].ItemKey;
+      this.modelbom_data[i].type_value_code = selectedDataDetails[0].ItemKey;
+      this.modelbom_data[i].display_name = selectedDataDetails[0].Description
+      this.modelbom_data[i].uom = selectedDataDetails[0].InvUOM
+      this.modelbom_data[i].price_source = selectedDataDetails[0].ListName;
+      this.modelbom_data[i].price_source_id = selectedDataDetails[0].PriceListID;
+      this.modelbom_data[i].unique_identifer = true;
+      this.live_tree_view_data.push({ "display_name": selectedDataDetails[0].Description, "tree_index": this.currentrowindex,"branchType": 'item', "icon":'item' });
+    }
+  }
+
+}
+
+on_typevalue_change(value, rowindex, code, type_value_code) {
+  this.currentrowindex = rowindex
+  var iIndex = this.currentrowindex - 1;
+  for (let j = 0; j < this.modelbom_data.length; j++) {
+    var psTypeCode = this.modelbom_data[j].type_value_code;
+    if (psTypeCode != undefined && psTypeCode != "") {
+      if (psTypeCode.toUpperCase() == code.toUpperCase()) {
+        this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
+        $(type_value_code).val("");
+        return;
+      }
+    }
+  }
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      this.modelbom_data[i].type_value = value.toString()
+      this.modelbom_data[i].type_value_code = code.toString()
+      if (this.modelbom_data[i].type == 1) {
+        this.service.onFeatureIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
+          data => {
+
+            if(data != undefined && data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                return;
+              } 
+            }
+            if (data === "False") {
+              this.toastr.error('', this.language.InvalidFeatureId, this.commonData.toast_config);
+              this.modelbom_data[iIndex].type_value = "";
+              this.modelbom_data[iIndex].type_value_code = "";
+              this.modelbom_data[iIndex].display_name = "";
+              this.modelbom_data[i].min_selected = 1;
+              this.modelbom_data[i].max_selected = 1;
+              this.modelbom_data[i].feature_min_selected = 1;
+              this.modelbom_data[i].feature_max_selected = 1;
+              this.modelbom_data[i].is_feature_multiselect = 'N';
+              this.modelbom_data[i].feature_default_count = 0;
+              return;
+            }
+            else {
+              this.lookupfor = ""
+              this.modelbom_data[iIndex].type_value = data;
+              this.getModelFeatureDetails(this.modelbom_data[iIndex].type_value, "Header", iIndex)
+            }
+          },error => {
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            }
+            return;
+          })
+      }
+      else if (this.modelbom_data[i].type == 2) {
+        this.service.onItemIdChangeModelBom(this.modelbom_data[i].type_value_code).subscribe(
+          data => {
+            console.log(data);
+            if(data != undefined && data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                return;
+              } 
+            }
+            if (data === "False") {
+              this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
+              this.modelbom_data[iIndex].type_value = "";
+              this.modelbom_data[iIndex].type_value_code = "";
+              this.modelbom_data[iIndex].display_name = "";
+              this.modelbom_data[iIndex].price_source = ""; 
+              this.modelbom_data[iIndex].price_source_id = ""; 
+              return;
+            }
+            else {
+              this.lookupfor = "";
+              this.modelbom_data[iIndex].type_value = data;
+              // this.getItemDetails(this.modelbom_data[iIndex].type_value);
+              this.getItemDetailsOnChange(this.modelbom_data[iIndex].type_value);
+            }
+          },error => {
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            }
+            return;
+          })
+      }
+      else {
+        //First we will check the conflicts
+        this.checkModelAlreadyAddedinParent(value, code, i, "change");
+      }
+    }
+  }
+}
+
+on_display_name_change(value, rowindex) {
+
+  this.currentrowindex = rowindex
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      if (this.modelbom_data.feature_name == value) {
+        this.modelbom_data[i].display_name = "";
+        this.toastr.error('', this.language.model_child_name_no_same, this.commonData.toast_config);
+        return false;
+      }
+      this.modelbom_data[i].display_name = value;
+      this.live_tree_view_data.push({ "display_name": value, "tree_index": this.currentrowindex });
+    }
+  }
+}
+
+on_quantity_change(value, rowindex) {
+  this.currentrowindex = rowindex;
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      if (value == 0) {
+        value = 1;
+        this.modelbom_data[i].quantity = (value);
+        this.toastr.error('', this.language.quantityvalid, this.commonData.toast_config);
+      }
+      else {
+        var rgexp = /^\d+$/;
+        if (isNaN(value) == true) {
+          value = 1;
+          this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        } else if (value == 0 || value == '' || value == null || value == undefined) {
+          value = 1;
+          this.toastr.error('', this.language.blank_or_zero_not_allowed, this.commonData.toast_config);
+        } else if (value < 0) {
+          value = 1;
+          this.toastr.error('', this.language.negativequantityvalid, this.commonData.toast_config);
+        } else if (rgexp.test(value) == false) {
+          value = 1;
+          this.toastr.error('', this.language.decimalquantityvalid, this.commonData.toast_config);
+        }
+        this.modelbom_data[i].quantity = (value);
+      }
+
+      $('input[name="bom_quantity"]').eq((rowindex - 1)).val((value));
+    }
+  }
+}
+
+on_uom_change(value, rowindex) {
+  this.currentrowindex = rowindex;
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      this.modelbom_data[i].uom = value
+    }
+  }
+}
+
+on_min_selected_change(value, rowindex, actualvalue) {
+  this.currentrowindex = rowindex;
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      var rgexp = /^\d+$/;
+      if (isNaN(value) == true) {
+        this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        $(".min_selectable_row").eq((rowindex - 1)).val(0);
+        return;
+      } else if (value == '' || value == null || value == undefined) {
+        this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+        this.toastr.error('', this.language.blank_not_allowed_min_selectable, this.commonData.toast_config);
+        $(".min_selectable_row").eq((rowindex - 1)).val(0);
+        return;
+      } else if (value < 0) {
+        this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+        this.toastr.error('', this.language.negativeminselectablevalid, this.commonData.toast_config);
+        $(".min_selectable_row").eq((rowindex - 1)).val(0);
+        return;
+      } else if (rgexp.test(value) == false) {
+        this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+        this.toastr.error('', this.language.decimaleminselectablevalid, this.commonData.toast_config);
+        $(".min_selectable_row").eq((rowindex - 1)).val(0);
+        return;
+      }
+
+      this.modelbom_data[i].min_selected = value
+      if (this.modelbom_data[i].max_selected != "") {
+        if (parseInt(this.modelbom_data[i].max_selected) < parseInt(value)) {
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+          // $(actualvalue).val(1);
+          $(".min_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_min_selected);
+          this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
+          return;
+        }
+      }
+    }
+  }
+}
+
+on_max_selected_change(value, rowindex, actualvalue) {
+  this.currentrowindex = rowindex
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      var rgexp = /^\d+$/;
+      if (isNaN(value) == true) {
+        this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
+        this.toastr.error('', this.language.ValidNumber, this.commonData.toast_config);
+        $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+        return;
+      } else if (value == 0 || value == '' || value == null || value == undefined) {
+        this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
+        this.toastr.error('', this.language.blank_or_zero_not_allowed_max_selectable, this.commonData.toast_config);
+        $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+        return;
+      } else if (value < 0) {
+        this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
+        this.toastr.error('', this.language.negativemaxselectablevalid, this.commonData.toast_config);
+        $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+        return;
+      } else if (rgexp.test(value) == false) {
+        this.modelbom_data[i].min_selected = (this.modelbom_data[i].feature_min_selected!="") ? this.modelbom_data[i].feature_min_selected : "1";
+        this.toastr.error('', this.language.decimalmaxselectablevalid, this.commonData.toast_config);
+        $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+        return;
+      }
+
+      // dont allow less than default defined in feature
+      if (this.modelbom_data[i].feature_default_count > value){
+        this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+        this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
+        $(".max_selectable_row").eq((rowindex - 1)).val(this.modelbom_data[i].feature_max_selected);
+        this.toastr.error('', this.language.max_selectable_less_than_default + ' ' + rowindex, this.commonData.toast_config);
+        return;
+      }
+
+      this.modelbom_data[i].max_selected = value;
+      if (this.modelbom_data[i].type == "1") {
+        this.service.CheckMaxSelectedValue(this.modelbom_data[i].type_value).subscribe(
+          data => {
+            console.log(data);
+            if(data != undefined && data != null && data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                return;
+              } 
+            }
+
+            if (data != null && data[0] != undefined && data[0]) {
+              let defaultCount = data[0].DefaultCount;
+              let FeatureChild = (data[0].FeatureChild);
+              let MaxSelectable = data[0].MaxSelectable;
+              if(data[0].FeatureChild == 0) {
+                this.modelbom_data[i].max_selected = 1;
+                $(".max_selectable_row").eq((rowindex - 1)).val(1);
+                this.toastr.error('', this.language.max_selected_validation_ie + " : " + 1, this.commonData.toast_config);
+                return;
+              } else {
+                if (parseFloat(value) > parseFloat(MaxSelectable)) { 
+                  this.modelbom_data[i].max_selected = MaxSelectable;
+                  $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
+                  this.toastr.error('', this.language.max_selected_validation_ie + " : " + MaxSelectable, this.commonData.toast_config);
+                  return;
+                }
+
+                if (parseFloat(value) < parseFloat(defaultCount)) { 
+                  this.modelbom_data[i].max_selected = MaxSelectable;
+                  $(".max_selectable_row").eq((rowindex - 1)).val(MaxSelectable);
+                  this.toastr.error('', this.language.max_selectable_less_than_default + " : " + rowindex, this.commonData.toast_config);
+                  return;
+                }
+              }
+
+            } 
+
+
+          },error => {
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commonService.isUnauthorized();
+            }
+            return;
+          })
+      } 
+
+      if (this.modelbom_data[i].min_selected != "") {
+        if (parseInt(this.modelbom_data[i].min_selected) > parseInt(value)) {
+          this.modelbom_data[i].min_selected = this.modelbom_data[i].feature_min_selected;
+          this.modelbom_data[i].max_selected = this.modelbom_data[i].feature_max_selected;
+          $(".max_selectable_row").eq((rowindex - 1)).val(1);
+          this.toastr.error('', this.language.qty_validation, this.commonData.toast_config);
+          return;
+        }
+      }
+
+    }
+  }
+}
+
+on_propagate_qty_change(value, rowindex) {
+  this.made_changes = true;
+  this.currentrowindex = rowindex
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      if (value.checked == true) {
+        this.modelbom_data[i].propagate_qty = true
+      }
+      else {
+        this.modelbom_data[i].propagate_qty = false
+      }
+    }
+  }
+}
+
+on_price_source_change(id, value, rowindex, actualValue) {
+  this.made_changes = true;
+  this.currentrowindex = rowindex;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      this.service.CheckValidPriceListEntered(this.modelbom_data[i].type_value, value).subscribe(
+        data => {
+          if(data != undefined && data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            } 
+          }
+          if (data === "False") {
+            $(actualValue).val("");
+            this.toastr.error('', this.language.InvalidPriceId, this.commonData.toast_config);
+            return;
+          }
+          else if (data != null) {
+            this.modelbom_data[i].price_source_id = data
+            this.modelbom_data[i].price_source = value
+            this.lookupfor = ""
+          }
+
+        },error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
+    }
+  }
+}
+
+on_mandatory_change(value, rowindex) {
+  this.made_changes = true;
+  this.currentrowindex = rowindex;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      if (value.checked == true) {
+        this.modelbom_data[i].mandatory = true
+      }
+      else {
+        this.modelbom_data[i].mandatory = false
+      }
+    }
+  }
+}
+
+on_unique_identifer_change(value, rowindex) {
+  this.made_changes = true;
+  this.currentrowindex = rowindex
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      if (value.checked == true) {
+        this.modelbom_data[i].unique_identifer = true
+      }
+      else {
+        this.modelbom_data[i].unique_identifer = false
+      }
+    }
+  }
+}
+
+on_isready_change(value) {
+  this.made_changes = true;
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (value.checked == true) {
+      this.modelbom_data[i].ReadyToUse = true
+    }
+    else {
+      this.modelbom_data[i].ReadyToUse = false
+    }
+  }
+}
+
+onSave() {
+  var obj = this;
+  if (this.validate_unique_identifier() == false) {
+    return;
+  }
+  if (obj.validation("Save") == false) {
+    return;
+  }
+  this.showLookupLoader = true;
+
+  if(this.rule_data.length == 0)
+  {
+    obj.save_data();
+    return;
+  }
+
+  obj.onVerifyOutput(function (response) {
+    console.log('in validate true ' + response);
+    if (response == true) {
+      obj.save_data();
+    } else {
+      this.showLookupLoader = false;
+    }
+  });
+}
+
+validation(btnpress) {
+  if (this.modelbom_data.modal_id == "" || this.modelbom_data.modal_id == null) {
+    this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
+    return false;
+  }
+
+  if (btnpress == "Save") {
+    this.made_changes = false;
+    if (this.modelbom_data.length == 0) {
+      this.toastr.error('', this.language.Addrow, this.commonData.toast_config);
+      return false;
+    }
+    else {
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        let currentrow = i + 1;
+        if (this.modelbom_data[i].type == 1 && this.modelbom_data[i].type_value == "") {
+          this.toastr.error('', this.language.SelectFeature + currentrow, this.commonData.toast_config);
+          return false;
+        }
+        if (this.modelbom_data[i].type == 2 && this.modelbom_data[i].type_value == "") {
+          this.toastr.error('', this.language.SelectItem + currentrow, this.commonData.toast_config);
+          return false;
+        }
+        if (this.modelbom_data[i].type == 3 && this.modelbom_data[i].type_value == "") {
+          this.toastr.error('', this.language.SelectModel + currentrow, this.commonData.toast_config);
+          return false;
+        }
+        if (this.modelbom_data[i].quantity == "") {
+          this.toastr.error('', this.language.quantityblank + currentrow, this.commonData.toast_config);
+          return false;
+        }
+      }
+    }
+
+  }
+}
+
+onDelete() {
+  // var result = confirm(this.language.DeleteConfimation);
+  this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
+  this.show_dialog = true;
+}
+
+//delete record will be execute from here
+delete_record() {
+  console.log('this.modelbom_data.modal_id');
+  console.log(this.modelbom_data.modal_id);
+  let GetItemData = []
+  GetItemData.push({
+    CompanyDBId: this.companyName,
+    ModelId: this.modelbom_data.modal_id,
+    GUID: sessionStorage.getItem("GUID"),
+    UsernameForLic: sessionStorage.getItem("loggedInUser")
+  });
+  this.service.DeleteData(GetItemData).subscribe(
+    data => {
+      if(data != undefined && data.length > 0){
+        if (data[0].ErrorMsg == "7001") {
+          this.made_changes = false;
+          this.showLookupLoader = false;
+          this.commonService.RemoveLoggedInUser().subscribe();
+          this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+          return;
+        } 
+      }
+
+      if(data[0].IsDeleted == "0" && data[0].Message == "ReferenceExists"){
+        this.toastr.error('', this.language.Refrence + ' at: ' + data[0].ModelCode , this.commonData.toast_config);
+      }
+      else if(data[0].IsDeleted == "1"){
+        this.toastr.success('', this.language.DataDeleteSuccesfully + ' : ' + data[0].ModelCode, this.commonData.toast_config);
+        this.made_changes = false;
+        this.route.navigateByUrl('modelbom/view');
+      }
+      else{
+        this.toastr.error('', this.language.DataNotDelete + ' : ' + data[0].ModelCode , this.commonData.toast_config);
+      }
+
+    },error => {
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
+    }
+    )
+}
+
+//This will take confimation box value
+get_dialog_value(userSelectionValue) {
+  if (userSelectionValue == true) {
+    this.delete_record();
+  }
+  this.show_dialog = false;
+}
+
+onExplodeClick(type) {
+  if (type == "manual") {
+    this.showtree();
+  }
+  console.log('onExplodeClick');
+  this.lookupfor = 'tree_view__model_bom_lookup"';
+  console.log(this.tree_data_json);
+  if (this.modelbom_data.modal_id != undefined) {
+    //now call bom id
+    if (this.tree_data_json == undefined || this.tree_data_json.length == 0) {
+      this.service.GetDataForExplodeViewForModelBOM(this.companyName, this.modelbom_data.modal_id, this.modelbom_data.feature_name).subscribe(
+        data => {
+          if (data != null && data != undefined) {
+            if(data.length > 0){
+              if (data[0].ErrorMsg == "7001") {
+                this.made_changes = false;
+                this.commonService.RemoveLoggedInUser().subscribe();
+                this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+                return;
+              } 
+            }
+            // this.serviceData = data;
+            // this.lookupfor = "tree_view__model_bom_lookup";
+            let counter_temp = 0;
+            let temp_data = data.filter(function (obj) {
+              obj['tree_index'] = (counter_temp);
+              obj['live_row_id'] = (counter_temp++);
+              return obj;
+            });
+            this.tree_data_json = temp_data;
+
+          }
+          else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
+          }
+
+        },error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
+          return;
+        }
+        );
+    }
+    else {
+
+      for (let i = 0; i < this.modelbom_data.length; ++i) {
+        if(this.modelbom_data[i].display_name == ''){
+          let currentrowindx = i+1;
+          this.toastr.error('', this.language.DisplayNameRequired + currentrowindx, this.commonData.toast_config);
+        }
+      }
+
+      let temp_data_level = this.tree_data_json.filter(function (obj) {
+        return obj.level == "0" || obj.level == "1";
+      });
+
+      let sequence_count = parseInt(this.tree_data_json.length + 1);
+      console.log(this.live_tree_view_data);
+      if (this.live_tree_view_data.length > 0) {
+
+        // for (var key in this.live_tree_view_data) {
+          for (var key = 0 ; key < this.live_tree_view_data.length ; key++) {
+            var update_index = "";
+
+            if (this.live_tree_view_data[key].tree_index !== undefined) {
+              let local_tree_index = this.live_tree_view_data[key].tree_index;
+              update_index = temp_data_level.findIndex(function (tree_el) {
+                return tree_el.tree_index == local_tree_index
+              });
+            }
+
+            let temp_seq = {};
+
+            //let temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.feature_name, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index };
+            if (update_index == "-1") {
+              temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.modal_code, "parentNumber": this.modelbom_data.modal_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": this.live_tree_view_data[key].branchType , "icon": this.live_tree_view_data[key].icon,"modalImage": ""};
+              this.tree_data_json.push(temp_seq);
+              temp_data_level.push(temp_seq);
+            } else {
+              let TempBranchType = temp_data_level[update_index].branchType;
+              let TempIcon = temp_data_level[update_index].icon;
+
+              temp_seq = { "sequence": sequence_count, "parentId": this.modelbom_data.modal_code, "parentNumber": this.modelbom_data.modal_id, "component": this.live_tree_view_data[key].display_name, "level": "1", "live_row_id": this.tree_data_json.length, "is_local": "1", "tree_index": this.live_tree_view_data[key].tree_index, "branchType": TempBranchType , "icon": TempIcon,"modalImage": ""};
+
+              let up_index = this.tree_data_json.findIndex(function (tree_el) {
+                return tree_el.component == temp_data_level[update_index].component && tree_el.parentId == temp_data_level[update_index].parentId && tree_el.branchType == temp_data_level[update_index].branchType
+              });
+
+              this.tree_data_json[up_index] = (temp_seq);
+              temp_data_level[update_index] = (temp_seq);
+            }
+            //this.live_tree_view_data.splice(key, 1);
+          }
+          console.log(this.tree_data_json);
+          this.live_tree_view_data = [];
+        }
+      }
+    } else {
+      this.toastr.error('', this.language.ModelCodeBlank, this.commonData.toast_config);
+      return;
+    }
+  }
+
+  onVerifyOutput(success_call): any {
+    let objDataset: any = {};
+    objDataset.ModelData = [];
+    objDataset.RuleData = [];
+    objDataset.apiData = [];
+    objDataset.ModelData.push({
+      CompanyDBId: this.companyName,
+      ModelId: this.modelbom_data.modal_id
+    });
+    objDataset.RuleData = this.rule_data;
+    objDataset.apiData.push({
+      GUID: sessionStorage.getItem("GUID"),
+      UsernameForLic: sessionStorage.getItem("loggedInUser")
+    });
+
+    this.service.onVerifyOutput(objDataset).subscribe(
+      data => {
+        if (data !== undefined && data != "" && data != null) {
+          if(data.length > 0){
+            if (data[0].ErrorMsg == "7001") {
+              this.made_changes = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
+          } 
+          if (data == "Rules Conflict") {
+            this.showLookupLoader = false;
+            this.toastr.error('', this.language.conflict, this.commonData.toast_config);
+            success_call(false);
+            return false;
+          }
+
+          else{
+            this.toastr.success('', this.language.ruleValidated, this.commonData.toast_config);
+            success_call(true);
+            return true;
+          }
+        }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+      })
+  }
+
+  enlage_image(image) {
+    this.lookupfor = 'large_image_view';
+    this.selectedImage = image;
+  }
+
+  onModelIdChange() {
+    this.made_changes = true;
+    this.service.onModelIdChange(this.modelbom_data.modal_code).subscribe(
+      data => {
+        if (data === "False") {
+          this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
+          this.modelbom_data.modal_id = "";
+          this.modelbom_data.modal_code = "";
+          this.modelbom_data.feature_name = "";
+          this.modelbom_data.feature_desc = "";
+          return;
+        }
+        else {
+          this.lookupfor = "ModelBom_lookup"
+          this.modelbom_data.modal_id = data;
+          this.getModelDetails(this.modelbom_data.modal_id, "Header", 0);
+
+        }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+      })
+  }
+
+  on_rule_click() {
+    this.lookupfor = "rule_section_lookup";
+    this.ruleselected = [];
+    //this.ruleselected=this.rule_data;
+    this.serviceData = [];
+    this.showLookupLoader = true;
+    this.service.getRuleLookupList(this.modelbom_data.modal_id).subscribe(
+      data => {
+        this.showLookupLoader = false;
+        console.log(data);
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          } 
+        }
+
+        if (data.length > 0) {
+          this.serviceData = data;
+        }
+        else {
+          this.toastr.error('', this.language.norules, this.commonData.toast_config);
+          return;
+        }
+      },error => {
+        this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+      });
+  }
+
+  getModelItemDetails(rowIndex) {
+    this.service.onModelIdChange(this.modelbom_data[rowIndex].type_value_code).subscribe(
+      data => {
+
+        if(data != undefined && data.length > 0){
+          if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          } 
+        }
+
+        if (data === "False") {
+          this.toastr.error('', this.language.Invalid_feature_item_value, this.commonData.toast_config);
+          this.modelbom_data[rowIndex].type_value = "";
+          this.modelbom_data[rowIndex].type_value_code = "";
+          this.modelbom_data[rowIndex].display_name = "";
+          this.modelbom_data[rowIndex].min_selected = 1;
+          this.modelbom_data[rowIndex].max_selected = 1;
+          return;
+        }
+        else {
+          this.lookupfor = "";
+          this.modelbom_data.modal_id = data;
+          this.getModelDetails(this.modelbom_data.modal_id, "Header", rowIndex);
+        }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+      })
+  }
+
+  checkModelAlreadyAddedinParent(enteredModelID, modelbom_type_value, rowindex, fromEvent) {
+    console.log(modelbom_type_value);
+    this.service.CheckModelAlreadyAddedinParent(enteredModelID, this.modelbom_data.modal_id).subscribe(
+      data => {
+        if (data.length > 0) {
+          if (data[0].ErrorMsg == "7001") {
+            this.made_changes = false;
+            this.commonService.RemoveLoggedInUser().subscribe();
+            this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+            return;
+          } 
+          //If exists then will restrict user 
+          else if (data == "Exist") {
+            this.toastr.error('', this.language.cyclic_ref_restriction, this.commonData.toast_config);
+            this.modelbom_data[rowindex].type_value = "";
+            this.modelbom_data[rowindex].display_name = "";
+            this.modelbom_data[rowindex].min_selected = 1;
+            this.modelbom_data[rowindex].max_selected = 1;
+
+            return;
+          }
+          else if (data == "True") {
+            if (fromEvent == "lookup") {
+              this.lookupfor = 'ModelBom_Detail_lookup';
+              this.getModelDetails(enteredModelID, "Header", 0);
+            }
+            else if (fromEvent == "change") {
+              this.getModelItemDetails(rowindex);
+            }
+          }
+        }
+        else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          console.log("Failed when checking hierac check for feature ID")
+          return;
+        }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
+        return;
+      }
+      )
+  }
+
+  //This will recurse the tree
+  get_childrens(unique_key) {
+    let data = this.complete_dataset.filter(function (obj) {
+      return obj['node_id'] == unique_key;
+    });
+    return data;
+  }
+
+  check_component_exist(unique_key, level) {
+    level = (parseInt(level) + 1);
+    let data = [];
+    if (unique_key != "" && unique_key != null && unique_key != undefined) {
+      data = this.tree_data_json.filter(function (obj) {
+        return obj['node_id'] == unique_key; //  && obj['level'] == level;
+      });
+    }
+    return data;
+  }
       /* get_childrens(componentNumber) {
          let data = this.complete_dataset.filter(function (obj) {
            return obj['parentNumber'] == componentNumber;
@@ -1688,7 +1782,7 @@ onDeleteRow(rowindex) {
          if (this.modelbom_data.length > 0) {
            let objDataset: any = {};
            objDataset.ModelData =[];
-            objDataset.RuleData = [];
+           objDataset.RuleData = [];
            var temp_model_data = new Array();
            this.modelbom_data[0].id = this.update_id;
 
@@ -1704,7 +1798,7 @@ onDeleteRow(rowindex) {
            if(this.validate_unique_identifier() == false){
              return;
            }
-            temp_model_data = this.modelbom_data;
+           temp_model_data = this.modelbom_data;
            console.log("modelbom data ", this.modelbom_data);
            for (let i = 0; i < temp_model_data.length; ++i) {
              if (temp_model_data[i].unique_identifer == false) {
@@ -1744,6 +1838,7 @@ onDeleteRow(rowindex) {
              data => {
                this.showLookupLoader = false;
                if (data == "7001") {
+                 this.made_changes = false;
                  this.commonService.RemoveLoggedInUser().subscribe();
                  this.commonService.signOut(this.toastr, this.route, 'Sessionout');
                  return;
@@ -1762,9 +1857,13 @@ onDeleteRow(rowindex) {
                  this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
                  return;
                }
-             }, error => {
-               this.showLookupLoader = false;
-             })
+             },error => {
+               this.showLookupLoader = false
+              if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                this.commonService.isUnauthorized();
+              }
+              return;
+            })
          }
        }
 

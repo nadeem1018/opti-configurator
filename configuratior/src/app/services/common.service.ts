@@ -22,7 +22,7 @@ export class CommonService {
   private commonData = new Subject<any>();
   commonData$ = this.commonData.asObservable();
 
-  constructor(private httpclient: HttpClient) { }
+  constructor(private httpclient: HttpClient,private toastr: ToastrService, private router: Router) { }
 
   // Methods
   public ShareData(data: any) {
@@ -31,18 +31,21 @@ export class CommonService {
 
 
   async get_config(callback) {
-    let config_call = await fetch( this.common_params.get_current_url() +  "/assets/data/json/config.json");
+    /*let config_call = await fetch( this.common_params.get_current_url() +  "/assets/data/json/config.json");*/
+    let config_call = await fetch( this.common_params.get_current_url() +  "/assets/config.json");
     let config_data = await config_call.json();
+    console.log("config_call - ", config_data[0]);
     if(callback != undefined && callback !== ""){
-      sessionStorage.setItem('system_config', JSON.stringify(config_data));
-      callback(config_data);
+      sessionStorage.setItem('system_config', JSON.stringify(config_data[0]));
+      callback(config_data[0]);
       
     }
 
   }
 
   async set_language(config_data, callback){
-    let language_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/i18n/" + config_data['locale'] + ".json");
+  /*  let language_call = await fetch(this.common_params.get_current_url() + "/assets/data/json/i18n/" + config_data['locale'] + ".json");*/
+    let language_call = await fetch(this.common_params.get_current_url() + "/assets/i18n/" + config_data['locale'] + ".json");
     let language_data = await language_call.json();
 
     sessionStorage.setItem('current_lang', JSON.stringify(language_data));
@@ -53,31 +56,6 @@ export class CommonService {
     }
   }
 
-
-
- /*  async set_language(language) {
-    let service_call = await fetch( this.common_params.get_current_url() + "/assets/data/json/i18n/" + language + ".json");
-    let data = await service_call.json();
-    console.log(data);
-    sessionStorage.setItem('current_lang', JSON.stringify(data));
-  } */
-
-   /* public get_config(){
-    let service_call = this.httpclient.get("../../assets/data/json/config.json");
-   
-    service_call.subscribe( data => {
-        sessionStorage.setItem('system_config', JSON.stringify(data));
-      });
-    } */
-
-
-  /* public set_language(language){
-    let service_call = this.httpclient.get("../../assets/data/json/i18n/" + language +".json");
-    service_call.subscribe(data => {
-      sessionStorage.setItem('current_lang', JSON.stringify(data));
-    });
-  } */
-
   //This will get he service according to user settings done on Admin Portal
   getMenuRecord(): Observable<any>{
     //this.config_params.product_code = 'CNF';
@@ -85,7 +63,7 @@ export class CommonService {
       this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
     }
     let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
-    return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/login/GetMenuRecord", jObject, this.common_params.httpOptions);
   }
 
   //This will get he service according to user settings done on Admin Portal
@@ -112,6 +90,7 @@ export class CommonService {
 
   RemoveLoggedInUser(): Observable<any> {
     var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
+    sessionStorage.removeItem('authToken');
     return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
   } 
 
@@ -157,6 +136,12 @@ export class CommonService {
     let jObject = { GetPSURL: JSON.stringify([{ CompanyDBID: sessionStorage.getItem('selectedComp') }]) };
     //Return the response form the API  
     return this.httpclient.post(this.config_params.service_url + "/Base/GetServerDate", jObject, this.common_params.httpOptions);
+  }
+
+  isUnauthorized() {
+    this.RemoveLoggedInUser().subscribe();
+    this.signOut(this.toastr, this.router, 'Sessionout');
+    return;
   }
 
 }

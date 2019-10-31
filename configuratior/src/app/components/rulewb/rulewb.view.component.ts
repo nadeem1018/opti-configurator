@@ -199,6 +199,12 @@ export class RuleWbViewComponent implements OnInit {
                         objcc.router.navigateByUrl('home');
                     }, 200);
                 }
+            },error => {
+                this.showLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
             });
         // check screen authorisation - end
 
@@ -250,6 +256,12 @@ export class RuleWbViewComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
 
+            },error => {
+                this.showLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
             });
     }
 
@@ -357,6 +369,11 @@ export class RuleWbViewComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
+            },error => {
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
             })
     }
 
@@ -469,6 +486,12 @@ export class RuleWbViewComponent implements OnInit {
                 this.CheckedData = [];
                 this.selectall = false;
                 $("input[name='child_checkbox']").prop("checked", false);
+            },error => {
+                this.showLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.commonservice.isUnauthorized();
+                }
+                return;
             })
 
         }

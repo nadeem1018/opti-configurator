@@ -1,0 +1,299 @@
+diff --git a/configuratior/src/app/app.module.ts b/configuratior/src/app/app.module.ts
+index 6de3c382..58db42ce 100644
+--- a/configuratior/src/app/app.module.ts
++++ b/configuratior/src/app/app.module.ts
+@@ -7,7 +7,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+ import { RouterModule, Routes } from '@angular/router';
+ import { StorageServiceModule } from 'angular-webstorage-service';
+ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
++import { HttpClientModule, HttpClientJsonpModule,HTTP_INTERCEPTORS } from '@angular/common/http';
+ import { InputsModule } from '@progress/kendo-angular-inputs';
+ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+ import { GridModule } from '@progress/kendo-angular-grid';
+@@ -70,6 +70,7 @@ import { ArchivingComponent } from './components/archiving/archiving.component';
+ 
+ // for deactivating route 
+ import { CanDeactivateGuard } from 'src/app/can-deactivate.guard';
++import { AuthInterceptor } from './helpers/Interceptors/authIntercepter';
+ 
+ 
+ // routing & navigation
+@@ -182,6 +183,11 @@ const routes: Routes = [
+     {
+       provide: PERFECT_SCROLLBAR_CONFIG,
+       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
++    },
++    {
++      provide: HTTP_INTERCEPTORS,
++      useClass: AuthInterceptor, 
++      multi: true 
+     }
+   ],
+   bootstrap: [AppComponent]
+diff --git a/configuratior/src/app/components/feature/bom/view.bom.component.ts b/configuratior/src/app/components/feature/bom/view.bom.component.ts
+index 1524a8bb..ab3e4cb5 100644
+--- a/configuratior/src/app/components/feature/bom/view.bom.component.ts
++++ b/configuratior/src/app/components/feature/bom/view.bom.component.ts
+@@ -243,6 +243,12 @@ export class ViewFeatureBOMComponent implements OnInit {
+                 this.selectall = false;
+                 $("input[name='child_checkbox']").prop("checked", false);
+ 
++            },error=>{
++                this.showLookupLoader = false;
++                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
++                this.commonservice.isUnauthorized();
++                }
++                return;
+             });
+     }
+ 
+@@ -331,9 +337,12 @@ export class ViewFeatureBOMComponent implements OnInit {
+             error => {
+                 this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                 this.showLookupLoader = false;
++                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
++                  this.commonservice.isUnauthorized();
++                }
+                 return;
+             }
+-            )
++            );
+         
+     }
+ 
+diff --git a/configuratior/src/app/components/itemcodegeneration/viewitemcodegeneration.component.ts b/configuratior/src/app/components/itemcodegeneration/viewitemcodegeneration.component.ts
+index 955c30b9..a3c5e5c1 100644
+--- a/configuratior/src/app/components/itemcodegeneration/viewitemcodegeneration.component.ts
++++ b/configuratior/src/app/components/itemcodegeneration/viewitemcodegeneration.component.ts
+@@ -234,6 +234,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
+         this.CheckedData = [];
+         this.selectall = false;
+         $("input[name='child_checkbox']").prop("checked", false);
++      },error => {
++        this.showLookupLoader = false;
++        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
++          this.commonservice.isUnauthorized();
++        }
++        return;
+       });
+   }
+ 
+@@ -346,6 +352,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
+         this.CheckedData = [];
+         this.selectall = false;
+         $("input[name='child_checkbox']").prop("checked", false);
++      },error => {
++        this.showLookupLoader = false;
++        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
++          this.commonservice.isUnauthorized();
++        }
++        return;
+       });
+ 
+   }
+@@ -461,6 +473,12 @@ export class ViewItemCodeGenerationComponent implements OnInit {
+         this.CheckedData = [];
+         this.selectall = false;
+         $("input[name='child_checkbox']").prop("checked", false);
++      },error => {
++        this.showLookupLoader = false;
++        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
++          this.commonservice.isUnauthorized();
++        }
++        return;
+       })
+ 
+   }
+diff --git a/configuratior/src/app/components/login/login.component.ts b/configuratior/src/app/components/login/login.component.ts
+index 94373a94..4b34f057 100644
+--- a/configuratior/src/app/components/login/login.component.ts
++++ b/configuratior/src/app/components/login/login.component.ts
+@@ -205,10 +205,16 @@ onConnectBtnPress() {
+   }
+   if (this.loginCredentials.userName != undefined && this.loginCredentials.password != undefined) {
+     this.connectButtonLoader = true;
+-    this.auth.login(this.loginCredentials, this.psURL).subscribe(
++    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
++    this.auth.login(this.loginCredentials,this.config_params.service_url).subscribe(
+       data => {
+         if (data != null || data.Table.length > 0) {
+           if (data.Table.length > 0) {
++
++            var access_token = data.AuthenticationDetails[0].token_type +" "+data.AuthenticationDetails[0].access_token;
++            
++            sessionStorage.setItem('authToken', access_token);
++
+             if (data.Table[0].OPTM_ACTIVE == 1) {
+ 
+               this.connectBtnText = (this.language.connected != undefined) ? this.language.connected : "Connected";
+@@ -334,29 +340,29 @@ getPSURL() {
+   //This will get the psURL
+    /*  this.psURL = 'http://172.16.6.140/OptiAdmin/';
+    this.showLoginLoader = false; */
+-   this.auth.getPSURL().subscribe(
+-     data => {
+-       if (data != null) {
+-         this.psURL = data;
+-         //For code analysis remove in live enviorments.
+-         sessionStorage.setItem('psURL', this.psURL);
+-         this.showLoginLoader = false;
+-       } else {
+-         this.showLoginLoader = false;
+-         this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
+-         return;
+-       }
+-     }, error => {
+-       this.showLoginLoader = false;
+-       this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
+-       return;
+-     }
+-     )
++  //  this.auth.getPSURL().subscribe(
++  //    data => {
++  //      if (data != null) {
++  //        this.psURL = data;
++  //        //For code analysis remove in live enviorments.
++  //        sessionStorage.setItem('psURL', this.psURL);
++  //        this.showLoginLoader = false;
++  //      } else {
++  //        this.showLoginLoader = false;
++  //        this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
++  //        return;
++  //      }
++  //    }, error => {
++  //      this.showLoginLoader = false;
++  //      this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
++  //      return;
++  //    }
++  //    )
+  }
+ 
+  //to get the companies assigned to user
+  getCompanies() {
+-   this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
++   this.auth.getCompany(this.loginCredentials, this.config_params.service_url).subscribe(
+      data => {
+        this.connectButtonLoader = false;
+        if (data != null || data != undefined) {
+diff --git a/configuratior/src/app/models/CommonData.ts b/configuratior/src/app/models/CommonData.ts
+index 448b77c7..07188981 100644
+--- a/configuratior/src/app/models/CommonData.ts
++++ b/configuratior/src/app/models/CommonData.ts
+@@ -1,4 +1,7 @@
+ import { HttpHeaders } from '@angular/common/http';
++/* import { Router } from '@angular/router';
++import { ToastrService } from 'ngx-toastr';
++import { CommonService } from 'src/app/services/common.service'; */
+ 
+ 
+ export interface ColumnSetting {
+@@ -17,6 +20,9 @@ export class CommonData {
+     public adminDBName: string = "OPTIPROADMIN";
+     public href: any = window.location.href;
+     public application_path = this.get_current_url();
++    public unauthorizedMessage = "The remote server returned an error: (401) Unauthorized.";
++
++    /* constructor(private router:Router,private toastr: ToastrService,private commonservice: CommonService) { } */
+ 
+     public get_current_url() {
+         let temp: any = this.href.substring(0, this.href.lastIndexOf('/'));
+@@ -328,4 +334,6 @@ export class CommonData {
+ 
+     public excludeSpecialCharRegex = /[{}*!^=<>?|/(\\)&#@%]/;
+ 
++    
++
+ }
+diff --git a/configuratior/src/app/services/authentication.service.ts b/configuratior/src/app/services/authentication.service.ts
+index 6cb1b069..bc135040 100644
+--- a/configuratior/src/app/services/authentication.service.ts
++++ b/configuratior/src/app/services/authentication.service.ts
+@@ -18,10 +18,11 @@ export class AuthenticationService {
+ 
+   //Login function to hit login API
+   login(loginCredentials: any, psURL: string): Observable<any> {
++    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+     //JSON Obeject Prepared to be send as a param to API
+     let jObject: any = { Login: JSON.stringify([{ User: loginCredentials.userName, Password: loginCredentials.password, IsAdmin: false }]) };
+     //Return the response form the API  
+-    return this.httpclient.post(psURL + "/api/login/ValidateUserLogin", jObject, this.common_params.httpOptions);
++    return this.httpclient.post(psURL + "/login/ValidateUserLogin", jObject, this.common_params.httpOptions);
+   }
+ 
+   // //This function will get Company acc. to User
+@@ -30,7 +31,7 @@ export class AuthenticationService {
+     //Product: this.config_params.product_code
+     let jObject: any = { Username: JSON.stringify([{ Username: loginCredentials.userName, Product: this.config_params.product_code }]) };
+     //Return the response form the API  
+-    return this.httpclient.post(psURL + "/api/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
++    return this.httpclient.post(psURL + "/login/GetCompaniesAndLanguages", jObject, this.common_params.httpOptions)
+   }
+ 
+   //Get psURL
+diff --git a/configuratior/src/app/services/common.service.ts b/configuratior/src/app/services/common.service.ts
+index d90d1937..dabbbc3a 100644
+--- a/configuratior/src/app/services/common.service.ts
++++ b/configuratior/src/app/services/common.service.ts
+@@ -22,7 +22,7 @@ export class CommonService {
+   private commonData = new Subject<any>();
+   commonData$ = this.commonData.asObservable();
+ 
+-  constructor(private httpclient: HttpClient) { }
++  constructor(private httpclient: HttpClient,private toastr: ToastrService, private router: Router) { }
+ 
+   // Methods
+   public ShareData(data: any) {
+@@ -35,10 +35,8 @@ export class CommonService {
+     let config_data = await config_call.json();
+     if(callback != undefined && callback !== ""){
+       sessionStorage.setItem('system_config', JSON.stringify(config_data));
+-      callback(config_data);
+-      
++      callback(config_data); 
+     }
+-
+   }
+ 
+   async set_language(config_data, callback){
+@@ -85,7 +83,7 @@ export class CommonService {
+       this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+     }
+     let jObject = { Menus: JSON.stringify([{ CompanyDBID: this.config_params.admin_db_name ,Product: this.config_params.product_code ,UserCode:  sessionStorage.getItem('loggedInUser') }]) }
+-    return this.httpclient.post(sessionStorage.getItem('psURL') + "/api/login/GetMenuRecord", jObject, this.common_params.httpOptions);
++    return this.httpclient.post(this.config_params.service_url + "/login/GetMenuRecord", jObject, this.common_params.httpOptions);
+   }
+ 
+   //This will get he service according to user settings done on Admin Portal
+@@ -112,6 +110,7 @@ export class CommonService {
+ 
+   RemoveLoggedInUser(): Observable<any> {
+     var jObject = { GUID: sessionStorage.getItem("GUID"), LoginId: sessionStorage.getItem("loggedInUser") };
++    sessionStorage.removeItem('authToken');
+     return this.httpclient.post(this.config_params.service_url + "/Login/RemoveLoggedInUser", jObject, this.common_params.httpOptions);
+   } 
+ 
+@@ -159,4 +158,10 @@ export class CommonService {
+     return this.httpclient.post(this.config_params.service_url + "/Base/GetServerDate", jObject, this.common_params.httpOptions);
+   }
+ 
++  isUnauthorized() {
++    this.RemoveLoggedInUser().subscribe();
++    this.signOut(this.toastr, this.router, 'Sessionout');
++    return;
++  }
++
+ }
+diff --git a/configuratior/src/assets/data/json/config.json b/configuratior/src/assets/data/json/config.json
+index b4259b1c..1515cda9 100644
+--- a/configuratior/src/assets/data/json/config.json
++++ b/configuratior/src/assets/data/json/config.json
+@@ -3,7 +3,7 @@
+   "app_title":"OptiPro Configurator",
+   "locale":"en",
+   "locale_name": "English",
+-  "service_url":"http://localhost:63849/",
++  "service_url":"http://localhost:9636/",
+   "admin_db_name":"OPTIPROADMIN",
+   "product_code":"CNF",
+   "system_version":"1.14.78",

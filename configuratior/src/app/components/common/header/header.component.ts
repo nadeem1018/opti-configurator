@@ -68,16 +68,6 @@ export class HeaderComponent implements OnInit {
     this.user_guide_link = this.current_url + '/assets/user-guide/OptiPro-Configurator.html';
   }
 
- /* help_popup(){
-    this.popup_title = this.language.user_guide;
-    this.dialogOpened = true;
-    this.show_pdf = this.current_url + '/assets/data/user-guide.pdf';
-  }
-
-  close_lookup(){
-     this.dialogOpened = false;
-  }
-*/
   getLookupValue($event){}
 
   setDefaultLanguage(){

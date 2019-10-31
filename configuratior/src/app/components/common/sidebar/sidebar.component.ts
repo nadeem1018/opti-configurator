@@ -91,7 +91,12 @@ export class SidebarComponent implements OnInit {
         }
       },
       error =>{
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
+        return
       }
     )
   }
