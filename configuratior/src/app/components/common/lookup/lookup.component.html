@@ -695,7 +695,8 @@
                                                 <tr *ngFor="let row of print_item_list_array" [ngClass]="{'highlight_fg_row' :row.isFG}">
 
                                                     <td>
-                                                        {{row['sl_no']}}
+                                                        <!-- <span *ngIf="row.isFG">{{row['sl_no']}}</span> -->
+                                                        <span *ngIf="row.isFG">{{row['model_index']}}</span>
                                                     </td>
                                                     <td>
                                                         {{row['item']}}
@@ -732,6 +733,14 @@
                                         <div class="table-responsive">
                                             <table class="table table-invoice">
                                                 <tbody>
+                                                    <tr *ngIf="product_grand_details.step4_final_hidden_report_total != undefined && product_grand_details.step4_final_hidden_report_total != 0 && this.report_type == '2'">
+                                                        <td class="text-bold-800">
+                                                            <b class="" *ngIf="product_grand_details.step4_final_hidden_report_text !== undefined">{{product_grand_details.step4_final_hidden_report_text}}</b> 
+                                                            <b class="" *ngIf="product_grand_details.step4_final_hidden_report_text == undefined">{{language.product_total}}</b> 
+                                                            <b>({{defaultCurrency}})</b>
+                                                        </td>
+                                                        <td class="text-right">{{(product_grand_details.step4_final_hidden_report_total).toFixed(3)}}</td>
+                                                    </tr>
                                                     <tr>
                                                         <td class="text-bold-800">
                                                             <b class="">{{language.product_total}}

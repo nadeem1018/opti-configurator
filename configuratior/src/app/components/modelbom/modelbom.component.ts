@@ -286,7 +286,22 @@ export class ModelbomComponent implements OnInit {
               if (this.modelbom_data.length > 0) {
                 this.counter = this.modelbom_data.length
               }
-              data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY)
+              data.ModelDetail[i].OPTM_QUANTITY = (data.ModelDetail[i].OPTM_QUANTITY);
+
+              let print_on_report =  false;
+              let print_on_report_disabled = true;
+              if(data.ModelDetail[i].OPTM_TYPE == 2){
+                if(data.ModelDetail[i].OPTM_PRINT_OPTN == 'Y' || data.ModelDetail[i].OPTM_PRINT_OPTN == 'y'){
+                  print_on_report  = true;
+                } else {
+                  print_on_report  = false;
+                }
+
+                print_on_report_disabled = false;
+              } else {
+                print_on_report = false;
+                print_on_report_disabled = true;
+              }
 
               this.counter++;
               this.modelbom_data.push({
@@ -323,6 +338,8 @@ export class ModelbomComponent implements OnInit {
                 isAccessory: false,
                 is_feature_multiselect: data.ModelDetail[i].OPTM_ISMULTISELECT,
                 feature_default_count: data.ModelDetail[i].OPTM_DEFAULTCOUNT,
+                print_on_report : print_on_report,
+                print_on_report_disabled : print_on_report_disabled
               });
 
             }
@@ -366,6 +383,9 @@ onAddRow() {
   }
   this.counter++;
 
+  let print_on_report_flag = false;
+  let print_on_report_disabled_flag = true;
+
   this.modelbom_data.push({
     rowindex: this.counter,
     ModelId: this.modelbom_data.modal_id,
@@ -400,6 +420,8 @@ onAddRow() {
     isMaxSelectedDisable: false,
     is_feature_multiselect: 'N',
     feature_default_count: 0,
+    print_on_report : print_on_report_flag,
+    print_on_report_disabled : print_on_report_disabled_flag
   });
   this.made_changes = true;
 };
@@ -483,7 +505,8 @@ on_bom_type_change(selectedvalue, rowindex) {
         this.modelbom_data[i].mandatory = false;
         this.modelbom_data[i].unique_identifer = false;
         this.modelbom_data[i].mandatory_item_disabled = false;
-        // this.mandatory_disabled = false;
+        this.modelbom_data[i].print_on_report = false;
+        this.modelbom_data[i].print_on_report_disabled = true;
       }
       else {
         this.modelbom_data[i].isDisplayNameDisabled = false
@@ -500,9 +523,11 @@ on_bom_type_change(selectedvalue, rowindex) {
           this.modelbom_data[i].isMaxSelectedDisable = true;
           this.modelbom_data[i].propagate_qty = true;
           this.modelbom_data[i].mandatory = true;
-          // this.mandatory_disabled = true;
+          
           this.modelbom_data[i].unique_identifer = true;
           this.modelbom_data[i].mandatory_item_disabled = true;
+          this.modelbom_data[i].print_on_report = true;
+          this.modelbom_data[i].print_on_report_disabled = false;
 
         }
         else {
@@ -517,7 +542,8 @@ on_bom_type_change(selectedvalue, rowindex) {
           this.modelbom_data[i].mandatory = false;
           this.modelbom_data[i].unique_identifer = false;
           this.modelbom_data[i].mandatory_item_disabled = false;
-          // this.mandatory_disabled = false;
+          this.modelbom_data[i].print_on_report = false;
+          this.modelbom_data[i].print_on_report_disabled = true;
         }
 
       }
@@ -1013,6 +1039,22 @@ on_quantity_change(value, rowindex) {
       }
 
       $('input[name="bom_quantity"]').eq((rowindex - 1)).val((value));
+    }
+  }
+}
+
+print_on_report_change(value, rowindex){
+  this.made_changes = true;
+  this.currentrowindex = rowindex
+  for (let i = 0; i < this.modelbom_data.length; ++i) {
+    if (this.modelbom_data[i].rowindex === this.currentrowindex) {
+      console.log('print_on_report value ' + value);
+      if (value.checked == true) {
+        this.modelbom_data[i].print_on_report = true
+      }
+      else {
+        this.modelbom_data[i].print_on_report = false
+      }
     }
   }
 }
@@ -1748,6 +1790,13 @@ onExplodeClick(type) {
              }
 
              temp_model_data[i].type_value = temp_model_data[i].type_value.toString();
+
+             if (this.modelbom_data[i].print_on_report === false) {
+                this.modelbom_data[i].print_on_report = "N"
+              }
+              else {
+                this.modelbom_data[i].print_on_report = "Y"
+              }
            }
 
 

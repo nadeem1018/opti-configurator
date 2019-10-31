@@ -66,11 +66,12 @@ import { ToFixedPipe } from './components/common/custom-pipes/to-fixed.pipe';
 import { RoutingComponent } from './components/routing/routing.component';
 import { ViewRoutingComponent } from './components/routing/view.routing.component';
 import { ArchivingComponent } from './components/archiving/archiving.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
-// for deactivating route 
+// for deactivating route - start 
 import { CanDeactivateGuard } from 'src/app/can-deactivate.guard';
-
+// for deactivating route - end 
 
 // routing & navigation
 const routes: Routes = [
@@ -107,6 +108,8 @@ const routes: Routes = [
   { path: 'routing/view', component: ViewRoutingComponent },
 
   { path: 'archiving/configuration', component: ArchivingComponent },
+
+  { path: 'system-settings', component: SettingsComponent },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotfoundComponent }
@@ -150,7 +153,8 @@ const routes: Routes = [
     ToFixedPipe,
     RoutingComponent,
     ViewRoutingComponent,
-    ArchivingComponent
+    ArchivingComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
