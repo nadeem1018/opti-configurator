@@ -626,6 +626,7 @@ getModelFeatureDetails(feature_code, press_location, index) {
 
     },error => {
       this.showLoader = false;
+      this.showLookupLoader = false;
       if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
         this.commonService.isUnauthorized();
       }
