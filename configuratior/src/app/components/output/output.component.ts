@@ -280,12 +280,6 @@ export class OutputComponent implements OnInit {
             objcc.route.navigateByUrl('home');
           }, 200);
         }
-      },
-      error => {
-        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
-          this.CommonService.isUnauthorized();
-        }
-        return;
       });
     // check screen authorisation - end
   }
@@ -417,10 +411,6 @@ this.made_changes = true;
         //  this.step1_data.delivery_until = new Date((this.cDate.getMonth() + 1) + "/" + this.cDate.getDate() + "/" + this.cDate.getFullYear());
         //  console.log(this.step1_data.delivery_until);
         this.showLookupLoader = false;
-        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
-          this.CommonService.isUnauthorized();
-        }
-        return
       }
       )
 
@@ -6415,8 +6405,6 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                       }
                     }
 
-                      }
-                    }
 
 
                     this.feature_itm_list_table[iFeatureItemaddedTable].quantity = parseFloat(this.feature_itm_list_table[iFeatureItemaddedTable].quantity).toFixed(3)
