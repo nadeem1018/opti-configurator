@@ -486,6 +486,9 @@ this.made_changes = true;
         }
       }, error => {
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
       }
       )
   }
@@ -578,6 +581,12 @@ this.made_changes = true;
           this.getSavedModelDatabyModelCodeAndId(data);
         }
         this.isNextButtonVisible = true;
+      },error => {
+        this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       }
       )
 }
@@ -658,6 +667,9 @@ getSavedModelDatabyModelCodeAndId(saveddata) {
         }
 
       }, error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
         if (this.step1_data.main_operation_type == "3") {
           this.iLogID = "";
         }
@@ -890,6 +902,12 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
           this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           return;
         }
+      },error => {
+        this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       }
       )
   }
@@ -923,6 +941,10 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
         }
       }, error => {
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       }
       )
 
@@ -962,6 +984,10 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
         }
       }, error => {
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       }
       )
   }
@@ -1640,8 +1666,12 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
 
             },
             error => {
-              this.showLookupLoader = false;
-              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                this.showLookupLoader = false;
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.CommonService.isUnauthorized();
+                } else {
+                  this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                }
               return;
             }
             );
@@ -2580,8 +2610,13 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
           this.showLookupLoader = false;
         },//end data
         error => {
+          
           this.showLookupLoader = false;
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          } else{
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
           return;
         }
         );//end subscribe
@@ -3191,8 +3226,10 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
             this.showLookupLoader = false;
           }
         }, error => {
-
           this.showLookupLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          }
         })
     }
 
@@ -3231,6 +3268,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
         }, error => {
           this.showLookupLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          }
         })
     }
     onCustomerChange(callback) {
@@ -3275,6 +3315,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
         }, error => {
           this.showLookupLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          }
         }
         )
     }
@@ -3730,7 +3773,12 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
 
           error => {
             this.showLookupLoader = false;
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.CommonService.isUnauthorized();
+            }
+            else {
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            }
             return;
           }
           )
@@ -5192,9 +5240,13 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
               },
               error => {
                 this.showLookupLoader = false;
-                this.stoprefreshloader();
-                this.toastr.error('', this.language.server_error, this.commonData.toast_config);
-                this.feature_price_calculate();
+                if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                  this.CommonService.isUnauthorized();
+                } else {
+                  this.stoprefreshloader();
+                  this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+                  this.feature_price_calculate();
+                }
                 return;
               });
 
@@ -6618,6 +6670,9 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
           }
         }, error => {
           this.showLookupLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          }
         })
     }
 
@@ -7330,7 +7385,11 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
          },
          error => {
            this.showLookupLoader = false;
-           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+           if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
            return;
          })
 
@@ -7356,6 +7415,9 @@ fillBillAddress(bill_data, orig_data, callback) {
 
     }, error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.CommonService.isUnauthorized();
+      }
     })
 }
 
