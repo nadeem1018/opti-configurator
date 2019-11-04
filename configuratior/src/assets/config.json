@@ -7,7 +7,7 @@
 		"service_url":"http://localhost:9636/",
 		"admin_db_name":"OPTIPROADMIN",
 		"product_code":"CNF",
-		"system_version":"1.15.02",
+		"system_version":"1.15.03",
 		"installed" : 1
 	}
 ]
