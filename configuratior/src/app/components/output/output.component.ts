@@ -2089,6 +2089,14 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                       //  propagateqty = parentarray[0].OPTM_QUANTITY
                     }
+
+                   let feature_in_model =  this.ModelBOMDataForSecondLevel.filter(function(obj){
+                        if(obj.unique_key == feature_model_data.unique_key && obj.OPTM_TYPE == 1 && obj.checked == "True"){
+                          obj['checked'] = true;
+                        }
+                        return obj;
+                    });
+
                   }
                   for (var i = 0; i < data.DataForSelectedFeatureModelItem.length; ++i) {
                     var isExist;
