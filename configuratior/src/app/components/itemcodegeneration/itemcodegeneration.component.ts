@@ -558,7 +558,7 @@ export class ItemcodegenerationComponent implements OnInit {
     }
 
     //get user permission
-    getUserPermissionDetials(){
+    /* getUserPermissionDetials(){
 
       this.commanService.getPermissionDetails().subscribe(
         data => {
@@ -574,7 +574,7 @@ export class ItemcodegenerationComponent implements OnInit {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         }
         ) 
-    }
+    } */
 
     checkPermission(mode){
       setTimeout(function(){
