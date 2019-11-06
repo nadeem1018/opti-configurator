@@ -428,8 +428,12 @@
                           </a>
                         </h4>
                       </div>
-                      <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section"
-                        role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}" [ngClass]="{'tr-hide' :countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID)}">
+                      <!--  {{header_data.OPTM_FEATUREID}} -- {{countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID)}} -- {{header_data.OPTM_TYPE}} -->
+                        <div id="feature_id_{{header_data.OPTM_FEATUREID}}" class="panel-collapse collapse custom_panel_child_section"
+                        role="tabpanel" attr.aria-labelledby="feature_id_{{header_data.OPTM_FEATUREID}}" 
+                       [ngClass]="( countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID) === true && header_data.OPTM_TYPE != 3 ) ? 'tr-hide' : '' "
+                        > 
+                        <!-- [ngClass]="{'tr-hide' :countFeatureBOMChildsByFeatureId(header_data.OPTM_FEATUREID)}" -->
                         <div class="panel-body">
                           <table class="parent_table inner-table table table-bordered table-strip table-sm">
                             <thead class="thead-dark" *ngIf="ModelHeaderData.length > 0">
@@ -442,7 +446,9 @@
                             </thead>
                             <tbody *ngIf="get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel).length > 0">
                               <tr *ngFor="let feature_model_data of get_feature_elements(header_data, FeatureBOMDataForSecondLevel, ModelBOMDataForSecondLevel); let i= index;"
-                                [ngClass]="{'tr-hide' :feature_model_data.disable}">
+                              [ngClass]="( feature_model_data.disable === true && header_data.OPTM_TYPE != 3 ) ? 'tr-hide' : '' "
+                                >
+                                <!-- [ngClass]="{'tr-hide' :feature_model_data.disable}" -->
                                   <td class="text-center">
                                     <div class="{{header_data.element_class}}" >
 
@@ -450,14 +456,14 @@
                                         <input type="{{header_data.element_type}}" id="checkbox_child_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                           #selectionchecked name="checkbox_child_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                           class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id,true, header_data.unique_key)"
-                                          [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                          [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable && header_data.OPTM_TYPE != 3">
                                         <label class="custom-control-label" for="checkbox_child_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
                                       </span>
                                       <span *ngIf="header_data.is_second_level== undefined" >
                                         <input type="{{header_data.element_type}}" id="checkbox_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                           #selectionchecked name="checkbox_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"
                                           class="custom-control-input" (change)="onselectionchange(feature_model_data,selectionchecked.checked,selectionchecked.id,false, header_data.unique_key)"
-                                          [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable">
+                                          [(checked)]="feature_model_data.checked" [disabled]="feature_model_data.disable && header_data.OPTM_TYPE != 3">
                                         <label class="custom-control-label" for="checkbox_{{feature_model_data.nodeid}}_{{feature_model_data.unique_key}}_{{feature_model_data.OPTM_LINENO}}_{{i}}"></label>
                                       </span>
 

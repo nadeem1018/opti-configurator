@@ -702,13 +702,49 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
     })
 
     data.FeatureBOMDataForSecondLevel = data.FeatureBOMDataForSecondLevel.filter(function (obj) {
-      obj['OPTM_LEVEL'] = 1;
+      obj['OPTM_LEVEL'] = 1
       return obj; // data.FeatureBOMDataForSecondLevel
     })
+    data.FeatureBOMDataForSecondLevel.filter(function(obj){
+      if(obj.isRuleApplied == "True")  {
+        obj['isRuleApplied'] = true
+      } else if(obj.isRuleApplied == "False") {
+        obj['isRuleApplied'] = false
+      }
+      if(obj.isSecondIteration == "True")  {
+        obj['isSecondIteration'] = true
+      } else if(obj.isSecondIteration == "False") {
+        obj['isSecondIteration'] = false
+      }
+      if(obj.isManuallyChecked == "True")  {
+        obj['isManuallyChecked'] = true
+      } else if(obj.isManuallyChecked == "False") {
+        obj['isManuallyChecked'] = false
+      }
+    })
+    
 
     data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
-      obj['OPTM_LEVEL'] = 2;
+      obj['OPTM_LEVEL'] = 2
       return obj; // data.ModelBOMDataForSecondLevel
+    })
+
+    data.ModelBOMDataForSecondLevel.filter(function(obj){
+      if(obj.isRuleApplied == "True")  {
+        obj['isRuleApplied'] = true
+      } else if(obj.isRuleApplied == "False") {
+        obj['isRuleApplied'] = false
+      }
+      if(obj.isSecondIteration == "True")  {
+        obj['isSecondIteration'] = true
+      } else if(obj.isSecondIteration == "False") {
+        obj['isSecondIteration'] = false
+      }
+      if(obj.isManuallyChecked == "True")  {
+        obj['isManuallyChecked'] = true
+      } else if(obj.isManuallyChecked == "False") {
+        obj['isManuallyChecked'] = false
+      }
     })
 
     data.ModelBOMDataForSecondLevel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
@@ -745,6 +781,11 @@ GetAllDataForSavedMultiModelBomOutput(data, saveddata) {
     for (var i in data.ModelBOMDataForSecondLevel) {
       if (data.ModelBOMDataForSecondLevel[i].IMAGEPATH != "" && data.ModelBOMDataForSecondLevel[i].IMAGEPATH != null && data.ModelBOMDataForSecondLevel[i].IMAGEPATH != undefined) {
         data.ModelBOMDataForSecondLevel[i].IMAGEPATH = this.commonData.get_current_url() + data.ModelBOMDataForSecondLevel[i].IMAGEPATH
+      }
+      if(data.ModelBOMDataForSecondLevel[i].disable == "False") {
+        data.ModelBOMDataForSecondLevel[i].disable = false
+      } else if (data.ModelBOMDataForSecondLevel[i].disable == "True") {
+        data.ModelBOMDataForSecondLevel[i].disable = true
       }
     }
 
@@ -2078,6 +2119,14 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
                       parentarray[0].OPTM_QUANTITY = parseFloat(parentarray[0].OPTM_QUANTITY).toFixed(3)
                       //  propagateqty = parentarray[0].OPTM_QUANTITY
                     }
+
+                   let feature_in_model =  this.ModelBOMDataForSecondLevel.filter(function(obj){
+                        if(obj.unique_key == feature_model_data.unique_key && obj.OPTM_TYPE == 1 && obj.checked == "True"){
+                          obj['checked'] = true;
+                        }
+                        return obj;
+                    });
+
                   }
                   for (var i = 0; i < data.DataForSelectedFeatureModelItem.length; ++i) {
                     var isExist;
