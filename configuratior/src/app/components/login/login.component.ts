@@ -239,6 +239,10 @@ onConnectBtnPress() {
         }
       }, error => {
         this.connectButtonLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       })
   }
 
@@ -302,8 +306,12 @@ getLisenceData() {
       error => {
         // this.showLoader = false;
         this.showLoginLoader = false;
-        //  alert("license Failed");
-        this.toastr.error('', this.license_failed, this.commonData.toast_config);
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.license_failed, this.commonData.toast_config);
+        }
+        return;
       }
       );
   }
