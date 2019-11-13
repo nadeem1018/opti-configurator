@@ -267,19 +267,23 @@ export class ViewModelBomComponent implements OnInit {
     show_button1: boolean = true;
     show_button2: boolean = true;
     show_button3: boolean = false;
+    show_button4: boolean = true;
     feature_model_button : boolean = false;
 
     button1_title = this.language.edit;
     button2_title = this.language.delete;
     button3_title = this.language.associated_BOMs;
+    button4_title = this.language.duplicate_record
 
     button1_color = "btn-info";
     button2_color = "btn-danger";
     button3_color = "btn-secondary";
+    button4_color = "btn-success";
 
     button1_icon = "fa fa-edit fa-fw";
     button2_icon = "fa fa-trash-o fa-fw";
     button3_icon = "fa fa-share-alt fa-fw";
+    button4_icon = "fa fa-copy fa-fw";
 
     button_click1(data) {
 
@@ -291,6 +295,10 @@ export class ViewModelBomComponent implements OnInit {
         this.show_dialog = true;
         this.row_id = data.OPTM_MODELID;
         // var result = confirm(this.language.DeleteConfimation);
+    }
+
+    duplicate_record(data){
+        this.router.navigateByUrl('modelbom/add/' + data.OPTM_MODELID);
     }
 
     show_association(data){
