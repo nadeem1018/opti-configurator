@@ -232,6 +232,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             return;
           }
         }
+        data.reverse();
         this.dataArray = data;
         console.log("sort - " , this.sort);
         console.log("this.dataArray ", this.dataArray);
@@ -308,7 +309,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
     return false;
   }
 
-  duplicate_record(data){
+  duplicate_record(data,isDuplicate){
     this.router.navigateByUrl('item-code-genration/add/' + data.Code.trim());
   }
 

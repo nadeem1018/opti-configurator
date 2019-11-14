@@ -46,6 +46,7 @@ export class ModelComponent implements OnInit {
   item: string = '';
   public codekey: string = "";
   public button = "save";
+  public isDuplicateMode:boolean = false;
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = true;
@@ -150,11 +151,34 @@ export class ModelComponent implements OnInit {
     else {
       this.button = "update";
       this.made_changes = false; 
-      this.isUpdateButtonVisible = true;
-      this.isSaveButtonVisible = false;
-      this.isDeleteButtonVisible = true;
+      /* this.isUpdateButtonVisible = true;
+      this.isSaveButtonVisible = false; */
+      /* this.isDeleteButtonVisible = true; */
       this.section_title = this.language.edit;
-      this.code_disabled = "true";
+      /* this.code_disabled = "true"; */
+
+      if(this.ActivatedRouter.snapshot.url[2].path == "edit") {
+        this.code_disabled = "true";
+        this.button = "update"
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDuplicateMode = false;
+        this.isDeleteButtonVisible = true;
+      } else if(this.ActivatedRouter.snapshot.url[2].path == "add"){
+        this.code_disabled = "false";
+        this.button = "save"
+        this.isUpdateButtonVisible = false;
+        this.isSaveButtonVisible = true;
+        this.isDuplicateMode = true;
+        this.isDeleteButtonVisible = false;
+      } else {
+        this.code_disabled= "true";
+        this.button = "update"
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDuplicateMode = false;
+        this.isDeleteButtonVisible = true;
+      }
 
 
       this.fms.GetRecordById(this.companyName, this.codekey).subscribe(
@@ -180,6 +204,11 @@ export class ModelComponent implements OnInit {
           this.featureBom.ItemName = data[0].OPTM_MODELTEMPLATEITEM
           this.featureBom.Ref = data[0].OPTM_ITEMCODEGENREF
           this.featureBom.Accessory = data[0].OPTM_ACCESSORY
+
+          if(this.isDuplicateMode){
+            this.featureBom.Code = ""
+          }
+
           if (data[0].isRefExists == "Ref_already_exist") {
             this.isUsedAccesoriesDisabled = true;
           }
@@ -274,13 +303,19 @@ export class ModelComponent implements OnInit {
     this.showLookupLoader = true;
     this.featureModel = [];
     var validateStatus = this.Validation();
+    var EffectiveDate:any = ""
+    if(this.isDuplicateMode) {
+      EffectiveDate = new Date(this.featureBom.Date);
+    } else {
+      EffectiveDate = this.featureBom.Date;
+    }
     if (validateStatus == true) {
       this.featureModel.push({
         CompanyDBId: this.companyName,
         FeatureCode: this.featureBom.Code,
         DisplayName: this.featureBom.Name,
         FeatureDesc: this.featureBom.Desc,
-        EffectiveDate: (this.featureBom.Date).getFullYear() + '/' + ((this.featureBom.Date).getMonth() + 1) + '/' + (this.featureBom.Date).getDate(),
+        EffectiveDate: (EffectiveDate).getFullYear() + '/' + ((EffectiveDate).getMonth() + 1) + '/' + (EffectiveDate).getDate(),
         Type: this.featureBom.type,
         FeatureStatus: this.featureBom.Status,
         ModelTemplateItem: this.featureBom.ItemName,
