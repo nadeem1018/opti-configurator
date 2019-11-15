@@ -162,6 +162,12 @@ export class BomComponent implements OnInit {
             objcc.router.navigateByUrl('home');
           }, 200);
         }
+      },
+      error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commanService.isUnauthorized();
+        }
+        return
       });
     // check screen authorisation - end
 
@@ -374,6 +380,10 @@ export class BomComponent implements OnInit {
       },
       error => {
         this.showLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commanService.isUnauthorized();
+        }
+        return;
       }
       )
 
@@ -594,6 +604,12 @@ validate_min_values(value, input_id) {
             }
           }
         }
+      },
+      error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commanService.isUnauthorized();
+        }
+        return;
       })
     }
 
@@ -716,6 +732,12 @@ validate_min_values(value, input_id) {
             this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
             return;
           }
+        },
+        error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          }
+          return;
         }
         )
     }
@@ -892,6 +914,12 @@ validate_min_values(value, input_id) {
                  this.feature_bom_table[iIndex].type_value = data;
                  this.checkFeaturesAlreadyAddedinParent(value, this.feature_bom_table[iIndex].type_value, iIndex, "change");
                }
+             },
+             error => {
+               if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                 this.commanService.isUnauthorized();
+               }
+               return;
              })
          }
          else if (this.feature_bom_table[i].type == 2) {
@@ -926,6 +954,12 @@ validate_min_values(value, input_id) {
                  // this.getItemDetails(this.feature_bom_table[iIndex].type_value);
                  this.getItemDetailsOnChange(this.feature_bom_table[iIndex].type_value);
                }
+             },
+             error => {
+               if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                 this.commanService.isUnauthorized();
+               }
+               return;
              })
          }
          else {
@@ -1061,7 +1095,10 @@ validate_min_values(value, input_id) {
          }
        },
        error => {
-         this.showLookupLoader = false;
+         if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+           this.commanService.isUnauthorized();
+         }
+         return;
        }
        )
    }
@@ -1094,6 +1131,12 @@ validate_min_values(value, input_id) {
              }
            }
          }
+       },
+       error => {
+         if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+           this.commanService.isUnauthorized();
+         }
+         return
        })
    }
 
@@ -1230,6 +1273,10 @@ validate_min_values(value, input_id) {
        },
        error => {
          this.showLookupLoader = false;
+         if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+           this.commanService.isUnauthorized();
+         }
+         return
        }
        )
 }
@@ -1266,6 +1313,10 @@ openPriceLookUp(ItemKey, rowindex) {
     },
     error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commanService.isUnauthorized();
+      }
+      return
     }
     )
 }
@@ -1427,6 +1478,12 @@ validation(btnpress) {
               this.lookupfor = ""
             }
 
+          },error => {
+            this.showLookupLoader = false;
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commanService.isUnauthorized();
+            }
+            return
           })
 
 
@@ -1482,6 +1539,12 @@ validation(btnpress) {
               //   this.toastr.error('', this.language.DataNotDelete, this.commonData.toast_config);
               //   return;
               // }
+            },error => {
+              this.showLookupLoader = false;
+              if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                this.commanService.isUnauthorized();
+              }
+              return
             }
             )
   }
@@ -1529,8 +1592,12 @@ validation(btnpress) {
           }
         },
         error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
           this.showLookupLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
           return;
         }
         )
@@ -1580,7 +1647,11 @@ validation(btnpress) {
 
           },
           error => {
-            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.commanService.isUnauthorized();
+            } else {
+              this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            }
             return;
           }
           );
@@ -1677,6 +1748,12 @@ validation(btnpress) {
             this.feature_bom_data.feature_id = data;
             this.getFeatureDetails(this.feature_bom_data.feature_id, "Header", 0);
           }
+        },
+        error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          }
+          return;
         })
     }
 
@@ -1721,7 +1798,11 @@ validation(btnpress) {
           }
         },
         error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
           return;
         }
         )

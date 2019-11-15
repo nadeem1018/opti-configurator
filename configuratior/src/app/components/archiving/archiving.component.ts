@@ -220,6 +220,9 @@ export class ArchivingComponent implements OnInit {
       }, error => {
         this.clear_model_list();
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
         return;
       }
       );
@@ -272,6 +275,9 @@ export class ArchivingComponent implements OnInit {
       }, error => {
         this.clear_filter_results(1);
         this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
         return;
       }
       );
@@ -311,7 +317,11 @@ export class ArchivingComponent implements OnInit {
         }
       }, error => {
         this.showLookupLoader = false;
-        this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
         return;
       }
       );

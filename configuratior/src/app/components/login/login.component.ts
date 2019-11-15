@@ -205,10 +205,16 @@ onConnectBtnPress() {
   }
   if (this.loginCredentials.userName != undefined && this.loginCredentials.password != undefined) {
     this.connectButtonLoader = true;
-    this.auth.login(this.loginCredentials, this.psURL).subscribe(
+    this.config_params = JSON.parse(sessionStorage.getItem('system_config'));
+    this.auth.login(this.loginCredentials,this.config_params.service_url).subscribe(
       data => {
         if (data != null || data.Table.length > 0) {
           if (data.Table.length > 0) {
+
+            var access_token = data.AuthenticationDetails[0].token_type +" "+data.AuthenticationDetails[0].access_token;
+            
+            sessionStorage.setItem('authToken', access_token);
+
             if (data.Table[0].OPTM_ACTIVE == 1) {
 
               this.connectBtnText = (this.language.connected != undefined) ? this.language.connected : "Connected";
@@ -233,6 +239,10 @@ onConnectBtnPress() {
         }
       }, error => {
         this.connectButtonLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        }
+        return;
       })
   }
 
@@ -296,8 +306,12 @@ getLisenceData() {
       error => {
         // this.showLoader = false;
         this.showLoginLoader = false;
-        //  alert("license Failed");
-        this.toastr.error('', this.license_failed, this.commonData.toast_config);
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.CommonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.license_failed, this.commonData.toast_config);
+        }
+        return;
       }
       );
   }
@@ -334,29 +348,29 @@ getPSURL() {
   //This will get the psURL
    /*  this.psURL = 'http://172.16.6.140/OptiAdmin/';
    this.showLoginLoader = false; */
-   this.auth.getPSURL().subscribe(
-     data => {
-       if (data != null) {
-         this.psURL = data;
-         //For code analysis remove in live enviorments.
-         sessionStorage.setItem('psURL', this.psURL);
-         this.showLoginLoader = false;
-       } else {
-         this.showLoginLoader = false;
-         this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
-         return;
-       }
-     }, error => {
-       this.showLoginLoader = false;
-       this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
-       return;
-     }
-     )
+  //  this.auth.getPSURL().subscribe(
+  //    data => {
+  //      if (data != null) {
+  //        this.psURL = data;
+  //        //For code analysis remove in live enviorments.
+  //        sessionStorage.setItem('psURL', this.psURL);
+  //        this.showLoginLoader = false;
+  //      } else {
+  //        this.showLoginLoader = false;
+  //        this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
+  //        return;
+  //      }
+  //    }, error => {
+  //      this.showLoginLoader = false;
+  //      this.toastr.error('', this.default_server_error_msg, this.commonData.toast_config);
+  //      return;
+  //    }
+  //    )
  }
 
  //to get the companies assigned to user
  getCompanies() {
-   this.auth.getCompany(this.loginCredentials, this.psURL).subscribe(
+   this.auth.getCompany(this.loginCredentials, this.config_params.service_url).subscribe(
      data => {
        this.connectButtonLoader = false;
        if (data != null || data != undefined) {
@@ -413,10 +427,13 @@ getPSURL() {
            }
          }
        }
-     },
-     error => {
-       this.toastr.error('', this.FailedToReadCurrency, this.commonData.toast_config);
-     }
+     },error=>{
+      this.showLoginLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+      this.CommonService.isUnauthorized();
+      }
+      return;
+  }
      )
  }
 

@@ -158,7 +158,13 @@ export class RulewbComponent implements OnInit {
             objcc.route.navigateByUrl('home');
           }, 200);
         }
-      });
+      },error => {
+        this.showLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
+    });
     // check screen authorisation - end
 
     this.update_id = "";
@@ -425,10 +431,13 @@ export class RulewbComponent implements OnInit {
             obj.getFBOMHeader();
             // obj.getFeatureDetailsForOutput();
           }, 300)
-        },
-        error => {
+        },error => {
           this.showLoader = false;
-        })
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+      })
 
 }
 }
@@ -609,9 +618,12 @@ getFetureListLookup(status) {
         this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         return;
       }
-    },
-    error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
     )
 }
@@ -709,8 +721,12 @@ getFeatureDetails(feature_code, press_location, index) {
         this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
         return;
       }
-    }, error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
     )
 }
@@ -758,8 +774,11 @@ getFBOMHeader() {
       this.showLookupLoader = false;
       this.rule_wb_data.applicable_for_feature_id = '';
       this.rule_wb_data.applicable_for_feature_code = '';
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
-
     )
 }
 
@@ -836,8 +855,12 @@ getFeatureDetailsForOutput() {
         }
       }
       this.showLookupLoader = false;
-    }, error => {
+    },error => {
       this.showLookupLoader = false;
+      if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+        this.commonService.isUnauthorized();
+      }
+      return;
     }
 
     )
@@ -1144,7 +1167,12 @@ async  genearate_expression() {
                      this.rule_sequence_data[i].type_value = data;
                      this.rule_sequence_data[i].type_value_code = value;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              } else if (this.rule_sequence_data[i].type == 2) {
                this.rule_sequence_data[i]['is_operand1_disable'] = true;
                this.service.onModelIdChange(this.rule_sequence_data[i].type_value).subscribe(
@@ -1168,7 +1196,12 @@ async  genearate_expression() {
                      this.rule_sequence_data[i].type_value = data;
                      this.rule_sequence_data[i].type_value_code = value;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
            }
 
@@ -1212,7 +1245,12 @@ async  genearate_expression() {
                      }
 
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
 
              else {
@@ -1236,7 +1274,12 @@ async  genearate_expression() {
                    else {
                      this.rule_sequence_data[i].type_value = data;
                    }
-                 });
+                 },error => {
+                  if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                    this.commonService.isUnauthorized();
+                  }
+                  return;
+                });
              }
            }
            console.log(this.rule_sequence_data[i]);
@@ -1260,11 +1303,13 @@ async  genearate_expression() {
              }
              this.serviceData = data;
            }
-         },
-         error => {
+         },error => {
            this.showLookupLoader = false;
-         }
-         )
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
 
      show_operand_lookup(type, type_value, rowindex, operand_value) {
@@ -1300,10 +1345,12 @@ async  genearate_expression() {
              this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
              return;
            }
-         }, error => {
-           this.showLookupLoader = false;
-         }
-         )
+         },error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
 
      show_input_lookup(selected_type, rowindex) {
@@ -1402,6 +1449,11 @@ async  genearate_expression() {
           this.getFBOMHeader();
           // this.getFeatureDetailsForOutput();
         }
+      },error => {
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        }
+        return;
       })
   }
 
@@ -1737,11 +1789,13 @@ async  genearate_expression() {
              this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
              return;
            }
-         },
-         error => {
+         },error => {
            this.showLookupLoader = false;
-         }
-         )
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commonService.isUnauthorized();
+          }
+          return;
+        })
      }
    }
  }

@@ -7,7 +7,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { RouterModule, Routes } from '@angular/router';
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GridModule } from '@progress/kendo-angular-grid';
@@ -71,7 +71,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 
 // for deactivating route - start 
 import { CanDeactivateGuard } from 'src/app/can-deactivate.guard';
-// for deactivating route - end 
+import { AuthInterceptor } from './helpers/Interceptors/authIntercepter';
+
 
 // routing & navigation
 const routes: Routes = [
@@ -81,6 +82,7 @@ const routes: Routes = [
   { path: 'feature/model/add', component: ModelComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/model/view', component: ViewFeatureModelComponent },
   { path: 'feature/model/edit/:id', component: ModelComponent,   canDeactivate: [CanDeactivateGuard] },
+  { path: 'feature/model/add/:id', component: ModelComponent,   canDeactivate: [CanDeactivateGuard] },
 
   { path: 'feature/bom/add', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/bom/edit/:id', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
@@ -90,14 +92,17 @@ const routes: Routes = [
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent, canDeactivate: [CanDeactivateGuard] },
   { path: 'item-code-generation/view', component: ViewItemCodeGenerationComponent },
   { path: 'item-code-generation', component: ViewItemCodeGenerationComponent },
+  { path: 'item-code-genration/add/:id', component: ItemcodegenerationComponent, canDeactivate: [CanDeactivateGuard] },
 
   { path: 'modelbom/add', component: ModelbomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'modelbom/edit/:id', component: ModelbomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'modelbom/view', component: ViewModelBomComponent },
+  { path: 'modelbom/add/:id', component: ModelbomComponent,   canDeactivate: [CanDeactivateGuard] },
 
   { path: 'rulewb/add', component: RulewbComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'rulewb/edit/:id', component: RulewbComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'rulewb/view', component: RuleWbViewComponent },
+  { path: 'rulewb/add/:id', component: RulewbComponent,   canDeactivate: [CanDeactivateGuard] },
 
   { path: 'output/view', component: OutputComponent,  canDeactivate: [CanDeactivateGuard] },
   { path: 'output/view/:id', component: OutputComponent,   canDeactivate: [CanDeactivateGuard] },
@@ -186,6 +191,11 @@ const routes: Routes = [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor, 
+      multi: true 
     }
   ],
   bootstrap: [AppComponent]

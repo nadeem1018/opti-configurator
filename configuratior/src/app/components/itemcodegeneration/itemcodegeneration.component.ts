@@ -43,6 +43,7 @@ export class ItemcodegenerationComponent implements OnInit {
   public GetItemData: any = [];
   public DefaultTypeValue: any = [];
   public button = "save"
+  public isDuplicateMode: boolean = false;
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = true;
@@ -106,7 +107,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.username = sessionStorage.getItem('loggedInUser');
     
     //get permissions
-    this.getUserPermissionDetials();
+    // this.getUserPermissionDetials();
     
     // this.stringtypevalue = this.commonData.stringtypevalue;
     // this.opertions = this.commonData.opertions
@@ -141,6 +142,7 @@ export class ItemcodegenerationComponent implements OnInit {
       this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
       this.isSaveButtonVisible=true;
+      this.isDuplicateMode = false;
       this.isDeleteButtonVisible=false;
       // this.counter=1;
       this.onAddRow(1);
@@ -149,13 +151,33 @@ export class ItemcodegenerationComponent implements OnInit {
       this.checkPermission("save");
     }
     else {
-      this.button = "update"
+      /* this.button = "update" */
       this.made_changes = false;
-
-      this.isUpdateButtonVisible = true;
+      /* this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
-      this.isDeleteButtonVisible = true;
-      this.isCodeDisabled = false;
+      this.isDeleteButtonVisible = true; */
+      if(this.router.snapshot.url[1].path == "edit") {
+        this.isCodeDisabled = false;
+        this.button = "update"
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDuplicateMode = false;
+        this.isDeleteButtonVisible = true;
+      } else if(this.router.snapshot.url[1].path == "add"){
+        this.isCodeDisabled = true;
+        this.button = "save"
+        this.isUpdateButtonVisible = false;
+        this.isSaveButtonVisible = true;
+        this.isDuplicateMode = true;
+        this.isDeleteButtonVisible = false;
+      } else {
+        this.isCodeDisabled = false;
+        this.button = "update"
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDuplicateMode = false;
+        this.isDeleteButtonVisible = true;
+      }
       this.GetItemData = []
       this.GetItemData.push({
         CompanyDBId: this.companyName,
@@ -190,12 +212,21 @@ export class ItemcodegenerationComponent implements OnInit {
             this.finalstring = this.finalstring + data[i].OPTM_CODESTRING
           }
           this.showLoader  = false;
+        },error => {
+          this.showLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          }
+          return;
         }
         )
 
       //Check Permission
 
       this.checkPermission("edit");
+      if(this.isDuplicateMode) {
+        this.codekey = "";
+      }
     }
 
     //Check Permission
@@ -263,7 +294,7 @@ export class ItemcodegenerationComponent implements OnInit {
     if (this.validateRowData("SaveData") == false) {
       return;
     }
-    console.log(this.itemcodetable);
+    console.log(this.itemcodetable);   
     this.itemgen.saveData(this.itemcodetable).subscribe(
       data => {
 
@@ -287,6 +318,12 @@ export class ItemcodegenerationComponent implements OnInit {
           this.toastr.error('', this.language.DataNotSaved, this.commonData.toast_config);
           return;
         }
+      },error => {
+        this.showLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commanService.isUnauthorized();
+        }
+        return;
       }
       )
 
@@ -484,6 +521,12 @@ export class ItemcodegenerationComponent implements OnInit {
                 this.toastr.error('', this.language.DataNotDelete + ' : ' , this.commonData.toast_config);
               }
 
+            },error => {
+              this.showLoader = false;
+              if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+                this.commanService.isUnauthorized();
+              }
+              return;
             }
             )
 
@@ -529,12 +572,18 @@ export class ItemcodegenerationComponent implements OnInit {
               this.itemcodetable[iCount]['codekey'] = this.codekey.replace(/ +/g, "");
             }
           } 
+        },error => {
+          this.showLoader = false;
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.commanService.isUnauthorized();
+          }
+          return;
         }
         )
     }
 
     //get user permission
-    getUserPermissionDetials(){
+    /* getUserPermissionDetials(){
 
       this.commanService.getPermissionDetails().subscribe(
         data => {
@@ -550,7 +599,7 @@ export class ItemcodegenerationComponent implements OnInit {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         }
         ) 
-    }
+    } */
 
     checkPermission(mode){
       setTimeout(function(){

@@ -1160,6 +1160,10 @@ export class LookupComponent implements OnInit {
           }
 
           //$(".modal-backdrop").hasClass("show").removeClass("show").addClass('hide');
+        }, error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.common_service.isUnauthorized();
+          }
         })
 
       this.showruleOutputLoader = false;
@@ -1294,7 +1298,11 @@ export class LookupComponent implements OnInit {
           }
         },
         error => {
-          this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.common_service.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+          }
         }
         )
 
@@ -1523,6 +1531,10 @@ export class LookupComponent implements OnInit {
                   }
                 }
               }
+          }, error => {
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.common_service.isUnauthorized();
+            }
           });
       }
 
@@ -1796,7 +1808,11 @@ export class LookupComponent implements OnInit {
             this.toastr.error('', this.language.NoDataAvailable, this.commonData.toast_config);
           }
         }, error => {
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.common_service.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
         }
         )
     }
@@ -1845,9 +1861,14 @@ export class LookupComponent implements OnInit {
               return;
             }
           }, error => {
-            this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
-            this.clearInvalidRes(currentrow);
             this.showLookupLoader = false;
+            if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+              this.common_service.isUnauthorized();
+            } else {
+              this.toastr.error('', this.language.invalidrescodeRow + ' ' + rowindex, this.commonData.toast_config);
+              this.clearInvalidRes(currentrow);
+
+            }
             return;
           }
           );
@@ -2038,7 +2059,11 @@ export class LookupComponent implements OnInit {
         error => {
           this.dialogOpened = false;
           this.showLookupLoader = false;
-          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.common_service.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          }
         }
         )
     }
