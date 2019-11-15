@@ -41,6 +41,7 @@ export class ArchivingComponent implements OnInit {
   public selectButtonIcon = ''; 
   public lookupfor = '';
   public selectedImage = '';
+  public order_status_types = [];
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -73,19 +74,21 @@ export class ArchivingComponent implements OnInit {
     this.filter_section_data.from_date = (new Date((current_date.getMonth() + 1) + '/' + (current_date.getDate()) + '/' + current_date.getFullYear()));
     this.filter_section_data.date_range = [this.filter_section_data.from_date, this.filter_section_data.to_date];
     this.showLoader = false;
-    if (this.filter_section_data.model_list == undefined) {
-      this.filter_section_data.model_list = ["test", "test1", "test2", "test3"];
-    }
-
     this.selectableSettings = {
       mode: 'multiple'
     };
 
     let doc_type_values = this.commonData.document_type();
     this.doctype = [doc_type_values[1], doc_type_values[2], { "value": 'both', "Name": this.language.both, "selected": "0" }];
-    this.doctype[0].selected = '1';
-    this.filter_section_data.doc_type = 'sales_quote';
-    this.filter_section_data.order_status = this.language.process_status;
+    this.doctype[2].selected = '1';
+    this.filter_section_data.doc_type = 'both';
+    this.filter_section_data.order_status = 'processed';
+    this.order_status_types = [
+    { "value": 'draft', "name": this.language.draft },
+    { "value": 'pending', "name": this.language.pending_status },
+    { "value": 'error', "name": this.language.error_status },
+    { "value": 'processed', "name": this.language.process_status }
+    ];
 
     this.grid_section_data.push({
       rowindex: 1,
@@ -111,12 +114,19 @@ export class ArchivingComponent implements OnInit {
       gross_total: "$" + parseFloat('55210.1').toFixed(3),
     });
 
+
     this.selectButtonTextIconChange(1);
+    this.get_all_model_list();
+   /* this.service.get_all_model_list().subscribe(
+      data => {
+        if (data.length > 0) {}
+      });*/
   }
 
   getLookupValue($event) {
-    
+
   }
+
 
   date_range(date_range_value) {
     this.filter_section_data.date_range = date_range_value;
@@ -169,11 +179,11 @@ export class ArchivingComponent implements OnInit {
       this.selectButtonTextIconChange(2);
     }
 
-   }
+  }
 
-   clear_model_list(){
-     this.filter_section_data.model_list = [];
-   }
+  clear_model_list(){
+    this.filter_section_data.model_list = [];
+  }
 
   get_all_model_list() {
     this.showLookupLoader = true;
@@ -183,7 +193,20 @@ export class ArchivingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
-            // here goes the result processing 
+
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
+            var temp = []; 
+            for (var i = 0; i < data.length; i++) {
+              temp.push(data[i]['OPTM_FEATURECODE']);
+            }
+            this.filter_section_data.model_list= temp ;
+            this.showLookupLoader = false;
+
           } else {
             this.clear_model_list();
             this.showLookupLoader = false;
@@ -199,7 +222,7 @@ export class ArchivingComponent implements OnInit {
         this.showLookupLoader = false;
         return;
       }
-    );
+      );
   }
 
   clear_filter_results(show_msg){
@@ -217,16 +240,12 @@ export class ArchivingComponent implements OnInit {
     this.showLookupLoader = true;
     this.clear_filter_results(0);
     if (this.filter_section_data.config_desc == undefined || this.filter_section_data.config_desc == null){
-      this.filter_section_data.config_desc = [];
+      this.filter_section_data.config_desc = '';
     } 
 
-    if (this.filter_section_data.selected_models
-       == undefined || this.filter_section_data.selected_models
-       == null) {
-      this.filter_section_data.selected_models
-       = [];
+    if (this.filter_section_data.selected_models == undefined || this.filter_section_data.selected_models == null) {
+      this.filter_section_data.selected_models = [];
     } 
-
     console.log("this.filter_section_data ", this.filter_section_data);
     this.service.filter_results(this.filter_section_data).subscribe(
       data => {
@@ -234,6 +253,12 @@ export class ArchivingComponent implements OnInit {
         if (data != null) {
           if (data.length > 0) {
             // here goes the result processing 
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
           } else {
             this.clear_filter_results(1);
             this.showLookupLoader = false;
@@ -249,7 +274,7 @@ export class ArchivingComponent implements OnInit {
         this.showLookupLoader = false;
         return;
       }
-    );
+      );
 
   }
 
@@ -266,8 +291,14 @@ export class ArchivingComponent implements OnInit {
         console.log(data);
         if (data != null) {
           if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
             // here goes the result processing 
-            this.clear_archived_data_search();
+          //  this.clear_archived_data_search();
           } else {
             this.showLookupLoader = false;
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -283,7 +314,7 @@ export class ArchivingComponent implements OnInit {
         this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         return;
       }
-    );
+      );
   }
 
 

@@ -34,13 +34,13 @@ export class ArchivingService {
         CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"), 
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
-        dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
+        // dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
         fromDate: filter_data_obj.from_date,
         toDate: filter_data_obj.to_date,
         DocType: filter_data_obj.doc_type,
-        orderStatus: 'P',
+        orderStatus: filter_data_obj.order_status,
         configDesc: filter_data_obj.config_desc,
-        modelId: (filter_data_obj.selected_models).join()
+        modelIds: (filter_data_obj.selected_models).join(',')
       }])
     };
     console.log("jObject ", jObject); 
@@ -53,13 +53,13 @@ export class ArchivingService {
         CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"),
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
-        dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
+     //  dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
         fromDate: filter_data_obj.from_date,
         toDate: filter_data_obj.to_date,
         DocType: filter_data_obj.doc_type,
         orderStatus: 'P',
         configDesc: filter_data_obj.config_desc,
-        modelId: (filter_data_obj.selected_models).join(),
+        modelIds: (filter_data_obj.selected_models).join(','),
         selectedRecords : '',
       }])
     };

@@ -66,9 +66,13 @@
                 <div class="form-group row clearfic">
                   <label class="col-sm-4 col-form-label" for="order_status">{{language.order_status}}</label>
                   <div class="col-sm-7">
-                    <input type="text" name="order_status" maxlength="50" class="form-control  form-control-sm mt3" id="order_status"
+                    <!-- <input type="text" name="order_status" maxlength="50" class="form-control  form-control-sm mt3" id="order_status"
                       placeholder="{{language.order_status}}" [(ngModel)]="filter_section_data.order_status" title="{{filter_section_data.order_status}}"
-                      tabindex="2" [disabled]="true">
+                      tabindex="2" [disabled]="true"> -->
+                      <select class="form-control  form-control-sm mt3" name="order_status" id="order_status" [(ngModel)]="filter_section_data.order_status" #order_status_value> <!-- (change)="onorder_status_change(order_status_value.value)"  -->
+                      <option *ngFor="let v of order_status_types" [value]="v.value" [selected]="filter_section_data.order_status == v.value">
+                        {{v.name}}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -192,11 +196,16 @@
         <div class="card-footer small text-muted">
           <div class="footer-buttons">
             <div class="row">
-              <div class="col-md-8 pl-1">
+              <div class="col-md-12 pl-1">
                 <div class="pull-left">
-                  <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.select_all}}"
-                    (click)="archive_data()">
+                  <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.archive}}" (click)="archive_data()" *ngIf="grid_section_data.length > 0">
                     <b><i class="fa fa-cloud-upload"></i> {{this.language.archive}} </b>
+                  </a>
+                </div>
+
+                <div class="pull-right">
+                  <a href="javascript:;" class="btn btn-outline-danger btn-sm mt-1" title="{{language.delete}}" (click)="delete_data()" *ngIf="filter_section_data.order_status != 'processed'">
+                    <b><i class="fa fa-trash"></i> {{this.language.delete}} </b>
                   </a>
                 </div>
               </div>
