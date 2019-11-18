@@ -33,6 +33,7 @@ export class BomComponent implements OnInit {
   public commonData = new CommonData();
   public view_route_link = '/feature/bom/view';
   public lookupfor: string = '';
+  public isDuplicateMode:boolean = false;
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = false;
@@ -193,6 +194,30 @@ export class BomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isFeatureIdEnable = true;
       this.FeatureLookupBtnhide = true;
+
+      if(this.ActivatedRouter.snapshot.url[2].path == "edit") {
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDeleteButtonVisible = true;
+        this.isFeatureIdEnable = true;
+        this.FeatureLookupBtnhide = true;
+        this.isDuplicateMode = false;
+      } else if(this.ActivatedRouter.snapshot.url[2].path == "add"){
+        this.isUpdateButtonVisible = false;
+        this.isSaveButtonVisible = true;
+        this.isDeleteButtonVisible = true;
+        this.isDuplicateMode = true;
+        this.isFeatureIdEnable = false;
+        this.FeatureLookupBtnhide = false;
+      } else {
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDeleteButtonVisible = false;
+        this.isFeatureIdEnable = true;
+        this.FeatureLookupBtnhide = true;
+        this.isDuplicateMode = false;
+      }
+
       this.getFeatureBomDetail(this.update_id)
     }
 
