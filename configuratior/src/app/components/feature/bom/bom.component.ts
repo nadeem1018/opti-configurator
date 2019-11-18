@@ -412,13 +412,18 @@ on_multiple_model_change() {
   }
   this.feature_bom_data.feature_min_selectable = 1;
   if (this.feature_bom_table.length > 0) {
-    let default_rows  =  this.feature_bom_table.filter(function(obj){
-      return obj.default == true;
+    this.feature_bom_table.filter(function(obj){
+      return obj.default = false;
+    });
+      /* let default_rows  = this.feature_bom_table.filter(function(obj){
+      return obj.default == true || obj.default == 'Y';
     });
     
-    if(default_rows.length == 0){
-      this.feature_bom_table[0].default = true;   
-    }
+ if (this.feature_bom_data.multi_select == 'false') {          
+      if(default_rows.length == 0){
+        this.feature_bom_table[0].default = true;   
+      }
+    }*/
   }
   this.feature_bom_data.feature_max_selectable = 1;
 }
