@@ -2575,7 +2575,6 @@ onselectionchange(feature_model_data, value, id, isSecondLevel, unique_key) {
               } else if(feature_model_data.isRuleApplied == false) {
                 this.checkedFunction(feature_model_data, elementtypeforcheckedfunction, value, false);
               }
-
              /* if (data.RuleOutputData != undefined && data.RuleOutputData.length != null)  {
               if(data.RuleOutputData.length > 0) {
                 if (this.ruleData.length > 0 && this.ruleData.length > this.ruleIndex) {
@@ -6074,26 +6073,41 @@ setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureMode
                             }
                             break loopRule;
                           }
-                        }
+                        } else if(this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isManuallyChecked == true){
+                          var ModelHeaderData = this.ModelHeaderData.filter(function(obj){
+                            return obj.unique_key == feature_model_data.nodeid
+                          })
+                          if(ModelHeaderData.length > 0) {
+                            if(ModelHeaderData[0].element_type == "radio") {
+                              var nodeid = feature_model_data.nodeid;
+                              var unique_key = feature_model_data.unique_key;
+                              this.FeatureBOMDataForSecondLevel.filter(function(obj){
+                                if(obj.nodeid == nodeid && obj.unique_key != unique_key) {
+                                  obj['checked'] = false;
+                                } else if(obj.nodeid == nodeid && obj.unique_key == unique_key) {
+                                  obj['checked'] = true;
+                                }
+                              })
+                            }
+                          }
+                        } 
+                      }
 
-                                        }
+                    } else {
+                      /* this.isSecondIteration = false */
+                      this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isRuleApplied = false
+                      this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isSecondIteration = false
+                      /* this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isManuallyChecked = false */
 
-                                      } 
-                                      else {
-                                        /* this.isSecondIteration = false */
-                                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isRuleApplied = false
-                                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isSecondIteration = false
-                                        /* this.FeatureBOMDataForSecondLevel[iItemFeatureTable].isManuallyChecked = false */
+                      if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
+                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                      } else {
+                        this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
 
-                                        if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
-                                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
-                                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
-                                        } else {
-                                          this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
-
-                                        }
-                                      }
-                                    }
+                      }
+                    }
+                  }
                 }
                 else {
                   if (this.FeatureBOMDataForSecondLevel[iItemFeatureTable].OPTM_VALUE == RuleOutputData[iItemRule].OPTM_VALUE) {
