@@ -232,7 +232,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
             return;
           }
         }
-        data.reverse();
+         data.reverse(); 
         this.dataArray = data;
         console.log("sort - " , this.sort);
         console.log("this.dataArray ", this.dataArray);
