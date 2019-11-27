@@ -110,6 +110,10 @@
               <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.select_all}}" (click)="select_all_data()">
                 <b><i class="{{selectButtonIcon}}"></i> {{selectbuttonText}} </b>
               </a>
+
+              <a href="javascript:;" class="btn btn-outline-warning btn-sm mt-1 ml-2" title="{{language.clear_selection}}" (click)="this.clear_filter_results(0)">
+                <b><i class="fa fa-search-minus"></i> {{this.language.clear_selection}} </b>
+              </a>
             </div>
           </div>
           <div class="clearfix"></div>

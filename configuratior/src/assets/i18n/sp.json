@@ -296,6 +296,7 @@
     "Nodataforsave": "Ninguna expresion ha sido agregada, favor de ingresar una expresion antes de guardar.",
     "DateValidation": "Fecha desde no puede ser mayor a Fecha hasta",
     "clear_selection": "Borrar seleccion",
+    "clear_filter": "Clear Filter",
     "add_model": "Agregar Modelo",
     "update_model": "Actualizar Modelo",
     "features": "Caracteristicas",

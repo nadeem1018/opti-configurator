@@ -1437,8 +1437,10 @@ export class LookupComponent implements OnInit {
             console.log(data);  
             this.product_grand_details.step4_final_hidden_report_total = 0;
             var step4_final_hidden_report_total = 0;
-            if(data.PrintSettings != undefined && data.PrintSettings.length > 0){
-              this.product_grand_details.step4_final_hidden_report_text = data.PrintSettings[0]["VALUE"] ;
+            if( data != null ) {
+              if(data.PrintSettings != undefined && data.PrintSettings.length > 0){
+                this.product_grand_details.step4_final_hidden_report_text = data.PrintSettings[0]["VALUE"] ;
+              }
             }
 
             for (var i = 0; i < this.serviceData.verify_final_data_sel_details.length; i++) {

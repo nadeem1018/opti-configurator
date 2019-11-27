@@ -296,6 +296,7 @@
     "Nodataforsave": "No expression added to save in the system, please add expression before saving.",
     "DateValidation": "From date cannot be greater than to date",
     "clear_selection": "Clear Selection",
+    "clear_filter": "Clear Filter",
     "add_model": "Add Model",
     "update_model": "Update Model",
     "delete_model": "Delete Model",
