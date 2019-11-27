@@ -87,6 +87,7 @@ const routes: Routes = [
   { path: 'feature/bom/add', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/bom/edit/:id', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'feature/bom/view', component: ViewFeatureBOMComponent },
+  { path: 'feature/bom/add/:id', component: BomComponent,   canDeactivate: [CanDeactivateGuard] },
   
   { path: 'item-code-genration/add', component: ItemcodegenerationComponent,   canDeactivate: [CanDeactivateGuard] },
   { path: 'item-code-genration/edit/:id', component: ItemcodegenerationComponent, canDeactivate: [CanDeactivateGuard] },

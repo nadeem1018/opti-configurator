@@ -570,6 +570,7 @@
     "filter_result":"Filtered Results",
     "both":"Both",
     "archive":"Archive",
+    "archiving": "Archiving",
     "notAuthorisedScreen":"You are not authorised to access this screen.",
     "about":"About",
     "system_info":"System Info.",
