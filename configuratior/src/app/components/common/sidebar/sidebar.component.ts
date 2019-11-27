@@ -65,7 +65,6 @@ export class SidebarComponent implements OnInit {
 
           for(let menu_data of this.menu_options){
             if(allowed_menus_ids.indexOf(menu_data.menu_code) !== -1){
-              console.log("menu_data", menu_data);
              this.menu_obj.push(menu_data);
            }
           }
