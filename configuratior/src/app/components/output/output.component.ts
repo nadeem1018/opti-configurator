@@ -2846,7 +2846,7 @@ export class OutputComponent implements OnInit {
 
     if (checkDefaultFeatureIndtFeatureDataWithDefault.length > 0) {
       isExist = this.ModelHeaderData.filter(function (obj) {
-        return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CHILDFEATUREID;
+        return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CHILDFEATUREID && obj['unique_key'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].unique_key;
       });
 
 
@@ -3010,12 +3010,6 @@ export class OutputComponent implements OnInit {
   removeAllSubmodelChild(uniqueKey, featureModelData, isThirdLevel) {
     //this function removes sub-model & thieir respective childs from right grid.
 
-    /* let isSubModelExist:boolean = true; */
-    /* if(featureModelData.OPTM_LEVEL == 3) {
-      isSubModelExist = false
-    } else {
-      isSubModelExist = true
-    } */
 
     let all_child_of_selected_submodel = [];
     all_child_of_selected_submodel = this.ModelBOMDataForSecondLevel.filter(function (obj) {
@@ -3026,12 +3020,10 @@ export class OutputComponent implements OnInit {
       for (let i = 0; i < all_child_of_selected_submodel.length; i++) {
         let selection_parent_child_data = all_child_of_selected_submodel[i];
         for (let j = 0; j < this.feature_itm_list_table.length; j++) {
-          if (selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid && featureModelData.unique_key != this.feature_itm_list_table[j].unique_key) {
+          if (selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid && featureModelData.unique_key != this.feature_itm_list_table[j].unique_key && featureModelData.unique_key != this.feature_itm_list_table[j].nodeid) {
             let currentRow = this.feature_itm_list_table[j];
             if (currentRow.OPTM_ITEMTYPE == undefined && currentRow.OPTM_ITEMTYPE == null) {
-              /* if(isSubModelExist){ */
               this.feature_itm_list_table.splice(j, 1);
-              /* } */
             }
             if (currentRow.OPTM_TYPE == 3) {
               this.removeAllSubmodelChild(currentRow.unique_key, featureModelData, false);
@@ -3044,10 +3036,15 @@ export class OutputComponent implements OnInit {
       }
     } else {
       for (let index = 0; index < this.feature_itm_list_table.length; index++) {
-
         if (this.feature_itm_list_table[index].nodeid == uniqueKey && this.feature_itm_list_table[index].ModelId == featureModelData.parentmodelid) {
           let currentSelection = this.feature_itm_list_table[index];
-          this.feature_itm_list_table.splice(index, 1);
+          if(currentSelection.OPTM_TYPE == 3) {
+            if(featureModelData.unique_key != currentSelection.unique_key) {
+              this.feature_itm_list_table.splice(index, 1);
+            }
+          } else {
+            this.feature_itm_list_table.splice(index, 1);
+          }
           this.removeAllSubmodelChild(currentSelection.unique_key, featureModelData, true);
         }
       }
@@ -3071,7 +3068,7 @@ export class OutputComponent implements OnInit {
         } else if (parentarray[0].OPTM_TYPE == 3) {
           if (type == 3) {
             let subOfSubModelData = this.ModelHeaderData.filter(function (obj) {
-              if(obj.nodeid != null && obj.nodeid != undefined) {
+              if(parentarray[0].nodeid != null && parentarray[0].nodeid != undefined) {
                 return obj.is_second_level == 1 && obj.nodeid == featureModelData.nodeid
               } else {
                 return obj.is_second_level == 1 && obj.unique_key == featureModelData.nodeid
@@ -3080,7 +3077,10 @@ export class OutputComponent implements OnInit {
             if (subOfSubModelData.length == 0) {
               this.removeAllSubmodelChild(parentarray[0].unique_key, featureModelData, false);
               this.remove_all_features_child(parentarray[0].unique_key, parentarray);
+            } else if (featureModelData.OPTM_LEVEL >= 3 && featureModelData.is_second_level == 1) {
+              this.removeAllSubmodelChild(featureModelData.nodeid, featureModelData, true);
             }
+
           } else {
             if (featureModelData.OPTM_LEVEL >= 3 && featureModelData.is_second_level == 1) {
               this.removeAllSubmodelChild(featureModelData.nodeid, featureModelData, true);
@@ -3123,9 +3123,10 @@ export class OutputComponent implements OnInit {
 
         } else if (featureModelData.OPTM_TYPE == 3) {
           if (ItemData[0].OPTM_TYPE == 2) {
-            isExist = this.feature_itm_list_table.filter(function (obj) {
+              isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
             });
+
           } else {
             isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == featureModelData.OPTM_MODELID && obj['nodeid'] == featureModelData.nodeid && obj['unique_key'] == featureModelData.unique_key;
