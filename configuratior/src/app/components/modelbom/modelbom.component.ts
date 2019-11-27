@@ -37,6 +37,7 @@ export class ModelbomComponent implements OnInit {
   public isPriceDisabled = true;
   public pricehide = true;
   public isUOMDisabled = true;
+  public NewModel = "";
   public update_id: string = "";
   public typevaluefromdatabase: string = "";
   public typevaluecodefromdatabase: string = "";
@@ -58,6 +59,7 @@ export class ModelbomComponent implements OnInit {
   public current_selected_row: any = [];
   public selectableSettings: any = [];
   public model_bom_type:any = '';
+  public isDuplicateMode:boolean = false;
   // public mandatory_disabled: boolean = false;
   public menu_auth_index = '203'; 
   public made_changes:boolean = false;
@@ -173,7 +175,7 @@ export class ModelbomComponent implements OnInit {
         return;
       });
     // check screen authorisation - end
-
+    this.update_id = this.ActivatedRouter.snapshot.paramMap.get('id');
     if (this.update_id === "" || this.update_id === null) {
       this.made_changes = true;
       this.isUpdateButtonVisible = false;
@@ -190,12 +192,34 @@ export class ModelbomComponent implements OnInit {
       this.isDeleteButtonVisible = true;
       this.isModelIdEnable = true;
       this.ModelLookupBtnhide = true;
+      if(this.ActivatedRouter.snapshot.url[1].path == "edit") {
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDeleteButtonVisible = true; 
+        this.isDuplicateMode = false;
+      } else if(this.ActivatedRouter.snapshot.url[1].path == "add"){ 
+        this.isUpdateButtonVisible = false;
+        this.isSaveButtonVisible = true;
+        this.isDeleteButtonVisible = false; 
+        this.isDuplicateMode = true; 
+        this.isModelIdEnable = false;
+        this.ModelLookupBtnhide = false;
+      } else {
+        this.isUpdateButtonVisible = true;
+        this.isSaveButtonVisible = false;
+        this.isDeleteButtonVisible = false; 
+        this.isDuplicateMode = false;
+      }
       this.get_modelbom_details(this.update_id, false);
     }
   }
 
   get_modelbom_details(id, navigat_to_header) {
     this.showLoader = true;
+    if(this.isDuplicateMode)
+    {
+      this.NewModel = this.update_id;
+    }
     this.service.GetDataByModelId(id).subscribe(
       data => {
         if(data != undefined && data.LICDATA != undefined){
@@ -364,6 +388,13 @@ export class ModelbomComponent implements OnInit {
           }
           this.onExplodeClick('auto');
           this.showLoader = false;
+          if(this.isDuplicateMode)
+          { 
+            this.modelbom_data.modal_code = "";
+            this.modelbom_data.feature_name = "";
+            this.modelbom_data.feature_desc = ""; 
+            this.modelbom_data.is_ready_to_use=false; 
+          }
         },error => {
           this.showLoader = false;
           if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
@@ -433,6 +464,7 @@ onAddRow() {
     print_on_report : print_on_report_flag,
     print_on_report_disabled : print_on_report_disabled_flag
   });
+  this.NewModel =  this.modelbom_data.modal_id;
   this.made_changes = true;
 };
 
@@ -1827,9 +1859,17 @@ onExplodeClick(type) {
            objDataset.ModelData =[];
            objDataset.RuleData = [];
            var temp_model_data = new Array();
-           this.modelbom_data[0].id = this.update_id;
+           if(this.isDuplicateMode)
+           {
+            this.modelbom_data[0].id =  0; 
+           }
+           else
+           {
+            this.modelbom_data[0].id = this.update_id;
+           }
 
            for (let i = 0; i < this.modelbom_data.length; ++i) {
+             
              if (this.modelbom_data[i].display_name == "" || this.modelbom_data[i].display_name == " ") {
                let currentrow = i + 1;
                this.toastr.error('',this.language.DisplayNameRequired + currentrow, this.commonData.toast_config);
@@ -1843,7 +1883,12 @@ onExplodeClick(type) {
            }
            temp_model_data = this.modelbom_data;
            console.log("modelbom data ", this.modelbom_data);
-           for (let i = 0; i < temp_model_data.length; ++i) {
+           for (let i = 0; i < temp_model_data.length; ++i) { 
+            if(this.isDuplicateMode)
+            {
+              this.NewModel = this.modelbom_data.modal_id;
+              this.modelbom_data[i].ModelId = this.NewModel;
+            }
              if (temp_model_data[i].unique_identifer == false) {
                temp_model_data[i].unique_identifer = "N"
              }

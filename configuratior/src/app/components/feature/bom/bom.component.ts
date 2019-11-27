@@ -34,6 +34,7 @@ export class BomComponent implements OnInit {
   public view_route_link = '/feature/bom/view';
   public lookupfor: string = '';
   public isDuplicateMode:boolean = false;
+  public isAddRowMode:boolean = false;
   public isUpdateButtonVisible: boolean = false;
   public isSaveButtonVisible: boolean = true;
   public isDeleteButtonVisible: boolean = false;
@@ -55,6 +56,7 @@ export class BomComponent implements OnInit {
   public FeatureLookupBtnhide: boolean = true;
   public showImageBlock: boolean = false;
   public selectedImage = "";
+  public NewFeatureId = "";
   config_params: any;
   serviceData: any;
   counter = 0;
@@ -78,6 +80,8 @@ export class BomComponent implements OnInit {
   //custom dialoag params
   public dialog_params: any = [];
   public show_dialog: boolean = false;
+  featureNameCode : string ="";
+ 
   constructor(private route: Router, private fbom: FeaturebomService, private toastr: ToastrService, private router: Router, private ActivatedRouter: ActivatedRoute, private httpclient: HttpClient, private commanService: CommonService, private cdref: ChangeDetectorRef, private modalService: BsModalService, private DialogService: DialogService) { }
 
   isMobile: boolean = false;
@@ -202,10 +206,10 @@ export class BomComponent implements OnInit {
         this.isFeatureIdEnable = true;
         this.FeatureLookupBtnhide = true;
         this.isDuplicateMode = false;
-      } else if(this.ActivatedRouter.snapshot.url[2].path == "add"){
+      } else if(this.ActivatedRouter.snapshot.url[2].path == "add"){ 
         this.isUpdateButtonVisible = false;
         this.isSaveButtonVisible = true;
-        this.isDeleteButtonVisible = true;
+        this.isDeleteButtonVisible = false; 
         this.isDuplicateMode = true;
         this.isFeatureIdEnable = false;
         this.FeatureLookupBtnhide = false;
@@ -218,12 +222,16 @@ export class BomComponent implements OnInit {
         this.isDuplicateMode = false;
       }
 
-      this.getFeatureBomDetail(this.update_id)
+      this.getFeatureBomDetail(this.update_id) 
     }
 
   }
 
   getFeatureBomDetail(id) {
+    if(this.isDuplicateMode)
+    {
+      this.NewFeatureId = this.update_id;
+    }
     this.showLoader = true;
     this.fbom.GetDataByFeatureId(id).subscribe(
       data => {
@@ -237,7 +245,7 @@ export class BomComponent implements OnInit {
         }
 
         if (data.FeatureDetail.length > 0) {
-          for (let i = 0; i < data.FeatureDetail.length; ++i) {
+          for (let i = 0; i < data.FeatureDetail.length; ++i) { 
             if (data.FeatureDetail[i].OPTM_TYPE == 1) {
               this.typevaluefromdatabase = data.FeatureDetail[i].OPTM_CHILDFEATUREID.toString()
               this.typevaluecodefromdatabase = data.FeatureDetail[i].child_code.toString()
@@ -347,7 +355,7 @@ export class BomComponent implements OnInit {
               CreatedUser: data.FeatureDetail[i].OPTM_CREATEDBY,
               print_on_report : print_on_report,
               print_on_report_disabled : print_on_report_disabled
-            });
+            }); 
           }
         } else {
           // this.route.navigateByUrl('feature/bom/view');
@@ -402,6 +410,11 @@ export class BomComponent implements OnInit {
         }
         this.showLoader = false;
         console.log(this.feature_bom_table);
+        if(this.isDuplicateMode) {
+          this.feature_bom_data.feature_code = ""; 
+          this.feature_bom_data.feature_name = "";
+          this.feature_bom_data.feature_desc = "";
+          }
       },
       error => {
         this.showLoader = false;
@@ -531,6 +544,7 @@ validate_min_values(value, input_id) {
     }
 
     onAddRow() {
+      this.isAddRowMode=true;
       if (this.validation("Add") == false) {
         return;
       }
@@ -591,6 +605,7 @@ validate_min_values(value, input_id) {
         print_on_report : print_on_report_flag,
         print_on_report_disabled : print_on_report_disabled_flag
       });
+      this.NewFeatureId =  this.feature_bom_data.feature_id;
       this.made_changes = true;
     };
 
@@ -684,7 +699,16 @@ validate_min_values(value, input_id) {
       }
 
       if (this.feature_bom_table.length > 0) {
-        this.feature_bom_table[0].id = this.update_id;
+        
+        if(this.isDuplicateMode)
+        {
+          this.feature_bom_table[0].id =  0; 
+
+        }
+        else
+        {
+          this.feature_bom_table[0].id = this.update_id;
+        }
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
           if (this.feature_bom_table[i].display_name == "" || this.feature_bom_table[i].display_name == " ") {
             let currentrow = i + 1;
@@ -695,7 +719,11 @@ validate_min_values(value, input_id) {
         }
 
         for (let i = 0; i < this.feature_bom_table.length; ++i) {
-
+        if(this.isDuplicateMode)
+        {
+          this.NewFeatureId =  this.feature_bom_data.feature_id;
+          this.feature_bom_table[i].FeatureId = this.NewFeatureId;
+        }
           if (this.feature_bom_data.multi_select == 'false') {
             this.feature_bom_table[i].multi_select = "N"
           }
@@ -1254,7 +1282,10 @@ validate_min_values(value, input_id) {
                  }
                }
                if (this.feature_bom_table.length > 0) {
-                 this.feature_bom_table = [];
+                  if(!this.isDuplicateMode)
+                  {
+                    this.feature_bom_table = [];
+                  }
                }
              }
              else {
