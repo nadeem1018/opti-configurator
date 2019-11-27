@@ -1270,7 +1270,131 @@ export class OutputComponent implements OnInit {
     this.step4_final_price_calculation();
   }
 
+   output_new_invoice(operation_type) {
+      if (operation_type == "") {
+        this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
+        return;
+      }
+      this.serviceData = [];
+      this.serviceData.product_grand_details = [];
+      this.serviceData.all_info = [];
+      this.serviceData.locale_obj = [];
+      this.serviceData.customer_and_doc_details = this.step1_data;
 
+      this.serviceData.ModelHeaderData = [];
+      this.serviceData.FeatureBOMDataForSecondLevel = [];
+      this.serviceData.ModelBOMDataForSecondLevel = [];
+      this.serviceData.feature = [];
+      this.serviceData.accesories = [];
+      this.serviceData.Accessoryarray = [];
+      this.serviceData.ModelHeaderItemsArray = [];
+
+
+      //pushing all customer data
+      this.serviceData.all_info.push({
+        "selected_print_type": operation_type,
+        "ref_doc_no": this.final_reference_number,
+        "ref_doc_entry": this.final_ref_doc_entry,
+        "conf_id": this.iLogID,
+        "conf_desc": this.step1_data.description,
+        "logo_path" : "",
+        "company_name": "",
+        "company_address" :"",
+        "step4_final_prod_total": this.step4_final_prod_total,
+        "step4_final_acc_total": this.step4_final_acc_total,
+        "step4_final_grand_total": this.step4_final_grand_total,
+        "prod_discount_log": this.prod_discount_log,
+        "access_dis_amount_log": this.access_dis_amount_log,
+      });
+     
+      // language variables 
+      this.serviceData.locale_obj.push({
+        "SalesQuote": this.language.SalesQuote,
+        "SalesOrder": this.language.SalesOrder,
+        "order_type": this.language.order_type,
+        "ref_doc_no": this.language.ref_doc_no,
+        "ref_doc_entry": this.language.ref_doc_entry,
+        "configuration_id": this.language.configuration_id,
+        "description": this.language.description,
+        "customer": this.language.customer,
+        "contact_person": this.language.contact_person,
+        "ship_to": this.language.ship_to,
+        "address": this.language.address,
+        "bill_to": this.language.bill_to,
+        "pay_terms" : this.language.pay_terms,
+        "payment_method" : this.language.payment_method,
+        "posting_date" : this.language.posting_date,
+        "Bom_Remarks"  : this.language.Bom_Remarks,
+        "ModelBom_FeatureValue" : this.language.ModelBom_FeatureValue,
+        "quantity" : this.language.quantity,
+        "price" : this.language.price,
+        "extension" : this.language.extension,
+        "discount_per" : this.language.discount_per,
+        "discounted_price" : this.language.discounted_price,
+        "total": this.language.total,
+        "product_total": this.language.product_total,
+        "accessories_total": this.language.accessories_total,
+        "prod_disc_amount": this.language.prod_disc_amount,
+        "acc_disc_amount": this.language.acc_disc_amount,
+        "grand_total": this.language.grand_total,
+      });
+
+   
+      //pushing all final data selected detail - start
+      if(this.step3_data_final.length > 0){
+        for (let me_d_v_i = 0; me_d_v_i < this.step3_data_final.length; me_d_v_i++) {
+          let me_d_v_row = this.step3_data_final[me_d_v_i];
+          if (me_d_v_row.ModelHeaderData != null && me_d_v_row.ModelHeaderData != undefined && me_d_v_row.ModelHeaderData != "") {
+            let temp_modelheder_data = me_d_v_row.ModelHeaderData;
+          }
+          
+          if (me_d_v_row.ModelHeaderItemsArray != null && me_d_v_row.ModelHeaderItemsArray != undefined && me_d_v_row.ModelHeaderItemsArray != "") {
+            let modelheader_item_array = me_d_v_row.ModelHeaderItemsArray;
+          }
+
+          if (me_d_v_row.Accessoryarray != null && me_d_v_row.Accessoryarray != undefined && me_d_v_row.Accessoryarray != "") {
+            let temp_Accessoryarray = me_d_v_row.Accessoryarray;
+          }
+
+          if (me_d_v_row.ModelBOMDataForSecondLevel != null && me_d_v_row.ModelBOMDataForSecondLevel != undefined && me_d_v_row.ModelBOMDataForSecondLevel != "") {
+            let temp_ModelBOMDataForSecondLevel = me_d_v_row.ModelBOMDataForSecondLevel;
+          }
+
+          if (me_d_v_row.FeatureBOMDataForSecondLevel != null && me_d_v_row.FeatureBOMDataForSecondLevel != undefined && me_d_v_row.FeatureBOMDataForSecondLevel != "") {
+            let temp_FeatureBOMDataForSecondLevel = me_d_v_row.FeatureBOMDataForSecondLevel;
+          }
+
+          if (me_d_v_row.selectedAccessoryBOM != null && me_d_v_row.selectedAccessoryBOM != undefined && me_d_v_row.selectedAccessoryBOM != "") {
+            let temp_selectedAccessoryBOM = me_d_v_row.selectedAccessoryBOM;
+          }
+        }
+      }
+
+      //pushing all final data selected detail - end
+     
+      // api calling 
+      this.CommonService.GetCompanyDetails(this.common_output_data.companyName).subscribe(
+        data => {
+          if (data != null || data != undefined) {
+            if (data.length > 0) {
+              if (data[0].LogoImage != "") {
+                this.serviceData.all_info[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
+              }
+              this.serviceData.all_info[0]['company_name'] = data[0].CompanyName;
+              this.serviceData.all_info[0]['company_address'] = data[0].CompanyAddress;
+            }
+          }
+        },
+        error => {
+          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+            this.CommonService.isUnauthorized();
+          } else {
+            this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+          }
+        }
+        )
+      console.log("verify ", this.serviceData);
+    }
 
   output_invvoice_print_lookup(operation_type) {
     if (operation_type == "") {
