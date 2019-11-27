@@ -42,7 +42,8 @@ export class SidebarComponent implements OnInit {
       { "menu_code": 203, "menu_title": this.language.Model_Bom, "router_link": "modelbom/view", "icon_path": this.imgPath + "/leftpanel/modelBOM.svg", "chkURL": "modelbom" },
       { "menu_code": 204, "menu_title": this.language.rule_workbench, "router_link": "rulewb/view", "icon_path": this.imgPath + "/leftpanel/ruleworkbench.svg", "chkURL": "rulewb" },
       { "menu_code": 206, "menu_title": this.language.routing, "router_link": "routing/view", "icon_path": this.imgPath + "/leftpanel/routing.svg", "chkURL": "routing" },
-      { "menu_code": 205, "menu_title": this.language.config_wizard, "router_link": "output/view", "icon_path": this.imgPath + "/leftpanel/configure.svg", "chkURL": "output" }
+      { "menu_code": 205, "menu_title": this.language.config_wizard, "router_link": "output/view", "icon_path": this.imgPath + "/leftpanel/configure.svg", "chkURL": "output" },
+      { "menu_code": 207, "menu_title": "Archive", "router_link": "output/view", "icon_path": this.imgPath + "/leftpanel/configure.svg", "chkURL": "output" },
     ]
     let chkISFeature = getURL.includes('feature');
     

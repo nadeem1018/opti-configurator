@@ -42,6 +42,7 @@ export class ArchivingComponent implements OnInit {
   public lookupfor = '';
   public selectedImage = '';
   public order_status_types = [];
+  public selectedValue: number = 25;
 
   detectDevice() {
     let getDevice = UIHelper.isDevice();
@@ -84,43 +85,21 @@ export class ArchivingComponent implements OnInit {
     this.filter_section_data.doc_type = 'both';
     this.filter_section_data.order_status = 'processed';
     this.order_status_types = [
-    { "value": 'draft', "name": this.language.draft },
+    { "value": 'draft', "name": this.language.draft_new },
     { "value": 'pending', "name": this.language.pending_status },
     { "value": 'error', "name": this.language.error_status },
     { "value": 'processed', "name": this.language.process_status }
     ];
 
-    this.grid_section_data.push({
-      rowindex: 1,
-      config_id: '1250',
-      config_desc: 'Test with routing',
-      doc_type: '17',
-      ref_doc_entry: '45',
-      models: ('Moto z2 play, Dell G-series laptop'),
-      fg_item: ('Moto_0001, Dell_200'),
-      doc_date: '2019/12/2',
-      gross_total: "$" + parseFloat('85203.1').toFixed(3),
-    });
-
-    this.grid_section_data.push({
-      rowindex: 2,
-      config_id: '1251',
-      config_desc: 'Test without routing',
-      doc_type: '23',
-      ref_doc_entry: '46',
-      models: ('Moto z2 play, Dell G-series laptop'),
-      fg_item: ('Moto_0001, Dell_200'),
-      doc_date: '2019/12/2',
-      gross_total: "$" + parseFloat('55210.1').toFixed(3),
-    });
-
-
     this.selectButtonTextIconChange(1);
     this.get_all_model_list();
-   /* this.service.get_all_model_list().subscribe(
-      data => {
-        if (data.length > 0) {}
-      });*/
+  }
+
+  getPageValue() {
+    if (this.selectedValue == null) {
+      this.selectedValue = 10;
+    }
+    return this.selectedValue;
   }
 
   getLookupValue($event) {
@@ -163,6 +142,7 @@ export class ArchivingComponent implements OnInit {
       this.selectButtonTextIconChange(1);
       this.current_selected_row = [];
     }
+    console.log("this.current_selected_row -", this.current_selected_row);
   }
 
   select_all_data() {
@@ -249,7 +229,7 @@ export class ArchivingComponent implements OnInit {
     if (this.filter_section_data.selected_models == undefined || this.filter_section_data.selected_models == null) {
       this.filter_section_data.selected_models = [];
     } 
-    console.log("this.filter_section_data ", this.filter_section_data);
+    
     this.service.filter_results(this.filter_section_data).subscribe(
       data => {
         console.log(data);
@@ -261,6 +241,30 @@ export class ArchivingComponent implements OnInit {
               this.commonService.RemoveLoggedInUser().subscribe();
               this.commonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
+            }
+
+            this.showLookupLoader = false;
+            if(data.length > 0){
+              let counter = 0;
+              for(let grid_index of data){
+                var change_date_format = new Date(grid_index.OPTM_POSTINGDATE).toLocaleDateString('it-US');
+
+                this.grid_section_data.push({
+                  rowindex: counter,
+                  config_id: grid_index.OPTM_LOGID,
+                  config_desc: grid_index.OPTM_DESC,
+                  doc_type: grid_index.OPTM_DOCTYPE,
+                  ref_doc_entry: grid_index.OPTM_REFDOCENTRY,
+                  models: grid_index.MODEL,
+                  fg_item: (grid_index.OPTM_FGITEM),
+                  doc_date: change_date_format,
+                  gross_total: "$" + parseFloat(grid_index.OPTM_GRANDTOTAL).toFixed(3),
+                });
+                counter++;
+              }
+
+            } else {
+              this.toastr.warning('', this.language.no_records_found_in_range, this.commonData.toast_config);
             }
           } else {
             this.clear_filter_results(1);
@@ -284,15 +288,33 @@ export class ArchivingComponent implements OnInit {
 
   }
 
-  clear_archived_data_search(){
 
-  }
-
-  archive_data() {
+  archive_data(flag) {
 
     this.showLookupLoader = true;
-    let temp_array = [];
-    this.service.archive_data(temp_array).subscribe(
+    if (this.filter_section_data.config_desc == undefined || this.filter_section_data.config_desc == null){
+      this.filter_section_data.config_desc = '';
+    } 
+
+    if (this.filter_section_data.selected_models == undefined || this.filter_section_data.selected_models == null) {
+      this.filter_section_data.selected_models = [];
+    } 
+   
+    let log_id_arr = [];
+    for(let row_index in this.current_selected_row){
+      log_id_arr.push(this.current_selected_row[row_index].config_id);
+    }
+
+    let log_id = '';
+    if(log_id_arr.length > 0){
+      log_id = log_id_arr.join(","); 
+    }
+
+    if(flag == 'all'){
+      log_id = '';
+    }
+
+    this.service.archive_data(this.filter_section_data, log_id, flag).subscribe(
       data => {
         console.log(data);
         if (data != null) {
@@ -304,7 +326,10 @@ export class ArchivingComponent implements OnInit {
               return;
             }
             // here goes the result processing 
-          //  this.clear_archived_data_search();
+            this.clear_filter_results(0);
+            this.toastr.success('', this.language.cnf_archieved_successfully, this.commonData.toast_config);
+            this.showLookupLoader = false;
+
           } else {
             this.showLookupLoader = false;
             this.toastr.error('', this.language.server_error, this.commonData.toast_config);
@@ -322,10 +347,70 @@ export class ArchivingComponent implements OnInit {
         } else {
           this.toastr.error('', this.language.server_error, this.commonData.toast_config);
         }
-        return;
-      }
-      );
+      });
   }
+
+   delete_data(flag) {
+
+    this.showLookupLoader = true;
+    if (this.filter_section_data.config_desc == undefined || this.filter_section_data.config_desc == null){
+      this.filter_section_data.config_desc = '';
+    } 
+
+    if (this.filter_section_data.selected_models == undefined || this.filter_section_data.selected_models == null) {
+      this.filter_section_data.selected_models = [];
+    } 
+   
+    let log_id_arr = [];
+    for(let row_index in this.current_selected_row){
+      log_id_arr.push(this.current_selected_row[row_index].config_id);
+    }
+
+    let log_id = '';
+    if(log_id_arr.length > 0){
+      log_id = log_id_arr.join(","); 
+    }
+
+     if(flag == 'all'){
+      log_id = '';
+    }
+
+    this.service.delete_data(this.filter_section_data, log_id, flag).subscribe(
+      data => {
+        console.log(data);
+        if (data != null) {
+          if (data.length > 0) {
+            if (data[0].ErrorMsg == "7001") {
+              this.showLookupLoader = false;
+              this.commonService.RemoveLoggedInUser().subscribe();
+              this.commonService.signOut(this.toastr, this.route, 'Sessionout');
+              return;
+            }
+            // here goes the result processing 
+            this.toastr.success('', this.language.cnf_deleted_successfully, this.commonData.toast_config);
+            this.clear_filter_results(0);
+            this.showLookupLoader = false;
+
+          } else {
+            this.showLookupLoader = false;
+            this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+            return;
+          }
+        } else {
+          this.showLookupLoader = false;
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+          return;
+        }
+      }, error => {
+        this.showLookupLoader = false;
+        if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
+          this.commonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.server_error, this.commonData.toast_config);
+        }
+      });
+  }
+
 
 
   ondoc_type_change(selected_value){

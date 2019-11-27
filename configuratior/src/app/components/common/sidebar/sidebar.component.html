@@ -17,11 +17,11 @@
 
   <ng-container *ngFor="let menuRow of menu_obj, let i = index">
       <li class="nav-item" (click)="onMenuPress(getMenuDetails(menuRow.OPTM_MENUID), i, getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL)"
-        routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}" [ngClass]="{'active': selectedItem == getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL}" title="{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}">
-        <a class="nav-link" href='javascript:;' >
-          <img src="{{getMenuDetails(menuRow.OPTM_MENUID)[0].icon_path}}" width="25px" height="25px;" >
-          <span>{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}</span>
-        </a>
-      </li>
+      routerLink="{{(getMenuDetails(menuRow.OPTM_MENUID))[0].router_link}}" [ngClass]="{'active': selectedItem == getMenuDetails(menuRow.OPTM_MENUID)[0].chkURL}" title="{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}">
+      <a class="nav-link" href='javascript:;' >
+        <img src="{{getMenuDetails(menuRow.OPTM_MENUID)[0].icon_path}}" width="25px" height="25px;" >
+        <span>{{getMenuDetails(menuRow.OPTM_MENUID)[0].menu_title}}</span>
+      </a>
+    </li>
   </ng-container>  
 </ul>
