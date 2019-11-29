@@ -3228,11 +3228,7 @@ export class OutputComponent implements OnInit {
           } else {
             isDefaultItem = false
           }
-        } /*else {
-            isExist = this.feature_itm_list_table.filter(function (obj) {
-              return obj['FeatureId'] == ItemData[0].OPTM_FEATUREID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
-            });
-          }*/
+        }
       }
       else if (parentarray[0].OPTM_TYPE == 3) {
         if (featureModelData.OPTM_TYPE == 1) {
@@ -3342,10 +3338,16 @@ export class OutputComponent implements OnInit {
         if (isExist.length == 0 && !isValue) {
           if (ItemData[0].OPTM_TYPE != 2) {
             let featureModelDataPrice: any = 0;
+            let optmLevel = "";
             if (featureModelData.Price == undefined && featureModelData.Price == null) {
               featureModelDataPrice = featureModelDataPrice;
             } else {
               featureModelDataPrice = featureModelData.Price;
+            }
+            if(featureModelData.OPTM_TYPE == 3 && parentarray[0].OPTM_TYPE == 3) {
+              optmLevel = featureModelData.OPTM_LEVEL
+            } else {
+              optmLevel = parentarray[0].OPTM_LEVEL
             }
             this.feature_itm_list_table.push({
               FeatureId: featureId,
@@ -3363,7 +3365,7 @@ export class OutputComponent implements OnInit {
               isPriceDisabled: isPriceDisabled,
               pricehide: isPricehide,
               ModelId: (tempModelID).toString(),
-              OPTM_LEVEL: parentarray[0].OPTM_LEVEL,
+              OPTM_LEVEL: optmLevel,
               OPTM_TYPE: featureModelData.OPTM_TYPE,
               isQuantityDisabled: true,
               HEADER_LINENO: lineno,
@@ -6366,8 +6368,6 @@ export class OutputComponent implements OnInit {
         }
       }
 
-      console.log('this.FeatureBOMDataForSecondLevel:', this.FeatureBOMDataForSecondLevel);
-
       for (var iModelItemTable in this.ModelBOMDataForSecondLevel) {
         loopRule:
         for (var iItemRule in RuleOutputData) {
@@ -6477,8 +6477,6 @@ export class OutputComponent implements OnInit {
 
         }
       }
-
-      console.log('this.ModelBOMDataForSecondLevel:', this.ModelBOMDataForSecondLevel);
 
       for (var iFeatureItemaddedTable = 0; iFeatureItemaddedTable < this.feature_itm_list_table.length; iFeatureItemaddedTable++) {
         for (var iItemRule in RuleOutputData) {
