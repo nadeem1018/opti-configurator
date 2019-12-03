@@ -3167,7 +3167,9 @@ export class OutputComponent implements OnInit {
               this.feature_itm_list_table.splice(index, 1);
             }
           } else {
-            this.feature_itm_list_table.splice(index, 1);
+            if(featureModelData.unique_key != currentSelection.nodeid) {
+              this.feature_itm_list_table.splice(index, 1);
+            }
           }
           this.removeAllSubmodelChild(currentSelection.unique_key, featureModelData, true);
         }
@@ -4637,7 +4639,8 @@ export class OutputComponent implements OnInit {
             "OPTM_PARENTTYPE": 2,
             "UNIQUE_KEY": '',
             "NODEID": '',
-            "temp_model_id": parseInt(step3_data_row.model_id)
+            "temp_model_id": parseInt(step3_data_row.model_id),
+            "OPTM_FILL_POINT":"1"
           })
         } // if step3 data ot undefined if - end 
 
@@ -4788,7 +4791,8 @@ export class OutputComponent implements OnInit {
                       "UNIQUE_KEY": featureitemlistfilterdata[0].unique_key,
                       "NODEID": featureitemlistfilterdata[0].nodeid,
                       //  "temp_model_id": parseInt(master_model_id)
-                      "temp_model_id": parseInt(temp_model_id_default)
+                      "temp_model_id": parseInt(temp_model_id_default),
+                      "OPTM_FILL_POINT":"2"
                     })
                   }
 
@@ -4830,19 +4834,21 @@ export class OutputComponent implements OnInit {
               "OPTM_PARENTTYPE": 2,
               "UNIQUE_KEY": imodelData[0].unique_key,
               "NODEID": step3_data_row.feature[ifeature].nodeid,
-              "temp_model_id": parseInt(master_model_id)
+              "temp_model_id": parseInt(master_model_id),
+              "OPTM_FILL_POINT":"3"
             })
             //   }
 
           }
           else {
-            var ifeatureData = [];
+            
             var itemtype;
             var fid = step3_data_row.feature[ifeature].FeatureId;
 
-            let temp_model_id_default = master_model_id;
-            let temp_item_number = step3_data_row.feature[ifeature].Item;
-            let temp_unique_key = step3_data_row.feature[ifeature].unique_key;
+            var temp_model_id_default = master_model_id;
+            var temp_item_number = step3_data_row.feature[ifeature].Item;
+            var temp_unique_key = step3_data_row.feature[ifeature].unique_key;
+            var temp_nodeid = step3_data_row.feature[ifeature].nodeid;
 
             let temp_model_data = step3_data_row.FeatureBOMDataForSecondLevel.filter(function (obj) {
               return obj.unique_key == temp_unique_key;
@@ -4878,14 +4884,20 @@ export class OutputComponent implements OnInit {
             if (step3_data_row.feature[ifeature].FeatureId != null) {
               if (step3_data_row.feature[ifeature].FeatureId != step3_data_row.model_id) {
                 var ifeatureHeaderData = [];
-                ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+               /*  ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
                   return obj['OPTM_FEATUREID'] == fid && obj['OPTM_FEATUREID'] != null
+                }) */
+                ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                  return obj['unique_key'] == temp_nodeid
                 })
 
                 if (ifeatureHeaderData.length == 0) {
                   if (step3_data_row.feature[ifeature].is_accessory == "N") {
-                    ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                  /*   ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
                       return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
+                    }) */
+                    ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                      return obj['unique_key'] == temp_unique_key
                     })
                   } else {
                     ifeatureHeaderData = step3_data_row.Accessoryarray.filter(function (obj) {
@@ -4894,9 +4906,12 @@ export class OutputComponent implements OnInit {
                   }
                 }
                 if (ifeatureHeaderData.length == 0) {
-                  ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
+                 /*  ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
                     return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
-                  })
+                  }) */
+                  ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
+                    return obj['unique_key'] == temp_unique_key
+                  });
                 }
                 var itemcode = step3_data_row.feature[ifeature].Item
                 if (step3_data_row.feature[ifeature].is_accessory == "Y") {
@@ -4940,6 +4955,7 @@ export class OutputComponent implements OnInit {
                   "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": parseInt(temp_model_id_default),
+                  "OPTM_FILL_POINT":"4"
                 })
               }
               else {
@@ -4958,7 +4974,6 @@ export class OutputComponent implements OnInit {
                 var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
                 formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
-                // if (ifeatureData.length > 0) {
                 temp_step2_final_dataset_save.push({
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
@@ -4988,10 +5003,10 @@ export class OutputComponent implements OnInit {
                   "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": parseInt(temp_model_id_default),
+                  "OPTM_FILL_POINT":"5"
                 })
               }
 
-              // }
             }
           }
         }
@@ -5125,7 +5140,8 @@ export class OutputComponent implements OnInit {
               "OPTM_PARENTTYPE": 1,
               "UNIQUE_KEY": iValueData[itempsavefinal].unique_key,
               "NODEID": iValueData[itempsavefinal].nodeid,
-              "temp_model_id": parseInt('0')
+              "temp_model_id": parseInt('0'),
+              "OPTM_FILL_POINT":"6"
             })
           }
         }
