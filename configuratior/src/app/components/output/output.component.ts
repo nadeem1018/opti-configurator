@@ -47,6 +47,7 @@ export class OutputComponent implements OnInit {
   public Accessoryarray = [];
   public ModelHeaderItemsArray = [];
   public ModelBOMRules = [];
+  public MainModelDetails = [];
   public warehouse: string = "";
   public currentDate = new Date();
   public submit_date;
@@ -376,7 +377,7 @@ export class OutputComponent implements OnInit {
     if (this.text_input_elem != undefined) {
       this.text_input_elem.nativeElement.focus();
     }
-    setTimeout(function (){
+    setTimeout(function () {
       $(document).find("#description").focus();
     }, 10);
     this.step1_data.main_operation_type = operation_type;
@@ -1270,128 +1271,128 @@ export class OutputComponent implements OnInit {
     this.step4_final_price_calculation();
   }
 
-   output_new_invoice(operation_type) {
-      if (operation_type == "") {
-        this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
-        return;
-      }
-      let invoice_output_data:any = [];
-      invoice_output_data.product_grand_details = [];
-      invoice_output_data.all_info = [];
-      invoice_output_data.locale_obj = [];
-      invoice_output_data.customer_and_doc_details = this.step1_data;
-
-      invoice_output_data.feature = [];
-      invoice_output_data.model_details = [];
-
-
-      //pushing all customer data
-      invoice_output_data.all_info.push({
-        "selected_print_type": operation_type,
-        "ref_doc_no": this.final_reference_number,
-        "ref_doc_entry": this.final_ref_doc_entry,
-        "conf_id": this.iLogID,
-        "conf_desc": this.step1_data.description,
-        "logo_path" : "",
-        "company_name": "",
-        "company_address" :"",
-        "step4_final_prod_total": this.step4_final_prod_total,
-        "step4_final_acc_total": this.step4_final_acc_total,
-        "step4_final_grand_total": this.step4_final_grand_total,
-        "prod_discount_log": this.prod_discount_log,
-        "access_dis_amount_log": this.access_dis_amount_log,
-      });
-     
-      // language variables 
-      invoice_output_data.locale_obj.push({
-        "SalesQuote": this.language.SalesQuote,
-        "SalesOrder": this.language.SalesOrder,
-        "order_type": this.language.order_type,
-        "ref_doc_no": this.language.ref_doc_no,
-        "ref_doc_entry": this.language.ref_doc_entry,
-        "configuration_id": this.language.configuration_id,
-        "description": this.language.description,
-        "customer": this.language.customer,
-        "contact_person": this.language.contact_person,
-        "ship_to": this.language.ship_to,
-        "address": this.language.address,
-        "bill_to": this.language.bill_to,
-        "pay_terms" : this.language.pay_terms,
-        "payment_method" : this.language.payment_method,
-        "posting_date" : this.language.posting_date,
-        "Bom_Remarks"  : this.language.Bom_Remarks,
-        "ModelBom_FeatureValue" : this.language.ModelBom_FeatureValue,
-        "quantity" : this.language.quantity,
-        "price" : this.language.price,
-        "extension" : this.language.extension,
-        "discount_per" : this.language.discount_per,
-        "discounted_price" : this.language.discounted_price,
-        "total": this.language.total,
-        "product_total": this.language.product_total,
-        "accessories_total": this.language.accessories_total,
-        "prod_disc_amount": this.language.prod_disc_amount,
-        "acc_disc_amount": this.language.acc_disc_amount,
-        "grand_total": this.language.grand_total,
-      });
-
-   
-      //pushing all final data selected detail - start
-      if(this.step3_data_final.length > 0){
-        for (let me_d_v_i = 0; me_d_v_i < this.step3_data_final.length; me_d_v_i++) {
-          let me_d_v_row = this.step3_data_final[me_d_v_i];
-          if (me_d_v_row.feature != null && me_d_v_row.feature != undefined && me_d_v_row.feature != "") {
-            let model_feature_array = me_d_v_row.feature;
-            for (let mhia_i = 0; mhia_i < model_feature_array.length; mhia_i++) {
-              invoice_output_data.feature.push(model_feature_array[mhia_i]);
-            }
-          }
-
-          invoice_output_data.model_details.push({
-            "accesory_final_price": me_d_v_row.accesory_final_price,
-            "accessory_discount_amount": me_d_v_row.accessory_discount_amount,
-            "accessory_discount_percent": me_d_v_row.accessory_discount_percent,
-            "accessory_item_total": me_d_v_row.accessory_item_total,
-            "accessory_total_before_dis": me_d_v_row.accessory_total_before_dis,
-            "desc": me_d_v_row.desc,
-            "discount_amount": me_d_v_row.discount_amount,
-            "discounted_price": me_d_v_row.discounted_price,
-            "feature_discount_percent": me_d_v_row.feature_discount_percent,
-            "itemcodegenkey": me_d_v_row.itemcodegenkey,
-            "model_id": me_d_v_row.model_id,
-            "price": me_d_v_row.price,
-            "price_ext": me_d_v_row.price_ext,
-            "quantity": me_d_v_row.quantity,
-            "rowIndex": me_d_v_row.rowIndex,
-            "templateid": me_d_v_row.templateid,
-          });
-        }
-      }
-
-      //pushing all final data selected detail - end
-     
-      // api calling 
-      this.CommonService.GetCompanyDetails(this.common_output_data.companyName).subscribe(
-        data => {
-          if (data != null || data != undefined) {
-            if (data.length > 0) {
-              if (data[0].LogoImage != "") {
-                invoice_output_data.all_info[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
-              }
-              invoice_output_data.all_info[0]['company_name'] = data[0].CompanyName;
-              invoice_output_data.all_info[0]['company_address'] = data[0].CompanyAddress;
-            }
-          }
-        },
-        error => {
-          if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
-            this.CommonService.isUnauthorized();
-          } else {
-            this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
-          }
-        }
-        )
-      console.log("verify ", invoice_output_data);
+  output_new_invoice(operation_type) {
+    if (operation_type == "") {
+      this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
+      return;
     }
+    let invoice_output_data: any = [];
+    invoice_output_data.product_grand_details = [];
+    invoice_output_data.all_info = [];
+    invoice_output_data.locale_obj = [];
+    invoice_output_data.customer_and_doc_details = this.step1_data;
+
+    invoice_output_data.feature = [];
+    invoice_output_data.model_details = [];
+
+
+    //pushing all customer data
+    invoice_output_data.all_info.push({
+      "selected_print_type": operation_type,
+      "ref_doc_no": this.final_reference_number,
+      "ref_doc_entry": this.final_ref_doc_entry,
+      "conf_id": this.iLogID,
+      "conf_desc": this.step1_data.description,
+      "logo_path": "",
+      "company_name": "",
+      "company_address": "",
+      "step4_final_prod_total": this.step4_final_prod_total,
+      "step4_final_acc_total": this.step4_final_acc_total,
+      "step4_final_grand_total": this.step4_final_grand_total,
+      "prod_discount_log": this.prod_discount_log,
+      "access_dis_amount_log": this.access_dis_amount_log,
+    });
+
+    // language variables 
+    invoice_output_data.locale_obj.push({
+      "SalesQuote": this.language.SalesQuote,
+      "SalesOrder": this.language.SalesOrder,
+      "order_type": this.language.order_type,
+      "ref_doc_no": this.language.ref_doc_no,
+      "ref_doc_entry": this.language.ref_doc_entry,
+      "configuration_id": this.language.configuration_id,
+      "description": this.language.description,
+      "customer": this.language.customer,
+      "contact_person": this.language.contact_person,
+      "ship_to": this.language.ship_to,
+      "address": this.language.address,
+      "bill_to": this.language.bill_to,
+      "pay_terms": this.language.pay_terms,
+      "payment_method": this.language.payment_method,
+      "posting_date": this.language.posting_date,
+      "Bom_Remarks": this.language.Bom_Remarks,
+      "ModelBom_FeatureValue": this.language.ModelBom_FeatureValue,
+      "quantity": this.language.quantity,
+      "price": this.language.price,
+      "extension": this.language.extension,
+      "discount_per": this.language.discount_per,
+      "discounted_price": this.language.discounted_price,
+      "total": this.language.total,
+      "product_total": this.language.product_total,
+      "accessories_total": this.language.accessories_total,
+      "prod_disc_amount": this.language.prod_disc_amount,
+      "acc_disc_amount": this.language.acc_disc_amount,
+      "grand_total": this.language.grand_total,
+    });
+
+
+    //pushing all final data selected detail - start
+    if (this.step3_data_final.length > 0) {
+      for (let me_d_v_i = 0; me_d_v_i < this.step3_data_final.length; me_d_v_i++) {
+        let me_d_v_row = this.step3_data_final[me_d_v_i];
+        if (me_d_v_row.feature != null && me_d_v_row.feature != undefined && me_d_v_row.feature != "") {
+          let model_feature_array = me_d_v_row.feature;
+          for (let mhia_i = 0; mhia_i < model_feature_array.length; mhia_i++) {
+            invoice_output_data.feature.push(model_feature_array[mhia_i]);
+          }
+        }
+
+        invoice_output_data.model_details.push({
+          "accesory_final_price": me_d_v_row.accesory_final_price,
+          "accessory_discount_amount": me_d_v_row.accessory_discount_amount,
+          "accessory_discount_percent": me_d_v_row.accessory_discount_percent,
+          "accessory_item_total": me_d_v_row.accessory_item_total,
+          "accessory_total_before_dis": me_d_v_row.accessory_total_before_dis,
+          "desc": me_d_v_row.desc,
+          "discount_amount": me_d_v_row.discount_amount,
+          "discounted_price": me_d_v_row.discounted_price,
+          "feature_discount_percent": me_d_v_row.feature_discount_percent,
+          "itemcodegenkey": me_d_v_row.itemcodegenkey,
+          "model_id": me_d_v_row.model_id,
+          "price": me_d_v_row.price,
+          "price_ext": me_d_v_row.price_ext,
+          "quantity": me_d_v_row.quantity,
+          "rowIndex": me_d_v_row.rowIndex,
+          "templateid": me_d_v_row.templateid,
+        });
+      }
+    }
+
+    //pushing all final data selected detail - end
+
+    // api calling 
+    this.CommonService.GetCompanyDetails(this.common_output_data.companyName).subscribe(
+      data => {
+        if (data != null || data != undefined) {
+          if (data.length > 0) {
+            if (data[0].LogoImage != "") {
+              invoice_output_data.all_info[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
+            }
+            invoice_output_data.all_info[0]['company_name'] = data[0].CompanyName;
+            invoice_output_data.all_info[0]['company_address'] = data[0].CompanyAddress;
+          }
+        }
+      },
+      error => {
+        if (error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage) {
+          this.CommonService.isUnauthorized();
+        } else {
+          this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
+        }
+      }
+    )
+    console.log("verify ", invoice_output_data);
+  }
 
   output_invvoice_print_lookup(operation_type) {
     if (operation_type == "") {
@@ -1402,7 +1403,7 @@ export class OutputComponent implements OnInit {
     this.serviceData.ref_doc_details = [];
     this.serviceData.product_grand_details = [];
     this.serviceData.print_types = [];
-    this.serviceData.customer_and_doc_details= [];
+    this.serviceData.customer_and_doc_details = [];
 
     //pushing print types
     this.serviceData.print_types.push({
@@ -1711,6 +1712,7 @@ export class OutputComponent implements OnInit {
 
           this.RuleOutputData = data.RuleOutputData;
           this.ModelBOMRules = data.ModelBOMRules;
+          this.MainModelDetails = data.MainModelDetails;
 
           this.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
             obj['random_unique_key'] = this_obj.commonData.random_string(50)
@@ -3162,12 +3164,12 @@ export class OutputComponent implements OnInit {
       for (let index = 0; index < this.feature_itm_list_table.length; index++) {
         if (this.feature_itm_list_table[index].nodeid == uniqueKey && this.feature_itm_list_table[index].ModelId == featureModelData.parentmodelid) {
           let currentSelection = this.feature_itm_list_table[index];
-          if(currentSelection.OPTM_TYPE == 3) {
-            if(featureModelData.unique_key != currentSelection.unique_key) {
+          if (currentSelection.OPTM_TYPE == 3) {
+            if (featureModelData.unique_key != currentSelection.unique_key) {
               this.feature_itm_list_table.splice(index, 1);
             }
           } else {
-            if(featureModelData.unique_key != currentSelection.nodeid) {
+            if (featureModelData.unique_key != currentSelection.nodeid) {
               this.feature_itm_list_table.splice(index, 1);
             }
           }
@@ -3194,7 +3196,7 @@ export class OutputComponent implements OnInit {
         } else if (parentarray[0].OPTM_TYPE == 3) {
           if (type == 3) {
             let subOfSubModelData = this.ModelHeaderData.filter(function (obj) {
-              if(parentarray[0].nodeid != null && parentarray[0].nodeid != undefined) {
+              if (parentarray[0].nodeid != null && parentarray[0].nodeid != undefined) {
                 return obj.is_second_level == 1 && obj.nodeid == featureModelData.nodeid
               } else {
                 return obj.is_second_level == 1 && obj.unique_key == featureModelData.nodeid
@@ -3245,7 +3247,7 @@ export class OutputComponent implements OnInit {
 
         } else if (featureModelData.OPTM_TYPE == 3) {
           if (ItemData[0].OPTM_TYPE == 2) {
-              isExist = this.feature_itm_list_table.filter(function (obj) {
+            isExist = this.feature_itm_list_table.filter(function (obj) {
               return obj['ModelId'] == ItemData[0].OPTM_MODELID && obj['nodeid'] == ItemData[0].nodeid && obj['Item'] == ItemData[0].OPTM_ITEMKEY;
             });
 
@@ -3346,7 +3348,7 @@ export class OutputComponent implements OnInit {
             } else {
               featureModelDataPrice = featureModelData.Price;
             }
-            if(featureModelData.OPTM_TYPE == 3 && parentarray[0].OPTM_TYPE == 3) {
+            if (featureModelData.OPTM_TYPE == 3 && parentarray[0].OPTM_TYPE == 3) {
               optmLevel = featureModelData.OPTM_LEVEL
             } else {
               optmLevel = parentarray[0].OPTM_LEVEL
@@ -3854,7 +3856,7 @@ export class OutputComponent implements OnInit {
 
         let modelheader_item_array = me_d_v_row.ModelHeaderItemsArray;
         for (let mhia_i = 0; mhia_i < modelheader_item_array.length; mhia_i++) {
-         modelheader_item_array[mhia_i]['model_index'] = me_d_v_i;
+          modelheader_item_array[mhia_i]['model_index'] = me_d_v_i;
           if ((modelheader_item_array[mhia_i].OPTM_QUANTITY != null && modelheader_item_array[mhia_i].OPTM_QUANTITY != undefined && modelheader_item_array[mhia_i].OPTM_QUANTITY != "") || modelheader_item_array[mhia_i].OPTM_QUANTITY == 0) {
             modelheader_item_array[mhia_i].OPTM_QUANTITY = parseFloat(modelheader_item_array[mhia_i].OPTM_QUANTITY).toFixed(3);
           }
@@ -4640,7 +4642,8 @@ export class OutputComponent implements OnInit {
             "UNIQUE_KEY": '',
             "NODEID": '',
             "temp_model_id": parseInt(step3_data_row.model_id),
-            "OPTM_FILL_POINT":"1"
+            "OPTM_FILL_POINT": "1",
+            "MODEL_UNIQUE_KEY": ""
           })
         } // if step3 data ot undefined if - end 
 
@@ -4760,7 +4763,6 @@ export class OutputComponent implements OnInit {
                     temp_model_id_default = temp_model_data[0].OPTM_MODELID
                   }
 
-
                   if (checkmodelitem.length > 0) {
                     temp_step2_final_dataset_save.push({
                       "OPTM_OUTPUTID": "",
@@ -4792,7 +4794,8 @@ export class OutputComponent implements OnInit {
                       "NODEID": featureitemlistfilterdata[0].nodeid,
                       //  "temp_model_id": parseInt(master_model_id)
                       "temp_model_id": parseInt(temp_model_id_default),
-                      "OPTM_FILL_POINT":"2"
+                      "OPTM_FILL_POINT": "2",
+                      "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
                     })
                   }
 
@@ -4804,6 +4807,13 @@ export class OutputComponent implements OnInit {
 
             var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
             formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
+
+            var modelUniqueKey = "";
+            if (step3_data_row.feature.OPTM_TYPE == 3) {
+              modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].unique_key, step3_data_row.ModelHeaderData)
+            } else {
+              modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
+            }
 
             temp_step2_final_dataset_save.push({
               "OPTM_OUTPUTID": "",
@@ -4835,13 +4845,14 @@ export class OutputComponent implements OnInit {
               "UNIQUE_KEY": imodelData[0].unique_key,
               "NODEID": step3_data_row.feature[ifeature].nodeid,
               "temp_model_id": parseInt(master_model_id),
-              "OPTM_FILL_POINT":"3"
+              "OPTM_FILL_POINT": "3",
+              "MODEL_UNIQUE_KEY": modelUniqueKey
             })
             //   }
 
           }
           else {
-            
+
             var itemtype;
             var fid = step3_data_row.feature[ifeature].FeatureId;
 
@@ -4884,18 +4895,18 @@ export class OutputComponent implements OnInit {
             if (step3_data_row.feature[ifeature].FeatureId != null) {
               if (step3_data_row.feature[ifeature].FeatureId != step3_data_row.model_id) {
                 var ifeatureHeaderData = [];
-               /*  ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
-                  return obj['OPTM_FEATUREID'] == fid && obj['OPTM_FEATUREID'] != null
-                }) */
+                /*  ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                   return obj['OPTM_FEATUREID'] == fid && obj['OPTM_FEATUREID'] != null
+                 }) */
                 ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
                   return obj['unique_key'] == temp_nodeid
                 })
 
                 if (ifeatureHeaderData.length == 0) {
                   if (step3_data_row.feature[ifeature].is_accessory == "N") {
-                  /*   ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
-                      return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
-                    }) */
+                    /*   ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                        return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
+                      }) */
                     ifeatureHeaderData = step3_data_row.ModelHeaderData.filter(function (obj) {
                       return obj['unique_key'] == temp_unique_key
                     })
@@ -4906,9 +4917,9 @@ export class OutputComponent implements OnInit {
                   }
                 }
                 if (ifeatureHeaderData.length == 0) {
-                 /*  ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
-                    return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
-                  }) */
+                  /*  ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
+                     return obj['OPTM_ITEMKEY'] == step3_data_row.feature[ifeature].Item
+                   }) */
                   ifeatureHeaderData = step3_data_row.ModelHeaderItemsArray.filter(function (obj) {
                     return obj['unique_key'] == temp_unique_key
                   });
@@ -4925,7 +4936,9 @@ export class OutputComponent implements OnInit {
                 if (ifeatureHeaderData.length > 0) {
                   var uniqueIdentifier = ifeatureHeaderData[0].OPTM_UNIQUEIDNT;
                 }
+                var modelUniqueKey = ""
 
+                 var modelUniqueKey1 = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData);
                 temp_step2_final_dataset_save.push({
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
@@ -4955,7 +4968,8 @@ export class OutputComponent implements OnInit {
                   "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": parseInt(temp_model_id_default),
-                  "OPTM_FILL_POINT":"4"
+                  "OPTM_FILL_POINT": "4",
+                  "MODEL_UNIQUE_KEY": modelUniqueKey1
                 })
               }
               else {
@@ -5003,7 +5017,8 @@ export class OutputComponent implements OnInit {
                   "UNIQUE_KEY": step3_data_row.feature[ifeature].unique_key,
                   "NODEID": step3_data_row.feature[ifeature].nodeid,
                   "temp_model_id": parseInt(temp_model_id_default),
-                  "OPTM_FILL_POINT":"5"
+                  "OPTM_FILL_POINT": "5",
+                  "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
                 })
               }
 
@@ -5022,6 +5037,7 @@ export class OutputComponent implements OnInit {
             for (var model_index in temp_model_dataa_row) {
               var model_curr_row: any = temp_model_dataa_row[model_index];
               var model_id: any = ''; var submodel_code: any = ''; var sub_model_tems: any = [];
+              var unique_key = "";
               if (model_item_type == '0') {
                 model_id = model_curr_row['temp_model_id'];
 
@@ -5031,6 +5047,7 @@ export class OutputComponent implements OnInit {
                 })
                 if (sub_model_header_row.length > 0 && sub_model_header_row != undefined && sub_model_header_row[0] != undefined) {
                   model_id = sub_model_header_row[0]['OPTM_CHILDMODELID'];
+                  unique_key = sub_model_header_row[0]['unique_key'];
                   submodel_code = sub_model_header_row[0]['child_code'];
 
                 }
@@ -5041,7 +5058,7 @@ export class OutputComponent implements OnInit {
                   if (model_item_type == '0') {
                     return obj['temp_model_id'] == model_id && obj.UNIQUEIDNT == 'Y' && obj.OPTM_ITEMTYPE != model_item_type
                   } else if (model_item_type == '1') {
-                    return obj['temp_model_id'] == model_id && obj.UNIQUEIDNT == 'Y';
+                    return obj['temp_model_id'] == model_id && obj['MODEL_UNIQUE_KEY'] == unique_key && obj.UNIQUEIDNT == 'Y';
                   }
                 });
 
@@ -5141,7 +5158,8 @@ export class OutputComponent implements OnInit {
               "UNIQUE_KEY": iValueData[itempsavefinal].unique_key,
               "NODEID": iValueData[itempsavefinal].nodeid,
               "temp_model_id": parseInt('0'),
-              "OPTM_FILL_POINT":"6"
+              "OPTM_FILL_POINT": "6",
+              "MODEL_UNIQUE_KEY": ""
             })
           }
         }
@@ -5224,6 +5242,47 @@ export class OutputComponent implements OnInit {
       sortitemkey = item_key;
     }
     return sortitemkey;
+  }
+
+  getModelUniqueKey(nodeId, modelHeaderData) {
+    var subModelData = [];
+    var uniqueKey = "";
+    if(subModelData.length == 0) {
+      let mainModelDetailArr = []
+      mainModelDetailArr = this.MainModelDetails.filter(function (obj) {
+        return obj.UNIQUE_KEY == nodeId
+      })
+
+      if (mainModelDetailArr.length > 0) {
+        uniqueKey =  mainModelDetailArr[0].UNIQUE_KEY;
+      }
+    }
+    if (modelHeaderData.length > 0 && uniqueKey == "") {
+      subModelData = modelHeaderData.filter(function (obj) {
+        return obj.unique_key == nodeId
+      })
+
+      if (subModelData.length > 0) {
+        if (subModelData[0].OPTM_TYPE == 1) {
+          this.getModelUniqueKey(subModelData[0].nodeid, modelHeaderData);
+        } else {
+          uniqueKey =  subModelData[0].unique_key;
+          return uniqueKey;
+        }
+      }
+
+    }
+    return uniqueKey;
+    /* if(subModelData.length == 0) {
+      let mainModelDetailArr = []
+      mainModelDetailArr = this.MainModelDetails.filter(function (obj) {
+        return obj.UNIQUE_KEY == nodeId
+      })
+
+      if (mainModelDetailArr.length > 0) {
+        return mainModelDetailArr[0].UNIQUE_KEY;
+      }
+    } */
   }
 
 
@@ -6001,7 +6060,7 @@ export class OutputComponent implements OnInit {
           OPTM_TYPE: ModelItemsData[imodelarray].OPTM_TYPE,
           isQuantityDisabled: true,
           HEADER_LINENO: ModelItemsData[imodelarray].OPTM_LINENO,
-          nodeid: ModelItemsData[imodelarray].unique_key,
+          nodeid: ModelItemsData[imodelarray].nodeid,
           unique_key: ModelItemsData[imodelarray].unique_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
