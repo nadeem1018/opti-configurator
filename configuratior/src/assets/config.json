@@ -4,7 +4,7 @@
 		"app_title":"OptiPro Configurator",
 		"locale":"en",
 		"locale_name": "English",
-		"service_url":"http://localhost:3000/",
+		"service_url":"http://localhost:9636/",
 		"admin_db_name":"OPTIPROADMIN",
 		"product_code":"CNF",
 		"system_version":"1.16.07",

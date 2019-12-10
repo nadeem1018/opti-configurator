@@ -81,6 +81,8 @@ export class LookupComponent implements OnInit {
   public showGeneralDetails: boolean = false;
   public showProdDetailsTable: boolean = false;
   public showProdGrandDetails: boolean = false;
+  public reportDialogOpened: boolean = false;
+  
   public isDraggable: boolean = true;
   public customer_details: any = [];
   public refrence_doc_details: any = [];
@@ -115,9 +117,11 @@ export class LookupComponent implements OnInit {
   public gridView: GridDataResult;
   public config_data:any;
   public show_pdf:any;
+  public reportBase64String:any;
 
   public close_kendo_dialog() {
     this.dialogOpened = false;
+    this.reportDialogOpened = false;
     this.current_popup_row = "";
   }
   @HostListener('window:scroll', ['$event'])
@@ -171,6 +175,7 @@ export class LookupComponent implements OnInit {
     this.resource_counter = 0;
     this.dialogOpened = false;
     this.about_info = [];
+    this.reportDialogOpened = false;
 
     this.current_popup_row = "";
     //this.test_model();
@@ -269,6 +274,11 @@ export class LookupComponent implements OnInit {
 
       if (this.popup_lookupfor == "output_invoice_print") {
         this.output_invoice_print();
+        return;
+      }
+
+      if (this.popup_lookupfor == "output_invoice_print_new") {
+        this.output_invoice_print_new();
         return;
       }
 
@@ -1276,6 +1286,15 @@ export class LookupComponent implements OnInit {
       this.preview_image = this.selectedImage;
       this.showLoader = false;
       this.LookupDataLoaded = true;
+    }
+
+    output_invoice_print_new(){
+
+      this.popup_title = this.language.print_quote;
+      this.reportBase64String= "data:application/pdf;base64,"+ this.serviceData; 
+      if(this.reportBase64String!=null && this.reportBase64String != "")  { 
+        this.reportDialogOpened = true; 
+      }
     }
 
     output_invoice_print() {

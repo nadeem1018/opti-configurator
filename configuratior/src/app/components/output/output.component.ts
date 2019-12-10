@@ -1275,21 +1275,37 @@ export class OutputComponent implements OnInit {
         this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
         return;
       }
-      let invoice_output_data:any = [];
+      let invoice_output_data:any = {};
       // invoice_output_data.product_grand_details = [];
       invoice_output_data.header = [];
       invoice_output_data.model_details = [];
       invoice_output_data.feature = [];
       invoice_output_data.locale_obj = [];
 
+      let description = (this.step1_data.description!= "" && this.step1_data.description!= null) ? this.step1_data.description : "";
+      let document = (this.step1_data.document!= "" && this.step1_data.document!= null) ? this.step1_data.document : "";
+      let document_name = (this.step1_data.document_name!= "" && this.step1_data.document_name!= null) ? this.step1_data.document_name : "";
+      let main_operation_type = (this.step1_data.main_operation_type!= "" && this.step1_data.main_operation_type!= null) ? this.step1_data.main_operation_type : "";
+      let posting_date = (this.step1_data.posting_date!= "" && this.step1_data.posting_date!= null) ? this.step1_data.posting_date : "";
+      let customer = (this.step1_data.customer!= "" && this.step1_data.customer!= null) ? this.step1_data.customer : "";
+      let ship_to = (this.step1_data.ship_to!= "" && this.step1_data.ship_to!= null) ? this.step1_data.ship_to : "";
+      let ship_to_address = (this.step1_data.ship_to_address!= "" && this.step1_data.ship_to_address!= null) ? this.step1_data.ship_to_address : "";
+      let bill_to = (this.step1_data.bill_to!= "" && this.step1_data.bill_to!= null) ? this.step1_data.bill_to : "";
+      let bill_to_address = (this.step1_data.bill_to_address!= "" && this.step1_data.bill_to_address!= null) ? this.step1_data.bill_to_address : "";
+      let person_name = (this.step1_data.person_name!= "" && this.step1_data.person_name!= null) ? this.step1_data.person_name : "";
+      let sales_employee = (this.step1_data.sales_employee!= "" && this.step1_data.sales_employee!= null) ? this.step1_data.sales_employee : "";
+      let owner = (this.step1_data.owner!= "" && this.step1_data.owner!= null) ? this.step1_data.owner : "";
+      let remark = (this.step1_data.remark!= "" && this.step1_data.remark!= null) ? this.step1_data.remark : "";
+      let delivery_until = (this.step1_data.delivery_until!= "" && this.step1_data.delivery_until!= null) ? this.step1_data.delivery_until : "";
+      
 
       //pushing all customer data
-      invoice_output_data.header.push({
+      invoice_output_data.header = [{
         "selected_print_type": operation_type,
         "ref_doc_no": this.final_reference_number,
         "ref_doc_entry": this.final_ref_doc_entry,
         "conf_id": this.iLogID,
-        "conf_desc": this.step1_data.description,
+        "conf_desc": description,
         "logo_path" : "",
         "company_name": "",
         "company_address" :"",
@@ -1298,26 +1314,28 @@ export class OutputComponent implements OnInit {
         "step4_final_grand_total": this.step4_final_grand_total,
         "prod_discount_log": this.prod_discount_log,
         "access_dis_amount_log": this.access_dis_amount_log,
-        "description": this.step1_data.description,
-        "document": this.step1_data.document,
-        "document_name": this.step1_data.document_name,
-        "main_operation_type": this.step1_data.main_operation_type,
-        "posting_date": this.step1_data.posting_date,
-        "customer": this.step1_data.customer,
-        "ship_to": this.step1_data.ship_to,
-        "ship_to_address": this.step1_data.ship_to_address,
-        "bill_to": this.step1_data.bill_to,
-        "bill_to_address": this.step1_data.bill_to_address,
-        "contact_person" : this.step1_data.person_name,
-        "sales_employee": this.step1_data.sales_employee,
-        "owner": this.step1_data.owner,
-        "remark": this.step1_data.remark,
-        "ship_date": this.step1_data.delivery_until,
-        "ship_date_anticipated": this.step1_data.delivery_until,
+        "description": description,
+        "document": document,
+        "document_name": document_name,
+        "main_operation_type": main_operation_type,
+        "posting_date": posting_date,
+        "customer": customer,
+        "ship_to": ship_to,
+        "ship_to_address": ship_to_address,
+        "bill_to": bill_to,
+        "bill_to_address": bill_to_address,
+        "contact_person" : person_name,
+        "sales_employee": sales_employee,
+        "owner": owner,
+        "remark": remark,
+        "ship_date": delivery_until,
+        "ship_date_anticipated": delivery_until,
         "currency": this.defaultCurrency,
+        "CompanyDBID": this.common_output_data.companyName,
+        "GUID": sessionStorage.getItem("GUID"),
+        "UsernameForLic": sessionStorage.getItem("loggedInUser")
+      }];
 
-      });
-     
       // language variables 
       invoice_output_data.locale_obj.push({
         "SalesQuote": this.language.SalesQuote,
@@ -1366,6 +1384,9 @@ export class OutputComponent implements OnInit {
 
             for (let mhia_i = 0; mhia_i < model_feature_array.length; mhia_i++) {
               model_feature_array[mhia_i]['super_model_key'] = super_model_key;
+              model_feature_array[mhia_i]['ItemNumber'] = (model_feature_array[mhia_i]['ItemNumber']!= undefined && model_feature_array[mhia_i]['ItemNumber']!= null) ? (model_feature_array[mhia_i]['ItemNumber']).toString() : "";
+              model_feature_array[mhia_i]['ModelId'] = (model_feature_array[mhia_i]['ModelId']!= undefined && model_feature_array[mhia_i]['ModelId']!= null) ? (model_feature_array[mhia_i]['ItemNumber']).toString() : "";
+              
               invoice_output_data.feature.push(model_feature_array[mhia_i]);
             }
           }
@@ -1395,17 +1416,18 @@ export class OutputComponent implements OnInit {
       //pushing all final data selected detail - end
      
       // api calling 
-      this.CommonService.GetCompanyDetails(this.common_output_data.companyName).subscribe(
+      this.showLookupLoader = true;
+      this.OutputService.getPrintOnReportStatus(invoice_output_data).subscribe(
         data => {
+          this.showLookupLoader = false;
           if (data != null || data != undefined) {
             if (data.length > 0) {
-              if (data[0].LogoImage != "") {
-                invoice_output_data.header[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
-              }
-              invoice_output_data.header[0]['company_name'] = data[0].CompanyName;
-              invoice_output_data.header[0]['company_address'] = data[0].CompanyAddress;
-            }
-          }
+              console.log("data ", data);
+              this.serviceData = data[0]['Base64String'];
+              this.lookupfor = 'output_invoice_print_new';
+             
+           }
+          }  
         },
         error => {
           if(error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage){
@@ -4209,6 +4231,7 @@ export class OutputComponent implements OnInit {
       this.step2_selected_model = this.step3_data_final[current_row];
       this.step2_data.model_id = this.step2_selected_model.model_id;
       this.step2_data.model_code = this.step2_selected_model.item;
+      this.step2_data.model_name = this.step2_selected_model.desc
       this.step2_data.quantity = parseInt(this.step2_selected_model.quantity);
       this.feature_accessory_list = this.step2_selected_model.accesories;
       this.feature_itm_list_table = this.step2_selected_model.feature;

@@ -63,6 +63,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BlankhandlerPipe } from './components/common/custom-pipes/blankhandler.pipe';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { ToFixedPipe } from './components/common/custom-pipes/to-fixed.pipe';
+import { PdfpipePipe } from './components/common/custom-pipes/pdfpipe.pipe';
 import { RoutingComponent } from './components/routing/routing.component';
 import { ViewRoutingComponent } from './components/routing/view.routing.component';
 import { ArchivingComponent } from './components/archiving/archiving.component';
@@ -147,6 +148,7 @@ const routes: Routes = [
     ViewFeatureBOMComponent,
     ViewModelBomComponent, 
     FilterPipe,
+    PdfpipePipe,
     TreeViewComponent,
     FormElementTreeViewComponent,
     CustomDialogsComponent,
