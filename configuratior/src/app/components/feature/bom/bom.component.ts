@@ -932,6 +932,8 @@ validate_min_values(value, input_id) {
    }
 
    on_typevalue_change(value, rowindex, code, type_value_code) {
+
+     console.log("type_value_code", type_value_code.id) ; 
      var iIndex;
      this.made_changes = true;
      this.currentrowindex = rowindex
@@ -941,7 +943,8 @@ validate_min_values(value, input_id) {
        if (psTypeCode != undefined && psTypeCode != "") {
          if (psTypeCode.toUpperCase() == code.toUpperCase()) {
            this.toastr.error('', this.language.DuplicateId, this.commonData.toast_config);
-           $(type_value_code).val("");
+        //   $(type_value_code).val("");
+        type_value_code.value = '';
            return;
          }
        }
@@ -1056,6 +1059,7 @@ validate_min_values(value, input_id) {
 
 
    getLookupValue($event) {
+     console.log($event);
      if (this.lookupfor == 'feature_lookup') {
        this.made_changes = true;
        this.feature_bom_data.feature_id = $event[0];

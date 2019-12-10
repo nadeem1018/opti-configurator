@@ -306,7 +306,7 @@ export class OutputComponent implements OnInit {
     this.lookupfor = "";
     $("select[name='print_operation_type']").val("");
     this.serviceData = [];
-    this.step1_data.print_operation = [];
+    this.step1_data.print_operation = "";
     this.serviceData.ref_doc_details = [];
     this.serviceData.product_grand_details = [];
     this.serviceData.print_types = [];
@@ -1276,17 +1276,15 @@ export class OutputComponent implements OnInit {
         return;
       }
       let invoice_output_data:any = [];
-      invoice_output_data.product_grand_details = [];
-      invoice_output_data.all_info = [];
-      invoice_output_data.locale_obj = [];
-      invoice_output_data.customer_and_doc_details = this.step1_data;
-
-      invoice_output_data.feature = [];
+      // invoice_output_data.product_grand_details = [];
+      invoice_output_data.header = [];
       invoice_output_data.model_details = [];
+      invoice_output_data.feature = [];
+      invoice_output_data.locale_obj = [];
 
 
       //pushing all customer data
-      invoice_output_data.all_info.push({
+      invoice_output_data.header.push({
         "selected_print_type": operation_type,
         "ref_doc_no": this.final_reference_number,
         "ref_doc_entry": this.final_ref_doc_entry,
@@ -1300,6 +1298,24 @@ export class OutputComponent implements OnInit {
         "step4_final_grand_total": this.step4_final_grand_total,
         "prod_discount_log": this.prod_discount_log,
         "access_dis_amount_log": this.access_dis_amount_log,
+        "description": this.step1_data.description,
+        "document": this.step1_data.document,
+        "document_name": this.step1_data.document_name,
+        "main_operation_type": this.step1_data.main_operation_type,
+        "posting_date": this.step1_data.posting_date,
+        "customer": this.step1_data.customer,
+        "ship_to": this.step1_data.ship_to,
+        "ship_to_address": this.step1_data.ship_to_address,
+        "bill_to": this.step1_data.bill_to,
+        "bill_to_address": this.step1_data.bill_to_address,
+        "contact_person" : this.step1_data.person_name,
+        "sales_employee": this.step1_data.sales_employee,
+        "owner": this.step1_data.owner,
+        "remark": this.step1_data.remark,
+        "ship_date": this.step1_data.delivery_until,
+        "ship_date_anticipated": this.step1_data.delivery_until,
+        "currency": this.defaultCurrency,
+
       });
      
       // language variables 
@@ -1332,6 +1348,11 @@ export class OutputComponent implements OnInit {
         "prod_disc_amount": this.language.prod_disc_amount,
         "acc_disc_amount": this.language.acc_disc_amount,
         "grand_total": this.language.grand_total,
+        "model": this.language.model,
+        "preferences": this.language.preferences,
+        "ship_date": this.language.ship_date,
+        "ship_date_anticipated": this.language.ship_date_anticipated,
+        "item_code":this.language.item_code,
       });
 
    
@@ -1339,9 +1360,12 @@ export class OutputComponent implements OnInit {
       if(this.step3_data_final.length > 0){
         for (let me_d_v_i = 0; me_d_v_i < this.step3_data_final.length; me_d_v_i++) {
           let me_d_v_row = this.step3_data_final[me_d_v_i];
+          let super_model_key = this.commonData.random_string(100);
           if (me_d_v_row.feature != null && me_d_v_row.feature != undefined && me_d_v_row.feature != "") {
             let model_feature_array = me_d_v_row.feature;
+
             for (let mhia_i = 0; mhia_i < model_feature_array.length; mhia_i++) {
+              model_feature_array[mhia_i]['super_model_key'] = super_model_key;
               invoice_output_data.feature.push(model_feature_array[mhia_i]);
             }
           }
@@ -1363,6 +1387,7 @@ export class OutputComponent implements OnInit {
             "quantity": me_d_v_row.quantity,
             "rowIndex": me_d_v_row.rowIndex,
             "templateid": me_d_v_row.templateid,
+            "super_model_key": super_model_key,
           });
         }
       }
@@ -1375,10 +1400,10 @@ export class OutputComponent implements OnInit {
           if (data != null || data != undefined) {
             if (data.length > 0) {
               if (data[0].LogoImage != "") {
-                invoice_output_data.all_info[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
+                invoice_output_data.header[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
               }
-              invoice_output_data.all_info[0]['company_name'] = data[0].CompanyName;
-              invoice_output_data.all_info[0]['company_address'] = data[0].CompanyAddress;
+              invoice_output_data.header[0]['company_name'] = data[0].CompanyName;
+              invoice_output_data.header[0]['company_address'] = data[0].CompanyAddress;
             }
           }
         },
@@ -1408,6 +1433,7 @@ export class OutputComponent implements OnInit {
     this.serviceData.print_types.push({
       "selected_print_type": operation_type
     });
+
     //pushing all customer data
     this.serviceData.customer_and_doc_details.push(this.step1_data);
 
@@ -1418,6 +1444,7 @@ export class OutputComponent implements OnInit {
       "conf_id": this.iLogID,
       "conf_desc": this.step1_data.description
     });
+
     //pushing all price details
     this.serviceData.product_grand_details.push({
       "step4_final_prod_total": this.step4_final_prod_total,
@@ -1426,8 +1453,10 @@ export class OutputComponent implements OnInit {
       "prod_discount_log": this.prod_discount_log,
       "access_dis_amount_log": this.access_dis_amount_log,
     });
+
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
+
     //pushing all payement data details
     this.serviceData.payment_details = undefined;
     this.lookupfor = 'output_invoice_print';
