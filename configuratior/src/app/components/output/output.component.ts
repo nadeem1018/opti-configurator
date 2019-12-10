@@ -307,7 +307,7 @@ export class OutputComponent implements OnInit {
     this.lookupfor = "";
     $("select[name='print_operation_type']").val("");
     this.serviceData = [];
-    this.step1_data.print_operation = [];
+    this.step1_data.print_operation = "";
     this.serviceData.ref_doc_details = [];
     this.serviceData.product_grand_details = [];
     this.serviceData.print_types = [];
@@ -1271,128 +1271,6 @@ export class OutputComponent implements OnInit {
     this.step4_final_price_calculation();
   }
 
-  output_new_invoice(operation_type) {
-    if (operation_type == "") {
-      this.toastr.error('', this.language.operation_type_required, this.commonData.toast_config);
-      return;
-    }
-    let invoice_output_data: any = [];
-    invoice_output_data.product_grand_details = [];
-    invoice_output_data.all_info = [];
-    invoice_output_data.locale_obj = [];
-    invoice_output_data.customer_and_doc_details = this.step1_data;
-
-    invoice_output_data.feature = [];
-    invoice_output_data.model_details = [];
-
-
-    //pushing all customer data
-    invoice_output_data.all_info.push({
-      "selected_print_type": operation_type,
-      "ref_doc_no": this.final_reference_number,
-      "ref_doc_entry": this.final_ref_doc_entry,
-      "conf_id": this.iLogID,
-      "conf_desc": this.step1_data.description,
-      "logo_path": "",
-      "company_name": "",
-      "company_address": "",
-      "step4_final_prod_total": this.step4_final_prod_total,
-      "step4_final_acc_total": this.step4_final_acc_total,
-      "step4_final_grand_total": this.step4_final_grand_total,
-      "prod_discount_log": this.prod_discount_log,
-      "access_dis_amount_log": this.access_dis_amount_log,
-    });
-
-    // language variables 
-    invoice_output_data.locale_obj.push({
-      "SalesQuote": this.language.SalesQuote,
-      "SalesOrder": this.language.SalesOrder,
-      "order_type": this.language.order_type,
-      "ref_doc_no": this.language.ref_doc_no,
-      "ref_doc_entry": this.language.ref_doc_entry,
-      "configuration_id": this.language.configuration_id,
-      "description": this.language.description,
-      "customer": this.language.customer,
-      "contact_person": this.language.contact_person,
-      "ship_to": this.language.ship_to,
-      "address": this.language.address,
-      "bill_to": this.language.bill_to,
-      "pay_terms": this.language.pay_terms,
-      "payment_method": this.language.payment_method,
-      "posting_date": this.language.posting_date,
-      "Bom_Remarks": this.language.Bom_Remarks,
-      "ModelBom_FeatureValue": this.language.ModelBom_FeatureValue,
-      "quantity": this.language.quantity,
-      "price": this.language.price,
-      "extension": this.language.extension,
-      "discount_per": this.language.discount_per,
-      "discounted_price": this.language.discounted_price,
-      "total": this.language.total,
-      "product_total": this.language.product_total,
-      "accessories_total": this.language.accessories_total,
-      "prod_disc_amount": this.language.prod_disc_amount,
-      "acc_disc_amount": this.language.acc_disc_amount,
-      "grand_total": this.language.grand_total,
-    });
-
-
-    //pushing all final data selected detail - start
-    if (this.step3_data_final.length > 0) {
-      for (let me_d_v_i = 0; me_d_v_i < this.step3_data_final.length; me_d_v_i++) {
-        let me_d_v_row = this.step3_data_final[me_d_v_i];
-        if (me_d_v_row.feature != null && me_d_v_row.feature != undefined && me_d_v_row.feature != "") {
-          let model_feature_array = me_d_v_row.feature;
-          for (let mhia_i = 0; mhia_i < model_feature_array.length; mhia_i++) {
-            invoice_output_data.feature.push(model_feature_array[mhia_i]);
-          }
-        }
-
-        invoice_output_data.model_details.push({
-          "accesory_final_price": me_d_v_row.accesory_final_price,
-          "accessory_discount_amount": me_d_v_row.accessory_discount_amount,
-          "accessory_discount_percent": me_d_v_row.accessory_discount_percent,
-          "accessory_item_total": me_d_v_row.accessory_item_total,
-          "accessory_total_before_dis": me_d_v_row.accessory_total_before_dis,
-          "desc": me_d_v_row.desc,
-          "discount_amount": me_d_v_row.discount_amount,
-          "discounted_price": me_d_v_row.discounted_price,
-          "feature_discount_percent": me_d_v_row.feature_discount_percent,
-          "itemcodegenkey": me_d_v_row.itemcodegenkey,
-          "model_id": me_d_v_row.model_id,
-          "price": me_d_v_row.price,
-          "price_ext": me_d_v_row.price_ext,
-          "quantity": me_d_v_row.quantity,
-          "rowIndex": me_d_v_row.rowIndex,
-          "templateid": me_d_v_row.templateid,
-        });
-      }
-    }
-
-    //pushing all final data selected detail - end
-
-    // api calling 
-    this.CommonService.GetCompanyDetails(this.common_output_data.companyName).subscribe(
-      data => {
-        if (data != null || data != undefined) {
-          if (data.length > 0) {
-            if (data[0].LogoImage != "") {
-              invoice_output_data.all_info[0]['logo_path'] = "data:image/jpeg;base64," + data[0].LogoImage;
-            }
-            invoice_output_data.all_info[0]['company_name'] = data[0].CompanyName;
-            invoice_output_data.all_info[0]['company_address'] = data[0].CompanyAddress;
-          }
-        }
-      },
-      error => {
-        if (error.error.ExceptionMessage.trim() == this.commonData.unauthorizedMessage) {
-          this.CommonService.isUnauthorized();
-        } else {
-          this.toastr.error('', this.language.FailedToReadCurrency, this.commonData.toast_config);
-        }
-      }
-    )
-    console.log("verify ", invoice_output_data);
-  }
 
   output_invvoice_print_lookup(operation_type) {
     if (operation_type == "") {
@@ -1409,6 +1287,7 @@ export class OutputComponent implements OnInit {
     this.serviceData.print_types.push({
       "selected_print_type": operation_type
     });
+
     //pushing all customer data
     this.serviceData.customer_and_doc_details.push(this.step1_data);
 
@@ -1419,6 +1298,7 @@ export class OutputComponent implements OnInit {
       "conf_id": this.iLogID,
       "conf_desc": this.step1_data.description
     });
+
     //pushing all price details
     this.serviceData.product_grand_details.push({
       "step4_final_prod_total": this.step4_final_prod_total,
@@ -1427,8 +1307,10 @@ export class OutputComponent implements OnInit {
       "prod_discount_log": this.prod_discount_log,
       "access_dis_amount_log": this.access_dis_amount_log,
     });
+
     //pushing all final data sel details
     this.serviceData.verify_final_data_sel_details = this.step3_data_final;
+
     //pushing all payement data details
     this.serviceData.payment_details = undefined;
     this.lookupfor = 'output_invoice_print';

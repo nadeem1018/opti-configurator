@@ -617,7 +617,9 @@
     "archive_all":"Archive All",
     "cnf_archieved_successfully":"Configurations Archieved successfully",
     "cnf_deleted_successfully":"Configurations Deleted successfully",
-    "delete_all":"Delete All"
+    "delete_all":"Delete All",
+    "ship_date":"Ship Date",
+    "ship_date_anticipated":"Ship Date Anticipated"
 
 
 }
