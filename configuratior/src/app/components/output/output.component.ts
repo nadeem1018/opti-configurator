@@ -5299,42 +5299,31 @@ export class OutputComponent implements OnInit {
   getModelUniqueKey(nodeId, modelHeaderData) {
     var subModelData = [];
     var uniqueKey = "";
+   
     if(subModelData.length == 0) {
       let mainModelDetailArr = []
       mainModelDetailArr = this.MainModelDetails.filter(function (obj) {
         return obj.UNIQUE_KEY == nodeId
       })
-
       if (mainModelDetailArr.length > 0) {
-        uniqueKey =  mainModelDetailArr[0].UNIQUE_KEY;
+        return  uniqueKey =  mainModelDetailArr[0].UNIQUE_KEY;
       }
     }
+    
     if (modelHeaderData.length > 0 && uniqueKey == "") {
       subModelData = modelHeaderData.filter(function (obj) {
         return obj.unique_key == nodeId
       })
-
       if (subModelData.length > 0) {
         if (subModelData[0].OPTM_TYPE == 1) {
-          this.getModelUniqueKey(subModelData[0].nodeid, modelHeaderData);
+          return uniqueKey=  this.getModelUniqueKey(subModelData[0].nodeid, modelHeaderData);
         } else {
           uniqueKey =  subModelData[0].unique_key;
           return uniqueKey;
         }
       }
-
     }
-    return uniqueKey;
-    /* if(subModelData.length == 0) {
-      let mainModelDetailArr = []
-      mainModelDetailArr = this.MainModelDetails.filter(function (obj) {
-        return obj.UNIQUE_KEY == nodeId
-      })
-
-      if (mainModelDetailArr.length > 0) {
-        return mainModelDetailArr[0].UNIQUE_KEY;
-      }
-    } */
+    /* return uniqueKey; */
   }
 
 
