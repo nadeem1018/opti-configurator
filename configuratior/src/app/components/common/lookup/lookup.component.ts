@@ -121,7 +121,9 @@ export class LookupComponent implements OnInit {
 
   public close_kendo_dialog() {
     this.dialogOpened = false;
+    
     this.reportDialogOpened = false;
+    this.lookupvalue.emit('');
     this.current_popup_row = "";
   }
   @HostListener('window:scroll', ['$event'])
@@ -1292,6 +1294,7 @@ export class LookupComponent implements OnInit {
 
       this.popup_title = this.language.print_quote;
       this.reportBase64String= "data:application/pdf;base64,"+ this.serviceData; 
+      console.log("this", this.reportBase64String);
       if(this.reportBase64String!=null && this.reportBase64String != "")  { 
         this.reportDialogOpened = true; 
       }

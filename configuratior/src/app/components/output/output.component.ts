@@ -1098,6 +1098,10 @@ export class OutputComponent implements OnInit {
       this.iLogID = $event[0];
       this.getAllDetails(this.step1_data.main_operation_type, this.step1_data.selected_configuration_key, this.step1_data.description);
     }
+    else if (this.lookupfor == 'output_invoice_print_new') {
+      this.serviceData = []
+      this.lookupfor = "";
+    }
     // setTimeout(()=> {
     //   this.lookupfor = "";
     // }, 200)
