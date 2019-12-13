@@ -532,10 +532,10 @@ export class OutputComponent implements OnInit {
             setTimeout(function () {
               objs_this.step1_data.delivery_until = "";
 
-              if (data.CustomerOutput[0].OPTM_DELIVERYDATE !== null && data.CustomerOutput[0].OPTM_DELIVERYDATE !== "") {
+              /* if (data.CustomerOutput[0].OPTM_DELIVERYDATE !== null && data.CustomerOutput[0].OPTM_DELIVERYDATE !== "") {
                 let temp_date = new Date(data.CustomerOutput[0].OPTM_DELIVERYDATE)
                 objs_this.step1_data.delivery_until = new Date((temp_date.getFullYear()) + '/' + (temp_date.getMonth() + 1) + '/' + temp_date.getDate());
-              }
+              } */
               objs_this.step1_data.customer_name = '';
               objs_this.step1_data.person_name = '';
               objs_this.step1_data.bill_to = "";
@@ -4727,12 +4727,18 @@ export class OutputComponent implements OnInit {
               step3_data_row.feature[ifeature].FeatureId = null;
             }
             var temp_child_model_id = step3_data_row.feature[ifeature].FeatureId;
+            var tempNodeId = step3_data_row.feature[ifeature].nodeid;
             /* var tempmodelid = step3_data_row.feature[ifeature].ModelId;
              console.log(temp_child_model_id);*/
 
             imodelData = step3_data_row.ModelHeaderData.filter(function (obj) {
-              return obj['OPTM_CHILDMODELID'] == temp_child_model_id && obj['OPTM_TYPE'] == 3
+              return obj['OPTM_CHILDMODELID'] == temp_child_model_id && obj['nodeid'] == tempNodeId && obj['OPTM_TYPE'] == 3
             });
+            if(imodelData.length == 0) {
+              imodelData = step3_data_row.ModelHeaderData.filter(function (obj) {
+                return obj['OPTM_CHILDMODELID'] == temp_child_model_id && obj['unique_key'] == tempNodeId && obj['OPTM_TYPE'] == 3
+              });
+            }
 
             imodelfilteritems = step3_data_row.ModelBOMDataForSecondLevel.filter(function (obj) {
               return obj['OPTM_MODELID'] == temp_child_model_id && obj['OPTM_TYPE'] == 2
@@ -4855,17 +4861,15 @@ export class OutputComponent implements OnInit {
               }
             }
 
-            //  if(imodelData.length > 0 && imodelData!= undefined ){
-
             var formatedTotalPrice: any = step3_data_row.feature[ifeature].quantity * step3_data_row.feature[ifeature].Actualprice
             formatedTotalPrice = parseFloat(formatedTotalPrice).toFixed(3)
 
-            var modelUniqueKey = "";
-            if (step3_data_row.feature.OPTM_TYPE == 3) {
+            /* var modelUniqueKey = "";
+            if (step3_data_row.feature[ifeature].OPTM_TYPE == 3) {
               modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].unique_key, step3_data_row.ModelHeaderData)
             } else {
               modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
-            }
+            } */
 
             temp_step2_final_dataset_save.push({
               "OPTM_OUTPUTID": "",
@@ -4898,9 +4902,8 @@ export class OutputComponent implements OnInit {
               "NODEID": step3_data_row.feature[ifeature].nodeid,
               "temp_model_id": parseInt(master_model_id),
               "OPTM_FILL_POINT": "3",
-              "MODEL_UNIQUE_KEY": modelUniqueKey
+              "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
             })
-            //   }
 
           }
           else {
