@@ -789,7 +789,7 @@ export class OutputComponent implements OnInit {
           data.ModelBOMDataForSecondLevel[i].disable = true
         }
       }
-
+      this.MainModelDetails = data.MainModelDetails
       this.RuleOutputData = data.RuleOutputData;
 
       this.ModelHeaderData = data.ModelHeaderData.filter(function (obj) {
@@ -3662,7 +3662,7 @@ export class OutputComponent implements OnInit {
     final_dataset_to_save.ModelBOMDataForSecondLevel = [];
     final_dataset_to_save.FeatureBOMDataForSecondLevel = [];
     final_dataset_to_save.RuleOutputData = [];
-
+    final_dataset_to_save.MainModelDetails = [];
     // modify /duplocate / view data  set  - end
 
 
@@ -3978,6 +3978,13 @@ export class OutputComponent implements OnInit {
           temp_RuleOutputData[rod_i]['model_index'] = me_d_v_i;
           final_dataset_to_save.RuleOutputData.push(temp_RuleOutputData[rod_i]);
         }
+
+        let temp_MainModelDetails = me_d_v_row.MainModelDetails;
+        for (let index = 0; index < temp_MainModelDetails.length; index++) {
+          temp_MainModelDetails[index]['model_index'] = me_d_v_i;
+          final_dataset_to_save.MainModelDetails.push(temp_MainModelDetails[index]);
+        }
+        me_d_v_row.MainModelDetails
 
       }
       // modify exiting all data push block  - end
@@ -4438,6 +4445,7 @@ export class OutputComponent implements OnInit {
         "accessory_item_total": (this.accessory_item_total).toFixed(3),
         "model_id": this.step2_data.model_id,
         "desc": this.step2_data.model_name,
+        "MainModelDetails" : this.MainModelDetails,
         "ModelHeaderData": this.ModelHeaderData,
         "RuleOutputData": this.RuleOutputData,
         "FeatureBOMDataForSecondLevel": this.FeatureBOMDataForSecondLevel,
@@ -4465,6 +4473,7 @@ export class OutputComponent implements OnInit {
       this.step3_data_final[row_id]["selectedAccessoryBOM"] = this.selectedAccessoryBOM;
       this.step3_data_final[row_id]["model_id"] = this.step2_data.model_id;
       this.step3_data_final[row_id]["desc"] = this.step2_data.model_name;
+      this.step3_data_final[row_id]["MainModelDetails"] = this.MainModelDetails;
       this.step3_data_final[row_id]["ModelHeaderData"] = this.ModelHeaderData;
       this.step3_data_final[row_id]["FeatureBOMDataForSecondLevel"] = this.FeatureBOMDataForSecondLevel;
       this.step3_data_final[row_id]["ModelBOMDataForSecondLevel"] = this.ModelBOMDataForSecondLevel;
