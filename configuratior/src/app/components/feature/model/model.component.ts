@@ -336,7 +336,7 @@ export class ModelComponent implements OnInit {
           }
 
           if (data == "True") {
-            this.made_changes = false; 
+            this.made_changes = true; 
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
             return;
