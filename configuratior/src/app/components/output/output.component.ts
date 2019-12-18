@@ -1861,11 +1861,8 @@ export class OutputComponent implements OnInit {
 
           this.ModelLookupFlag = true
 
-          this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.OPTM_LINENO - b.OPTM_LINENO)
-
-          /* if(data.RuleOutputData.length > 0){
-             this.setDefaultByRule(data.RuleOutputData, "");
-          } */
+          this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
+          
 
           if (this.setModelDataFlag == true) {
             this.setModelDataInOutputBom(getmodelsavedata, "", data.ModelHeaderData, "");
@@ -2121,7 +2118,8 @@ export class OutputComponent implements OnInit {
       /* currentDate: this.step1_data.posting_date */
       currentDate: this.submit_date,
       unique_key: feature_model_data.unique_key,
-      nodeid: feature_model_data.nodeid
+      nodeid: feature_model_data.nodeid,
+      // sort_key: feature_model_data.sort_key
     });
 
     if (GetDataForSelectedFeatureModelItemData.selecteddata[0].checked == false) {
@@ -2867,12 +2865,7 @@ export class OutputComponent implements OnInit {
 
 
     this.feature_price_calculate();
-    /* if (this.ruleIndex == this.ruleData.length)
-    {
-      this.ruleIndex = 0;
-      this.isSecondIteration = false;
-      this.ruleData = [];
-    } */
+    // this.ModelHeaderData.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
   } //end selection
 
   getPropagateQuantity(nodeId) {
@@ -3429,7 +3422,8 @@ export class OutputComponent implements OnInit {
               isQuantityDisabled: true,
               HEADER_LINENO: lineno,
               unique_key: featureModelData.unique_key,
-              nodeid: featureModelData.nodeid
+              nodeid: featureModelData.nodeid,
+              // sort_key: featureModelData.sort_key
             });
           } else if (isDefaultItem) {
             this.feature_itm_list_table.push({
@@ -3454,7 +3448,8 @@ export class OutputComponent implements OnInit {
               HEADER_LINENO: lineno,
               parent_featureid: ItemData[0].parent_featureid,
               unique_key: ItemData[0].unique_key,
-              nodeid: ItemData[0].nodeid
+              nodeid: ItemData[0].nodeid,
+              // sort_key: featureModelData.sort_key
             });
           }
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
@@ -3462,8 +3457,8 @@ export class OutputComponent implements OnInit {
       }
 
     }
-
-    this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    
+    // this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
 
     this.feature_price_calculate();
 
@@ -5799,11 +5794,12 @@ export class OutputComponent implements OnInit {
           parent_featureid: DefaultData[idefault].parent_featureid,
           nodeid: DefaultData[idefault].nodeid,
           unique_key: DefaultData[idefault].unique_key,
+          // sort_key:DefaultData[idefault].sort_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
-    this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    //this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key))
     this.feature_price_calculate();
 
   }
@@ -5850,7 +5846,8 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
           OPTM_ITEMTYPE: 1,
-          nodeid: ModelData[imodelarray].unique_key
+          nodeid: ModelData[imodelarray].unique_key,
+          // sort_key:ModelData[imodelarray].sort_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
@@ -5907,7 +5904,8 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
             nodeid: ModelItemsArray[imodelItemsarray].nodeid,
-            unique_key: ModelItemsArray[imodelItemsarray].unique_key
+            unique_key: ModelItemsArray[imodelItemsarray].unique_key,
+            // sort_key:ModelItemsArray[imodelItemsarray].sort_key
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           ItemPrice = ItemPrice + ModelItemsArray[imodelItemsarray].Price
@@ -5923,6 +5921,7 @@ export class OutputComponent implements OnInit {
       }
 
     }
+    // this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
     this.feature_price_calculate();
   }
 
@@ -5988,7 +5987,8 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
           OPTM_ITEMTYPE: 1,
-          nodeid: nodeid
+          nodeid: nodeid,
+          sort_key: ModelData[imodelarray].sort_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
@@ -6060,7 +6060,8 @@ export class OutputComponent implements OnInit {
             isQuantityDisabled: true,
             HEADER_LINENO: ModelItemsArray[imodelItemsarray].HEADER_LINENO,
             nodeid: nodeid,
-            unique_key: unique_key
+            unique_key: unique_key,
+            sort_key: ModelItemsArray[imodelItemsarray].sort_key
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           ItemPrice = ItemPrice + ModelItemsArray[imodelItemsarray].Price
@@ -6075,6 +6076,7 @@ export class OutputComponent implements OnInit {
 
     }
     this.feature_price_calculate();
+    this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
   }
 
   setModelItemsDataInGrid(ModelItemsData) {
@@ -6118,9 +6120,12 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelItemsData[imodelarray].OPTM_LINENO,
           nodeid: ModelItemsData[imodelarray].nodeid,
-          unique_key: ModelItemsData[imodelarray].unique_key
+          unique_key: ModelItemsData[imodelarray].unique_key,
+          // sort_key: ModelItemsData[imodelarray].sort_key
+          
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
+        // this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
       }
     }
   }
@@ -6203,12 +6208,14 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: DefaultData[idefault].HEADER_LINENO,
           unique_key: unqiue_key,
-          nodeid: nodeid
+          nodeid: nodeid,
+          sort_key:DefaultData[idefault].sort_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
     }
-    this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    // this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
     this.feature_price_calculate();
 
   }
@@ -6954,7 +6961,8 @@ export class OutputComponent implements OnInit {
             OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
             OPTM_TYPE: getmodelsavedata[imodelsavedata].OPTM_TYPE,
             isQuantityDisabled: true,
-            HEADER_LINENO: parseFloat(imodelsavedata) + 1
+            HEADER_LINENO: parseFloat(imodelsavedata) + 1,
+            sort_key:getmodelsavedata[imodelsavedata].sort_key
           });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
       }
@@ -6994,7 +7002,8 @@ export class OutputComponent implements OnInit {
               OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
               OPTM_TYPE: getmodelsavedata[imodelsavedata].OPTM_TYPE,
               isQuantityDisabled: true,
-              HEADER_LINENO: parseFloat(imodelsavedata) + 1
+              HEADER_LINENO: parseFloat(imodelsavedata) + 1,
+              sort_key:getmodelsavedata[imodelsavedata].sort_key
             });
             console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           }
@@ -7050,7 +7059,8 @@ export class OutputComponent implements OnInit {
               OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
               OPTM_TYPE: getmodelsavedata[imodelsavedata].OPTM_TYPE,
               isQuantityDisabled: true,
-              HEADER_LINENO: parseFloat(imodelsavedata) + 1
+              HEADER_LINENO: parseFloat(imodelsavedata) + 1,
+              sort_key:getmodelsavedata[imodelsavedata].sort_key
             });
             console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           }
@@ -7108,7 +7118,8 @@ export class OutputComponent implements OnInit {
              ModelId: this.step2_data.model_id,
              OPTM_LEVEL: getmodelsavedata[imodelsavedata].OPTM_LEVEL,
              isQuantityDisabled: true,
-             HEADER_LINENO: parseFloat(imodelsavedata) + 1
+             HEADER_LINENO: parseFloat(imodelsavedata) + 1,
+             sort_key:getmodelsavedata[imodelsavedata].sort_key
            });
            console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
          }
@@ -7199,7 +7210,8 @@ export class OutputComponent implements OnInit {
 
       }
     }
-    this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    // this.feature_itm_list_table = this.feature_itm_list_table.sort((a, b) => a.HEADER_LINENO - b.HEADER_LINENO)
+    this.feature_itm_list_table.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
     this.feature_price_calculate();
 
   }//end function
