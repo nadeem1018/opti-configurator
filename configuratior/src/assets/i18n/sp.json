@@ -299,6 +299,7 @@
     "clear_filter": "Clear Filter",
     "add_model": "Agregar Modelo",
     "update_model": "Actualizar Modelo",
+    "delete_model": "Delete Model",
     "features": "Caracteristicas",
     "accessories": "Accesorios",
     "price_extn": "Precio Extn.",
@@ -419,11 +420,14 @@
     "bracket_doesnt_match": "Los brackets no estan cerrados en el orden correcto, por favor verifica los brackets",
     "operator_cannotbe_blank_with_type": "El operador no puede ir en blanco con el tipo seleccionado en la fila ",
     "max_selected_validation": "Maximo seleccionado no puede ser mayor que el maximo. seleccionable definido en 'Caracteristicas de LdM'",
+    "max_selected_validation_ie": "Max. selected cannot be greater than max. selectable defined on 'Feature BOM' i.e.",
     "max_selected_validation_model": "Maximo seleccionable no puede ser mayor a - ",
     "max_selected_validation_default": "Maximo seleccionado no puede ser mayor que no. predeterminado defino en la fila caracteristicas de 'LdM'",
     "select_max_selectable": "No se puede seleccionar un valor mayor al limite",
     "MandatoryItems": "Articulos obligatorios no han sido seleccionados",
     "seq_no": "Numero de Secuencia.",
+    "n_a":"N/A",
+    "at_row":"at row",
     "view_output": "Ver Salida",
     "no_item_selected": "Ningun articulo seleccionado",
     "seq": "Secuencia.",
@@ -459,7 +463,7 @@
     "ServerDateError": "Error mientras se buscaba la fecha del servidor",
     "multiple_model_add": "Modelo Agregado.",
     "multiple_model_update": "Modelo Actualizado",
-    "model_child_name_no_same": "Model Display name cannot be same as Child Element Display Name",
+    "multiple_model_delete": "Model Deleted",
     "model_child_name_no_same": "El nombre del modelo no puede ser el mismo que el nombre del elemento hijo",
     "feature_child_name_no_same": "El nombre del modelo no puede ser el mismo que el nombre del elemento hijo",
     "one_default_required": "Al menos una opcion predeterminada es requerida en la regla de salida",
@@ -612,6 +616,9 @@
     "archive_all":"Archive All",
     "cnf_archieved_successfully":"Configurations Archieved successfully",
     "cnf_deleted_successfully":"Configurations Deleted successfully",
-    "delete_all":"Delete All"
+    "delete_all":"Delete All",
+    "ship_date":"Ship Date",
+    "ship_date_anticipated":"Ship Date Anticipated"
+
 
 }
