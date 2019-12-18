@@ -909,7 +909,9 @@ export class OutputComponent implements OnInit {
         if (this.selectedAccessoryHeader.length > 0) {
           for (let acchdr_i = 0; acchdr_i < this.selectedAccessoryHeader.length; acchdr_i++) {
             console.log("data.Savedgetmodelsavedata ", data.Savedgetmodelsavedata);
-            this.setItemDataForFeatureAccessory(this.SelectedAccessory, this.selectedAccessoryHeader[acchdr_i], '', data.Savedgetmodelsavedata);
+            let accessoryData = [];
+            accessoryData.push(this.selectedAccessoryHeader[acchdr_i])
+            this.setItemDataForFeatureAccessory(this.SelectedAccessory, accessoryData, '', data.Savedgetmodelsavedata,this.step2_data);
           }
         }
       }
@@ -1204,7 +1206,7 @@ export class OutputComponent implements OnInit {
               if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                 if (this.feature_itm_list_table[i].ispropogateqty == "Y") {
                   // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
-                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity) * modelheaderpropagatechecked[0].OPTM_QUANTITY);
                 }
 
               }
@@ -1862,7 +1864,7 @@ export class OutputComponent implements OnInit {
 
           this.ModelLookupFlag = true
 
-          this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.sort_key.localeCompare(b.sort_key));
+          /* this.ModelHeaderData = this.ModelHeaderData.sort((a, b) => a.sort_key.localeCompare(b.sort_key)); */
           
 
           if (this.setModelDataFlag == true) {
@@ -5461,6 +5463,7 @@ export class OutputComponent implements OnInit {
     // This function is used to render Accessory Header data in right grid.
     let checkedacc = false;
     var isAccExist;
+
     for (let iaccss = 0; iaccss < Accarray.length; iaccss++) {
       isAccExist = this.feature_accessory_list.filter(function (obj) {
         // return obj['OPTM_FEATUREID'] == Accarray[iaccss].OPTM_FEATUREID
@@ -5547,7 +5550,9 @@ export class OutputComponent implements OnInit {
           }
           if (value == true) {
             if (data.AccessoryFeatureData.length > 0) {
-              this.setItemDataForFeatureAccessory(data.AccessoryFeatureData, accessory_header_data, rowData, "");
+              let accessoryHeader = [];
+              accessoryHeader.push(accessory_header_data)
+              this.setItemDataForFeatureAccessory(data.AccessoryFeatureData, accessoryHeader, rowData, "",this.step2_data);
             }
             this.showLookupLoader = false;
           }
@@ -5578,13 +5583,12 @@ export class OutputComponent implements OnInit {
 
   }
 
-  setItemDataForFeatureAccessory(ItemData, parentArray, current_row_accessory, saved_data_from_dtl) {
+  setItemDataForFeatureAccessory(ItemData, parentArray, current_row_accessory, saved_data_from_dtl,step2Data) {
     // This Feature sets Accessory items data in right grid on Selection change.
     let isPriceDisabled: boolean = false;
     let isPricehide: boolean = false;
     if (ItemData.length > 0) {
       for (let i = 0; i < this.feature_itm_list_table.length; i++) {
-        // if (this.feature_itm_list_table[i].FeatureId == ItemData[0].OPTM_FEATUREID && this.feature_itm_list_table[i].Item == ItemData[0].OPTM_ITEMKEY) {
         if (this.feature_itm_list_table[i].nodeid == ItemData[0].nodeid && this.feature_itm_list_table[i].unique_key == ItemData[0].unique_key) {
           this.feature_itm_list_table.splice(i, 1);
           i = i - 1;
@@ -5595,7 +5599,6 @@ export class OutputComponent implements OnInit {
       let isheadercounter = 10000;
       for (let i = 0; i < ItemData.length; i++) {
         isExist = this.feature_itm_list_table.filter(function (obj) {
-          //return obj['FeatureId'] == ItemData[i].OPTM_FEATUREID && obj['Item'] == ItemData[i].OPTM_ITEMKEY;
           return obj['nodeid'] == ItemData[i].nodeid && obj['unique_key'] == ItemData[i].unique_key;
         });
 
@@ -5605,22 +5608,45 @@ export class OutputComponent implements OnInit {
         let qty_value: any;
         let unique_key: any;
         let nodeid: any;
-        let rowData: any
+        let rowData: any;
+        let propagateQuantity = 1;
+
         if (saved_data_from_dtl == "") {
-          console.log("in saved_data_from_dtl");
           if (ItemData[i].OPTM_PROPOGATEQTY == "Y") {
             if (ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY != "") {
               qty_value = ItemData[i].OPTM_QUANTITY;
             } else {
-              if (parentArray[0].OPTM_QUANTITY !== undefined && parentArray[0].OPTM_QUANTITY != "") {
-                qty_value = parentArray[0].OPTM_QUANTITY;
-              } else {
-                qty_value = 1;
-              }
-
+              qty_value = 1;
             }
-
-            formatequantity = qty_value * this.step2_data.quantity
+            if(current_row_accessory != undefined && current_row_accessory != null) {
+              let accessoryBOMData = parentArray.filter( function(obj) {
+                return obj.unique_key == current_row_accessory.nodeid
+              })
+              let modelHeaderData = [];
+              let parentArrayData = [];
+              parentArrayData = parentArray.filter(function(obj) {
+                obj.unique_key == current_row_accessory.nodeid
+              })
+              if(parentArrayData.length > 0) {
+                modelHeaderData = this.ModelHeaderData.filter(function(obj){
+                  obj.unique_key == parentArrayData[0].nodeid
+                })
+              }
+              if(accessoryBOMData.length > 0) {
+                propagateQuantity = accessoryBOMData[0].OPTM_QUANTITY;
+              }
+              if(modelHeaderData.length > 0) {
+                if(modelHeaderData[0].OPTM_PROPOGATEQTY == "Y") {
+                  propagateQuantity = propagateQuantity * modelHeaderData[0].OPTM_QUANTITY
+                }
+              }
+            }
+            if(propagateQuantity != null && propagateQuantity != undefined) {
+              propagateQuantity = propagateQuantity
+            } else {
+              propagateQuantity = 1
+            }
+            formatequantity = qty_value * propagateQuantity * step2Data.quantity
           } else {
             if (ItemData[i].OPTM_QUANTITY !== undefined && ItemData[i].OPTM_QUANTITY != "") {
               qty_value = ItemData[i].OPTM_QUANTITY;
@@ -5636,7 +5662,7 @@ export class OutputComponent implements OnInit {
           nodeid = current_row_accessory.nodeid;
 
         } else {
-
+          console.log("in saved_data_from_dtl");
           let tempdata = saved_data_from_dtl.filter(function (obj) {
             return obj['UNIQUE_KEY'] == ItemData[i].unique_key;
           });
@@ -5683,12 +5709,6 @@ export class OutputComponent implements OnInit {
         }
 
         var priceextn: any = formatequantity * price
-        /*let display_name = '';
-        if (parentArray.name != "" && parentArray.name != undefined) {
-          display_name = parentArray.name;
-        } else if (parentArray.OPTM_DISPLAYNAME != "" && parentArray.OPTM_DISPLAYNAME != undefined) {
-          display_name = parentArray.OPTM_DISPLAYNAME;
-        }*/
 
         let display_name = this.selectedAccessoryHeader.filter(function (obj) {
           return (obj.unique_key == nodeid) ? obj.OPTM_DISPLAYNAME : "";
@@ -7055,7 +7075,9 @@ export class OutputComponent implements OnInit {
       else if (getmodelsavedata[imodelsavedata].OPTM_ITEMTYPE == 3) {
         if (selectedAccessoryHeader.length > 0) {
           for (let i = 0; i < selectedAccessoryHeader.length; i++) {
-            this.setItemDataForFeatureAccessory(SelectedAccessory, selectedAccessoryHeader[i], "", "");
+            let accessoryData = [];
+            accessoryData.push(selectedAccessoryHeader[i]);
+            this.setItemDataForFeatureAccessory(SelectedAccessory, accessoryData, "", "","");
           }
         }
       }
