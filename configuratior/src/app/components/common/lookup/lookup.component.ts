@@ -1846,6 +1846,10 @@ export class LookupComponent implements OnInit {
       for (let i = 0; i < this.resourceServiceData.length; ++i) {
         if (this.resourceServiceData[i].rowindex === rowindex) {
           currentrow = i;
+        } else {
+          if (grid_element == 'schedule') {
+            this.resourceServiceData[i].schedule = false;
+          }
         }
       }
       console.log(currentrow);
