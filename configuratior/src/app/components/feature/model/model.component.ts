@@ -150,7 +150,7 @@ export class ModelComponent implements OnInit {
     }
     else {
       this.button = "update";
-      this.made_changes = false; 
+      this.made_changes = true; 
       /* this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false; */
       /* this.isDeleteButtonVisible = true; */
@@ -336,7 +336,7 @@ export class ModelComponent implements OnInit {
           }
 
           if (data == "True") {
-            this.made_changes = true; 
+            this.made_changes = false; 
             this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
             this.router.navigateByUrl(this.view_route_link);
             return;
