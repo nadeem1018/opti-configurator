@@ -2770,6 +2770,8 @@ export class OutputComponent implements OnInit {
 
             if (data.RuleOutputData.length > 0) {
               this.RuleIntegration(data.RuleOutputData, value, feature_model_data);
+            } else {
+              this.enableFeatureModelsItems();
             }
             this.RuleOutputData = data.RuleOutputData;
 
