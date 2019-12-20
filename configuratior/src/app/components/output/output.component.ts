@@ -5517,7 +5517,8 @@ export class OutputComponent implements OnInit {
       currentDate: this.submit_date,
       superfeatureid: superfeatureid,
       unique_key: rowData.unique_key,
-      nodeid: rowData.nodeid
+      nodeid: rowData.nodeid,
+      sort_key:""
     });
 
     let cobj = this;
