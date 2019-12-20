@@ -3094,7 +3094,7 @@ export class OutputComponent implements OnInit {
   }
 
 
-  remove_all_features_child(unique_key, parentArray) {
+  remove_all_features_child(unique_key, parentArray,featureModelData) {
     // for removing feature within feature 
     var all_child_of_current_selection_parent = [];
     /* if(parentArray[0].parentmodelid == null && parentArray[0].parentmodelid == undefined) { */
@@ -3110,17 +3110,17 @@ export class OutputComponent implements OnInit {
           if (selection_parent_child_data.parentmodelid != null && selection_parent_child_data.parentmodelid != undefined && (selection_parent_child_data.OPTM_CHILDFEATUREID == 0 || selection_parent_child_data.OPTM_CHILDFEATUREID == null)) {
             if (selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid) {
               this.feature_itm_list_table.splice(j, 1);
-              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray);
+              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray,"");
             }
           } else if (selection_parent_child_data.parentmodelid != null && selection_parent_child_data.OPTM_CHILDFEATUREID != null && selection_parent_child_data.OPTM_CHILDFEATUREID != 0) {
-            if (selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid) {
+            if (selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid && featureModelData.unique_key != this.feature_itm_list_table[j].nodeid) {
               this.feature_itm_list_table.splice(j, 1);
-              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray);
+              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray,featureModelData);
             }
           } else {
             if (selection_parent_child_data.unique_key == this.feature_itm_list_table[j].nodeid) {
               this.feature_itm_list_table.splice(j, 1);
-              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray);
+              this.remove_all_features_child(selection_parent_child_data.unique_key, parentArray,"");
             }
           }
 
@@ -3142,7 +3142,7 @@ export class OutputComponent implements OnInit {
         for (var j = 0; j < this.feature_itm_list_table.length; j++) {
           if (selection_parent_child_data.nodeid == this.feature_itm_list_table[j].nodeid && this.feature_itm_list_table[j].OPTM_TYPE == "1") {
             this.feature_itm_list_table.splice(j, 1);
-            this.remove_all_features_child(selection_parent_child_data.nodeid, parentArray);
+            this.remove_all_features_child(selection_parent_child_data.nodeid, parentArray,"");
           }
 
         }
@@ -3196,7 +3196,7 @@ export class OutputComponent implements OnInit {
       }
     } else {
       for (let index = 0; index < this.feature_itm_list_table.length; index++) {
-        if (this.feature_itm_list_table[index].nodeid == uniqueKey && this.feature_itm_list_table[index].ModelId == featureModelData.parentmodelid) {
+        if (this.feature_itm_list_table[index].nodeid == uniqueKey && this.feature_itm_list_table[index].ModelId == featureModelData.parentmodelid && this.feature_itm_list_table[index].nodeid != featureModelData.unique_key) {
           let currentSelection = this.feature_itm_list_table[index];
           if (currentSelection.OPTM_TYPE == 3) {
             if (featureModelData.unique_key != currentSelection.unique_key) {
@@ -3221,12 +3221,12 @@ export class OutputComponent implements OnInit {
     if (ItemData.length > 0) {
       if (parentArrayElemType == "radio") {
         if (parentarray[0].OPTM_TYPE == 1 && type == 1) {
-          this.remove_all_features_child(parentarray[0].nodeid, parentarray);
+          this.remove_all_features_child(parentarray[0].nodeid, parentarray,featureModelData);
           this.removeAllSubmodelChild(parentarray[0].unique_key, featureModelData, false);
         } else if (parentarray[0].OPTM_TYPE == 1 && type == 2) {
-          this.remove_all_features_child(parentarray[0].unique_key, parentarray);
+          this.remove_all_features_child(parentarray[0].unique_key, parentarray,"");
         } else if (parentarray[0].OPTM_TYPE == 1 && type == 3) {
-          this.remove_all_features_child(parentarray[0].unique_key, parentarray);
+          this.remove_all_features_child(parentarray[0].unique_key, parentarray,"");
         } else if (parentarray[0].OPTM_TYPE == 3) {
           if (type == 3) {
             let subOfSubModelData = this.ModelHeaderData.filter(function (obj) {
@@ -3238,7 +3238,7 @@ export class OutputComponent implements OnInit {
             })
             if (subOfSubModelData.length == 0) {
               this.removeAllSubmodelChild(parentarray[0].unique_key, featureModelData, false);
-              this.remove_all_features_child(parentarray[0].unique_key, parentarray);
+              this.remove_all_features_child(parentarray[0].unique_key, parentarray,"");
             } else if (featureModelData.OPTM_LEVEL >= 3 && featureModelData.is_second_level == 1) {
               this.removeAllSubmodelChild(featureModelData.nodeid, featureModelData, true);
             }
@@ -3249,7 +3249,7 @@ export class OutputComponent implements OnInit {
             } else {
               this.removeAllSubmodelChild(featureModelData.nodeid, featureModelData, false);
             }
-            this.remove_all_features_child(parentarray[0].unique_key, parentarray);
+            this.remove_all_features_child(parentarray[0].unique_key, parentarray,"");
           }
         }
 
