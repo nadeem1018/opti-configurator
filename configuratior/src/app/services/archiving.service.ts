@@ -29,40 +29,75 @@ export class ArchivingService {
   }
 
   filter_results(filter_data_obj): Observable<any> {
+    let model_list_string = "";
+    if(filter_data_obj.selected_models.length > 0 && filter_data_obj.selected_models!= null ){
+      model_list_string = "'"+(filter_data_obj.selected_models).join("','")+"'";
+    }
+
     let jObject = {
       FilteredData: JSON.stringify([{
         CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"), 
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
-        dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
         fromDate: filter_data_obj.from_date,
         toDate: filter_data_obj.to_date,
         DocType: filter_data_obj.doc_type,
-        orderStatus: 'P',
+        orderStatus: filter_data_obj.order_status,
         configDesc: filter_data_obj.config_desc,
-        modelId: (filter_data_obj.selected_models).join()
+        modelIds: model_list_string
       }])
     };
     console.log("jObject ", jObject); 
     return this.httpclient.post(this.config_params.service_url + "/Archiving/FilterResult", jObject, this.common_params.httpOptions);
   }
 
-  archive_data(filter_data_obj): Observable<any> {
+  archive_data(filter_data_obj, log_ids, flag): Observable<any> {
+    let model_list_string = "";
+    if(filter_data_obj.selected_models.length > 0 && filter_data_obj.selected_models!= null ){
+      model_list_string = "'"+(filter_data_obj.selected_models).join("','")+"'";
+
+    }
     let jObject = {
       ArchiveDate: JSON.stringify([{
         CompanyDBID: sessionStorage.selectedComp,
         GUID: sessionStorage.getItem("GUID"),
         UsernameForLic: sessionStorage.getItem("loggedInUser"),
-        dateRange: filter_data_obj.from_date + ',' + filter_data_obj.to_date,
         fromDate: filter_data_obj.from_date,
         toDate: filter_data_obj.to_date,
         DocType: filter_data_obj.doc_type,
-        orderStatus: 'P',
+        orderStatus: filter_data_obj.order_status,
         configDesc: filter_data_obj.config_desc,
-        modelId: (filter_data_obj.selected_models).join(),
-        selectedRecords : '',
+        modelIds: model_list_string,
+        type : flag,
+        LogId : log_ids,
       }])
     };
+    console.log("jObject ", jObject); 
     return this.httpclient.post(this.config_params.service_url + "/Archiving/ArchiveData", jObject, this.common_params.httpOptions);
+  }
+
+    delete_data(filter_data_obj, log_ids, flag): Observable<any> {
+     let model_list_string = "";
+     if(filter_data_obj.selected_models.length > 0 && filter_data_obj.selected_models!= null ){
+       model_list_string = "'"+(filter_data_obj.selected_models).join("','")+"'";
+
+     }
+    let jObject = {
+      ArchiveDate: JSON.stringify([{
+        CompanyDBID: sessionStorage.selectedComp,
+        GUID: sessionStorage.getItem("GUID"),
+        UsernameForLic: sessionStorage.getItem("loggedInUser"),
+        fromDate: filter_data_obj.from_date,
+        toDate: filter_data_obj.to_date,
+        DocType: filter_data_obj.doc_type,
+        orderStatus: filter_data_obj.order_status,
+        configDesc: filter_data_obj.config_desc,
+         modelIds: model_list_string,
+        type : flag,
+         LogId : log_ids,
+      }])
+    };
+    console.log("jObject ", jObject); 
+    return this.httpclient.post(this.config_params.service_url + "/Archiving/DeleteData", jObject, this.common_params.httpOptions);
   }
 }

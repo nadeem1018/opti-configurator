@@ -39,74 +39,21 @@
     </div>
 </div>
 
-<!-- import data modal -->
-<!-- Grid Modal-->
-<!-- <div class="modal fade" id="import_modal" tabindex="-1" role="dialog" aria-labelledby="import_modal" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="import_modal_title">{{popup_title}}</h5>
-
-                <button class="close" type="button" data-dismiss="modal" (click)="close_lookup('import_modal')"
-                    aria-label="Close">
-                    <span aria-hidden="true">
-                        <i class="fa fa-window-close"></i>
-                    </span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="opti_loader " *ngIf="showLoader">
-                    <div class="text-center">
-                        <i class="fa fa-gear fa-3x fa-spin"></i>
-                    </div>
-                </div>
-                <div class="lookup_data" *ngIf="LookupDataLoaded">
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-4 col-form-label" for="Status">{{language.file_type}}</label>
-                        <div class="col-sm-6">
-                            <select class="form-control  form-control-sm mt3" [(ngModel)]="fileType" name="fileType" id="fileTypeID">
-                                <option value="excel">{{language.excel}}</option>
-                                <option value="csv">{{language.csv}}</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-4 col-form-label" for="Status">{{language.template_type}}</label>
-                        <div class="col-sm-6">
-                            <select class="form-control  form-control-sm mt3" (change)="on_template_type_change()"
-                                [(ngModel)]="template_type" name="template_type" id="templateTypeID">
-                                <option value="model">{{language.model}}</option>
-                                <option value="feature">{{language.feature}}</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <hr>
-                    <div class="form-group row clearfix">
-                        <label class="col-sm-4 col-form-label" for="image">{{language.choose_file}}</label>
-                        <div class="col-sm-6">
-                            <input type="file" class="form-control  form-control-sm mt3-file" #myInput id="image"
-                                (change)="file_input($event)">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="{{template_path}}" class="btn btn-sm btn btn-success mr-10" download title="{{this.language.download_template}}">
-                    <i class="fa fa-download"></i> {{this.language.download_template}} </a>
-                <button class="btn btn-sm btn-info mr-10" type="button" (click)="importclick()">
-                    <i class="fa fa-check"></i> {{this.language.import}}</button>
-            </div>
-        </div>
+<!-- Output Invoice -->
+<div class="k-overlay" *ngIf="reportDialogOpened"></div>
+<div class="custom-window-wrapper" *ngIf="reportDialogOpened">
+    <div class="custom-window-innner">
+        <kendo-window [draggable]="isDraggable" (close)="close_kendo_dialog()" [minWidth]="320" [width]="1050">
+        <kendo-window-titlebar>
+                    <div class='k-window-title'>{{popup_title}}</div>
+                    <button kendoWindowMaximizeAction></button>
+                    <button kendoWindowRestoreAction></button>
+                    <button kendoWindowCloseAction></button>
+                </kendo-window-titlebar>
+                <iframe width='100%' height='100%' [src]='reportBase64String | pdfpipe'></iframe>
+        </kendo-window>
     </div>
-    <script src="Scripts/angular.min.js"></script>
-    <script src='../../../feature/model/model.component.ts'></script>
-
-    <script src="Scripts/xlsx.full.min.js"></script>
-    <script src="Scripts/jszip.js"></script>
-</div> -->
+</div>
 
 <!-- enlarge image modal -->
 

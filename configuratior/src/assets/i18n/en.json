@@ -296,6 +296,7 @@
     "Nodataforsave": "No expression added to save in the system, please add expression before saving.",
     "DateValidation": "From date cannot be greater than to date",
     "clear_selection": "Clear Selection",
+    "clear_filter": "Clear Filter",
     "add_model": "Add Model",
     "update_model": "Update Model",
     "delete_model": "Delete Model",
@@ -305,8 +306,8 @@
     "extension": "Extension",
     "price": "Price",
     "discount_per": "Discount %",
-    "discounted_price": "Dicounted Price",
-    "discounted_amount": "Dicounted Amount",
+    "discounted_price": "Discounted Price",
+    "discounted_amount": "Discounted Amount",
     "gross": "Gross",
     "Excluded": "Excluded",
     "prod_disc_amount": "Product Discount Amount",
@@ -570,6 +571,7 @@
     "filter_result":"Filtered Results",
     "both":"Both",
     "archive":"Archive",
+    "archiving": "Archiving",
     "notAuthorisedScreen":"You are not authorised to access this screen.",
     "about":"About",
     "system_info":"System Info.",
@@ -609,7 +611,15 @@
     "miscellaneous_charges":"Miscellaneous Charges",
     "hidden_item_text_on_report":"Hidden Item Text On Report",
     "DataNotUpdated": "Failed to update data",
-    "duplicate_record":"Duplicate this record"
+    "duplicate_record":"Duplicate this record",
+    "no_records_found_in_range":"No records found for the following filter.",
+    "draft_new":"Draft / New",
+    "archive_all":"Archive All",
+    "cnf_archieved_successfully":"Configurations Archieved successfully",
+    "cnf_deleted_successfully":"Configurations Deleted successfully",
+    "delete_all":"Delete All",
+    "ship_date":"Ship Date",
+    "ship_date_anticipated":"Ship Date Anticipated"
 
 
 }

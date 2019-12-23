@@ -81,6 +81,8 @@ export class LookupComponent implements OnInit {
   public showGeneralDetails: boolean = false;
   public showProdDetailsTable: boolean = false;
   public showProdGrandDetails: boolean = false;
+  public reportDialogOpened: boolean = false;
+  
   public isDraggable: boolean = true;
   public customer_details: any = [];
   public refrence_doc_details: any = [];
@@ -115,9 +117,13 @@ export class LookupComponent implements OnInit {
   public gridView: GridDataResult;
   public config_data:any;
   public show_pdf:any;
+  public reportBase64String:any;
 
   public close_kendo_dialog() {
     this.dialogOpened = false;
+    
+    this.reportDialogOpened = false;
+    this.lookupvalue.emit('');
     this.current_popup_row = "";
   }
   @HostListener('window:scroll', ['$event'])
@@ -171,6 +177,7 @@ export class LookupComponent implements OnInit {
     this.resource_counter = 0;
     this.dialogOpened = false;
     this.about_info = [];
+    this.reportDialogOpened = false;
 
     this.current_popup_row = "";
     //this.test_model();
@@ -269,6 +276,11 @@ export class LookupComponent implements OnInit {
 
       if (this.popup_lookupfor == "output_invoice_print") {
         this.output_invoice_print();
+        return;
+      }
+
+      if (this.popup_lookupfor == "output_invoice_print_new") {
+        this.output_invoice_print_new();
         return;
       }
 
@@ -1278,6 +1290,16 @@ export class LookupComponent implements OnInit {
       this.LookupDataLoaded = true;
     }
 
+    output_invoice_print_new(){
+
+      this.popup_title = this.language.print_quote;
+      this.reportBase64String= "data:application/pdf;base64,"+ this.serviceData; 
+      console.log("this", this.reportBase64String);
+      if(this.reportBase64String!=null && this.reportBase64String != "")  { 
+        this.reportDialogOpened = true; 
+      }
+    }
+
     output_invoice_print() {
       this.company_name = "Optipro Product Configuration";
       this.company_address = "255 Street, Washington DC, USA ";
@@ -1437,8 +1459,10 @@ export class LookupComponent implements OnInit {
             console.log(data);  
             this.product_grand_details.step4_final_hidden_report_total = 0;
             var step4_final_hidden_report_total = 0;
-            if(data.PrintSettings != undefined && data.PrintSettings.length > 0){
-              this.product_grand_details.step4_final_hidden_report_text = data.PrintSettings[0]["VALUE"] ;
+            if( data != null ) {
+              if(data.PrintSettings != undefined && data.PrintSettings.length > 0){
+                this.product_grand_details.step4_final_hidden_report_text = data.PrintSettings[0]["VALUE"] ;
+              }
             }
 
             for (var i = 0; i < this.serviceData.verify_final_data_sel_details.length; i++) {
@@ -1822,6 +1846,10 @@ export class LookupComponent implements OnInit {
       for (let i = 0; i < this.resourceServiceData.length; ++i) {
         if (this.resourceServiceData[i].rowindex === rowindex) {
           currentrow = i;
+        } else {
+          if (grid_element == 'schedule') {
+            this.resourceServiceData[i].schedule = false;
+          }
         }
       }
       console.log(currentrow);

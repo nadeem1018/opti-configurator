@@ -309,7 +309,7 @@ export class ViewFeatureBOMComponent implements OnInit {
     }
 
     duplicate_record(data){
-        this.router.navigateByUrl('feature/bom/add/' + data.Code.trim());
+        this.router.navigateByUrl('feature/bom/add/' + data.OPTM_FEATUREID);
       }
 
     show_association(row_data){

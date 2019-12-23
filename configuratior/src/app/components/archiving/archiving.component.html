@@ -66,9 +66,13 @@
                 <div class="form-group row clearfic">
                   <label class="col-sm-4 col-form-label" for="order_status">{{language.order_status}}</label>
                   <div class="col-sm-7">
-                    <input type="text" name="order_status" maxlength="50" class="form-control  form-control-sm mt3" id="order_status"
+                    <!-- <input type="text" name="order_status" maxlength="50" class="form-control  form-control-sm mt3" id="order_status"
                       placeholder="{{language.order_status}}" [(ngModel)]="filter_section_data.order_status" title="{{filter_section_data.order_status}}"
-                      tabindex="2" [disabled]="true">
+                      tabindex="2" [disabled]="true"> -->
+                      <select class="form-control  form-control-sm mt3" name="order_status" id="order_status" [(ngModel)]="filter_section_data.order_status" #order_status_value> <!-- (change)="onorder_status_change(order_status_value.value)"  -->
+                      <option *ngFor="let v of order_status_types" [value]="v.value" [selected]="filter_section_data.order_status == v.value">
+                        {{v.name}}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -106,6 +110,10 @@
               <a href="javascript:;" class="btn btn-outline-info btn-sm mt-1" title="{{language.select_all}}" (click)="select_all_data()">
                 <b><i class="{{selectButtonIcon}}"></i> {{selectbuttonText}} </b>
               </a>
+
+              <a href="javascript:;" class="btn btn-outline-warning btn-sm mt-1 ml-2" title="{{language.clear_selection}}" (click)="this.clear_filter_results(0)">
+                <b><i class="fa fa-search-minus"></i> {{this.language.clear_selection}} </b>
+              </a>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -115,7 +123,7 @@
               <div class="col-md-12 pl-0 pr-0">
                 <kendo-grid [kendoGridBinding]="grid_section_data" [resizable]="true" [sortable]="false" [groupable]="false"
                   [filterable]="false" [selectable]="selectableSettings" [kendoGridSelectBy]="'rowindex'"
-                  [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)">
+                  [selectedKeys]="row_selection" (selectionChange)="getSelectedRowDetail($event)" [pageSize]="getPageValue()" [pageable]="true">
                   <ng-template kendoGridToolbarTemplate>
                     <span>
                       <b>{{this.language.filter_result}}</b>
@@ -157,17 +165,28 @@
                   <kendo-grid-column field="models" title="{{language.model}}" filter="text" [width]="140"
                     [minResizableWidth]="140">
                     <ng-template kendoGridCellTemplate let-dataItem>
-                      <ng-container *ngFor="let model_item of dataItem.models.split(',')">
-                      <div> {{model_item}}</div>
+                       <span *ngIf="dataItem.models != null && dataItem.models!= undefined">
+                         
+                      <ng-container *ngIf="dataItem.models.indexOf(',') !== -1">
+                      <div *ngFor="let model_item of dataItem.models.split(',')"> {{model_item}}</div>
                       </ng-container>
+                      <ng-container *ngIf="dataItem.models.indexOf(',') == -1">
+                        {{dataItem.models}}
+                      </ng-container>
+                       </span> 
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column field="fg_item" title="{{language.fg_item}}" filter="text" [width]="140"
                     [minResizableWidth]="140">
                     <ng-template kendoGridCellTemplate let-dataItem>
-                      <ng-container *ngFor="let fg_data_item of dataItem.fg_item.split(',')">
-                        <div> {{fg_data_item}}</div>
+                      <span *ngIf="dataItem.fg_item != null && dataItem.fg_item!= undefined">
+                      <ng-container *ngIf="dataItem.fg_item.indexOf(',') !== -1">
+                         <div *ngFor="let fg_data_item of dataItem.fg_item.split(',')"> {{fg_data_item}}</div>
                       </ng-container>
+                      <ng-container *ngIf="dataItem.fg_item.indexOf(',') == -1">
+                        {{dataItem.fg_item}}
+                      </ng-container>
+                    </span>
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column field="doc_date" title="{{language.posting_date}}" filter="text" [width]="140"
@@ -192,11 +211,22 @@
         <div class="card-footer small text-muted">
           <div class="footer-buttons">
             <div class="row">
-              <div class="col-md-8 pl-1">
+              <div class="col-md-12 pl-1">
                 <div class="pull-left">
-                  <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.select_all}}"
-                    (click)="archive_data()">
+                  <a href="javascript:;" class="btn btn-outline-primary btn-sm mt-1" title="{{language.archive}}" (click)="archive_data('')" *ngIf="this.current_selected_row.length > 0 && (filter_section_data.order_status != 'draft' && filter_section_data.order_status != 'pending'  && filter_section_data.order_status != 'error')">
                     <b><i class="fa fa-cloud-upload"></i> {{this.language.archive}} </b>
+                  </a>
+                  <a href="javascript:;" class="btn btn-outline-primary btn-sm ml-2 mt-1" title="{{language.archive_all}}" (click)="archive_data('all')" *ngIf="this.grid_section_data.length > 0  && (filter_section_data.order_status != 'draft' && filter_section_data.order_status != 'pending'  && filter_section_data.order_status != 'error')">
+                    <b><i class="fa fa-cloud-upload"></i> {{this.language.archive_all}} </b>
+                  </a>
+                </div>
+
+                <div class="pull-right">
+                  <a href="javascript:;" class="btn btn-outline-danger btn-sm mt-1" title="{{language.delete}}" (click)="delete_data('')" *ngIf="filter_section_data.order_status != 'processed'">
+                    <b><i class="fa fa-trash"></i> {{this.language.delete}} </b>
+                  </a>
+                   <a href="javascript:;" class="btn btn-outline-danger btn-sm mt-1 ml-3" title="{{language.delete_all}}" (click)="delete_data('all')" *ngIf="filter_section_data.order_status != 'processed'">
+                    <b><i class="fa fa-trash"></i> {{this.language.delete_all}} </b>
                   </a>
                 </div>
               </div>

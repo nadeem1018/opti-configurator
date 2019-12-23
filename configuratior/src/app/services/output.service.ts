@@ -236,6 +236,6 @@ export class OutputService {
    
      let jObject = { GetData: JSON.stringify(item_list_data) }
     //Return the response form the API  
-    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetPrintOnReport?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
+    return this.httpclient.post(this.config_params.service_url + "/Wizard/GetReportData?cache_control=" + cache_control, jObject, this.common_params.httpOptions);
   }
 }
