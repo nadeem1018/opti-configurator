@@ -245,7 +245,7 @@ export class ArchivingComponent implements OnInit {
 
             this.showLookupLoader = false;
             if(data.length > 0){
-              let counter = 0;
+              let counter = 1;
               for(let grid_index of data){
                 var change_date_format = new Date(grid_index.OPTM_POSTINGDATE).toLocaleDateString('it-US');
 
@@ -255,8 +255,8 @@ export class ArchivingComponent implements OnInit {
                   config_desc: grid_index.OPTM_DESC,
                   doc_type: grid_index.OPTM_DOCTYPE,
                   ref_doc_entry: grid_index.OPTM_REFDOCENTRY,
-                  models: grid_index.MODEL,
-                  fg_item: (grid_index.OPTM_FGITEM),
+                  models: grid_index.Model,
+                  fg_item: grid_index.OPTM_FGITEM,
                   doc_date: change_date_format,
                   gross_total: "$" + parseFloat(grid_index.OPTM_GRANDTOTAL).toFixed(3),
                 });

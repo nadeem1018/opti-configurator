@@ -1056,7 +1056,10 @@ export class OutputComponent implements OnInit {
       this.validnextbtn = true;
       this.getSavedModelData = [];
       // this.GetDataForModelBomOutput();
-      this.GetAllDataForModelBomOutput(this.getSavedModelData);
+      if (this.step2_data.model_id != undefined || this.step2_data.model_code != undefined)
+      {
+        this.GetAllDataForModelBomOutput(this.getSavedModelData);
+      }
     }
     else if (this.lookupfor == 'Price_lookup') {
       // this.getPriceDetails($event[0], "Header", this.currentrowindex);
@@ -6261,14 +6264,15 @@ export class OutputComponent implements OnInit {
               if (value == true) {
 
                 if (RuleOutputData[iItemRule].OPTM_ISINCLUDED.toString().trim() == "False") {
-                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
-                  let currentFeatureBomData = this.FeatureBOMDataForSecondLevel[iItemFeatureTable]
-                  if (currentFeatureBomData.parentfeatureid != null && currentFeatureBomData.parentfeatureid != "") {
+                  let this1 = this
+                  this1.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = true
+                  let currentFeatureBomData = this1.FeatureBOMDataForSecondLevel[iItemFeatureTable]
+                  if (currentFeatureBomData.parentfeatureid != null && currentFeatureBomData.parentfeatureid != "" && currentFeatureBomData.parentfeatureid != "0") {
                     this.removefeaturesanditems(currentFeatureBomData.parentfeatureid)
                   } else {
                     this.removefeaturesanditems(currentFeatureBomData.OPTM_FEATUREID)
                   }
-                  this.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
+                  this1.FeatureBOMDataForSecondLevel[iItemFeatureTable].checked = false
                 }
                 else {
                   this.FeatureBOMDataForSecondLevel[iItemFeatureTable].disable = false
