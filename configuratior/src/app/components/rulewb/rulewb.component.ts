@@ -656,7 +656,10 @@ getLookupValue($event) {
   if (this.lookupfor == 'feature_lookup') {
     this.rule_wb_data.applicable_for_feature_id = $event[0];
     this.rule_wb_data.applicable_for_feature_code = $event[1];
-    this.getFBOMHeader();
+    if (this.rule_wb_data.applicable_for_feature_id != undefined || this.rule_wb_data.applicable_for_feature_code != undefined)
+    {
+      this.getFBOMHeader();
+    }
     // this.getFeatureDetailsForOutput();
   }
   if (this.lookupfor == 'feature_Detail_lookup') {

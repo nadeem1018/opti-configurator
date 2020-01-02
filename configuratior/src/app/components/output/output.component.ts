@@ -4991,8 +4991,18 @@ export class OutputComponent implements OnInit {
                   var uniqueIdentifier = ifeatureHeaderData[0].OPTM_UNIQUEIDNT;
                 }
                 var modelUniqueKey = ""
-
+                var addItem = "True"
                  var modelUniqueKey1 = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData);
+                 if(temp_step2_final_dataset_save.length>0){
+                  for(var idata in temp_step2_final_dataset_save ){                     
+                    if(temp_step2_final_dataset_save[idata].NODEID == step3_data_row.feature[ifeature].nodeid
+                      && temp_step2_final_dataset_save[idata].UNIQUE_KEY == step3_data_row.feature[ifeature].unique_key){
+                       addItem = "False" 
+                       break;
+                    }
+                  }
+                }
+                if(addItem == "True"){
                 temp_step2_final_dataset_save.push({
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
@@ -5025,6 +5035,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_FILL_POINT": "4",
                   "MODEL_UNIQUE_KEY": modelUniqueKey1
                 })
+              }
               }
               else {
                 var ifeatureHeaderData = [];
