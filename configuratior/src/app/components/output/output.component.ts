@@ -3821,6 +3821,8 @@ export class OutputComponent implements OnInit {
             feature_code: step3_temp_row.ModelHeaderData[f_indexx].feature_code,
             parentfeatureid: step3_temp_row.ModelHeaderData[f_indexx].parentfeatureid,
             parentmodelid: step3_temp_row.ModelHeaderData[f_indexx].parentmodelid,
+            nodeid: step3_temp_row.ModelHeaderData[f_indexx].nodeid,
+            unique_key: step3_temp_row.ModelHeaderData[f_indexx].unique_key,
           });
         }
 
@@ -3867,6 +3869,8 @@ export class OutputComponent implements OnInit {
             pricehide: step3_temp_row.feature[us_indexx].pricehide,
             pricextn: parseFloat(step3_temp_row.feature[us_indexx].pricextn).toFixed(3),
             quantity: step3_temp_row.feature[us_indexx].quantity,
+            nodeid: step3_temp_row.feature[us_indexx].nodeid,
+            unique_key: step3_temp_row.feature[us_indexx].unique_key,
           });
         }
 
@@ -5262,7 +5266,8 @@ export class OutputComponent implements OnInit {
             "OPTM_PARENTTYPE": temp_step2_final_dataset_save[itempsavefinal].OPTM_PARENTTYPE,
             "UNIQUE_KEY": temp_step2_final_dataset_save[itempsavefinal].UNIQUE_KEY,
             "NODEID": temp_step2_final_dataset_save[itempsavefinal].NODEID,
-            "temp_model_id": temp_step2_final_dataset_save[itempsavefinal].temp_model_id
+            "temp_model_id": temp_step2_final_dataset_save[itempsavefinal].temp_model_id,
+            "MODEL_UNIQUE_KEY": temp_step2_final_dataset_save[itempsavefinal].MODEL_UNIQUE_KEY
           })
         }
 
