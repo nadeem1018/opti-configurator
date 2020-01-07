@@ -2216,12 +2216,23 @@ export class OutputComponent implements OnInit {
                             this.FeatureBOMDataForSecondLevel.splice(ideletemodeldataforfeaturesecond, 1);
                             ideletemodeldataforfeaturesecond = ideletemodeldataforfeaturesecond - 1;
                           }
-                        }
+                        }                       
+
                         let removeFeatureId = this.ModelHeaderData[imodelheader].OPTM_FEATUREID
                         let removeModelChildId = this.ModelHeaderData[imodelheader].OPTM_CHILDMODELID
                         let removeUniqueKey = this.ModelHeaderData[imodelheader].unique_key
+                        let removemodelid = this.ModelHeaderData[imodelheader].OPTM_MODELID
+                        let removetype = this.ModelHeaderData[imodelheader].OPTM_TYPE;
                         this.ModelHeaderData.splice(imodelheader, 1);
                         imodelheader = imodelheader - 1;
+                        if(removetype == "3"){
+                        for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
+                          if (this.feature_itm_list_table[igrid].parentmodelid == removemodelid && this.feature_itm_list_table[igrid].nodeid == removeUniqueKey) {
+                            this.feature_itm_list_table.splice(igrid, 1);
+                            igrid = igrid - 1;
+                          }
+                        }
+                      }
                         this.removemodelheaderdatatable(removeModelChildId, removeUniqueKey, removeFeatureId)
 
                       }
@@ -3414,7 +3425,8 @@ export class OutputComponent implements OnInit {
               HEADER_LINENO: lineno,
               unique_key: featureModelData.unique_key,
               nodeid: featureModelData.nodeid,
-              sort_key: featureModelData.sort_key
+              sort_key: featureModelData.sort_key,
+              parentmodelid: featureModelData.parentmodelid
             });
           } else if (isDefaultItem) {
             this.feature_itm_list_table.push({
@@ -3440,7 +3452,8 @@ export class OutputComponent implements OnInit {
               parent_featureid: ItemData[0].parent_featureid,
               unique_key: ItemData[0].unique_key,
               nodeid: ItemData[0].nodeid,
-              sort_key: ItemData[0].sort_key
+              sort_key: ItemData[0].sort_key,
+              parentmodelid: featureModelData.parentmodelid
             });
           }
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
