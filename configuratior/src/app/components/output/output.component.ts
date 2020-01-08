@@ -1823,8 +1823,9 @@ export class OutputComponent implements OnInit {
           this.AccessModel = [];
           this.AccessModel = data.ModelBOMDataForSecondLevel.filter(function (obj) {
             return obj['ACCESSORY'] == "Y";
-          });
+          });      
 
+          console.log("AccessModel", this.AccessModel);
           this.selectedAccessoryHeader = data.SelectedAccessory;
 
           this.getAccessoryData(this.selectedAccessoryHeader)
@@ -2165,7 +2166,7 @@ export class OutputComponent implements OnInit {
               return;
             }
           }
-
+       
           if (value == true) {
             if (data.DataForSelectedFeatureModelItem.length > 0) {
               if (parentarray[0].element_type == "radio") {
@@ -2232,6 +2233,49 @@ export class OutputComponent implements OnInit {
                             igrid = igrid - 1;
                           }
                         }
+                        console.log("Value", this.feature_accessory_list)
+                        console.log("Value", removemodelid)
+                        console.log("Value", removeUniqueKey)
+
+                        if(this.feature_accessory_list.length>0){
+                          for (let iacc = 0; iacc < this.feature_accessory_list.length; iacc++) {
+                            if (this.feature_accessory_list[iacc].parentmodelid == removemodelid && this.feature_accessory_list[iacc].nodeid == removeUniqueKey) {
+                              let removeAccUniqueKey = this.feature_accessory_list[iacc].unique_key
+                              this.feature_accessory_list.splice(iacc, 1);
+                              iacc = iacc - 1;
+                              for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
+                                if (this.feature_itm_list_table[igrid].nodeid == removeAccUniqueKey) {
+                                  this.feature_itm_list_table.splice(igrid, 1);
+                                  igrid = igrid - 1;
+                                }
+                              }
+
+                              if(this.selectedAccessoryBOM != undefined){
+                                if(this.selectedAccessoryBOM.length > 0){
+                                  for (let accidbom = 0; accidbom < this.selectedAccessoryBOM.length; accidbom++) {
+                                    if (this.selectedAccessoryBOM[accidbom].nodeid == removeAccUniqueKey) {
+                                      this.selectedAccessoryBOM.splice(accidbom, 1);
+                                      accidbom = accidbom - 1;
+                                    }
+                                  } 
+                                }
+                              }
+
+                            }
+                          }
+                        }
+                        if( this.selectedAccessoryHeader != undefined){
+                          if( this.selectedAccessoryHeader.length >0){
+                            for (let accid = 0; accid < this.selectedAccessoryHeader.length; accid++) {
+                              if (this.selectedAccessoryHeader[accid].nodeid == removeUniqueKey) {
+                                this.selectedAccessoryHeader.splice(accid, 1);
+                                accid = accid - 1;
+                              }
+                            } 
+                          }
+                        }
+                        
+                      
                       }
                         this.removemodelheaderdatatable(removeModelChildId, removeUniqueKey, removeFeatureId)
 
@@ -2724,9 +2768,29 @@ export class OutputComponent implements OnInit {
                           isSecondIteration: false,
                           isRuleApplied: false,
                           sort_key: data.DataForSelectedFeatureModelItem[i].sort_key,
+                          OPTM_PARENTMODELID: data.DataForSelectedFeatureModelItem[i].OPTM_PARENTMODELID
                         });
                       }
                     }
+
+                    this.AccessModel = [];
+                    this.AccessModel = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                      return obj['ACCESSORY'] == "Y";
+                    });
+                    if (this.AccessModel != undefined || this.AccessModel != null) {
+
+                    if(this.selectedAccessoryHeader == undefined || this.selectedAccessoryHeader == null){
+                      this.selectedAccessoryHeader = this.AccessModel;
+                    }else{
+                      this.selectedAccessoryHeader = this.selectedAccessoryHeader.concat(this.AccessModel);
+                    }
+                    this.getAccessoryData(this.selectedAccessoryHeader)
+                    }
+
+                    this.ModelBOMDataForSecondLevel = this.ModelBOMDataForSecondLevel.filter(function (obj) {
+                      return obj['ACCESSORY'] != "Y"
+                    });                   
+
                     this.ModelBOMDataForSecondLevel.filter(function (obj) {
                       if (obj.nodeid == data.DataForSelectedFeatureModelItem[i].nodeid) {
                         return obj['checked'] = false;
@@ -2755,6 +2819,14 @@ export class OutputComponent implements OnInit {
                       this.setItemDataForFeature(selectedModelData, parentarray, propagateqtychecked, propagateQtyForitem, featureCode, parentarray[0].OPTM_LINENO, type, parentArrayElemType, false, feature_model_data);
                     }
                   }
+                  if(data.AccessoryBOM != undefined){
+                  if (this.selectedAccessoryBOM == undefined || this.selectedAccessoryBOM == null) {                 
+                    this.selectedAccessoryBOM = data.AccessoryBOM;
+                   } else {
+                   this.selectedAccessoryBOM = this.selectedAccessoryBOM.concat(data.AccessoryBOM);                 
+                  }
+                }
+                  console.log("selectedAccessoryBOM", this.selectedAccessoryBOM);
                   this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                 }
               }
@@ -5521,7 +5593,10 @@ export class OutputComponent implements OnInit {
           OPTM_QUANTITY: parseFloat(Accarray[iaccss].OPTM_QUANTITY).toFixed(3),
           OPTM_TYPE: Accarray[iaccss].OPTM_TYPE,
           OPTM_VALUE: Accarray[iaccss].OPTM_VALUE,
-          unique_key: Accarray[iaccss].unique_key
+          unique_key: Accarray[iaccss].unique_key,
+          nodeid: Accarray[iaccss].nodeid,
+          sort_key: Accarray[iaccss].sort_key,
+          parentmodelid: Accarray[iaccss].OPTM_PARENTMODELID
         });
       }
 
@@ -5771,8 +5846,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: isheadercounter,
             unique_key: unique_key,
             nodeid: nodeid,
-
-
+            sort_key:""
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           isheadercounter++;
@@ -7538,6 +7612,45 @@ export class OutputComponent implements OnInit {
           }
         }
 
+        if(this.feature_accessory_list.length>0){
+          for (let iacc = 0; iacc < this.feature_accessory_list.length; iacc++) {
+            if (this.feature_accessory_list[iacc].nodeid == tempchildfeatuniqueKey) {
+              let removeAccUniqueKey = this.feature_accessory_list[iacc].unique_key
+              this.feature_accessory_list.splice(iacc, 1);
+              iacc = iacc - 1;
+              for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
+                if (this.feature_itm_list_table[igrid].nodeid == removeAccUniqueKey) {
+                  this.feature_itm_list_table.splice(igrid, 1);
+                  igrid = igrid - 1;
+                }
+              }
+
+              if(this.selectedAccessoryBOM != undefined){
+                if(this.selectedAccessoryBOM.length > 0){
+                  for (let accidbom = 0; accidbom < this.selectedAccessoryBOM.length; accidbom++) {
+                    if (this.selectedAccessoryBOM[accidbom].nodeid == removeAccUniqueKey) {
+                      this.selectedAccessoryBOM.splice(accidbom, 1);
+                      accidbom = accidbom - 1;
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }
+        
+        if( this.selectedAccessoryHeader != undefined){
+          if( this.selectedAccessoryHeader.length >0){
+            for (let accid = 0; accid < this.selectedAccessoryHeader.length; accid++) {
+              if (this.selectedAccessoryHeader[accid].nodeid == tempchildfeatuniqueKey) {
+                this.selectedAccessoryHeader.splice(accid, 1);
+                accid = accid - 1;
+              }
+            } 
+          }
+        }
+       
+
         for (let index = 0; index < this.ModelBOMDataForSecondLevel.length; index++) {
           if (this.ModelBOMDataForSecondLevel[index].nodeid == tempchildfeatuniqueKey) {
             let tempParentModelId;
@@ -7565,7 +7678,7 @@ export class OutputComponent implements OnInit {
             }
             this.removeModelfeaturesbyuncheck(tempParentModelId, tempFeatureCode, tempNodeId, tempUniqueKey)
           }
-        }
+        }       
 
       }
     }
