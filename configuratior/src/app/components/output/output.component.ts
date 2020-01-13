@@ -4959,40 +4959,41 @@ export class OutputComponent implements OnInit {
               modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
             } */
 
-            temp_step2_final_dataset_save.push({
-              "OPTM_OUTPUTID": "",
-              "OPTM_OUTPUTDTLID": "",
-              "OPTM_ITEMNUMBER": "",
-              "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME,
-              //"OPTM_KEY": itemkeyforparentmodel,
-              "OPTM_KEY": "",
-              "OPTM_PARENTKEY": "",
-              "OPTM_TEMPLATEID": imodelData[0].MODELTEMPLATEITEM,
-              "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
-              "OPTM_ITEMTYPE": 1,
-              "OPTM_WHSE": this.warehouse,
-              "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
-              "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
-              "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.feature[ifeature].original_quantity).toFixed(3),
-              "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
-              "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
-              "OPTM_TOTALPRICE": formatedTotalPrice,
-              "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
-              "OPTM_CREATEDBY": this.common_output_data.username,
-              "OPTM_MODIFIEDBY": this.common_output_data.username,
-              "UNIQUEIDNT": imodelData[0].OPTM_UNIQUEIDNT,
-              "PARENTID": imodelData[0].OPTM_MODELID,
-              "OPTM_FGCREATEDATE": "",
-              "OPTM_REFITEMCODE": "",
-              "OPTM_PARENTID": imodelData[0].OPTM_MODELID,
-              "OPTM_PARENTTYPE": 2,
-              "UNIQUE_KEY": imodelData[0].unique_key,
-              "NODEID": step3_data_row.feature[ifeature].nodeid,
-              "temp_model_id": parseInt(master_model_id),
-              "OPTM_FILL_POINT": "3",
-              "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
-            })
-
+            if (imodelData.length > 0) {
+              temp_step2_final_dataset_save.push({
+                "OPTM_OUTPUTID": "",
+                "OPTM_OUTPUTDTLID": "",
+                "OPTM_ITEMNUMBER": "",
+                "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME,
+                //"OPTM_KEY": itemkeyforparentmodel,
+                "OPTM_KEY": "",
+                "OPTM_PARENTKEY": "",
+                "OPTM_TEMPLATEID": imodelData[0].MODELTEMPLATEITEM,
+                "OPTM_ITMCODEGENKEY": imodelData[0].ITEMCODEGENREF,
+                "OPTM_ITEMTYPE": 1,
+                "OPTM_WHSE": this.warehouse,
+                "OPTM_LEVEL": step3_data_row.feature[ifeature].OPTM_LEVEL,
+                "OPTM_QUANTITY": parseFloat(step3_data_row.feature[ifeature].quantity).toFixed(3),
+                "OPTM_ORIGINAL_QUANTITY": parseFloat(step3_data_row.feature[ifeature].original_quantity).toFixed(3),
+                "OPTM_PRICELIST": Number(step3_data_row.feature[ifeature].price),
+                "OPTM_UNITPRICE": parseFloat(step3_data_row.feature[ifeature].Actualprice).toFixed(3),
+                "OPTM_TOTALPRICE": formatedTotalPrice,
+                "OPTM_DISCPERCENT": parseFloat(step3_data_row.feature[ifeature].discount).toFixed(3),
+                "OPTM_CREATEDBY": this.common_output_data.username,
+                "OPTM_MODIFIEDBY": this.common_output_data.username,
+                "UNIQUEIDNT": imodelData[0].OPTM_UNIQUEIDNT,
+                "PARENTID": imodelData[0].OPTM_MODELID,
+                "OPTM_FGCREATEDATE": "",
+                "OPTM_REFITEMCODE": "",
+                "OPTM_PARENTID": imodelData[0].OPTM_MODELID,
+                "OPTM_PARENTTYPE": 2,
+                "UNIQUE_KEY": imodelData[0].unique_key,
+                "NODEID": step3_data_row.feature[ifeature].nodeid,
+                "temp_model_id": parseInt(master_model_id),
+                "OPTM_FILL_POINT": "3",
+                "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
+              })
+            }
           }
           else {
 
