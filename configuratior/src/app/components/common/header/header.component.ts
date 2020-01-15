@@ -89,8 +89,8 @@ export class HeaderComponent implements OnInit {
 
     }, 2000);
   }
-  logout() {
-
+  logout() {    
+    CommonData.sessionExpire = false;
     this.CommonService.RemoveLoggedInUser().subscribe();
 
     this.CommonService.signOut(this.toastr, this.router, 'Logout');

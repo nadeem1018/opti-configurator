@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   public language: any = [];
   private commonData = new CommonData();
   public background = this.commonData.get_current_url() + "/assets/images/bg.jpg";
+  
 /*  public login = "Login..";
   public titleInfo = "Enter username and password";
   public username = "Username";
@@ -84,6 +85,7 @@ export class LoginComponent implements OnInit {
     this._el.nativeElement.focus();
     this.selecetedComp = "";
     let objj = this;
+    CommonData.sessionExpire = true;
     setTimeout(function () {
       
      /* this.config_data = JSON.parse(sessionStorage.getItem('system_config'));

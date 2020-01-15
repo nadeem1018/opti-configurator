@@ -150,8 +150,8 @@
                   <kendo-grid-column field="doc_type" title="{{language.document_type}}" filter="text" [width]="140"
                     [minResizableWidth]="140">
                     <ng-template kendoGridCellTemplate let-dataItem>
-                      <span *ngIf="dataItem.doc_type == 17">{{this.language.SalesQuote}}</span>
-                      <span *ngIf="dataItem.doc_type == 23">{{this.language.SalesOrder}}</span>
+                      <span *ngIf="dataItem.doc_type == 23">{{this.language.SalesQuote}}</span>
+                      <span *ngIf="dataItem.doc_type == 17">{{this.language.SalesOrder}}</span>
                     </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column field="ref_doc_entry" title="{{language.ref_doc_entry}}" filter="text" [width]="140"

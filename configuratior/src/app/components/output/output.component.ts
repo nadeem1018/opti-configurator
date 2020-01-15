@@ -207,7 +207,7 @@ export class OutputComponent implements OnInit {
   }
 
   canDeactivate() {
-    if (this.made_changes == true) {
+    if (this.made_changes == true && CommonData.sessionExpire == true) {
       return this.DialogService.confirm('');
     } else {
       return true;
@@ -2054,7 +2054,7 @@ export class OutputComponent implements OnInit {
       var isExistFeatureInModel = [];
 
       if (feature_model_data.OPTM_FEATUREID != '0' && feature_model_data.OPTM_FEATUREID != "") {
-        if (feature_model_data.OPTM_TYPE == 2) {
+        if (feature_model_data.OPTM_TYPE == 2 || feature_model_data.OPTM_TYPE == 1) {
           isExistForItemMax = this.feature_itm_list_table.filter(function (obj) {
             return obj['FeatureId'] == feature_model_data.OPTM_FEATUREID && obj.nodeid == feature_model_data.nodeid;
           })
@@ -2236,47 +2236,8 @@ export class OutputComponent implements OnInit {
                         console.log("Value", this.feature_accessory_list)
                         console.log("Value", removemodelid)
                         console.log("Value", removeUniqueKey)
-
-                        if(this.feature_accessory_list.length>0){
-                          for (let iacc = 0; iacc < this.feature_accessory_list.length; iacc++) {
-                            if (this.feature_accessory_list[iacc].parentmodelid == removemodelid && this.feature_accessory_list[iacc].nodeid == removeUniqueKey) {
-                              let removeAccUniqueKey = this.feature_accessory_list[iacc].unique_key
-                              this.feature_accessory_list.splice(iacc, 1);
-                              iacc = iacc - 1;
-                              for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
-                                if (this.feature_itm_list_table[igrid].nodeid == removeAccUniqueKey) {
-                                  this.feature_itm_list_table.splice(igrid, 1);
-                                  igrid = igrid - 1;
-                                }
-                              }
-
-                              if(this.selectedAccessoryBOM != undefined){
-                                if(this.selectedAccessoryBOM.length > 0){
-                                  for (let accidbom = 0; accidbom < this.selectedAccessoryBOM.length; accidbom++) {
-                                    if (this.selectedAccessoryBOM[accidbom].nodeid == removeAccUniqueKey) {
-                                      this.selectedAccessoryBOM.splice(accidbom, 1);
-                                      accidbom = accidbom - 1;
-                                    }
-                                  } 
-                                }
-                              }
-
-                            }
-                          }
-                        }
-                        if( this.selectedAccessoryHeader != undefined){
-                          if( this.selectedAccessoryHeader.length >0){
-                            for (let accid = 0; accid < this.selectedAccessoryHeader.length; accid++) {
-                              if (this.selectedAccessoryHeader[accid].nodeid == removeUniqueKey) {
-                                this.selectedAccessoryHeader.splice(accid, 1);
-                                accid = accid - 1;
-                              }
-                            } 
-                          }
-                        }
-                        
-                      
-                      }
+                       this.removeAccessoryHeaderAndItems(removeUniqueKey);                  
+                       }
                         this.removemodelheaderdatatable(removeModelChildId, removeUniqueKey, removeFeatureId)
 
                       }
@@ -2961,6 +2922,47 @@ export class OutputComponent implements OnInit {
     }
   }
 
+  removeAccessoryHeaderAndItems(removeUniqueKey){
+
+    if(this.feature_accessory_list.length>0){
+      for (let iacc = 0; iacc < this.feature_accessory_list.length; iacc++) {
+        if (this.feature_accessory_list[iacc].nodeid == removeUniqueKey) {
+          let removeAccUniqueKey = this.feature_accessory_list[iacc].unique_key
+          this.feature_accessory_list.splice(iacc, 1);
+          iacc = iacc - 1;
+          for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
+            if (this.feature_itm_list_table[igrid].nodeid == removeAccUniqueKey) {
+              this.feature_itm_list_table.splice(igrid, 1);
+              igrid = igrid - 1;
+            }
+          }
+
+          if(this.selectedAccessoryBOM != undefined){
+            if(this.selectedAccessoryBOM.length > 0){
+              for (let accidbom = 0; accidbom < this.selectedAccessoryBOM.length; accidbom++) {
+                if (this.selectedAccessoryBOM[accidbom].nodeid == removeAccUniqueKey) {
+                  this.selectedAccessoryBOM.splice(accidbom, 1);
+                  accidbom = accidbom - 1;
+                }
+              } 
+            }
+          }
+
+        }
+      }
+    }
+    if( this.selectedAccessoryHeader != undefined){
+      if( this.selectedAccessoryHeader.length >0){
+        for (let accid = 0; accid < this.selectedAccessoryHeader.length; accid++) {
+          if (this.selectedAccessoryHeader[accid].nodeid == removeUniqueKey) {
+            this.selectedAccessoryHeader.splice(accid, 1);
+            accid = accid - 1;
+          }
+        } 
+      }
+    }
+  }
+
   setDtFeatureDataWithDefault(dtFeatureDataWithDefault, DataForSelectedFeatureModelItem, feature_model_data, parentmodelid, parentarray, propagateqtychecked, data, type) {
     for (var idtfeature in dtFeatureDataWithDefault) {
       var isExist;
@@ -3062,12 +3064,12 @@ export class OutputComponent implements OnInit {
         var tempparentarray = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
           return obj['OPTM_CHILDFEATUREID'] == dtFeatureDataWithDefault[idtfeature].OPTM_FEATUREID && obj['unique_key'] == dtFeatureDataWithDefault[idtfeature].nodeid;
         });
-        if (tempparentarray.length > 0) {
-          parentarray[0].OPTM_TYPE = tempparentarray[0].OPTM_TYPE
-          parentarray[0].parentmodelid = tempparentarray[0].parentmodelid
-          parentarray[0].OPTM_LEVEL = tempparentarray[0].OPTM_LEVEL
-          parentarray[0].HEADER_LINENO = tempparentarray[0].HEADER_LINENO
-        }
+        // if (tempparentarray.length > 0) {
+        //   parentarray[0].OPTM_TYPE = tempparentarray[0].OPTM_TYPE
+        //   parentarray[0].parentmodelid = tempparentarray[0].parentmodelid
+        //   parentarray[0].OPTM_LEVEL = tempparentarray[0].OPTM_LEVEL
+        //   parentarray[0].HEADER_LINENO = tempparentarray[0].HEADER_LINENO
+        // }
         itemData.push(dtFeatureDataWithDefault[idtfeature])
         var input_type = 'radio';
         if (dtFeatureDataWithDefault[idtfeature].OPTM_ISMULTISELECT == 'Y') {
@@ -3082,9 +3084,9 @@ export class OutputComponent implements OnInit {
           temp_feature_code = tempparentarray[0].feature_code;
         }
 
-        propagateqty = propagateqty * this.getPropagateQuantity(parentarray[0].nodeid);
+        propagateqty = propagateqty * this.getPropagateQuantity(tempparentarray[0].nodeid);
 
-        this.setItemDataForFeature(itemData, parentarray, propagateqtychecked, propagateqty, temp_feature_code, parentarray[0].HEADER_LINENO, type, input_type, false, "");
+        this.setItemDataForFeature(itemData, tempparentarray, propagateqtychecked, propagateqty, temp_feature_code, tempparentarray[0].HEADER_LINENO, dtFeatureDataWithDefault[idtfeature].OPTM_TYPE, input_type, false, "");
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
@@ -3092,8 +3094,9 @@ export class OutputComponent implements OnInit {
     })
 
     if (checkDefaultFeatureIndtFeatureDataWithDefault.length > 0) {
+      for (var checkdefauldid in checkDefaultFeatureIndtFeatureDataWithDefault) {
       isExist = this.ModelHeaderData.filter(function (obj) {
-        return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CHILDFEATUREID && obj['unique_key'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].unique_key;
+        return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_CHILDFEATUREID && obj['unique_key'] == checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].unique_key;
       });
 
 
@@ -3102,9 +3105,9 @@ export class OutputComponent implements OnInit {
       var pselementclass = "custom-control custom-radio"
       var pselementtype = "radio"
       var elementtypeforcheckedfunction = "radio";
-      if (checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_ISMULTISELECT == "Y") {
-        psMaxSelect = checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MAX_SELECTABLE
-        psMinSelect = checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MIN_SELECTABLE
+      if (checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_ISMULTISELECT == "Y") {
+        psMaxSelect = checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MAX_SELECTABLE
+        psMinSelect = checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MIN_SELECTABLE
         if (parseFloat(psMaxSelect) > 1) {
           pselementclass = "custom-control custom-checkbox"
           pselementtype = "checkbox"
@@ -3116,65 +3119,66 @@ export class OutputComponent implements OnInit {
 
       if (isExist.length == 0) {
         let model_mandatory = "N";
-        if (checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MANDATORY != undefined && checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MANDATORY == "Y") {
+        if (checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MANDATORY != undefined && checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MANDATORY == "Y") {
           model_mandatory = 'Y';
         }
         this.ModelHeaderData.push({
-          ACCESSORY: checkDefaultFeatureIndtFeatureDataWithDefault[0].ACCESSORY,
-          IMAGEPATH: checkDefaultFeatureIndtFeatureDataWithDefault[0].IMAGEPATH,
+          ACCESSORY: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].ACCESSORY,
+          IMAGEPATH: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].IMAGEPATH,
           OPTM_CHILDMODELID: "",
-          OPTM_COMPANYID: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_COMPANYID,
-          OPTM_CREATEDATETIME: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CREATEDATETIME,
-          OPTM_CREATEDBY: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CREATEDBY,
-          OPTM_DISPLAYNAME: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_DISPLAYNAME,
-          OPTM_FEATUREID: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CHILDFEATUREID,
-          OPTM_ITEMKEY: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_ITEMKEY,
+          OPTM_COMPANYID: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_COMPANYID,
+          OPTM_CREATEDATETIME: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_CREATEDATETIME,
+          OPTM_CREATEDBY: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_CREATEDBY,
+          OPTM_DISPLAYNAME: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_DISPLAYNAME,
+          OPTM_FEATUREID: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_CHILDFEATUREID,
+          OPTM_ITEMKEY: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_ITEMKEY,
           OPTM_LINENO: this.ModelHeaderData.length + 1,
           OPTM_MANDATORY: model_mandatory,
-          OPTM_ISMULTISELECT: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_ISMULTISELECT,
+          OPTM_ISMULTISELECT: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_ISMULTISELECT,
           OPTM_MAXSELECTABLE: psMaxSelect,
           OPTM_MINSELECTABLE: psMinSelect,
           OPTM_MODELID: parentarray[0].OPTM_MODELID,
-          OPTM_MODIFIEDBY: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MODIFIEDBY,
-          OPTM_MODIFIEDDATETIME: String(checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_MODIFIEDDATETIME).toString(),
-          OPTM_PRICESOURCE: checkDefaultFeatureIndtFeatureDataWithDefault[0].ListName,
-          OPTM_PROPOGATEQTY: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_PROPOGATEQTY,
-          OPTM_QUANTITY: parseFloat(checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_QUANTITY).toFixed(3),
-          OPTM_TYPE: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_TYPE,
+          OPTM_MODIFIEDBY: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MODIFIEDBY,
+          OPTM_MODIFIEDDATETIME: String(checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_MODIFIEDDATETIME).toString(),
+          OPTM_PRICESOURCE: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].ListName,
+          OPTM_PROPOGATEQTY: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_PROPOGATEQTY,
+          OPTM_QUANTITY: parseFloat(checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_QUANTITY).toFixed(3),
+          OPTM_TYPE: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_TYPE,
           OPTM_UNIQUEIDNT: parentarray[0].OPTM_UNIQUEIDNT,
           OPTM_UOM: parentarray[0].OPTM_UOM,
           child_code: parentarray[0].child_code,
           element_class: pselementclass,
           element_type: pselementtype,
-          feature_code: checkDefaultFeatureIndtFeatureDataWithDefault[0].feature_code,
-          parentfeatureid: checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_FEATUREID,
+          feature_code: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].feature_code,
+          parentfeatureid: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_FEATUREID,
           parentmodelid: parentmodelid,
           OPTM_LEVEL: feature_model_data.OPTM_LEVEL,
           is_second_level: 1,
-          nodeid: checkDefaultFeatureIndtFeatureDataWithDefault[0].nodeid,
-          unique_key: checkDefaultFeatureIndtFeatureDataWithDefault[0].unique_key,
-          sort_key: checkDefaultFeatureIndtFeatureDataWithDefault[0].sort_key,
+          nodeid: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].nodeid,
+          unique_key: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].unique_key,
+          sort_key: checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].sort_key,
           random_unique_key: this.commonData.random_string(50)
         });
 
 
 
-        if (checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_PROPOGATEQTY == "Y") {
+        if (checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_PROPOGATEQTY == "Y") {
           propagateqtychecked = "Y"
-          checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_QUANTITY = parseFloat(checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_QUANTITY).toFixed(3)
-          propagateqty = checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_QUANTITY
+          checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_QUANTITY = parseFloat(checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_QUANTITY).toFixed(3)
+          propagateqty = checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_QUANTITY
         }
 
         var childItemsAddedModelHeaderData = data.AllDataForFeature.filter(function (obj) {
-          return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[0].OPTM_CHILDFEATUREID
+          return obj['OPTM_FEATUREID'] == checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid].OPTM_CHILDFEATUREID
         })
 
         if (childItemsAddedModelHeaderData.length > 0) {
-          this.setDtFeatureDataWithDefault(childItemsAddedModelHeaderData, checkDefaultFeatureIndtFeatureDataWithDefault[0], feature_model_data, parentmodelid, parentarray, propagateqtychecked, data, type)
+          this.setDtFeatureDataWithDefault(childItemsAddedModelHeaderData, checkDefaultFeatureIndtFeatureDataWithDefault[checkdefauldid], feature_model_data, parentmodelid, parentarray, propagateqtychecked, data, type)
         }
 
       }
     }
+  }
     // else if (dtFeatureDataWithDefault[idtfeature].OPTM_DEFAULT == "Y" && dtFeatureDataWithDefault[idtfeature].OPTM_TYPE == "1") {
 
     // }
@@ -4757,7 +4761,7 @@ export class OutputComponent implements OnInit {
             "OPTM_OUTPUTID": "",
             "OPTM_OUTPUTDTLID": "",
             "OPTM_ITEMNUMBER": "",
-            "OPTM_ITEMCODE": step3_data_row.item,
+            "OPTM_ITEMCODE": step3_data_row.item.trim,
             "OPTM_KEY": "",
             "OPTM_PARENTKEY": "",
             "OPTM_TEMPLATEID": step3_data_row.templateid,
@@ -4914,7 +4918,7 @@ export class OutputComponent implements OnInit {
                       "OPTM_OUTPUTID": "",
                       "OPTM_OUTPUTDTLID": "",
                       "OPTM_ITEMNUMBER": imodelfilteritems[i].DocEntry,
-                      "OPTM_ITEMCODE": featureitemlistfilterdata[0].Item,
+                      "OPTM_ITEMCODE": featureitemlistfilterdata[0].Item.trim(),
                       "OPTM_KEY": "",
                       "OPTM_PARENTKEY": "",
                       "OPTM_TEMPLATEID": "",
@@ -4963,7 +4967,7 @@ export class OutputComponent implements OnInit {
               "OPTM_OUTPUTID": "",
               "OPTM_OUTPUTDTLID": "",
               "OPTM_ITEMNUMBER": "",
-              "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME,
+              "OPTM_ITEMCODE": imodelData[0].OPTM_DISPLAYNAME.trim(),
               //"OPTM_KEY": itemkeyforparentmodel,
               "OPTM_KEY": "",
               "OPTM_PARENTKEY": "",
@@ -5096,7 +5100,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
                   "OPTM_ITEMNUMBER": step3_data_row.feature[ifeature].ItemNumber,
-                  "OPTM_ITEMCODE": step3_data_row.feature[ifeature].Item,
+                  "OPTM_ITEMCODE": step3_data_row.feature[ifeature].Item.trim(),
                   "OPTM_KEY": "",
                   "OPTM_PARENTKEY": "",
                   "OPTM_TEMPLATEID": "",
@@ -5146,7 +5150,7 @@ export class OutputComponent implements OnInit {
                   "OPTM_OUTPUTID": "",
                   "OPTM_OUTPUTDTLID": "",
                   "OPTM_ITEMNUMBER": step3_data_row.feature[ifeature].ItemNumber,
-                  "OPTM_ITEMCODE": step3_data_row.feature[ifeature].Item,
+                  "OPTM_ITEMCODE": step3_data_row.feature[ifeature].Item.trim(),
                   "OPTM_KEY": "",
                   "OPTM_PARENTKEY": "",
                   "OPTM_TEMPLATEID": "",
@@ -5846,7 +5850,7 @@ export class OutputComponent implements OnInit {
             HEADER_LINENO: isheadercounter,
             unique_key: unique_key,
             nodeid: nodeid,
-            sort_key:""
+            sort_key:"999999"
           });
           console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
           isheadercounter++;
@@ -7612,45 +7616,8 @@ export class OutputComponent implements OnInit {
           }
         }
 
-        if(this.feature_accessory_list.length>0){
-          for (let iacc = 0; iacc < this.feature_accessory_list.length; iacc++) {
-            if (this.feature_accessory_list[iacc].nodeid == tempchildfeatuniqueKey) {
-              let removeAccUniqueKey = this.feature_accessory_list[iacc].unique_key
-              this.feature_accessory_list.splice(iacc, 1);
-              iacc = iacc - 1;
-              for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
-                if (this.feature_itm_list_table[igrid].nodeid == removeAccUniqueKey) {
-                  this.feature_itm_list_table.splice(igrid, 1);
-                  igrid = igrid - 1;
-                }
-              }
-
-              if(this.selectedAccessoryBOM != undefined){
-                if(this.selectedAccessoryBOM.length > 0){
-                  for (let accidbom = 0; accidbom < this.selectedAccessoryBOM.length; accidbom++) {
-                    if (this.selectedAccessoryBOM[accidbom].nodeid == removeAccUniqueKey) {
-                      this.selectedAccessoryBOM.splice(accidbom, 1);
-                      accidbom = accidbom - 1;
-                    }
-                  } 
-                }
-              }
-            }
-          }
-        }
-        
-        if( this.selectedAccessoryHeader != undefined){
-          if( this.selectedAccessoryHeader.length >0){
-            for (let accid = 0; accid < this.selectedAccessoryHeader.length; accid++) {
-              if (this.selectedAccessoryHeader[accid].nodeid == tempchildfeatuniqueKey) {
-                this.selectedAccessoryHeader.splice(accid, 1);
-                accid = accid - 1;
-              }
-            } 
-          }
-        }
+        this.removeAccessoryHeaderAndItems(tempchildfeatuniqueKey);  
        
-
         for (let index = 0; index < this.ModelBOMDataForSecondLevel.length; index++) {
           if (this.ModelBOMDataForSecondLevel[index].nodeid == tempchildfeatuniqueKey) {
             let tempParentModelId;

@@ -89,7 +89,7 @@ export class RulewbComponent implements OnInit {
   isPerfectSCrollBar: boolean = false;
 
  canDeactivate() {
-    if(this.made_changes == true){
+    if(this.made_changes == true && CommonData.sessionExpire == true){
       return this.DialogService.confirm('');
     } else {
       return true;

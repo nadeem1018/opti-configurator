@@ -101,7 +101,7 @@ export class BomComponent implements OnInit {
   }
 
   canDeactivate() {
-    if(this.made_changes == true){
+    if(this.made_changes == true && CommonData.sessionExpire == true){
       return this.DialogService.confirm('');
     } else {
       return true;

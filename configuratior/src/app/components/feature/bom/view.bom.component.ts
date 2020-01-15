@@ -453,7 +453,11 @@ export class ViewFeatureBOMComponent implements OnInit {
             })
         }
 
-
+        if (this.dataArray.length == this.CheckedData.length) {
+            $("input[name='parent_checkbox']").prop("checked", true);
+            }else{
+             $("input[name='parent_checkbox']").prop("checked", false);
+           }
     }
 
     on_Selectall_checkbox_checked(checkedvalue) {
@@ -466,7 +470,7 @@ export class ViewFeatureBOMComponent implements OnInit {
             this.selectall = true
             if (this.dataArray.length > 0) {
                 for (let i = 0; i < this.dataArray.length; ++i) {
-
+                    $("input[name='child_checkbox']").prop("checked", true);
                     this.CheckedData.push({
                         FeatureId: this.dataArray[i].OPTM_FEATUREID,
                         CompanyDBId: this.companyName,

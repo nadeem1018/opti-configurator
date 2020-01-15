@@ -118,6 +118,7 @@ export class LookupComponent implements OnInit {
   public config_data:any;
   public show_pdf:any;
   public reportBase64String:any;
+  public isColumnFilteLookp: boolean = false;
 
   public close_kendo_dialog() {
     this.dialogOpened = false;

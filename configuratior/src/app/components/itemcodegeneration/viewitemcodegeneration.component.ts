@@ -413,7 +413,11 @@ export class ViewItemCodeGenerationComponent implements OnInit {
         UsernameForLic: sessionStorage.getItem("loggedInUser")
       })
     }
-
+    if (this.dataArray.length == this.CheckedData.length) {
+      $("input[name='parent_checkbox']").prop("checked", true);
+      }else{
+       $("input[name='parent_checkbox']").prop("checked", false);
+     }
 
   }
 
@@ -425,7 +429,7 @@ export class ViewItemCodeGenerationComponent implements OnInit {
       if (this.dataArray.length > 0) {
         this.selectall = true
         for (let i = 0; i < this.dataArray.length; ++i) {
-
+          $("input[name='child_checkbox']").prop("checked", true);
           this.CheckedData.push({
             ItemCode: this.dataArray[i].Code,
             CompanyDBId: this.companyName,

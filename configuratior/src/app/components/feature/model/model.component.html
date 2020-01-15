@@ -162,7 +162,7 @@
                             </button>
 
                             <button type="button" *ngIf="isAssociatedBOMButtonVisible && featureBom.type == 'Feature' && this.codekey!= ''" class="btn btn-sm btn-secondary"
-                            (click)="onAssociatedBOMClick()">
+                            [disabled] = "isAssociateBomDisable"  (click)="onAssociatedBOMClick()"  >
                             <i class="fa fa-share-alt"></i> {{language.associated_BOM}}
                         </button>
 

@@ -71,7 +71,7 @@ export class RoutingComponent implements OnInit {
   isOperationDisabled: boolean = false;
 
   canDeactivate() {
-    if(this.made_changes == true){
+    if(this.made_changes == true && CommonData.sessionExpire == true){
       return this.DialogService.confirm('');
     } else {
       return true;

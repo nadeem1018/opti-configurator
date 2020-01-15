@@ -366,7 +366,7 @@ export class ViewRoutingComponent implements OnInit {
                 if (this.dataArray.length > 0) {
                     this.selectall = true
                     for (let i = 0; i < this.dataArray.length; ++i) {
-
+                        $("input[name='child_checkbox']").prop("checked", true);
                         this.CheckedData.push({
                             RoutingId: this.dataArray[i].OPTM_MODELFEATUREID,
                             CompanyDBId: this.companyName,
@@ -379,6 +379,7 @@ export class ViewRoutingComponent implements OnInit {
             else {
                 this.selectall = false
             }
+            
         }
 
         on_checkbox_checked(checkedvalue, row_data) {
@@ -418,6 +419,13 @@ export class ViewRoutingComponent implements OnInit {
                 })
             }
 
+            if (this.dataArray.length == this.CheckedData.length) {
+                $("input[name='parent_checkbox']").prop("checked", true);
+                }else{
+                 $("input[name='parent_checkbox']").prop("checked", false);
+               }
+
 
         }
+        
     }

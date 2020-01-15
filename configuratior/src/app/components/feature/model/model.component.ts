@@ -77,9 +77,10 @@ export class ModelComponent implements OnInit {
   public header_image_data: any;
   public menu_auth_index = '201';
   public made_changes:boolean = false;
+  public isAssociateBomDisable = false;
 
   canDeactivate() {
-    if(this.made_changes == true){
+    if(this.made_changes == true && CommonData.sessionExpire == true){
       return this.DialogService.confirm('');
     } else {
       return true;
@@ -135,6 +136,7 @@ export class ModelComponent implements OnInit {
       this.featureBom.Status = "Active";
       this.code_disabled = "false";
       this.featureBom.type = "Feature";
+      this.isAssociateBomDisable = true;
       if (this.featureBom.type == "Feature") {
         this.model_code_label = this.language.model_FeatureCode;
         this.model_name_label = this.language.Model_FeatureName;
@@ -164,6 +166,7 @@ export class ModelComponent implements OnInit {
         this.isSaveButtonVisible = false;
         this.isDuplicateMode = false;
         this.isDeleteButtonVisible = true;
+        this.isAssociateBomDisable = false;
       } else if(this.ActivatedRouter.snapshot.url[2].path == "add"){
         this.code_disabled = "false";
         this.button = "save"
@@ -171,6 +174,7 @@ export class ModelComponent implements OnInit {
         this.isSaveButtonVisible = true;
         this.isDuplicateMode = true;
         this.isDeleteButtonVisible = false;
+        this.isAssociateBomDisable = true;
       } else {
         this.code_disabled= "true";
         this.button = "update"
