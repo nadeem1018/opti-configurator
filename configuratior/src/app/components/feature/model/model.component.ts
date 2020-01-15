@@ -316,7 +316,7 @@ export class ModelComponent implements OnInit {
     if (validateStatus == true) {
       this.featureModel.push({
         CompanyDBId: this.companyName,
-        FeatureCode: this.featureBom.Code,
+        FeatureCode: this.featureBom.Code.trim(),
         DisplayName: this.featureBom.Name,
         FeatureDesc: this.featureBom.Desc,
         EffectiveDate: (EffectiveDate).getFullYear() + '/' + ((EffectiveDate).getMonth() + 1) + '/' + (EffectiveDate).getDate(),
@@ -516,7 +516,7 @@ export class ModelComponent implements OnInit {
       this.featureModel.push({
         CompanyDBId: this.companyName,
         FeatureId: this.codekey,
-        FeatureCode: this.featureBom.Code,
+        FeatureCode: this.featureBom.Code.trim(),
         DisplayName: this.featureBom.Name,
         FeatureDesc: this.featureBom.Desc,
         EffectiveDate: this.featureBom.Date,
