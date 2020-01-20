@@ -4786,7 +4786,7 @@ export class OutputComponent implements OnInit {
             "OPTM_OUTPUTID": "",
             "OPTM_OUTPUTDTLID": "",
             "OPTM_ITEMNUMBER": "",
-            "OPTM_ITEMCODE": step3_data_row.item.trim,
+            "OPTM_ITEMCODE": step3_data_row.item.trim(),
             "OPTM_KEY": "",
             "OPTM_PARENTKEY": "",
             "OPTM_TEMPLATEID": step3_data_row.templateid,
