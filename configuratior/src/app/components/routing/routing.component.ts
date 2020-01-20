@@ -551,6 +551,9 @@ ClearOperLineOnWarehouse() {
 getLookupValue($event) {
 
   console.log('in getLookupValue' + 'lookup for - ' + this.lookupfor, $event);
+  if($event[0] == undefined || $event[0] == "" || $event[0] == null){
+    return;    
+ }
   if (this.lookupfor == 'feature_lookup') {
     this.routing_header_data.feature_id = $event[0];
     this.routing_header_data.feature_code = $event[1];

@@ -1061,10 +1061,13 @@ validate_min_values(value, input_id) {
 
    getLookupValue($event) {
      console.log($event);
-     if (this.lookupfor == 'feature_lookup') {
+     if($event[0] == undefined || $event[0] == "" ){
+      return;    
+    }
+     if (this.lookupfor == 'feature_lookup') {      
        this.made_changes = true;
        this.feature_bom_data.feature_id = $event[0];
-       this.feature_bom_data.feature_code = $event[1];
+       this.feature_bom_data.feature_code = $event[1];      
        this.getFeatureDetails($event[0], "Header", 0);
      }
      else if (this.lookupfor == 'Item_Detail_lookup') {
