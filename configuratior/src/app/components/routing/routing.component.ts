@@ -1340,6 +1340,12 @@ getTemplateRoutingDetails(template_code) {
       return;
     });
 }
+on_template_change(){
+  if(this.routing_header_data.use_template_routing == false){
+    this.routing_header_data.template_routing_id = "";
+    this.routing_header_data.template_routing_code = "";
+   }
+}
 
 on_type_click_lookup(type, rowindex) {
   this.made_changes = true;

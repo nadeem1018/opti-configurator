@@ -262,6 +262,7 @@
                         <div class="custom-control custom-checkbox custom-control-inline">
                           <input type="checkbox" id="use_template_routing" name="use_template_routing" [(ngModel)]="routing_header_data.use_template_routing"
                             class="custom-control-input" value="1" style="position: relative;margin-top: 5px;"
+                            (change)="on_template_change()"
                             #use_template_routing_objj title="{{routing_header_data.use_template_routing}}" tabindex="5">
                           <label class="custom-control-label" for="use_template_routing"></label>
                         </div>

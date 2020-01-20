@@ -393,6 +393,7 @@ export class ModelbomComponent implements OnInit {
             this.modelbom_data.modal_code = "";
             this.modelbom_data.feature_name = "";
             this.modelbom_data.feature_desc = ""; 
+            this.modelbom_data.modal_id = ""; 
             this.modelbom_data.is_ready_to_use=false; 
           }
         },error => {

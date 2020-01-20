@@ -602,12 +602,12 @@
     "inspection_qc":"Inspeccion de CC",
     "sub_contracting":"Subcontratacion",
     "others":"Otros",
-    "variable":"Variable",
-    "fixed":"Fixed",
+    "variable":"Variable",  
     "print_on_report":"Print on Quote",
     "miscellaneous_charges":"Miscellaneous Charges",
     "hidden_item_text_on_report":"Hidden Item Text On Report",
     "DataNotUpdated": "Failed to update data",
-    "duplicate_record":"Duplicate this record"
+    "duplicate_record":"Duplicate this record",
+    "hidden_item_text_on_report_blank": "Hidden item text on report can't be blank"
 
 }

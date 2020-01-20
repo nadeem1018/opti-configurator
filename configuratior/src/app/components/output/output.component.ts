@@ -2426,6 +2426,25 @@ export class OutputComponent implements OnInit {
                           sort_key: data.DataForSelectedFeatureModelItem[i].sort_key
                         });
                       }
+
+                      this.AccessModel = [];
+                      this.AccessModel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                        return obj['ACCESSORY'] == "Y";
+                      });
+                      if (this.AccessModel != undefined || this.AccessModel != null) {
+  
+                      if(this.selectedAccessoryHeader == undefined || this.selectedAccessoryHeader == null){
+                        this.selectedAccessoryHeader = this.AccessModel;
+                      }else{
+                        this.selectedAccessoryHeader = this.selectedAccessoryHeader.concat(this.AccessModel);
+                      }
+                      this.getAccessoryData(this.selectedAccessoryHeader)
+                      }
+  
+                      this.FeatureBOMDataForSecondLevel = this.FeatureBOMDataForSecondLevel.filter(function (obj) {
+                        return obj['ACCESSORY'] != "Y"
+                      });
+
                       let itemsData = [];
                       let isValue: boolean = false
                       itemsData.push(data.DataForSelectedFeatureModelItem[i])
@@ -2601,7 +2620,13 @@ export class OutputComponent implements OnInit {
                       }
                     }
                   }
-
+                  if(data.AccessoryBOM != undefined){
+                    if (this.selectedAccessoryBOM == undefined || this.selectedAccessoryBOM == null) {                 
+                      this.selectedAccessoryBOM = data.AccessoryBOM;
+                     } else {
+                     this.selectedAccessoryBOM = this.selectedAccessoryBOM.concat(data.AccessoryBOM);                 
+                    }
+                  }
                   this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
 
                 }
@@ -2787,7 +2812,7 @@ export class OutputComponent implements OnInit {
                    this.selectedAccessoryBOM = this.selectedAccessoryBOM.concat(data.AccessoryBOM);                 
                   }
                 }
-                  console.log("selectedAccessoryBOM", this.selectedAccessoryBOM);
+                 
                   this.defaultitemflagid = feature_model_data.OPTM_FEATUREID
                 }
               }
@@ -3090,7 +3115,7 @@ export class OutputComponent implements OnInit {
       }
     }
     var checkDefaultFeatureIndtFeatureDataWithDefault = dtFeatureDataWithDefault.filter(function (obj) {
-      return obj['OPTM_DEFAULT'] == "Y" && dtFeatureDataWithDefault[idtfeature].OPTM_TYPE == "1"
+      return obj['OPTM_DEFAULT'] == "Y" && obj['OPTM_TYPE'] == "1"
     })
 
     if (checkDefaultFeatureIndtFeatureDataWithDefault.length > 0) {
@@ -4962,7 +4987,7 @@ export class OutputComponent implements OnInit {
             } else {
               modelUniqueKey = this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
             } */
-
+            if (imodelData.length > 0) {
             temp_step2_final_dataset_save.push({
               "OPTM_OUTPUTID": "",
               "OPTM_OUTPUTDTLID": "",
@@ -4996,6 +5021,7 @@ export class OutputComponent implements OnInit {
               "OPTM_FILL_POINT": "3",
               "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
             })
+          }
 
           }
           else {
@@ -7476,7 +7502,7 @@ export class OutputComponent implements OnInit {
         tempchildfeatunique_key = this.ModelHeaderData[itemp].unique_key
         this.ModelHeaderData.splice(itemp, 1);
         itemp = itemp - 1
-
+        this.removeAccessoryHeaderAndItems(tempchildfeatunique_key); 
         for (var itemp2 = 0; itemp2 < this.FeatureBOMDataForSecondLevel.length; itemp2++) {
           if (this.FeatureBOMDataForSecondLevel[itemp2].nodeid == tempchildfeatunique_key && this.FeatureBOMDataForSecondLevel[itemp2].OPTM_FEATUREID == tempfeatureidmodelheader) {
             if (this.FeatureBOMDataForSecondLevel[itemp2].OPTM_TYPE == "1") {

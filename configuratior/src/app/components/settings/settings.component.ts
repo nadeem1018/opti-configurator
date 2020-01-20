@@ -92,12 +92,16 @@ export class SettingsComponent implements OnInit {
 	}
 
 	onUpdateClick(){
-		this.showLookupLoader = true;
 		let report_data_save: any = {};
 		report_data_save.settingdata = [];
 		report_data_save.apidata = [];
 		report_data_save.connectiondetails = [];
 		let temp = {};
+		if(this.settings_data.report_hidden_item_text.trim().length==0){
+		this.toastr.error('', this.language.hidden_item_text_on_report_blank, this.commonData.toast_config);
+		return;
+		}
+		this.showLookupLoader = true;
 		for(let index in this.settings_data){
 			temp = {
 				"NAME"  : index,

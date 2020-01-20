@@ -414,6 +414,7 @@ export class BomComponent implements OnInit {
           this.feature_bom_data.feature_code = ""; 
           this.feature_bom_data.feature_name = "";
           this.feature_bom_data.feature_desc = "";
+          this.feature_bom_data.feature_id = "";
           }
       },
       error => {
