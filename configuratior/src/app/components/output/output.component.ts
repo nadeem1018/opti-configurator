@@ -6098,7 +6098,7 @@ export class OutputComponent implements OnInit {
         originalQuantity = ModelData[imodelarray].OPTM_QUANTITY
         priceextn = formatequantity * ModelData[imodelarray].Price
         actualPrice = ModelData[imodelarray].Price;
-        nodeid = (ModelData[imodelarray].unqiue_key !== undefined) ? ModelData[imodelarray] : "";
+        nodeid = (ModelData[imodelarray].unique_key !== undefined) ? ModelData[imodelarray].nodeid : "";
       } else {
         get_saved_data[0].OPTM_QUANTITY = parseFloat(get_saved_data[0].OPTM_QUANTITY).toFixed(3)
         formatequantity = get_saved_data[0].OPTM_QUANTITY;
