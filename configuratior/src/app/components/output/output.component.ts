@@ -3813,13 +3813,15 @@ export class OutputComponent implements OnInit {
           "OPTM_BILLADD": this.step1_data.bill_to_address,
           "OPTM_SHIPADD": this.step1_data.ship_to_address,
           "OPTM_POSTINGDATE": this.step1_data.posting_date,
-          "OPTM_GRANDTOTAL": Number(this.step3_data_final[iHdrCount].discounted_price),
+          "OPTM_GRANDTOTAL": Number(this.step3_data_final[iHdrCount].discounted_price) + 
+                             Number(this.step3_data_final[iHdrCount].accesory_final_price),
           "OPTM_PRODTOTAL": Number(this.step3_data_final[iHdrCount].price_ext),
           "OPTM_TOTALBEFOREDIS": Number(this.step3_data_final[iHdrCount].price),
           "OPTM_PRODDISCOUNT": Number(this.step3_data_final[iHdrCount].feature_discount_percent),
           "OPTM_ACCESSORYDIS": this.step3_data_final[iHdrCount].accessory_discount_percent,
-          "OPTM_ACCESSORYTOTAL": "",
-          "OPTM_TOTALDISCOUNT": "",
+          "OPTM_ACCESSORYTOTAL": Number(this.step3_data_final[iHdrCount].accessory_total_before_dis),
+          "OPTM_TOTALDISCOUNT": Number(this.step3_data_final[iHdrCount].discount_amount) + 
+                                Number(this.step3_data_final[iHdrCount].accessory_discount_amount),
           "model_index": iHdrCount,
         })
       }
