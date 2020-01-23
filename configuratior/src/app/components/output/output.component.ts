@@ -3440,7 +3440,12 @@ export class OutputComponent implements OnInit {
 
       var tempModelID
       if (parentarray[0].OPTM_TYPE == 3) {
-        tempModelID = featureModelData.OPTM_MODELID
+        if(featureModelData.OPTM_CHILDMODELID == undefined || 
+          featureModelData.OPTM_CHILDMODELID == "" || featureModelData.OPTM_CHILDMODELID == null) {
+          tempModelID = featureModelData.OPTM_MODELID
+          } else {
+           tempModelID = featureModelData.OPTM_CHILDMODELID
+          }
       } else {
         if (parentarray[0].parentmodelid != this.step2_data.model_id) {
           if (parentarray[0].parentmodelid !== undefined && parentarray[0].parentmodelid !== null) {
