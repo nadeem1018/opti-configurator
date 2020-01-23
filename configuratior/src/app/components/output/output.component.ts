@@ -3439,17 +3439,12 @@ export class OutputComponent implements OnInit {
       var priceextn: any = formatequantity * ItemData[0].Price
 
       var tempModelID
-      if (parentarray[0].OPTM_TYPE == 3) {
-        if(featureModelData.OPTM_CHILDMODELID == undefined || 
-          featureModelData.OPTM_CHILDMODELID == "" || featureModelData.OPTM_CHILDMODELID == null) {
-          tempModelID = featureModelData.OPTM_MODELID
-          } else {
-           tempModelID = featureModelData.OPTM_CHILDMODELID
-          }
+      if (parentarray[0].OPTM_TYPE == 3) {        
+          tempModelID = featureModelData.OPTM_MODELID         
       } else {
         if (parentarray[0].parentmodelid != this.step2_data.model_id) {
           if (parentarray[0].parentmodelid !== undefined && parentarray[0].parentmodelid !== null) {
-            tempModelID = parentarray[0].parentmodelid;
+             tempModelID = parentarray[0].parentmodelid;
           } else {
             if (currentfeaturerow.ModelId != undefined && currentfeaturerow.ModelId != null) {
               tempModelID = currentfeaturerow.ModelId;
@@ -4815,7 +4810,7 @@ export class OutputComponent implements OnInit {
             "OPTM_REFITEMCODE": "",
             "OPTM_PARENTID": step3_data_row.model_id,
             "OPTM_PARENTTYPE": 2,
-            "UNIQUE_KEY": '',
+            "UNIQUE_KEY": this.MainModelDetails[0].UNIQUE_KEY,
             "NODEID": '',
             "temp_model_id": parseInt(step3_data_row.model_id),
             "OPTM_FILL_POINT": "1",
