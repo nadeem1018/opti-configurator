@@ -152,7 +152,7 @@ export class ModelComponent implements OnInit {
     }
     else {
       this.button = "update";
-      this.made_changes = true; 
+      this.made_changes = false; 
       /* this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false; */
       /* this.isDeleteButtonVisible = true; */
