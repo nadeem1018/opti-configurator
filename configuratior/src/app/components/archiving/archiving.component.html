@@ -167,10 +167,10 @@
                     <ng-template kendoGridCellTemplate let-dataItem>
                        <span *ngIf="dataItem.models != null && dataItem.models!= undefined">
                          
-                      <ng-container *ngIf="dataItem.models.indexOf(',') !== -1">
-                      <div *ngFor="let model_item of dataItem.models.split(',')"> {{model_item}}</div>
+                      <ng-container *ngIf="dataItem.models.indexOf('::_::') !== -1">
+                      <div *ngFor="let model_item of dataItem.models.split('::_::')"> {{model_item}}</div>
                       </ng-container>
-                      <ng-container *ngIf="dataItem.models.indexOf(',') == -1">
+                      <ng-container *ngIf="dataItem.models.indexOf('::_::') == -1">
                         {{dataItem.models}}
                       </ng-container>
                        </span> 
@@ -180,10 +180,10 @@
                     [minResizableWidth]="140">
                     <ng-template kendoGridCellTemplate let-dataItem>
                       <span *ngIf="dataItem.fg_item != null && dataItem.fg_item!= undefined">
-                      <ng-container *ngIf="dataItem.fg_item.indexOf(',') !== -1">
-                         <div *ngFor="let fg_data_item of dataItem.fg_item.split(',')"> {{fg_data_item}}</div>
+                      <ng-container *ngIf="dataItem.fg_item.indexOf('::_::') !== -1">
+                         <div *ngFor="let fg_data_item of dataItem.fg_item.split('::_::')"> {{fg_data_item}}</div>
                       </ng-container>
-                      <ng-container *ngIf="dataItem.fg_item.indexOf(',') == -1">
+                      <ng-container *ngIf="dataItem.fg_item.indexOf('::_::') == -1">
                         {{dataItem.fg_item}}
                       </ng-container>
                     </span>

@@ -31,7 +31,7 @@ export class ArchivingService {
   filter_results(filter_data_obj): Observable<any> {
     let model_list_string = "";
     if(filter_data_obj.selected_models.length > 0 && filter_data_obj.selected_models!= null ){
-      model_list_string = "'"+(filter_data_obj.selected_models).join("','")+"'";
+      model_list_string = "'"+(filter_data_obj.selected_models).join("'::_::'")+"'";
     }
 
     let jObject = {
