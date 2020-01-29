@@ -1181,20 +1181,28 @@ export class OutputComponent implements OnInit {
                   if (featurepropagatecheck.length > 0) {
                     if (featurepropagatecheck[0].OPTM_PROPOGATEQTY == "Y") {
                       // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
-                      this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
+                      this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].progateqty));
                     }
                   }
                 }
                 else if (modelheaderpropagatechecked[0].OPTM_TYPE == "2") {
                   if (modelheaderpropagatechecked[0].OPTM_ITEMKEY == this.feature_itm_list_table[i].Item) {
                     // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                    if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                    this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].progateqty));
+                   } else {
                     this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
-                  }
+                   }
+                   }
                 }
                 else {
                   // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
+                  if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].progateqty));
+                 } else {
                   this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
-                }
+                 }
+                 }
 
               }
 
@@ -1209,7 +1217,7 @@ export class OutputComponent implements OnInit {
               if (modelheaderpropagatechecked[0].OPTM_PROPOGATEQTY == "Y") {
                 if (this.feature_itm_list_table[i].ispropogateqty == "Y") {
                   // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
-                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity) * modelheaderpropagatechecked[0].OPTM_QUANTITY);
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].progateqty) * modelheaderpropagatechecked[0].OPTM_QUANTITY);
                 }
 
               }
@@ -1218,7 +1226,7 @@ export class OutputComponent implements OnInit {
               if (this.feature_itm_list_table[i].is_accessory == 'Y') {
                 if (this.feature_itm_list_table[i].ispropogateqty == 'Y') {
                   // this.feature_itm_list_table[i].quantity = this.step2_data.quantity
-                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].original_quantity));
+                  this.feature_itm_list_table[i].quantity = ((this.step2_data.quantity) * Number(this.feature_itm_list_table[i].progateqty));
                 }
               }
             }
@@ -2226,12 +2234,27 @@ export class OutputComponent implements OnInit {
                         let removetype = this.ModelHeaderData[imodelheader].OPTM_TYPE;
                         this.ModelHeaderData.splice(imodelheader, 1);
                         imodelheader = imodelheader - 1;
+
+                        for (let isecond = 0; isecond < this.ModelBOMDataForSecondLevel.length; isecond++) {
+                          if (this.ModelBOMDataForSecondLevel[isecond].nodeid == removeUniqueKey) {
+                            this.ModelBOMDataForSecondLevel.splice(isecond, 1);
+                            isecond = isecond - 1;
+                          }
+                        }
                         if(removetype == "3"){
                         for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
-                          if (this.feature_itm_list_table[igrid].parentmodelid == removemodelid && this.feature_itm_list_table[igrid].nodeid == removeUniqueKey) {
+
+                          let tempIdForFeatureList = "";
+                          if (this.feature_itm_list_table[igrid].OPTM_TYPE == 3) {
+                            tempIdForFeatureList = this.feature_itm_list_table[igrid].unique_key;
+                          } else {
+                            tempIdForFeatureList = this.feature_itm_list_table[igrid].nodeid;
+                          }
+                          if (tempIdForFeatureList == removeUniqueKey) {
                             this.feature_itm_list_table.splice(igrid, 1);
                             igrid = igrid - 1;
                           }
+                          
                         }
                         console.log("Value", this.feature_accessory_list)
                         console.log("Value", removemodelid)
@@ -3513,6 +3536,7 @@ export class OutputComponent implements OnInit {
               discount: 0,
               ItemNumber: featureModelData.DocEntry,
               Description: description,
+              progateqty: parseFloat(formatequantity).toFixed(3),
               quantity: parseFloat(formatequantity).toFixed(3),
               original_quantity: parseFloat(featureModelData.OPTM_QUANTITY).toFixed(3),
               price: featureModelData.ListName,
@@ -3539,6 +3563,7 @@ export class OutputComponent implements OnInit {
               discount: 0,
               ItemNumber: ItemData[0].DocEntry,
               Description: description,
+              progateqty: parseFloat(formatequantity).toFixed(3),
               quantity: parseFloat(formatequantity).toFixed(3),
               original_quantity: parseFloat(ItemData[0].OPTM_QUANTITY).toFixed(3),
               price: ItemData[0].ListName,
@@ -5867,6 +5892,7 @@ export class OutputComponent implements OnInit {
             discount: 0,
             ItemNumber: ItemData[i].DocEntry,
             Description: ItemData[i].OPTM_DISPLAYNAME,
+            progateqty: parseFloat(formatequantity).toFixed(3),
             quantity: parseFloat(formatequantity).toFixed(3),
             original_quantity: parseFloat(qty_value).toFixed(3),
             price: price_list,
@@ -5925,6 +5951,7 @@ export class OutputComponent implements OnInit {
           discount: 0,
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
+          progateqty: parseFloat(formatequantity).toFixed(3),
           quantity: parseFloat(formatequantity).toFixed(3),
           original_quantity: parseFloat(DefaultData[idefault].OPTM_QUANTITY).toFixed(3),
           price: DefaultData[idefault].ListName,
@@ -5979,6 +6006,7 @@ export class OutputComponent implements OnInit {
           discount: 0,
           ItemNumber: "",
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
+          progateqty: parseFloat(formatequantity).toFixed(3),
           quantity: parseFloat(formatequantity).toFixed(3),
           original_quantity: parseFloat(formatequantity).toFixed(3),
           price: ModelData[imodelarray].ListName,
@@ -6036,6 +6064,7 @@ export class OutputComponent implements OnInit {
             discount: 0,
             ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
             Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
+            progateqty: parseFloat(formatequantity).toFixed(3),
             quantity: parseFloat(formatequantity).toFixed(3),
             original_quantity: parseFloat(formatequantity).toFixed(3),
             price: ModelItemsArray[imodelItemsarray].ListName,
@@ -6120,6 +6149,7 @@ export class OutputComponent implements OnInit {
           discount: 0,
           ItemNumber: "",
           Description: ModelData[imodelarray].OPTM_DISPLAYNAME,
+          progateqty: parseFloat(formatequantity).toFixed(3),
           quantity: parseFloat(formatequantity).toFixed(3),
           original_quantity: parseFloat(originalQuantity).toFixed(3),
           price: ModelData[imodelarray].ListName,
@@ -6193,6 +6223,7 @@ export class OutputComponent implements OnInit {
             discount: 0,
             ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
             Description: ModelItemsArray[imodelItemsarray].OPTM_DISPLAYNAME,
+            progateqty: parseFloat(formatequantity).toFixed(3),
             quantity: parseFloat(formatequantity).toFixed(3),
             original_quantity: parseFloat(originalQuantity).toFixed(3),
             price: ModelItemsArray[imodelItemsarray].ListName,
@@ -6253,6 +6284,7 @@ export class OutputComponent implements OnInit {
           discount: 0,
           ItemNumber: ModelItemsData[imodelarray].DocEntry,
           Description: ModelItemsData[imodelarray].OPTM_DISPLAYNAME,
+          progateqty: parseFloat(formatequantity).toFixed(3),
           quantity: parseFloat(formatequantity).toFixed(3),
           original_quantity: parseFloat(ModelItemsData[imodelarray].OPTM_QUANTITY).toFixed(3),
           price: ModelItemsData[imodelarray].ListName,
@@ -6341,6 +6373,7 @@ export class OutputComponent implements OnInit {
           discount: 0,
           ItemNumber: DefaultData[idefault].DocEntry,
           Description: DefaultData[idefault].OPTM_DISPLAYNAME,
+          progateqty: parseFloat(formatequantity).toFixed(3),
           quantity: parseFloat(formatequantity).toFixed(3),
           original_quantity: parseFloat(originalQuantity).toFixed(3),
           price: DefaultData[idefault].ListName,
@@ -7097,6 +7130,7 @@ export class OutputComponent implements OnInit {
             discount: 0,
             ItemNumber: filtemodeldataheader[0].DocEntry,
             Description: filtemodeldataheader[0].OPTM_DISPLAYNAME,
+            progateqty: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
             quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
             original_quantity: parseFloat(filtemodeldataheader[0].OPTM_QUANTITY).toFixed(3),
             price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
@@ -7138,6 +7172,7 @@ export class OutputComponent implements OnInit {
               discount: 0,
               ItemNumber: ModelItemsArray[0].DocEntry,
               Description: ModelItemsArray[0].OPTM_DISPLAYNAME,
+              progateqty: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
               original_quantity: parseFloat(mbom_quantity).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
@@ -7195,6 +7230,7 @@ export class OutputComponent implements OnInit {
               discount: 0,
               ItemNumber: ItemsArray[0].DocEntry,
               Description: ItemsArray[0].OPTM_DISPLAYNAME,
+              progateqty: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
               quantity: parseFloat(getmodelsavedata[imodelsavedata].OPTM_QUANTITY).toFixed(3),
               original_quantity: parseFloat(mbomQuantity).toFixed(3),
               price: getmodelsavedata[imodelsavedata].OPTM_PRICELIST,
@@ -7384,15 +7420,28 @@ export class OutputComponent implements OnInit {
 
 
         for (let igrid = 0; igrid < this.feature_itm_list_table.length; igrid++) {
-          if (this.feature_itm_list_table[igrid].FeatureId == this.ModelHeaderData[iremove].OPTM_FEATUREID && this.feature_itm_list_table[igrid].nodeid == this.ModelHeaderData[iremove].unique_key) {
-            this.feature_itm_list_table.splice(igrid, 1);
-            igrid = igrid - 1;
-          }
+          let tempIdForFeatureList = "";
+           if (this.feature_itm_list_table[igrid].OPTM_TYPE == 3) {
+            tempIdForFeatureList = this.feature_itm_list_table[igrid].unique_key;
+             } else {
+            tempIdForFeatureList = this.feature_itm_list_table[igrid].nodeid;
+             }
+             if (tempIdForFeatureList == removeUniqueKey) {
+              this.feature_itm_list_table.splice(igrid, 1);
+                igrid = igrid - 1;
+            }
+
         }
 
         for (let isecond = 0; isecond < this.FeatureBOMDataForSecondLevel.length; isecond++) {
-          if (this.FeatureBOMDataForSecondLevel[isecond].OPTM_FEATUREID == this.ModelHeaderData[iremove].OPTM_FEATUREID && this.FeatureBOMDataForSecondLevel[isecond].nodeid == this.ModelHeaderData[iremove].unique_key) {
+          if (this.FeatureBOMDataForSecondLevel[isecond].nodeid == this.ModelHeaderData[iremove].unique_key) {
             this.FeatureBOMDataForSecondLevel.splice(isecond, 1);
+            isecond = isecond - 1;
+          }
+        }
+        for (let isecond = 0; isecond < this.ModelBOMDataForSecondLevel.length; isecond++) {
+          if (this.ModelBOMDataForSecondLevel[isecond].nodeid == this.ModelHeaderData[iremove].unique_key) {
+            this.ModelBOMDataForSecondLevel.splice(isecond, 1);
             isecond = isecond - 1;
           }
         }
