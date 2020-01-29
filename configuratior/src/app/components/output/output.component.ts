@@ -2408,7 +2408,7 @@ export class OutputComponent implements OnInit {
                           OPTM_TYPE: data.DataForSelectedFeatureModelItem[i].OPTM_TYPE,
                           OPTM_VALUE: data.DataForSelectedFeatureModelItem[i].OPTM_VALUE,
                           feature_code: data.DataForSelectedFeatureModelItem[i].feature_code,
-                          parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
+                          parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,                        
                           checked: checkeddefault,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
                           is_second_level: 1,
@@ -2741,6 +2741,7 @@ export class OutputComponent implements OnInit {
                           parent_code: data.DataForSelectedFeatureModelItem[i].parent_code,
                           child_code: data.DataForSelectedFeatureModelItem[i].child_code,
                           OPTM_LEVEL: feature_model_data.OPTM_LEVEL + 1,
+                          DocEntry : data.DataForSelectedFeatureModelItem[i].DocEntry,
                           is_second_level: 1,
                           element_class: item_elementclass,
                           element_type: item_elementtype,
@@ -3044,6 +3045,7 @@ export class OutputComponent implements OnInit {
         this.FeatureBOMDataForSecondLevel.push({
           ACCESSORY: dtFeatureDataWithDefault[idtfeature].ACCESSORY,
           IMAGEPATH: this.commonData.get_current_url() + dtFeatureDataWithDefault[idtfeature].OPTM_ATTACHMENT,
+          DocEntry: dtFeatureDataWithDefault[idtfeature].DocEntry,
           OPTM_ATTACHMENT: dtFeatureDataWithDefault[idtfeature].OPTM_ATTACHMENT,
           OPTM_CHILDFEATUREID: parseInt(dtFeatureDataWithDefault[idtfeature].OPTM_CHILDFEATUREID),
           OPTM_COMPANYID: dtFeatureDataWithDefault[idtfeature].OPTM_COMPANYID,
@@ -6099,7 +6101,7 @@ export class OutputComponent implements OnInit {
         formatequantity = ModelData[imodelarray].OPTM_QUANTITY * this.step2_data.quantity
         originalQuantity = ModelData[imodelarray].OPTM_QUANTITY
         priceextn = formatequantity * ModelData[imodelarray].Price
-        actualPrice = ModelData[imodelarray].Price;
+        actualPrice = ModelData[imodelarray].Price;        
         nodeid = (ModelData[imodelarray].unique_key !== undefined) ? ModelData[imodelarray].nodeid : "";
       } else {
         get_saved_data[0].OPTM_QUANTITY = parseFloat(get_saved_data[0].OPTM_QUANTITY).toFixed(3)
@@ -6126,7 +6128,7 @@ export class OutputComponent implements OnInit {
           is_accessory: "N",
           isPriceDisabled: isPriceDisabled,
           pricehide: isPricehide,
-          ModelId: ModelData[imodelarray].OPTM_MODELID,
+          ModelId: ModelData[imodelarray].parentmodelid,
           OPTM_LEVEL: 1,
           OPTM_TYPE: ModelData[imodelarray].OPTM_TYPE,
           isQuantityDisabled: true,
@@ -6199,7 +6201,7 @@ export class OutputComponent implements OnInit {
             is_accessory: "N",
             isPriceDisabled: isPriceDisabled,
             pricehide: isPricehide,
-            ModelId: ModelItemsArray[imodelItemsarray].OPTM_MODELID,
+            ModelId: ModelData[imodelarray].parentmodelid,
             OPTM_LEVEL: 2,
             OPTM_TYPE: ModelItemsArray[imodelItemsarray].OPTM_TYPE,
             isQuantityDisabled: true,
