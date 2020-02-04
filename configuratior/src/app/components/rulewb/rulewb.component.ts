@@ -1391,7 +1391,7 @@ async  genearate_expression() {
     this.on_input_change(rowindex, 'type_value', value, actualvalue);
   }
 
-  add_rule_sequence() {
+  add_rule_sequence() {debugger
     this.made_changes = true;
     if (this.rule_sequence_data.length > 0) {
       this.expression_counter = 0;
@@ -1402,6 +1402,10 @@ async  genearate_expression() {
       // additional validation for atleast 1 option selected as default in output
       var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
         return obj.is_default;
+      });
+
+      var feature_data_checked_value = this.rule_feature_data.filter(function (obj) {
+        return obj.check_child;
       });
       console.log("feature_data_default_value");
       console.log(feature_data_default_value);
@@ -1414,6 +1418,10 @@ async  genearate_expression() {
       } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'Y') {
         if (feature_data_default_value.length > this.feature_bom_header_details.OPTM_MAX_SELECTABLE ){
           this.toastr.error('', this.language.default_more_than_max_sel + ' - ' + this.feature_bom_header_details.OPTM_MAX_SELECTABLE, this.commonData.toast_config);
+          return false;
+        }
+        if (feature_data_checked_value.length < this.feature_bom_header_details.OPTM_MIN_SELECTABLE) {
+          this.toastr.error('', this.language.default_less_than_min_sel + ' - ' + this.feature_bom_header_details.OPTM_MIN_SELECTABLE, this.commonData.toast_config);
           return false;
         }
       }
@@ -1460,12 +1468,15 @@ async  genearate_expression() {
       })
   }
 
-  update_rule_sequence() {
+  update_rule_sequence() {debugger
     this.made_changes = true;
     if (this.rule_sequence_data.length > 0) {
       // additional validation for atleast 1 option selected as default in output
       var feature_data_default_value = this.rule_feature_data.filter(function (obj) {
         return obj.is_default;
+      });
+      var feature_data_checked_value = this.rule_feature_data.filter(function (obj) {
+        return obj.check_child;
       });
       if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'N' && this.feature_bom_header_details.OPTM_MIN_SELECTABLE != '0') {
         if (feature_data_default_value.length == 0 || feature_data_default_value == null || feature_data_default_value == undefined) {
@@ -1475,6 +1486,10 @@ async  genearate_expression() {
       } else if (this.feature_bom_header_details.OPTM_ISMULTISELECT == 'Y') {
         if (feature_data_default_value.length > this.feature_bom_header_details.OPTM_MAX_SELECTABLE) {
           this.toastr.error('', this.language.default_more_than_max_sel + ' - ' + this.feature_bom_header_details.OPTM_MAX_SELECTABLE, this.commonData.toast_config);
+          return false;
+        }
+        if (feature_data_checked_value.length < this.feature_bom_header_details.OPTM_MIN_SELECTABLE) {
+          this.toastr.error('', this.language.default_less_than_min_sel + ' - ' + this.feature_bom_header_details.OPTM_MIN_SELECTABLE, this.commonData.toast_config);
           return false;
         }
       }

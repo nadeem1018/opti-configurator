@@ -619,7 +619,8 @@
     "delete_all":"Delete All",
     "ship_date":"Ship Date",
     "ship_date_anticipated":"Ship Date Anticipated",
-    "hidden_item_text_on_report_blank": "Hidden item text on report can't be blank"
+    "hidden_item_text_on_report_blank": "Hidden item text on report can't be blank",
+    "default_less_than_min_sel" : "Checked items cannot be less than 'Min Selectable'"
 
 
 }
