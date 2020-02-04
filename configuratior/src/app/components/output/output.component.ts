@@ -3984,6 +3984,10 @@ export class OutputComponent implements OnInit {
             }
           }
 
+          if(step3_temp_row.feature[us_indexx].OPTM_TYPE == 2){
+            modelid_val = this.getModelId(step3_temp_row.feature[us_indexx].nodeid, step3_temp_row.ModelHeaderData);            
+          }
+
           let ItemNo = "";
           if (step3_temp_row.feature[us_indexx].ItemNumber != undefined && step3_temp_row.feature[us_indexx].ItemNumber != "") {
             ItemNo = (step3_temp_row.feature[us_indexx].ItemNumber).toString();
@@ -4195,6 +4199,36 @@ export class OutputComponent implements OnInit {
         return;
       }
     )
+  }
+
+  getModelId(nodeId, modelHeaderData) {
+    var subModelData = [];
+    var modelId = "";
+   
+    if(subModelData.length == 0) {
+      let mainModelDetailArr = []
+      mainModelDetailArr = this.MainModelDetails.filter(function (obj) {
+        return obj.UNIQUE_KEY == nodeId
+      })
+      if (mainModelDetailArr.length > 0) {
+        return  modelId =  mainModelDetailArr[0].OPTM_MODELID;
+      }
+    }
+    
+    if (modelHeaderData.length > 0 && modelId == "") {
+      subModelData = modelHeaderData.filter(function (obj) {
+        return obj.unique_key == nodeId
+      })
+      if (subModelData.length > 0) {
+        if (subModelData[0].OPTM_TYPE == 1) {
+          return modelId=  this.getModelId(subModelData[0].nodeid, modelHeaderData);
+        } else {
+          modelId =  subModelData[0].OPTM_CHILDMODELID;
+          return modelId;
+        }
+      }
+    }
+    /* return modelId; */
   }
 
   colSpanValue(e) {
