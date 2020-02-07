@@ -7118,9 +7118,10 @@ export class OutputComponent implements OnInit {
 
   }
 
-  onModelCodeChange() {
-    /* this.onclearselection(1); */
+  onModelCodeChange(value) {
+    this.onclearselection(1);
     this.showLookupLoader = true;
+    this.step2_data.model_code = value; 
     this.OutputService.onModelIdChange(this.step2_data.model_code).subscribe(
       data => {
 
@@ -7141,7 +7142,7 @@ export class OutputComponent implements OnInit {
           this.toastr.error('', this.language.InvalidModelId, this.commonData.toast_config);
           this.step2_data.modal_id = "";
           this.step2_data.model_code = "";
-          this.onclearselection(1);
+          //this.onclearselection(1);
           return;
         }
         else {
