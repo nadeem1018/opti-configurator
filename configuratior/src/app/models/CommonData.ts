@@ -18,7 +18,8 @@ export class CommonData {
     public href: any = window.location.href;
     public application_path = this.get_current_url();
     public unauthorizedMessage = "The remote server returned an error: (401) Unauthorized.";
-    public static sessionExpire: boolean = true;
+    public static sessionExpire: boolean = false;
+    public static made_changes: boolean = false;
 
     /* constructor(private router:Router,private toastr: ToastrService,private commonservice: CommonService) { } */
 

@@ -90,12 +90,13 @@ export class HeaderComponent implements OnInit {
     }, 2000);
   }
   logout() {    
-    CommonData.sessionExpire = false;
+    CommonData.sessionExpire = true;
+    if(CommonData.made_changes){
+     this.router.navigateByUrl('/login');
+      return;
+    }
     this.CommonService.RemoveLoggedInUser().subscribe();
-
     this.CommonService.signOut(this.toastr, this.router, 'Logout');
-
-
     }
 
   /* checkSession(){

@@ -84,8 +84,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this._el.nativeElement.focus();
     this.selecetedComp = "";
-    let objj = this;
-    CommonData.sessionExpire = true;
+    let objj = this;    
     setTimeout(function () {
       
      /* this.config_data = JSON.parse(sessionStorage.getItem('system_config'));

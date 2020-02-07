@@ -185,7 +185,6 @@ export class OutputComponent implements OnInit {
   public selectedAccessoryHeader: any = []
   public selectedAccessoryBOM: any = []
   public menu_auth_index = '205';
-  public made_changes: boolean = false;
 
   isMobile: boolean = false;
   isIpad: boolean = false;
@@ -207,7 +206,7 @@ export class OutputComponent implements OnInit {
   }
 
   canDeactivate() {
-    if (this.made_changes == true && CommonData.sessionExpire == true) {
+    if (CommonData.made_changes == true) {
       return this.DialogService.confirm('');
     } else {
       return true;
@@ -219,6 +218,7 @@ export class OutputComponent implements OnInit {
     //  this.router_link_new_config = "/output/view/" + Math.round(Math.random() * 10000);
     //this.step1_data.posting_date = (cDate.getMonth() + 1) + "/" + cDate.getDate() + "/" + cDate.getFullYear();
     const element = document.getElementsByTagName('body')[0];
+    CommonData.made_changes = false;
     // // element.className = '';
     this.detectDevice();
     // element.classList.add('sidebar-toggled');
@@ -330,7 +330,7 @@ export class OutputComponent implements OnInit {
   }
 
   onOperationChange(operation_type) {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     this.step1_data = [];
     /* const inpueElem = document.getElementById('description');
     inpueElem.focus();     */
@@ -384,12 +384,12 @@ export class OutputComponent implements OnInit {
   }
 
   on_configuration_id_change(value) {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     this.globalConfigId = value;
   }
 
   onStep0NextPress() {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     this.CommonService.GetServerDate().subscribe(
       data => {
         if (data.length > 0) {
@@ -461,7 +461,7 @@ export class OutputComponent implements OnInit {
   }
 
   open_config_lookup() {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     this.serviceData = []
     this.showLookupLoader = true;
     this.lookupfor = 'configure_list_lookup';
@@ -471,7 +471,7 @@ export class OutputComponent implements OnInit {
           this.showLookupLoader = false;
 
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
@@ -501,7 +501,7 @@ export class OutputComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           // test
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
@@ -625,7 +625,7 @@ export class OutputComponent implements OnInit {
             if (data.length > 0) {
               if (data != undefined) {
                 if (data[0].ErrorMsg == "7001") {
-                  this.made_changes = false;
+                  CommonData.made_changes = false;
                   this.showLookupLoader = false;
                   this.CommonService.RemoveLoggedInUser().subscribe();
                   this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -933,7 +933,7 @@ export class OutputComponent implements OnInit {
       data => {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -966,7 +966,7 @@ export class OutputComponent implements OnInit {
       data => {
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -1009,7 +1009,7 @@ export class OutputComponent implements OnInit {
 
         if (data.length > 0) {
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.showLookupLoader = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -1044,6 +1044,9 @@ export class OutputComponent implements OnInit {
 
 
   getLookupValue($event) {
+    if($event.length == 0){
+      return;
+    }
     if (this.lookupfor == 'ModelBomForWizard_lookup') {
       this.onclearselection(1);
       this.step2_data.model_id = $event[0];
@@ -1699,7 +1702,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -2168,7 +2171,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
               return;
@@ -3616,7 +3619,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -3655,7 +3658,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -3686,7 +3689,7 @@ export class OutputComponent implements OnInit {
         if (data != undefined && data != null) {
           if (data.length > 0) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -3733,7 +3736,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined && data.length > 0) {
 
           if (data[0].ErrorMsg == "7001") {
-            this.made_changes = false;
+            CommonData.made_changes = false;
             this.CommonService.RemoveLoggedInUser().subscribe();
             this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
             return;
@@ -4157,7 +4160,7 @@ export class OutputComponent implements OnInit {
         if (data != null && data != undefined) {
           if (data.length > 0 && data != undefined) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -5319,7 +5322,7 @@ export class OutputComponent implements OnInit {
                     if (model_item_curr_row['OPTM_ITEMNUMBER'] == "" && model_item_curr_row['OPTM_ITEMTYPE'] == 1) {
                       if (model_item_curr_row['OPTM_ITEMCODE'] != "") {
                         sub_item = step3_data_row.ModelHeaderData.filter(function (obj) {
-                          return obj['OPTM_TYPE'] == 3 && obj['child_code'] == model_item_curr_row['OPTM_ITEMCODE']
+                          return obj['OPTM_TYPE'] == 3 && obj['child_code'].trim() == model_item_curr_row['OPTM_ITEMCODE'].trim()
                         })
                         if (sub_item.length > 0) {
                           sub_model_tems = step3_data_row.feature.filter(function (obj) {
@@ -5533,7 +5536,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data != undefined && data != undefined) {
               if (data[0].ErrorMsg == "7001") {
-                this.made_changes = false;
+                CommonData.made_changes = false;
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -5743,7 +5746,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data != undefined && data != undefined) {
               if (data[0].ErrorMsg == "7001") {
-                this.made_changes = false;
+                CommonData.made_changes = false;
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -6152,6 +6155,8 @@ export class OutputComponent implements OnInit {
       let nodeid: any;
       let get_saved_data = [];
       let originalQuantity: any = '';
+      let featureCode: any = '';
+      let get_selected_row = [];
 
       if (Savedgetmodelsavedata !== "" && Savedgetmodelsavedata !== undefined) {
         get_saved_data = Savedgetmodelsavedata.filter(function (obj) {
@@ -6174,11 +6179,20 @@ export class OutputComponent implements OnInit {
         actualPrice = get_saved_data[0].OPTM_UNITPRICE;
         nodeid = get_saved_data[0].UNIQUE_KEY;
       }
+      if(ModelData[imodelarray].feature_code == "" || ModelData[imodelarray].feature_code == null
+       || ModelData[imodelarray].feature_code == undefined ){
+        get_selected_row = ModelData.filter(function (obj) {
+          return ( obj.unique_key == ModelData[imodelarray].nodeid) ? obj.OPTM_DISPLAYNAME : "";
+        })
+        featureCode = get_selected_row[0].OPTM_DISPLAYNAME;
+       }else {
+        featureCode = ModelData[imodelarray].feature_code;
+       }
 
       if (isExist.length == 0) {
         this.feature_itm_list_table.push({
           FeatureId: ModelData[imodelarray].OPTM_CHILDMODELID,
-          featureName: ModelData[imodelarray].child_code,
+          featureName: featureCode,
           Item: ModelData[imodelarray].OPTM_ITEMKEY,
           discount: 0,
           ItemNumber: "",
@@ -6208,7 +6222,7 @@ export class OutputComponent implements OnInit {
       ModelItemsArray = ModelItems.filter(function (obj) {
         return obj['OPTM_MODELID'] == ModelData[imodelarray].OPTM_CHILDMODELID && obj['OPTM_TYPE'] == 2 && obj['nodeid'] == ModelData[imodelarray].unique_key;
       });
-
+       featureCode = ModelData[imodelarray].OPTM_DISPLAYNAME;
 
       for (var imodelItemsarray in ModelItemsArray) {
         isExist = this.feature_itm_list_table.filter(function (obj) {
@@ -6252,7 +6266,7 @@ export class OutputComponent implements OnInit {
         if (isExist.length == 0) {
           this.feature_itm_list_table.push({
             FeatureId: ModelItemsArray[imodelItemsarray].OPTM_FEATUREID,
-            featureName: ModelItemsArray[imodelItemsarray].feature_code,
+            featureName: featureCode,
             Item: ModelItemsArray[imodelItemsarray].OPTM_ITEMKEY,
             discount: 0,
             ItemNumber: ModelItemsArray[imodelItemsarray].DocEntry,
@@ -7113,7 +7127,7 @@ export class OutputComponent implements OnInit {
         if (data != undefined && data.length > 0) {
           if (data != undefined && data != undefined) {
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.showLookupLoader = false;
               this.CommonService.RemoveLoggedInUser().subscribe();
               this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -7783,7 +7797,7 @@ export class OutputComponent implements OnInit {
           if (data.length > 0) {
             if (data != undefined && data != undefined) {
               if (data[0].ErrorMsg == "7001") {
-                this.made_changes = false;
+                CommonData.made_changes = false;
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');
@@ -7922,7 +7936,7 @@ export class OutputComponent implements OnInit {
 
             if (data != undefined && data != undefined) {
               if (data[0].ErrorMsg == "7001") {
-                this.made_changes = false;
+                CommonData.made_changes = false;
                 this.showLookupLoader = false;
                 this.CommonService.RemoveLoggedInUser().subscribe();
                 this.CommonService.signOut(this.toastr, this.route, 'Sessionout');

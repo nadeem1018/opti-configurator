@@ -70,10 +70,10 @@ export class ItemcodegenerationComponent implements OnInit {
   isDesktop:boolean=true;
   isPerfectSCrollBar:boolean = false;
   public menu_auth_index = '200';
-  public made_changes:boolean = false;
+ 
 
   canDeactivate() {
-    if(this.made_changes == true && CommonData.sessionExpire == true ){
+    if(CommonData.made_changes == true){
       return this.DialogService.confirm('');
     } else {
       return true;
@@ -137,7 +137,7 @@ export class ItemcodegenerationComponent implements OnInit {
     this.codekey = this.router.snapshot.paramMap.get('id');
     if (this.codekey === "" || this.codekey === null) {
       this.button = "save"
-      this.made_changes = true;
+      CommonData.made_changes = false;
 
       this.isCodeDisabled=true;
       this.isUpdateButtonVisible=false;
@@ -152,7 +152,7 @@ export class ItemcodegenerationComponent implements OnInit {
     }
     else {
       /* this.button = "update" */
-      this.made_changes = false;
+      CommonData.made_changes = false;
       /* this.isUpdateButtonVisible = true;
       this.isSaveButtonVisible = false;
       this.isDeleteButtonVisible = true; */
@@ -265,12 +265,20 @@ export class ItemcodegenerationComponent implements OnInit {
       CreatedUser: this.username,
       isOperationDisable:true
     });
-    this.made_changes = true;
+  //  CommonData.made_changes = true;
 
+  }
+  onInputeCode(value) {    
+    if(value.trim().length > 0){
+      CommonData.made_changes = true;
+     }else{
+      CommonData.made_changes = false;
+    }
+  
   }
 
   onDeleteRow(rowindex) {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     if (this.itemcodetable.length > 0) {
       for (let i = 0; i < this.itemcodetable.length; ++i) {
         if (this.itemcodetable[i].rowindex === rowindex) {
@@ -299,14 +307,14 @@ export class ItemcodegenerationComponent implements OnInit {
       data => {
 
         if (data == "7001") {
-          this.made_changes = false;
+          CommonData.made_changes = false;
           this.commanService.RemoveLoggedInUser().subscribe();
           this.commanService.signOut(this.toastr, this.route, 'Sessionout');
           return;
         } 
 
         if (data === "True") {
-          this.made_changes = false;
+          CommonData.made_changes = false;
           this.toastr.success('', this.language.DataSaved, this.commonData.toast_config);
           this.route.navigateByUrl('item-code-generation/view');
           return;
@@ -330,7 +338,7 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onStringTypeSelectChange(selectedvalue, rowindex) {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     for (let i = 0; i < this.itemcodetable.length; ++i) {
       if (this.itemcodetable[i].rowindex === rowindex) {
         this.itemcodetable[i].stringtype = selectedvalue;
@@ -348,7 +356,7 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onStringOperationsSelectChange(selectedvalue, rowindex) {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     for (let i = 0; i < this.itemcodetable.length; ++i) {
       if (this.itemcodetable[i].rowindex === rowindex) {
         this.itemcodetable[i].operations = selectedvalue;
@@ -358,7 +366,7 @@ export class ItemcodegenerationComponent implements OnInit {
   }
 
   onDeleteClick() {
-    this.made_changes = true;
+    CommonData.made_changes = true;
     this.dialog_params.push({ 'dialog_type': 'delete_confirmation', 'message': this.language.DeleteConfimation });
     this.show_dialog = true;
     // var result = confirm(this.language.DeleteConfimation);
@@ -380,7 +388,7 @@ export class ItemcodegenerationComponent implements OnInit {
       }
     }
     onStrBlur(selectedvalue, rowindex, string_number) {
-      this.made_changes = true;
+      CommonData.made_changes = true;
       if (string_number == 2){ // validate string on blur
         var rgexp = /^\d+$/;
         if (rgexp.test(selectedvalue) == false) {
@@ -502,7 +510,7 @@ export class ItemcodegenerationComponent implements OnInit {
             data => {
               if(data != undefined && data.length > 0){
                 if (data[0].ErrorMsg == "7001") {
-                  this.made_changes = false;
+                  CommonData.made_changes = false;
                   this.commanService.RemoveLoggedInUser().subscribe();
                   this.commanService.signOut(this.toastr, this.route, 'Sessionout');
                   return;
@@ -514,7 +522,7 @@ export class ItemcodegenerationComponent implements OnInit {
               }
               else if(data[0].IsDeleted == "1"){
                 this.toastr.success('', this.language.DataDeleteSuccesfully, this.commonData.toast_config);
-                this.made_changes = false;
+                CommonData.made_changes = false;
                 this.route.navigateByUrl('item-code-generation/view');
               }
               else{
@@ -554,7 +562,7 @@ export class ItemcodegenerationComponent implements OnInit {
 
           if(data != undefined && data.length > 0){
             if (data[0].ErrorMsg == "7001") {
-              this.made_changes = false;
+              CommonData.made_changes = false;
               this.commanService.RemoveLoggedInUser().subscribe();
               this.commanService.signOut(this.toastr, this.route, 'Sessionout');
               return;
