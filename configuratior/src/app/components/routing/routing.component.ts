@@ -2293,6 +2293,10 @@ CommonData.made_changes = true;
         } else {
           oper_arr_data.opn_application = 'N';
         }
+
+        if(oper_arr_data.oper_consumption_method =="" || oper_arr_data.oper_consumption_method ==''){
+          oper_arr_data.oper_consumption_method = 0; 
+        }
         routing_detail_tmp_arr.push(oper_arr_data);
       }
     }
