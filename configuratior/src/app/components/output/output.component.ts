@@ -4874,7 +4874,7 @@ export class OutputComponent implements OnInit {
             "OPTM_REFITEMCODE": "",
             "OPTM_PARENTID": step3_data_row.model_id,
             "OPTM_PARENTTYPE": 2,
-            "UNIQUE_KEY": this.MainModelDetails[0].UNIQUE_KEY,
+            "UNIQUE_KEY": step3_data_row.MainModelDetails[0].UNIQUE_KEY,
             "NODEID": '',
             "temp_model_id": parseInt(step3_data_row.model_id),
             "OPTM_FILL_POINT": "1",
@@ -5036,7 +5036,7 @@ export class OutputComponent implements OnInit {
                       //  "temp_model_id": parseInt(master_model_id)
                       "temp_model_id": parseInt(temp_model_id_default),
                       "OPTM_FILL_POINT": "2",
-                      "MODEL_UNIQUE_KEY": this.getModelUniqueKey(step3_data_row.feature[ifeature].nodeid, step3_data_row.ModelHeaderData)
+                      "MODEL_UNIQUE_KEY": this.getModelUniqueKey(featureitemlistfilterdata[0].nodeid, step3_data_row.ModelHeaderData)
                     })
                   }
 
@@ -6058,7 +6058,7 @@ export class OutputComponent implements OnInit {
           isQuantityDisabled: true,
           HEADER_LINENO: ModelData[imodelarray].OPTM_LINENO,
           OPTM_ITEMTYPE: 1,
-          nodeid: ModelData[imodelarray].unique_key,
+          nodeid: ModelData[imodelarray].nodeid,
           sort_key:ModelData[imodelarray].sort_key
         });
         console.log("this.feature_itm_list_table - ", this.feature_itm_list_table);
