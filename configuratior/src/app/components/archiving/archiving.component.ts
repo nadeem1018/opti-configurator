@@ -255,7 +255,7 @@ export class ArchivingComponent implements OnInit {
                   config_desc: grid_index.OPTM_DESC,
                   doc_type: grid_index.OPTM_DOCTYPE,
                   ref_doc_entry: grid_index.OPTM_REFDOCENTRY,
-                  models: grid_index.MODEL,
+                  models: grid_index.Model,
                   fg_item: grid_index.OPTM_FGITEM,
                   doc_date: change_date_format,
                   gross_total: "$" + parseFloat(grid_index.OPTM_GRANDTOTAL).toFixed(3),
