@@ -774,9 +774,7 @@ openPriceLookUp(ItemKey, rowindex) {
 }
 
 getLookupValue($event) {
-  if($event[0] == undefined || $event[0] == "" ){
-    return;    
- }
+  
   if (this.lookupfor == "feature_Detail_lookup" || this.lookupfor == "ModelBom_Detail_lookup" || this.lookupfor == "Item_Detail_lookup") {
     console.log("in here - selection ");
     for (let j = 0; j < this.modelbom_data.length; j++) {
@@ -804,8 +802,10 @@ getLookupValue($event) {
     }
   }
 
-  if (this.lookupfor == 'ModelBom_lookup') {
-    //alert($event);    
+  if (this.lookupfor == 'ModelBom_lookup') {  
+    if($event[0] == undefined || $event[0] == "" ){
+      return;    
+   }
     CommonData.made_changes = true;
     this.modelbom_data.modal_id = $event[0];
     this.modelbom_data.modal_code = $event[1];    
