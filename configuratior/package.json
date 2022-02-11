@@ -40,7 +40,7 @@
     "@progress/kendo-theme-default": "latest",
     "@telerik/kendo-intl": "^1.4.2",
     "@types/jquery": "^3.3.6",
-    "ajv": "^6.9.1",
+    "ajv": "^6.12.3",
     "ajv-keywords": "^3.4.0",
     "angular-webstorage-service": "^1.0.2",
     "bootstrap": "^4.3.1",
